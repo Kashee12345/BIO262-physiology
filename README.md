@@ -5,7 +5,7 @@ book**, **693 original practice questions with rationales**, **554 flashcards**,
 games — covering the whole BIO 262 semester. Every page is plain HTML that runs in any browser,
 on a phone, tablet or projector. No installs, no accounts.
 
-**Live site:** https://kashee12345.github.io/bio262-physiology/
+**Live site:** https://kashee12345.github.io/BIO262-physiology/
 
 A study resource for **Joyce University** BIO 262 students, by **Dr. Vidya Garg**.
 *(An independent supplement — not an official Joyce University publication.)*
