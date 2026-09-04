@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1 — Introduction to Physiology &amp; the Chemical Level | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 1 — Introduction to Physiology &amp; the Chemical Level</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit1">
+
+<h2>Module 1 &nbsp;•&nbsp; Introduction to Physiology &amp; the Chemical Level &nbsp;<span class="chip">Exam 1</span></h2>
+<div class="box obj"><ol><li>Define physiology and its subdivisions.</li><li>Examine the role of atoms and electrons in physiological processes.</li><li>Define homeostasis, positive feedback and negative feedback.</li><li>Describe pH and how acids, bases and buffers matter physiologically.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Normal blood pH is <b>7.35–7.45</b>. Below = acidosis, above = alkalosis.</li><li>pH is <b>inversely</b> related to H⁺; each unit is a tenfold change.</li><li>Negative feedback <b>opposes</b> the stimulus; positive feedback <b>amplifies</b> it.</li><li>Ionic = electrons <b>transferred</b>. Covalent = electrons <b>shared</b> (equally = nonpolar, unequally = polar).</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">What physiology actually asks</h4><div class="read">Anatomy asks <i>what is this and where is it</i>. Physiology asks <i>what does it do and how</i>. Every
+question in this course is really the same question in different clothing: here is a structure, here is
+its job, and here is what goes wrong when it fails.<br><br>
+You will see three scales. <b>Cell physiology</b> looks inside a single cell — how it makes ATP, how it moves
+glucose across its membrane. <b>Organ physiology</b> zooms out to one organ, like how the kidney filters blood.
+<b>Systemic physiology</b> looks at organs cooperating, like the heart and lungs together during exercise.
+<b>Pathophysiology</b> is what this becomes when something breaks.</div>
+<h4 class="topic">Bonds, and why water behaves the way it does</h4><div class="read">Atoms bond to fill their outer shell, and there are only really two ways to do it. In an <b>ionic bond</b>
+one atom hands an electron over completely — sodium gives its lone outer electron to chlorine, both end up
+charged, and opposite charges cling together. In a <b>covalent bond</b> they share instead. If they share
+evenly it is <b>nonpolar</b>; if one atom pulls harder it is <b>polar</b>, and the molecule ends up with a
+slightly negative end and a slightly positive end.<br><br>
+Water is the polar molecule that matters. Oxygen pulls the shared electrons toward itself, so oxygen sits
+slightly negative and the hydrogens slightly positive. That lopsidedness is why water dissolves salts — it
+surrounds ions and pulls them apart — and why water molecules stick to each other through <b>hydrogen
+bonds</b>. Hydrogen bonds are weak, and that weakness is the point: they form and break easily, which is
+exactly what DNA needs to unzip and what proteins need to change shape.</div>
+<h4 class="topic">Homeostasis is a thermostat, not a freeze-frame</h4><div class="read">Homeostasis does not mean values stay still. It means they wobble around a <b>set point</b> and get pulled
+back. Every loop has the same five parts: a <b>stimulus</b> knocks a value off target, a <b>receptor</b>
+notices, a <b>control center</b> decides, an <b>effector</b> acts, and the response feeds back.<br><br>
+In <b>negative feedback</b> the response <i>opposes</i> the stimulus and therefore switches itself off. You
+get too warm, you sweat, you cool down, you stop sweating. Nearly everything in your body works this way.<br><br>
+In <b>positive feedback</b> the response <i>amplifies</i> the stimulus, so it escalates until something
+external stops it. Labor is the classic case — contractions release oxytocin, oxytocin strengthens
+contractions, and it only ends with delivery. Clotting is the other. Positive feedback is not "bad"; it is
+just the rarer design, used when the body needs to finish something decisively.</div>
+<h4 class="topic">pH, and why 7.35–7.45 is so tight</h4><div class="read">pH measures hydrogen ions, and it runs <i>backwards</i>: more H⁺ means a <b>lower</b> number. It is also
+logarithmic, so each unit is a tenfold change — pH 2 has ten million times more H⁺ than pH 9.<br><br>
+Blood sits between <b>7.35 and 7.45</b>. That window is narrow because protein shape depends on pH, and
+enzyme function depends on protein shape. Drift outside it and a great many reactions degrade at once.
+Below 7.35 is <b>acidosis</b>; above 7.45 is <b>alkalosis</b>.<br><br>
+<b>Buffers</b> are what hold the line. A buffer soaks up H⁺ when acid rises and releases it when acid falls —
+it works in both directions. The main one in blood is the bicarbonate system, which is also why breathing
+(CO₂) and the kidneys (bicarbonate) both end up controlling your pH.</div>
+<h4 class="topic">Electrons, shells, and why ions matter</h4><div class="read">An atom is a nucleus of protons and neutrons surrounded by electrons in shells, and only the outermost — the <b>valence shell</b> — does chemistry. An atom is stable when that shell is full and reactive when it is not, so it gives away, takes, or shares electrons until it is full. Lose an electron and the atom becomes a positive <b>cation</b>; gain one and it becomes a negative <b>anion</b>.<br><br>
+Your electrolyte panel is that rule applied. <b>Sodium</b> holds water in the extracellular fluid, <b>potassium</b> sets the resting membrane potential, <b>calcium</b> triggers contraction and clotting, <b>magnesium</b> activates enzymes, <b>chloride</b> follows sodium, and <b>bicarbonate</b> and <b>phosphate</b> buffer acid. Charge is what makes each of these do work — which is why a shift in potassium too small to notice can stop a heart outright.</div>
+<h4 class="topic">The buffers, and the three lines of defense</h4><div class="read">A <b>buffer</b> is a pair of molecules that can absorb a hydrogen ion or release one, so pH barely moves when acid arrives. You run three of them. The <b>bicarbonate</b> system handles extracellular fluid and does most of the work; the <b>phosphate</b> system works inside cells and in the kidney tubules. <b>Protein</b> buffers, hemoglobin above all, work wherever protein is, taking up hydrogen and handing it back.<br><br>
+Buffers act in seconds, but they only bind the acid, they do not remove it. The <b>lungs</b> follow within minutes, blowing off carbon dioxide before it becomes carbonic acid. The <b>kidneys</b> take hours to days, but they alone excrete fixed acid and rebuild the bicarbonate you spent — which is why acid-base trouble in kidney failure deepens for days instead of correcting itself.</div>
+<h4 class="topic">Positive feedback is not the villain</h4><div class="read"><b>Negative feedback</b> reverses a change, and it holds nearly every variable steady. <b>Positive feedback</b> amplifies a change instead, driving the variable further from its start, which students read as pathology. It is not. It is what the body uses when a job needs finishing, not balancing.<br><br>
+There are only a handful. In <b>labor</b>, cervical stretch drives oxytocin, which drives stronger contractions, which stretch the cervix further. Activated platelets recruit more platelets in <b>clotting</b>, sodium entry opens more sodium channels in the <b>action potential</b>, rising estrogen tips the pituitary into the <b>LH surge</b>, and suckling drives the <b>milk ejection</b> reflex. Each loop ends because something outside it removes the stimulus — the baby is delivered, the vessel is sealed — which is why positive feedback is dangerous only when that end never arrives.</div>
+<h4 class="topic">Set points can move</h4><div class="read">A thermostat has one setting. You have several, and they move.<br><br>
+In <b>fever</b>, pyrogens raise the hypothalamic set point to thirty-nine degrees Celsius; your temperature has not escaped control, it is being controlled to a higher target — which is why you shiver under blankets while already hot. At <b>altitude</b>, erythropoietin resets red cell mass upward over weeks. In chronic <b>hypertension</b>, baroreceptors reset and treat the raised pressure as normal. Even across a day, temperature, cortisol and blood pressure follow a <b>circadian</b> swing.<br><br>
+Homeostasis does not mean a value never changes; it means a value is defended. When a number sits outside the range, ask whether control has failed or the target has moved — cooling a fever fights the body's own target, while cooling heat stroke saves a life.</div>
+<h4 class="topic">Gradients are stored energy</h4><div class="read">Ions do not drift at random. The body spends roughly a fifth of its resting energy running the <b>sodium-potassium pump</b>, which pushes three sodium out for every two potassium in, against both concentrations. That looks wasteful until you see what it buys.<br><br>
+The result is a <b>gradient</b> — sodium high outside, potassium high inside — and a gradient is stored energy, like water held behind a dam. Opening a sodium channel releases it, and that release is the action potential and the muscle twitch; the same gradient drags glucose into the gut lining alongside sodium. Nothing is built on demand; it is already charged and waiting.<br><br>
+Which is why cells swell within minutes of losing blood flow and die soon after — no oxygen, no ATP, no pump, and the dam drains.</div>
+<h3>Reference tables</h3>
+<h4>Chemical bonds</h4><table><tr><th>Bond</th><th>What happens to electrons</th><th>Example</th></tr><tr><td>Ionic</td><td>Transferred from one atom to another</td><td>Na⁺Cl⁻</td></tr><tr><td>Polar covalent</td><td>Shared unequally → partial charges</td><td>H₂O</td></tr><tr><td>Nonpolar covalent</td><td>Shared equally</td><td>O₂, lipids</td></tr><tr><td>Hydrogen</td><td>No sharing — weak attraction between partial charges</td><td>Between water molecules; DNA strands</td></tr></table>
+<h4>Feedback loop components</h4><table><tr><th>Component</th><th>Role</th></tr><tr><td>Stimulus</td><td>The change that disturbs the set point</td></tr><tr><td>Receptor</td><td>Detects the change</td></tr><tr><td>Control center</td><td>Integrates and decides the response</td></tr><tr><td>Effector</td><td>Carries out the response</td></tr><tr><td>Set point</td><td>The value being defended</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Higher pH means more hydrogen ions."</b> Inverted. pH is <i>inversely</i> related to H⁺ — pH 2 has ten million times more H⁺ than pH 9.</li><li><b>"Positive feedback is harmful."</b> No. Labor and clotting both depend on it. It amplifies rather than opposes; that is the only difference.</li><li><b>"Homeostasis means values never change."</b> Values oscillate around a set point. Homeostasis is dynamic, not static.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 1 — p.4 · Module 1 live-class deck, slide 10 · Module 1 live-class deck, slide 11 · Module 1 live-class deck, slide 13 · Module 1 live-class deck, slide 14 · Module 1 live-class deck, slide 15 · Module 1 live-class deck, slide 2 · Module 1 live-class deck, slide 4 · Module 1 live-class deck, slide 5 · Module 1 live-class deck, slide 6</p>
+<h3>Practice questions <span class="small">(54)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> A researcher measures how quickly a single hepatocyte takes up glucose after insulin exposure. Which subdivision of physiology is this?</summary><ol class="opts" type="A"><li class="key">Cell physiology</li><li>Organ physiology</li><li>Systemic physiology</li><li>Pathophysiology</li><li>Comparative anatomy</li></ol><div class="ans show"><b>Answer: A.</b> The unit of study is one cell and its internal handling of glucose, so this is cell physiology. Organ physiology would study the liver as a whole.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q2.</b> A student explains how the respiratory and cardiovascular systems cooperate to raise oxygen delivery during exercise. This is best described as:</summary><ol class="opts" type="A"><li>Cell physiology</li><li class="key">Systemic physiology</li><li>Organ physiology</li><li>Regional gross anatomy</li><li>Microscopic anatomy</li></ol><div class="ans show"><b>Answer: B.</b> Systemic physiology examines how multiple organ systems interact to accomplish a shared function.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q3.</b> Which statement best captures the relationship between anatomy and physiology?</summary><ol class="opts" type="A"><li>They examine identical questions and differ only in the laboratory tools each one uses</li><li>Physiology is a narrow subdivision of gross anatomy concerned with cadaver dissection</li><li class="key">Anatomy studies structure; physiology studies function</li><li>Anatomy studies disease; physiology studies health</li><li>Physiology examines only microscopic structures</li></ol><div class="ans show"><b>Answer: C.</b> Anatomy asks what a structure IS; physiology asks what it DOES. Structure and function are tightly linked but are distinct questions.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q4.</b> A clinician studies how glomerular filtration changes in a patient with hypertension. This is:</summary><ol class="opts" type="A"><li>Cell physiology only</li><li>Comparative physiology</li><li>Gross anatomy</li><li class="key">Organ physiology</li><li>Renal histology</li></ol><div class="ans show"><b>Answer: D.</b> The kidney is the unit of study, so this is organ physiology.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q5.</b> Pathophysiology is best defined as the study of:</summary><ol class="opts" type="A"><li>How the healthy body maintains its normal function under everyday conditions</li><li>The structural changes disease produces in tissue as seen under the microscope</li><li>How drugs act on their target receptors</li><li>Microbial causes of infectious disease</li><li class="key">How normal function is disrupted by disease</li></ol><div class="ans show"><b>Answer: E.</b> Pathophysiology examines the altered function that results from disease — normal physiology gone wrong.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q6.</b> Which pairing of subdivision and example is INCORRECT?</summary><ol class="opts" type="A"><li class="key">Cell physiology — how the cardiovascular and renal systems jointly regulate blood pressure</li><li>Cell physiology — how a single neuron generates and propagates an action potential along its axon membrane</li><li>Organ physiology — how the stomach as a whole secretes hydrochloric acid and mixes food into chyme</li><li>Systemic physiology — how nerves and hormones together regulate body temperature</li><li>Pathophysiology — how insulin resistance alters glucose handling in diabetes</li></ol><div class="ans show"><b>Answer: A.</b> Two organ systems working together is systemic physiology, not cell physiology.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q7.</b> Two atoms share a pair of electrons unequally, producing partial charges. This bond is:</summary><ol class="opts" type="A"><li>Ionic attraction</li><li class="key">Polar covalent</li><li>Nonpolar covalent</li><li>Hydrogen bonding</li><li>Van der Waals</li></ol><div class="ans show"><b>Answer: B.</b> Unequal sharing creates partial positive and partial negative regions — the definition of a polar covalent bond.<span class="ref">Module 1 live-class deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q8.</b> Sodium transfers its single valence electron to chlorine. What has formed?</summary><ol class="opts" type="A"><li>A nonpolar covalent bond</li><li>A polar covalent bond</li><li class="key">An ionic bond</li><li>A hydrogen bond</li><li>A peptide bond</li></ol><div class="ans show"><b>Answer: C.</b> Complete transfer of an electron creates oppositely charged ions that attract — an ionic bond.<span class="ref">Module 1 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q9.</b> An atom's chemical bonding behavior is determined primarily by:</summary><ol class="opts" type="A"><li>The number of neutrons packed into the nucleus alongside the protons</li><li>The number of protons in the nucleus</li><li>Its total atomic mass in daltons, summing protons and neutrons</li><li class="key">Electrons in the outermost (valence) shell</li><li>The physical size of the atom's nucleus</li></ol><div class="ans show"><b>Answer: D.</b> Valence electrons are the ones available to be shared or transferred, so they dictate bonding.<span class="ref">Module 1 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q10.</b> Which particle is gained or lost when an ion forms?</summary><ol class="opts" type="A"><li>Proton</li><li>Neutron</li><li>Atomic nucleus</li><li>Alpha particle</li><li class="key">Electron</li></ol><div class="ans show"><b>Answer: E.</b> Ions form by gaining or losing electrons. Changing proton number would change the element itself.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q11.</b> An atom that has GAINED an electron is best described as:</summary><ol class="opts" type="A"><li class="key">An anion with a negative charge</li><li>A cation with a positive charge, formed when an electron is lost</li><li>A cation with a negative charge, since protons are unchanged in number</li><li>An anion with a positive charge</li><li>An isotope with extra neutrons</li></ol><div class="ans show"><b>Answer: A.</b> Gaining a negatively charged electron makes the atom net negative — an anion.<span class="ref">Module 1 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q12.</b> Which bond type holds the two hydrogens to oxygen WITHIN a single water molecule?</summary><ol class="opts" type="A"><li>Hydrogen bonds</li><li class="key">Polar covalent bonds</li><li>Ionic bonds</li><li>Nonpolar covalent bonds</li><li>Van der Waals forces</li></ol><div class="ans show"><b>Answer: B.</b> Within one water molecule the atoms share electrons unequally — polar covalent. Hydrogen bonds act BETWEEN separate water molecules.<span class="ref">Module 1 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q13.</b> Water molecules cling to one another, giving water a high surface tension. This is due to:</summary><ol class="opts" type="A"><li>Ionic bonds between molecules</li><li>Covalent bonds between molecules</li><li class="key">Hydrogen bonds between molecules</li><li>Electron transfer between molecules</li><li>Neutron sharing between atoms</li></ol><div class="ans show"><b>Answer: C.</b> Hydrogen bonding between the partial-positive H of one molecule and partial-negative O of another produces cohesion.<span class="ref">Module 1 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q14.</b> Two identical atoms share electrons equally. The resulting bond is:</summary><ol class="opts" type="A"><li>Ionic attraction</li><li>Polar covalent</li><li>Hydrogen bonding</li><li class="key">Nonpolar covalent</li><li>Ionic-covalent hybrid</li></ol><div class="ans show"><b>Answer: D.</b> Identical atoms pull equally, so there are no partial charges — nonpolar covalent.<span class="ref">Module 1 live-class deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q15.</b> Which of the following is the WEAKEST interaction?</summary><ol class="opts" type="A"><li>Ionic bond</li><li>Polar covalent bond</li><li>Nonpolar covalent bond</li><li>Double covalent bond</li><li class="key">Hydrogen bond</li></ol><div class="ans show"><b>Answer: E.</b> Hydrogen bonds are weak individually — which is what lets them form and break rapidly in biological systems.<span class="ref">Module 1 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q16.</b> Why is hydrogen bonding physiologically important?</summary><ol class="opts" type="A"><li class="key">It allows DNA strands and protein folds to be held together yet separated when needed</li><li>It permanently locks folded proteins into a rigid shape that can never be altered by heat or pH</li><li>It is the strongest chemical bond in the body, far stronger than either a covalent or an ionic bond</li><li>It transfers electrons from one molecule to another to form ions</li><li>It creates the sodium and potassium ions used in nerve conduction</li></ol><div class="ans show"><b>Answer: A.</b> Because hydrogen bonds are weak and reversible, DNA can be unzipped for transcription and proteins can change conformation.<span class="ref">Module 1 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q17.</b> Homeostasis is best defined as:</summary><ol class="opts" type="A"><li>A completely unchanging internal environment in which no variable is ever allowed to fluctuate</li><li class="key">Maintenance of a stable internal environment despite external change</li><li>The body's inflammatory response to tissue injury, infection, and foreign material</li><li>A resting state that is reached only during deep sleep</li><li>The complete absence of disease or injury</li></ol><div class="ans show"><b>Answer: B.</b> Homeostasis is dynamic — variables fluctuate around a set point rather than remaining fixed.<span class="ref">Module 1 live-class deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q18.</b> In a feedback loop, the structure that detects the change is the:</summary><ol class="opts" type="A"><li>Effector</li><li>Control center</li><li class="key">Receptor</li><li>Set point</li><li>Stimulus</li></ol><div class="ans show"><b>Answer: C.</b> Order is stimulus → receptor (detects) → control center (decides) → effector (acts).<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q19.</b> Which component of a feedback loop carries out the corrective response?</summary><ol class="opts" type="A"><li>Receptor</li><li>Control center</li><li>Stimulus</li><li class="key">Effector</li><li>Set point</li></ol><div class="ans show"><b>Answer: D.</b> The effector performs the action that moves the variable back toward the set point.<span class="ref">Module 1 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q20.</b> Body temperature rises, sweating begins, temperature falls, and sweating stops. This illustrates:</summary><ol class="opts" type="A"><li>Positive feedback</li><li>Feedforward control</li><li>Acclimatization</li><li>Long-term adaptation</li><li class="key">Negative feedback</li></ol><div class="ans show"><b>Answer: E.</b> The response opposes and shuts off the original stimulus — the defining feature of negative feedback.<span class="ref">Module 1 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q21.</b> Which is a true POSITIVE feedback loop?</summary><ol class="opts" type="A"><li class="key">Oxytocin release intensifying uterine contractions during labor</li><li>Insulin release lowering blood glucose after a carbohydrate-rich meal</li><li>Sweating and skin vasodilation lowering core body temperature on a hot day</li><li>Baroreceptor reflexes slowing the heart when pressure rises</li><li>Renal excretion of hydrogen ions to correct blood pH</li></ol><div class="ans show"><b>Answer: A.</b> Contractions trigger oxytocin, which strengthens contractions — an escalating loop that ends only with delivery.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q22.</b> The key difference between positive and negative feedback is that positive feedback:</summary><ol class="opts" type="A"><li>Is always harmful to the body and never occurs outside of disease states</li><li class="key">Amplifies the original stimulus rather than opposing it</li><li>Involves no receptor, no control center, and no integrating pathway</li><li>Acts far more slowly than negative feedback</li><li>Requires no effector to carry out a response</li></ol><div class="ans show"><b>Answer: B.</b> Positive feedback drives the variable further from baseline. It is not inherently harmful — labor and clotting both rely on it.<span class="ref">Module 1 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q23.</b> Blood clotting is considered positive feedback because:</summary><ol class="opts" type="A"><li>Clotting shuts itself off the moment the first platelet is activated</li><li>It restores circulating blood volume back toward its normal set point</li><li class="key">Each activated platelet recruits more platelets to the site</li><li>It is controlled by centers in the brainstem</li><li>It opposes and reverses the initial injury</li></ol><div class="ans show"><b>Answer: C.</b> Platelet activation recruits further platelets, escalating until the vessel is sealed.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q24.</b> Which body systems are the two principal regulators of homeostasis?</summary><ol class="opts" type="A"><li>Digestive and urinary</li><li>Skeletal and muscular</li><li>Integumentary and lymphatic</li><li class="key">Nervous and endocrine</li><li>Respiratory and reproductive</li></ol><div class="ans show"><b>Answer: D.</b> The nervous system gives fast electrical control; the endocrine system gives slower, longer-lasting hormonal control.<span class="ref">Module 1 live-class deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q25.</b> Compared with endocrine regulation, nervous regulation is:</summary><ol class="opts" type="A"><li>Slower in onset but far longer lasting in its effects</li><li>Slower in onset and shorter lasting than hormonal signaling</li><li>Faster in onset and longer lasting</li><li>Identical in onset and duration</li><li class="key">Faster in onset but shorter lasting</li></ol><div class="ans show"><b>Answer: E.</b> Nerve signals act in milliseconds but stop quickly; hormones take longer to act but persist.<span class="ref">Module 1 live-class deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q26.</b> In negative feedback, the response ultimately acts on the receptor by:</summary><ol class="opts" type="A"><li class="key">Removing the stimulus so the receptor stops signaling</li><li>Sensitizing it so that it signals even more strongly than before</li><li>Destroying the receptor permanently so it can never fire again</li><li>Converting the receptor into an effector</li><li>Raising the set point to a new value</li></ol><div class="ans show"><b>Answer: A.</b> By correcting the variable, the response eliminates the stimulus the receptor was detecting, switching the loop off.<span class="ref">Module 1 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q27.</b> A solution's pH falls from 7 to 5. The hydrogen ion concentration has:</summary><ol class="opts" type="A"><li>Decreased 10-fold</li><li class="key">Increased 100-fold</li><li>Decreased by a factor of one hundred</li><li>Increased by a factor of ten</li><li>Remained the same</li></ol><div class="ans show"><b>Answer: B.</b> The pH scale is logarithmic — each unit is a 10-fold change, so two units is 100-fold. Lower pH means MORE H+.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which solution contains the fewest hydrogen ions?</summary><ol class="opts" type="A"><li>pH 1.5</li><li>pH 4</li><li class="key">pH 12</li><li>pH 6.5</li><li>pH 10</li></ol><div class="ans show"><b>Answer: C.</b> pH is inversely related to H+ concentration, so the highest pH has the fewest hydrogen ions.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q29.</b> The normal pH range of arterial blood is:</summary><ol class="opts" type="A"><li>6.85-7.05</li><li>7.15-7.25</li><li>7.55-7.65</li><li class="key">7.35-7.45</li><li>7.75-7.85</li></ol><div class="ans show"><b>Answer: D.</b> 7.35-7.45 is a narrow window because enzyme function and protein structure depend on it.<span class="ref">Module 1 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q30.</b> A patient's arterial blood pH is 7.28. This is termed:</summary><ol class="opts" type="A"><li>Alkalosis</li><li>Normal</li><li>Neutral</li><li>Compensated alkalosis</li><li class="key">Acidosis</li></ol><div class="ans show"><b>Answer: E.</b> Below 7.35 is acidosis. Above 7.45 is alkalosis.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q31.</b> What does a buffer do?</summary><ol class="opts" type="A"><li class="key">Resists pH change by accepting or releasing hydrogen ions</li><li>Permanently prevents any change in pH from ever occurring in the blood</li><li>Raises pH by adding hydroxide ions</li><li>Lowers pH only, by releasing hydrogen ions and never accepting them</li><li>Removes water molecules from the solution</li></ol><div class="ans show"><b>Answer: A.</b> A buffer works in both directions, soaking up excess H+ or releasing H+ when levels fall.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q32.</b> The principal buffer system of the blood is:</summary><ol class="opts" type="A"><li>Phosphate</li><li class="key">Bicarbonate</li><li>Ammonium ion</li><li>Protein-only</li><li>Sulfate ion</li></ol><div class="ans show"><b>Answer: B.</b> The bicarbonate system is the main extracellular buffer and is tied to both respiratory and renal control.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q33.</b> If pH rises above the normal range, the patient is in alkalosis, which means H+ concentration has:</summary><ol class="opts" type="A"><li>Increased</li><li>Stayed the same</li><li class="key">Decreased</li><li>Doubled</li><li>Become zero</li></ol><div class="ans show"><b>Answer: C.</b> Higher pH = fewer hydrogen ions, by definition of the inverse relationship.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q34.</b> Why must blood pH be tightly regulated?</summary><ol class="opts" type="A"><li>Because the hypothalamus uses blood pH, not blood temperature, to set the body's thermostat</li><li>Because the kidneys decide how much circulating blood volume to keep based directly on plasma pH</li><li>Because clotting time is determined entirely by blood pH</li><li class="key">Because enzymes and proteins denature and lose function outside a narrow pH</li><li>Because hair and nail growth rates depend on blood pH</li></ol><div class="ans show"><b>Answer: D.</b> Protein shape — and therefore enzyme activity — is pH dependent. Small deviations impair many reactions at once.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q35.</b> A pH of 7.0 is considered:</summary><ol class="opts" type="A"><li>Strongly acidic</li><li>Weakly acidic</li><li>Weakly basic</li><li>Strongly basic</li><li class="key">Neutral</li></ol><div class="ans show"><b>Answer: E.</b> At pH 7 the H+ and OH- concentrations are equal.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q36.</b> Which change would most directly lower blood pH?</summary><ol class="opts" type="A"><li class="key">Retention of carbon dioxide</li><li>Excretion of hydrogen ions by the renal tubules</li><li>Reabsorption of filtered bicarbonate in the proximal tubule</li><li>Rapid hyperventilation</li><li>Vomiting gastric acid</li></ol><div class="ans show"><b>Answer: A.</b> Retained CO2 forms carbonic acid, releasing H+ and lowering pH — respiratory acidosis.<span class="ref">Module 1 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q37.</b> A marathon runner becomes dehydrated. Receptors detect rising blood osmolarity, the hypothalamus signals ADH release, and the kidneys conserve water. This sequence is an example of:</summary><ol class="opts" type="A"><li>Positive feedback</li><li class="key">Negative feedback</li><li>A pathological loop</li><li>Feedforward regulation</li><li>Passive diffusion</li></ol><div class="ans show"><b>Answer: B.</b> The response (water conservation) corrects the stimulus (high osmolarity) and switches the loop off — negative feedback.<span class="ref">Module 1 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q38.</b> Which of the following would NOT be part of a homeostatic feedback loop?</summary><ol class="opts" type="A"><li>A receptor detecting a change in a variable</li><li>A control center integrating information</li><li class="key">A permanent structural change to an organ</li><li>An effector producing a response</li><li>A stimulus that alters a variable</li></ol><div class="ans show"><b>Answer: C.</b> Feedback loops produce functional, reversible corrections — not permanent structural remodeling.<span class="ref">Module 1 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q39.</b> A patient hyperventilates during a panic attack, blowing off large amounts of CO2. The expected acid-base result is:</summary><ol class="opts" type="A"><li>Respiratory acidosis</li><li>Metabolic acidosis</li><li>No acid-base change</li><li class="key">Respiratory alkalosis</li><li>Complete buffer failure</li></ol><div class="ans show"><b>Answer: D.</b> Losing CO2 removes carbonic acid, so H+ falls and pH rises — respiratory alkalosis.<span class="ref">Module 1 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q40.</b> Which subdivision studies how the cardiovascular and respiratory systems cooperate during exercise?</summary><ol class="opts" type="A"><li>Cell physiology</li><li>Organ physiology</li><li>Microscopic anatomy</li><li>Comparative physiology</li><li class="key">Systemic physiology</li></ol><div class="ans show"><b>Answer: E.</b> Two or more organ systems working together is systemic physiology.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q41.</b> A hydrogen bond forms between:</summary><ol class="opts" type="A"><li class="key">A partial positive hydrogen and a partial negative atom on another molecule</li><li>Two atomic nuclei that are pulled together by their opposite electrical charges</li><li>Two electrons that are paired within the same valence shell</li><li>A proton and a neutron held together inside the atomic nucleus</li><li>Two nonpolar molecules that carry no partial charges at all</li></ol><div class="ans show"><b>Answer: A.</b> Hydrogen bonds are weak electrostatic attractions between opposite partial charges.<span class="ref">Module 1 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q42.</b> Which best explains why water is an excellent solvent for ions?</summary><ol class="opts" type="A"><li>It is a nonpolar molecule whose atoms share electrons perfectly evenly</li><li class="key">Its polarity lets it surround and separate charged particles</li><li>It carries a full negative charge distributed over the whole molecule</li><li>It forms ionic bonds with dissolved solutes</li><li>It has unusually low surface tension</li></ol><div class="ans show"><b>Answer: B.</b> Polar water molecules orient around ions, pulling them apart and keeping them in solution.<span class="ref">Module 1 live-class deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q43.</b> An atom with 6 valence electrons will most likely:</summary><ol class="opts" type="A"><li>Lose all 6 valence electrons to another atom</li><li>Gain 6 more electrons to reach a total of twelve</li><li class="key">Gain 2 electrons to complete its outer shell</li><li>Lose 2 protons from the nucleus to balance out</li><li>Remain chemically inert and form no bonds at all</li></ol><div class="ans show"><b>Answer: C.</b> Atoms bond so as to fill the valence shell, usually to eight electrons.<span class="ref">Module 1 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q44.</b> Which is an example of a chemical buffer at work?</summary><ol class="opts" type="A"><li>Sweating to cool the body when core temperature climbs too high</li><li>Shivering to generate heat when the body cools below its set point</li><li>Vasoconstriction of skin vessels in cold</li><li class="key">Bicarbonate accepting a hydrogen ion when acid rises</li><li>Increased urine output after drinking</li></ol><div class="ans show"><b>Answer: D.</b> A buffer binds free H+ when acid rises and releases it when acid falls.<span class="ref">Module 1 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q45.</b> In a feedback loop, the set point is best described as:</summary><ol class="opts" type="A"><li>The stimulus that starts the loop</li><li>The effector that acts on the variable</li><li>The receptor that detects the change</li><li>The final response of the effector</li><li class="key">The normal value the body defends</li></ol><div class="ans show"><b>Answer: E.</b> The set point is the target value the loop works to maintain.<span class="ref">Module 1 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q46.</b> Which is NOT an example of negative feedback?</summary><ol class="opts" type="A"><li class="key">Oxytocin intensifying labor contractions</li><li>Blood glucose regulation by insulin</li><li>Body temperature regulation by sweating</li><li>Blood pressure regulation by baroreceptors</li><li>Calcium regulation by parathyroid hormone</li></ol><div class="ans show"><b>Answer: A.</b> Oxytocin in labor amplifies the stimulus, making it positive feedback.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q47.</b> Blood pH of 7.52 would be classified as:</summary><ol class="opts" type="A"><li>Normal</li><li class="key">Alkalosis</li><li>Acidosis</li><li>Neutral</li><li>Compensated acidosis</li></ol><div class="ans show"><b>Answer: B.</b> Above 7.45 is alkalosis; the hydrogen ion concentration has fallen.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q48.</b> Which statement about pH is correct?</summary><ol class="opts" type="A"><li>A higher pH value means more free hydrogen ions are present in solution</li><li>pH is a direct measure of how much oxygen the blood is carrying</li><li class="key">pH and hydrogen ion concentration are inversely related</li><li>Each pH unit is a twofold change in H+</li><li>A pH of exactly 7 is strongly acidic</li></ol><div class="ans show"><b>Answer: C.</b> More H+ gives a LOWER pH. Each unit is a tenfold change.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q49.</b> The nervous system contributes to homeostasis mainly by:</summary><ol class="opts" type="A"><li>Slow hormonal signaling that produces long-lasting effects on target cells</li><li>Producing antibodies directed against foreign antigens in the blood</li><li>Storing calcium and phosphate in bone</li><li class="key">Rapid electrical signaling with short-lived effects</li><li>Filtering blood and excreting waste</li></ol><div class="ans show"><b>Answer: D.</b> Nerve signals act in milliseconds but stop quickly, unlike hormones.<span class="ref">Module 1 live-class deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q50.</b> Which pair correctly matches bond type to electron behavior?</summary><ol class="opts" type="A"><li>Ionic — electrons shared equally</li><li>Covalent — electrons transferred</li><li>Hydrogen — electrons transferred</li><li>Nonpolar covalent — electrons transferred</li><li class="key">Ionic — electrons transferred</li></ol><div class="ans show"><b>Answer: E.</b> Ionic bonds transfer electrons; covalent bonds share them.<span class="ref">Module 1 live-class deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q51.</b> A solution at pH 3 compared with pH 6 has:</summary><ol class="opts" type="A"><li class="key">1000 times more H+</li><li>3 times more H+</li><li>100 times fewer H+</li><li>Exactly the same H+</li><li>10 times fewer H+</li></ol><div class="ans show"><b>Answer: A.</b> Three pH units equals 10x10x10 = 1000-fold more hydrogen ions.<span class="ref">Lecture Outline, Module 1 — p.4</span></div></details>
+<details class="q"><summary><b>Q52.</b> Which is the correct order of a feedback loop?</summary><ol class="opts" type="A"><li>Receptor, stimulus, integrating center, effector, corrective response</li><li class="key">Stimulus, receptor, control center, effector, response</li><li>Effector, sensor, stimulus, control center, response</li><li>Control center, stimulus, receptor, effector, corrective response</li><li>Stimulus, effector, sensor, control center, response</li></ol><div class="ans show"><b>Answer: B.</b> A change is detected, integrated, then acted upon.<span class="ref">Module 1 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q53.</b> Why can homeostasis be described as dynamic rather than static?</summary><ol class="opts" type="A"><li>Regulated values never change at all from one moment to the next</li><li>The body has no set points for any variable at all</li><li class="key">Values fluctuate around a set point rather than staying fixed</li><li>Only positive feedback loops operate in the body</li><li>It only operates during sleep and periods of rest</li></ol><div class="ans show"><b>Answer: C.</b> Variables oscillate within a normal range; they are not held perfectly constant.<span class="ref">Module 1 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q54.</b> Pathophysiology differs from physiology because it studies:</summary><ol class="opts" type="A"><li>Structure rather than function</li><li>Only microscopic anatomy</li><li>Chemical bonding in molecules</li><li class="key">Function altered by disease</li><li>Population-level health trends</li></ol><div class="ans show"><b>Answer: D.</b> Pathophysiology examines how disease disrupts normal function.<span class="ref">Module 1 live-class deck, slide 2</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Levers, Cartilage and the Strain Ladder &mdash; the skeleton in motion and after injury</title>
+<meta name="description" content="Balance torques on a third-class lever, watch pressurized water carry a joint load and then leak away under a static hold, and heal a fracture up a ladder of tissues set by interfragmentary strain.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+.eq{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.9;font-variant-numeric:tabular-nums;}
+.eq .t{color:var(--coral);font-weight:700;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+.srow{display:grid;grid-template-columns:150px 1fr 88px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.srow .nm{color:var(--soft);font-weight:700;line-height:1.2;}
+.srow .nm small{display:block;font-weight:500;color:var(--muted);font-size:10px;}
+.srow .tr{height:13px;border-radius:7px;background:rgba(0,0,0,.055);overflow:hidden;}
+.srow .fl{height:100%;border-radius:7px;transition:width .3s;background:var(--blue);}
+.srow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch04.html">&larr; Module 4</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 4 &middot; Section 5</div>
+  <h1>Levers, Cartilage and the Strain Ladder</h1>
+  <div class="intro">Three mechanical stories share one skeleton. Muscles work through <b>third-class levers</b> and must therefore pull many times harder than the loads they lift. Joints slide on <b>water pressurized inside cartilage</b>, not on a slippery coating. And a fracture heals up a ladder of tissues chosen by one physical variable, <b>interfragmentary strain</b>, which the healing tissue then lowers for itself.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Levers</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Cartilage</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Fracture strain</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Which joint are we loading?</div>
+        <div class="chips" id="sys1"></div>
+        <div class="sl"><label for="mass">Load <span class="v" id="massV">10.0 kg</span></label>
+          <input type="range" id="mass" min="0" max="600" value="100" aria-label="Load carried, in tenths of a kilogram"></div>
+        <div class="sl"><label for="dins">Muscle insertion from the joint axis <span class="v" id="dinsV">4.0 cm</span></label>
+          <input type="range" id="dins" min="10" max="120" value="40" aria-label="Distance from the joint axis to the muscle insertion, in millimeters"></div>
+        <div class="sl"><label for="dload">Load from the joint axis <span class="v" id="dloadV">32 cm</span></label>
+          <input type="range" id="dload" min="60" max="500" value="320" aria-label="Distance from the joint axis to the load, in millimeters"></div>
+        <div class="sl"><label for="short">Muscle shortening <span class="v" id="shortV">1.0 cm</span></label>
+          <input type="range" id="short" min="0" max="40" value="10" aria-label="How far the muscle shortens, in millimeters"></div>
+        <div class="eq">muscle force = load &times; load arm &divide; effort arm
+          <span class="r">torque equals force times the perpendicular distance from the axis of rotation</span></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">How is the joint being used?</div>
+        <div class="chips" id="modes2"></div>
+        <div class="sl"><label for="tmin">Time under this load <span class="v" id="tminV">1.0 min</span></label>
+          <input type="range" id="tmin" min="0" max="3600" value="60" aria-label="Time under load, in seconds"></div>
+        <div class="sl"><label for="agg">Aggrecan content &mdash; fixed negative charge <span class="v" id="aggV">100%</span></label>
+          <input type="range" id="agg" min="25" max="130" value="100" aria-label="Aggrecan content of the cartilage, percent of normal"></div>
+        <button class="tog" id="tLub" type="button" aria-pressed="true"><span class="dot"></span><span>Lubricin present <small>Boundary lubricant for the moments when fluid pressurization has decayed</small></span></button>
+        <div class="hint">Articular cartilage is <b>65&ndash;80 percent water</b> by weight, held in a type II collagen network by the giant proteoglycan <b>aggrecan</b>. Aggrecan&rsquo;s densely packed sulfate and carboxyl groups draw counter-ions in, water follows osmotically, and the tissue sits permanently swollen and pre-tensioned against its own collagen restraint.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">The construct</div>
+        <div class="chips" id="fix3"></div>
+        <div class="sl"><label for="gap">Fracture gap width <span class="v" id="gapV">2.00 mm</span></label>
+          <input type="range" id="gap" min="5" max="600" value="200" aria-label="Fracture gap width in hundredths of a millimeter"></div>
+        <div class="sl"><label for="mot">Interfragmentary motion under load <span class="v" id="motV">0.600 mm</span></label>
+          <input type="range" id="mot" min="0" max="200" value="156" aria-label="Interfragmentary motion under weight bearing, logarithmic scale from 2 micrometers to 3 millimeters"></div>
+        <div class="lbl">Biology of this patient</div>
+        <button class="tog" id="tSmk" type="button" aria-pressed="false"><span class="dot"></span><span>Smoker <small>Nicotine-induced vasoconstriction and impaired angiogenesis</small></span></button>
+        <button class="tog" id="tDm" type="button" aria-pressed="false"><span class="dot"></span><span>Diabetes or malnutrition <small>Slower matrix synthesis and mineralization</small></span></button>
+        <button class="tog" id="tPer" type="button" aria-pressed="false"><span class="dot"></span><span>Periosteum stripped at surgery <small>Removes the outer third of the cortical blood supply and a progenitor source</small></span></button>
+        <button class="tog" id="tInf" type="button" aria-pressed="false"><span class="dot"></span><span>Infection <small>Consumes the biology and destabilizes the construct</small></span></button>
+        <div class="sl"><label for="week">Week after injury <span class="v" id="weekV">6</span></label>
+          <input type="range" id="week" min="0" max="16" value="6" aria-label="Weeks after injury"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Torque balance</h2>
+      <canvas id="cv1" width="1040" height="480" aria-label="Diagram of a third-class lever: joint axis, muscle insertion close to the axis with a large upward force, and the load far out with a small downward force, plus the arc the load sweeps for a given muscle shortening"></canvas>
+      <div class="stats" id="s1"></div>
+      <div id="bars1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Where the load is actually carried</h2>
+      <canvas id="cv2" width="1040" height="500" aria-label="Left: cross-section of loaded articular cartilage showing the proportion of load carried by pressurized interstitial fluid. Right: plot of fluid load support against time under load, comparing a static hold with cyclic loading."></canvas>
+      <div class="stats" id="s2"></div>
+      <div id="bars2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>The ladder of tissues</h2>
+      <canvas id="cv3" width="1040" height="680" aria-label="Top: the stage of fracture healing at the selected week. Middle: the fracture site with the tissue currently able to survive the local strain. Bottom: interfragmentary strain against week with the tolerance thresholds for granulation tissue, cartilage and bone marked."></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(p){p[0].classList.toggle('on',p[1]===n);p[0].setAttribute('aria-selected',p[1]===n?'true':'false');});
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =====================================================
+   BENCH 1 - third-class levers
+   ===================================================== */
+var mass=$('mass'),dins=$('dins'),dload=$('dload'),shortS=$('short');
+var SYS=[
+ {k:'elbow',n:'Elbow &mdash; biceps',eff:'biceps insertion',ld:'weight in the hand',m:100,d:40,L:320,sign:-1,
+  extra:0,extraArm:0,
+  note:'Hold a 10 kg weight (98 N) with the elbow at 90 degrees: the biceps inserts about 4 cm from the axis while the hand is about 32 cm out, so the muscle must produce roughly 780 N &mdash; nearly eight times the load.'},
+ {k:'hip',n:'Hip &mdash; single-leg stance',eff:'abductor insertion',ld:'supported body weight',m:572,d:50,L:100,sign:1,
+  extra:0,extraArm:0,
+  note:'In single-leg stance the abductors act on a lever arm of about 5 cm against body weight acting about 10 cm from the hip center. Joint reaction force reaches 2.5&ndash;3 times body weight &mdash; almost all of it produced by muscle, not by gravity.'},
+ {k:'spine',n:'Lumbar spine &mdash; lifting',eff:'erector spinae',ld:'the object being lifted',m:200,d:50,L:350,sign:1,
+  extra:392,extraArm:250,
+  note:'Lifting 20 kg with a flexed spine can produce compressive loads exceeding 3,000 N at the L4&ndash;L5 disc, because the erector spinae work on a lever arm of a few centimeters against a load arm of 30 or 40 cm. Lifting technique is applied lever physics.'}
+];
+var sys=SYS[0];
+var sb=$('sys1');
+SYS.forEach(function(S){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(S.k===sys.k?' on':''); b.innerHTML=S.n;
+  b.onclick=function(){sys=S;mass.value=S.m;dins.value=S.d;dload.value=S.L;
+    [].forEach.call(sb.children,function(c,i){c.classList.toggle('on',SYS[i].k===sys.k);}); render1();};
+  sb.appendChild(b);
+});
+[mass,dins,dload,shortS].forEach(function(s){s.addEventListener('input',render1);});
+
+function render1(){
+  var W=+mass.value/10*9.8;                 /* newtons */
+  var d=+dins.value/10, L=+dload.value/10;  /* cm */
+  var sh=+shortS.value/10;                  /* cm */
+  $('massV').textContent=(+mass.value/10).toFixed(1)+' kg';
+  $('dinsV').textContent=d.toFixed(1)+' cm';
+  $('dloadV').textContent=L.toFixed(0)+' cm';
+  $('shortV').textContent=sh.toFixed(1)+' cm';
+  var torque=W*L + sys.extra*sys.extraArm/10;
+  var Fm=torque/d;
+  var MA=d/L;
+  var totalDown=W+sys.extra;
+  var JRF=(sys.sign<0)?Math.abs(Fm-totalDown):(Fm+totalDown);
+  var ratio=L/d, excursion=sh*ratio, angle=(sh/d)*180/Math.PI;
+
+  $('s1').innerHTML=
+    tile('Load',(W).toFixed(0),'N &middot; '+(+mass.value/10).toFixed(1)+' kg')+
+    tile('Muscle force required',Math.round(Fm).toLocaleString(),'N &middot; '+(Fm/Math.max(1,W)).toFixed(1)+'&times; the load')+
+    tile('Mechanical advantage',MA.toFixed(3),'effort arm &divide; load arm')+
+    tile('Joint reaction force',Math.round(JRF).toLocaleString(),'N &middot; '+(JRF/Math.max(1,W)).toFixed(1)+'&times; the load')+
+    tile('Excursion ratio',ratio.toFixed(1)+':1','load moves this much further than the muscle')+
+    tile('Load travels',excursion.toFixed(1),'cm for '+sh.toFixed(1)+' cm of shortening');
+
+  $('bars1').innerHTML=
+    '<div class="lbl" style="margin-top:14px">What the lever costs and what it buys</div>'+
+    '<div class="srow"><div class="nm">Force penalty<small>muscle force &divide; load</small></div><div class="tr"><div class="fl" style="width:'+Math.min(100,(Fm/Math.max(1,W))/20*100)+'%;background:'+CORAL+'"></div></div><div class="tv">'+(Fm/Math.max(1,W)).toFixed(1)+'&times;</div></div>'+
+    '<div class="srow"><div class="nm">Range and speed gain<small>load excursion &divide; muscle excursion</small></div><div class="tr"><div class="fl" style="width:'+Math.min(100,ratio/20*100)+'%;background:'+GREEN+'"></div></div><div class="tv">'+ratio.toFixed(1)+'&times;</div></div>';
+
+  var v=$('v1'),cls='verdict',txt='';
+  if(MA<0.2){
+    cls='verdict info';
+    txt='A third-class lever &mdash; mechanical advantage well below 1<small>The effort sits between the fulcrum and the load, so the muscle must generate far more force than the load weighs. That looks like poor design until you notice what is bought: a '+ratio.toFixed(0)+':1 gain in range and speed, which is the right trade for a limb that must throw, run and reach.</small>';
+  } else if(MA<0.6){
+    cls='verdict warn';
+    txt='A modest force penalty<small>Move the insertion further from the axis and the muscle force falls &mdash; but so does the distance the load travels for every centimeter the muscle shortens. You cannot have both.</small>';
+  } else {
+    cls='verdict';
+    txt='Mechanical advantage approaching 1<small>At this geometry the muscle is nearly matched to the load. Real human joints almost never look like this, because reach and speed matter more than efficiency.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML='<span class="n">'+sys.n+'</span>'+sys.note+
+    '<div class="dd"><b>The clinical consequence.</b> The loads on joints and bones in ordinary life come mostly from <b>muscle contraction</b>, not from body weight. The same statics explain avulsion injuries &mdash; a muscle can tear its own attachment off the bone before the muscle itself fails, particularly in adolescents where the apophysis is still cartilaginous &mdash; and stress fractures, where bone adapts to habitual strain over weeks while training loads can be raised in days.</div>';
+  draw1(W,d,L,Fm,JRF,sh,ratio,angle);
+}
+function draw1(W,d,L,Fm,JRF,sh,ratio,angle){
+  var cv=$('cv1'),g=cv.getContext('2d'),CW=cv.width,CH=cv.height;
+  g.clearRect(0,0,CW,CH); g.fillStyle='#fff'; g.fillRect(0,0,CW,CH);
+  var ax=110, ay=300, scale=(CW-220)/Math.max(L,1);
+  var lx=ax+L*scale, ix=ax+d*scale;
+  /* lever bar */
+  g.strokeStyle=TDK; g.lineWidth=13; g.lineCap='round';
+  g.beginPath(); g.moveTo(ax,ay); g.lineTo(lx,ay); g.stroke(); g.lineCap='butt';
+  /* fulcrum */
+  g.fillStyle=TDK; g.beginPath(); g.arc(ax,ay,17,0,6.284); g.fill();
+  g.fillStyle='#fff'; g.beginPath(); g.arc(ax,ay,7,0,6.284); g.fill();
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('JOINT AXIS', ax, ay+44);
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+  g.fillText('(fulcrum)', ax, ay+62);
+  /* force arrows, scaled by square root so both fit */
+  function fArrow(x,dir,mag,col,lab){
+    var h=Math.min(190,26+Math.sqrt(mag)*5.2);
+    g.strokeStyle=col; g.lineWidth=9;
+    g.beginPath(); g.moveTo(x,ay); g.lineTo(x,ay-dir*h); g.stroke();
+    g.fillStyle=col; g.beginPath();
+    g.moveTo(x,ay-dir*(h+20)); g.lineTo(x-13,ay-dir*h); g.lineTo(x+13,ay-dir*h); g.closePath(); g.fill();
+    g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(lab, x, ay-dir*(h+34)+(dir>0?0:16));
+  }
+  fArrow(ix,1,Fm,CORAL,Math.round(Fm).toLocaleString()+' N');
+  fArrow(lx,-1,W,BLUE,Math.round(W).toLocaleString()+' N');
+  g.fillStyle=CORAL; g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(sys.eff, ix, ay+28);
+  g.fillStyle=BLUE; g.fillText(sys.ld, lx, ay+28);
+  /* arms */
+  g.strokeStyle=MUT; g.lineWidth=1.5; g.setLineDash([5,4]);
+  g.beginPath(); g.moveTo(ax,ay+90); g.lineTo(ix,ay+90); g.stroke();
+  g.beginPath(); g.moveTo(ax,ay+124); g.lineTo(lx,ay+124); g.stroke(); g.setLineDash([]);
+  g.fillStyle=MUT; g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('effort arm '+d.toFixed(1)+' cm',(ax+ix)/2,ay+84);
+  g.fillText('load arm '+L.toFixed(0)+' cm',(ax+lx)/2,ay+142);
+  /* excursion arc */
+  var th=Math.min(0.32,angle*Math.PI/180);
+  g.strokeStyle=GREEN; g.lineWidth=3; g.setLineDash([7,5]);
+  g.beginPath(); g.arc(ax,ay,L*scale,-th,0); g.stroke(); g.setLineDash([]);
+  var ex=ax+L*scale*Math.cos(-th), ey=ay+L*scale*Math.sin(-th);
+  g.fillStyle=GREEN; g.beginPath(); g.arc(ex,ey,8,0,6.284); g.fill();
+  g.fillStyle=GREEN; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText((sh*ratio).toFixed(1)+' cm of travel for '+sh.toFixed(1)+' cm of shortening', lx-14, ey-16);
+  /* header */
+  g.fillStyle=TDK; g.font='800 17px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Joint reaction force  '+Math.round(JRF).toLocaleString()+' N', 30, 44);
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+  g.fillText('the joint itself carries the muscle force and the load together', 30, 66);
+}
+
+/* =====================================================
+   BENCH 2 - cartilage
+   ===================================================== */
+var tmin=$('tmin'),agg=$('agg');
+var lub=true, cmode='static';
+var MODES2=[
+ {k:'static',n:'Standing still &mdash; static hold'},
+ {k:'cyclic',n:'Walking &mdash; cyclic loading'},
+ {k:'immob',n:'Immobilized &mdash; no load at all'}
+];
+var mb=$('modes2');
+MODES2.forEach(function(M){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(M.k===cmode?' on':''); b.innerHTML=M.n;
+  b.onclick=function(){cmode=M.k;[].forEach.call(mb.children,function(c,i){c.classList.toggle('on',MODES2[i].k===cmode);});render2();};
+  mb.appendChild(b);
+});
+$('tLub').onclick=function(){lub=!lub;this.setAttribute('aria-pressed',lub?'true':'false');render2();};
+[tmin,agg].forEach(function(s){s.addEventListener('input',render2);});
+
+function fluidSupport(t,tau,mode){
+  if(mode==='immob') return 0;
+  if(mode==='cyclic') return 0.05+0.87*(0.66+0.34*Math.exp(-t/(tau*16)));
+  return 0.05+0.87*Math.exp(-t/tau);
+}
+function render2(){
+  var t=+tmin.value, A=+agg.value/100;
+  $('tminV').textContent=(t<60)?(t+' s'):((t/60).toFixed(1)+' min');
+  $('aggV').textContent=agg.value+'%';
+  var tau=300*A;
+  var F=fluidSupport(t,tau,cmode);
+  var mub=lub?0.30:0.62;
+  var mu=0.002+(mub-0.002)*Math.pow(1-F,2);
+  var solid=(1-F)*100;
+  var nutrition=(cmode==='cyclic')?100:(cmode==='static'?22:6);
+
+  $('s2').innerHTML=
+    tile('Load carried by fluid',(F*100).toFixed(0),'% &middot; over 90% in the first seconds')+
+    tile('Load on the solid matrix',solid.toFixed(0),'% &middot; this is what the collagen feels')+
+    tile('Friction coefficient',mu.toFixed(4),'healthy cartilage 0.002&ndash;0.03')+
+    tile('Compared with ice on ice',(mu<0.03?'lower':'higher'),'ice on ice is about 0.03')+
+    tile('Pressurization time constant',(tau/60).toFixed(1),'min &middot; set by permeability and aggrecan')+
+    tile('Chondrocyte nutrition',nutrition,'% &middot; cyclic loading pumps fluid in and out');
+
+  $('bars2').innerHTML=
+    '<div class="lbl" style="margin-top:14px">Where the applied stress is going right now</div>'+
+    '<div class="srow"><div class="nm">Pressurized interstitial fluid<small>fluid cannot support shear</small></div><div class="tr"><div class="fl" style="width:'+(F*100).toFixed(0)+'%;background:'+BLUE+'"></div></div><div class="tv">'+(F*100).toFixed(0)+'%</div></div>'+
+    '<div class="srow"><div class="nm">Solid matrix<small>collagen and aggrecan</small></div><div class="tr"><div class="fl" style="width:'+solid.toFixed(0)+'%;background:'+CORAL+'"></div></div><div class="tv">'+solid.toFixed(0)+'%</div></div>';
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(cmode==='immob'){
+    cls='verdict bad';
+    txt='No loading at all &mdash; and cartilage is starving<small>Cartilage is avascular, aneural and alymphatic. Chondrocytes make up only 1&ndash;5 percent of the tissue volume and live on nutrients diffusing from synovial fluid, a process actively helped by cyclic loading pumping fluid in and out. Immobilization causes cartilage to thin within weeks.</small>';
+    inf='<span class="n">The joint most at risk is the one held still</span>Removing load removes both the pressurization that protects the matrix and the pumping that feeds the cells. This is why early mobilization matters after joint injury and surgery, and why a limb held rigid for months does not come back unchanged.';
+  } else if(cmode==='static'&&F<0.35){
+    cls='verdict bad';
+    txt='Pressurization has decayed &mdash; the solid matrix is now carrying the load<small>Held still, water slowly exudes from the tissue, fluid load support collapses, and friction rises from about 0.005 toward the boundary-lubricated value. Standing still on a joint for an hour is harder on cartilage than walking for an hour.</small>';
+    inf='<span class="n">Lubrication is not a coating</span>The dominant mechanism is water pressurized <i>inside</i> the cartilage carrying the load so the solid surfaces barely touch. Because fluid cannot support shear, the friction coefficient of healthy cartilage on cartilage is only about <b>0.002&ndash;0.03</b> &mdash; lower than ice sliding on ice. When pressurization decays, <b>lubricin</b> takes over as a boundary lubricant, and it is much less good at the job.';
+  } else if(cmode==='cyclic'){
+    cls='verdict';
+    txt='Cyclic loading keeps the tissue pressurized<small>Each unloading phase lets the tissue re-imbibe water, so fluid load support stays high and friction stays near '+mu.toFixed(4)+'. The same cycling also pumps nutrients to chondrocytes that have no blood supply of their own.</small>';
+    inf='<span class="n">Why the numbers work</span>Cartilage permeability is extremely low, so in the first seconds after loading upwards of <b>90 percent</b> of the applied stress is borne by pressurized fluid rather than by the solid matrix. Synovial fluid adds <b>hyaluronan</b> at 3&ndash;4 mg/mL and <b>lubricin</b>; only about 0.5&ndash;2 mL sits in a normal knee. The fluid is non-Newtonian and shear-thinning &mdash; viscous at low shear rates for load bearing, thin at high shear rates for fast movement.';
+  } else {
+    cls='verdict warn';
+    txt='Still mostly pressurized, but the clock is running<small>At '+(t<60?(t+' seconds'):((t/60).toFixed(1)+' minutes'))+' of a static hold, '+(F*100).toFixed(0)+' percent of the load is still carried by fluid. Push the time slider out and watch the transfer to the solid matrix.</small>';
+    inf='<span class="n">Aggrecan sets the clock</span>Aggrecan carries a high fixed negative charge; counter-ions are drawn in, water follows osmotically, and the tissue is permanently swollen against the restraint of the collagen network. Lose aggrecan &mdash; as in early osteoarthritis &mdash; and the tissue both loses its swelling pressure and becomes more permeable, so pressurization decays faster and the solid matrix is loaded sooner and harder.';
+  }
+  if(!lub) inf+='<div class="dd"><b>Lubricin is absent.</b> Nothing changes while fluid pressurization holds &mdash; but the moment it decays, friction rises far higher than it otherwise would. Boundary lubrication is the safety net, not the primary mechanism.</div>';
+  v.className=cls; v.innerHTML=txt; $('i2').innerHTML=inf;
+  draw2(t,tau,F,mu);
+}
+function draw2(t,tau,F,mu){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  /* left : the joint */
+  var jx=30,jw=330;
+  g.fillStyle=LINE; g.fillRect(jx,60,jw,58); g.fillRect(jx,300,jw,60);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('SUBCHONDRAL BONE', jx+jw/2, 94);
+  g.fillText('SUBCHONDRAL BONE', jx+jw/2, 338);
+  /* cartilage layers */
+  g.fillStyle=BLUE; g.globalAlpha=0.16+0.5*F; g.fillRect(jx,118,jw,62); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=2; g.strokeRect(jx,118,jw,62);
+  g.fillStyle=BLUE; g.globalAlpha=0.16+0.5*F; g.fillRect(jx,238,jw,62); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.strokeRect(jx,238,jw,62);
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('ARTICULAR CARTILAGE  65–80% water', jx+jw/2, 154);
+  g.fillText('ARTICULAR CARTILAGE', jx+jw/2, 274);
+  /* joint space */
+  g.fillStyle=GREEN; g.globalAlpha=0.20; g.fillRect(jx,180,jw,58); g.globalAlpha=1;
+  g.fillStyle=TDK; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('synovial fluid  0.5–2 mL  hyaluronan 3–4 mg/mL', jx+jw/2, 214);
+  /* exuding water arrows when depressurized */
+  var k;
+  if(F<0.7){
+    g.strokeStyle=CORAL; g.lineWidth=2.5;
+    for(k=0;k<6;k++){
+      var ex=jx+30+k*(jw-60)/5;
+      g.beginPath(); g.moveTo(ex,150); g.lineTo(ex,196); g.stroke();
+      g.beginPath(); g.moveTo(ex-5,190); g.lineTo(ex,198); g.lineTo(ex+5,190); g.closePath(); g.fillStyle=CORAL; g.fill();
+    }
+    g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif';
+    g.fillText('water exuding — pressurization decaying', jx+jw/2, 400);
+  } else {
+    g.fillStyle=BLUE; g.font='800 13px Inter, system-ui, sans-serif';
+    g.fillText('water trapped and pressurized — carrying the load', jx+jw/2, 400);
+  }
+  g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif';
+  g.fillText((F*100).toFixed(0)+'% of load on fluid', jx+jw/2, 434);
+  g.fillStyle=MUT; g.font='700 14px Inter, system-ui, sans-serif';
+  g.fillText('friction coefficient  '+mu.toFixed(4), jx+jw/2, 458);
+  /* applied load arrow */
+  g.strokeStyle=TDK; g.lineWidth=7;
+  g.beginPath(); g.moveTo(jx+jw/2,16); g.lineTo(jx+jw/2,54); g.stroke();
+  g.fillStyle=TDK; g.beginPath(); g.moveTo(jx+jw/2,62); g.lineTo(jx+jw/2-11,44); g.lineTo(jx+jw/2+11,44); g.closePath(); g.fill();
+
+  /* right : plot */
+  var L=430,R=W-30,T=60,B=H-90;
+  function X(s){return L+(s/3600)*(R-L);}
+  function Y(f){return B-f*(B-T);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=100;i+=20){ g.beginPath(); g.moveTo(L,Y(i/100)); g.lineTo(R,Y(i/100)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i+'%',L-8,Y(i/100)+5); }
+  [0,600,1200,1800,2400,3000,3600].forEach(function(s){
+    g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(s),T); g.lineTo(X(s),B); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText((s/60)+(s===0?' min':''),X(s),B+22); });
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Fluid load support against time under load', L, T-12);
+  g.fillStyle=MUT; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('MINUTES UNDER LOAD',(L+R)/2,B+46);
+  function curve(mode,col,dash){
+    g.strokeStyle=col; g.lineWidth=4; g.setLineDash(dash);
+    g.beginPath();
+    for(i=0;i<=3600;i+=25){ var y=Y(fluidSupport(i,tau,mode)); if(i===0)g.moveTo(X(i),y); else g.lineTo(X(i),y); }
+    g.stroke(); g.setLineDash([]);
+  }
+  curve('cyclic',GREEN,[]); curve('static',CORAL,[]);
+  g.fillStyle=GREEN; g.font='700 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('walking (cyclic)', L+12, Y(fluidSupport(1200,tau,'cyclic'))-12);
+  g.fillStyle=CORAL;
+  g.fillText('standing still (static)', L+12, Y(fluidSupport(1200,tau,'static'))+26);
+  /* current marker */
+  g.fillStyle=TDK; g.beginPath(); g.arc(X(t),Y(F),8,0,6.284); g.fill();
+  g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText((F*100).toFixed(0)+'%', X(t), Y(F)-16);
+}
+
+/* =====================================================
+   BENCH 3 - the strain ladder
+   ===================================================== */
+var gapS=$('gap'),motS=$('mot'),weekS=$('week');
+var smk=false,dm=false,per=false,inf3=false;
+var FIX=[
+ {n:'Rigid compression plate',g:50,m:19},
+ {n:'Locking plate',g:120,m:118},
+ {n:'Intramedullary nail',g:200,m:141},
+ {n:'Cast',g:200,m:156},
+ {n:'Gap too wide for the motion',g:100,m:186},
+ {n:'The in-between construct',g:150,m:69}
+];
+var fb=$('fix3');
+FIX.forEach(function(F){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=F.n;
+  b.onclick=function(){gapS.value=F.g;motS.value=F.m;render3();};
+  fb.appendChild(b);
+});
+function bindT(id,fn){var b=$(id);b.onclick=function(){fn(b);render3();};}
+bindT('tSmk',function(b){smk=!smk;b.setAttribute('aria-pressed',smk?'true':'false');});
+bindT('tDm',function(b){dm=!dm;b.setAttribute('aria-pressed',dm?'true':'false');});
+bindT('tPer',function(b){per=!per;b.setAttribute('aria-pressed',per?'true':'false');});
+bindT('tInf',function(b){inf3=!inf3;b.setAttribute('aria-pressed',inf3?'true':'false');});
+[gapS,motS,weekS].forEach(function(s){s.addEventListener('input',render3);});
+
+function motionMM(){ return 0.002*Math.pow(10,(+motS.value/200)*3.176); }   /* 2 um to 3 mm */
+function rateFor(strain){
+  if(strain<1) return 0.85;        /* rigid enough for cutting cones to tunnel straight across */
+  if(strain<2.5) return 0.04;      /* too stiff to stimulate callus, not stiff enough for direct union */
+  if(strain<15) return 0.55;       /* cartilage can survive here */
+  if(strain<100) return 0.35;      /* granulation tissue only */
+  return 0.015;                    /* nothing survives this much motion */
+}
+function render3(){
+  var gap=+gapS.value/100, m0=motionMM(), wk=+weekS.value;
+  $('gapV').textContent=gap.toFixed(2)+' mm';
+  $('motV').textContent=m0.toFixed(3)+' mm';
+  $('weekV').textContent=wk;
+  var bio=1*(smk?0.65:1)*(dm?0.78:1)*(per?0.62:1)*(inf3?0.45:1);
+  var dt=0.25, T=16, N=Math.round(T/dt)+1;
+  var Cst=0, calVol=0, series=[], unionWk=null, i;
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    var motion=m0/(1+Cst);
+    var strain=motion/gap*100;
+    series.push({t:t,strain:strain,C:Cst,cal:calVol});
+    if(unionWk===null&&strain<2&&t>0) unionWk=t;
+    var r=rateFor(strain);
+    Cst+=bio*r*(1+0.5*Cst)*dt;
+    if(strain>2.5&&strain<=100) calVol+=bio*0.28*dt;
+  }
+  var atWk=series[Math.min(N-1,Math.round(wk/dt))];
+  var s0=series[0].strain, sEnd=series[N-1].strain;
+
+  var valley=(s0>=1&&s0<2.5&&calVol<0.3);
+  var outcome, ocls;
+  if(s0<1&&calVol<0.6){ outcome='Primary (direct) union'; ocls='verdict'; }
+  else if(valley){ outcome='The nonunion valley'; ocls='verdict bad'; }
+  else if(s0>100){ outcome='Gap too wide for the motion'; ocls='verdict bad'; }
+  else if(sEnd<2&&calVol>=0.6){ outcome='Secondary healing'; ocls='verdict'; }
+  else if(sEnd>=2){ outcome='Delayed union / nonunion'; ocls='verdict bad'; }
+  else { outcome='Union, slowly'; ocls='verdict warn'; }
+
+  $('s3').innerHTML=
+    tile('Interfragmentary strain at week 0',s0.toFixed(1),'% &middot; motion &divide; gap width')+
+    tile('Strain at week '+wk,atWk.strain.toFixed(1),'% right now')+
+    tile('Strain at week 16',sEnd.toFixed(1),'% &middot; bone tolerates about 2')+
+    tile('Callus volume',calVol.toFixed(1),'relative &middot; 0 means no visible callus')+
+    tile('Bone can form from',unionWk===null?'not yet':('week '+unionWk.toFixed(1)),'when strain drops under 2%')+
+    tile('Biology of the host',(bio*100).toFixed(0),'% of normal healing capacity');
+
+  var v=$('v3'); v.className=ocls;
+  var txt='';
+  if(outcome==='Primary (direct) union'){
+    txt='Primary (direct) union &mdash; no callus at all<small>Strain is under 2 percent from the first day, so bone itself can survive the local motion. Osteoclast cutting cones tunnel straight across the fracture line and osteoblasts follow behind them. The radiograph shows the fracture line simply fading, with no callus ever appearing.</small>';
+  } else if(outcome==='Secondary healing'){
+    txt='Secondary healing &mdash; abundant callus, and it worked<small>Motion was too large for bone at first, so the site laid down the tissue that <i>could</i> survive the strain. That tissue stiffened the site, which lowered strain, which permitted the next tissue up the ladder. Bone became possible at week '+(unionWk===null?'&mdash;':unionWk.toFixed(1))+'.</small>';
+  } else if(outcome==='The nonunion valley'){
+    txt='The paradoxical middle ground &mdash; too stiff for callus, too flexible for direct union<small>Interfragmentary strain sits between about 1 and 2.5 percent. There is not enough motion to stimulate a callus, and not enough rigidity for osteoclast cutting cones to cross the line directly. Nothing stiffens the site, so nothing changes. About 5&ndash;10 percent of fractures fail to unite on schedule, and this is where many of them live.</small>';
+  } else if(outcome==='Gap too wide for the motion'){
+    txt='Strain above 100 percent &mdash; nothing can survive here<small>Even granulation tissue tears at this much relative motion, so no tissue gets established and no stiffening happens. This is the mechanical version of a nonunion: the fracture needs either less motion or a smaller gap, usually both.</small>';
+  } else if(outcome==='Delayed union / nonunion'){
+    txt='Still above 2 percent at 16 weeks &mdash; this fracture is not uniting on schedule<small>The ladder started to be climbed but stalled. Check the biology toggles: a smoker with a stripped periosteum builds callus so slowly that the site never stiffens enough to permit bone within the expected window.</small>';
+  } else {
+    txt='Uniting, but slowly<small>The ladder is being climbed, just with less biology than normal to climb it with. Ask which of the three inputs is limiting: blood supply, mechanical environment, or the cells and signals themselves.</small>';
+  }
+  v.innerHTML=txt;
+
+  var extra='';
+  if(smk||dm||per||inf3){
+    extra='<div class="dd"><b>A fracture that will not unite is usually failing on one of three inputs</b> &mdash; blood supply, mechanical environment, or biology. An open tibial fracture with stripped periosteum is a vascular problem; a wobbly fixation is a strain problem; a smoker on chronic steroids with vitamin D deficiency is a biological problem. The treatment differs entirely depending on the answer.</div>';
+  }
+  $('i3').innerHTML='<span class="n">Tissues are chosen by the strain they can survive</span>Granulation tissue tolerates up to about <b>100 percent</b> strain, cartilage about <b>10&ndash;15 percent</b>, and bone only about <b>2 percent</b>. A healing fracture therefore lays down whatever can survive the local strain, and that tissue then stiffens the site &mdash; a self-limiting negative feedback in which the callus grows until motion is small enough for bone.'+
+    '<div class="dd">The one genuine <b>positive</b> feedback in this module is at the very start: in the fracture hematoma, thrombin amplifies its own generation by activating factors V, VIII and XI. Positive feedback is rare in physiology precisely because it drives a variable away from where it started and must be stopped by something outside the loop &mdash; here, antithrombin, protein C and the physical limits of the wound.</div>'+extra;
+  draw3(series,atWk,wk,gap,calVol);
+}
+function draw3(series,atWk,wk,gap,calVol){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  /* stage strip */
+  var STAGES=[
+   {a:0,b:0.29,n:'HEMATOMA',s:'0–48 h · platelets and clotting factors · scaffold and signal reservoir',c:CORAL},
+   {a:0.29,b:1.0,n:'INFLAMMATION',s:'days 1–7 · macrophages release BMP-2, TGF-β, PDGF, VEGF',c:GOLD},
+   {a:1.0,b:3.0,n:'SOFT CALLUS',s:'weeks 2–3 · chondrocytes and fibroblasts · springy splint',c:PURP},
+   {a:3.0,b:12.0,n:'HARD CALLUS',s:'weeks 4–12 · woven bone bridging · clinical union',c:BLUE},
+   {a:12.0,b:16.1,n:'REMODELING',s:'months to years · woven becomes lamellar, aligned to load',c:TEAL}
+  ];
+  var sx=30,sw=W-60,sy=26,sh=54;
+  STAGES.forEach(function(S){
+    var x0=sx+(S.a/16)*sw, x1=sx+(Math.min(16,S.b)/16)*sw;
+    var on=(wk>=S.a&&wk<S.b);
+    g.fillStyle=S.c; g.globalAlpha=on?0.30:0.10; g.fillRect(x0,sy,x1-x0-2,sh); g.globalAlpha=1;
+    if(on){ g.strokeStyle=S.c; g.lineWidth=3; g.strokeRect(x0,sy,x1-x0-2,sh); }
+    g.fillStyle=on?TDK:MUT; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(S.n,(x0+x1)/2,sy+22);
+  });
+  var cur=STAGES[0]; STAGES.forEach(function(S){ if(wk>=S.a&&wk<S.b) cur=S; });
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(cur.s, W/2, sy+sh+22);
+
+  /* fracture site picture */
+  var fy=140, fh=170, cx=W/2;
+  g.fillStyle=LINE; g.fillRect(sx,fy+40,cx-90-sx,90); g.fillRect(cx+90,fy+40,sx+sw-(cx+90),90);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('BONE',sx+90,fy+92); g.fillText('BONE',sx+sw-90,fy+92);
+  var st=atWk.strain, col, lbl;
+  if(st>=100){ col=MUT; lbl='nothing can survive this much motion'; }
+  else if(st>=15){ col=GOLD; lbl='granulation tissue only (tolerates up to ~100%)'; }
+  else if(st>=2){ col=PURP; lbl='cartilage can survive here (10–15%)'; }
+  else { col=BLUE; lbl='bone can survive here (about 2%)'; }
+  /* callus swelling proportional to accumulated volume */
+  var bulge=Math.min(70,atWk.cal*22);
+  g.fillStyle=col; g.globalAlpha=0.35;
+  g.beginPath();
+  g.moveTo(cx-90,fy+40);
+  g.bezierCurveTo(cx-70,fy+40-bulge,cx+70,fy+40-bulge,cx+90,fy+40);
+  g.lineTo(cx+90,fy+130);
+  g.bezierCurveTo(cx+70,fy+130+bulge,cx-70,fy+130+bulge,cx-90,fy+130);
+  g.closePath(); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=col; g.lineWidth=3; g.stroke();
+  g.fillStyle=col; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(lbl, cx, fy+160+Math.min(24,bulge/3));
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif';
+  g.fillText('week '+wk+'   ·   strain '+st.toFixed(1)+'%   ·   gap '+gap.toFixed(2)+' mm', cx, fy+22);
+
+  /* strain plot */
+  var L=92,R=W-30,T=372,B=H-52;
+  function X(t){return L+(t/16)*(R-L);}
+  function Y(s){return B-(Math.log10(Math.max(0.2,Math.min(400,s)))-Math.log10(0.2))/(Math.log10(400)-Math.log10(0.2))*(B-T);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  [0.2,1,2,10,15,100,400].forEach(function(s){
+    g.beginPath(); g.moveTo(L,Y(s)); g.lineTo(R,Y(s)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(s+'%',L-8,Y(s)+5);
+  });
+  [[2,BLUE,'bone tolerates ~2%'],[15,PURP,'cartilage 10–15%'],[100,GOLD,'granulation ~100%']].forEach(function(p){
+    g.strokeStyle=p[1]; g.lineWidth=2.5; g.setLineDash([7,5]);
+    g.beginPath(); g.moveTo(L,Y(p[0])); g.lineTo(R,Y(p[0])); g.stroke(); g.setLineDash([]);
+    g.fillStyle=p[1]; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(p[2],R-6,Y(p[0])-7);
+  });
+  for(i=0;i<=16;i+=2){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),T); g.lineTo(X(i),B); g.stroke();
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillText(i,X(i),B+22); }
+  g.fillStyle=MUT; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('WEEKS AFTER INJURY',(L+R)/2,B+44);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Interfragmentary strain  (log scale)', L, T-12);
+  g.strokeStyle=CORAL; g.lineWidth=4; g.beginPath();
+  series.forEach(function(p,k){ if(k===0)g.moveTo(X(p.t),Y(p.strain)); else g.lineTo(X(p.t),Y(p.strain)); }); g.stroke();
+  g.fillStyle=TDK; g.beginPath(); g.arc(X(atWk.t),Y(atWk.strain),8,0,6.284); g.fill();
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

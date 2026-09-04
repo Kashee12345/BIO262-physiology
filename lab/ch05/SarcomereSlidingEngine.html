@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Sarcomere &mdash; an engine that shortens by sliding</title>
+<meta name="description" content="Drag a sarcomere from 1.3 to 3.7 micrometers and watch the A band refuse to change while the I band and H zone vanish, then run the four-step cross-bridge cycle and take the ATP away.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.steps{display:flex;flex-direction:column;gap:6px;margin-top:10px;}
+.stp{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;font-size:12.5px;color:var(--soft);line-height:1.45;}
+.stp .no{flex:none;width:22px;height:22px;border-radius:50%;background:var(--line);color:var(--soft);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;}
+.stp b{color:var(--ink);}
+.stp.on{border-color:var(--teal);box-shadow:inset 3px 0 0 var(--teal);} .stp.on .no{background:var(--teal);color:#fff;}
+.stp.locked{border-color:var(--coral);box-shadow:inset 3px 0 0 var(--coral);} .stp.locked .no{background:var(--coral);color:#fff;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch05.html">&larr; Module 5</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 5</div>
+  <h1>The Sarcomere: An Engine That Shortens by Sliding</h1>
+  <div class="intro">Neither actin nor myosin ever changes length. Shortening is a geometric consequence of two rigid rods being pulled into greater overlap. Drag the sarcomere from <b>1.3 to 3.7 &micro;m</b> and watch the <b>A band</b> refuse to move while the I band and H zone narrow and vanish &mdash; then step a single myosin head through the four-part cycle and take its ATP away.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Slide the filaments</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Cross-bridge cycle</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Set the sarcomere length</div>
+        <div class="sl"><label for="len">Z disc to Z disc <span class="v" id="lenV">2.20 &micro;m</span></label>
+          <input type="range" id="len" min="130" max="370" value="220" step="2" aria-label="Sarcomere length from Z disc to Z disc, in hundredths of a micrometer"></div>
+        <div class="chips" id="presets"></div>
+        <div class="lbl">Show me</div>
+        <button class="tog" id="tTitin" type="button" aria-pressed="true"><span class="dot"></span><span>Titin, the molecular spring <small>Runs Z disc to M line, centers the thick filament and carries most of the passive tension of a stretched relaxed muscle.</small></span></button>
+        <button class="tog" id="tStripe" type="button" aria-pressed="true"><span class="dot"></span><span>The striation pattern you would actually see <small>Light where there is thin filament alone, mid-gray where thick filament alone, darkest where the two overlap.</small></span></button>
+        <div class="hint"><b>The geometry, fixed.</b> The thick filament is <b>1.6 &micro;m</b> long and tethered at the M line. Each thin filament is <b>1.0 &micro;m</b> long and anchored to a Z disc. Everything on the readout to the right is arithmetic on those two numbers plus the length you choose. A band = 1.6 &micro;m. I band = length &minus; 1.6. H zone = length &minus; 2.0.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Drive one myosin head</div>
+        <div class="row">
+          <button class="btn solid" id="bStep" type="button">Next step</button>
+          <button class="btn" id="bPlay" type="button">Run</button>
+          <button class="btn" id="bReset" type="button">Reset</button>
+        </div>
+        <button class="tog" id="tATP" type="button" aria-pressed="true"><span class="dot"></span><span>ATP is available <small>Switch it off and the cycle will show you where it stops. This is the whole experiment of rigor mortis.</small></span></button>
+        <button class="tog" id="tCa" type="button" aria-pressed="true"><span class="dot"></span><span>Calcium has exposed the binding sites <small>Tropomyosin off the actin binding sites. Switch it off and the head cocks but has nothing to grab.</small></span></button>
+        <div class="steps" id="steplist"></div>
+        <div class="hint"><b>Watch the accounting.</b> One ATP is consumed per head per cycle. It is <b>hydrolyzed in step 1</b> to cock the head, its energy is <b>spent in step 3</b>, and a <b>fresh ATP must bind in step 4</b> simply to let go &mdash; that binding is not a hydrolysis.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>One sarcomere, drawn to scale</h2>
+      <canvas id="cv1" width="1040" height="520" aria-label="Scale drawing of a sarcomere showing Z discs, thick and thin filaments, titin, and the A band, I band and H zone measured at the chosen length"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>A single myosin head, four steps and one ATP</h2>
+      <canvas id="cv2" width="1040" height="470" aria-label="Animated diagram of one myosin head attaching to a thin filament, performing a ten nanometer power stroke and detaching"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'gray';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple'),INK=C('--ink');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =====================================================
+   BENCH 1 - sliding filaments
+   ===================================================== */
+var THICK=1.6, THIN=1.0;
+var PRESETS=[
+ {n:'Resting 2.2 &micro;m',v:220},
+ {n:'Optimal overlap 2.0 &micro;m',v:200},
+ {n:'Contracted 1.8 &micro;m',v:180},
+ {n:'Thick filament jams 1.6 &micro;m',v:160},
+ {n:'Stretched 2.8 &micro;m',v:280},
+ {n:'Overlap gone 3.6 &micro;m',v:360}
+];
+var pbox=$('presets');
+PRESETS.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+  b.onclick=function(){ $('len').value=P.v; render1(); };
+  pbox.appendChild(b);
+});
+var showTitin=true, showStripe=true;
+$('tTitin').onclick=function(){showTitin=!showTitin;this.setAttribute('aria-pressed',showTitin?'true':'false');render1();};
+$('tStripe').onclick=function(){showStripe=!showStripe;this.setAttribute('aria-pressed',showStripe?'true':'false');render1();};
+$('len').addEventListener('input',render1);
+
+function geom(L){
+  var A=Math.min(THICK,L);
+  var I=Math.max(0,L-THICK);
+  var H=clamp(L-2*THIN,0,THICK);
+  var doubleOv=Math.max(0,2*THIN-L);
+  /* thick filament facing exactly one thin filament, per half sarcomere */
+  var single=clamp(THICK/2-Math.max(0,L/2-THIN),0,THICK/2)-doubleOv/2;
+  single=Math.max(0,single);
+  return {A:A,I:I,H:H,dbl:doubleOv,single:single,jam:L<=THICK};
+}
+function render1(){
+  var L=+$('len').value/100;
+  $('lenV').textContent=L.toFixed(2)+' µm';
+  var G=geom(L);
+  var pctFromRest=(2.20-L)/2.20*100;
+  var nSarc=Math.round(300000/2.20);
+  var travel=30*(pctFromRest/100);
+
+  $('s1').innerHTML=
+    tile('A band',G.A.toFixed(2),'&micro;m &middot; the thick filament, always 1.6')+
+    tile('I band',G.I.toFixed(2),'&micro;m &middot; thin filament only')+
+    tile('H zone',G.H.toFixed(2),'&micro;m &middot; thick filament only')+
+    tile('Change from 2.2 &micro;m',(pctFromRest>=0?'−':'+')+Math.abs(pctFromRest).toFixed(1)+'%','shortened or stretched')+
+    tile('Single-overlap zone',G.single.toFixed(2),'&micro;m per half &middot; where force is made')+
+    tile('A 30 cm muscle moves',(travel>0?travel.toFixed(1):'0.0'),'cm &middot; '+nSarc.toLocaleString()+' sarcomeres in series');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(L>=3.60){
+    cls='verdict bad';
+    txt='Overlap is zero &mdash; no cross-bridge can form<small>The thin filament tips have been pulled clear of the thick filament. Calcium can flood the cytosol, every binding site can be exposed, every head can be cocked, and active tension is still zero. Force is not a chemical quantity here; it is a geometric one.</small>';
+    inf='<span class="n">Why 3.6 &micro;m is the end of the road</span>Each thin filament reaches <b>1.0 &micro;m</b> in from its Z disc, so the two tips are 2.0 &micro;m apart plus whatever the sarcomere has been stretched. Once the half sarcomere exceeds 1.8 &micro;m &mdash; a total of <b>3.6 &micro;m</b> &mdash; the thin filament no longer reaches the 1.6 &micro;m thick filament at all.';
+  } else if(G.jam){
+    cls='verdict bad';
+    txt='The thick filaments are jammed against the Z discs<small>Below about 1.6 &micro;m the rigid 1.6 &micro;m thick filament physically cannot fit between the Z discs. It crumples against them, and tension falls very steeply &mdash; this is the far left of the length&ndash;tension curve.</small>';
+    inf='<span class="n">Two different reasons for weakness on the short side</span>From about 2.0 down to 1.7 &micro;m the loss is <b>double overlap</b>: thin filaments from opposite Z discs slide past the M line and get in each other&rsquo;s way. Below about 1.7 &micro;m a second and much harsher limit takes over as the thick filament meets the Z disc itself.';
+  } else if(G.dbl>0.001){
+    cls='verdict warn';
+    txt='Thin filaments from opposite ends are now overlapping each other<small>'+(G.dbl*1000).toFixed(0)+' nm of double overlap. Thin filaments that have crossed the M line point the wrong way for the myosin heads on the far half of the thick filament, so they interfere instead of contributing.</small>';
+    inf='<span class="n">The shortening limb is interference, not exhaustion</span>Nothing has run out. There is as much calcium and as much ATP as before. The heads simply have the wrong partner in front of them. This is exactly why grip is weaker with the wrist fully flexed: the finger flexors have been carried below their optimal sarcomere length.';
+  } else if(L>=2.00&&L<=2.20){
+    cls='verdict';
+    txt='Optimal overlap &mdash; every head that can work has an actin site to work on<small>The plateau of the length&ndash;tension curve runs from about 2.0 to 2.2 &micro;m. It has width rather than being a single point because the central 0.2 &micro;m of the thick filament carries no heads at all.</small>';
+    inf='<span class="n">The body keeps you here on purpose</span>Joints limit excursion so that resting muscle sits close to optimal length, which is why you can usually ignore the descending limb in intact skeletal muscle. You cannot ignore it in the heart: the ascending limb of this same curve is the <b>Frank&ndash;Starling</b> relationship &mdash; the more the ventricle fills, the closer its sarcomeres come to optimal overlap, and the harder it contracts.';
+  } else if(L>2.20){
+    cls='verdict warn';
+    txt='Stretched past optimal &mdash; overlap is falling and so is active force<small>The single-overlap zone is now '+G.single.toFixed(2)+' &micro;m per half sarcomere, against 0.70 &micro;m at 2.2 &micro;m. Passive tension is rising instead, and almost all of that passive tension is titin.</small>';
+    inf='<span class="n">Titin is doing the work you can feel</span>Titin runs from Z disc to M line like a molecular spring. It keeps the thick filament centerd so that the two halves of the sarcomere pull equally, and it is the main source of the resistance you feel when you stretch a relaxed muscle. It generates no active force &mdash; it stores it.';
+  } else {
+    cls='verdict info';
+    txt='Shortened, and still on the plateau of usable overlap<small>Notice what has and has not changed on the drawing above: the A band is exactly as wide as it was, while the I band and the H zone have both narrowed.</small>';
+    inf='<span class="n">The observation that settled the argument</span>If contraction shortened the filaments, the A band would narrow with everything else. It does not. The A band is the length of the thick filament, and the thick filament never changes length &mdash; so the only thing that can be happening is <b>sliding</b>.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf+'<div class="dd"><b>At this length:</b> A band '+G.A.toFixed(2)+' &micro;m, I band '+G.I.toFixed(2)+' &micro;m, H zone '+G.H.toFixed(2)+' &micro;m. A sarcomere shortening from 2.2 to 1.8 &micro;m is about 18 percent &mdash; and 18 percent of a 30 cm muscle moves a bone roughly 5 cm.</div>';
+  draw1(L,G);
+  $('cv1').setAttribute('aria-label','Sarcomere at '+L.toFixed(2)+' micrometers: A band '+G.A.toFixed(2)+', I band '+G.I.toFixed(2)+', H zone '+G.H.toFixed(2)+' micrometers.');
+}
+
+function draw1(L,G){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var cx=W/2, PX=235, midY=200;
+  function X(u){return cx+u*PX;}
+  var half=L/2, tip=half-THIN;
+  var thickL=Math.max(-THICK/2,-half), thickR=Math.min(THICK/2,half);
+
+  /* striation strip */
+  if(showStripe){
+    var sy=42, sh=46, x;
+    for(x=X(-half);x<=X(half);x+=1){
+      var u=(x-cx)/PX, au=Math.abs(u);
+      var hasThick=au<=Math.min(THICK/2,half);
+      var hasThin=au>=tip;
+      var shade;
+      if(hasThick&&hasThin) shade=58;
+      else if(hasThick) shade=132;
+      else shade=222;
+      g.fillStyle='rgb('+shade+','+shade+','+(shade+6)+')';
+      g.fillRect(x,sy,1.2,sh);
+    }
+    g.strokeStyle=LINE; g.lineWidth=1; g.strokeRect(X(-half),sy,X(half)-X(-half),sh);
+    g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('what the microscope shows', X(-half), sy-8);
+  }
+
+  /* Z discs */
+  function zdisc(u){
+    g.fillStyle=TDK; g.fillRect(X(u)-4,midY-72,8,144);
+    g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('Z', X(u), midY-82);
+  }
+  /* titin */
+  if(showTitin){
+    g.strokeStyle=GOLD; g.lineWidth=2.4;
+    [-1,1].forEach(function(s){
+      var x0=X(s*half), x1=X(s*Math.min(THICK/2,half));
+      var n=14, i;
+      g.beginPath(); g.moveTo(x0,midY+52);
+      for(i=1;i<=n;i++){
+        var t=i/n, xx=x0+(x1-x0)*t, yy=midY+52+(i%2===0?-6:6);
+        g.lineTo(xx,yy);
+      }
+      g.lineTo(x1,midY+52); g.lineTo(X(0),midY+52);
+      g.stroke();
+    });
+    g.fillStyle=GOLD; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('titin — Z disc to M line', cx, midY+82);
+  }
+
+  /* thin filaments */
+  function thin(uFrom,uTo,y){
+    g.strokeStyle=TEAL; g.lineWidth=6; g.lineCap='round';
+    g.beginPath(); g.moveTo(X(uFrom),y); g.lineTo(X(uTo),y); g.stroke();
+    var step=0.055,u;
+    g.fillStyle='#fff';
+    for(u=Math.min(uFrom,uTo)+step/2;u<Math.max(uFrom,uTo);u+=step){
+      g.beginPath(); g.arc(X(u),y,1.7,0,6.3); g.fill();
+    }
+  }
+  thin(-half,Math.min(-half+THIN,half),midY-34);
+  thin(-half,Math.min(-half+THIN,half),midY+34);
+  thin(half,Math.max(half-THIN,-half),midY-34);
+  thin(half,Math.max(half-THIN,-half),midY+34);
+
+  /* thick filament with heads */
+  g.strokeStyle=CORAL; g.lineWidth=11; g.lineCap='round';
+  g.beginPath(); g.moveTo(X(thickL),midY); g.lineTo(X(thickR),midY); g.stroke();
+  var u2;
+  g.strokeStyle=CORAL; g.lineWidth=2.6;
+  for(u2=thickL+0.05;u2<=thickR-0.02;u2+=0.075){
+    if(Math.abs(u2)<0.10) continue;
+    var dir=u2<0?-1:1;
+    [[-1],[1]].forEach(function(s){
+      g.beginPath(); g.moveTo(X(u2),midY+s[0]*5);
+      g.lineTo(X(u2+dir*0.045),midY+s[0]*26); g.stroke();
+      g.fillStyle=CORAL; g.beginPath(); g.arc(X(u2+dir*0.045),midY+s[0]*26,3.6,0,6.3); g.fill();
+    });
+  }
+  /* M line */
+  g.strokeStyle=PURP; g.lineWidth=3; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(cx,midY-46); g.lineTo(cx,midY+46); g.stroke(); g.setLineDash([]);
+  g.fillStyle=PURP; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('M', cx, midY-54);
+  zdisc(-half); zdisc(half);
+
+  /* double overlap shading */
+  if(G.dbl>0.001){
+    g.fillStyle=GOLD; g.globalAlpha=0.22;
+    g.fillRect(X(-G.dbl/2),midY-44,X(G.dbl/2)-X(-G.dbl/2),88); g.globalAlpha=1;
+  }
+
+  /* band brackets */
+  var by=midY+112;
+  function bracket(u1,u2,col,label,yy){
+    if(u2-u1<=0.004) return;
+    g.strokeStyle=col; g.lineWidth=2;
+    g.beginPath(); g.moveTo(X(u1),yy-7); g.lineTo(X(u1),yy+7);
+    g.moveTo(X(u2),yy-7); g.lineTo(X(u2),yy+7);
+    g.moveTo(X(u1),yy); g.lineTo(X(u2),yy); g.stroke();
+    g.fillStyle=col; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(label,(X(u1)+X(u2))/2,yy-13);
+  }
+  bracket(thickL,thickR,CORAL,'A band '+G.A.toFixed(2)+' µm',by);
+  if(G.I>0.004){
+    bracket(-half,thickL,TEAL,'½ I',by+46);
+    bracket(thickR,half,TEAL,'½ I  ·  I band total '+G.I.toFixed(2)+' µm',by+46);
+  } else {
+    g.fillStyle=TEAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('I band has disappeared', cx, by+46);
+  }
+  if(G.H>0.004){ bracket(-G.H/2,G.H/2,BLUE,'H '+G.H.toFixed(2)+' µm',by+92); }
+  else {
+    g.fillStyle=BLUE; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('H zone has disappeared', cx, by+92);
+  }
+
+  /* scale bar */
+  g.strokeStyle=MUT; g.lineWidth=2;
+  g.beginPath(); g.moveTo(X(-1.85),H-24); g.lineTo(X(-0.85),H-24);
+  g.moveTo(X(-1.85),H-30); g.lineTo(X(-1.85),H-18);
+  g.moveTo(X(-0.85),H-30); g.lineTo(X(-0.85),H-18); g.stroke();
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('1.0 µm', X(-1.35), H-32);
+  g.textAlign='right'; g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('sarcomere '+L.toFixed(2)+' µm', W-16, H-24);
+}
+
+/* =====================================================
+   BENCH 2 - cross-bridge cycle
+   ===================================================== */
+var STEPS=[
+ {t:'Cocking',d:'Myosin <b>hydrolyzes ATP</b> to ADP + inorganic phosphate and holds both products. The released energy is stored as strain and the head swings to a high-energy, roughly <b>90-degree</b> cocked position.'},
+ {t:'Cross-bridge formation',d:'If calcium has moved tropomyosin off the actin binding site, the cocked head <b>attaches</b>. If the site is still blocked, nothing happens &mdash; myosin is always willing; actin is what gets switched on.'},
+ {t:'The power stroke',d:'<b>Phosphate is released</b>, the head pivots to about <b>45 degrees</b>, and the thin filament is dragged toward the M line by roughly <b>10 nm</b>. ADP leaves at the end of the stroke.'},
+ {t:'Detachment',d:'A <b>fresh ATP binds</b> the head, its affinity for actin collapses, and myosin lets go. This ATP is not hydrolyzed for detachment &mdash; it is simply required for it.'}
+];
+var step=0, playing=false, atpOn=true, caOn=true, cycles=0, atpUsed=0, travel=0, rigor=false, anim=0, raf=null;
+function buildSteps(){
+  var h='';
+  STEPS.forEach(function(S,i){
+    var cls='stp'+(i===step?' on':'')+((rigor&&i===3)?' locked':'');
+    h+='<div class="'+cls+'"><div class="no">'+(i+1)+'</div><div><b>'+S.t+'.</b> '+S.d+'</div></div>';
+  });
+  $('steplist').innerHTML=h;
+}
+$('tATP').onclick=function(){atpOn=!atpOn;this.setAttribute('aria-pressed',atpOn?'true':'false');if(atpOn)rigor=false;render2();};
+$('tCa').onclick=function(){caOn=!caOn;this.setAttribute('aria-pressed',caOn?'true':'false');render2();};
+$('bReset').onclick=function(){step=0;cycles=0;atpUsed=0;travel=0;rigor=false;playing=false;$('bPlay').textContent='Run';render2();};
+$('bStep').onclick=function(){advance();};
+$('bPlay').onclick=function(){
+  playing=!playing; this.textContent=playing?'Pause':'Run';
+  if(playing) loop(); else if(raf){cancelAnimationFrame(raf);raf=null;}
+};
+var lastT=0;
+function loop(ts){
+  if(!playing){raf=null;return;}
+  if(!lastT) lastT=ts||0;
+  var now=ts||0;
+  if(now-lastT>620){ lastT=now; advance(); }
+  raf=requestAnimationFrame(loop);
+}
+function advance(){
+  if(rigor) { render2(); return; }
+  if(step===0){ /* about to cock */
+    if(!atpOn){ render2(); return; }
+    atpUsed++; step=1; }
+  else if(step===1){ if(!caOn){ render2(); return; } step=2; }
+  else if(step===2){ travel+=10; step=3; }
+  else if(step===3){
+    if(!atpOn){ rigor=true; render2(); return; }
+    cycles++; step=0; }
+  render2();
+}
+function render2(){
+  buildSteps();
+  var head=(step===0||step===1)?90:45;
+  $('s2').innerHTML=
+    tile('Cycles completed',cycles,'one ATP each')+
+    tile('ATP molecules used',atpUsed,'hydrolyzed at step 1')+
+    tile('Thin filament moved',travel,'nm &middot; about 10 nm per stroke')+
+    tile('Head angle',head+'°','90 cocked, 45 after the stroke')+
+    tile('Heads per thick filament','~600','about 300 myosins, two heads each')+
+    tile('Cycle rate in life','5–50','per head per second during sustained work');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(rigor){
+    cls='verdict bad';
+    txt='Rigor &mdash; the head is locked on and cannot let go<small>Detachment needs a fresh ATP to bind. With none available the cross-bridge stays attached, and the muscle becomes stiff rather than limp.</small>';
+    inf='<span class="n">Rigor mortis is the clean experiment</span>After death, oxidative phosphorylation stops and the residual ATP is gone within a few hours. Calcium also leaks out of the sarcoplasmic reticulum because <b>the pump that removes it needs ATP too</b>, so the binding sites stay exposed. Stiffness begins <b>3 to 4 hours</b> after death, peaks near <b>12 hours</b>, and resolves over <b>48 to 72 hours</b> only when lysosomal enzymes digest the proteins. Warmth and hard exercise before death, which deplete ATP faster, both bring it on sooner.<div class="dd">The clinical corollary matters more than the forensic one: <b>anything that starves muscle of ATP produces stiffness and contracture, not flaccidity</b>. That is one reason ischemic muscle hardens and hurts rather than simply going limp.</div>';
+  } else if(!atpOn&&step===0){
+    cls='verdict warn';
+    txt='No ATP, so the head cannot be cocked<small>Step 1 is a hydrolysis. Without ATP the head is stuck in its low-energy 45-degree conformation and the cycle never starts.</small>';
+    inf='<span class="n">Two different ATP requirements, one cycle</span>Students often merge them. ATP is <b>hydrolyzed in step 1</b> to load the head with strain, and a separate ATP must <b>bind in step 4</b> for release. Take ATP away mid-cycle and you get rigor; take it away before the cycle starts and you get a head that simply cannot arm itself.';
+  } else if(!caOn&&step===1){
+    cls='verdict info';
+    txt='Cocked, energized &mdash; and nothing to grab<small>The binding site on actin is still covered by tropomyosin, so no cross-bridge can form. This is a relaxed muscle: full of ATP, full of cocked heads, generating no force.</small>';
+    inf='<span class="n">Muscle is switched on at actin, not at myosin</span>Myosin heads are always willing. What changes is whether the actin binding site is exposed. Calcium binds <b>troponin C</b>, troponin drags <b>tropomyosin</b> off the site, and cycling begins. Because the switch sits on the thin filament, skeletal and cardiac regulation is called <b>actin-linked</b> &mdash; and smooth muscle, which switches the myosin head instead, is not.';
+  } else if(step===2){
+    cls='verdict';
+    txt='Attached &mdash; a cross-bridge exists<small>At any instant only a fraction of the roughly 600 heads on a thick filament are attached. That is deliberate: some always hold while others reset, so the filament never slips backward, the way a rope is pulled hand over hand.</small>';
+    inf='<span class="n">Why the fraction matters</span>The attached, force-generating part of the cycle lasts only a few milliseconds, but a head repeats the whole cycle perhaps <b>5 to 50 times a second</b> during a sustained contraction. Force is the number of heads attached at this instant multiplied by the force each one makes.';
+  } else if(step===3){
+    cls='verdict';
+    txt='Power stroke delivered &mdash; the thin filament has moved 10 nm<small>Phosphate release is the trigger. The head pivots from about 90 to about 45 degrees, and the energy stored back at step 1 is spent here.</small>';
+    inf='<span class="n">The energy and the event are not simultaneous</span>ATP was split in step 1; the mechanical work appears in step 3. Myosin is a spring that is wound long before it is released, which is why the hydrolysis and the power stroke are separate steps rather than one.';
+  } else {
+    cls='verdict info';
+    txt='Ready &mdash; press Next step to hydrolyze an ATP and cock the head<small>Run the cycle a few times, then switch ATP off in the middle and see exactly where it stops.</small>';
+    inf='<span class="n">One head, one ATP, ten nanometers</span>Each thick filament carries roughly <b>300 myosin molecules</b>, and each myosin has two globular heads. A head is at once an <b>actin-binding site</b> and an <b>ATPase</b>. That double identity is the whole engine: the enzyme that splits the fuel is the same object that does the pulling.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  draw2();
+}
+function draw2(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var thinY=118, thickY=330, cx=W/2;
+  var shift=(step===3||rigor)?26:0;
+
+  /* thin filament */
+  g.strokeStyle=TEAL; g.lineWidth=16; g.lineCap='round';
+  g.beginPath(); g.moveTo(70+shift,thinY); g.lineTo(W-70+shift,thinY); g.stroke();
+  var i;
+  for(i=0;i<26;i++){
+    var x=100+shift+i*34;
+    g.fillStyle='rgba(255,255,255,.85)'; g.beginPath(); g.arc(x,thinY,5.5,0,6.3); g.fill();
+  }
+  /* tropomyosin */
+  g.strokeStyle=caOn?GREEN:CORAL; g.lineWidth=5;
+  g.beginPath();
+  for(i=0;i<=60;i++){
+    var xx=70+shift+i*((W-140)/60), yy=thinY+(caOn?15:-1)+Math.sin(i*0.5)*3;
+    if(i===0)g.moveTo(xx,yy); else g.lineTo(xx,yy);
+  }
+  g.stroke();
+  g.fillStyle=caOn?GREEN:CORAL; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(caOn?'tropomyosin pushed aside — binding sites exposed':'tropomyosin covering the binding sites', 70, thinY+(caOn?46:-26));
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('THIN FILAMENT  (actin)', 70, 40);
+  g.fillStyle=MUT; g.font='600 13px Inter, system-ui, sans-serif';
+  g.fillText('moves this way → toward the M line', 300, 40);
+
+  /* thick filament */
+  g.strokeStyle=CORAL; g.lineWidth=20; g.lineCap='round';
+  g.beginPath(); g.moveTo(70,thickY); g.lineTo(W-70,thickY); g.stroke();
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THICK FILAMENT  (myosin)', 70, H-22);
+
+  /* the one head we are following */
+  var baseX=cx-60, ang=(step===0||step===1)?-72:-40;
+  if(step===2) ang=-72;
+  var len1=86, len2=64;
+  var jx=baseX, jy=thickY-14;
+  var ex=jx+Math.cos(ang*Math.PI/180)*len1;
+  var ey=jy+Math.sin(ang*Math.PI/180)*len1;
+  var attached=(step===2||step===3||rigor);
+  var hx=attached?(cx-30+shift):(ex+Math.cos((ang+18)*Math.PI/180)*len2);
+  var hy=attached?(thinY+16):(ey+Math.sin((ang+18)*Math.PI/180)*len2);
+
+  g.strokeStyle=CORAL; g.lineWidth=9; g.lineCap='round';
+  g.beginPath(); g.moveTo(jx,jy); g.lineTo(ex,ey); g.lineTo(hx,hy); g.stroke();
+  g.fillStyle=CORAL;
+  g.beginPath(); g.ellipse(hx,hy,22,15,Math.atan2(hy-ey,hx-ex),0,6.3); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2; g.stroke();
+
+  /* nucleotide state label on the head */
+  var lbl='';
+  if(step===0) lbl='ATP arriving';
+  if(step===1) lbl='ADP + Pi held — cocked 90°';
+  if(step===2) lbl='ADP + Pi held — attached';
+  if(step===3) lbl='Pi released → 45° — ADP leaves';
+  if(rigor) lbl='no ATP — LOCKED';
+  g.fillStyle=rigor?CORAL:TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(lbl,hx,hy-30);
+
+  /* other heads for context */
+  var k;
+  g.strokeStyle=CORAL; g.globalAlpha=0.30; g.lineWidth=6;
+  for(k=-4;k<=4;k++){
+    if(k===0) continue;
+    var ox=baseX+k*112; if(ox<90||ox>W-90) continue;
+    var oa=(k%2===0)?-70:-42;
+    var oe1=ox+Math.cos(oa*Math.PI/180)*len1, oe2=jy+Math.sin(oa*Math.PI/180)*len1;
+    g.beginPath(); g.moveTo(ox,jy); g.lineTo(oe1,oe2); g.stroke();
+    g.beginPath(); g.arc(oe1,oe2,13,0,6.3); g.fillStyle=CORAL; g.fill();
+  }
+  g.globalAlpha=1;
+
+  /* step ribbon */
+  var names=['Ready','1 · Cocking','2 · Attach','3 · Power stroke'];
+  g.fillStyle=rigor?CORAL:TEAL; g.globalAlpha=0.12;
+  g.fillRect(70,H-100,W-140,40); g.globalAlpha=1;
+  g.strokeStyle=rigor?CORAL:TEAL; g.lineWidth=2; g.strokeRect(70,H-100,W-140,40);
+  g.fillStyle=rigor?CORAL:TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(rigor?'RIGOR — detachment needs a fresh ATP and there is none':(step===3?'3 · Power stroke — thin filament dragged 10 nm':names[step]+(step===0?' · press Next step':'')), W/2, H-74);
+}
+
+/* boot */
+render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

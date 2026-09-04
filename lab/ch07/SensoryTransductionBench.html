@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From Stimulus to Spike Train &mdash; Transduction, Adaptation and Frequency Coding</title>
+<meta name="description" content="Push a stimulus into five different receptors, watch the graded receptor potential turn into a firing rate, and see why a tonic receptor keeps reporting while a phasic one falls silent.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.rlist{display:flex;flex-direction:column;gap:6px;}
+.rbtn{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;cursor:pointer;text-align:left;font-family:var(--sans);width:100%;}
+.rbtn:hover{border-color:var(--teal);}
+.rbtn .nm{font-weight:800;font-size:13px;color:var(--ink);}
+.rbtn .s{font-size:11px;color:var(--muted);}
+.rbtn .tag{margin-left:auto;font-size:9.6px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:20px;padding:3px 9px;background:var(--line);color:var(--soft);flex:none;}
+.rbtn.on{background:var(--teal);border-color:var(--teal);}
+.rbtn.on .nm{color:#fff;} .rbtn.on .s{color:rgba(255,255,255,.85);}
+.rbtn.on .tag{background:rgba(255,255,255,.22);color:#fff;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.numin{width:100%;font-family:var(--sans);font-size:14px;font-weight:700;color:var(--teal-dk);border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;}
+table.mini{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px;}
+table.mini th{text-align:left;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;padding:5px 6px;border-bottom:1px solid var(--line);}
+table.mini td{padding:6px;border-bottom:1px solid var(--line);color:var(--soft);vertical-align:top;}
+table.mini td b{color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch07.html">&larr; Module 7</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 7</div>
+  <h1>From Stimulus to Spike Train</h1>
+  <div class="intro">Every special sense runs the same three-step machine: an adequate stimulus opens or closes ion channels, that produces a <b>graded receptor potential</b>, and the trigger zone converts amplitude into <b>firing frequency</b>. Drive a stimulus into five different receptors below, hold it there, and watch which ones keep reporting and which ones go quiet. Then use the labeled-line bench to see why pressing on your eyeball produces light.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Receptor &amp; adaptation</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Labeled line</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Weber&ndash;Fechner</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Choose a receptor</div>
+        <div class="rlist" id="rlist"></div>
+
+        <div class="lbl">Stimulus</div>
+        <div class="sl"><label for="inten">Stimulus intensity <span class="v" id="intenV">60 units</span></label>
+          <input type="range" id="inten" min="0" max="100" value="60" step="1" aria-label="Stimulus intensity in arbitrary units from zero to one hundred"></div>
+        <div class="chips" id="pre1"></div>
+        <div class="hint"><b>The experiment.</b> Set intensity to 20 &mdash; the receptor potential rises but never reaches the &minus;55 mV threshold, so the axon is silent. Now step to 40, 70 and 100 and watch the <i>same</i> spike shape arrive faster and faster. Amplitude never changes. Only interval does.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Deliver an odd stimulus and see what is perceived</div>
+        <div class="rlist" id="llist"></div>
+        <div class="hint"><b>Why this matters.</b> An action potential in the optic nerve and one in the cochlear nerve are electrically indistinguishable &mdash; roughly 100 mV swings lasting about 1 ms, driven by the same voltage-gated Na<sup>+</sup> and K<sup>+</sup> channels from Module 6. Nothing in the spike says &ldquo;light.&rdquo; The <i>line</i> says light.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Just-noticeable difference</div>
+        <div class="sl"><span class="lbl" style="margin:0 0 4px;display:block;">Modality</span></div>
+        <div class="chips" id="wmod" style="margin-top:0" role="group" aria-label="Choose a sensory modality"></div>
+        <div class="sl"><label for="base">Background intensity <span class="v" id="baseV">50 candles</span></label>
+          <input type="range" id="base" min="0" max="400" value="170" step="1" aria-label="Background stimulus intensity, logarithmic scale"></div>
+        <div class="lbl">Sound pressure, in decibels</div>
+        <div class="sl"><label for="press">Sound pressure <span class="v" id="pressV">0.02 Pa</span></label>
+          <input type="range" id="press" min="0" max="440" value="200" step="1" aria-label="Sound pressure in pascals, logarithmic scale"></div>
+        <div class="hint"><b>Weber&ndash;Fechner.</b> The just-noticeable difference is a roughly constant <i>fraction</i> of the baseline, not a constant amount. That is why the ear needed a logarithmic unit: dB SPL = 20 &times; log(P / 20 &micro;Pa), where 20 &micro;Pa is the threshold of human hearing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>The graded receptor potential, and the spike train it produces</h2>
+      <canvas id="cv1" width="1040" height="300" aria-label="Plot of membrane potential in the receptor over time, showing the graded receptor potential and the minus 55 millivolt threshold"></canvas>
+      <canvas id="cv1b" width="1040" height="250" aria-label="Plot of instantaneous firing frequency over time with a spike raster beneath it"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>One kind of spike, four destinations</h2>
+      <canvas id="cv2" width="1040" height="430" aria-label="Diagram of four sensory pathways from receptor to cortical target, with the activated pathway highlighted"></canvas>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>Physical intensity is huge. Neural range is not.</h2>
+      <canvas id="cv3" width="1040" height="380" aria-label="Plot of perceived intensity against physical intensity showing logarithmic compression, with the just-noticeable difference marked"></canvas>
+      <div class="stats" id="st3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(P){
+    P[0].classList.toggle('on',n===P[1]);
+    P[0].setAttribute('aria-selected',n===P[1]?'true':'false');
+  });
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =========================================================
+   BENCH 1 -- receptor potential, adaptation, frequency coding
+   ========================================================= */
+var REST=-70, THRESH=-55, RPMAX=40, FMIN=5, FMAX=300;
+
+var RX=[
+ {id:'pac',n:'Pacinian corpuscle',s:'deep pressure and vibration',kind:'phasic',win:2.0,tau:0.10,floor:0.00,off:0.55,
+  mech:'The onion-like lamellae mechanically redistribute a sustained force, so within milliseconds the nerve terminal is no longer deformed even though your finger is still pressed down.',
+  life:'You stop feeling your watchband within seconds of putting it on.'},
+ {id:'olf',n:'Olfactory receptor neuron',s:'dissolved odorant molecules',kind:'phasic',win:120,tau:20,floor:0.05,off:0,
+  mech:'Calcium entering through the transduction channel binds calmodulin, which lowers the channel&rsquo;s affinity for cAMP. The same odorant concentration then opens fewer channels.',
+  life:'You stop noticing your own perfume within a minute or two.'},
+ {id:'spi',n:'Muscle spindle',s:'muscle length and its rate of change',kind:'tonic',win:30,tau:6,floor:0.80,off:0,
+  mech:'Only modest adaptation. The spindle has to keep reporting length for as long as the limb is held there, or the stretch reflex would have nothing to compare against.',
+  life:'You always know where your arm is, even with your eyes shut and your arm still.'},
+ {id:'noc',n:'Nociceptor',s:'tissue-damaging stimuli',kind:'tonic',win:30,tau:25,floor:0.93,off:0,
+  mech:'Almost no adaptation, and with sustained injury nociceptors <i>sensitize</i> rather than fatigue. A signal that means damage must not fade while the damage is still there.',
+  life:'You never stop feeling a kidney stone.'},
+ {id:'bar',n:'Carotid baroreceptor',s:'stretch of the arterial wall',kind:'tonic',win:30,tau:8,floor:0.75,off:0,
+  mech:'Slowly adapting, because blood pressure is a regulated variable and the integrator in the medulla needs a continuous readout, not just an alert when pressure changes.',
+  life:'Your blood pressure is being sampled several times per second, all day, without you noticing.'}
+];
+var cur=RX[0];
+
+(function(){
+  var box=$('rlist');
+  RX.forEach(function(R){
+    var b=document.createElement('button'); b.type='button'; b.className='rbtn'+(R===cur?' on':'');
+    b.innerHTML='<span><span class="nm">'+R.n+'</span><span class="s">'+R.s+'</span></span><span class="tag">'+R.kind+'</span>';
+    b.setAttribute('aria-pressed',R===cur?'true':'false');
+    b.onclick=function(){
+      cur=R;
+      [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',RX[i]===cur); c.setAttribute('aria-pressed',RX[i]===cur?'true':'false'); });
+      render1();
+    };
+    box.appendChild(b);
+  });
+  var pre=$('pre1');
+  [['Subthreshold',20],['Just over threshold',42],['Moderate',70],['Maximal',100]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('inten').value=P[1]; render1(); };
+    pre.appendChild(b);
+  });
+})();
+$('inten').addEventListener('input',render1);
+
+function rpPeak(I){ return RPMAX*Math.pow(clamp(I,0,100)/100,0.65); }
+function rate(rp){ return rp>=(THRESH-REST) ? clamp(FMIN+(rp-(THRESH-REST))*11.8,0,FMAX) : 0; }
+
+function sim(){
+  var I=+$('inten').value, R=cur, W=R.win, t0=W*0.10, t1=W*0.72, peak=rpPeak(I);
+  var pts=[], N=760, i, t, rp;
+  for(i=0;i<=N;i++){
+    t=W*i/N;
+    if(t<t0) rp=0;
+    else if(t<=t1) rp=peak*(R.floor+(1-R.floor)*Math.exp(-(t-t0)/R.tau));
+    else rp=peak*R.off*Math.exp(-(t-t1)/Math.max(R.tau,0.08));
+    pts.push([t,rp,rate(rp)]);
+  }
+  var fOn=rate(peak), fEnd=rate(peak*(R.floor+(1-R.floor)*Math.exp(-(t1-t0)/R.tau)));
+  return {pts:pts,peak:peak,fOn:fOn,fEnd:fEnd,I:I,W:W,t0:t0,t1:t1,R:R};
+}
+
+/* recruitment: twelve afferent fibers with staggered thresholds */
+var THRS=[14,20,26,33,40,47,54,62,70,78,87,95];
+
+function render1(){
+  var I=+$('inten').value;
+  $('intenV').textContent=I+' units';
+  var S=sim(), R=cur;
+  var recr=0; THRS.forEach(function(x){ if(I>=x) recr++; });
+  var drop=S.fOn>0?Math.round(100*(1-S.fEnd/S.fOn)):0;
+
+  $('st1').innerHTML=
+    tile('Peak receptor potential',S.peak.toFixed(1),'mV of depolarization, graded')+
+    tile('Membrane reached',(REST+S.peak).toFixed(0),'mV &middot; threshold is &minus;55')+
+    tile('Firing at stimulus onset',S.fOn.toFixed(0),'spikes/s')+
+    tile('Firing after the hold',S.fEnd.toFixed(0),'spikes/s &middot; '+drop+'% lost to adaptation')+
+    tile('Fibers recruited',recr+' of 12','higher-threshold units join as intensity climbs')+
+    tile('Spike amplitude','100','mV, always &middot; set by E<sub>Na</sub> and E<sub>K</sub>');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(S.fOn===0){
+    cls='verdict cool';
+    txt='Subthreshold &mdash; a receptor potential with no output<small>The membrane rose '+S.peak.toFixed(1)+' mV, to '+(REST+S.peak).toFixed(0)+' mV. Threshold sits about 15 mV above rest, at &minus;55 mV. The graded potential simply spread electrotonically and decayed.</small>';
+    inf='<span class="n">Transduction happened. Signaling did not.</span>Channels opened, ions moved, the membrane depolarized &mdash; the transducer worked perfectly. But a receptor potential decays over a few hundred micrometers because it spreads passively, so unless it reaches the trigger zone still above threshold, nothing is sent anywhere.<div class="dd">This is exactly why the receptor potential is called <b>analog</b> and the output <b>digital</b>. Raise the intensity to about 25 units and watch the first spike appear.</div>';
+  } else if(R.kind==='phasic'){
+    cls='verdict warn';
+    txt='Phasic receptor &mdash; it reported the change, then went quiet<small>Firing fell from '+S.fOn.toFixed(0)+' to '+S.fEnd.toFixed(0)+' spikes/s ('+drop+'%) while the stimulus never changed. A rapidly adapting receptor encodes the <i>derivative</i> of the stimulus, not its level.</small>';
+    inf='<span class="n">'+R.n+'</span>'+R.mech+'<div class="dd"><b>In everyday terms.</b> '+R.life+(R.off>0?' Notice the second burst when the stimulus is released &mdash; offset is a change too, and a phasic receptor reports it just as loudly as onset.':'')+'</div>';
+  } else {
+    cls='verdict';
+    txt='Tonic receptor &mdash; still reporting after the hold<small>Firing settled from '+S.fOn.toFixed(0)+' to '+S.fEnd.toFixed(0)+' spikes/s, a decline of only '+drop+'%. A slowly adapting receptor guards a variable that must be monitored continuously.</small>';
+    inf='<span class="n">'+R.n+'</span>'+R.mech+'<div class="dd"><b>In everyday terms.</b> '+R.life+'</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Receptor potential trace for the '+R.n+' at intensity '+I+': peak '+S.peak.toFixed(1)+' millivolts, '+(S.fOn===0?'no spikes fired':S.fOn.toFixed(0)+' spikes per second at onset falling to '+S.fEnd.toFixed(0)+'.'));
+  draw1(S);
+}
+
+function draw1(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=76,Rt=W-20,T=26,B=H-46;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(t){ return L+(t/S.W)*(Rt-L); }
+  function Y(mv){ return B-((mv+72)/46)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [-70,-60,-50,-40,-30].forEach(function(mv){
+    g.beginPath(); g.moveTo(L,Y(mv)); g.lineTo(Rt,Y(mv)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(mv,L-8,Y(mv)+4);
+  });
+  /* stimulus window */
+  g.fillStyle=PURP; g.globalAlpha=0.08; g.fillRect(X(S.t0),T,X(S.t1)-X(S.t0),B-T); g.globalAlpha=1;
+  g.fillStyle=PURP; g.font='800 11px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('STIMULUS ON — HELD CONSTANT',(X(S.t0)+X(S.t1))/2,T+14);
+
+  g.strokeStyle=GOLD; g.lineWidth=2; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(L,Y(THRESH)); g.lineTo(Rt,Y(THRESH)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('threshold −55 mV',Rt-128,Y(THRESH)-6);
+
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(Rt,B); g.stroke();
+  var steps=5,k;
+  for(k=0;k<=steps;k++){
+    var tt=S.W*k/steps;
+    g.beginPath(); g.moveTo(X(tt),B); g.lineTo(X(tt),B+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(S.W<5?tt.toFixed(1):tt.toFixed(0),X(tt),B+20);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('seconds',(L+Rt)/2,B+38);
+  g.textAlign='left'; g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif';
+  g.fillText('mV',L-52,T+12);
+
+  g.strokeStyle=TDK; g.lineWidth=3.2; g.lineJoin='round'; g.beginPath();
+  S.pts.forEach(function(p,i){ var x=X(p[0]),y=Y(REST+p[1]); if(i===0) g.moveTo(x,y); else g.lineTo(x,y); });
+  g.stroke();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('RECEPTOR POTENTIAL — graded, analog, decremental',L+10,T+14);
+
+  /* ---- panel two: rate + raster ---- */
+  var c2=$('cv1b'),h=c2.getContext('2d'),W2=c2.width,H2=c2.height,T2=26,MID=H2-104,B2=H2-38;
+  h.clearRect(0,0,W2,H2); h.fillStyle='#fff'; h.fillRect(0,0,W2,H2);
+  function Y2(f){ return MID-(f/FMAX)*(MID-T2); }
+  h.strokeStyle=LINE; h.lineWidth=1;
+  [0,100,200,300].forEach(function(f){
+    h.beginPath(); h.moveTo(L,Y2(f)); h.lineTo(Rt,Y2(f)); h.stroke();
+    h.fillStyle=MUT; h.font='600 11.5px Inter, system-ui, sans-serif'; h.textAlign='right'; h.fillText(f,L-8,Y2(f)+4);
+  });
+  h.strokeStyle=MUT; h.lineWidth=1.6;
+  h.beginPath(); h.moveTo(L,T2); h.lineTo(L,MID); h.lineTo(Rt,MID); h.stroke();
+  h.strokeStyle=TEAL; h.lineWidth=3; h.beginPath();
+  S.pts.forEach(function(p,i){ var x=X(p[0]),y=Y2(p[2]); if(i===0) h.moveTo(x,y); else h.lineTo(x,y); });
+  h.stroke();
+  h.fillStyle=TEAL; h.font='800 12.5px Inter, system-ui, sans-serif'; h.textAlign='left';
+  h.fillText('FIRING FREQUENCY — spikes per second',L+10,T2+14);
+
+  /* spike raster generated by integrating the rate */
+  h.fillStyle=MUT; h.font='700 11px Inter, system-ui, sans-serif'; h.textAlign='right';
+  h.fillText('spikes',L-8,MID+34);
+  var acc=0,i2,dt=S.W/760,nsp=0;
+  h.strokeStyle=TDK; h.lineWidth=1.6;
+  for(i2=0;i2<S.pts.length;i2++){
+    acc+=S.pts[i2][2]*dt;
+    while(acc>=1){
+      acc-=1; nsp++;
+      var xs=X(S.pts[i2][0]);
+      if(nsp<2600){ h.beginPath(); h.moveTo(xs,MID+16); h.lineTo(xs,B2); h.stroke(); }
+    }
+  }
+  h.fillStyle=MUT; h.font='600 11.5px Inter, system-ui, sans-serif'; h.textAlign='center';
+  h.fillText('every tick is one identical, all-or-none action potential — '+nsp+' of them in this window',(L+Rt)/2,H2-12);
+}
+
+/* =========================================================
+   BENCH 2 -- the labeled line
+   ========================================================= */
+var LANES=[
+ {k:'vis',n:'Optic nerve (CN II)',t:'Primary visual cortex, occipital lobe',col:GOLD,r:'Retina'},
+ {k:'aud',n:'Cochlear nerve (CN VIII)',t:'Primary auditory cortex, temporal lobe',col:BLUE,r:'Cochlea'},
+ {k:'som',n:'Dorsal column pathway',t:'Primary somatosensory cortex, parietal lobe',col:TEAL,r:'Skin mechanoreceptor'},
+ {k:'olf',n:'Olfactory nerve (CN I)',t:'Piriform cortex — no thalamic relay',col:PURP,r:'Olfactory epithelium'}
+];
+var STIMS=[
+ {n:'Photons enter the eye',s:'the adequate stimulus for a rod',lane:'vis',p:'Light',
+  txt:'The ordinary case. Photons are the adequate stimulus for photoreceptors, the visual pathway carries the signal, and the visual cortex reports light. Everything is as expected.',
+  info:'<span class="n">Adequate stimulus</span>Each receptor type transduces one form of energy at the <b>lowest threshold</b>. A rod will respond to a single photon; a cochlear hair cell answers to a 1-nanometer deflection of its stereocilia. That bias is what &ldquo;adequate&rdquo; means &mdash; not that other energies cannot work, only that they need vastly more of it.'},
+ {n:'Press firmly on a closed eyelid',s:'mechanical energy delivered to the globe',lane:'vis',p:'A glowing ring — a phosphene',
+  txt:'You delivered pressure. You perceived light. The brain never received a report about mechanics, because the only line carrying the signal was the visual one.',
+  info:'<span class="n">This is the whole principle in one demonstration</span>Mechanical energy was strong enough to activate the photoreceptor pathway. Modality is determined by <b>which central pathway</b> the action potentials arrive on, not by anything intrinsic to the spikes.<div class="dd">Note carefully what the demonstration does <i>not</i> show. It does not show that rods detect pressure well. It shows that when they are forced to fire, the percept is light regardless of what caused it.</div>'},
+ {n:'A schwannoma compresses cranial nerve VIII',s:'mechanical compression of an axon bundle',lane:'aud',p:'Tinnitus — ringing, not a tickle',
+  txt:'A tumor is squeezing a nerve. Squeezing is mechanical, and yet the patient hears a tone. The auditory line reports sound whatever excites it.',
+  info:'<span class="n">Why the symptom predicts the anatomy</span>A vestibular schwannoma sits on cranial nerve VIII and produces <b>tinnitus, unilateral hearing loss and imbalance</b> &mdash; the three things that nerve carries. The lesion is mechanical; the symptoms are auditory and vestibular, because those are the lines.'},
+ {n:'Stimulate the stump after an amputation',s:'severed afferents in the residual limb',lane:'som',p:'Sensation in a hand that is gone',
+  txt:'The receptors were amputated years ago. The line still projects to the hand region of the somatosensory map, so activity on that line is felt in a hand.',
+  info:'<span class="n">Phantom limb</span>Location, like modality, is encoded by <b>wiring</b> &mdash; which part of the topographic map the line projects to. Cortex does not audit whether the periphery still exists. Activity arriving on the hand line is a hand.'},
+ {n:'A rose in the room',s:'volatile odorants dissolving in nasal mucus',lane:'olf',p:'Smell, with an emotional pull',
+  txt:'Odorants must dissolve in the mucus before they can bind. What is unusual here is the destination, not the transduction.',
+  info:'<span class="n">The one line that skips the thalamus</span>Olfaction is the only sensory modality that reaches cortex &mdash; piriform, amygdala, entorhinal &mdash; without an obligatory thalamic relay. That is the anatomical basis for the immediate emotional and memory pull of a familiar smell.'}
+];
+var curS=STIMS[1];
+(function(){
+  var box=$('llist');
+  STIMS.forEach(function(S){
+    var b=document.createElement('button'); b.type='button'; b.className='rbtn'+(S===curS?' on':'');
+    b.innerHTML='<span><span class="nm">'+S.n+'</span><span class="s">'+S.s+'</span></span>';
+    b.setAttribute('aria-pressed',S===curS?'true':'false');
+    b.onclick=function(){
+      curS=S;
+      [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',STIMS[i]===curS); c.setAttribute('aria-pressed',STIMS[i]===curS?'true':'false'); });
+      render2();
+    };
+    box.appendChild(b);
+  });
+})();
+
+function render2(){
+  var v=$('v2');
+  v.className='verdict info';
+  v.innerHTML='Perceived as: '+curS.p+'<small>'+curS.txt+'</small>';
+  $('i2').innerHTML=curS.info;
+  $('cv2').setAttribute('aria-label','Four sensory pathways. The '+curS.lane+' pathway is highlighted; the stimulus is '+curS.n+' and the percept is '+curS.p+'.');
+  drawLanes();
+}
+function drawLanes(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE SPIKES ARE IDENTICAL. THE DESTINATIONS ARE NOT.',30,32);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('Modality is a property of the line, not of the signal traveling on it.',30,52);
+  var y0=96,dy=84;
+  LANES.forEach(function(Ln,i){
+    var y=y0+i*dy, on=(Ln.k===curS.lane);
+    g.globalAlpha=on?1:0.30;
+    g.fillStyle=on?Ln.col:MUT;
+    g.beginPath(); g.arc(150,y,17,0,6.3); g.fill();
+    g.strokeStyle=on?Ln.col:LINE; g.lineWidth=on?7:4; g.lineCap='round';
+    g.beginPath(); g.moveTo(170,y); g.lineTo(W-260,y); g.stroke();
+    /* spike glyphs on the axon */
+    var sp;
+    for(sp=0;sp<7;sp++){
+      var sx=210+sp*((W-500)/6);
+      g.strokeStyle=on?'#fff':LINE; g.lineWidth=on?2.4:1.4;
+      g.beginPath(); g.moveTo(sx-5,y+ (on?7:4)); g.lineTo(sx,y-(on?9:5)); g.lineTo(sx+5,y+(on?7:4)); g.stroke();
+    }
+    g.fillStyle=on?Ln.col:MUT;
+    g.beginPath(); g.roundRect? g.roundRect(W-250,y-26,222,52,12) : g.rect(W-250,y-26,222,52); g.fill();
+    g.fillStyle='#fff'; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    wrap(g,Ln.t,W-139,y-4,206,15);
+    g.fillStyle=on?TDK:MUT; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(Ln.r,30,y-6);
+    g.font='600 11.5px Inter, system-ui, sans-serif'; g.fillStyle=MUT;
+    g.fillText(Ln.n,30,y+11);
+    g.globalAlpha=1;
+  });
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('Each spike is about a 100 mV swing lasting roughly 1 ms — the same on every line.',W/2,H-16);
+}
+function wrap(g,text,cx,cy,maxw,lh){
+  var words=text.split(' '),line='',lines=[],i;
+  for(i=0;i<words.length;i++){
+    var test=line?line+' '+words[i]:words[i];
+    if(g.measureText(test).width>maxw && line){ lines.push(line); line=words[i]; } else line=test;
+  }
+  lines.push(line);
+  var y=cy-(lines.length-1)*lh/2;
+  lines.forEach(function(L){ g.fillText(L,cx,y); y+=lh; });
+}
+
+/* =========================================================
+   BENCH 3 -- Weber-Fechner and the decibel
+   ========================================================= */
+var WMODS=[{n:'Brightness',k:0.02,u:'candles'},{n:'Loudness',k:0.10,u:'sones'}];
+var wcur=WMODS[0];
+(function(){
+  var box=$('wmod');
+  WMODS.forEach(function(M){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(M===wcur?' on':'');
+    b.textContent=M.n+' — ΔI/I ≈ '+M.k.toFixed(2);
+    b.onclick=function(){ wcur=M; [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',WMODS[i]===wcur); }); render3(); };
+    box.appendChild(b);
+  });
+})();
+['base','press'].forEach(function(id){ $(id).addEventListener('input',render3); });
+
+function render3(){
+  var I=Math.pow(10,(+$('base').value)/100);          /* 1 .. 10,000 */
+  var P=Math.pow(10,-5+(+$('press').value)/100);      /* 1e-5 .. 1e-0.6 Pa */
+  var jnd=wcur.k*I;
+  var dB=20*Math.log10(P/0.00002);
+  $('baseV').textContent=(I<10?I.toFixed(1):I.toFixed(0))+' '+wcur.u;
+  $('pressV').textContent=(P<0.001?(P*1e6).toFixed(0)+' µPa':P.toFixed(4)+' Pa');
+  $('st3').innerHTML=
+    tile('Background',(I<10?I.toFixed(1):I.toFixed(0)),wcur.u+' &middot; physical intensity')+
+    tile('Just-noticeable difference',(jnd<10?jnd.toFixed(2):jnd.toFixed(0)),wcur.u+' must be added before you notice')+
+    tile('Weber fraction',wcur.k.toFixed(2),'&Delta;I / I, constant across the range')+
+    tile('Sound pressure',(P<0.001?(P*1e6).toFixed(0)+' µPa':P.toFixed(4)+' Pa'),'reference is 20 &micro;Pa at threshold')+
+    tile('Sound pressure level',dB.toFixed(0),'dB SPL = 20 &times; log(P / 20 &micro;Pa)')+
+    tile('Pressure ratio to threshold',(P/0.00002).toFixed(0)+'&times;','a '+dB.toFixed(0)+' dB label hides a '+(P/0.00002).toFixed(0)+'-fold range');
+
+  var v=$('v3'); v.className='verdict info';
+  v.innerHTML='At a background of '+(I<10?I.toFixed(1):I.toFixed(0))+' '+wcur.u+' you need '+(jnd<10?jnd.toFixed(2):jnd.toFixed(0))+' more to notice a change<small>Ten times the background needs ten times the increment. The nervous system reports <i>ratios</i>, not differences &mdash; which is what makes the response curve a logarithm.</small>';
+  $('i3').innerHTML='<span class="n">Why the ear got its own unit</span>Human hearing spans a pressure range of roughly a million to one and an intensity range of about a trillion to one, while afferent firing rates span only about 5 to 300 spikes per second. Something has to compress. The <b>decibel</b> is that compression written down: dB SPL = 20 &times; log(P / 20 &micro;Pa), with 20 &micro;Pa fixed as the threshold of hearing so that 0 dB SPL means &ldquo;just audible.&rdquo;<div class="dd"><b>Do the arithmetic yourself.</b> Every 20 dB is a ten-fold change in pressure. A whisper at 30 dB and a chainsaw at 110 dB differ by 80 dB &mdash; which is 10<sup>4</sup>, ten thousand times the sound pressure. Compressing that onto a firing rate that can only run from about 5 to 300 spikes/s is not a convenience. It is a necessity.</div><div class="dd">The same logic runs in vision, where photoreceptor light adaptation, not the pupil, handles most of the ten-billion-fold range of natural light levels.</div>';
+  $('cv3').setAttribute('aria-label','Logarithmic compression curve: at a background of '+I.toFixed(0)+' '+wcur.u+', the just noticeable difference is '+jnd.toFixed(2)+'.');
+  draw3(I,jnd);
+}
+function draw3(I,jnd){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=84,Rt=W-24,T=30,B=H-52;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(x){ return L+(Math.log10(clamp(x,1,10000))/4)*(Rt-L); }
+  function Y(p){ return B-(p/100)*(B-T); }
+  function perceived(x){ return 100*Math.log10(clamp(x,1,10000))/4; }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,25,50,75,100].forEach(function(p){ g.beginPath(); g.moveTo(L,Y(p)); g.lineTo(Rt,Y(p)); g.stroke(); });
+  [1,10,100,1000,10000].forEach(function(x){
+    g.beginPath(); g.moveTo(X(x),B); g.lineTo(X(x),B+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillText(x,X(x),B+20);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(Rt,B); g.stroke();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('physical intensity (logarithmic axis)',(L+Rt)/2,B+40);
+  g.save(); g.translate(24,(T+B)/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('perceived intensity',0,0); g.restore();
+
+  /* the true linear relation, for contrast */
+  g.strokeStyle=LINE; g.lineWidth=2.5; g.setLineDash([6,5]); g.beginPath();
+  var x;
+  for(x=1;x<=10000;x*=1.05){ var xx=X(x),yy=Y(100*x/10000); if(x===1) g.moveTo(xx,yy); else g.lineTo(xx,yy); }
+  g.stroke(); g.setLineDash([]);
+  g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('if perception were linear',X(2200),Y(18));
+
+  g.strokeStyle=TEAL; g.lineWidth=3.4; g.beginPath();
+  for(x=1;x<=10000;x*=1.03){ var a=X(x),b=Y(perceived(x)); if(x===1) g.moveTo(a,b); else g.lineTo(a,b); }
+  g.stroke();
+  g.fillStyle=TEAL; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('what you actually perceive — a logarithm',L+14,T+16);
+
+  /* the JND step at the current background */
+  var x1=I, x2=I+jnd;
+  g.strokeStyle=CORAL; g.lineWidth=2.5;
+  g.beginPath(); g.moveTo(X(x1),B); g.lineTo(X(x1),Y(perceived(x1))); g.stroke();
+  g.fillStyle=CORAL;
+  g.beginPath(); g.arc(X(x1),Y(perceived(x1)),7,0,6.3); g.fill();
+  g.beginPath(); g.arc(X(x2),Y(perceived(x2)),5,0,6.3); g.fill();
+  g.strokeStyle=CORAL; g.lineWidth=6;
+  g.beginPath(); g.moveTo(X(x1),Y(perceived(x1))); g.lineTo(X(x2),Y(perceived(x2))); g.stroke();
+  g.fillStyle=CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('one JND = +'+(jnd<10?jnd.toFixed(2):jnd.toFixed(0)),X(x1),Y(perceived(x1))-16);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('the step is the same size on this curve everywhere — that is the point',(L+Rt)/2,H-14);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

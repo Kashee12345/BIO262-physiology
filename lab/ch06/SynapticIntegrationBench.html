@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Synapse &mdash; Summation at the Axon Hillock</title>
+<meta name="description" content="Drive thousands of one-millivolt votes into a neuron and watch the axon hillock convert them into a single all-or-none decision, then take calcium or receptors away at the terminal and watch transmission fail.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.lbl.exc{color:var(--coral);} .lbl.inh{color:var(--blue);}
+.sl{margin:9px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.hide{display:none;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch06.html">&larr; Module 6</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 6</div>
+  <h1>The Synapse: Summation at the Axon Hillock</h1>
+  <div class="intro">A single EPSP is worth about <b>0.5&ndash;1 mV</b>, and the neuron must climb <b>15 mV</b> from &minus;70 to &minus;55 to fire. So no synapse ever decides anything alone. Drive excitatory and inhibitory inputs into a cell and watch thousands of graded, analog votes get summed in the dendrites and converted, at one point, into a digital output &mdash; then move to the terminal and take away the calcium or the receptors and watch a perfectly healthy axon fail to say anything at all.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Integration at the hillock</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Inside the terminal</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Start from a situation</div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl exc">Excitatory input A &mdash; glutamate onto AMPA receptors</div>
+        <div class="sl"><label for="rA">Firing rate <span class="v" id="rAV">20 Hz</span></label>
+          <input type="range" id="rA" min="0" max="120" value="20" step="1" aria-label="Firing rate of excitatory input A in hertz"></div>
+        <div class="sl"><label for="nA">Synapses it makes on this neuron <span class="v" id="nAV">8</span></label>
+          <input type="range" id="nA" min="0" max="40" value="8" step="1" aria-label="Number of synapses made by excitatory input A"></div>
+
+        <div class="lbl exc">Excitatory input B</div>
+        <div class="sl"><label for="rB">Firing rate <span class="v" id="rBV">20 Hz</span></label>
+          <input type="range" id="rB" min="0" max="120" value="20" step="1" aria-label="Firing rate of excitatory input B in hertz"></div>
+        <div class="sl"><label for="nB">Synapses it makes on this neuron <span class="v" id="nBV">8</span></label>
+          <input type="range" id="nB" min="0" max="40" value="8" step="1" aria-label="Number of synapses made by excitatory input B"></div>
+
+        <div class="lbl inh">Inhibitory interneuron &mdash; GABA onto GABA<sub>A</sub> chloride channels</div>
+        <div class="sl"><label for="rI">Firing rate <span class="v" id="rIV">0 Hz</span></label>
+          <input type="range" id="rI" min="0" max="120" value="0" step="1" aria-label="Firing rate of the inhibitory interneuron in hertz"></div>
+        <div class="sl"><label for="nI">Synapses it makes on this neuron <span class="v" id="nIV">6</span></label>
+          <input type="range" id="nI" min="0" max="40" value="6" step="1" aria-label="Number of synapses made by the inhibitory interneuron"></div>
+
+        <div class="lbl">Size of one postsynaptic potential</div>
+        <div class="chips" id="unitChips"></div>
+        <button class="tog" id="tSync" type="button" aria-pressed="false"><span class="dot"></span><span>All synapses of an input arrive together <small>Off, each synapse fires at its own moment and the currents never meet. On, they converge &mdash; this is spatial summation, and it is the difference between noise and a decision.</small></span></button>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Presynaptic terminal</div>
+        <div class="sl"><label for="ca">Extracellular Ca<sup>2+</sup> <span class="v" id="caV">1.2 mM</span></label>
+          <input type="range" id="ca" min="0" max="240" value="120" step="2" aria-label="Extracellular free ionized calcium concentration in hundredths of a millimolar"></div>
+        <button class="tog" id="tBot" type="button" aria-pressed="false"><span class="dot"></span><span>Botulinum toxin &mdash; SNARE proteins cleaved <small>Vesicles can no longer zipper to the plasma membrane, so almost nothing is released even with normal calcium entry.</small></span></button>
+
+        <div class="lbl">Postsynaptic membrane</div>
+        <div class="sl"><label for="rec">Nicotinic receptors still present <span class="v" id="recV">100%</span></label>
+          <input type="range" id="rec" min="0" max="100" value="100" step="1" aria-label="Percentage of postsynaptic nicotinic acetylcholine receptors remaining"></div>
+        <button class="tog" id="tChe" type="button" aria-pressed="false"><span class="dot"></span><span>Cholinesterase inhibitor &mdash; pyridostigmine <small>Acetylcholinesterase normally clears the cleft in about a millisecond. Slow it and each released molecule gets more chances to find a surviving receptor.</small></span></button>
+
+        <div class="lbl">Stimulate</div>
+        <div class="row">
+          <button class="btn solid" id="bTrain" type="button">Run a train of 5 at 3 Hz</button>
+          <button class="btn" id="bOne" type="button">Single stimulus</button>
+        </div>
+        <div class="hint"><b>What the bars mean.</b> Repetitive stimulation depletes the readily releasable vesicle pool, so the fifth response is normally about a quarter smaller than the first. A healthy junction never notices, because it releases three to four times more transmitter than it needs. Take that margin away and the decrement becomes visible &mdash; which is precisely the electrodiagnostic sign of myasthenia gravis.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Every input, and the one decision they add up to</h2>
+      <canvas id="cv1" width="1040" height="200" aria-label="Raster plot of individual synaptic events arriving from two excitatory inputs and one inhibitory input over 250 milliseconds"></canvas>
+      <canvas id="cv1b" width="1040" height="330" aria-label="Membrane potential at the axon hillock over 250 milliseconds, showing summation of postsynaptic potentials, the minus 55 millivolt threshold and any action potentials produced"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>One terminal, one cleft, one decision</h2>
+      <canvas id="cv2" width="1040" height="380" aria-label="Diagram of a chemical synapse showing calcium entry, vesicles, the synaptic cleft and postsynaptic receptors, scaled to the current settings"></canvas>
+      <canvas id="cv2b" width="1040" height="230" aria-label="Bar chart of postsynaptic response amplitude across five successive stimuli, with the threshold for firing marked"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =========================================================
+   BENCH 1 -- summation at the hillock
+   ========================================================= */
+var REST=-70, THRESH=-55, TWIN=250, DT=0.2, TAU_D=15, TAU_R=1.2, GNORM=0.7386;
+var unit=1.0, sync=false;
+
+var UNITS=[{n:'0.5 mV',v:0.5},{n:'0.75 mV',v:0.75},{n:'1.0 mV',v:1.0}];
+(function(){
+  var box=$('unitChips');
+  UNITS.forEach(function(U){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(U.v===1.0?' on':''); b.innerHTML=U.n;
+    b.onclick=function(){ unit=U.v; [].slice.call(box.children).forEach(function(c){c.classList.remove('on');}); b.classList.add('on'); render1(); };
+    box.appendChild(b);
+  });
+})();
+var PRE1=[
+ {n:'Quiet cell', rA:6,nA:4,rB:0,nB:0,rI:0,nI:6,s:false},
+ {n:'One input firing fast &mdash; temporal summation', rA:110,nA:3,rB:0,nB:0,rI:0,nI:6,s:false},
+ {n:'Many synapses at once &mdash; spatial summation', rA:14,nA:30,rB:14,nB:30,rI:0,nI:6,s:true},
+ {n:'The same excitation, now inhibited', rA:14,nA:30,rB:14,nB:30,rI:60,nI:22,s:true},
+ {n:'Cortical background chatter', rA:30,nA:18,rB:30,nB:18,rI:26,nI:14,s:false}
+];
+(function(){
+  var box=$('pre1');
+  PRE1.forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+    b.onclick=function(){ $('rA').value=P.rA; $('nA').value=P.nA; $('rB').value=P.rB; $('nB').value=P.nB; $('rI').value=P.rI; $('nI').value=P.nI; sync=P.s; $('tSync').setAttribute('aria-pressed',sync?'true':'false'); render1(); };
+    box.appendChild(b);
+  });
+})();
+$('tSync').onclick=function(){ sync=!sync; this.setAttribute('aria-pressed',sync?'true':'false'); render1(); };
+['rA','nA','rB','nB','rI','nI'].forEach(function(id){ $(id).addEventListener('input',render1); });
+
+function events(rate,nsyn,seed){
+  var out=[];
+  if(rate<=0||nsyn<=0) return out;
+  var rnd=mulberry32(seed), iv=1000/rate, s, t;
+  for(s=0;s<nsyn;s++){
+    var phase=sync?(rnd()*1.4):(rnd()*iv);
+    for(t=phase;t<TWIN;t+=iv){
+      var jit=sync?((rnd()-0.5)*0.8):((rnd()-0.5)*iv*0.35);
+      var tt=t+jit; if(tt>=0&&tt<TWIN) out.push([tt,s]);
+    }
+  }
+  out.sort(function(a,b){return a[0]-b[0];});
+  return out;
+}
+
+function simulate1(){
+  var rA=+$('rA').value,nA=+$('nA').value,rB=+$('rB').value,nB=+$('nB').value,rI=+$('rI').value,nI=+$('nI').value;
+  var eA=events(rA,nA,11), eB=events(rB,nB,4242), eI=events(rI,nI,90210);
+  var all=[];
+  eA.forEach(function(e){all.push([e[0],+unit]);});
+  eB.forEach(function(e){all.push([e[0],+unit]);});
+  eI.forEach(function(e){all.push([e[0],-unit]);});
+  all.sort(function(a,b){return a[0]-b[0];});
+
+  var a=0,b=0,c=0,idx=0,t,pts=[],spikes=[],refr=-99,peak=REST;
+  var da=Math.exp(-DT/TAU_R), db=Math.exp(-DT/TAU_D), dc=Math.exp(-DT/4);
+  for(t=0;t<=TWIN;t+=DT){
+    while(idx<all.length && all[idx][0]<=t){ a+=all[idx][1]; b+=all[idx][1]; idx++; }
+    var Vs=(b-a)/GNORM;
+    var V=REST+Vs-c;
+    if(V>=THRESH && (t-refr)>2.0){ spikes.push(t); refr=t; c+=17; V=THRESH; }
+    if(V>peak) peak=V;
+    pts.push([t,V]);
+    a*=da; b*=db; c*=dc;
+  }
+  return {pts:pts,spikes:spikes,eA:eA,eB:eB,eI:eI,peak:peak,
+          exc:eA.length+eB.length, inh:eI.length, nA:nA,nB:nB,nI:nI};
+}
+
+function render1(){
+  $('rAV').textContent=$('rA').value+' Hz'; $('nAV').textContent=$('nA').value;
+  $('rBV').textContent=$('rB').value+' Hz'; $('nBV').textContent=$('nB').value;
+  $('rIV').textContent=$('rI').value+' Hz'; $('nIV').textContent=$('nI').value;
+  var R=simulate1();
+  var out=R.spikes.length*(1000/TWIN);
+  var totalIn=(R.exc+R.inh)*(1000/TWIN);
+
+  $('st1').innerHTML=
+    tile('Output firing rate',out.toFixed(0),'Hz &middot; the neuron&rsquo;s only answer')+
+    tile('Synaptic events arriving',totalIn.toFixed(0),'per second, across '+(R.nA+R.nB+R.nI)+' synapses')+
+    tile('Excitatory : inhibitory',R.exc+' : '+R.inh,'events in this 250 ms window')+
+    tile('Highest voltage reached',R.peak.toFixed(1),'mV &middot; threshold is &minus;55')+
+    tile('One postsynaptic potential',(unit).toFixed(2),'mV &middot; module range 0.5 to 1')+
+    tile('Simultaneous EPSPs needed',Math.ceil(15/unit),'to bridge 15 mV on their own');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(R.spikes.length===0 && R.exc===0){
+    cls='verdict cool';
+    txt='Silent &mdash; nothing is arriving<small>The hillock sits at rest, 15 mV below threshold, waiting.</small>';
+    inf='<span class="n">Resting is not idling</span>Even at rest the cell is spending ATP continuously on the Na<sup>+</sup>/K<sup>+</sup> ATPase to hold that 15 mV gap open. The gap is deliberately small enough that a few hundred coincident inputs can close it, and deliberately large enough that random noise cannot.';
+  } else if(R.spikes.length===0 && R.inh>R.exc*0.6 && R.inh>0){
+    cls='verdict bad';
+    txt='Inhibition is winning &mdash; the cell will not fire<small>'+R.inh+' IPSPs against '+R.exc+' EPSPs. The net voltage at the hillock peaks at '+R.peak.toFixed(1)+' mV, still short of &minus;55.</small>';
+    inf='<span class="n">Inhibition does not have to hyperpolarize to work</span>An inhibitory input opens Cl<sup>&minus;</sup> or K<sup>+</sup> channels. Sometimes that drives the membrane down and away from threshold. Just as often it simply <b>clamps</b> the membrane near rest, so that excitatory current leaks straight back out through the open chloride channels and never reaches the hillock. Either way the answer is no.<div class="dd">This is the mechanism that benzodiazepines, barbiturates, alcohol and many antiseizure drugs all exploit &mdash; they do not create inhibition, they amplify the GABA<sub>A</sub> inhibition that is already running. And it is why <b>strychnine</b>, which blocks glycine receptors in the cord and brainstem, produces convulsive rigidity: remove inhibition and every motor neuron fires.</div>';
+  } else if(R.spikes.length===0){
+    cls='verdict warn';
+    txt='Subthreshold &mdash; plenty of input, no output<small>The membrane climbed to '+R.peak.toFixed(1)+' mV and slid back. Individual potentials decayed before enough of them could overlap.</small>';
+    inf='<span class="n">Summation has two independent axes</span>Raise a single input&rsquo;s <b>rate</b> and successive potentials at the same synapse overlap before decaying &mdash; <b>temporal summation</b>. Raise the <b>number of synapses</b> and switch on synchronous arrival, and currents from different places converge at the same moment &mdash; <b>spatial summation</b>. Try each on its own and watch which one gets you there faster.<div class="dd">A single cortical neuron may carry <b>1,000&ndash;10,000</b> synapses. The arithmetic of excitation minus inhibition is being done continuously across the dendrites and soma; what you see on the trace is only the running total.</div>';
+  } else {
+    cls='verdict';
+    txt='Firing at '+out.toFixed(0)+' Hz &mdash; the analog sum has become a digital output<small>'+R.spikes.length+' action potential'+(R.spikes.length===1?'':'s')+' in 250 ms. Every one of them is the same size, no matter how much excitation produced it.</small>';
+    inf='<span class="n">Why the decision is made at the hillock</span>The axon hillock, or more precisely the initial segment, carries the <b>highest density of voltage-gated Na<sup>+</sup> channels in the cell</b> and therefore the lowest threshold. Whatever net voltage arrives there decides the output. That is neural integration in one sentence: thousands of graded analog votes are summed, and converted at a single point into an all-or-none answer.<div class="dd">Now add inhibition. Watch how few IPSPs it takes to silence a cell that was firing confidently &mdash; because inhibition arrives on the soma and proximal dendrites, closest to the point where the decision is actually made.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1b').setAttribute('aria-label','Hillock voltage peaked at '+R.peak.toFixed(1)+' millivolts and produced '+R.spikes.length+' action potentials in 250 milliseconds.');
+  draw1(R);
+}
+
+function draw1(R){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=140,Rt=W-20;
+  function X(t){ return L+(t/TWIN)*(Rt-L); }
+  function lane(evts,yy,col,label,nsyn){
+    g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(label, L-12, yy+4);
+    g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.moveTo(L,yy+22); g.lineTo(Rt,yy+22); g.stroke();
+    g.strokeStyle=col; g.lineWidth=1.6; g.globalAlpha=0.85;
+    evts.forEach(function(e){
+      var yo=nsyn>1?((e[1]%nsyn)/nsyn-0.5)*36:0;
+      g.beginPath(); g.moveTo(X(e[0]),yy+yo-6); g.lineTo(X(e[0]),yy+yo+6); g.stroke();
+    });
+    g.globalAlpha=1;
+  }
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('every individual synaptic event arriving', L, 20);
+  lane(R.eA,58,CORAL,'input A  (excitatory)',R.nA);
+  lane(R.eB,108,CORAL,'input B  (excitatory)',R.nB);
+  lane(R.eI,158,BLUE,'interneuron  (inhibitory)',R.nI);
+
+  var c2=$('cv1b'),h=c2.getContext('2d'),W2=c2.width,H2=c2.height;
+  h.clearRect(0,0,W2,H2); h.fillStyle='#fff'; h.fillRect(0,0,W2,H2);
+  var T=26,B=H2-46;
+  function Y(v){ return B-((v+80)/45)*(B-T); }   /* -80 .. -35 mV */
+  h.strokeStyle=LINE; h.lineWidth=1;
+  for(var v=-80;v<=-35;v+=5){
+    h.beginPath(); h.moveTo(L,Y(v)); h.lineTo(Rt,Y(v)); h.stroke();
+    h.fillStyle=MUT; h.font='600 11.5px Inter, system-ui, sans-serif'; h.textAlign='right';
+    h.fillText(v, L-12, Y(v)+4);
+  }
+  h.strokeStyle=MUT; h.lineWidth=1.6;
+  h.beginPath(); h.moveTo(L,T); h.lineTo(L,B); h.lineTo(Rt,B); h.stroke();
+  for(var t=0;t<=TWIN;t+=50){
+    h.beginPath(); h.moveTo(X(t),B); h.lineTo(X(t),B+5); h.stroke();
+    h.fillStyle=MUT; h.font='600 11.5px Inter, system-ui, sans-serif'; h.textAlign='center';
+    h.fillText(t, X(t), B+20);
+  }
+  h.fillStyle=TDK; h.font='800 12.5px Inter, system-ui, sans-serif'; h.textAlign='center';
+  h.fillText('milliseconds', (L+Rt)/2, B+38);
+  h.textAlign='left'; h.fillStyle=MUT; h.font='700 11.5px Inter, system-ui, sans-serif';
+  h.fillText('mV at the hillock', 12, T+8);
+
+  h.strokeStyle=GOLD; h.lineWidth=2.2; h.setLineDash([6,5]);
+  h.beginPath(); h.moveTo(L,Y(THRESH)); h.lineTo(Rt,Y(THRESH)); h.stroke();
+  h.strokeStyle=MUT; h.lineWidth=1.3;
+  h.beginPath(); h.moveTo(L,Y(REST)); h.lineTo(Rt,Y(REST)); h.stroke(); h.setLineDash([]);
+  h.fillStyle=GOLD; h.font='800 12px Inter, system-ui, sans-serif'; h.textAlign='left';
+  h.fillText('threshold −55 mV', L+8, Y(THRESH)-6);
+  h.fillStyle=MUT; h.fillText('rest −70 mV', L+8, Y(REST)+16);
+
+  h.strokeStyle=TDK; h.lineWidth=2.6; h.lineJoin='round'; h.beginPath();
+  for(var i=0;i<R.pts.length;i++){ var p=R.pts[i]; if(i===0) h.moveTo(X(p[0]),Y(clamp(p[1],-80,-35))); else h.lineTo(X(p[0]),Y(clamp(p[1],-80,-35))); }
+  h.stroke();
+
+  R.spikes.forEach(function(s){
+    h.strokeStyle=GREEN; h.lineWidth=3.2;
+    h.beginPath(); h.moveTo(X(s),Y(THRESH)); h.lineTo(X(s),T+6); h.stroke();
+    h.fillStyle=GREEN;
+    h.beginPath(); h.arc(X(s),T+4,4.5,0,6.3); h.fill();
+  });
+  if(R.spikes.length){
+    h.fillStyle=GREEN; h.font='800 12px Inter, system-ui, sans-serif'; h.textAlign='right';
+    h.fillText('output action potentials', Rt-4, T-8);
+  }
+}
+
+/* =========================================================
+   BENCH 2 -- the terminal
+   ========================================================= */
+var QMAX=1157, KCA=0.8, QNORM=150, NEED=0.27;
+var botox=false, chei=false, trainN=1, trainRaf=null;
+$('tBot').onclick=function(){ botox=!botox; this.setAttribute('aria-pressed',botox?'true':'false'); render2(); };
+$('tChe').onclick=function(){ chei=!chei; this.setAttribute('aria-pressed',chei?'true':'false'); render2(); };
+['ca','rec'].forEach(function(id){ $(id).addEventListener('input',render2); });
+$('bOne').onclick=function(){ trainN=1; render2(); };
+$('bTrain').onclick=function(){
+  trainN=1; render2();
+  if(trainRaf) clearInterval(trainRaf);
+  trainRaf=setInterval(function(){
+    trainN++; render2();
+    if(trainN>=5){ clearInterval(trainRaf); trainRaf=null; }
+  },430);
+};
+
+function junction(){
+  var ca=(+$('ca').value)/100, rec=(+$('rec').value)/100;
+  var q1=QMAX*Math.pow(ca/(ca+KCA),4);
+  if(botox) q1*=0.10;
+  var resp=[], n;
+  for(n=1;n<=5;n++){
+    var run=0.72+0.28*Math.exp(-(n-1)/1.5);
+    var q=q1*run;
+    var r=(q/QNORM)*rec*(chei?1.35:1);
+    resp.push({q:q,r:r,fires:r>=NEED});
+  }
+  return {ca:ca, rec:rec, q1:q1, resp:resp, sf:resp[0].r/NEED};
+}
+
+function render2(){
+  var J=junction();
+  $('caV').textContent=J.ca.toFixed(2)+' mM';
+  $('recV').textContent=Math.round(J.rec*100)+'%';
+  var r1=J.resp[0], r5=J.resp[4];
+  var dec=r1.r>0?((r1.r-r5.r)/r1.r*100):0;
+  var firing=J.resp.slice(0,trainN).filter(function(x){return x.fires;}).length;
+
+  $('st2').innerHTML=
+    tile('Vesicles released',Math.round(J.q1),'quanta on the first stimulus &middot; 150 is normal')+
+    tile('Molecules per vesicle','5,000–10,000','of acetylcholine, a fixed packet')+
+    tile('Postsynaptic response',(r1.r*100).toFixed(0)+'%','of a normal end-plate response')+
+    tile('Safety factor',J.sf.toFixed(2),'normal junction runs near 3.7')+
+    tile('Decrement over 5 stimuli',dec.toFixed(0)+'%','vesicle pool depletion, always present')+
+    tile('Fired so far',firing+' of '+trainN,'stimuli that reached threshold');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(botox){
+    cls='verdict bad';
+    txt='Release blocked at the SNARE step &mdash; only '+Math.round(J.q1)+' quanta escape<small>Calcium still enters. Synaptotagmin still binds it. What has been cut is the machinery that zippers vesicle membrane to plasma membrane, so the vesicles cannot fuse.</small>';
+    inf='<span class="n">Presynaptic failure looks like weakness, not numbness</span>Botulinum toxin cleaves SNARE proteins in cholinergic terminals. Motor junctions and autonomic terminals go quiet; sensation is untouched, because sensory transmission uses different terminals. Clinically it presents as descending flaccid paralysis with dry mouth, blurred vision and fixed pupils &mdash; and it is the same mechanism sold cosmetically, where a few units are deliberately placed to silence a small group of end plates.';
+  } else if(J.ca<0.5){
+    cls='verdict bad';
+    txt='Calcium too low &mdash; the axon conducts perfectly and says nothing<small>Only '+Math.round(J.q1)+' quanta released against a normal 150, because release scales with roughly the <b>fourth power</b> of calcium entry.</small>';
+    inf='<span class="n">The one step where the electrical signal must become chemical</span>Terminal depolarization opens voltage-gated Ca<sup>2+</sup> channels, and the driving force for entry is enormous &mdash; free Ca<sup>2+</sup> inside is held near <b>100 nM</b> against <b>1.2 mM</b> outside, a roughly ten-thousand-fold gradient pointing inward, added to an inside-negative voltage. Calcium binds <b>synaptotagmin</b>, SNAREs zipper, and the vesicle exocytoses.<div class="dd">Lower the extracellular concentration and the driving force falls; because the relationship is fourth-power, a modest fall in calcium produces a steep fall in release. The action potential still arrives at the terminal exactly as before. Everything upstream is normal &mdash; and nothing gets across.</div>';
+  } else if(J.rec<0.30 && !chei){
+    cls='verdict bad';
+    txt='Myasthenic failure &mdash; the response has fallen through the floor<small>Only '+Math.round(J.rec*100)+'% of nicotinic receptors survive. The first response is '+(r1.r*100).toFixed(0)+'% of normal, and by the fifth stimulus it has decremented to '+(r5.r*100).toFixed(0)+'%.</small>';
+    inf='<span class="n">Normal release, absent reception</span>In <b>myasthenia gravis</b> autoantibodies destroy nicotinic acetylcholine receptors at the motor end plate. Transmitter release is entirely normal. What shrinks is the end-plate potential, and it shrinks <i>further with repetition</i> as the vesicle pool depletes &mdash; which is the mechanism behind the cardinal symptom: weakness that worsens through the day and with sustained effort, and improves with rest.<div class="dd">Switch on the cholinesterase inhibitor. <b>Pyridostigmine</b> does not replace receptors; it leaves each released acetylcholine molecule in the cleft longer, so the surviving receptors are used more efficiently. Watch the bars lift back over the line.</div>';
+  } else if(!r5.fires && r1.fires){
+    cls='verdict warn';
+    txt='Decrement &mdash; the first stimulus fires the fiber and the fifth does not<small>Safety factor has fallen to '+J.sf.toFixed(2)+'. Every junction decrements by about a quarter over a train; only a junction with no margin left shows it as failure.</small>';
+    inf='<span class="n">This is the electrodiagnostic test</span>Repetitive nerve stimulation at low frequency produces a progressive fall in the compound muscle action potential, classically greater than 10% between the first and fourth or fifth response. In a healthy junction the same depletion happens and nothing changes clinically, because the margin absorbs it.<div class="dd">Note what has to be true for a junction to be this fragile: the <b>safety factor</b> must already be near 1. A normal end plate releases three to four times more transmitter than it needs, which is why myasthenia is silent until well over half the receptors are gone.</div>';
+  } else if(chei && J.rec<0.55){
+    cls='verdict cool';
+    txt='Cholinesterase inhibited &mdash; the margin has been rebuilt pharmacologically<small>Response is back to '+(r1.r*100).toFixed(0)+'% with safety factor '+J.sf.toFixed(2)+', on '+Math.round(J.rec*100)+'% of the original receptors.</small>';
+    inf='<span class="n">Prolonging the signal instead of restoring the receptor</span>Acetylcholinesterase normally hydrolyzes acetylcholine in the cleft within about a millisecond. Slow that enzyme and each molecule gets more chances to find a surviving receptor before it is destroyed.<div class="dd">The same lever pulled too hard is a poison. <b>Organophosphate insecticides and nerve agents</b> inhibit acetylcholinesterase irreversibly, producing a cholinergic crisis of salivation, lacrimation, urination, defecation, bronchospasm and bradycardia &mdash; every muscarinic target driven at once, plus depolarizing blockade at the neuromuscular junction.</div>';
+  } else {
+    cls='verdict';
+    txt='Transmission succeeds with room to spare &mdash; safety factor '+J.sf.toFixed(2)+'<small>'+Math.round(J.q1)+' quanta released, a response '+(r1.r*100).toFixed(0)+'% of normal, against the '+(NEED*100).toFixed(0)+'% needed to fire the fiber.</small>';
+    inf='<span class="n">A synapse is a deliberate, costly conversion</span>The cleft is only <b>20&ndash;40 nm</b> wide, but electrically that is enormous, so the signal is converted to chemical and back. The conversion costs a <b>synaptic delay of 0.5&ndash;1 ms</b> &mdash; the rate-limiting step in any reflex arc, and the reason a polysynaptic reflex is always slower than a monosynaptic one.<div class="dd">Why pay for it? Because a chemical step allows amplification, sign inversion, and modulation. The same acetylcholine excites skeletal muscle through nicotinic receptors and slows the heart through muscarinic ones. <b>The postsynaptic response depends on the receptor, not on the transmitter.</b></div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Synapse with '+Math.round(J.q1)+' quanta released and '+Math.round(J.rec*100)+' percent of receptors present.');
+  drawSyn(J); drawTrain(J);
+}
+
+function drawSyn(J){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=40,R=W-40, termB=192, postT=252;
+
+  /* terminal */
+  g.fillStyle=TEAL; g.globalAlpha=0.08; g.fillRect(L,40,R-L,termB-40); g.globalAlpha=1;
+  g.strokeStyle=TEAL; g.lineWidth=2.5;
+  g.beginPath(); g.moveTo(L,40); g.lineTo(L,termB); g.lineTo(R,termB); g.lineTo(R,40); g.stroke();
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('PRESYNAPTIC TERMINAL', L+10, 30);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('free Ca²⁺ inside ≈ 100 nM   ·   outside '+J.ca.toFixed(2)+' mM', R-6, 30);
+
+  /* calcium channels and inflow */
+  var caF=Math.min(1,J.ca/1.2);
+  [L+120,L+230].forEach(function(cx){
+    g.fillStyle='#fff'; g.strokeStyle=PURP; g.lineWidth=2.5;
+    g.beginPath(); g.rect(cx-13,termB-8,26,16); g.fill(); g.stroke();
+    g.strokeStyle=PURP; g.lineWidth=Math.max(1.2,1+8*caF);
+    g.beginPath(); g.moveTo(cx,termB+30); g.lineTo(cx,termB-52); g.stroke();
+    g.beginPath(); g.moveTo(cx,termB-52); g.lineTo(cx-7,termB-40); g.lineTo(cx+7,termB-40); g.closePath();
+    g.fillStyle=PURP; g.fill();
+  });
+  g.fillStyle=PURP; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('voltage-gated Ca²⁺ (N and P/Q type)', L+175, termB-66);
+
+  /* vesicles */
+  var nv=Math.max(0,Math.min(24,Math.round(J.q1/8)));
+  for(var i=0;i<24;i++){
+    var vx=L+330+ (i%8)*((R-L-360)/8) + 18, vy=70+Math.floor(i/8)*38;
+    var filled=i<nv;
+    g.beginPath(); g.arc(vx,vy,11,0,6.3);
+    g.fillStyle=filled?GOLD:'#fff'; g.fill();
+    g.strokeStyle=filled?GOLD:LINE; g.lineWidth=2; g.stroke();
+  }
+  g.fillStyle=GOLD; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(Math.round(J.q1)+' quanta released  ·  5,000–10,000 molecules each', L+470, termB-14);
+  if(botox){
+    g.strokeStyle=CORAL; g.lineWidth=5;
+    g.beginPath(); g.moveTo(L+340,86); g.lineTo(R-30,150); g.moveTo(R-30,86); g.lineTo(L+340,150); g.stroke();
+    g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('SNAREs cleaved', L+470, 176);
+  }
+
+  /* cleft */
+  g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('synaptic cleft, 20–40 nm  ·  transmitter crosses in about 0.1 ms  ·  synaptic delay 0.5–1 ms', L+10, (termB+postT)/2+4);
+  var mol=Math.round(Math.min(46,J.q1/4));
+  for(var k=0;k<mol;k++){
+    var mx=L+40+ (k*((R-L-90)/Math.max(1,mol-1))), my=termB+10+((k%3)*10);
+    g.fillStyle=GOLD; g.beginPath(); g.arc(mx,my,3,0,6.3); g.fill();
+  }
+  if(chei){
+    g.fillStyle=GREEN; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('cholinesterase inhibited — transmitter lingers', R-6, termB+22);
+  }
+
+  /* postsynaptic membrane and receptors */
+  g.fillStyle=CORAL; g.globalAlpha=0.07; g.fillRect(L,postT,R-L,H-24-postT); g.globalAlpha=1;
+  g.strokeStyle=CORAL; g.lineWidth=2.5;
+  g.beginPath(); g.moveTo(L,postT); g.lineTo(R,postT); g.stroke();
+  var NR=20, kept=Math.round(NR*J.rec);
+  for(var r=0;r<NR;r++){
+    var rx=L+34+r*((R-L-68)/(NR-1));
+    var alive=r<kept;
+    g.fillStyle=alive?CORAL:'#fff'; g.strokeStyle=alive?CORAL:LINE; g.lineWidth=2;
+    g.beginPath(); g.rect(rx-9,postT-9,18,26); g.fill(); g.stroke();
+    if(!alive){
+      g.strokeStyle=MUT; g.lineWidth=2;
+      g.beginPath(); g.moveTo(rx-8,postT-8); g.lineTo(rx+8,postT+16); g.moveTo(rx+8,postT-8); g.lineTo(rx-8,postT+16); g.stroke();
+    }
+  }
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('POSTSYNAPTIC MEMBRANE', L+10, H-14);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText(kept+' of 20 nicotinic receptors present ('+Math.round(J.rec*100)+'%)', R-6, H-14);
+}
+
+function drawTrain(J){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=90,R=W-40,T=36,B=H-52;
+  var maxR=Math.max(1.2,J.resp[0].r*1.15);
+  function Y(x){ return B-(x/maxR)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,0.25,0.5,0.75,1.0].forEach(function(u){
+    if(u*maxR>maxR) return;
+    g.beginPath(); g.moveTo(L,Y(u)); g.lineTo(R,Y(u)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText((u*100)+'%', L-10, Y(u)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+
+  var bw=(R-L)/5*0.55;
+  for(var n=0;n<5;n++){
+    var x=L+(R-L)*((n+0.5)/5), rr=J.resp[n];
+    var shown=n<trainN;
+    g.fillStyle=shown?(rr.fires?GREEN:CORAL):'#fff';
+    g.strokeStyle=shown?(rr.fires?GREEN:CORAL):LINE; g.lineWidth=2;
+    var hgt=Math.max(2,B-Y(Math.min(rr.r,maxR)));
+    g.fillRect(x-bw/2,B-hgt,bw,hgt); g.strokeRect(x-bw/2,B-hgt,bw,hgt);
+    g.fillStyle=shown?(rr.fires?GREEN:CORAL):MUT; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    if(shown) g.fillText((rr.r*100).toFixed(0)+'%', x, B-hgt-8);
+    g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+    g.fillText('stimulus '+(n+1), x, B+20);
+  }
+  g.strokeStyle=GOLD; g.lineWidth=2.4; g.setLineDash([7,5]);
+  g.beginPath(); g.moveTo(L,Y(NEED)); g.lineTo(R,Y(NEED)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('threshold to fire the muscle fiber — 27% of a normal response', L+8, Y(NEED)-8);
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('END-PLATE RESPONSE ACROSS A TRAIN AT 3 Hz', L, 22);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('bars above the line fire the fiber; bars below it do not', (L+R)/2, B+40);
+}
+
+/* boot */
+render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

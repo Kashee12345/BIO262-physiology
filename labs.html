@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Lab Library · BIO 262 Human Physiology — Joyce University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:820px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a:hover{text-decoration:underline;}
+
+  header.hero{text-align:center;padding:40px 20px 20px;}
+  header.hero .crest{font-size:30px;line-height:1;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;margin:12px 0 8px;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:0 0 10px;color:var(--maroon-dk);}
+  header.hero p.sub{margin:0 auto;max-width:580px;font-size:15px;color:var(--muted);}
+  .divline{height:1px;background:var(--line);margin:22px 0 6px;}
+
+  .count{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin:18px 0 6px;}
+  .count div{text-align:center;}
+  .count b{display:block;font-family:var(--disp);font-size:26px;color:var(--maroon-dk);line-height:1.1;}
+  .count span{font-size:11.5px;letter-spacing:1.4px;text-transform:uppercase;color:var(--faint);font-weight:700;}
+
+  .sl{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--faint);margin:34px 4px 12px;}
+
+  .mod{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+       overflow:hidden;margin-bottom:9px;}
+  .mod > summary{display:flex;align-items:center;gap:13px;padding:14px 15px;cursor:pointer;list-style:none;}
+  .mod > summary::-webkit-details-marker{display:none;}
+  .mod > summary:hover{background:var(--maroon-lt);}
+  .mod .ic{font-size:21px;flex:0 0 auto;}
+  .mod .tx{flex:1;min-width:0;}
+  .mod .tx b{display:block;font-size:14.5px;font-weight:700;color:var(--maroon-dk);}
+  .mod .tx span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;}
+  .mod .tag{flex:0 0 auto;font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+            background:var(--gold-lt);color:#8a6a12;border-radius:20px;padding:4px 9px;}
+  .mod .chev{flex:0 0 auto;color:var(--faint);font-size:13px;transition:transform .2s;}
+  .mod[open] .chev{transform:rotate(90deg);}
+  .labs{border-top:1px solid var(--line);padding:12px 15px 15px;display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+  @media(max-width:620px){.labs{grid-template-columns:1fr;}}
+  .lab{display:block;border:1px solid var(--line);border-radius:10px;padding:12px 13px;background:#fff;
+       transition:border-color .15s,transform .15s;}
+  .lab:hover{border-color:var(--maroon);transform:translateY(-1px);}
+  .lab b{display:block;font-size:13.5px;font-weight:700;color:var(--maroon-dk);line-height:1.35;}
+  .lab span{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45;}
+
+  footer{text-align:center;padding:38px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="backbar"><div class="bi"><a href="index.html">&larr; BIO 262 course hub</a></div></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="crest">&#128300;</div>
+    <div class="kicker">Joyce University of Nursing and Health Sciences</div>
+    <h1>The Lab Library</h1>
+    <p class="sub">Seventy interactive physiology benches &mdash; change a variable, watch the system answer.
+       Every lab runs in the browser with nothing to install, and each one also sits inside its book chapter.</p>
+  </header>
+
+  <div class="count">
+    <div><b>70</b><span>Labs</span></div>
+    <div><b>14</b><span>Modules</span></div>
+    <div><b>5</b><span>Per module</span></div>
+  </div>
+
+  <div class="divline"></div>
+  <div class="sl">Open a module</div>
+  <details class="mod">
+    <summary>
+      <span class="ic">🔬</span>
+      <span class="tx"><b>Module 1 &middot; Introduction to Physiology & the Chemical Level</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 01</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch01/AcidBaseLab.html"><b>Acid&ndash;Base Lab</b><span>the Henderson&ndash;Hasselbalch ratio</span></a>
+      <a class="lab" href="lab/ch01/EnzymeKineticsLab.html"><b>Enzyme and ATP Lab</b><span>saturation, shape, and the cost of a gradient</span></a>
+      <a class="lab" href="lab/ch01/FeedbackLoopLab.html"><b>Feedback Loop Lab</b><span>break the loop and watch</span></a>
+      <a class="lab" href="lab/ch01/FlowEquationLab.html"><b>The Flow Equation Lab</b><span>Q = &Delta;P / R</span></a>
+      <a class="lab" href="lab/ch01/TonicityLab.html"><b>Osmolality and Tonicity Lab</b><span>how solutes move water</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🧫</span>
+      <span class="tx"><b>Module 2 &middot; The Cellular Level of Organization</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 02</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch02/CellCycleCheckpointSim.html"><b>Checkpoints &amp; Chemiosmosis</b><span>run a cell cycle, then pay for it</span></a>
+      <a class="lab" href="lab/ch02/CentralDogmaBench.html"><b>Central Dogma Bench</b><span>edit a gene, read the protein</span></a>
+      <a class="lab" href="lab/ch02/MembraneBarrierLab.html"><b>The Bilayer Barrier</b><span>permeability, fluidity and &tau; = R &times; C</span></a>
+      <a class="lab" href="lab/ch02/TonicityCellVolumeLab.html"><b>Tonicity &amp; Cell Volume</b><span>mix a solution, watch the cell answer</span></a>
+      <a class="lab" href="lab/ch02/TransportBench.html"><b>The Transport Bench</b><span>Fick, T&#8344; and the pump that pays for everything</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🧴</span>
+      <span class="tx"><b>Module 3 &middot; Tissues & the Integumentary System</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 03</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch03/DiffusionAndJunctionsLab.html"><b>The Diffusion Limit</b><span>why tissues exist, and what junctions do</span></a>
+      <a class="lab" href="lab/ch03/PolarisedEpitheliumLab.html"><b>The Polarized Epithelium</b><span>move the pump, reverse the transport</span></a>
+      <a class="lab" href="lab/ch03/SkinBarrierLab.html"><b>The Skin Barrier</b><span>and its repair loop</span></a>
+      <a class="lab" href="lab/ch03/StarlingForcesBench.html"><b>Starling Forces</b><span>and the interstitial compartment</span></a>
+      <a class="lab" href="lab/ch03/ThermoregulationLoop.html"><b>Skin as a Control Organ</b><span>the thermoregulatory loop</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🦴</span>
+      <span class="tx"><b>Module 4 &middot; Bones & Skeletal Physiology</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 04</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch04/BoneCompositeLab.html"><b>The Bone Composite Bench</b><span>mineral, collagen and the osteoclast</span></a>
+      <a class="lab" href="lab/ch04/CalciumLoopSim.html"><b>The Calcium Loop</b><span>three effectors, three time constants</span></a>
+      <a class="lab" href="lab/ch04/GrowthPlateConveyor.html"><b>The Growth Plate Conveyor</b><span>how a bone gets longer and wider</span></a>
+      <a class="lab" href="lab/ch04/LeverAndFractureLab.html"><b>Levers, Cartilage and Strain</b><span>the skeleton in motion and after injury</span></a>
+      <a class="lab" href="lab/ch04/MechanostatRemodelingSim.html"><b>The Mechanostat and RANKL</b><span>how bone decides how much of itself to keep</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">💪</span>
+      <span class="tx"><b>Module 5 &middot; Muscle Tissue & Nervous Tissue</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 05</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch05/ForceGradingBench.html"><b>Grading Force</b><span>motor units, frequency, length and fuel</span></a>
+      <a class="lab" href="lab/ch05/JunctionToCalciumLab.html"><b>From Nerve to Calcium</b><span>the safety factor and E&ndash;C coupling</span></a>
+      <a class="lab" href="lab/ch05/MuscleTypeComparator.html"><b>Smooth and Cardiac Muscle</b><span>same filaments, different control</span></a>
+      <a class="lab" href="lab/ch05/RestingPotentialAndReflexLab.html"><b>Nervous Tissue</b><span>resting voltage, summation and the reflex loop</span></a>
+      <a class="lab" href="lab/ch05/SarcomereSlidingEngine.html"><b>The Sarcomere</b><span>an engine that shortens by sliding</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🧠</span>
+      <span class="tx"><b>Module 6 &middot; Brain, Action Potentials & the Autonomic Nervous System</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 06</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch06/ActionPotentialLab.html"><b>The Action Potential</b><span>threshold, refractoriness and speed</span></a>
+      <a class="lab" href="lab/ch06/BaroreflexLoop.html"><b>The Baroreceptor Reflex</b><span>break the loop and watch</span></a>
+      <a class="lab" href="lab/ch06/CerebralPerfusionModel.html"><b>The Brain as a Control System</b><span>perfusion and set points</span></a>
+      <a class="lab" href="lab/ch06/RestingPotentialBench.html"><b>The Charged Membrane</b><span>building &minus;70 mV</span></a>
+      <a class="lab" href="lab/ch06/SynapticIntegrationBench.html"><b>The Synapse</b><span>summation at the axon hillock</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">👁️</span>
+      <span class="tx"><b>Module 7 &middot; Special Senses — Vision, Hearing & Equilibrium</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 07</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch07/CochlearMechanicsLab.html"><b>From Pressure Wave to Firing Rate</b><span>impedance, tonotopy and the hair cell</span></a>
+      <a class="lab" href="lab/ch07/OpticsOfTheEye.html"><b>The Sixty-Diopter Eye</b><span>refraction, accommodation and intraocular pressure</span></a>
+      <a class="lab" href="lab/ch07/PhototransductionLab.html"><b>The Dark Current</b><span>phototransduction, adaptation and center-surround</span></a>
+      <a class="lab" href="lab/ch07/SensoryTransductionBench.html"><b>From Stimulus to Spike Train</b><span>transduction, adaptation and frequency coding</span></a>
+      <a class="lab" href="lab/ch07/VestibularAndChemicalSenses.html"><b>Accelerometers and Chemical Codes</b><span>balance, taste and smell</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🧪</span>
+      <span class="tx"><b>Module 8 &middot; The Endocrine System — Receptors & Hormones</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 08</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch08/AdrenalPressureLab.html"><b>Salt, Sugar and Speed</b><span>RAAS, cortisol and the permissive effect</span></a>
+      <a class="lab" href="lab/ch08/GlucoseDefenceLab.html"><b>The Beta Cell</b><span>and the defense of blood glucose</span></a>
+      <a class="lab" href="lab/ch08/PituitaryAxisSimulator.html"><b>The Three-Tier Axis</b><span>break a tier, read the pair</span></a>
+      <a class="lab" href="lab/ch08/SignalAmplificationBench.html"><b>Solubility and Amplification</b><span>receptor address and signal gain</span></a>
+      <a class="lab" href="lab/ch08/ThyroidCalciumBench.html"><b>Two Set Points</b><span>metabolic rate and ionized calcium</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🩸</span>
+      <span class="tx"><b>Module 9 &middot; Blood & Blood Vessels</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 09</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch09/ErythropoietinLoopSim.html"><b>The Erythropoietin Loop</b><span>break a link, run the clock</span></a>
+      <a class="lab" href="lab/ch09/HematocritTradeoffLab.html"><b>The Hematocrit Trade-off</b><span>oxygen per milliliter vs milliliters per minute</span></a>
+      <a class="lab" href="lab/ch09/HemostasisAmplifierLab.html"><b>Hemostasis</b><span>an amplifier with brakes</span></a>
+      <a class="lab" href="lab/ch09/PoiseuilleFlowBench.html"><b>Q = &Delta;P / R</b><span>the fourth-power bench</span></a>
+      <a class="lab" href="lab/ch09/StarlingAndBaroreflexLab.html"><b>Four Pressures and One Reflex</b><span>capillary exchange meets the baroreflex</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">❤️</span>
+      <span class="tx"><b>Module 10 &middot; The Heart</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 10</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch10/CardiacCycleWiggers.html"><b>The Cardiac Cycle</b><span>every valve event is a pressure crossing</span></a>
+      <a class="lab" href="lab/ch10/CardiacOutputBaroreflex.html"><b>Cardiac Output and the Baroreflex</b><span>break the loop and watch pressure run away</span></a>
+      <a class="lab" href="lab/ch10/PacemakerAndConduction.html"><b>Automaticity and Conduction</b><span>building an ECG from the pacemaker up</span></a>
+      <a class="lab" href="lab/ch10/TwoPumpsAndLaplace.html"><b>Two Pumps in Series</b><span>resistance, pressure and the law of Laplace</span></a>
+      <a class="lab" href="lab/ch10/VentricularActionPotentialLab.html"><b>The Ventricular Action Potential</b><span>plateau, calcium and why tetanus is impossible</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🛡️</span>
+      <span class="tx"><b>Module 11 &middot; The Lymphatic & Immune Systems</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 11</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch11/AntibodyResponseSimulator.html"><b>Building an Antibody Response</b><span>from first exposure to memory</span></a>
+      <a class="lab" href="lab/ch11/ClonalSelectionAndThymicTolerance.html"><b>Clonal Selection and Thymic Tolerance</b><span>how the repertoire is edited</span></a>
+      <a class="lab" href="lab/ch11/FeverSetPointLoop.html"><b>Fever</b><span>a negative-feedback loop with a moved set point</span></a>
+      <a class="lab" href="lab/ch11/StarlingForcesAndLymphDrain.html"><b>Starling Forces and the Lymphatic Drain</b><span>where the missing liters go</span></a>
+      <a class="lab" href="lab/ch11/TCellSignalsAndTheKill.html"><b>Two Signals, Then the Kill</b><span>T cell activation and cytotoxicity</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🫁</span>
+      <span class="tx"><b>Module 12 &middot; The Respiratory System</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 12</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch12/AcidBaseWorkbench.html"><b>The Lung as an Acid&ndash;Base Organ</b><span>ventilation sets pH</span></a>
+      <a class="lab" href="lab/ch12/BreathingControlLoop.html"><b>The Control of Breathing</b><span>a loop you can break</span></a>
+      <a class="lab" href="lab/ch12/BreathingMechanicsLab.html"><b>Breathing Mechanics</b><span>gradient, compliance and resistance</span></a>
+      <a class="lab" href="lab/ch12/DeadSpaceAndSpirometry.html"><b>Dead Space and the Spirogram</b><span>alveolar ventilation in numbers</span></a>
+      <a class="lab" href="lab/ch12/GasExchangeAndTransport.html"><b>Diffusion, V/Q Matching and Oxygen Transport</b><span>getting O&#8322; to the tissue</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🍽️</span>
+      <span class="tx"><b>Module 13 &middot; The Digestive System</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 13</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch13/AcidLoopAndGastricEmptying.html"><b>The Parietal Cell</b><span>the somatostatin brake and metered emptying</span></a>
+      <a class="lab" href="lab/ch13/BrushBorderTransport.html"><b>The Brush Border</b><span>sodium gradients, surface area and oral rehydration</span></a>
+      <a class="lab" href="lab/ch13/ColonWaterAndDefecation.html"><b>Nine Liters a Day</b><span>colonic water balance and the defecation reflex</span></a>
+      <a class="lab" href="lab/ch13/SecretinCCKandBile.html"><b>Secretin, CCK and Bile</b><span>the enterohepatic circulation</span></a>
+      <a class="lab" href="lab/ch13/SlowWavesAndMotility.html"><b>Slow Waves and Motility</b><span>spike potentials and the motor patterns of the gut</span></a>
+    </div>
+  </details>
+  <details class="mod">
+    <summary>
+      <span class="ic">🫘</span>
+      <span class="tx"><b>Module 14 &middot; The Urinary & Reproductive Systems</b><span>5 interactive labs</span></span>
+      <span class="tag">Ch 14</span>
+      <span class="chev">&#9654;</span>
+    </summary>
+    <div class="labs">
+      <a class="lab" href="lab/ch14/CountercurrentAndADH.html"><b>The Medullary Gradient</b><span>and the ADH loop</span></a>
+      <a class="lab" href="lab/ch14/PressureNatriuresisLoop.html"><b>Pressure Natriuresis</b><span>the kidney sets blood pressure</span></a>
+      <a class="lab" href="lab/ch14/ReproductiveAxisAndCycle.html"><b>One Axis, Two Patterns</b><span>the surge and the steady state</span></a>
+      <a class="lab" href="lab/ch14/StarlingForcesAndGFR.html"><b>Starling Forces and the 180 Liters</b><span>what the glomerulus filters</span></a>
+      <a class="lab" href="lab/ch14/TransportMaximumAndClearance.html"><b>Editing the Filtrate</b><span>Tm, threshold and clearance</span></a>
+    </div>
+  </details>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by Dr. Vidya Garg
+  </footer>
+</div>
+</body>
+</html>

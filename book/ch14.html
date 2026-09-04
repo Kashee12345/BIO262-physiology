@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Urinary and Reproductive Systems &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="The kidney is the body&rsquo;s editor. It does not search the blood for waste and pluck it out; it dumps roughly 180 liters of plasma into the tubules every day and then decides, molecule by molecule, what to take back. Everything">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 14 &middot; Urinary and Reproductive Systems</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#filtration">1 &middot; Filtration: making 180 liters a day</a>
+        <a href="#reabsorption">2 &middot; Reabsorption and secretion: editing the filtrate</a>
+        <a href="#concentration">3 &middot; Concentrating and diluting: countercurrent and ADH</a>
+        <a href="#homeostasis">4 &middot; Pressure, potassium, pH &mdash; and emptying the bladder</a>
+        <a href="#reproduction">5 &middot; Reproductive physiology: one axis, two patterns</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 14</div>
+<h1>The Urinary and Reproductive Systems</h1>
+
+<p class="lede">The kidney is the body&rsquo;s editor. It does not hunt through the blood for waste and pick it out. It dumps roughly 180 liters of plasma into the tubules each day. Then it decides, molecule by molecule, what to take back. Everything you have learned about pressure, gradients and feedback comes together here. Filtration runs on Starling forces, the push and pull of pressures. Reabsorption runs on the sodium gradient set by the Na+/K+ ATPase. And one hormone sets how strong the urine ends up. It works by opening water pores in a membrane. The kidney controls plasma volume, so it controls arterial pressure over days and weeks. It controls hydrogen and bicarbonate, so it sets pH alongside the lung. The reproductive systems then reuse the same logic in a different key. A pulsed signal from the hypothalamus. Two gonadotropins from the pituitary. Gonadal steroids feeding back. There is one famous inversion. In mid-cycle, feedback switches from negative to positive. That switch fires ovulation.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4>
+<ul>
+<li>Work out <b>net filtration pressure</b> from the Starling forces at the glomerulus. Predict how each force changes the <b>glomerular filtration rate (GFR)</b>, the volume filtered each minute.</li>
+<li>Explain <b>renal autoregulation</b>, the way the kidney steadies its own flow. Use the <b>myogenic response</b> and <b>tubuloglomerular feedback</b>. Name the sensor, the integrator and the effector.</li>
+<li>Trace sodium, water, glucose and potassium segment by segment. Link <b>transport maximum</b> and <b>renal threshold</b> to glycosuria, sugar in the urine.</li>
+<li>Describe the <b>countercurrent multiplier</b> and <b>urea recycling</b>. Together they build the 300&ndash;1200 mOsm/kg gradient in the medulla, the deep layer of the kidney.</li>
+<li>Draw the <b>osmoreceptor&ndash;ADH&ndash;aquaporin-2</b> negative feedback loop. Tell <b>diabetes insipidus</b> apart from <b>SIADH</b>.</li>
+<li>Explain how the <b>renin&ndash;angiotensin&ndash;aldosterone system</b>, <b>ANP</b> and pressure natriuresis set arterial pressure over the long run.</li>
+<li>Use <b>pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2))</b>. Describe how the kidney makes up for an acid&ndash;base disturbance.</li>
+<li>Outline the <b>hypothalamic&ndash;pituitary&ndash;gonadal axis</b> and <b>spermatogenesis</b>, the making of sperm. Say which hormones run the <b>ovarian</b> and <b>uterine cycles</b>.</li>
+<li>Point out where real <b>positive feedback</b> works in reproduction. The <b>LH surge</b> and labor are the two. Say why it is the exception.</li>
+</ul>
+</div>
+
+<h2 id="filtration"><span class="num">Section 1</span>Filtration: making 180 liters a day</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch14_s1.jpg" alt="Diagram of a nephron and its blood supply showing the glomerulus inside Bowman capsule, afferent and efferent arterioles, proximal tubule, loop of Henle, distal tubule and collecting duct" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The nephron and its blood vessels. A high-pressure filtering bed feeds straight into a low-pressure bed that takes fluid back. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Why the kidney gets a quarter of the cardiac output</h3>
+
+<p>The two kidneys weigh about 300 g together. That is roughly 0.4 percent of body mass. Yet they receive 1.0 to 1.2 L/min of blood. That is about 20 to 25 percent of resting cardiac output. It is far more than their own fuel needs. The flow is not there to deliver oxygen. It is the raw material for filtration. About 600 to 625 mL/min of plasma enters the kidney. That amount is called renal plasma flow. About 125 mL/min of it crosses into Bowman&rsquo;s space. Divide GFR by renal plasma flow and you get the <b>filtration fraction</b>. It is normally about 0.20.</p>
+
+<p>The layout of the blood vessels is the whole trick. Blood enters the glomerulus through an <b>afferent arteriole</b>. It leaves through an <b>efferent arteriole</b>. So a capillary bed sits between two vessels that can squeeze down. Ordinary capillaries drain into venules. Their pressure falls to 10&ndash;15 mmHg by the venous end. Glomerular capillaries drain into another arteriole instead. So their hydrostatic pressure stays high, about 55 mmHg, along their whole length. Filtration therefore runs all the way along. It does not happen only at the arterial end. Downstream sit the <b>peritubular capillaries</b>. They wrap around the tubules. They run at only 10&ndash;15 mmHg and hold a high oncotic pressure, the inward pull of protein. That makes them ideal for taking fluid back.</p>
+
+<p>Two arterioles in a row also give the kidney two separate dials. Narrow the afferent arteriole and glomerular pressure falls. GFR falls with it. Narrow the efferent arteriole and glomerular pressure rises. GFR rises too, up to a point. Total renal blood flow drops at the same time. Angiotensin II narrows the efferent arteriole most of all. That is why a falling blood pressure does not collapse filtration straight away. It is also why drugs that block that pathway can drop GFR sharply. The danger is greatest in a patient who is already low on fluid.</p>
+
+<h3>The three-layer filter</h3>
+
+<p>Filtrate crosses three barriers. The first is the <b>fenestrated endothelium</b>, the capillary lining full of windows. Its pores are 70&ndash;100 nm wide. They hold back cells but almost nothing that is dissolved. The second is the <b>glomerular basement membrane</b>. It is a dense mesh of type IV collagen and laminin. Heparan sulfate proteoglycans stud that mesh and carry a negative charge. The third is the <b>filtration slits</b>. These are the gaps between the interlocking foot processes of <b>podocytes</b>, cells that grip the capillary like fingers. A slit diaphragm built from nephrin bridges each gap. The working gaps are roughly 4&ndash;11 nm.</p>
+
+<p>The result is a filter that sorts by size and by charge. Molecules under about 5 kDa pass almost freely. That list includes water, sodium, potassium, glucose, urea, creatinine and amino acids. Their concentration in the filtrate matches their concentration in plasma. Above roughly 70 kDa, almost nothing gets through. Albumin sits awkwardly at 69 kDa. It also carries a strong negative charge. The basement membrane is negative too, so it pushes albumin away and keeps it in the blood. Normal urine holds under 30 mg of albumin per day. Damage the charge barrier and albumin turns up in the urine early. It appears long before the size barrier fails. Early diabetic nephropathy, kidney damage from diabetes, is the classic example. That is why microalbuminuria, a small amount of albumin in urine, is an early marker and not a late one.</p>
+
+<div class="pearl"><b>Common misconception.</b> Students often picture the kidney pulling waste out of the blood. It does the opposite. The glomerulus is not fussy about small solutes, and that is on purpose. It throws away 180 L of plasma-like fluid daily. Then it reabsorbs about 99 percent of it. What you excrete is simply what is left over after that reclaiming. It was never picked out for removal. This is why regulation lives in the tubule and not in the glomerulus.</div>
+
+<h3>Starling forces and net filtration pressure</h3>
+
+<p>Filtration at the glomerulus follows the same Starling rule you met in the capillary module. Net filtration pressure (NFP) is the outward hydrostatic push minus everything pushing back. Those opposing forces are hydrostatic and oncotic:</p>
+
+<p>NFP = (P<sub>GC</sub> &minus; P<sub>BS</sub>) &minus; (&pi;<sub>GC</sub> &minus; &pi;<sub>BS</sub>)</p>
+
+<p>Put in the usual values. P<sub>GC</sub>, the pressure inside the glomerular capillary, is 55 mmHg. P<sub>BS</sub>, the hydrostatic pressure in Bowman&rsquo;s space, is 15 mmHg. &pi;<sub>GC</sub>, the oncotic pull of protein in that capillary, is 30 mmHg. &pi;<sub>BS</sub> is essentially 0, because protein does not cross. So NFP = (55 &minus; 15) &minus; 30 = 10 mmHg. Then GFR = K<sub>f</sub> &times; NFP. K<sub>f</sub> is the filtration coefficient. It is surface area multiplied by how easily water crosses. The glomerular K<sub>f</sub> is about 12.5 mL/min/mmHg. Per gram of tissue that is some 400 times an everyday capillary bed such as skeletal muscle. That is how a mere 10 mmHg makes 125 mL/min.</p>
+
+<p>Each clinical disturbance of GFR maps onto one of these terms. Bleeding lowers P<sub>GC</sub>. A stone blocking the ureter raises P<sub>BS</sub>. It can drive NFP toward zero. Severe dehydration raises &pi;<sub>GC</sub>. Glomerulonephritis, inflammation of the glomeruli, lowers K<sub>f</sub> as mesangial cells multiply. So when you are asked why GFR fell, ask which of the four numbers moved.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Force</th><th>Typical value</th><th>Direction</th><th>Raised by</th></tr></thead>
+<tbody>
+<tr><td>Glomerular capillary hydrostatic (P<sub>GC</sub>)</td><td>55 mmHg</td><td>Favors filtration</td><td>Efferent narrowing, afferent widening, high MAP</td></tr>
+<tr><td>Bowman&rsquo;s space hydrostatic (P<sub>BS</sub>)</td><td>15 mmHg</td><td>Opposes</td><td>A blocked ureter, casts plugging the tubule</td></tr>
+<tr><td>Glomerular capillary oncotic (&pi;<sub>GC</sub>)</td><td>30 mmHg</td><td>Opposes</td><td>Dehydration, high plasma protein</td></tr>
+<tr><td>Bowman&rsquo;s space oncotic (&pi;<sub>BS</sub>)</td><td>~0 mmHg</td><td>Favors</td><td>Heavy protein loss in urine (the barrier fails)</td></tr>
+<tr><td><b>Net filtration pressure</b></td><td><b>~10 mmHg</b></td><td>&mdash;</td><td>&mdash;</td></tr>
+</tbody>
+</table></div>
+
+<h3>Autoregulation: the loop that protects GFR</h3>
+
+<p>Mean arterial pressure swings from 80 to 180 mmHg during everyday life. Yet renal blood flow and GFR barely move. Two mechanisms hold them steady. The first is the <b>myogenic response</b>. It is built into the smooth muscle of the vessel itself. Pressure stretches the afferent arteriole. Stretch opens cation channels, and the muscle cells depolarize. Voltage-gated calcium channels then open. The vessel constricts within one to two seconds. A higher driving pressure is met by a higher resistance. So by Q = &Delta;P / R, the flow does not change.</p>
+
+<p>The second is <b>tubuloglomerular feedback</b>. It is worth laying out as a formal negative feedback loop. The <b>regulated variable</b> is the delivery of sodium chloride to the end of the thick ascending limb. That delivery stands in for GFR. The <b>sensor</b> is the <b>macula densa</b>. It is a small patch of tubule cells that taste the fluid. The patch leans against its own glomerulus. The <b>integrator</b> is the <b>juxtaglomerular apparatus</b>. There the macula densa cells release ATP and adenosine. The <b>effector</b> is the afferent arteriole, plus the granular cells that secrete renin. Now the <b>response</b>. If GFR rises, NaCl delivery rises. The macula densa signals with adenosine. The afferent arteriole constricts, and GFR falls back. If GFR falls, NaCl delivery falls. Adenosine release falls. The afferent arteriole relaxes, and renin release increases. That restores filtration and calls in the whole-body pressure response. The loop settles within 30&ndash;60 seconds. It is how a single nephron defends its own filtration rate.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Filtration is not a search for waste. It is a physical event. A net Starling pressure of only about 10 mmHg drives it. The barrier is so leaky that 10 mmHg yields 125 mL/min. Move the four pressures and watch GFR. <a href="../lab/ch14/StarlingForcesAndGFR.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch14/StarlingForcesAndGFR.html" loading="lazy" title="Starling Forces and the 180 Liters interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Filtration is a purely physical event. A net Starling pressure of about 10 mmHg drives it across a barrier that is remarkably leaky. Two local mechanisms protect it from pressure swings. They are the myogenic response and tubuloglomerular feedback. No hormone is involved.</p></div>
+
+<h2 id="reabsorption"><span class="num">Section 2</span>Reabsorption and secretion: editing the filtrate</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch14_s2.jpg" alt="Schematic of tubular transport showing sodium-potassium ATPase on the basolateral membrane driving apical cotransport of glucose, amino acids and sodium-hydrogen exchange in the proximal tubule" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Nearly each reabsorptive step in the nephron is powered by the basolateral Na+/K+ ATPase. Some steps use it directly and some use it at one remove. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>One pump, many passengers</h3>
+
+<p>Each tubule cell carries a <b>Na+/K+ ATPase</b> on its basolateral membrane, the side facing the blood. For each ATP it spends, it exports 3 Na+ and imports 2 K+. That keeps sodium inside the cell low, about 10&ndash;15 mmol/L against 140 mmol/L in the filtrate. It also keeps the inside of the cell negative, roughly &minus;70 mV. That electrochemical gradient is the currency the tubule spends. Sodium slides back in across the apical membrane, the side facing the urine. On the way it can drag glucose uphill with it through SGLT2 and SGLT1. It can drag amino acids, phosphate and lactate the same way. That is <b>secondary active cotransport</b>. Sodium can instead be exchanged for hydrogen ions leaving the cell through NHE3. That exchange is <b>countertransport</b>. Block the pump with ouabain, or starve the cell of oxygen, and each one of these steps stops. Reabsorption consumes roughly 8 percent of the whole body&rsquo;s resting oxygen use. The thick ascending limb of the medulla works hard on a thin blood supply. It is the segment most easily hurt by ischemia, a shortage of blood flow.</p>
+
+<p>Water then follows the solute that was reabsorbed. It can only follow where the lining lets water through. In the proximal tubule the tight junctions are leaky. Aquaporin-1 water channels are plentiful. So water follows solute almost instantly. The fluid stays <b>isosmotic</b> at about 300 mOsm/kg all the way along. Isosmotic means its concentration matches plasma. Volume falls. Concentration does not.</p>
+
+<h3>The proximal tubule does the bulk work</h3>
+
+<p>The proximal convoluted tubule does the bulk of the work. By its end, about 65 percent of filtered sodium and water has been reclaimed. So has 65 percent of the potassium. So has 80&ndash;90 percent of the filtered bicarbonate. Essentially 100 percent of filtered glucose and amino acids is back as well. Roughly 45 mL/min of the original 125 mL/min carries on into the loop. This is bulk transport, and nothing regulates it. The proximal tubule reabsorbs a fixed <i>fraction</i> rather than a fixed amount. That behavior is called <b>glomerulotubular balance</b>. Because of it, a rise in GFR does not flood the distal nephron.</p>
+
+<p>Bicarbonate reclaiming deserves its own note, because it is not reabsorbed as bicarbonate. The cell first secretes H+ into the lumen. That H+ joins filtered HCO3- to form carbonic acid. Carbonic anhydrase IV in the lumen splits the acid into CO2 and water. The CO2 diffuses into the cell. Carbonic anhydrase II adds the water back. The HCO3- made this way leaves on the blood side. So the kidney reclaims bicarbonate by secreting acid. Once you see that, carbonic anhydrase inhibitors are easy to understand.</p>
+
+<h3>Transport maximum and renal threshold</h3>
+
+<p>Carrier-mediated reabsorption saturates. For glucose the job is shared by SGLT2 and SGLT1. SGLT2 sits in the proximal tubule and has a high capacity. SGLT1 sits later and has a high affinity, meaning it grips tightly. Together they have a <b>transport maximum (Tm)</b> of about 375 mg/min in an adult. Filtered load = GFR &times; plasma concentration. So at a plasma glucose of 100 mg/dL and a GFR of 125 mL/min, the filtered load is about 125 mg/min. That is reabsorbed easily, and the urine is glucose free. The filtered load reaches Tm at a plasma glucose near 300 mg/dL. Yet glucose starts appearing in urine at about 180&ndash;200 mg/dL. Nephrons are not all alike. The ones with the highest filtered load per carrier spill first. That earlier point is the <b>renal threshold</b>. The gap between threshold and Tm is called <b>splay</b>.</p>
+
+<p>The clinical payoff is immediate. In uncontrolled diabetes, glucose spills into the urine. That unreabsorbed glucose holds water in the lumen and creates an osmotic diuresis. So the patient passes a lot of urine, which is polyuria. Heavy thirst follows, which is polydipsia. Pregnancy raises GFR by 40&ndash;50 percent. It can cause harmless glycosuria at a normal blood glucose. SGLT2 inhibitors lower the threshold on purpose. They dump 50&ndash;80 g of glucose per day into the urine.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Segment</th><th>Share of filtered Na+ taken back</th><th>Main apical transporter</th><th>Water permeable?</th></tr></thead>
+<tbody>
+<tr><td>Proximal convoluted tubule</td><td>~65%</td><td>NHE3, SGLT2, amino acid cotransporters</td><td>Yes (AQP1) &mdash; isosmotic</td></tr>
+<tr><td>Thin descending limb</td><td>0%</td><td>&mdash;</td><td>Yes (AQP1) &mdash; water only</td></tr>
+<tr><td>Thick ascending limb</td><td>~25%</td><td>NKCC2 (Na-K-2Cl)</td><td>No &mdash; the &ldquo;diluting segment&rdquo;</td></tr>
+<tr><td>Distal convoluted tubule</td><td>~5%</td><td>NCC (Na-Cl), plus PTH-sensitive Ca2+ entry</td><td>No</td></tr>
+<tr><td>Collecting duct (principal cell)</td><td>~3%, tuned by aldosterone</td><td>ENaC, and ROMK for K+ secretion</td><td>Only when ADH inserts AQP2</td></tr>
+</tbody>
+</table></div>
+
+<h3>Secretion, clearance and how we measure GFR</h3>
+
+<p>The tubule also moves substances the other way. It carries them from the peritubular blood into the lumen. Organic anion and organic cation transporters in the proximal tubule do this. They secrete urate, bile salts and creatinine. They also secrete a long list of drugs. Penicillin, furosemide and metformin are on that list. Secretion lets the kidney clear a substance faster than filtration alone allows. It also means two drugs that share a transporter will compete. Probenecid uses that competition to prolong penicillin levels.</p>
+
+<p><b>Renal clearance</b> is the volume of plasma cleared of a substance per minute. The formula is C = (U &times; V) / P. U is the urine concentration. V is the urine flow rate. P is the plasma concentration. Now take a substance that is freely filtered and then left alone. Nothing reabsorbs it and nothing secretes it. Its clearance equals GFR. Inulin is the laboratory standard for this. In practice we use <b>creatinine</b>. Creatinine is freely filtered and only slightly secreted. So creatinine clearance overestimates true GFR by 10&ndash;15 percent. That is acceptable for clinical work. One warning is worth remembering. The relationship is reciprocal, and it is steep at the healthy end. A serum creatinine rising from 0.8 to 1.6 mg/dL means GFR has roughly halved. Both numbers still look small.</p>
+
+<div class="pearl"><b>Why it matters.</b> The curve linking plasma creatinine to GFR is a rectangular hyperbola. Because of that shape, early kidney disease hides. A patient can lose 40&ndash;50 percent of functioning nephrons and still have a creatinine inside the reference range. The surviving nephrons hyperfiltrate to make up the difference. Estimated GFR equations exist for exactly this reason. They stop clinicians reading a normal creatinine as a normal kidney.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Each reabsorptive step in the nephron is bought with the sodium gradient. The basolateral Na+/K+ ATPase sets that gradient. And each carrier saturates in the end. Push plasma glucose upward against a transport maximum and watch what spills. <a href="../lab/ch14/TransportMaximumAndClearance.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch14/TransportMaximumAndClearance.html" loading="lazy" title="Editing the Filtrate: Tm, Threshold and Clearance interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Reabsorption is powered by sodium. Most of it is finished by the end of the proximal tubule. Bulk transport there is unregulated, and it can saturate. Regulation lives downstream in the distal nephron. Measurement lives downstream too, in the idea of clearance.</p></div>
+
+<h2 id="concentration"><span class="num">Section 3</span>Concentrating and diluting: countercurrent and ADH</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch14_s3.jpg" alt="Diagram of the countercurrent multiplier in the loop of Henle with osmolality rising from 300 to 1200 milliosmoles per kilogram from cortex to inner medulla, and the vasa recta running alongside" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The osmotic gradient from cortex to medulla. The loop of Henle builds it, and the vasa recta keep it there. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>How the loop builds a gradient</h3>
+
+<p>To excrete concentrated urine, the kidney needs salty tissue around the collecting duct. That hyperosmotic tissue draws water out. The kidney builds it with the <b>countercurrent multiplier</b>. The thin descending limb lets water through but not salt. The thick ascending limb blocks water but pumps NaCl out through NKCC2. Take a single step. The ascending limb pumps sodium into the surrounding tissue. Local osmolality rises there by about 200 mOsm/kg. That is the single effect. It is limited by how steep a gradient NKCC2 can sustain. Water then leaves the descending limb next door. The fluid inside that limb grows more concentrated. New filtrate pushes the column along. The already-concentrated fluid enters the ascending limb, and the pump acts on it again. Repeat that hundreds of times along a hairpin of increasing length. A modest 200 mOsm/kg single effect is multiplied along the axis. The result is a gradient running from 300 mOsm/kg at the corticomedullary junction to about 1200 mOsm/kg at the papillary tip.</p>
+
+<p>Two results follow. First, only nephrons with long loops can build deep gradients. Those are the <b>juxtamedullary</b> nephrons, roughly 15 percent of the total. Desert rodents have enormously long loops. They concentrate to 5000 mOsm/kg. Humans stop near 1200. Second, the ascending limb removes solute without water. So the fluid leaving the loop is <b>hypo-osmotic</b>, about 100 mOsm/kg. Hypo-osmotic means more dilute than plasma. The kidney always dilutes first. Then it decides whether to reconcentrate.</p>
+
+<h3>Vasa recta and urea recycling</h3>
+
+<p>A gradient is useless if the blood supply washes it away. The <b>vasa recta</b> solve this by being hairpins themselves. Descending vessels dive into the medulla. They lose water and gain solute on the way down. Ascending vessels do the reverse on the way up. So solute is passively trapped rather than carried off. This is <b>countercurrent exchange</b>. It is a passive process, which makes it different from the active multiplier in the loop. Medullary blood flow is also kept on purpose low. It is under 10 percent of renal blood flow. That preserves the gradient. The cost is that the medulla sits chronically near the edge of hypoxia, a shortage of oxygen.</p>
+
+<p>Urea contributes roughly 40&ndash;50 percent of the inner medullary osmolality. Most of the nephron is impermeable to urea. So as water is reabsorbed, the urea in the lumen grows more concentrated. In the inner medullary collecting duct, ADH switches on the UT-A1 and UT-A3 transporters. They let that concentrated urea move into the surrounding tissue. There it adds osmotic pull. Some of it re-enters the thin limbs and cycles again. This is why a person on a very low protein diet concentrates urine less well. There is less urea available to build the gradient.</p>
+
+<h3>The ADH loop, written out</h3>
+
+<p>Here is the module&rsquo;s central negative feedback circuit. <b>Variable:</b> plasma osmolality, normally held between 275 and 295 mOsm/kg. <b>Sensor:</b> osmoreceptor neurons. They sit in the organum vasculosum of the lamina terminalis and in the subfornical organ. They shrink when plasma osmolality rises, and then they fire faster. <b>Integrator:</b> magnocellular neurons of the supraoptic and paraventricular nuclei of the hypothalamus. <b>Output signal:</b> <b>antidiuretic hormone (ADH, vasopressin)</b>. Those same neurons make it. Their axon terminals release it in the posterior pituitary. <b>Effector:</b> the collecting duct principal cell. ADH binds V2 receptors there and raises cyclic AMP. That moves <b>aquaporin-2</b> vesicles into the apical membrane. <b>Response:</b> water is reabsorbed down the osmotic gradient into the hyperosmotic medulla. Urine volume falls. Plasma osmolality falls back toward set point. Osmoreceptor firing subsides.</p>
+
+<p>The numbers are worth memorizing, because the system is very sensitive. ADH secretion begins around 280 mOsm/kg and then rises steeply. A rise of 1 to 2 percent in osmolality clearly increases ADH. That is about 3 mOsm/kg. Thirst is not triggered until roughly 293 mOsm/kg. Suppress ADH fully and urine osmolality can fall to 50 mOsm/kg. Output can then reach 15&ndash;20 L/day. Raise ADH to its maximum and urine reaches 1200 mOsm/kg. Output falls to the <b>obligatory</b> minimum of about 500 mL/day. That is the volume needed to carry the daily 600 mOsm solute load. Volume matters too. A fall in blood volume of more than 8&ndash;10 percent will drive ADH release. Baroreceptors sense that fall. ADH then rises even against a low osmolality. The body defends perfusion before it defends concentration.</p>
+
+<div class="pearl"><b>Common misconception.</b> ADH is not a salt hormone, and aldosterone is not a water hormone. ADH moves pure water. So it changes the plasma sodium concentration. Aldosterone moves sodium, and water must come with it. So aldosterone changes volume with little change in concentration. That is why the classic low sodium of SIADH is a water problem. It is not a salt-deficiency problem. Treating it with salt alone misses the mechanism.</div>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>State</th><th>ADH level</th><th>Renal response</th><th>Urine osmolality</th><th>Serum Na+</th></tr></thead>
+<tbody>
+<tr><td>Central diabetes insipidus</td><td>Low (none made or released)</td><td>No AQP2 put into the membrane</td><td>Under 300 mOsm/kg, often 50&ndash;150</td><td>High or high-normal</td></tr>
+<tr><td>Nephrogenic diabetes insipidus</td><td>High</td><td>V2 receptor or AQP2 cannot answer</td><td>Under 300 mOsm/kg</td><td>High or high-normal</td></tr>
+<tr><td>SIADH</td><td>Inappropriately high</td><td>Too much water held back</td><td>Over 100, typically concentrated</td><td>Low (often 120&ndash;130 mmol/L)</td></tr>
+<tr><td>Water loading, healthy</td><td>Suppressed</td><td>Diluted as far as possible</td><td>50&ndash;100 mOsm/kg</td><td>Normal</td></tr>
+</tbody>
+</table></div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The loop of Henle multiplies a 200 mOsm/kg single effect into a corticomedullary gradient. That gradient runs from 300 to about 1200 mOsm/kg. The vasa recta preserve it passively, and urea tops it up. ADH then decides how much of it gets used. <a href="../lab/ch14/CountercurrentAndADH.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch14/CountercurrentAndADH.html" loading="lazy" title="The Medullary Gradient and the ADH Loop interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The loop of Henle actively multiplies a 200 mOsm/kg single effect into a 1200 mOsm/kg medullary gradient. The vasa recta preserve that gradient passively. ADH then decides how much of it the collecting duct is allowed to use.</p></div>
+
+<h2 id="homeostasis"><span class="num">Section 4</span>Pressure, potassium, pH &mdash; and emptying the bladder</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch14_s4.jpg" alt="Flow chart of the renin angiotensin aldosterone system showing renin release from juxtaglomerular cells, angiotensinogen conversion, ACE in the lung, and angiotensin two acting on arterioles, adrenal cortex and the tubule" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The renin&ndash;angiotensin&ndash;aldosterone cascade. It is the body&rsquo;s long-term controller of arterial pressure. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The kidney sets blood pressure over days, not seconds</h3>
+
+<p>Baroreceptors correct pressure in seconds. The kidney corrects it over hours to days. When the two disagree, the kidney wins. The mechanism is <b>pressure natriuresis</b>. A rise in mean arterial pressure increases sodium and water excretion. Plasma volume falls. Venous return and cardiac output fall with it. Pressure returns toward set point. Output keeps exceeding intake for as long as pressure sits above set point. Balance returns only once pressure has come back down. That is why the renal function curve has infinite long-term gain. Sustained hypertension therefore requires a resetting of that curve.</p>
+
+<p>The opposing arm is the <b>renin&ndash;angiotensin&ndash;aldosterone system</b>. Renin is released from the granular cells of the afferent arteriole. These are also called juxtaglomerular cells. Three signals release it. The first is reduced stretch of the afferent arteriole. The second is reduced NaCl sensed by the macula densa. The third is sympathetic beta-1 stimulation. Renin cleaves angiotensinogen from the liver into angiotensin I. Angiotensin-converting enzyme then converts that into <b>angiotensin II</b>. That enzyme sits mostly on the lining of the pulmonary capillaries. Angiotensin II acts at five sites at once. It constricts arterioles throughout the body, raising total peripheral resistance. It constricts the efferent arteriole most of all, preserving GFR. It drives proximal NHE3 directly, increasing sodium reabsorption. It drives the adrenal zona glomerulosa to release <b>aldosterone</b>. And it drives the hypothalamus to raise thirst and ADH.</p>
+
+<p>Aldosterone acts on principal cells of the collecting duct over 1&ndash;2 hours. It works by increasing transcription of ENaC, ROMK and the Na+/K+ ATPase. Sodium is retained. Potassium and hydrogen are secreted. Opposing all of this is <b>atrial natriuretic peptide (ANP)</b>. Atrial muscle cells release it when volume overload stretches them. ANP dilates the afferent arteriole and raises GFR. It inhibits renin and aldosterone. It promotes sodium loss. So volume regulation is a tug of war. One system retains sodium and the other dumps it. Where they balance sets the extracellular fluid volume.</p>
+
+<h3>Potassium: a narrow window defended by secretion</h3>
+
+<p>Plasma potassium is held between 3.5 and 5.0 mmol/L. Yet 98 percent of body potassium is inside cells. The resting membrane potential depends on the ratio of intracellular to extracellular K+. So small changes outside the cell have outsized effects on excitable tissue. Hyperkalemia, a high plasma potassium, depolarizes cells and inactivates sodium channels. It makes peaked T waves and eventually cardiac arrest.</p>
+
+<p>Nearly all filtered potassium is reabsorbed early. The proximal tubule and the thick ascending limb take it back. So the amount excreted is set almost entirely by <b>secretion</b>. Principal cells of the collecting duct secrete it through ROMK and BK channels. Three things drive that secretion. The first is aldosterone. The second is a high distal flow rate, which sweeps K+ away and keeps the gradient steep. The third is plasma potassium itself, acting directly on the adrenal cortex. Acid&ndash;base status matters too. H+ and K+ trade across cell membranes. So acidosis tends to raise plasma K+, and alkalosis tends to lower it. This explains a familiar pattern. Loop and thiazide diuretics cause hypokalemia, a low plasma potassium, because they raise distal flow and aldosterone. ENaC blockers and aldosterone antagonists are potassium sparing instead.</p>
+
+<h3>Acid&ndash;base: the slow, powerful partner of the lung</h3>
+
+<p>The Henderson&ndash;Hasselbalch equation describes the bicarbonate buffer system. It reads pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2)). Take a normal HCO3- of 24 mmol/L and a PaCO2 of 40 mmHg. The ratio is 24 / 1.2 = 20. Log 20 = 1.3. So pH = 7.4. The lung sets the denominator within minutes. The kidney sets the numerator over 1&ndash;3 days. The kidney is slower, but it has far greater capacity.</p>
+
+<p>The kidney does two distinct jobs here. First it <b>reclaims</b> bicarbonate. Roughly 4300 mmol is filtered daily, and the proximal tubule takes most of it back as described earlier. That job merely prevents acidosis. Second, it <b>generates new</b> bicarbonate. It does so by excreting the fixed acid made each day from protein metabolism, some 50&ndash;100 mmol. Type A intercalated cells pump H+ into the lumen with an apical H+-ATPase. Free H+ on its own would drop urine pH below about 4.5, and the kidney cannot go lower than that. So the acid must be buffered. Filtered phosphate buffers part of it, and that part is called <b>titratable acid</b>. Under stress, <b>ammonia</b> matters more. Proximal cells deaminate glutamine to make NH4+. At the same time they generate a new HCO3- that enters the blood. Ammoniagenesis can increase severalfold over days. That is why renal compensation is slow to arrive but very hard to exhaust.</p>
+
+<div class="pearl"><b>Why it matters.</b> Chronic kidney disease makes a predictable quartet from these same mechanisms. Metabolic acidosis comes from failed acid excretion. Hyperkalemia comes from failed secretion. Hypertension and edema come from failed volume control. Anemia with bone disease comes from failed endocrine output. Once you can name the mechanism, the clinical picture is not a list to memorize. It is a set of results you can derive.</div>
+
+<h3>Endocrine kidney and the micturition reflex</h3>
+
+<p>The kidney is also a gland. Fibroblasts in the tissue around the tubules sense the oxygen level. They do it through hypoxia-inducible factor. When oxygen is low they release <b>erythropoietin</b>. That hormone drives red cell production in the marrow. It is a negative feedback loop. Its failure explains the normocytic anemia of chronic kidney disease. Proximal tubule cells carry another enzyme, <b>1-alpha-hydroxylase</b>. Under the influence of parathyroid hormone it converts 25-hydroxyvitamin D into active <b>calcitriol</b>. Calcitriol then raises calcium absorption from the intestine. Losing that enzyme explains a great deal. It is why renal failure makes hypocalcemia, secondary hyperparathyroidism and renal bone disease.</p>
+
+<p>Finally, storage and voiding. Urine passes down the ureters by peristalsis, roughly every 10&ndash;30 seconds. It enters the bladder through oblique tunnels in the bladder wall. Those tunnels act as one-way flap valves. The detrusor muscle takes in filling with almost no rise in pressure. That is receptive relaxation. It lasts until about 150&ndash;250 mL, when the first conscious urge appears. Comfortable capacity is 300&ndash;500 mL. Stretch receptors then fire through pelvic afferents to the sacral micturition center at S2&ndash;S4. The <b>parasympathetic</b> outflow contracts the detrusor through muscarinic M3 receptors. It also relaxes the internal urethral sphincter. The <b>somatic</b> pudendal nerve holds the external sphincter closed, and you inhibit it voluntarily. The pontine micturition center coordinates the two. It makes sure the sphincter opens before the detrusor squeezes. The external sphincter is skeletal muscle under cortical control. That is why continence is learned. It is lost when a spinal cord lesion above the sacral center disconnects pontine coordination. The result is a reflexic bladder that empties without permission.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Baroreceptors correct pressure in seconds and then adapt. The kidney corrects it over days and never adapts. As long as arterial pressure sits above set point, it keeps excreting sodium and water. So volume keeps falling until pressure comes back down. <a href="../lab/ch14/PressureNatriuresisLoop.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch14/PressureNatriuresisLoop.html" loading="lazy" title="Pressure Natriuresis: the Kidney Sets Blood Pressure interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>By controlling sodium, the kidney controls volume and therefore long-term arterial pressure. By controlling potassium secretion and acid excretion, it protects excitable membranes and pH. By making erythropoietin and calcitriol, it works as an endocrine organ. Failure in those roles explains most of the syndrome of chronic kidney disease.</p></div>
+
+<h2 id="reproduction"><span class="num">Section 5</span>Reproductive physiology: one axis, two patterns</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch14_s5.jpg" alt="Hormones of the ovarian and uterine cycles, including the mid-cycle LH surge produced by positive feedback." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Hormones of the ovarian and uterine cycles. The mid-cycle LH surge is made by positive feedback. <span class="cred">Chris 73 | Talk, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The shared hypothalamic&ndash;pituitary&ndash;gonadal axis</h3>
+
+<p>Both sexes run the same three-tier control system. Hypothalamic neurons release <b>gonadotropin-releasing hormone (GnRH)</b> in pulses. One pulse comes every 60 to 120 minutes. It travels in the hypophyseal portal circulation, a short run of vessels into the pituitary. The pulsing is not a detail. Continuous GnRH turns down pituitary receptors and shuts the axis off. That is exactly how GnRH agonists are used as therapy. Gonadotroph cells of the anterior pituitary answer the pulses. They secrete <b>follicle-stimulating hormone (FSH)</b> and <b>luteinizing hormone (LH)</b>. The gonads answer with steroids and peptides. The steroids are testosterone, estradiol and progesterone. The peptide is inhibin B. All of them feed back on the hypothalamus and the pituitary.</p>
+
+<p>In the classical arrangement this is straightforward negative feedback. Gonadal steroid rises. GnRH pulse frequency falls, and gonadotropin output falls with it. Kisspeptin neurons in the arcuate nucleus are the relay. Steroids act on GnRH cells through them. Those same neurons are also where nutrition, leptin and stress gate reproduction. That is why very low body fat or an intense energy deficit suppresses the axis at the top. The block sits in the brain, not at the gonad.</p>
+
+<h3>The male pattern: steady state</h3>
+
+<p>LH acts on <b>Leydig cells</b>, which sit in the spaces between the tubules of the testis. LH makes them convert cholesterol into <b>testosterone</b>. Adult levels run roughly 300&ndash;1000 ng/dL, with a morning peak. FSH acts on <b>Sertoli cells</b>, which line the seminiferous tubules. Sertoli cells nurse developing germ cells. They form the blood&ndash;testis barrier. They make androgen-binding protein, which keeps testosterone inside the tubule 50&ndash;100 times higher than in plasma. They also secrete <b>inhibin B</b>. The feedback is neatly divided. Testosterone suppresses LH, and GnRH with it. Inhibin B selectively suppresses FSH. That division lets the body regulate steroid output and sperm output almost separately.</p>
+
+<p><b>Spermatogenesis</b> takes 64 to 74 days from spermatogonium to spermatozoon. A further 10&ndash;14 days of maturation follow in the epididymis. There the sperm acquire motility and the ability to bind the zona. Production runs roughly 100&ndash;200 million sperm per day. A typical ejaculate of 2&ndash;5 mL contains 200&ndash;300 million. The lower reference limit for concentration is about 15 million/mL. The process requires a scrotal temperature 2&ndash;3 &deg;C below core. The pampiniform venous plexus keeps up it. It works as a countercurrent heat exchanger. That is the same physical principle you met in the vasa recta, used for heat instead of solute. Production is continuous and feedback is tonic. So male hormone levels stay about steady from day to day.</p>
+
+<div class="pearl"><b>Common misconception.</b> Students frequently assign testosterone production to Sertoli cells, because FSH and Sertoli are learned together. Keep it simple. <b>L</b>H acts on <b>L</b>eydig cells to make testosterone. <b>F</b>SH acts on Sertoli cells to support <b>f</b>ertility. A patient on exogenous anabolic steroids shows the consequence. High circulating androgen suppresses LH. Intratesticular testosterone then collapses. Sperm counts fall even though blood testosterone is high.</div>
+
+<h3>The female pattern: a cycle built on a feedback inversion</h3>
+
+<p>The ovarian cycle averages 28 days, with a normal range of 21 to 35. In the <b>follicular phase</b>, rising FSH recruits a cohort of antral follicles. Theca cells make androgens under the drive of LH. Granulosa cells then aromatize those androgens into <b>estradiol</b> under the drive of FSH. That is the two-cell, two-gonadotropin model. Estradiol and inhibin B feed back negatively, so FSH falls. The follicle with the most FSH receptors survives that withdrawal and becomes dominant. The rest undergo atresia. So selection happens by declining hormone, not by rising hormone.</p>
+
+<p>Then comes the inversion. Estradiol climbs above roughly 200 pg/mL and stays there for about 48 hours. At that point its effect on the hypothalamic&ndash;pituitary unit flips from inhibitory to stimulatory. The result is genuine <b>positive feedback</b>. More estradiol drives more LH. More LH drives more estradiol. That loop makes the <b>LH surge</b>. Ovulation follows 24&ndash;36 hours after the surge begins. It comes about 10&ndash;12 hours after the peak. The surge triggers resumption of meiosis I. It breaks down the follicular wall, and the follicle ruptures. The positive feedback ends itself for an obvious reason. The follicle that generated the signal has ruptured and stops making it. Labor and clotting can use positive feedback safely for the same reason. Each has a definite end point that removes the stimulus.</p>
+
+<p>The <b>luteal phase</b> is the most predictable part of the cycle. It lasts 14 days plus or minus 2, whatever the overall cycle length. Almost all the variation in cycle length lives in the follicular phase. The ruptured follicle becomes the <b>corpus luteum</b>. It secretes progesterone, peaking around 10&ndash;20 ng/mL at day 21. It secretes estradiol and inhibin A as well. Progesterone raises basal body temperature by 0.3&ndash;0.5 &deg;C. It thickens cervical mucus. It converts the endometrium from proliferative to <b>secretory</b>. It also restores strong negative feedback. That slows GnRH pulses and prevents a second ovulation. If no embryo appears, the corpus luteum breaks down after 12&ndash;14 days. Progesterone and estrogen fall. Spiral arterioles constrict. The functional layer of the endometrium is shed as <b>menstruation</b>. Falling steroid removes the brake on FSH, so the next cohort is recruited.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Days (28-day cycle)</th><th>Ovarian phase</th><th>Uterine phase</th><th>Dominant hormone</th><th>Feedback mode</th></tr></thead>
+<tbody>
+<tr><td>1&ndash;5</td><td>Early follicular</td><td>Menstrual</td><td>FSH rising</td><td>Negative, brake comes off</td></tr>
+<tr><td>6&ndash;13</td><td>Late follicular</td><td>Proliferative</td><td>Estradiol rising</td><td>Negative</td></tr>
+<tr><td>~14</td><td>Ovulation</td><td>&mdash;</td><td>LH surge</td><td><b>Positive</b></td></tr>
+<tr><td>15&ndash;28</td><td>Luteal</td><td>Secretory</td><td>Progesterone</td><td>Strong negative</td></tr>
+</tbody>
+</table></div>
+
+<h3>Fertilization, pregnancy and labor</h3>
+
+<p>The oocyte is viable for 12&ndash;24 hours. Sperm survive 3&ndash;5 days in favorable cervical mucus. So the fertile window is roughly the five days before ovulation plus the day of it. Fertilization occurs in the ampulla of the uterine tube. Capacitated sperm bind ZP3 in the zona pellucida. The acrosome reaction releases enzymes that digest a path through. One sperm fuses, and that triggers a calcium wave. The cortical reaction follows and hardens the zona. That zona reaction is the <i>slow</i> block to polyspermy, meaning entry by more than one sperm. The fast block is the brief membrane depolarization at the moment of fusion. The zygote reaches the uterus as a blastocyst around day 5&ndash;6. It implants around day 6&ndash;10 after ovulation.</p>
+
+<p>The syncytiotrophoblast secretes <b>human chorionic gonadotropin (hCG)</b>. It is an LH analog, so the ovary reads it as LH. It rescues the corpus luteum from its scheduled death and keeps progesterone flowing. hCG roughly doubles every 48 hours in early pregnancy. It peaks at 8&ndash;10 weeks and then falls. By weeks 8&ndash;10 the placenta takes over steroid production. That handover is the luteal&ndash;placental shift. Progesterone keeps up the endometrium. It keeps the myometrium quiescent throughout gestation. Pregnancy also raises plasma volume by 40&ndash;50 percent. It raises GFR by 40&ndash;50 percent as well. That is why serum creatinine falls in normal pregnancy.</p>
+
+<p>Labor is the second clear example of physiological positive feedback. The fetal head descends and stretches the cervix. Stretch receptors signal the hypothalamus. The posterior pituitary releases <b>oxytocin</b>. Oxytocin contracts the myometrium. Near term the myometrium carries many times more oxytocin receptors, so it answers strongly. Oxytocin also drives placental prostaglandins. The contraction pushes the head harder against the cervix. The loop amplifies. It stops for the same structural reason ovulation stops. Delivery removes the stimulus. Afterwards a third loop takes over. Suckling triggers oxytocin for milk ejection and prolactin for milk synthesis. Prolactin also suppresses GnRH pulses. That gives lactational suppression of ovulation.</p>
+
+<div class="pearl"><b>Common misconception.</b> Positive feedback is not bad feedback, and it is not a system failure. It is a planned amplifier. The body uses it only where it needs an all-or-none event with a built-in stop. The action potential upstroke, clotting, ovulation, labor and milk ejection are the examples. Each one of them terminates because the process destroys or removes its own trigger. Negative feedback keeps up. Positive feedback completes.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Both sexes run the same three tiers. Pulsatile GnRH, two pituitary gonadotropins, and gonadal steroids feeding back. The female cycle differs from the male steady state because of a single inversion. <a href="../lab/ch14/ReproductiveAxisAndCycle.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch14/ReproductiveAxisAndCycle.html" loading="lazy" title="One Axis, Two Patterns: the Surge and the Steady State interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Both sexes run a pulsatile GnRH&ndash;gonadotropin&ndash;steroid axis under negative feedback. The female cycle differs for one reason. Sustained high estradiol inverts that feedback to positive for about 48 hours. That inversion is what causes ovulation. No new hormone is needed.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2>
+<p>The kidney filters about 180 L of plasma each day. A net Starling pressure of only 10 mmHg drives it. Two local mechanisms protect that rate against pressure swings. They are the afferent myogenic response and tubuloglomerular feedback from the macula densa. Almost all of that filtrate is reclaimed. Each reclaiming step is ultimately paid for by the basolateral Na+/K+ ATPase. The proximal tubule takes back 65 percent of sodium and water isosmotically. It takes back all the glucose and amino acids too. Its carriers saturate at a transport maximum, and that explains glycosuria. The loop of Henle then uses countercurrent multiplication. It converts a 200 mOsm/kg single effect into a 1200 mOsm/kg medullary gradient. Vasa recta countercurrent exchange preserves that gradient. Urea recycling tops it up. Osmoreceptors detect a 1&ndash;2 percent rise in plasma osmolality, and ADH is released. ADH inserts aquaporin-2 and decides how much of the gradient the collecting duct uses. Sodium handling by RAAS, aldosterone and ANP sets extracellular volume, and therefore long-term arterial pressure. Potassium and acid excretion protect excitable membranes and pH. The reproductive systems reuse the same feedback architecture through GnRH, FSH and LH. There is one planned inversion, the estradiol-driven LH surge. And there is one planned amplifier at birth, the oxytocin loop of labor.</p>
+</div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Glomerular filtration rate (GFR)</td><td>How much filtrate all the nephrons make each minute. Normally about 125 mL/min, or 180 L/day.</td></tr>
+<tr><td>Net filtration pressure</td><td>(P<sub>GC</sub> &minus; P<sub>BS</sub>) &minus; (&pi;<sub>GC</sub> &minus; &pi;<sub>BS</sub>). It is about 10 mmHg at the glomerulus.</td></tr>
+<tr><td>Filtration fraction</td><td>GFR divided by renal plasma flow. Normally about 0.20.</td></tr>
+<tr><td>Podocyte</td><td>A cell of Bowman&rsquo;s capsule that grips the capillary. Its foot processes form the slit diaphragm, the last barrier that sorts by size.</td></tr>
+<tr><td>Tubuloglomerular feedback</td><td>The macula densa senses how much NaCl arrives distally. It then adjusts afferent arteriolar tone to steady the GFR of that one nephron.</td></tr>
+<tr><td>Juxtaglomerular apparatus</td><td>The macula densa plus the granular cells at the vascular pole. Renin release and tubuloglomerular feedback both happen here.</td></tr>
+<tr><td>Transport maximum (Tm)</td><td>The point at which a carrier system is full. For glucose it is about 375 mg/min.</td></tr>
+<tr><td>Renal threshold</td><td>The plasma level at which a substance first appears in urine. For glucose it is about 180&ndash;200 mg/dL.</td></tr>
+<tr><td>Glomerulotubular balance</td><td>The proximal tubule takes back a constant fraction of whatever is filtered, about 65 percent.</td></tr>
+<tr><td>Clearance</td><td>C = (U &times; V) / P. It is the volume of plasma cleared of a substance each minute.</td></tr>
+<tr><td>Countercurrent multiplier</td><td>An active mechanism in the loop of Henle. It multiplies a 200 mOsm/kg single effect into a 300&ndash;1200 mOsm/kg gradient along the axis.</td></tr>
+<tr><td>Countercurrent exchange</td><td>The hairpin vasa recta trap solute passively. That preserves the medullary gradient.</td></tr>
+<tr><td>Aquaporin-2</td><td>A water channel controlled by ADH. It is inserted into the apical membrane of collecting duct principal cells.</td></tr>
+<tr><td>Pressure natriuresis</td><td>The kidney excretes more sodium and water when arterial pressure rises. It is the long-term controller of blood pressure.</td></tr>
+<tr><td>Titratable acid</td><td>Secreted H+ that filtered phosphate has buffered. It lets the kidney excrete acid without dropping urine pH below about 4.5.</td></tr>
+<tr><td>Ammoniagenesis</td><td>The proximal tubule breaks down glutamine. That makes NH4+ to excrete and new HCO3- for the blood. It is the adjustable arm of renal acid handling.</td></tr>
+<tr><td>Micturition reflex</td><td>A sacral S2&ndash;S4 reflex. The detrusor contracts and the internal sphincter relaxes. The pontine micturition center coordinates it.</td></tr>
+<tr><td>Sertoli cell</td><td>The nurse cell of the seminiferous tubule, and it answers FSH. It forms the blood&ndash;testis barrier and secretes inhibin B.</td></tr>
+<tr><td>LH surge</td><td>A positive-feedback burst of luteinizing hormone. Sustained high estradiol triggers it. Ovulation follows in 24&ndash;36 hours.</td></tr>
+<tr><td>Corpus luteum</td><td>The structure left after ovulation that secretes progesterone. It has a fixed 12&ndash;14 day lifespan unless hCG rescues it.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">A patient has a glomerular capillary pressure of 60 mmHg. Bowman&rsquo;s space pressure is 20 mmHg. Plasma oncotic pressure is 32 mmHg. What is the net filtration pressure? Is filtration still happening?</div><div class="ans">NFP = (60 &minus; 20) &minus; 32 = 8 mmHg. Filtration is still happening. But 8 mmHg is below the usual 10 mmHg. So GFR would be reduced unless K<sub>f</sub> makes up for it. The raised Bowman&rsquo;s pressure points to a blockage downstream.</div></div>
+
+<div class="qq"><div class="q">Why does constricting the efferent arteriole raise GFR? Why does constricting the afferent arteriole lower it?</div><div class="ans">The glomerulus sits between the two. Constricting downstream, at the efferent arteriole, dams blood in the capillary. That raises P<sub>GC</sub> and increases NFP. Constricting upstream, at the afferent arteriole, reduces inflow. That lowers P<sub>GC</sub>. Angiotensin II uses the efferent effect to defend GFR when perfusion pressure falls.</div></div>
+
+<div class="qq"><div class="q">Name the sensor, integrator, effector and response of tubuloglomerular feedback.</div><div class="ans">Sensor: macula densa cells, detecting NaCl delivery at the end of the thick ascending limb. Integrator: the juxtaglomerular apparatus, signaling through ATP and adenosine. Effector: afferent arteriolar smooth muscle, plus the granular cells that secrete renin. Response: the afferent arteriole constricts when delivery is high. That brings GFR back down to set point.</div></div>
+
+<div class="qq"><div class="q">A person has a plasma glucose of 250 mg/dL and a GFR of 125 mL/min. There is glucose in the urine. Yet the filtered load is below the transport maximum of 375 mg/min. Explain why.</div><div class="ans">Filtered load = 125 mL/min &times; 250 mg/dL = about 312 mg/min. That is under Tm. Glycosuria still occurs because nephrons are not all alike. Some have a high filtered load for the number of carriers they have. Those spill before the whole-kidney Tm is reached. This is splay. It is why the renal threshold of 180&ndash;200 mg/dL is lower than Tm.</div></div>
+
+<div class="qq"><div class="q">Why does fluid leaving the loop of Henle have a lower osmolality than the plasma that was filtered?</div><div class="ans">The thick ascending limb pumps NaCl out through NKCC2. It is impermeable to water. So solute leaves without water, and the luminal fluid falls to about 100 mOsm/kg. This is why it is called the diluting segment. The kidney dilutes first. It only reconcentrates later, and only if ADH permits.</div></div>
+
+<div class="qq"><div class="q">A loop diuretic blocks NKCC2. Predict what it does to urine volume, to the medullary gradient and to plasma potassium.</div><div class="ans">Sodium reabsorption in the thick ascending limb fails. That segment normally takes back about 25 percent of the filtered load. So urine volume rises sharply. The single effect is lost, so the medullary gradient collapses. Maximal concentrating ability is impaired. More sodium and more flow now reach the distal nephron. That drives ENaC-mediated sodium uptake and ROMK potassium secretion. Aldosterone rises as well. So expect hypokalemia.</div></div>
+
+<div class="qq"><div class="q">Two patients have dilute urine and a rising serum sodium. One responds to desmopressin and makes concentrated urine. The other does not. What tells them apart?</div><div class="ans">The responder has central diabetes insipidus. The hypothalamic and posterior pituitary output of ADH has failed, but the collecting duct still works. The non-responder has nephrogenic diabetes insipidus. ADH is present or supplied, but the V2 receptor or the aquaporin-2 pathway cannot answer it.</div></div>
+
+<div class="qq"><div class="q">Why does the kidney have infinite gain for long-term blood pressure control? Why do baroreceptors not?</div><div class="ans">Baroreceptors adapt within days. They only reset the operating point. The kidney works through pressure natriuresis instead. It keeps excreting sodium and water for as long as pressure is above its set point. Extracellular volume keeps falling until pressure returns. There is no adaptation limit. So the correction can, in principle, be complete.</div></div>
+
+<div class="qq"><div class="q">A patient with chronic kidney disease has a bicarbonate of 16 mmol/L. The PaCO2 is 30 mmHg. Use Henderson&ndash;Hasselbalch to describe the state.</div><div class="ans">pH = 6.1 + log(16 / (0.03 &times; 30)) = 6.1 + log(16 / 0.9) = 6.1 + log 17.8 = 6.1 + 1.25 = 7.35. This is a metabolic acidosis. The low HCO3- comes from failed acid excretion and failed ammoniagenesis. Respiratory compensation has lowered PaCO2 to keep the ratio near 20.</div></div>
+
+<div class="qq"><div class="q">Why does a patient on high-dose exogenous testosterone often become infertile?</div><div class="ans">Circulating androgen feeds back negatively on GnRH and LH. Without LH, Leydig cells stop making testosterone locally. Testosterone inside the testis is normally 50&ndash;100 times plasma levels, and spermatogenesis needs it. So it collapses. Blood testosterone looks high while sperm production fails.</div></div>
+
+<div class="qq"><div class="q">A woman&rsquo;s cycle is 35 days long. On roughly which day did she ovulate? How can you say so?</div><div class="ans">Around day 21. The luteal phase is fixed at 14 days plus or minus 2, because the corpus luteum has a fixed lifespan. All the variation in cycle length sits in the follicular phase. So count back 14 days from the next menses to find the ovulation day.</div></div>
+
+<div class="qq"><div class="q">Explain why the LH surge is genuine positive feedback. Explain why it does not run away.</div><div class="ans">Estradiol above about 200 pg/mL, held there for 48 hours, flips its own effect. Its action on the hypothalamic&ndash;pituitary unit turns from inhibitory to stimulatory. So estradiol drives LH, and LH drives more estradiol. That is self-amplifying rather than self-correcting. It ends for a structural reason. Ovulation ruptures the follicle that was making the estradiol, and that removes the stimulus. The corpus luteum that follows secretes progesterone, which restores strong negative feedback.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch13.html"><span class="k">Previous</span>&larr; Digestive System</a>
+        <a class="next" href="index.html"><span class="k">Next</span>Back to Contents &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

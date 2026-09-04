@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Tissues &amp; the Integumentary System | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 3 — Tissues &amp; the Integumentary System</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit2">
+
+<h2>Module 3 &nbsp;•&nbsp; Tissues &amp; the Integumentary System &nbsp;<span class="chip">Exam 2</span></h2>
+<div class="box obj"><ol><li>Describe the physiological functions of different epithelial tissues.</li><li>Identify the roles of various connective tissues.</li><li>Examine the physiological significance of body membranes.</li><li>Describe the functions of the epidermis and dermis.</li><li>Explain melanin production and vitamin D conversion.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Simple squamous = <b>diffusion/filtration</b>. Stratified squamous = <b>protection</b>. Transitional = <b>stretch</b>.</li><li>Epidermal layers deep→superficial: <b>basale, spinosum, granulosum, lucidum, corneum</b>.</li><li>The epidermis is <b>avascular</b>; the dermis carries the vessels and nerves.</li><li>Vitamin D: UVB on <b>skin</b> → <b>liver</b> (calcidiol) → <b>kidney</b> (calcitriol, active).</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">Epithelium: shape tells you the job</h4><div class="read">Epithelium covers surfaces and lines cavities, and its shape is a direct clue to its function. <b>Squamous</b>
+cells are flat — thin means fast diffusion, which is why alveoli and capillaries use them. <b>Cuboidal</b>
+cells are boxy with room for machinery, so they secrete and absorb, as in kidney tubules. <b>Columnar</b>
+cells are tall with even more room, lining the digestive tract for absorption.<br><br>
+Then layers: <b>simple</b> means one layer and favors exchange; <b>stratified</b> means many layers and
+favors protection, which is why skin and esophagus are stratified squamous. <b>Transitional</b> epithelium
+changes shape as it stretches, which only the bladder and ureters need. <b>Pseudostratified</b> looks layered
+but is not, and in the airway it comes with cilia and goblet cells to trap and sweep debris.<br><br>
+Every epithelium is <b>avascular</b>. It is fed by diffusion from the connective tissue beneath, which is
+why the outermost skin cells eventually die.</div>
+<h4 class="topic">Connective tissue is mostly matrix</h4><div class="read">Where epithelium is packed with cells, connective tissue is mostly the <b>matrix</b> between them, and the
+matrix determines the property. Dense collagen in parallel bundles gives one-directional tensile strength —
+tendons. Collagen in every direction gives strength from all sides — the dermis. Elastic fibers let a
+structure spring back — the ear. Mineralized matrix gives hardness — bone. And a liquid matrix gives
+transport — blood and lymph, which are connective tissues too, however odd that sounds at first.</div>
+<h4 class="topic">Skin as an organ with a job list</h4><div class="read">The <b>epidermis</b> is the barrier. Cells are born in the <b>stratum basale</b>, and as they are pushed
+outward they fill with keratin, flatten, and die, ending as the <b>stratum corneum</b> — a sheet of tough,
+waterproof dead cells. That is not a design flaw; a dead, keratin-packed surface is exactly what resists
+water loss and blocks pathogens.<br><br>
+The <b>dermis</b> underneath carries the blood vessels, nerves, hair follicles and glands. Its vessels also
+do thermoregulation: dilate to dump heat, constrict to keep it. The <b>hypodermis</b> below is fat —
+insulation, cushioning, anchoring.</div>
+<h4 class="topic">Melanin and vitamin D — the same UV, two opposite stories</h4><div class="read"><b>Melanin</b>, made by melanocytes in the basale, absorbs ultraviolet light before it can damage DNA. More
+melanin means more protection from UV.<br><br>
+But the skin also <i>needs</i> UV. <b>UVB</b> converts a cholesterol precursor into vitamin D3, the
+<b>liver</b> converts that to calcidiol, and the <b>kidney</b> makes the active form, <b>calcitriol</b>.
+Calcitriol's job is to increase calcium absorption from the gut — which is why a skin topic ends up
+controlling your bones, and why chronic kidney disease weakens the skeleton.</div>
+<h4 class="topic">What holds epithelium together</h4><div class="read">Every epithelium is <b>polarized</b> — an <b>apical</b> surface facing the lumen or the outside world, and a <b>basal</b> surface anchored to a <b>basement membrane</b>. That anchoring matters, because epithelium is <b>avascular</b>: every nutrient must diffuse up from the connective tissue beneath.<br><br>
+Five junction types hold the sheet together. <b>Tight junctions</b> ring the cells near the apex and control what passes between them, keeping the lumen chemically separate from the tissue below. <b>Adherens junctions</b> and <b>desmosomes</b> rivet neighbors against mechanical stress, and <b>hemidesmosomes</b> pin the bottom row to the basement membrane. <b>Gap junctions</b> leave pores open so ions pass straight from cell to cell. And because epithelium divides constantly to replace what it loses, every division is another chance for a mutation — which is why most adult cancers are carcinomas.</div>
+<h4 class="topic">The four body membranes</h4><div class="read">A body membrane is a sheet of epithelium plus the connective tissue under it — with one deliberate exception.<br><br>
+<b>Mucous membranes</b> line every passage open to the outside — respiratory, digestive, urinary, reproductive — and stay wet, mostly with mucus that traps debris and keeps the surface from drying. <b>Serous membranes</b> line closed cavities and wrap the organs inside — pleura, pericardium, peritoneum — each with a <b>parietal</b> layer on the wall, a <b>visceral</b> layer on the organ, and a film of serous fluid between so the two glide. The <b>cutaneous membrane</b> is the skin, and the only dry one. <b>Synovial membranes</b> line joint cavities and contain no epithelium — connective tissue only, the exception. Inflame a serous membrane and those layers roughen and grate — which is why pericarditis rubs and hurts with every heartbeat.</div>
+<h4 class="topic">Walking up the epidermis</h4><div class="read">Start at the bottom. The <b>stratum basale</b> is where nearly all division happens, pushing daughters upward, and it houses <b>Merkel cells</b> and the <b>melanocytes</b> that hand pigment to keratinocytes to cap their nuclei; melanin is the shield against UV, not the cause of damage. The <b>stratum spinosum</b> is packed with desmosomes and carries immune <b>Langerhans cells</b>. In the <b>stratum granulosum</b> the cells fill with keratohyalin, waterproof themselves, and die. The <b>stratum lucidum</b> appears only in thick skin — palms and soles. The <b>stratum corneum</b> is twenty to thirty layers of dead, keratin-filled cells.<br><br>
+The epidermis has no vessels of its own — every nutrient diffuses up from dermal capillaries — which is why a burn that strips the basale cannot regrow from that layer and must resurface from follicles left in the dermis.</div>
+<h4 class="topic">What the dermis carries</h4><div class="read">Two layers, two jobs. The <b>papillary layer</b> is loose areolar tissue thrown into <b>dermal papillae</b> that push up into the epidermis, carrying the capillary loops that feed it, the <b>Meissner corpuscles</b> that read light touch, and — on your fingertips — the ridges that make fingerprints. The <b>reticular layer</b> beneath is dense irregular connective tissue — interwoven collagen for strength, elastin for recoil — and it is the address for hair follicles, sweat and sebaceous glands, blood vessels, nerves, and deep-pressure <b>Pacinian corpuscles</b>.<br><br>
+Those follicles and glands are lined with epidermal cells, which is how burn depth is judged. A partial-thickness burn spares them, so new epithelium creeps outward from each until the surface closes. A full-thickness burn destroys them — which is why it has no source of new skin and needs a graft.</div>
+<h4 class="topic">Glands, and the three ways they let go</h4><div class="read">Skin glands are named for how the cell releases its product, and only one of the three leaves the cell intact. <b>Merocrine</b> glands package the product into vesicles and let it out by exocytosis, losing nothing — the <b>eccrine sweat glands</b> that cool you by evaporation work this way, as do salivary and pancreatic glands.<br><br>
+<b>Apocrine</b> glands pinch off the apical part of the cell with the secretion; they empty into hair follicles in the axilla and groin, and ceruminous and mammary glands are counted with them. Their sweat is odorless until skin bacteria digest it — that is body odor. <b>Holocrine</b> glands rupture the whole cell — <b>sebaceous glands</b> do this, so sebum is lipid plus cell debris, which is why a plugged follicle keeps filling, inflames, and becomes acne.</div>
+<h3>Reference tables</h3>
+<h4>Every epithelial tissue</h4><table><tr><th>Tissue</th><th>Function</th><th>Location</th></tr><tr><td>Simple squamous</td><td>Diffusion and filtration</td><td>Alveoli, capillaries</td></tr><tr><td>Stratified squamous</td><td>Protection from abrasion</td><td>Skin, mouth, esophagus</td></tr><tr><td>Simple cuboidal</td><td>Secretion and absorption</td><td>Kidney tubules, glands</td></tr><tr><td>Simple columnar</td><td>Absorption and secretion</td><td>Digestive tract</td></tr><tr><td>Pseudostratified columnar</td><td>Mucus production and ciliary sweeping</td><td>Respiratory tract</td></tr><tr><td>Transitional</td><td>Stretch</td><td>Bladder, ureters</td></tr><tr><td>Goblet cells</td><td>Secrete mucus</td><td>Scattered in respiratory/digestive lining</td></tr></table>
+<h4>Every connective tissue</h4><table><tr><th>Tissue</th><th>Function</th><th>Location</th></tr><tr><td>Adipose</td><td>Energy storage, insulation, cushioning</td><td>Subcutaneous, around organs</td></tr><tr><td>Reticular</td><td>Supportive framework (stroma)</td><td>Spleen, liver, lymph nodes</td></tr><tr><td>Dense regular</td><td>Tensile strength in one direction</td><td>Tendons, ligaments</td></tr><tr><td>Dense irregular</td><td>Strength in many directions</td><td>Dermis</td></tr><tr><td>Hyaline cartilage</td><td>Smooth flexible support</td><td>Nose, trachea, joint surfaces</td></tr><tr><td>Elastic cartilage</td><td>Flexible support that recoils</td><td>External ear</td></tr><tr><td>Fibrocartilage</td><td>Resists compression</td><td>Intervertebral discs</td></tr><tr><td>Bone</td><td>Support; calcium and phosphate store</td><td>Skeleton</td></tr><tr><td>Blood / lymph</td><td>Transport</td><td>Vessels</td></tr></table>
+<h4>The four membranes</h4><table><tr><th>Membrane</th><th>Fluid?</th><th>Function</th><th>Location</th></tr><tr><td>Mucous</td><td>Mucus</td><td>Protects and lubricates</td><td>Cavities open to exterior</td></tr><tr><td>Serous</td><td>Serous fluid</td><td>Reduces friction</td><td>Closed cavities (pleura, pericardium, peritoneum)</td></tr><tr><td>Cutaneous</td><td>Dry</td><td>Protection</td><td>The skin</td></tr><tr><td>Synovial</td><td>Synovial fluid</td><td>Lubricates joints</td><td>Joint cavities</td></tr></table>
+<h4>Epidermal layers (deep → superficial)</h4><table><tr><th>Layer</th><th>Dividing?</th><th>Alive?</th><th>Note</th></tr><tr><td>Stratum basale</td><td>Yes</td><td>Yes</td><td>Melanocytes live here</td></tr><tr><td>Stratum spinosum</td><td>Some</td><td>Yes</td><td>Langerhans immune cells</td></tr><tr><td>Stratum granulosum</td><td>No</td><td>Dying</td><td>Keratin granules accumulate</td></tr><tr><td>Stratum lucidum</td><td>No</td><td>No</td><td>Thick skin only (palms, soles)</td></tr><tr><td>Stratum corneum</td><td>No</td><td>No</td><td>Flat, keratin-filled, waterproof</td></tr></table>
+<h4>Gland secretion modes</h4><table><tr><th>Mode</th><th>Mechanism</th><th>Example</th></tr><tr><td>Merocrine</td><td>Exocytosis, cell intact</td><td>Eccrine sweat glands</td></tr><tr><td>Apocrine</td><td>Part of the cell pinches off</td><td>Axillary glands</td></tr><tr><td>Holocrine</td><td>Whole cell ruptures and dies</td><td>Sebaceous glands</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"The epidermis has its own blood supply."</b> It is avascular — fed by diffusion from the dermis. That is why its outer cells die.</li><li><b>"Vitamin D is fully made in the skin."</b> Skin only starts it. The liver then the kidney complete activation to calcitriol.</li><li><b>"Melanin causes skin cancer."</b> Melanin <i>protects</i> against it by absorbing UV.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 3 — p.20 · Module 3 live-class deck, slide 10 · Module 3 live-class deck, slide 11 · Module 3 live-class deck, slide 13 · Module 3 live-class deck, slide 14 · Module 3 live-class deck, slide 15 · Module 3 live-class deck, slide 16 · Module 3 live-class deck, slide 17 · Module 3 live-class deck, slide 18 · Module 3 live-class deck, slide 4</p>
+<h3>Practice questions <span class="small">(51)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> Alveoli are lined by a single layer of extremely flat cells. This arrangement exists because:</summary><ol class="opts" type="A"><li>Multiple cell layers provide protection from abrasion</li><li>Squamous cells are the main producers of surfactant</li><li class="key">Thinness minimizes diffusion distance for gases</li><li>It allows stretch the way transitional epithelium does</li><li>Flat cells secrete mucus to trap inhaled debris</li></ol><div class="ans show"><b>Answer: C.</b> Simple squamous epithelium is one flat cell thick, which is ideal wherever rapid diffusion or filtration is needed.<span class="ref">Module 3 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q2.</b> Which epithelium lines the urinary bladder and permits it to distend?</summary><ol class="opts" type="A"><li>Simple squamous</li><li>Stratified squamous</li><li>Simple columnar</li><li class="key">Transitional</li><li>Pseudostratified columnar</li></ol><div class="ans show"><b>Answer: D.</b> Transitional epithelium changes cell shape as the organ fills, allowing stretch without tearing.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q3.</b> The esophagus and skin surface are lined by which epithelium, and why?</summary><ol class="opts" type="A"><li>Simple squamous, for rapid diffusion and filtration</li><li>Simple cuboidal, for secretion and absorption in ducts</li><li>Transitional, for stretch as the bladder fills</li><li>Simple columnar, for absorption in the small intestine</li><li class="key">Stratified squamous, for protection against abrasion</li></ol><div class="ans show"><b>Answer: E.</b> Multiple layers of cells absorb mechanical wear, which is why stratified squamous lines high-friction surfaces.<span class="ref">Module 3 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q4.</b> Kidney tubules and many glands are lined by:</summary><ol class="opts" type="A"><li class="key">Simple cuboidal</li><li>Simple squamous</li><li>Transitional</li><li>Stratified squamous</li><li>Pseudostratified columnar</li></ol><div class="ans show"><b>Answer: A.</b> Simple cuboidal epithelium specializes in secretion and absorption.<span class="ref">Module 3 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q5.</b> The lining of the small intestine is simple columnar epithelium because this tissue:</summary><ol class="opts" type="A"><li>Resists abrasion better than any other epithelium</li><li class="key">Is specialized for absorption and secretion</li><li>Permits stretch as the organ fills with urine</li><li>Allows rapid gas exchange across a thin barrier</li><li>Filters blood plasma at the glomerular capsule</li></ol><div class="ans show"><b>Answer: B.</b> Tall columnar cells have room for the organelles and microvilli that absorption requires.<span class="ref">Module 3 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q6.</b> Which epithelium lines the trachea and helps clear debris?</summary><ol class="opts" type="A"><li>Simple squamous, one flat cell thick</li><li>Transitional with dome-shaped cells</li><li class="key">Pseudostratified ciliated columnar</li><li>Stratified squamous, many layers thick</li><li>Simple cuboidal, as in kidney tubules</li></ol><div class="ans show"><b>Answer: C.</b> It appears layered but is not. Cilia sweep mucus-trapped debris upward out of the airway.<span class="ref">Module 3 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q7.</b> Goblet cells are specialized to secrete:</summary><ol class="opts" type="A"><li>Enzymes</li><li>Hormones</li><li>Sweat</li><li class="key">Mucus</li><li>Bile</li></ol><div class="ans show"><b>Answer: D.</b> Goblet cells are scattered through respiratory and digestive epithelium and produce protective mucus.<span class="ref">Module 3 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q8.</b> Which connective tissue stores energy, insulates and cushions?</summary><ol class="opts" type="A"><li>Reticular</li><li>Hyaline cartilage</li><li>Bone</li><li>Blood</li><li class="key">Adipose</li></ol><div class="ans show"><b>Answer: E.</b> Adipose tissue stores triglyceride and provides thermal and mechanical protection.<span class="ref">Module 3 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q9.</b> The flexible support of the external ear is provided by:</summary><ol class="opts" type="A"><li class="key">Elastic cartilage</li><li>Hyaline cartilage</li><li>Fibrocartilage</li><li>Bone</li><li>Dense regular connective tissue</li></ol><div class="ans show"><b>Answer: A.</b> Elastic cartilage bends and recoils, which is exactly what the auricle needs.<span class="ref">Module 3 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q10.</b> Which tissue forms the supportive internal framework of the spleen and lymph nodes?</summary><ol class="opts" type="A"><li>Adipose</li><li class="key">Reticular</li><li>Elastic cartilage</li><li>Compact bone</li><li>Dense irregular</li></ol><div class="ans show"><b>Answer: B.</b> Reticular fibers create a mesh (stroma) that holds soft organs' cells in place.<span class="ref">Module 3 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q11.</b> Blood and lymph are classified as which type of connective tissue?</summary><ol class="opts" type="A"><li>Supporting</li><li>Dense</li><li class="key">Fluid</li><li>Loose areolar</li><li>Elastic</li></ol><div class="ans show"><b>Answer: C.</b> They have cells suspended in a liquid matrix, so they are fluid connective tissues.<span class="ref">Module 3 live-class deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q12.</b> Bone's role as the body's principal mineral reservoir means it primarily stores:</summary><ol class="opts" type="A"><li>Iron and copper reserves</li><li>Sodium and potassium</li><li>Glucose stored as glycogen</li><li class="key">Calcium and phosphate</li><li>Vitamin C and vitamin K</li></ol><div class="ans show"><b>Answer: D.</b> About two-thirds of bone mass is calcium phosphate, drawn on to maintain blood calcium.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q13.</b> Which connective tissue would you expect at a site requiring great tensile strength in one direction, such as a tendon?</summary><ol class="opts" type="A"><li>Adipose tissue for cushioning</li><li>Reticular tissue forming a soft mesh</li><li>Elastic cartilage that recoils</li><li>Simple squamous epithelium</li><li class="key">Dense regular connective tissue</li></ol><div class="ans show"><b>Answer: E.</b> Parallel collagen bundles resist pull along a single axis.<span class="ref">Module 3 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q14.</b> Which membrane lines cavities that open to the exterior?</summary><ol class="opts" type="A"><li class="key">Mucous</li><li>Serous</li><li>Cutaneous</li><li>Synovial</li><li>Basement</li></ol><div class="ans show"><b>Answer: A.</b> Mucous membranes line the digestive, respiratory, urinary and reproductive tracts.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q15.</b> Which two membrane types contain fluid, and why?</summary><ol class="opts" type="A"><li>Mucous and cutaneous — for waterproofing</li><li class="key">Serous and synovial — to reduce friction</li><li>Cutaneous and synovial — for insulation</li><li>Mucous and serous — for nutrient absorption</li><li>Synovial and basement — for anchoring support</li></ol><div class="ans show"><b>Answer: B.</b> Serous fluid lets organs glide within cavities; synovial fluid lubricates joints.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q16.</b> The cutaneous membrane is another name for:</summary><ol class="opts" type="A"><li>The pleura</li><li>The peritoneum</li><li class="key">The skin</li><li>The synovium</li><li>The pericardium</li></ol><div class="ans show"><b>Answer: C.</b> The cutaneous membrane is the skin — the only membrane exposed to the outside air, and it is dry.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q17.</b> The pericardium surrounding the heart is which type of membrane?</summary><ol class="opts" type="A"><li>Mucous</li><li>Cutaneous</li><li>Synovial</li><li class="key">Serous</li><li>Fibrous only</li></ol><div class="ans show"><b>Answer: D.</b> Serous membranes line closed cavities and secrete fluid that lets the heart beat without friction.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q18.</b> Synovial fluid is essential because it:</summary><ol class="opts" type="A"><li>Nourishes the epidermis with dissolved nutrients</li><li>Transports hormones from glands to target tissues</li><li>Digests worn cellular debris with lysosomal enzymes</li><li>Produces new red blood cells within the marrow cavity</li><li class="key">Lubricates joints and reduces friction during movement</li></ol><div class="ans show"><b>Answer: E.</b> Without lubrication, articular cartilage would abrade during movement.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q19.</b> List the epidermal layers from DEEP to SUPERFICIAL:</summary><ol class="opts" type="A"><li class="key">Basale, spinosum, granulosum, lucidum, corneum</li><li>Corneum, lucidum, granulosum, spinosum, basale</li><li>Basale, granulosum, spinosum, lucidum, corneum</li><li>Spinosum, basale, corneum, granulosum, lucidum</li><li>Granulosum, basale, spinosum, corneum, lucidum</li></ol><div class="ans show"><b>Answer: A.</b> Cells are born in the basale and migrate outward, dying and flattening as they go, ending as the corneum.<span class="ref">Module 3 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q20.</b> Cell division in the epidermis occurs chiefly in the:</summary><ol class="opts" type="A"><li>Stratum corneum</li><li class="key">Stratum basale</li><li>Stratum lucidum</li><li>Stratum granulosum</li><li>Stratum spinosum</li></ol><div class="ans show"><b>Answer: B.</b> The basale sits on the blood-supplied dermis and is the only layer with substantial mitotic activity.<span class="ref">Module 3 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q21.</b> As keratinocytes migrate from the basale to the corneum, they:</summary><ol class="opts" type="A"><li>Enlarge and become more active</li><li>Gain organelles and increase in volume</li><li class="key">Flatten, fill with keratin and die</li><li>Begin dividing rapidly by mitosis</li><li>Become melanocytes and make pigment</li></ol><div class="ans show"><b>Answer: C.</b> The outer layer is a sheet of dead, keratin-packed flattened cells forming a waterproof barrier.<span class="ref">Module 3 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q22.</b> Why is the epidermis avascular?</summary><ol class="opts" type="A"><li>It has no metabolic need for either nutrients or oxygen</li><li>Blood vessels would interfere with keratin formation</li><li>It is dead tissue at every level, so needs no supply</li><li class="key">It receives nutrients by diffusion from the dermis below</li><li>Its cells manufacture their own glucose and oxygen</li></ol><div class="ans show"><b>Answer: D.</b> Vessels live in the dermis; the epidermis is fed by diffusion, which is one reason its outer cells die.<span class="ref">Module 3 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q23.</b> Which skin layer contains blood vessels, nerve endings, hair follicles and glands?</summary><ol class="opts" type="A"><li>Epidermis</li><li>Stratum corneum</li><li>Stratum basale</li><li>Stratum lucidum</li><li class="key">Dermis</li></ol><div class="ans show"><b>Answer: E.</b> The dermis is the vascular, innervated connective tissue layer beneath the epidermis.<span class="ref">Module 3 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q24.</b> The role of dermal blood vessels in temperature regulation is to:</summary><ol class="opts" type="A"><li class="key">Dilate to release heat and constrict to conserve it</li><li>Produce sweat that evaporates from the skin surface</li><li>Generate keratin to thicken the outer barrier</li><li>Synthesize melanin to shade the deeper layers</li><li>Store fat as an insulating subcutaneous layer</li></ol><div class="ans show"><b>Answer: A.</b> Changing dermal blood flow changes how much heat is lost at the surface.<span class="ref">Module 3 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q25.</b> Sebaceous glands secrete sebum, which serves to:</summary><ol class="opts" type="A"><li>Cool the body by evaporating water from the skin surface</li><li class="key">Lubricate skin and hair and provide antimicrobial protection</li><li>Produce vitamin D by converting cholesterol in the skin</li><li>Store surplus energy as triglyceride for later metabolic use</li><li>Detect light touch and pressure changes at the skin surface</li></ol><div class="ans show"><b>Answer: B.</b> Sebum conditions skin and hair and has mild antibacterial properties.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q26.</b> A gland that releases its product by rupturing the entire cell uses which mode of secretion?</summary><ol class="opts" type="A"><li>Merocrine</li><li>Apocrine</li><li class="key">Holocrine</li><li>Endocrine</li><li>Paracrine</li></ol><div class="ans show"><b>Answer: C.</b> Holocrine secretion destroys the cell in the process — the mechanism used by sebaceous glands.<span class="ref">Module 3 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q27.</b> Merocrine (eccrine) sweat glands release secretions by:</summary><ol class="opts" type="A"><li>Complete rupture of the secretory cell</li><li>Pinching off the apical part of the cell</li><li>Simple diffusion through the plasma membrane</li><li class="key">Exocytosis with the cell remaining intact</li><li>Endocytosis of fluid from the duct lumen</li></ol><div class="ans show"><b>Answer: D.</b> Merocrine secretion is the least destructive mode — the cell stays intact and keeps functioning.<span class="ref">Module 3 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which layer of skin is composed largely of adipose tissue and anchors skin to underlying structures?</summary><ol class="opts" type="A"><li>Epidermis, the outer layer</li><li>Dermis (papillary layer)</li><li>Stratum corneum (keratinized)</li><li>Basement membrane of epithelium</li><li class="key">Hypodermis (subcutaneous)</li></ol><div class="ans show"><b>Answer: E.</b> The hypodermis insulates, cushions and attaches the skin to muscle and bone.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q29.</b> Melanin is produced by:</summary><ol class="opts" type="A"><li class="key">Melanocytes</li><li>Keratinocytes</li><li>Langerhans cells</li><li>Merkel cells</li><li>Fibroblasts</li></ol><div class="ans show"><b>Answer: A.</b> Melanocytes sit in the stratum basale and transfer melanin granules to nearby keratinocytes.<span class="ref">Module 3 live-class deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q30.</b> The protective function of melanin is to:</summary><ol class="opts" type="A"><li>Insulate the body against cold environments</li><li class="key">Absorb ultraviolet radiation and shield DNA</li><li>Produce vitamin D from sunlight exposure</li><li>Reduce water loss across the skin surface</li><li>Provide mechanical strength to the dermis</li></ol><div class="ans show"><b>Answer: B.</b> Melanin caps the nucleus of keratinocytes, absorbing UV before it can damage DNA.<span class="ref">Module 3 live-class deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q31.</b> Which wavelength of ultraviolet light initiates vitamin D synthesis in the skin?</summary><ol class="opts" type="A"><li>UVA</li><li>UVC</li><li class="key">UVB</li><li>Infrared</li><li>Visible light</li></ol><div class="ans show"><b>Answer: C.</b> UVB converts 7-dehydrocholesterol in the epidermis into cholecalciferol.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q32.</b> Place the vitamin D pathway in correct order:</summary><ol class="opts" type="A"><li>Liver → skin → kidney</li><li>Kidney → liver → skin</li><li>Skin → kidney → liver</li><li class="key">Skin → liver → kidney</li><li>Liver → kidney → skin</li></ol><div class="ans show"><b>Answer: D.</b> UVB acts on the SKIN, the LIVER makes calcidiol, and the KIDNEY makes active calcitriol.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q33.</b> The active form of vitamin D is:</summary><ol class="opts" type="A"><li>Cholecalciferol</li><li>Calcidiol</li><li>7-dehydrocholesterol</li><li>Ergosterol</li><li class="key">Calcitriol</li></ol><div class="ans show"><b>Answer: E.</b> Calcitriol is the final, hormonally active product formed in the kidney.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q34.</b> The principal physiological action of activated vitamin D is to:</summary><ol class="opts" type="A"><li class="key">Increase intestinal calcium absorption</li><li>Increase melanin production in the basale</li><li>Stimulate hair growth from the follicles</li><li>Reduce sweating from eccrine sweat glands</li><li>Thicken the epidermis by adding keratin</li></ol><div class="ans show"><b>Answer: A.</b> Calcitriol raises blood calcium chiefly by increasing calcium uptake from the gut.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q35.</b> A patient with chronic kidney disease develops bone weakness. The most likely mechanism is:</summary><ol class="opts" type="A"><li>Excess melanin blocking ultraviolet light and intestinal calcium uptake</li><li class="key">Failure to convert calcidiol to calcitriol, reducing calcium absorption</li><li>Overproduction of sebum by holocrine sebaceous glands in the skin</li><li>Loss of the stratum corneum, allowing body water to escape freely</li><li>Excess UVB exposure driving overproduction of activated vitamin D</li></ol><div class="ans show"><b>Answer: B.</b> The final activation step occurs in the kidney, so renal failure impairs calcium absorption and weakens bone.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q36.</b> Very darkly pigmented skin in a low-sunlight climate carries an increased risk of:</summary><ol class="opts" type="A"><li>Melanoma</li><li>Dehydration</li><li class="key">Vitamin D deficiency</li><li>Hyperkeratosis</li><li>Excess calcium absorption</li></ol><div class="ans show"><b>Answer: C.</b> Melanin absorbs UVB, so more pigment means less vitamin D synthesis per unit of sun exposure.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q37.</b> Which epithelium would you expect where filtration occurs in the kidney?</summary><ol class="opts" type="A"><li>Stratified squamous</li><li>Transitional</li><li>Simple columnar</li><li class="key">Simple squamous</li><li>Pseudostratified</li></ol><div class="ans show"><b>Answer: D.</b> Thin simple squamous epithelium permits rapid filtration.<span class="ref">Module 3 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q38.</b> The basement membrane functions to:</summary><ol class="opts" type="A"><li>Produce mucus to lubricate the epithelial surface</li><li>Generate ATP for the metabolism of epithelial cells</li><li>Contract to change the shape of the organ wall</li><li>Transmit nerve impulses to and from the epidermis</li><li class="key">Anchor epithelium to underlying connective tissue</li></ol><div class="ans show"><b>Answer: E.</b> It is a supportive layer between epithelium and connective tissue.<span class="ref">Module 3 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q39.</b> Which is a defining feature of all epithelial tissue?</summary><ol class="opts" type="A"><li class="key">Avascular with a free apical surface</li><li>Rich blood supply within the tissue itself</li><li>Abundant extracellular matrix between cells</li><li>Contractile fibers arranged in parallel</li><li>Myelinated processes for fast conduction</li></ol><div class="ans show"><b>Answer: A.</b> Epithelia are avascular and polarized, fed by diffusion from below.<span class="ref">Module 3 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q40.</b> Tendons attach ____ and are made of ____.</summary><ol class="opts" type="A"><li>bone to bone; dense irregular connective tissue</li><li class="key">muscle to bone; dense regular connective tissue</li><li>muscle to muscle; smooth muscle tissue</li><li>bone to skin; loose areolar connective tissue</li><li>organ to organ; reticular connective tissue</li></ol><div class="ans show"><b>Answer: B.</b> Parallel collagen resists tension along one axis.<span class="ref">Module 3 live-class deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q41.</b> Which cartilage type resists compression in intervertebral discs?</summary><ol class="opts" type="A"><li>Elastic cartilage</li><li>Hyaline cartilage</li><li class="key">Fibrocartilage</li><li>Reticular cartilage</li><li>Adipose</li></ol><div class="ans show"><b>Answer: C.</b> Fibrocartilage has dense collagen bundles that absorb compressive load.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q42.</b> The stratum corneum contributes to homeostasis chiefly by:</summary><ol class="opts" type="A"><li>Producing vitamin D from ultraviolet exposure</li><li>Sensing pressure through encapsulated receptors</li><li>Generating new skin cells by continuous mitosis</li><li class="key">Forming a waterproof barrier that limits fluid loss</li><li>Storing fat for insulation and mechanical cushioning</li></ol><div class="ans show"><b>Answer: D.</b> Keratin-filled dead cells prevent dehydration and block pathogens.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q43.</b> Which cell in the epidermis participates in immune surveillance?</summary><ol class="opts" type="A"><li>Melanocyte in the stratum basale</li><li>Keratinocyte of the epidermis</li><li>Merkel cell (touch receptor)</li><li>Fibroblast in the dermis</li><li class="key">Langerhans (dendritic) cell</li></ol><div class="ans show"><b>Answer: E.</b> Langerhans cells present antigen to the immune system.<span class="ref">Module 3 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q44.</b> Merkel cells function in:</summary><ol class="opts" type="A"><li class="key">Light touch sensation</li><li>Melanin pigment production</li><li>Immune antigen defense</li><li>Keratin synthesis</li><li>Vitamin D activation</li></ol><div class="ans show"><b>Answer: A.</b> They act as touch receptors at the epidermal-dermal junction.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q45.</b> A deep partial-thickness burn destroys the epidermis and part of the:</summary><ol class="opts" type="A"><li>Hypodermis</li><li class="key">Dermis</li><li>Muscle</li><li>Bone</li><li>Fascia only</li></ol><div class="ans show"><b>Answer: B.</b> Partial-thickness burns extend into but not through the dermis.<span class="ref">Module 3 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q46.</b> Why does skin appear flushed when the body overheats?</summary><ol class="opts" type="A"><li>Melanin production increases sharply</li><li>Sweat glands close to conserve water</li><li class="key">Dermal vessels dilate to release heat</li><li>Keratin thickens the surface layer</li><li>Blood flow to the skin decreases</li></ol><div class="ans show"><b>Answer: C.</b> Vasodilation brings warm blood to the surface for heat loss.<span class="ref">Module 3 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q47.</b> Which describes exocrine secretion accurately?</summary><ol class="opts" type="A"><li>Released directly into the bloodstream</li><li>Stored inside the nucleus until needed</li><li>Produced only by neurons at synapses</li><li class="key">Released through a duct onto a surface</li><li>Always hormonal and always ductless</li></ol><div class="ans show"><b>Answer: D.</b> Exocrine glands use ducts; endocrine glands are ductless.<span class="ref">Lecture Outline, Module 3 — p.20</span></div></details>
+<details class="q"><summary><b>Q48.</b> Serous membranes secrete fluid in order to:</summary><ol class="opts" type="A"><li>Digest food particles in the cavity</li><li>Absorb nutrients from the cavity</li><li>Produce hormones for the bloodstream</li><li>Generate heat through shivering</li><li class="key">Reduce friction between moving organs</li></ol><div class="ans show"><b>Answer: E.</b> Serous fluid lets organs glide within closed cavities.<span class="ref">Module 3 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q49.</b> Vitamin D deficiency in children produces:</summary><ol class="opts" type="A"><li class="key">Rickets, with soft deformed bones</li><li>Osteoporosis, with brittle thin bones</li><li>Psoriasis, with scaly red skin plaques</li><li>Alopecia, with patchy loss of hair</li><li>Vitiligo, with depigmented skin patches</li></ol><div class="ans show"><b>Answer: A.</b> Inadequate calcium absorption prevents proper bone mineralization.<span class="ref">Module 3 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q50.</b> Which best explains why melanin protects against skin cancer?</summary><ol class="opts" type="A"><li>It thickens the epidermis against sunlight</li><li class="key">It absorbs UV before it can damage DNA</li><li>It increases blood flow to the skin surface</li><li>It produces vitamin D from sunlight</li><li>It reduces sweating and water loss</li></ol><div class="ans show"><b>Answer: B.</b> Melanin caps the nucleus and absorbs ultraviolet radiation.<span class="ref">Module 3 live-class deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q51.</b> Goblet cells are most abundant in which epithelium?</summary><ol class="opts" type="A"><li>Stratified squamous of skin and esophagus</li><li>Transitional of the bladder and ureters</li><li class="key">Simple columnar and pseudostratified columnar</li><li>Simple squamous of alveoli and capillaries</li><li>Simple cuboidal of the kidney tubules</li></ol><div class="ans show"><b>Answer: C.</b> They sit within the linings of the digestive and respiratory tracts.<span class="ref">Module 3 live-class deck, slide 6</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

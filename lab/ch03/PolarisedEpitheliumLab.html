@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Polarized Epithelium &mdash; move the pump, reverse the transport</title>
+<meta name="description" content="Poison or relocate the basolateral sodium-potassium pump and watch intracellular sodium, glucose uptake, water flow and the whole direction of transepithelial transport respond.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:12px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.warnbox{border:1px solid var(--line);border-left:5px solid var(--gold);background:#fff;border-radius:10px;padding:11px 13px;margin-top:10px;font-size:12.5px;color:var(--soft);line-height:1.5;}
+.warnbox b{color:var(--gold);}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.94;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);}
+.bars{margin-top:12px;}
+.brow{display:grid;grid-template-columns:96px 1fr 68px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.brow .nm{color:var(--soft);font-weight:700;line-height:1.15;}
+.brow .tr{height:14px;border-radius:7px;background:rgba(0,0,0,.05);overflow:hidden;}
+.brow .fl{height:100%;border-radius:7px;transition:width .3s;}
+.brow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.mini{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.hide{display:none;}
+svg.dia{border:1px solid var(--line);border-radius:12px;background:#fff;}
+.tbl{width:100%;border-collapse:collapse;margin-top:11px;font-size:12.5px;}
+.tbl th,.tbl td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;}
+.tbl th{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.tbl td:first-child{font-weight:700;color:var(--teal-dk);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch03.html">&larr; Module 3</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 3 &middot; Section 2</div>
+  <h1>The Polarized Epithelium</h1>
+  <div class="intro">An epithelial cell is a machine, and its asymmetry is the motor: the <b>Na&#8314;/K&#8314;-ATPase</b> sits basolateral, builds a sodium battery, and every apical transporter spends it. Poison the pump, move it to the apical membrane, or open the tight junction, and watch intracellular sodium, glucose uptake, water flow and the <i>direction</i> of transport all follow. Nothing here pumps water &mdash; find the solute first.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" role="tab" aria-selected="true" class="on">Polarity engine</button>
+        <button id="m2" role="tab" aria-selected="false">Architecture</button>
+        <button id="m3" role="tab" aria-selected="false">Glands</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Scenarios</div>
+        <div class="chips" id="scen"></div>
+
+        <div class="lbl">Where does the Na&#8314;/K&#8314;-ATPase sit?</div>
+        <div class="seg" role="group" aria-label="Pump location">
+          <button id="locB" class="on" type="button">Basolateral<small>Gut, nephron, epidermis</small></button>
+          <button id="locA" type="button">Apical<small>Choroid plexus</small></button>
+        </div>
+
+        <div class="sl">
+          <label for="pump">Pump activity <span class="v" id="pumpV">100%</span></label>
+          <input type="range" id="pump" min="0" max="100" value="100" aria-label="Sodium potassium ATPase activity, 0 to 100 percent">
+        </div>
+        <div class="mini">Drag toward zero to model a cardiac glycoside or ischemic ATP failure.</div>
+
+        <div class="sl">
+          <label for="ter">Tight junction resistance <span class="v" id="terV">80 &Omega;&middot;cm&sup2;</span></label>
+          <input type="range" id="ter" min="0" max="100" value="45" aria-label="Tight junction transepithelial resistance, logarithmic from 5 to 3000 ohm centimeters squared">
+        </div>
+
+        <div class="lbl">Apical transporters &mdash; all of them spend the sodium gradient</div>
+        <button class="tog" id="tSGLT" aria-pressed="true" type="button"><span class="dot"></span><span>SGLT1 <small>2 Na&#8314; in with 1 glucose &mdash; glucose climbs uphill on sodium's back</small></span></button>
+        <button class="tog" id="tNHE" aria-pressed="true" type="button"><span class="dot"></span><span>NHE3 <small>Na&#8314; in, H&#8314; out &mdash; sodium absorption plus acid secretion</small></span></button>
+        <button class="tog" id="tENaC" aria-pressed="false" type="button"><span class="dot"></span><span>ENaC <small>Na&#8314; simply falls through a channel</small></span></button>
+        <button class="tog" id="tAQP" aria-pressed="true" type="button"><span class="dot"></span><span>Aquaporins <small>Water channels &mdash; they conduct, they never pump</small></span></button>
+
+        <div class="sl">
+          <label for="lumGlc">Luminal glucose <span class="v" id="lumGlcV">Present</span></label>
+          <input type="range" id="lumGlc" min="0" max="100" value="100" aria-label="Luminal glucose availability for SGLT1, 0 to 100 percent">
+        </div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Pick an epithelium and read its design</div>
+        <div class="chips" id="arch"></div>
+        <svg id="asvg" class="dia" viewBox="0 0 520 300" role="img" aria-label="Cross-sectional diagram of the selected epithelium showing cell shape, layering and surface specializations"></svg>
+        <div class="mini" id="archHint"></div>
+        <div class="sl hide" id="bladderSl">
+          <label for="bladder">Bladder volume <span class="v" id="bladderV">50 mL</span></label>
+          <input type="range" id="bladder" min="50" max="500" value="50" aria-label="Bladder volume from 50 to 500 milliliters">
+        </div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Exocrine secretion mechanism</div>
+        <div class="seg" role="group" aria-label="Secretion mechanism">
+          <button id="gM" class="on" type="button">Merocrine<small>Exocytosis</small></button>
+          <button id="gA" type="button">Apocrine<small>Apical fragment</small></button>
+          <button id="gH" type="button">Holocrine<small>Whole cell</small></button>
+        </div>
+        <svg id="gsvg" class="dia" viewBox="0 0 520 300" style="margin-top:12px" role="img" aria-label="Animated diagram of a secretory cell releasing product by the selected mechanism"></svg>
+        <div class="mini">The cell is redrawn each cycle. Watch what happens to the cell itself, not just the product.</div>
+        <div class="lbl">Duct or no duct?</div>
+        <table class="tbl">
+          <thead><tr><th>Gland</th><th>Route</th><th>Signal character</th></tr></thead>
+          <tbody>
+            <tr><td>Endocrine</td><td>No duct &mdash; interstitium, then blood</td><td>Slow (seconds to hours), broadcast, terminated by metabolism</td></tr>
+            <tr><td>Exocrine</td><td>Duct to a surface</td><td>Local, fast, high volume &mdash; salivary 1&ndash;1.5 L/day, pancreas 1&ndash;1.5 L/day of bicarbonate-rich juice</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <svg id="svg" viewBox="0 0 520 360" role="img" aria-label="Diagram of a polarized epithelial cell with lumen above and blood below, showing the sodium potassium pump, apical transporters, tight junctions and the direction of net water movement"></svg>
+      <div class="stats" id="stats"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <div class="bars" id="bars"></div>
+      <div class="infobox" id="info"></div>
+      <div class="warnbox"><b>Pearl.</b> &ldquo;Active transport of water&rdquo; does not exist. When you read that a segment &ldquo;absorbs water,&rdquo; translate it immediately into which solute was moved and where the osmotic gradient it created points. That habit will save you in the renal and gastrointestinal modules.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+function css(v){var s=getComputedStyle(document.documentElement).getPropertyValue(v).trim();return s;}
+var C={teal:css('--teal')||'#1f5b73',tealdk:css('--teal-dk')||'#0f3040',coral:css('--coral')||'#d1495b',
+  line:css('--line')||'#ebe3d5',muted:css('--muted')||'#8d8270',blue:css('--blue')||'#2f6f9f',
+  green:css('--green')||'#2f9e5b',gold:css('--gold')||'#b8862f',soft:css('--soft')||'#5f5340',
+  purple:css('--purple')||'#7a5a8a'};
+
+var S={loc:'baso',pump:100,ter:45,sglt:true,nhe:true,enac:false,aqp:true,glc:100};
+var mode=1, phase=0;
+
+/* ---------------- model ---------------- */
+function terOhm(){ return 5*Math.pow(600,S.ter/100); }
+function model(){
+  var a=S.pump/100;
+  var naI=140/(1+10.7*a);                       /* 12 mmol/L at full pump, 140 with none */
+  var vm=-70*(0.25+0.75*a);                     /* membrane potential collapses with the pump */
+  var eNa= naI>0 ? 61.5*Math.log(140/naI)/Math.LN10 : 0;
+  var df = Math.max(0, -(vm-eNa));              /* inward driving force on Na, mV */
+  var dfMax=135.6;
+  var carriers=(S.sglt?1:0)+(S.nhe?1:0)+(S.enac?1:0);
+  var glcFlux = (S.sglt? Math.pow(df/dfMax,1.6)*(S.glc/100) : 0);
+  var naFlux  = (carriers? Math.pow(df/dfMax,1.2)*(carriers/2)*(S.sglt?(0.4+0.6*S.glc/100):1) : 0);
+  var soluteFlux = 0.55*naFlux + 0.45*glcFlux;
+  var R=terOhm();
+  var backleak = Math.min(0.95, 10/R);           /* leaky junction lets the gradient bleed back */
+  var netSolute = soluteFlux*(1-0.55*backleak);
+  var water = netSolute*(S.aqp?1:0.35) + netSolute*backleak*0.5;
+  var maxRatio = Math.pow(10, 2*df/61.5);        /* SGLT1 stoichiometry: 2 Na per glucose */
+  return {a:a,naI:naI,vm:vm,df:df,glcFlux:glcFlux,naFlux:naFlux,net:netSolute,water:water,R:R,
+          backleak:backleak,maxRatio:maxRatio,carriers:carriers};
+}
+
+/* ---------------- scenarios ---------------- */
+var SCEN=[
+  {n:'Small intestine, fed',s:{loc:'baso',pump:100,ter:45,sglt:true,nhe:true,enac:false,aqp:true,glc:100}},
+  {n:'Pump inhibited',s:{loc:'baso',pump:12,ter:45,sglt:true,nhe:true,enac:false,aqp:true,glc:100}},
+  {n:'Choroid plexus (apical pump)',s:{loc:'apic',pump:100,ter:88,sglt:false,nhe:true,enac:false,aqp:true,glc:0}},
+  {n:'Cholera: water without salt or sugar',s:{loc:'baso',pump:100,ter:20,sglt:true,nhe:false,enac:false,aqp:true,glc:0}},
+  {n:'Cholera: oral rehydration solution',s:{loc:'baso',pump:100,ter:20,sglt:true,nhe:false,enac:false,aqp:true,glc:100}},
+  {n:'Collecting duct (tight, ENaC)',s:{loc:'baso',pump:100,ter:100,sglt:false,nhe:false,enac:true,aqp:true,glc:0}}
+];
+(function(){
+  var h='';
+  for(var i=0;i<SCEN.length;i++) h+='<button class="chip" type="button" data-i="'+i+'">'+SCEN[i].n+'</button>';
+  $('scen').innerHTML=h;
+  $('scen').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    var s=SCEN[+b.dataset.i].s;
+    for(var k in s){ if(Object.prototype.hasOwnProperty.call(s,k)) S[k]=s[k]; }
+    sync();
+  });
+})();
+
+function sync(){
+  $('pump').value=S.pump; $('ter').value=S.ter; $('lumGlc').value=S.glc;
+  $('pumpV').textContent=S.pump+'%';
+  var R=terOhm(); $('terV').textContent=(R<10?R.toFixed(1):Math.round(R))+' Ω·cm²';
+  $('lumGlcV').textContent = S.glc>66?'Present':(S.glc>15?'Sparse':'Absent');
+  $('locB').classList.toggle('on',S.loc==='baso'); $('locA').classList.toggle('on',S.loc==='apic');
+  $('tSGLT').setAttribute('aria-pressed',S.sglt?'true':'false');
+  $('tNHE').setAttribute('aria-pressed',S.nhe?'true':'false');
+  $('tENaC').setAttribute('aria-pressed',S.enac?'true':'false');
+  $('tAQP').setAttribute('aria-pressed',S.aqp?'true':'false');
+  render();
+}
+$('pump').addEventListener('input',function(){S.pump=+this.value;sync();});
+$('ter').addEventListener('input',function(){S.ter=+this.value;sync();});
+$('lumGlc').addEventListener('input',function(){S.glc=+this.value;sync();});
+$('locB').addEventListener('click',function(){S.loc='baso';sync();});
+$('locA').addEventListener('click',function(){S.loc='apic';sync();});
+$('tSGLT').addEventListener('click',function(){S.sglt=!S.sglt;sync();});
+$('tNHE').addEventListener('click',function(){S.nhe=!S.nhe;sync();});
+$('tENaC').addEventListener('click',function(){S.enac=!S.enac;sync();});
+$('tAQP').addEventListener('click',function(){S.aqp=!S.aqp;sync();});
+
+/* ---------------- mode tabs ---------------- */
+function setMode(n){
+  mode=n;
+  [1,2,3].forEach(function(k){
+    $('m'+k).classList.toggle('on',k===n); $('m'+k).setAttribute('aria-selected',k===n?'true':'false');
+    $('p'+k).classList.toggle('hide',k!==n);
+  });
+  render();
+}
+$('m1').addEventListener('click',function(){setMode(1);});
+$('m2').addEventListener('click',function(){setMode(2);});
+$('m3').addEventListener('click',function(){setMode(3);});
+
+/* ---------------- cell diagram ---------------- */
+function dot(x,y,r,f,op){ return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'" fill="'+f+'" opacity="'+(op===undefined?1:op)+'"/>'; }
+function drawCell(){
+  var m=model(), s=[], W=520;
+  var lumTop=22, lumH=64, cellTop=lumTop+lumH, cellH=176, botTop=cellTop+cellH, botH=64;
+  var cx0=60, cw=400;
+  s.push('<rect x="0" y="0" width="520" height="360" fill="#fff"/>');
+  /* lumen */
+  s.push('<rect x="0" y="'+lumTop+'" width="520" height="'+lumH+'" fill="rgba(47,111,159,.10)"/>');
+  s.push('<text x="12" y="'+(lumTop+17)+'" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.blue+'">APICAL &middot; LUMEN</text>');
+  /* blood */
+  s.push('<rect x="0" y="'+botTop+'" width="520" height="'+botH+'" fill="rgba(209,73,91,.10)"/>');
+  s.push('<text x="12" y="'+(botTop+19)+'" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.coral+'">BASOLATERAL &middot; INTERSTITIUM &amp; BLOOD</text>');
+  /* cell */
+  s.push('<rect x="'+cx0+'" y="'+cellTop+'" width="'+cw+'" height="'+cellH+'" rx="12" fill="rgba(31,91,115,.08)" stroke="'+C.teal+'" stroke-width="2.5"/>');
+  /* microvilli */
+  for(var i=0;i<22;i++){ s.push('<rect x="'+(cx0+8+i*17.6)+'" y="'+(cellTop-11)+'" width="6" height="12" rx="3" fill="'+C.teal+'" opacity=".55"/>'); }
+  /* basement membrane */
+  s.push('<rect x="'+(cx0-16)+'" y="'+(cellTop+cellH+2)+'" width="'+(cw+32)+'" height="7" rx="3.5" fill="'+C.gold+'"/>');
+  /* neighbor stubs + tight junctions */
+  s.push('<rect x="6" y="'+cellTop+'" width="'+(cx0-16)+'" height="'+cellH+'" rx="10" fill="rgba(31,91,115,.05)" stroke="'+C.line+'" stroke-width="2"/>');
+  s.push('<rect x="'+(cx0+cw+10)+'" y="'+cellTop+'" width="'+(514-(cx0+cw+10))+'" height="'+cellH+'" rx="10" fill="rgba(31,91,115,.05)" stroke="'+C.line+'" stroke-width="2"/>');
+  var tjH=Math.max(5,4+11*(Math.log(m.R/5)/Math.log(600)));
+  s.push('<rect x="'+(cx0-18)+'" y="'+cellTop+'" width="20" height="'+tjH+'" rx="2.5" fill="'+C.coral+'"/>');
+  s.push('<rect x="'+(cx0+cw-2)+'" y="'+cellTop+'" width="20" height="'+tjH+'" rx="2.5" fill="'+C.coral+'"/>');
+  s.push('<text x="'+(cx0-20)+'" y="'+(cellTop-16)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.coral+'">TJ</text>');
+
+  /* paracellular leak */
+  if(m.backleak>0.06){
+    var n=Math.round(1+m.backleak*5);
+    for(var p=0;p<n;p++){
+      var yy=cellTop+((phase*2.2+p*30)%cellH);
+      s.push(dot(cx0-8,yy,4,C.blue,.75));
+      s.push(dot(cx0+cw+8,yy,4,C.blue,.75));
+    }
+    s.push('<text x="260" y="'+(cellTop+cellH+26)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.blue+'">paracellular back-leak</text>');
+  }
+
+  /* pump */
+  var pumpY = (S.loc==='baso') ? cellTop+cellH-13 : cellTop-13;
+  var pumpX = 120;
+  var pAlpha=0.25+0.75*m.a;
+  s.push('<rect x="'+pumpX+'" y="'+pumpY+'" width="86" height="26" rx="9" fill="'+C.tealdk+'" opacity="'+pAlpha+'"/>');
+  s.push('<text x="'+(pumpX+43)+'" y="'+(pumpY+17)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="#fff">Na/K ATPase</text>');
+  /* 3 Na out, 2 K in */
+  var outDir = (S.loc==='baso') ? 1 : -1;
+  for(var q=0;q<3;q++){
+    var t=((phase*0.9+q*22)%66)/66;
+    s.push(dot(pumpX+16+q*11, pumpY+13+outDir*(6+t*30), 5, C.coral, m.a*0.9));
+  }
+  for(var r2=0;r2<2;r2++){
+    var t2=((phase*0.9+r2*30)%66)/66;
+    s.push(dot(pumpX+58+r2*13, pumpY+13+outDir*(36-t2*30), 5, C.purple, m.a*0.9));
+  }
+  s.push('<text x="'+(pumpX+43)+'" y="'+(pumpY+(S.loc==='baso'?58:-16))+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+C.soft+'">3 Na&#8314; out &middot; 2 K&#8314; in</text>');
+
+  /* apical transporters (drawn on the membrane opposite the pump for the classic case) */
+  var apY=cellTop-13, tx=250;
+  function trans(x,label,col,on,dirIn){
+    var o=on?1:0.18;
+    s.push('<rect x="'+x+'" y="'+apY+'" width="66" height="26" rx="9" fill="'+col+'" opacity="'+o+'"/>');
+    s.push('<text x="'+(x+33)+'" y="'+(apY+17)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="#fff" opacity="'+(on?1:.4)+'">'+label+'</text>');
+    if(on && m.df>8){
+      for(var z=0;z<2;z++){
+        var tt=((phase*1.3+z*26)%52)/52;
+        s.push(dot(x+16+z*30, apY+13-(dirIn?1:-1)*(24-tt*30), 5, dirIn?C.coral:C.green, .9));
+      }
+    }
+  }
+  trans(tx,'SGLT1',C.teal,S.sglt,true);
+  trans(tx+80,'NHE3',C.teal,S.nhe,true);
+  trans(tx-84,'ENaC',C.teal,S.enac,true);
+
+  /* water arrow */
+  var absorb = (S.loc==='baso');
+  var wcol=C.blue, wy1= absorb? cellTop-4 : cellTop+cellH+4, wy2= absorb? cellTop+cellH+34 : cellTop-34;
+  var mag=Math.min(1,m.water);
+  if(mag>0.03){
+    s.push('<line x1="470" y1="'+wy1+'" x2="470" y2="'+wy2+'" stroke="'+wcol+'" stroke-width="'+(3+7*mag)+'" stroke-linecap="round" opacity=".85"/>');
+    var ax=470, ay=wy2, dirr=absorb?1:-1;
+    s.push('<path d="M'+(ax-9)+','+(ay-dirr*13)+' L'+ax+','+ay+' L'+(ax+9)+','+(ay-dirr*13)+'" fill="none" stroke="'+wcol+'" stroke-width="'+(3+5*mag)+'" stroke-linecap="round" stroke-linejoin="round"/>');
+    s.push('<text x="470" y="'+(cellTop+cellH/2)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+wcol+'" transform="rotate(-90 470 '+(cellTop+cellH/2)+')">H&#8322;O follows solute</text>');
+  }
+
+  /* intracellular sodium cloud */
+  var nDots=Math.round(3+m.naI/6);
+  for(var d2=0;d2<nDots;d2++){
+    var ang=(d2*2.399+phase*0.02);
+    var rr=18+((d2*37)%1)*0+ (d2%7)*11;
+    s.push(dot(cx0+cw/2+Math.cos(ang)*(30+rr*1.4), cellTop+cellH/2+Math.sin(ang)*(20+rr*0.6), 4.2, C.coral, .55));
+  }
+  s.push('<text x="'+(cx0+cw/2)+'" y="'+(cellTop+cellH/2+5)+'" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="19" font-weight="700" fill="'+C.tealdk+'">[Na&#8314;]&#7522; '+m.naI.toFixed(0)+' mM</text>');
+  s.push('<text x="'+(cx0+cw/2)+'" y="'+(cellTop+cellH/2+24)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="'+C.muted+'">V&#7396; '+m.vm.toFixed(0)+' mV</text>');
+  $('svg').innerHTML=s.join('');
+}
+
+/* ---------------- architecture ---------------- */
+var ARCH=[
+  {n:'Simple squamous',feat:'Minimum thickness (T)',con:'Maximal diffusive flux; fragile',site:'Alveolus, capillary endothelium',
+   num:'Type I cell + fused basement membrane + endothelium totals 0.2&ndash;0.6 &micro;m',k:'sq'},
+  {n:'Simple columnar + microvilli',feat:'Maximum area (A)',con:'High-capacity absorption',site:'Small intestine, proximal tubule',
+   num:'Microvilli multiply apical area roughly twentyfold',k:'col'},
+  {n:'Stratified squamous keratinized',feat:'Many layers, dead surface',con:'Abrasion and water barrier; no transport',site:'Epidermis',
+   num:'Transport is sacrificed entirely for protection',k:'str'},
+  {n:'Pseudostratified ciliated',feat:'Cilia plus mucus',con:'Directional particle clearance',site:'Trachea, bronchi',
+   num:'Cilia beat at 8&ndash;20 Hz, moving mucus 5&ndash;10 mm per minute toward the pharynx',k:'ps'},
+  {n:'Transitional (urothelium)',feat:'Umbrella cells, membrane reserve',con:'Distension without leak',site:'Bladder, ureter',
+   num:'Distends from about 50 mL to 500 mL while holding urine up to four times more concentrated than plasma',k:'tr'}
+];
+var archI=0;
+(function(){
+  var h='';
+  for(var i=0;i<ARCH.length;i++) h+='<button class="chip'+(i===0?' on':'')+'" type="button" data-i="'+i+'">'+ARCH[i].n+'</button>';
+  $('arch').innerHTML=h;
+  $('arch').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    archI=+b.dataset.i;
+    var cs=$('arch').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===archI);
+    $('bladderSl').classList.toggle('hide',ARCH[archI].k!=='tr');
+    render();
+  });
+})();
+$('bladder').addEventListener('input',function(){ $('bladderV').textContent=this.value+' mL'; drawArch(); });
+
+function drawArch(){
+  var A=ARCH[archI], s=[], k=A.k;
+  s.push('<rect x="0" y="0" width="520" height="300" fill="#fff"/>');
+  s.push('<rect x="0" y="0" width="520" height="46" fill="rgba(47,111,159,.10)"/>');
+  s.push('<text x="12" y="28" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.blue+'">LUMEN / OUTSIDE</text>');
+  var bm=246;
+  s.push('<rect x="10" y="'+bm+'" width="500" height="8" rx="4" fill="'+C.gold+'"/>');
+  s.push('<text x="510" y="'+(bm+26)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="'+C.gold+'">basement membrane</text>');
+  var i,j;
+  if(k==='sq'){
+    for(i=0;i<8;i++) s.push('<rect x="'+(14+i*62)+'" y="'+(bm-15)+'" width="58" height="15" rx="6" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="1.6"/>');
+    s.push('<line x1="26" y1="60" x2="26" y2="'+(bm-15)+'" stroke="'+C.coral+'" stroke-width="2" stroke-dasharray="6,5"/>');
+    s.push('<text x="36" y="150" font-family="Fraunces,Georgia,serif" font-size="19" font-weight="700" fill="'+C.coral+'">T is as small as biology allows</text>');
+    s.push('<text x="36" y="176" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="'+C.soft+'">0.2&ndash;0.6 &micro;m from air to blood</text>');
+  } else if(k==='col'){
+    for(i=0;i<7;i++){
+      var x=16+i*70;
+      s.push('<rect x="'+x+'" y="'+(bm-140)+'" width="64" height="140" rx="8" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="1.8"/>');
+      s.push('<circle cx="'+(x+32)+'" cy="'+(bm-32)+'" r="14" fill="'+C.tealdk+'" opacity=".45"/>');
+      for(j=0;j<9;j++) s.push('<rect x="'+(x+3+j*6.8)+'" y="'+(bm-140-((phase%14)>7?18:20))+'" width="3.6" height="'+((phase%14)>7?18:20)+'" rx="1.8" fill="'+C.teal+'" opacity=".7"/>');
+    }
+    s.push('<text x="260" y="'+(bm-160)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.teal+'">brush border &mdash; A multiplied about twentyfold</text>');
+  } else if(k==='str'){
+    var rows=[[8,20],[7,22],[6,24],[5,26]];
+    for(i=0;i<4;i++){
+      for(j=0;j<9;j++) s.push('<rect x="'+(14+j*55)+'" y="'+(bm-30-i*34)+'" width="52" height="30" rx="7" fill="rgba(31,91,115,'+(0.05+i*0.02)+')" stroke="'+C.teal+'" stroke-width="1.5"/>');
+    }
+    for(j=0;j<11;j++) s.push('<rect x="'+(10+j*46)+'" y="'+(bm-172)+'" width="42" height="11" rx="4" fill="'+C.gold+'" opacity=".55"/>');
+    for(j=0;j<11;j++) s.push('<rect x="'+(10+j*46)+'" y="'+(bm-186)+'" width="42" height="11" rx="4" fill="'+C.gold+'" opacity=".8"/>');
+    s.push('<text x="260" y="'+(bm-198)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.gold+'">dead, keratinized surface &mdash; barrier, not transport</text>');
+  } else if(k==='ps'){
+    for(i=0;i<8;i++){
+      var xx=16+i*62, tall=(i%2===0);
+      s.push('<rect x="'+xx+'" y="'+(bm-(tall?132:96))+'" width="56" height="'+(tall?132:96)+'" rx="8" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="1.7"/>');
+      s.push('<circle cx="'+(xx+28)+'" cy="'+(bm-(tall?40:26))+'" r="12" fill="'+C.tealdk+'" opacity=".45"/>');
+      if(tall){ for(j=0;j<7;j++){
+        var bend=Math.sin(phase*0.35+i*0.7+j*0.4)*7;
+        s.push('<path d="M'+(xx+5+j*7.5)+','+(bm-132)+' q'+bend+',-11 '+(bend*1.4)+',-21" stroke="'+C.teal+'" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/>');
+      } }
+    }
+    var mx=(phase*3)%560;
+    s.push('<rect x="'+(mx-120)+'" y="46" width="120" height="22" rx="11" fill="'+C.green+'" opacity=".45"/>');
+    s.push('<text x="260" y="86" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.green+'">mucus blanket traveling 5&ndash;10 mm/min toward the pharynx</text>');
+  } else {
+    var vol=+$('bladder').value, f=(vol-50)/450;
+    var uh=44-30*f, nCells=Math.round(4+5*f), cwid=(496/nCells)-6;
+    for(i=0;i<nCells;i++) s.push('<rect x="'+(12+i*(cwid+6))+'" y="'+(bm-40-uh)+'" width="'+cwid+'" height="'+uh+'" rx="'+(7-3*f)+'" fill="rgba(31,91,115,.12)" stroke="'+C.teal+'" stroke-width="1.8"/>');
+    for(i=0;i<7;i++) s.push('<rect x="'+(14+i*71)+'" y="'+(bm-40)+'" width="66" height="38" rx="8" fill="rgba(31,91,115,.07)" stroke="'+C.teal+'" stroke-width="1.5"/>');
+    s.push('<text x="260" y="'+(bm-56-uh)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.teal+'">umbrella cells flatten &mdash; membrane reserve unfolds, seal holds</text>');
+    s.push('<text x="260" y="'+(bm-30-uh)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="'+C.muted+'">'+vol+' mL</text>');
+  }
+  $('asvg').innerHTML=s.join('');
+  $('archHint').innerHTML='<b>'+A.feat+'</b> &rarr; '+A.con+'. '+A.num+'. Seen in: '+A.site+'.';
+}
+
+/* ---------------- glands ---------------- */
+var gMode='m';
+function setG(k){ gMode=k; $('gM').classList.toggle('on',k==='m'); $('gA').classList.toggle('on',k==='a'); $('gH').classList.toggle('on',k==='h'); render(); }
+$('gM').addEventListener('click',function(){setG('m');});
+$('gA').addEventListener('click',function(){setG('a');});
+$('gH').addEventListener('click',function(){setG('h');});
+
+function drawGland(){
+  var s=[], t=(phase%40)/40;
+  s.push('<rect x="0" y="0" width="520" height="300" fill="#fff"/>');
+  s.push('<rect x="0" y="0" width="520" height="52" fill="rgba(47,111,159,.10)"/>');
+  s.push('<text x="12" y="31" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.blue+'">DUCT LUMEN / SURFACE</text>');
+  s.push('<rect x="10" y="262" width="500" height="8" rx="4" fill="'+C.gold+'"/>');
+  var cx0=176, cw=168, cTop=64, cH=196;
+  if(gMode==='m'){
+    s.push('<rect x="'+cx0+'" y="'+cTop+'" width="'+cw+'" height="'+cH+'" rx="14" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="2.5"/>');
+    s.push('<circle cx="'+(cx0+cw/2)+'" cy="'+(cTop+cH-46)+'" r="20" fill="'+C.tealdk+'" opacity=".45"/>');
+    for(var i=0;i<5;i++){
+      var p=((t+i/5)%1);
+      var y=cTop+120-p*128;
+      s.push('<circle cx="'+(cx0+34+i*26)+'" cy="'+y+'" r="'+(9-3*p)+'" fill="'+C.green+'" opacity="'+(0.85-0.25*p)+'"/>');
+    }
+    s.push('<text x="260" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.green+'">Cell fully intact &mdash; eccrine sweat gland, pancreatic acinus</text>');
+  } else if(gMode==='a'){
+    var pinch=Math.sin(t*6.2832)*0.5+0.5;
+    s.push('<rect x="'+cx0+'" y="'+(cTop+22*pinch)+'" width="'+cw+'" height="'+(cH-22*pinch)+'" rx="14" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="2.5"/>');
+    s.push('<circle cx="'+(cx0+cw/2)+'" cy="'+(cTop+cH-46)+'" r="20" fill="'+C.tealdk+'" opacity=".45"/>');
+    s.push('<ellipse cx="'+(cx0+cw/2)+'" cy="'+(cTop+18-46*pinch)+'" rx="'+(54-14*pinch)+'" ry="'+(20-6*pinch)+'" fill="'+C.purple+'" opacity="'+(0.85-0.35*pinch)+'"/>');
+    s.push('<text x="260" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.purple+'">An apical fragment of cytoplasm leaves with the product &mdash; axillary apocrine, mammary lipid</text>');
+  } else {
+    var stage=(phase%60)/60;
+    if(stage<0.55){
+      var fill=stage/0.55;
+      s.push('<rect x="'+cx0+'" y="'+cTop+'" width="'+cw+'" height="'+cH+'" rx="14" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="2.5"/>');
+      s.push('<circle cx="'+(cx0+cw/2)+'" cy="'+(cTop+cH-46)+'" r="'+(20-10*fill)+'" fill="'+C.tealdk+'" opacity="'+(0.45-0.3*fill)+'"/>');
+      for(var d=0;d<Math.round(fill*13);d++){
+        s.push('<circle cx="'+(cx0+26+((d*47)%(cw-52)))+'" cy="'+(cTop+30+((d*61)%(cH-60)))+'" r="'+(9+((d*7)%5))+'" fill="'+C.gold+'" opacity=".8"/>');
+      }
+      s.push('<text x="260" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.gold+'">The cell fills with lipid&hellip;</text>');
+    } else {
+      var burst=(stage-0.55)/0.45;
+      for(var b=0;b<18;b++){
+        var ang=b*0.349, rr=burst*140;
+        s.push('<circle cx="'+(cx0+cw/2+Math.cos(ang)*rr)+'" cy="'+(cTop+cH/2-Math.sin(ang)*rr*0.9)+'" r="'+(9*(1-burst*0.5))+'" fill="'+C.gold+'" opacity="'+(0.9-0.7*burst)+'"/>');
+      }
+      s.push('<rect x="'+cx0+'" y="'+(cTop+cH-40)+'" width="'+cw+'" height="36" rx="10" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="2" stroke-dasharray="6,5"/>');
+      s.push('<text x="260" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.gold+'">&hellip;then disintegrates entirely. Its own membrane debris <i>is</i> the sebum.</text>');
+    }
+    s.push('<text x="260" y="'+(cTop-16)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="'+C.muted+'">Sebaceous glands must regenerate from a basal population &mdash; block the duct and you get the comedo of acne</text>');
+  }
+  $('gsvg').innerHTML=s.join('');
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  var m=model();
+  if(mode===2){ drawArch(); }
+  if(mode===3){ drawGland(); }
+  drawCell();
+
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Intracellular Na&#8314;</div><div class="v">'+m.naI.toFixed(0)+'</div><div class="u">mmol/L (normal 10&ndash;15)</div></div>'+
+    '<div class="stat"><div class="k">Na&#8314; driving force</div><div class="v">'+m.df.toFixed(0)+'</div><div class="u">mV inward</div></div>'+
+    '<div class="stat"><div class="k">Glucose uptake</div><div class="v">'+Math.round(m.glcFlux*100)+'</div><div class="u">% of normal</div></div>';
+
+  function bar(nm,pct,col,txt){
+    return '<div class="brow"><div class="nm">'+nm+'</div><div class="tr"><div class="fl" style="width:'+Math.max(1,Math.min(100,pct))+'%;background:'+col+'"></div></div><div class="tv">'+txt+'</div></div>';
+  }
+  $('bars').innerHTML=
+    '<div class="lbl" style="margin-top:0">Live fluxes</div>'+
+    bar('Na&#8314; transport',m.naFlux*100,C.coral,Math.round(m.naFlux*100)+'%')+
+    bar('Glucose transport',m.glcFlux*100,C.teal,Math.round(m.glcFlux*100)+'%')+
+    bar('Water flow',m.water*100,C.blue,Math.round(m.water*100)+'%')+
+    bar('Gradient held',(1-m.backleak)*100,C.green,Math.round((1-m.backleak)*100)+'%');
+
+  var v=$('verd'), cls='verdict', txt='';
+  if(S.loc==='apic'){
+    cls='verdict warn';
+    txt='Direction reversed &mdash; this sheet now SECRETES<small>Put the Na&#8314;/K&#8314;-ATPase on the apical membrane, as the choroid plexus does, and the same transporter list runs backwards: sodium is pumped into the lumen, water follows osmotically, and absorption becomes secretion. Polarity, not the transporter list, sets direction.</small>';
+  } else if(m.a<0.25){
+    cls='verdict bad';
+    txt='Battery flat &mdash; secondary active transport is failing<small>Intracellular sodium has risen to '+m.naI.toFixed(0)+' mmol/L, so the inward electrochemical driving force has collapsed from about 136 mV to '+m.df.toFixed(0)+' mV. SGLT1 can only drag glucose uphill while sodium is running downhill; with the gradient gone, glucose uptake falls to '+Math.round(m.glcFlux*100)+'% and water absorption falls with it, because water was never being pumped &mdash; it was following.</small>';
+  } else if(S.glc<15 && S.sglt && !S.nhe && !S.enac){
+    cls='verdict bad';
+    txt='Sodium has nothing to ride in with<small>SGLT1 is present and the pump is running, but with no luminal glucose there is no co-substrate. Absorption stalls even though every protein is intact. This is exactly why oral rehydration solution must contain both salt and sugar.</small>';
+  } else if(m.backleak>0.4){
+    cls='verdict warn';
+    txt='Leaky sheet &mdash; high volume, shallow gradient<small>At '+(m.R<10?m.R.toFixed(1):Math.round(m.R))+' &Omega;&middot;cm&sup2; most of the flow goes between the cells. The epithelium can move enormous volumes but only holds '+Math.round((1-m.backleak)*100)+'% of the gradient it builds. Appropriate for the proximal tubule; useless for concentrating urine.</small>';
+  } else {
+    cls='verdict ok';
+    txt='Net absorption: lumen &rarr; blood<small>The basolateral pump keeps intracellular sodium at '+m.naI.toFixed(0)+' mmol/L against 140 outside and holds V&#7396; near '+m.vm.toFixed(0)+' mV. Apical carriers spend that '+m.df.toFixed(0)+' mV, and water follows the solute they move. SGLT1 could in principle concentrate glucose about '+(m.maxRatio>1000?(m.maxRatio/1000).toFixed(0)+',000':Math.round(m.maxRatio))+'-fold on this gradient.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  var info=$('info');
+  if(mode===2){
+    var A=ARCH[archI];
+    info.innerHTML='<span class="n">'+A.n+'</span><b>Design feature:</b> '+A.feat+'. <b>Consequence:</b> '+A.con+'. '+A.num+'. Shape and layering are functional statements, not labels &mdash; read every epithelium as an answer to J = D &times; A &times; &Delta;C / T.';
+  } else if(mode===3){
+    if(gMode==='m') info.innerHTML='<span class="n">Merocrine (eccrine) secretion</span>Exocytosis with the cell fully intact. This is how eccrine sweat glands and the pancreatic acinus work: vesicles fuse, product leaves, the cell carries on. It is the only one of the three that costs the gland no cells.';
+    else if(gMode==='a') info.innerHTML='<span class="n">Apocrine secretion</span>The cell pinches off an apical fragment of its own cytoplasm along with the product &mdash; the axillary apocrine glands and the lipid droplets of the mammary gland. The cell survives but loses membrane and cytoplasm each cycle and must rebuild them.';
+    else info.innerHTML='<span class="n">Holocrine secretion</span>The sebaceous cell fills with lipid, disintegrates completely, and its own membrane debris becomes the sebum. Because the secretion <i>is</i> the dead cell, the gland must continually regenerate from a basal population &mdash; and blocking its duct produces the comedo of acne.';
+  } else {
+    info.innerHTML='<span class="n">Follow the sodium, and the water follows too</span>The basolateral pump moves 3 Na&#8314; out and 2 K&#8314; in per ATP, holding intracellular sodium near 10&ndash;15 mmol/L against roughly 140 mmol/L outside with a membrane potential near &minus;70 mV. That electrochemical difference is a battery. SGLT1 spends it by letting two Na&#8314; fall in alongside one glucose; NHE3 spends it exchanging Na&#8314; in for H&#8314; out; ENaC simply opens a hole. <b>There is no primary water pump anywhere in the body</b> &mdash; water moves osmotically through aquaporins or between the cells, following the solute that transport has just moved.';
+  }
+}
+
+setInterval(function(){ phase++; render(); },120);
+sync();
+setMode(1);
+})();
+</script>
+</body>
+</html>

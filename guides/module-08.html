@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 8 — The Endocrine System — Receptors &amp; Hormones | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 8 — The Endocrine System — Receptors &amp; Hormones</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit4">
+
+<h2>Module 8 &nbsp;•&nbsp; The Endocrine System — Receptors &amp; Hormones &nbsp;<span class="chip">Exam 4</span></h2>
+<div class="box obj"><ol><li>Compare the different types of receptors and their significance.</li><li>Describe the physiological roles of hormones.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Lipid-soluble hormones → <b>intracellular</b> receptors (slow, long-lasting, alter transcription).</li><li>Ion channel-linked receptors are the <b>fastest</b> (e.g. ACh at the NMJ).</li><li><b>FSH grows the follicle; LH triggers ovulation.</b></li><li>Insulin (beta cells) lowers glucose; glucagon (alpha cells) raises it.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">Receptors decide the speed of everything</h4><div class="read">A hormone can only do what its receptor allows, and receptor type sets the timescale.<br><br>
+<b>Ion channel-linked</b> receptors <i>are</i> channels — binding opens them and ions flow immediately. This
+is the fastest option and it is what the neuromuscular junction uses. <b>G-protein coupled</b> receptors sit
+in the membrane and trigger second messengers inside, which amplifies enormously: one hormone molecule can
+produce thousands of downstream events. <b>Enzyme-linked</b> receptors activate intracellular enzymes.<br><br>
+<b>Intracellular</b> receptors are the outlier. Lipid-soluble hormones — steroids and thyroid hormone —
+cross the membrane and bind receptors inside, and the complex alters gene transcription. That takes hours,
+but the effect lasts. Water-soluble hormones cannot cross, so they must work from the surface. That single
+distinction predicts almost everything about how a hormone behaves.</div>
+<h4 class="topic">Feedback is the whole subject</h4><div class="read">Nearly every endocrine axis is a negative feedback loop with three levels: hypothalamus → pituitary →
+target gland. The hypothalamus releases a releasing hormone, the anterior pituitary releases a tropic
+hormone, the target gland releases the final hormone — and that final hormone shuts off the two above it.<br><br>
+This is why lab interpretation works. High T4 with <b>low</b> TSH means the thyroid is overproducing and
+correctly suppressing the pituitary — primary hyperthyroidism. Students who expect both to move together get
+these questions wrong every time.</div>
+<h4 class="topic">The hormones worth knowing cold</h4><div class="read">Group them by what they defend. <b>Glucose</b>: insulin lowers it (beta cells), glucagon raises it (alpha
+cells). <b>Calcium</b>: PTH raises, calcitonin lowers. <b>Water and salt</b>: ADH keeps water, aldosterone
+keeps sodium. <b>Metabolism</b>: T3 and T4. <b>Stress</b>: cortisol and epinephrine. <b>Reproduction</b>:
+FSH grows the follicle, LH triggers ovulation — the pair most often confused.<br><br>
+For each, learn the trigger and the effect as a sentence, not as two separate facts.</div>
+<h4 class="topic">When the axis breaks</h4><div class="read">Endocrine disease is nearly always too much or too little of one hormone, and the clinical picture is just
+that hormone's normal job turned up or down.<br><br>
+Too much cortisol gives <b>Cushing</b>: high glucose, central weight gain, thin skin, weak bone — cortisol's
+ordinary effects, exaggerated. Too little gives <b>Addison</b>: fatigue, low blood pressure, low sodium, high
+potassium. Too much thyroid hormone speeds everything — weight loss, heat intolerance, fast heart. Too
+little slows everything — weight gain, cold intolerance, slow heart.<br><br>
+This is why you rarely need to memorize symptom lists. Work out what the hormone does, then push it in
+either direction.</div>
+<h4 class="topic">Why steroids must be tapered</h4><div class="read">Give someone cortisol from outside for long enough and their own axis notices. Negative feedback shuts down
+CRH and ACTH, and the adrenal cortex, unused, shrinks.<br><br>
+Stop the drug suddenly and there is now no cortisol from either source — the tablets have gone and the gland
+cannot restart quickly. That is an adrenal crisis: hypotension, shock, potentially death. Tapering gives the
+axis weeks to wake back up. It is negative feedback with real consequences.</div>
+<h4 class="topic">The three signals that make a gland fire</h4><div class="read">Glands do not secrete at random — something has to tell them to. There are only three kinds of trigger, and knowing which one a hormone uses tells you how fast it responds.<br><br>
+<b>Humoral</b> stimuli are changes in a blood value the gland itself measures. Parathyroid cells read falling calcium and release <b>PTH</b>; beta cells read rising glucose and release <b>insulin</b>. <b>Neural</b> stimuli are direct nerve input — sympathetic fibers firing onto the <b>adrenal medulla</b> dump epinephrine into the blood within seconds. <b>Hormonal</b> stimuli are one hormone triggering another, which is the whole hypothalamic-pituitary pattern: a releasing hormone tells the pituitary, the pituitary tells the target gland.<br><br>
+That layering is why your heart races almost instantly in a fright but cortisol, which travels the long hormonal route, takes many minutes to rise.</div>
+<h4 class="topic">Sensory receptors, sorted by what they detect</h4><div class="read">The same word, <b>receptor</b>, covers two different things, and the exam expects both. Hormone receptors are proteins that bind a chemical messenger. <b>Sensory receptors</b> are structures that convert a stimulus into an electrical signal your nervous system can read, and they are classified by what they detect.<br><br>
+<b>Mechanoreceptors</b> respond to physical deformation — touch, stretch, the <b>baroreceptors</b> reading blood pressure, proprioceptors reporting joint position, and the hair cells of hearing and balance. <b>Thermoreceptors</b> detect temperature, <b>nociceptors</b> detect tissue damage as pain, <b>chemoreceptors</b> detect chemicals including taste, smell, blood gases and the <b>osmoreceptors</b> watching blood concentration, and <b>photoreceptors</b> detect light.<br><br>
+Most adapt — you stop noticing your watch within minutes. Nociceptors barely adapt at all, which is why pain keeps shouting until you deal with the cause.</div>
+<h4 class="topic">How a hormone travels sets how long it lasts</h4><div class="read">A hormone reaches every cell, but how it travels depends on whether it dissolves in water or in fat.<br><br>
+<b>Water-soluble</b> hormones — the peptides and the catecholamines — dissolve straight into plasma, cannot cross the fatty cell membrane, and must bind <b>surface receptors</b>. Enzymes, the liver and the kidneys clear them within minutes. <b>Lipid-soluble</b> hormones — the <b>steroids</b> from the adrenal cortex and gonads, plus <b>thyroid hormone</b> — barely dissolve in plasma at all, so they travel bound to carrier proteins with only the small free fraction active. Being fat-soluble, they enter the cell and bind <b>intracellular receptors</b>, changing gene transcription directly.<br><br>
+Bound hormone is a reservoir, so steroid and thyroid half-lives run hours to days — which is why levothyroxine is a single daily tablet while insulin must be redosed or infused.</div>
+<h4 class="topic">Why the same hormone level stops working</h4><div class="read">A hormone circulates everywhere, but only cells with the matching receptor respond — the receptor, not the hormone, defines the target tissue.<br><br>
+Cells adjust that sensitivity. Persistently high hormone levels cause <b>down-regulation</b>: the cell withdraws receptors, so the same level produces less effect. Scarce hormone causes <b>up-regulation</b>, making the cell more sensitive. Type 2 diabetes is that pattern — insulin is present, but the tissues answer weakly, through fewer receptors and faulty internal signaling.<br><br>
+Hormones interact three ways. <b>Permissive</b> means one hormone must be present for another to work fully — epinephrine needs thyroid hormone. <b>Synergistic</b> means two push the same way and amplify each other beyond a simple sum — glucagon, cortisol and epinephrine on blood glucose. <b>Antagonistic</b> means opposition — insulin against glucagon. That is why an untreated hypothyroid patient handles stress badly.</div>
+<h4 class="topic">One pituitary, two completely different glands</h4><div class="read">The pituitary looks like one gland and behaves like two.<br><br>
+The <b>anterior pituitary</b> is true glandular tissue. It manufactures six hormones — <b>GH</b>, <b>TSH</b>, <b>ACTH</b>, <b>FSH</b>, <b>LH</b> and <b>prolactin</b> — controlled by releasing and inhibiting hormones arriving from the hypothalamus down a short private set of portal veins. FSH and LH are not interchangeable: FSH grows ovarian follicles and supports sperm production, while LH triggers ovulation and stimulates testosterone. TSH is pituitary output, not thyroid output — so a low TSH usually means the pituitary stopped shouting because thyroid hormone is already high.<br><br>
+The <b>posterior pituitary</b> manufactures nothing. <b>ADH</b> and <b>oxytocin</b> are made by hypothalamic neurons and stored in their nerve endings — which is why stalk damage can cut ADH off from the bloodstream and cause diabetes insipidus even with the lobe intact.</div>
+<h3>Reference tables</h3>
+<h4>Every receptor type</h4><table><tr><th>Receptor</th><th>Ligand</th><th>Speed</th><th>Effect</th></tr><tr><td>Ion channel-linked</td><td>Neurotransmitter</td><td>Fastest</td><td>Opens a channel directly</td></tr><tr><td>G-protein coupled</td><td>Water-soluble hormone</td><td>Fast</td><td>Second messengers amplify the signal</td></tr><tr><td>Enzyme-linked</td><td>Growth factors, insulin</td><td>Moderate</td><td>Activates intracellular enzymes</td></tr><tr><td>Intracellular</td><td>Lipid-soluble (steroid, thyroid)</td><td>Slow, long-lasting</td><td>Alters gene transcription</td></tr></table>
+<h4>Sensory receptors</h4><table><tr><th>Receptor</th><th>Detects</th></tr><tr><td>Baroreceptor</td><td>Pressure/stretch in vessel walls</td></tr><tr><td>Chemoreceptor</td><td>O₂, CO₂, pH</td></tr><tr><td>Nociceptor</td><td>Tissue damage (pain)</td></tr><tr><td>Mechanoreceptor</td><td>Physical deformation — touch, vibration</td></tr><tr><td>Thermoreceptor</td><td>Temperature</td></tr><tr><td>Photoreceptor</td><td>Light</td></tr></table>
+<h4>Every major hormone</h4><table><tr><th>Hormone</th><th>Source</th><th>Trigger</th><th>Effect</th></tr><tr><td>ADH</td><td>Posterior pituitary</td><td>Dehydration</td><td>Kidney reabsorbs water</td></tr><tr><td>Oxytocin</td><td>Posterior pituitary</td><td>Cervical stretch, suckling</td><td>Uterine contraction; milk ejection</td></tr><tr><td>Growth hormone</td><td>Anterior pituitary</td><td>Sleep, exercise, low glucose</td><td>Tissue growth; fat breakdown</td></tr><tr><td>TSH</td><td>Anterior pituitary</td><td>TRH</td><td>Stimulates thyroid</td></tr><tr><td>ACTH</td><td>Anterior pituitary</td><td>CRH</td><td>Stimulates adrenal cortex → cortisol</td></tr><tr><td>FSH</td><td>Anterior pituitary</td><td>GnRH</td><td>Grows follicles; sperm production</td></tr><tr><td>LH</td><td>Anterior pituitary</td><td>GnRH</td><td>Triggers ovulation; testosterone</td></tr><tr><td>Prolactin</td><td>Anterior pituitary</td><td>Suckling</td><td>Milk production</td></tr><tr><td>T3 / T4</td><td>Thyroid</td><td>TSH</td><td>Raises metabolic rate</td></tr><tr><td>Calcitonin</td><td>Thyroid (C cells)</td><td>High calcium</td><td>Lowers blood calcium</td></tr><tr><td>PTH</td><td>Parathyroid</td><td>Low calcium</td><td>Raises blood calcium</td></tr><tr><td>Cortisol</td><td>Adrenal cortex</td><td>Stress, ACTH</td><td>Raises glucose; suppresses inflammation</td></tr><tr><td>Aldosterone</td><td>Adrenal cortex</td><td>Low BP, high K⁺</td><td>Reabsorbs Na⁺ and water; excretes K⁺</td></tr><tr><td>Epinephrine</td><td>Adrenal medulla</td><td>Sympathetic activation</td><td>Fight-or-flight response</td></tr><tr><td>Insulin</td><td>Pancreas (beta)</td><td>High glucose</td><td>Glucose into cells; stores glycogen</td></tr><tr><td>Glucagon</td><td>Pancreas (alpha)</td><td>Low glucose</td><td>Breaks down glycogen; raises glucose</td></tr><tr><td>Melatonin</td><td>Pineal</td><td>Darkness</td><td>Promotes sleep; circadian rhythm</td></tr><tr><td>Erythropoietin</td><td>Kidney</td><td>Hypoxia</td><td>Stimulates red cell production</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Low TSH means hypothyroid."</b> In primary hyperthyroidism TSH is low <i>because</i> T4 is high — negative feedback.</li><li><b>"Steroid hormones bind surface receptors."</b> Lipid-soluble hormones cross the membrane and bind <i>intracellular</i> receptors.</li><li><b>"FSH and LH do the same thing."</b> FSH grows the follicle; LH triggers ovulation.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 8 — p.88 · Module 8 receptors &amp; hormones deck, slide 10 · Module 8 receptors &amp; hormones deck, slide 11 · Module 8 receptors &amp; hormones deck, slide 12 · Module 8 receptors &amp; hormones deck, slide 14 · Module 8 receptors &amp; hormones deck, slide 15 · Module 8 receptors &amp; hormones deck, slide 17 · Module 8 receptors &amp; hormones deck, slide 3 · Module 8 receptors &amp; hormones deck, slide 4 · Module 8 receptors &amp; hormones deck, slide 5</p>
+<h3>Practice questions <span class="small">(44)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> A lipid-soluble steroid hormone most likely binds which receptor type?</summary><ol class="opts" type="A"><li>Ion channel-linked</li><li class="key">Intracellular</li><li>G-protein coupled</li><li>Enzyme-linked</li><li>Membrane antigen</li></ol><div class="ans show"><b>Answer: B.</b> Lipid-soluble hormones cross the membrane freely and bind receptors inside the cell.<span class="ref">Module 8 receptors &amp; hormones deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q2.</b> Receptors that alter gene transcription and produce slow but long-lasting effects are:</summary><ol class="opts" type="A"><li>Ion channel-linked</li><li>G-protein coupled</li><li class="key">Intracellular</li><li>Enzyme-linked</li><li>Mechanoreceptors</li></ol><div class="ans show"><b>Answer: C.</b> The hormone-receptor complex acts as a transcription factor, so the effect takes hours but persists.<span class="ref">Module 8 receptors &amp; hormones deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q3.</b> Which receptor type produces the FASTEST response?</summary><ol class="opts" type="A"><li>Intracellular (nuclear)</li><li>G-protein coupled</li><li>Enzyme-linked (kinase)</li><li class="key">Ion channel-linked</li><li>Membrane antigen receptor</li></ol><div class="ans show"><b>Answer: D.</b> The receptor IS the channel — ions flow the instant the ligand binds, as at the neuromuscular junction.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q4.</b> The acetylcholine receptor at the neuromuscular junction is an example of a:</summary><ol class="opts" type="A"><li>G-protein coupled receptor</li><li>Intracellular steroid receptor</li><li>Enzyme-linked kinase receptor</li><li>Pressure-sensing baroreceptor</li><li class="key">Ion channel-linked receptor</li></ol><div class="ans show"><b>Answer: E.</b> ACh binding opens the channel directly, allowing sodium influx and immediate depolarization.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q5.</b> G-protein coupled receptors amplify signals by:</summary><ol class="opts" type="A"><li class="key">Activating G-proteins that generate second messengers inside the cell</li><li>Opening a membrane ion channel directly so that ions flow the instant the ligand binds</li><li>Binding directly to hormone response elements in the DNA and switching on gene transcription</li><li>Carrying the hormone across the membrane into the nucleus</li><li>Degrading the ligand enzymatically to end the signal</li></ol><div class="ans show"><b>Answer: A.</b> One receptor can activate many G-proteins, each generating many second messengers — enormous amplification.<span class="ref">Module 8 receptors &amp; hormones deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q6.</b> A water-soluble hormone cannot cross the plasma membrane, so it must:</summary><ol class="opts" type="A"><li>Bind an intracellular receptor and alter gene transcription</li><li class="key">Bind a surface receptor and act through second messengers</li><li>Be converted into a lipid-soluble steroid before it acts</li><li>Enter the cell through a nuclear pore to reach its receptor</li><li>Be taken into the cell by phagocytosis before binding</li></ol><div class="ans show"><b>Answer: B.</b> This is the fundamental division: lipid-soluble acts inside, water-soluble acts at the surface.<span class="ref">Module 8 receptors &amp; hormones deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q7.</b> Baroreceptors detect:</summary><ol class="opts" type="A"><li>Chemical concentration of oxygen and pH</li><li>Tissue damage and noxious chemicals</li><li class="key">Pressure and stretch in vessel walls</li><li>Light striking photoreceptor pigments</li><li>Temperature change at the skin surface</li></ol><div class="ans show"><b>Answer: C.</b> They are central to moment-to-moment blood pressure regulation.<span class="ref">Module 8 receptors &amp; hormones deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q8.</b> Chemoreceptors detect changes in:</summary><ol class="opts" type="A"><li>Pressure and stretch in vessel walls</li><li>Physical deformation of the membrane</li><li>Light intensity striking the retina</li><li class="key">Oxygen, carbon dioxide and pH</li><li>Sound vibration in the cochlea</li></ol><div class="ans show"><b>Answer: D.</b> Peripheral and central chemoreceptors drive respiratory adjustment.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q9.</b> Nociceptors are activated by:</summary><ol class="opts" type="A"><li>Light touch and vibration on the skin</li><li>Sound waves bending cochlear hair cells</li><li>Blood pressure changes in the aorta</li><li>Rising osmolarity of the blood plasma</li><li class="key">Tissue damage and noxious stimuli</li></ol><div class="ans show"><b>Answer: E.</b> Nociceptors are the pain receptors; their activation warns of actual or impending injury.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q10.</b> Mechanoreceptors are activated when:</summary><ol class="opts" type="A"><li class="key">The receptor membrane is physically deformed</li><li>The oxygen concentration in the surrounding blood plasma falls</li><li>The pH of the surrounding fluid falls</li><li>The temperature of the surrounding tissue rises above its set point</li><li>The retinal pigment absorbs light</li></ol><div class="ans show"><b>Answer: A.</b> Physical distortion opens stretch-sensitive channels — the basis of touch, hearing and proprioception.<span class="ref">Module 8 receptors &amp; hormones deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q11.</b> A patient with damaged carotid baroreceptors would have most difficulty:</summary><ol class="opts" type="A"><li>Detecting pain from injured tissue</li><li class="key">Regulating blood pressure on standing</li><li>Sensing temperature change at the skin</li><li>Hearing high-frequency tones clearly</li><li>Focusing the lens for near vision</li></ol><div class="ans show"><b>Answer: B.</b> Loss of baroreflex causes orthostatic hypotension because pressure changes go undetected.<span class="ref">Module 8 receptors &amp; hormones deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q12.</b> Aldosterone is released in response to ____ and causes ____.</summary><ol class="opts" type="A"><li>high blood pressure or low potassium; loss of sodium and water in the urine with retention of potassium</li><li>high blood glucose; movement of glucose into muscle cells</li><li class="key">low blood pressure or high potassium; sodium and water reabsorption with potassium excretion</li><li>darkness at night; drowsiness and sleep</li><li>low blood calcium; release of calcium from bone with increased absorption from the small intestine</li></ol><div class="ans show"><b>Answer: C.</b> Aldosterone is the salt-retaining hormone, raising blood volume and pressure.<span class="ref">Module 8 receptors &amp; hormones deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q13.</b> Antidiuretic hormone (ADH) causes the kidney to:</summary><ol class="opts" type="A"><li>Excrete more water into the filtrate, producing a large volume of dilute urine</li><li>Excrete more sodium into the urine while holding on to potassium ions</li><li>Release renin from the juxtaglomerular cells</li><li class="key">Reabsorb more water, producing concentrated urine</li><li>Reabsorb potassium in exchange for sodium</li></ol><div class="ans show"><b>Answer: D.</b> ADH inserts aquaporins in the collecting duct. Anti-diuretic literally means against urine production.<span class="ref">Module 8 receptors &amp; hormones deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q14.</b> A surge of which hormone causes the mature ovarian follicle to rupture?</summary><ol class="opts" type="A"><li>FSH</li><li>Estrogen</li><li>Progesterone</li><li>Prolactin</li><li class="key">LH</li></ol><div class="ans show"><b>Answer: E.</b> The LH surge is the trigger for ovulation. In males the same hormone drives Leydig cells to make testosterone.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q15.</b> Which hormone stimulates follicle growth in females and spermatogenesis in males?</summary><ol class="opts" type="A"><li class="key">FSH</li><li>LH</li><li>Oxytocin</li><li>ADH</li><li>Prolactin</li></ol><div class="ans show"><b>Answer: A.</b> FSH — Follicle Stimulating Hormone — grows the follicle and supports sperm production.<span class="ref">Module 8 receptors &amp; hormones deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q16.</b> Glucagon is released when blood glucose is ____ and acts by ____.</summary><ol class="opts" type="A"><li>high; moving glucose out of the blood into muscle cells</li><li class="key">low; stimulating the liver to break down glycogen into glucose</li><li>high; storing surplus glucose as glycogen in the liver while suppressing fat breakdown</li><li>low; moving glucose from the blood into adipose tissue for storage as fat</li><li>high; increasing storage of fat in adipose tissue</li></ol><div class="ans show"><b>Answer: B.</b> Glucagon comes from pancreatic alpha cells and raises blood glucose between meals.<span class="ref">Module 8 receptors &amp; hormones deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q17.</b> Insulin is released when blood glucose is ____ and acts by ____.</summary><ol class="opts" type="A"><li>low; releasing stored glucose from the liver into blood</li><li>low; breaking down liver glycogen to raise blood glucose</li><li class="key">high; promoting glucose uptake into cells and storage as glycogen</li><li>high; blocking glucose uptake by skeletal muscle and fat cells so glucose stays in the blood</li><li>low; stimulating gluconeogenesis in the liver from amino acids and lactate</li></ol><div class="ans show"><b>Answer: C.</b> Insulin comes from pancreatic beta cells and is the only hormone that lowers blood glucose.<span class="ref">Module 8 receptors &amp; hormones deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q18.</b> Oxytocin during childbirth acts to:</summary><ol class="opts" type="A"><li>Relax the uterine smooth muscle and delay labor</li><li>Thicken the endometrium to prepare for implantation</li><li>Promote sleep and reset the circadian rhythm</li><li class="key">Stimulate uterine contractions and milk ejection</li><li>Increase blood glucose by breaking down glycogen</li></ol><div class="ans show"><b>Answer: D.</b> Oxytocin drives a positive feedback loop: contractions release more oxytocin, intensifying contractions.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q19.</b> Growth hormone promotes:</summary><ol class="opts" type="A"><li>Storage of fat in adipose tissue with reduced synthesis of new protein</li><li>Sodium retention with potassium excretion</li><li>Excretion of calcium in the urine with reduced breakdown of bone matrix</li><li>Sleep onset and control of the circadian rhythm</li><li class="key">Tissue growth, protein synthesis and fat breakdown</li></ol><div class="ans show"><b>Answer: E.</b> GH builds tissue while mobilizing fat as an alternative fuel.<span class="ref">Module 8 receptors &amp; hormones deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q20.</b> Melatonin secretion is stimulated by ____ and functions to ____.</summary><ol class="opts" type="A"><li class="key">darkness; promote sleep and regulate circadian rhythm</li><li>bright morning light; increase daytime alertness and sharpen concentration</li><li>prolonged stress; raise blood pressure and glucose</li><li>eating a large meal; stimulate digestive secretion and speed nutrient absorption</li><li>exercise; build muscle and mobilize stored fat</li></ol><div class="ans show"><b>Answer: A.</b> The pineal gland releases melatonin in darkness, which is why screen light at night disrupts sleep.<span class="ref">Module 8 receptors &amp; hormones deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q21.</b> Thyroxine (T4) primarily regulates:</summary><ol class="opts" type="A"><li>Blood calcium and bone deposition</li><li class="key">Metabolic rate and energy consumption</li><li>Blood clotting and platelet activity</li><li>Urine concentration and water reabsorption</li><li>Immune memory and lymphocyte activation</li></ol><div class="ans show"><b>Answer: B.</b> T4 sets basal metabolic rate, influencing heat production, heart rate and growth.<span class="ref">Module 8 receptors &amp; hormones deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q22.</b> A patient with untreated hypothyroidism would most likely present with:</summary><ol class="opts" type="A"><li>Weight loss, heat intolerance and tachycardia</li><li>Increased appetite with weight loss</li><li class="key">Weight gain, cold intolerance and fatigue</li><li>Hypertension and tremor</li><li>Excessive sweating</li></ol><div class="ans show"><b>Answer: C.</b> Low thyroid hormone lowers metabolic rate, producing the classic sluggish picture.<span class="ref">Module 8 receptors &amp; hormones deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q23.</b> Which pairing of hormone and gland is INCORRECT?</summary><ol class="opts" type="A"><li>Insulin — pancreas</li><li>Aldosterone — adrenal cortex</li><li>Melatonin — pineal gland</li><li class="key">Oxytocin — adrenal medulla</li><li>Thyroxine — thyroid gland</li></ol><div class="ans show"><b>Answer: D.</b> Oxytocin is made in the hypothalamus and released from the posterior pituitary, not the adrenal medulla.<span class="ref">Module 8 receptors &amp; hormones deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q24.</b> Cortisol, released during prolonged stress, acts to:</summary><ol class="opts" type="A"><li>Lower blood glucose and improve the sensitivity of skeletal muscle to insulin</li><li>Promote sleep and reset the circadian rhythm at nightfall</li><li>Increase calcium deposition in bone and lower serum calcium</li><li>Stimulate ovulation by triggering rupture of the mature ovarian follicle at mid-cycle</li><li class="key">Raise blood glucose, suppress inflammation and support blood pressure</li></ol><div class="ans show"><b>Answer: E.</b> Cortisol mobilizes fuel and dampens immune activity — useful acutely, harmful chronically.<span class="ref">Module 8 receptors &amp; hormones deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q25.</b> Epinephrine from the adrenal medulla produces:</summary><ol class="opts" type="A"><li class="key">Increased heart rate, bronchodilation and mobilization of stored energy</li><li>Slowing of the heart rate, narrowing of the airways and stronger contractions of the gut</li><li>Increased secretion of digestive enzymes with greater blood flow to the intestines</li><li>Pupil constriction with increased watery salivary secretion</li><li>Decreased blood glucose with increased storage of fat and glycogen</li></ol><div class="ans show"><b>Answer: A.</b> It reinforces and prolongs the sympathetic fight-or-flight response.<span class="ref">Module 8 receptors &amp; hormones deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q26.</b> Parathyroid hormone and calcitonin act on blood calcium as:</summary><ol class="opts" type="A"><li>Both raise blood calcium levels</li><li class="key">PTH raises, calcitonin lowers</li><li>Both lower blood calcium levels</li><li>PTH lowers, calcitonin raises</li><li>Neither changes blood calcium levels</li></ol><div class="ans show"><b>Answer: B.</b> They form the opposing arms of calcium homeostasis.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q27.</b> A patient produces too little ADH. The expected finding is:</summary><ol class="opts" type="A"><li>Highly concentrated urine and low volume</li><li>Sodium retention with rising blood volume</li><li class="key">Large volumes of dilute urine and thirst</li><li>Hypertension with an expanded blood volume</li><li>Hyperglycemia with glucose in the urine</li></ol><div class="ans show"><b>Answer: C.</b> Without ADH the collecting duct cannot reabsorb water — the mechanism of diabetes insipidus.<span class="ref">Module 8 receptors &amp; hormones deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which hormone would you expect to rise during a prolonged fast?</summary><ol class="opts" type="A"><li>Insulin</li><li>Calcitonin</li><li>Oxytocin</li><li class="key">Glucagon</li><li>Prolactin</li></ol><div class="ans show"><b>Answer: D.</b> Falling blood glucose triggers glucagon to mobilize hepatic glycogen.<span class="ref">Module 8 receptors &amp; hormones deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q29.</b> The hypothalamus controls the anterior pituitary primarily by:</summary><ol class="opts" type="A"><li>Direct nerve fibers running down the stalk</li><li>Ion channels opening in the gland cells</li><li>Mechanical compression of the pituitary stalk</li><li>Lymphatic drainage carrying signaling peptides</li><li class="key">Releasing hormones into a portal blood supply</li></ol><div class="ans show"><b>Answer: E.</b> The hypophyseal portal system carries releasing and inhibiting hormones the short distance to the anterior pituitary.<span class="ref">Module 8 receptors &amp; hormones deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q30.</b> The anterior pituitary is controlled by the hypothalamus via:</summary><ol class="opts" type="A"><li class="key">A portal blood system carrying releasing hormones</li><li>Direct nerve fibers descending from the hypothalamus</li><li>The vagus nerve carrying parasympathetic signals</li><li>Cerebrospinal fluid circulating through the ventricles</li><li>Lymphatic drainage from the surrounding tissue</li></ol><div class="ans show"><b>Answer: A.</b> The hypophyseal portal system delivers releasing hormones over a short distance.<span class="ref">Module 8 receptors &amp; hormones deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q31.</b> Which hormones are stored and released by the POSTERIOR pituitary?</summary><ol class="opts" type="A"><li>ACTH and TSH</li><li class="key">ADH and oxytocin</li><li>GH and prolactin</li><li>FSH, LH and TSH</li><li>T4 and calcitonin</li></ol><div class="ans show"><b>Answer: B.</b> They are made in the hypothalamus and stored in the posterior lobe.<span class="ref">Module 8 receptors &amp; hormones deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q32.</b> Tropic hormones are defined as hormones that:</summary><ol class="opts" type="A"><li>Act only on bone and cartilage tissue</li><li>Are lipid-soluble and cross membranes</li><li class="key">Stimulate another endocrine gland</li><li>Act within the cell that made them</li><li>Regulate blood calcium concentration</li></ol><div class="ans show"><b>Answer: C.</b> TSH, ACTH, FSH and LH all act on other endocrine glands.<span class="ref">Module 8 receptors &amp; hormones deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q33.</b> In the HPA axis, cortisol exerts negative feedback on:</summary><ol class="opts" type="A"><li>The kidney and its juxtaglomerular cells</li><li>The pancreatic islet beta cells</li><li>The thyroid gland follicular cells</li><li class="key">The hypothalamus and anterior pituitary</li><li>The ovaries and the testes only</li></ol><div class="ans show"><b>Answer: D.</b> Rising cortisol suppresses CRH and ACTH, closing the loop.<span class="ref">Module 8 receptors &amp; hormones deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q34.</b> A patient with high T3/T4 would be expected to have:</summary><ol class="opts" type="A"><li>High TSH from pituitary stimulation</li><li>Normal TSH with a raised TRH level</li><li>High TRH driving the pituitary harder</li><li>No change in TSH or TRH secretion</li><li class="key">Low TSH due to negative feedback</li></ol><div class="ans show"><b>Answer: E.</b> Excess thyroid hormone suppresses pituitary TSH output.<span class="ref">Module 8 receptors &amp; hormones deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q35.</b> Calcitonin is produced by which cells?</summary><ol class="opts" type="A"><li class="key">Parafollicular (C) cells of the thyroid</li><li>Follicular cells lining the colloid-filled thyroid follicles</li><li>Chief cells of the four parathyroid glands behind the thyroid</li><li>Zona glomerulosa of the adrenal cortex</li><li>Beta cells of the pancreatic islets</li></ol><div class="ans show"><b>Answer: A.</b> C cells secrete calcitonin, lowering blood calcium.<span class="ref">Module 8 receptors &amp; hormones deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q36.</b> Which adrenal region produces aldosterone?</summary><ol class="opts" type="A"><li>Zona fasciculata</li><li class="key">Zona glomerulosa</li><li>Zona reticularis</li><li>The adrenal medulla</li><li>The entire cortex</li></ol><div class="ans show"><b>Answer: B.</b> The outermost glomerulosa makes mineralocorticoids.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q37.</b> The adrenal medulla is functionally an extension of the:</summary><ol class="opts" type="A"><li>Parasympathetic nervous system</li><li>Somatic nervous system</li><li class="key">Sympathetic nervous system</li><li>Enteric nervous system</li><li>Endocrine pancreatic islets</li></ol><div class="ans show"><b>Answer: C.</b> It is modified sympathetic tissue releasing epinephrine into blood.<span class="ref">Module 8 receptors &amp; hormones deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q38.</b> Type 1 diabetes results primarily from:</summary><ol class="opts" type="A"><li>Insulin resistance developing in skeletal muscle and adipose cells</li><li>Excess glucagon from pancreatic alpha cells</li><li>Adrenal cortex failure with low cortisol</li><li class="key">Autoimmune destruction of pancreatic beta cells</li><li>Thyroid hormone deficiency that slows the whole-body metabolic rate</li></ol><div class="ans show"><b>Answer: D.</b> Loss of beta cells means little or no insulin is produced.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q39.</b> Type 2 diabetes is characterized chiefly by:</summary><ol class="opts" type="A"><li>Absent insulin from autoimmune beta-cell destruction</li><li>Excess calcitonin from the thyroid gland</li><li>Low cortisol output from an adrenal cortex that gradually stops working</li><li>High ADH levels causing water retention and a dilutional fall in serum sodium</li><li class="key">Target-cell insulin resistance with relative insulin deficiency</li></ol><div class="ans show"><b>Answer: E.</b> Cells respond poorly to insulin, so glucose remains elevated.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q40.</b> Down-regulation of receptors occurs when:</summary><ol class="opts" type="A"><li class="key">Persistently high hormone levels reduce receptor number</li><li>Hormone levels fall for days and the cell inserts extra receptors into its membrane</li><li>Circulating enzymes break the hormone down before it reaches the target cell</li><li>Cellular ATP is depleted during prolonged exercise</li><li>Body temperature rises above the normal set point</li></ol><div class="ans show"><b>Answer: A.</b> Cells reduce receptor density to blunt excessive stimulation.<span class="ref">Module 8 receptors &amp; hormones deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q41.</b> Which hormone raises blood calcium by acting on bone, gut and kidney?</summary><ol class="opts" type="A"><li>Thyroid calcitonin</li><li class="key">Parathyroid hormone</li><li>Pancreatic insulin</li><li>Antidiuretic hormone</li><li>Adrenal aldosterone</li></ol><div class="ans show"><b>Answer: B.</b> PTH mobilizes bone calcium, boosts gut absorption and reduces renal loss.<span class="ref">Module 8 receptors &amp; hormones deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q42.</b> Prolactin's principal action is to:</summary><ol class="opts" type="A"><li>Trigger uterine contraction</li><li>Raise blood glucose</li><li class="key">Stimulate milk production</li><li>Retain sodium</li><li>Promote sleep</li></ol><div class="ans show"><b>Answer: C.</b> Prolactin drives milk synthesis; oxytocin causes ejection.<span class="ref">Module 8 receptors &amp; hormones deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q43.</b> Cushing syndrome reflects excess:</summary><ol class="opts" type="A"><li>Insulin</li><li>Calcitonin</li><li>ADH</li><li class="key">Cortisol</li><li>Melatonin</li></ol><div class="ans show"><b>Answer: D.</b> Chronic glucocorticoid excess causes central obesity and hyperglycemia.<span class="ref">Lecture Outline, Module 8 — p.88</span></div></details>
+<details class="q"><summary><b>Q44.</b> Addison disease results from insufficient:</summary><ol class="opts" type="A"><li>Thyroid hormones such as thyroxine and triiodothyronine from the follicles</li><li>Pancreatic beta-cell hormones such as insulin</li><li>Anterior pituitary hormones such as growth hormone and prolactin</li><li>Posterior pituitary hormones such as oxytocin</li><li class="key">Adrenal cortical hormones such as cortisol and aldosterone</li></ol><div class="ans show"><b>Answer: E.</b> Loss of cortisol and aldosterone causes fatigue, hypotension and low sodium.<span class="ref">Module 8 receptors &amp; hormones deck, slide 10</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

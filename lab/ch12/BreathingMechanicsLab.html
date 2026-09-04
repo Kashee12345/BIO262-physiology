@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breathing Mechanics: Gradient, Compliance and Resistance</title>
+<meta name="description" content="Drive a simulated breath with muscle pressure, compliance and airway resistance, watch alveolar and pleural pressure generate the tidal volume, then test why small alveoli do not empty into large ones.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:4px;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+svg text{font-family:var(--sans);}
+.rowbtn{display:flex;gap:9px;margin-top:12px;}
+.rowbtn .btn{flex:1;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch12.html">&larr; Module 12</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 12</div>
+  <h1>Moving Air: Gradient, Compliance, Resistance</h1>
+  <div class="intro">Nothing is ever sucked into a lung. Muscle enlarges the thorax, Boyle&rsquo;s law drops alveolar pressure about <b>1 cmH2O</b> below atmospheric, and <b>Q = &Delta;P / R</b> does the rest. Drive the breath below by changing effort, compliance and airway resistance, and watch alveolar, pleural and transpulmonary pressure either produce a 500 mL tidal volume or fail to. Then use the law of Laplace to find out why small alveoli do not empty into large ones.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Drive the breath</h2>
+      <div class="sl"><label for="sA">Inspiratory muscle pressure (peak) <span class="v" id="vA">2.5 cmH2O</span></label>
+        <input type="range" id="sA" min="0.3" max="20" value="2.5" step="0.1" aria-label="Peak inspiratory muscle pressure in centimeters of water"></div>
+      <div class="sl"><label for="sC">Lung compliance C = &Delta;V / &Delta;P <span class="v" id="vC">200 mL/cmH2O</span></label>
+        <input type="range" id="sC" min="25" max="400" value="200" step="5" aria-label="Lung compliance in milliliters per centimeter of water"></div>
+      <div class="sl"><label for="sR">Airway resistance R <span class="v" id="vR">2.0 cmH2O per L/s</span></label>
+        <input type="range" id="sR" min="0.5" max="20" value="2" step="0.1" aria-label="Airway resistance in centimeters of water per liter per second"></div>
+      <div class="sl"><label for="sF">Respiratory rate <span class="v" id="vF">12 / min</span></label>
+        <input type="range" id="sF" min="6" max="30" value="12" step="1" aria-label="Respiratory rate in breaths per minute"></div>
+
+      <div class="lbl">Load a lung</div>
+      <div class="chips" id="chips"></div>
+
+      <div class="rowbtn">
+        <button type="button" class="btn solid" id="bPlay" aria-pressed="true">Pause</button>
+        <button type="button" class="btn" id="bPneumo" aria-pressed="false">Open the pleural space</button>
+      </div>
+
+      <div class="eq" id="eqMotion"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Tidal volume</div><div class="v" id="oVT">500</div><div class="u">mL per breath</div></div>
+        <div class="lab"><div class="k">Minute ventilation</div><div class="v" id="oVE">6.0</div><div class="u">L / min</div></div>
+        <div class="lab"><div class="k">Peak inspiratory flow</div><div class="v" id="oQ">0.39</div><div class="u">L / s</div></div>
+        <div class="lab"><div class="k">Peak P<sub>alv</sub></div><div class="v" id="oPalv">&minus;0.8</div><div class="u">cmH2O</div></div>
+        <div class="lab"><div class="k">Lowest P<sub>ip</sub></div><div class="v" id="oPip">&minus;7.8</div><div class="u">cmH2O</div></div>
+        <div class="lab"><div class="k">Work of breathing</div><div class="v" id="oW">4</div><div class="u">% of resting VO2</div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div class="hint">Time constant <b>&tau; = R &times; C</b>. Normal is 2 &times; 0.2 = <b>0.4 s</b>, so a 2-second inspiration is five time constants and the lung fills completely. Raise resistance or compliance far enough and the breath runs out of time before it runs out of gradient &mdash; that is air trapping, and it is why <b>FRC rises in emphysema</b>.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The breath, drawn</h2>
+      <svg id="chest" viewBox="0 0 340 250" role="img" aria-label="Animated cross-section of the thorax showing the diaphragm descending, the lungs inflating, and the intrapleural and alveolar pressures during a breath">
+        <defs></defs>
+        <rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"></rect>
+        <g id="gChest">
+          <rect id="wall" x="46" y="36" width="248" height="160" rx="42" fill="none" stroke-width="7"></rect>
+          <rect id="pleura" x="53" y="43" width="234" height="146" rx="36" fill="none" stroke-width="9" opacity="0.5"></rect>
+        </g>
+        <rect id="trachea" x="162" y="4" width="16" height="46" rx="6"></rect>
+        <path id="bronL" d="M170 48 L124 76" stroke-width="7" fill="none" stroke-linecap="round"></path>
+        <path id="bronR" d="M170 48 L216 76" stroke-width="7" fill="none" stroke-linecap="round"></path>
+        <g id="gLungs">
+          <ellipse id="lungL" cx="118" cy="118" rx="36" ry="50"></ellipse>
+          <ellipse id="lungR" cx="222" cy="118" rx="36" ry="50"></ellipse>
+        </g>
+        <path id="diaph" d="M60 196 Q170 144 280 196" fill="none" stroke-width="9" stroke-linecap="round"></path>
+        <polygon id="arrow" points="170,14 162,2 178,2"></polygon>
+        <text id="tPalv" x="95" y="216" text-anchor="middle" font-size="12.5" font-weight="800">P alv</text>
+        <text id="tPip" x="245" y="216" text-anchor="middle" font-size="12.5" font-weight="800">P ip</text>
+        <text id="tPtp" x="170" y="232" text-anchor="middle" font-size="11.5" font-weight="800">P tp</text>
+        <text id="tPhase" x="170" y="246" text-anchor="middle" font-size="10.5" font-weight="700">phase</text>
+      </svg>
+      <canvas id="trace" width="640" height="330" aria-label="Traces of lung volume, alveolar pressure and intrapleural pressure across one breathing cycle" role="img"></canvas>
+      <div class="hint"><b>Read the middle trace.</b> Alveolar pressure is negative only while air is flowing <i>in</i> and positive only while it is flowing <i>out</i>; it crosses zero exactly at end-inspiration and end-expiration, because at those instants there is no gradient and therefore no flow. The bottom trace never touches zero in a healthy chest &mdash; that persistent negative intrapleural pressure is what holds the lung open at a transpulmonary pressure of +5 cmH2O.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Two alveoli, one law: P = 2T / r</h2>
+      <div class="hint" style="margin-top:2px">Surface tension at the air&ndash;liquid lining, not elastin, supplies about two-thirds of the lung&rsquo;s recoil. For a sphere with one surface the collapsing pressure is <b>P = 2T / r</b>. Shrink the small alveolus and watch what the law predicts &mdash; then switch surfactant on.</div>
+      <div class="sl" style="margin-top:14px"><label for="sRad">Radius of alveolus B <span class="v" id="vRad">50 &micro;m</span></label>
+        <input type="range" id="sRad" min="20" max="150" value="50" step="1" aria-label="Radius of the small alveolus in micrometers"></div>
+      <div class="hint" style="margin-top:6px">Alveolus A is held at <b>100 &micro;m</b>, a typical adult radius.</div>
+      <div class="seg2" style="margin-top:14px" role="group" aria-label="Surfactant on or off">
+        <button type="button" id="bSurfOff" class="on" aria-pressed="true">No surfactant</button>
+        <button type="button" id="bSurfOn" aria-pressed="false">Surfactant present</button>
+      </div>
+      <div class="lbl">Load a scenario</div>
+      <div class="chips" id="chips2"></div>
+      <div class="eq" id="eqLap"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Which way does the air go?</h2>
+      <svg id="alv" viewBox="0 0 340 210" role="img" aria-label="Two alveoli of different radius connected by a shared duct, with the calculated collapsing pressure of each and an arrow showing the direction gas would move">
+        <rect x="0" y="0" width="340" height="210" rx="12" fill="#fff"></rect>
+        <path id="duct" d="M96 108 L244 108" stroke-width="12" fill="none" stroke-linecap="round"></path>
+        <circle id="cA" cx="86" cy="108" r="60"></circle>
+        <circle id="cB" cx="254" cy="108" r="30"></circle>
+        <text x="86" y="196" text-anchor="middle" font-size="12" font-weight="800" id="labA">A</text>
+        <text x="254" y="196" text-anchor="middle" font-size="12" font-weight="800" id="labB">B</text>
+        <text x="86" y="112" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" id="pA">10.2</text>
+        <text x="254" y="112" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" id="pB">20.4</text>
+        <polygon id="flowArrow" points="0,0"></polygon>
+        <text x="170" y="30" text-anchor="middle" font-size="11.5" font-weight="800" id="flowLab">&nbsp;</text>
+      </svg>
+      <div class="verdict" id="verdictLap"></div>
+      <div class="hint"><b>Why surfactant is not just a lubricant.</b> Its molecules crowd together as the alveolus shrinks, so surface tension falls exactly when the radius falls. The ratio 2T/r stays roughly constant instead of exploding, small alveoli stay open, compliance rises and the work of breathing drops. Type II pneumocytes reach adequate output at about <b>34&ndash;36 weeks</b> of gestation, which is the whole story of neonatal respiratory distress syndrome &mdash; and grunting against a partly closed glottis is a newborn generating its own positive end-expiratory pressure to fight this equation.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CS=getComputedStyle(document.documentElement);
+function cv(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cv('--teal'), TEALD=cv('--teal-dk'), CORAL=cv('--coral'), BLUE=cv('--blue'),
+    GOLD=cv('--gold'), GREEN=cv('--green'), PURPLE=cv('--purple'), LINE=cv('--line'),
+    MUTED=cv('--muted'), SOFT=cv('--soft');
+
+/* ---------- breath model ---------- */
+var st={A:2.5,C:200,R:2,f:12,pneumo:false};
+var playing=true, simT=0, last=performance.now(), data=null;
+
+function cycleT(){return 60/st.f;}
+function inspT(){return Math.min(2.0, cycleT()*0.42);}
+function pmus(t){
+  if(st.pneumo) return 0;
+  var ti=inspT();
+  if(t<ti){var s=Math.sin(Math.PI*t/(2*ti)); return st.A*s*s;}
+  return st.A*Math.exp(-(t-ti)/0.5);
+}
+function compute(){
+  var T=cycleT(), dt=0.004, n=Math.max(40,Math.round(T/dt)), C=st.C/1000, R=st.R;
+  var V=0, W=0;
+  var out={T:T,t:[],V:[],Palv:[],Pip:[],F:[],Ptp:[]};
+  for(var c=0;c<3;c++){
+    V= (c===0?0:V);
+    for(var i=0;i<n;i++){
+      var t=i*dt, pm=pmus(t);
+      var flow=(pm - V/C)/R;
+      if(c===2){
+        var palv=-R*flow;
+        var ptp = st.pneumo?0:(5 + V/C);
+        out.t.push(t); out.V.push(V*1000); out.F.push(flow);
+        out.Palv.push(palv); out.Ptp.push(ptp); out.Pip.push(palv-ptp);
+        if(flow>0) W += pm*flow*dt;
+      }
+      V += flow*dt; if(V<0) V=0;
+    }
+  }
+  out.VT = Math.max.apply(null,out.V);
+  out.peakF = Math.max.apply(null,out.F);
+  out.minPalv = Math.min.apply(null,out.Palv);
+  out.maxPalv = Math.max.apply(null,out.Palv);
+  out.minPip = Math.min.apply(null,out.Pip);
+  out.W = W;                       /* cmH2O.L per breath */
+  out.VE = out.VT*st.f/1000;       /* L/min */
+  out.Wmin = W*st.f;               /* cmH2O.L per min */
+  out.o2pct = out.Wmin*1.04/250*100; /* mL O2 per min as % of a 250 mL/min resting VO2 */
+  return out;
+}
+
+/* ---------- presets ---------- */
+var PRE=[
+ {n:'Normal quiet breathing',A:2.5,C:200,R:2,f:12,p:false},
+ {n:'Emphysema',A:4.5,C:350,R:8,f:16,p:false},
+ {n:'Pulmonary fibrosis',A:9,C:50,R:2,f:22,p:false},
+ {n:'Acute asthma',A:6,C:200,R:12,f:20,p:false},
+ {n:'Opioid / weak effort',A:1.0,C:200,R:2,f:8,p:false},
+ {n:'Exercise',A:8,C:200,R:1.6,f:26,p:false}
+];
+function buildChips(){
+  var h='';
+  for(var i=0;i<PRE.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+PRE[i].n+'</button>';
+  $('chips').innerHTML=h;
+  var bs=$('chips').querySelectorAll('.chip');
+  bs[0].classList.add('on');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    var p=PRE[+this.getAttribute('data-i')];
+    st.A=p.A; st.C=p.C; st.R=p.R; st.f=p.f; st.pneumo=p.p;
+    $('sA').value=p.A; $('sC').value=p.C; $('sR').value=p.R; $('sF').value=p.f;
+    for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+    this.classList.add('on'); syncPneumo(); refresh();
+  });
+}
+
+/* ---------- rendering ---------- */
+function refresh(){
+  data=compute();
+  $('vA').textContent=st.A.toFixed(1)+' cmH2O';
+  $('vC').textContent=st.C+' mL/cmH2O';
+  $('vR').textContent=st.R.toFixed(1)+' cmH2O per L/s';
+  $('vF').textContent=st.f+' / min';
+  $('oVT').textContent=Math.round(data.VT);
+  $('oVE').textContent=data.VE.toFixed(1);
+  $('oQ').textContent=data.peakF.toFixed(2);
+  $('oPalv').textContent=(data.minPalv<0?'−':'')+Math.abs(data.minPalv).toFixed(1);
+  $('oPip').textContent=(data.minPip<0?'−':'')+Math.abs(data.minPip).toFixed(1);
+  $('oW').textContent=data.o2pct.toFixed(0);
+
+  var tau=(st.R*st.C/1000);
+  $('eqMotion').innerHTML='<b>P<sub>mus</sub> = V / C + R &times; flow</b><br>'+
+    'Muscle pressure is spent two ways: stretching the lung (elastic) and pushing gas through pipes (resistive). '+
+    'Here &tau; = R &times; C = <span class="num">'+st.R.toFixed(1)+'</span> &times; <span class="num">'+(st.C/1000).toFixed(2)+
+    '</span> = <b class="num">'+tau.toFixed(2)+' s</b>, and inspiration lasts <b class="num">'+inspT().toFixed(2)+' s</b> ('+
+    (inspT()/tau).toFixed(1)+' time constants).';
+
+  var v=$('verdict'), cls='verdict', msg='';
+  if(st.pneumo){
+    cls+=' bad';
+    msg='Pleural space open &mdash; P<sub>ip</sub> = 0, so P<sub>tp</sub> = 0.<small>With no distending pressure the lung recoils to its own unstressed volume and the chest wall springs outward, so the affected side looks fuller, not flatter. No amount of effort at the mouth moves air into this lung. The fix is to push air in from outside at positive pressure, or to re-evacuate the pleural space.</small>';
+  } else if(data.VT<250){
+    cls+=' bad';
+    msg='Tidal volume '+Math.round(data.VT)+' mL &mdash; hypoventilating.<small>Either the pressure is too small for the stiffness (V = C &times; P) or the time constant is too long for the breath. Look at &tau; against inspiratory time above and decide which.</small>';
+  } else if(data.o2pct>20){
+    cls+=' warn';
+    msg='Volume adequate, but breathing now costs '+data.o2pct.toFixed(0)+'% of resting oxygen consumption.<small>Quiet breathing normally costs 3 to 5 percent. Above about 30 percent the respiratory muscles are consuming a large share of what they deliver &mdash; this is the physiology behind weight loss and eventual fatigue in severe obstructive disease.</small>';
+  } else if(inspT()/tau < 2.2){
+    cls+=' warn';
+    msg='The breath is ending before the lung has finished filling.<small>Inspiratory time is only '+(inspT()/tau).toFixed(1)+' time constants. Gas is trapped, and end-expiratory volume (FRC) climbs. Slow the rate or lower resistance and watch tidal volume recover.</small>';
+  } else {
+    cls+=' ok';
+    msg='Tidal volume '+Math.round(data.VT)+' mL at '+st.f+' breaths per minute.<small>Alveolar pressure swings only '+Math.abs(data.minPalv).toFixed(1)+' cmH2O below and '+data.maxPalv.toFixed(1)+' cmH2O above atmospheric &mdash; a fraction of one percent of the 760 mmHg the atmosphere supplies. That trivial gradient is the entire engine of ventilation.</small>';
+  }
+  v.className=cls; v.innerHTML=msg;
+  drawTrace();
+}
+
+/* ---- trace canvas ---- */
+function sizeCanvas(cvs){
+  var r=cvs.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=Math.max(300,Math.round(r.width)), h=Math.max(290,Math.round(w*330/640));
+  if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr); cvs.height=Math.round(h*dpr);}
+  cvs.style.height=h+'px';
+  var g=cvs.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+  return {g:g,w:w,h:h};
+}
+function drawTrace(){
+  var cvs=$('trace'); if(!cvs) return;
+  var s=sizeCanvas(cvs), g=s.g, W=s.w, H=s.h;
+  g.clearRect(0,0,W,H);
+  var padL=44, padR=10, padT=14, gap=12;
+  var ph=(H-padT-18-2*gap)/3;
+  var pw=W-padL-padR;
+  var panes=[
+    {lab:'Volume above FRC (mL)', arr:data.V, lo:0, hi:Math.max(600,data.VT*1.15), col:TEAL, zero:false},
+    {lab:'P alveolar (cmH2O)', arr:data.Palv, lo:null, hi:null, col:CORAL, zero:true},
+    {lab:'P intrapleural (cmH2O)', arr:data.Pip, lo:null, hi:null, col:BLUE, zero:true}
+  ];
+  for(var p=0;p<3;p++){
+    var pn=panes[p], y0=padT+p*(ph+gap), lo=pn.lo, hi=pn.hi;
+    if(lo===null){
+      lo=Math.min.apply(null,pn.arr); hi=Math.max.apply(null,pn.arr);
+      var pad=Math.max(0.6,(hi-lo)*0.22); lo-=pad; hi+=pad;
+      if(pn.zero){ if(lo>0)lo=-0.4; if(hi<0)hi=0.4; }
+    }
+    g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.rect(padL,y0,pw,ph); g.fill(); g.stroke();
+    /* zero line */
+    if(lo<0&&hi>0){
+      var yz=y0+ph-(0-lo)/(hi-lo)*ph;
+      g.strokeStyle=LINE; g.setLineDash([4,4]); g.beginPath(); g.moveTo(padL,yz); g.lineTo(padL+pw,yz); g.stroke(); g.setLineDash([]);
+      g.fillStyle=MUTED; g.font='9px Inter,sans-serif'; g.textAlign='right'; g.fillText('0',padL-4,yz+3);
+    }
+    /* axis labels */
+    g.fillStyle=MUTED; g.font='9px Inter,sans-serif'; g.textAlign='right';
+    g.fillText(hi.toFixed(hi>50?0:1),padL-4,y0+8);
+    g.fillText(lo.toFixed(lo>50||lo<-50?0:1),padL-4,y0+ph-1);
+    g.textAlign='left'; g.fillStyle=SOFT; g.font='700 10px Inter,sans-serif';
+    g.fillText(pn.lab,padL+6,y0+11);
+    /* trace */
+    g.strokeStyle=pn.col; g.lineWidth=2.1; g.beginPath();
+    for(var i=0;i<pn.arr.length;i++){
+      var x=padL+ i/(pn.arr.length-1)*pw;
+      var y=y0+ph-(pn.arr[i]-lo)/(hi-lo)*ph;
+      if(i===0) g.moveTo(x,y); else g.lineTo(x,y);
+    }
+    g.stroke();
+    /* playhead */
+    var frac=(simT%data.T)/data.T;
+    var xp=padL+frac*pw;
+    g.strokeStyle=GOLD; g.lineWidth=1.6; g.beginPath(); g.moveTo(xp,y0); g.lineTo(xp,y0+ph); g.stroke();
+    var idx=Math.min(pn.arr.length-1,Math.floor(frac*pn.arr.length));
+    var yv=y0+ph-(pn.arr[idx]-lo)/(hi-lo)*ph;
+    g.fillStyle=GOLD; g.beginPath(); g.arc(xp,yv,3.4,0,6.2832); g.fill();
+  }
+  /* time axis */
+  g.fillStyle=MUTED; g.font='9.5px Inter,sans-serif'; g.textAlign='center';
+  for(var k=0;k<=4;k++){
+    var xx=padL+k/4*pw;
+    g.fillText((data.T*k/4).toFixed(1)+'s',xx,H-4);
+  }
+  /* inspiration shading marker */
+  var xi=padL+ Math.min(1,inspT()/data.T)*pw;
+  g.fillStyle=MUTED; g.textAlign='left'; g.font='700 9.5px Inter,sans-serif';
+  g.fillText('inspiration',padL+3,H-4);
+  g.strokeStyle=LINE; g.beginPath(); g.moveTo(xi,padT); g.lineTo(xi,H-16); g.stroke();
+}
+
+/* ---- chest animation ---- */
+function drawChest(){
+  var n=data.V.length, frac=(simT%data.T)/data.T;
+  var i=Math.min(n-1,Math.floor(frac*n));
+  var V=data.V[i], F=data.F[i], Palv=data.Palv[i], Pip=data.Pip[i], Ptp=data.Ptp[i];
+  var fill=Math.max(0,Math.min(1,V/700));
+  var lr=36+8*fill, lry=50+10*fill;
+  $('lungL').setAttribute('rx',lr.toFixed(1)); $('lungL').setAttribute('ry',lry.toFixed(1));
+  $('lungR').setAttribute('rx',lr.toFixed(1)); $('lungR').setAttribute('ry',lry.toFixed(1));
+  if(st.pneumo){
+    $('lungL').setAttribute('rx','16'); $('lungL').setAttribute('ry','20');
+    $('lungR').setAttribute('rx','16'); $('lungR').setAttribute('ry','20');
+  }
+  var lungCol = st.pneumo?CORAL:TEAL;
+  $('lungL').setAttribute('fill',lungCol); $('lungR').setAttribute('fill',lungCol);
+  $('lungL').setAttribute('opacity',(0.55+0.35*fill).toFixed(2));
+  $('lungR').setAttribute('opacity',(0.55+0.35*fill).toFixed(2));
+  /* diaphragm: dome flattens and descends as volume rises */
+  var dome=26-20*fill;
+  $('diaph').setAttribute('d','M60 196 Q170 '+(196-2*dome).toFixed(0)+' 280 196');
+  $('diaph').setAttribute('stroke',PURPLE);
+  /* chest wall widens slightly */
+  var ex=fill*5;
+  $('wall').setAttribute('x',(46-ex).toFixed(1)); $('wall').setAttribute('width',(248+2*ex).toFixed(1));
+  $('wall').setAttribute('stroke',st.pneumo?CORAL:SOFT);
+  $('pleura').setAttribute('stroke',st.pneumo?CORAL:BLUE);
+  $('pleura').setAttribute('opacity',st.pneumo?'0.35':(0.30+0.05*Math.min(1,Math.abs(Pip)/8)).toFixed(2));
+  $('trachea').setAttribute('fill',SOFT);
+  $('bronL').setAttribute('stroke',SOFT); $('bronR').setAttribute('stroke',SOFT);
+  /* airflow arrow at trachea */
+  var mag=Math.min(14,Math.abs(F)*16);
+  var ar=$('arrow');
+  if(mag<1.2 || st.pneumo){ ar.setAttribute('points','0,0'); }
+  else if(F>0){ ar.setAttribute('points','170,'+(6+mag)+' '+(170-mag*0.7)+',6 '+(170+mag*0.7)+',6'); ar.setAttribute('fill',TEAL); }
+  else { ar.setAttribute('points','170,2 '+(170-mag*0.7)+','+(2+mag)+' '+(170+mag*0.7)+','+(2+mag)); ar.setAttribute('fill',GOLD); }
+  $('tPalv').textContent='P alv '+(Palv<0?'−':'+')+Math.abs(Palv).toFixed(1)+' cmH2O';
+  $('tPalv').setAttribute('fill',CORAL);
+  $('tPip').textContent='P ip '+(Pip<0?'−':'+')+Math.abs(Pip).toFixed(1)+' cmH2O';
+  $('tPip').setAttribute('fill',BLUE);
+  $('tPtp').textContent='transpulmonary P tp = P alv − P ip = '+Ptp.toFixed(1)+' cmH2O';
+  $('tPtp').setAttribute('fill',TEALD);
+  var phase = st.pneumo ? 'no flow — the lung has no distending pressure'
+    : (F>0.01?'air flowing IN — alveolar pressure is below atmospheric'
+    : (F<-0.01?'air flowing OUT — elastic recoil has raised alveolar pressure':'no gradient, no flow'));
+  $('tPhase').textContent=phase;
+  $('tPhase').setAttribute('fill',MUTED);
+}
+
+/* ---------- Laplace panel ---------- */
+var lap={rB:50, surf:false};
+var PA_CM=98.0665; /* Pa per cmH2O */
+function tension(rUm){
+  if(!lap.surf) return 0.050;                       /* N/m, uncoated air-liquid interface */
+  return Math.min(0.030, 0.025*(rUm/100));          /* surfactant: T falls as area falls */
+}
+function pressure(rUm){
+  var T=tension(rUm), r=rUm*1e-6;
+  return (2*T/r)/PA_CM;                             /* cmH2O */
+}
+function drawLap(){
+  var rA=100, rB=lap.rB;
+  var pA=pressure(rA), pB=pressure(rB);
+  $('vRad').textContent=rB+' µm';
+  var dA=rA*0.5, dB=rB*0.5;
+  $('cA').setAttribute('r',dA.toFixed(1));
+  $('cB').setAttribute('r',dB.toFixed(1));
+  $('cA').setAttribute('cx','86'); $('cB').setAttribute('cx','254');
+  $('pB').setAttribute('font-size', dB<16 ? '0' : (dB<24?'10':'13'));
+  $('pB').setAttribute('y', dB<24 ? '112' : '113');
+  var colA=lap.surf?TEAL:CORAL, colB=lap.surf?TEAL:CORAL;
+  $('cA').setAttribute('fill',colA); $('cB').setAttribute('fill',colB);
+  $('cA').setAttribute('opacity','0.85'); $('cB').setAttribute('opacity','0.85');
+  $('duct').setAttribute('stroke',SOFT);
+  $('pA').textContent=pA.toFixed(1); $('pB').textContent=pB.toFixed(1);
+  $('labA').textContent='A · r = 100 µm · T = '+(tension(100)*1000).toFixed(1)+' mN/m';
+  $('labB').textContent='B · r = '+rB+' µm · T = '+(tension(rB)*1000).toFixed(1)+' mN/m';
+  $('labA').setAttribute('fill',SOFT); $('labB').setAttribute('fill',SOFT);
+  var d=pB-pA, arr=$('flowArrow');
+  if(Math.abs(d)<0.35){ arr.setAttribute('points','0,0'); $('flowLab').textContent='pressures matched — no net transfer'; $('flowLab').setAttribute('fill',GREEN); }
+  else if(d>0){ arr.setAttribute('points','120,108 152,100 152,116'); arr.setAttribute('fill',CORAL); $('flowLab').textContent='B empties into A'; $('flowLab').setAttribute('fill',CORAL); }
+  else { arr.setAttribute('points','220,108 188,100 188,116'); arr.setAttribute('fill',CORAL); $('flowLab').textContent='A empties into B'; $('flowLab').setAttribute('fill',CORAL); }
+
+  $('eqLap').innerHTML='<b>P = 2T / r</b><br>'+
+   'Alveolus A: 2 &times; <span class="num">'+(tension(100)*1000).toFixed(1)+'</span> mN/m &divide; <span class="num">100</span> &micro;m = <b class="num">'+pA.toFixed(1)+' cmH2O</b><br>'+
+   'Alveolus B: 2 &times; <span class="num">'+(tension(rB)*1000).toFixed(1)+'</span> mN/m &divide; <span class="num">'+rB+'</span> &micro;m = <b class="num">'+pB.toFixed(1)+' cmH2O</b>'+
+   (lap.surf?'<br><span style="color:'+GREEN+'"><b>Surfactant on:</b> tension falls in step with radius, so the ratio 2T/r barely moves.</span>'
+            :'<br><span style="color:'+CORAL+'"><b>No surfactant:</b> tension is fixed at about 50 mN/m, so pressure is governed by radius alone.</span>');
+
+  var v=$('verdictLap'), cls='verdict', msg='';
+  if(lap.surf){
+    cls+=' ok';
+    msg='Both alveoli are stable at roughly '+pA.toFixed(1)+' cmH2O.<small>Because surfactant molecules concentrate as the surface shrinks, T falls precisely when r falls. Small alveoli are no longer at a mechanical disadvantage, compliance rises, and the lung stays a foam of millions of small units instead of collapsing into a few big bags.</small>';
+  } else if(rB<95){
+    cls+=' bad';
+    msg='B is at '+pB.toFixed(1)+' cmH2O against A at '+pA.toFixed(1)+' cmH2O &mdash; B collapses into A.<small>Radius is in the denominator, so the smaller the alveolus the harder it squeezes. Without surfactant every small unit empties into a larger neighbor: diffuse atelectasis, falling compliance, and enormous transpulmonary pressures needed for tiny volumes. Exactly the preterm lung before 34 to 36 weeks.</small>';
+  } else if(rB>105){
+    cls+=' warn';
+    msg='B is now the larger alveolus, so A is the one at higher pressure and A empties into B.<small>The law does not care which one you called small. Whichever radius is smaller carries the higher collapsing pressure.</small>';
+  } else {
+    cls+=' cool';
+    msg='Equal radii, equal pressures &mdash; a knife-edge.<small>Identical alveoli are stable only until one of them is perturbed. Nudge the slider a few micrometers either way and the instability appears immediately. That is why the lung cannot rely on uniformity; it needs surfactant.</small>';
+  }
+  v.className=cls; v.innerHTML=msg;
+}
+var PRE2=[
+ {n:'Healthy adult lung',r:50,s:true},
+ {n:'Preterm at 29 weeks',r:40,s:false},
+ {n:'Adjacent equal alveoli',r:100,s:false},
+ {n:'Tiny terminal unit, no surfactant',r:25,s:false}
+];
+function buildChips2(){
+  var h='';
+  for(var i=0;i<PRE2.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+PRE2[i].n+'</button>';
+  $('chips2').innerHTML=h;
+  var bs=$('chips2').querySelectorAll('.chip');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    var p=PRE2[+this.getAttribute('data-i')];
+    lap.rB=p.r; lap.surf=p.s; $('sRad').value=p.r;
+    for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+    this.classList.add('on'); syncSurf(); drawLap();
+  });
+}
+function syncSurf(){
+  $('bSurfOn').classList.toggle('on',lap.surf);
+  $('bSurfOff').classList.toggle('on',!lap.surf);
+  $('bSurfOn').setAttribute('aria-pressed',lap.surf?'true':'false');
+  $('bSurfOff').setAttribute('aria-pressed',lap.surf?'false':'true');
+}
+function syncPneumo(){
+  $('bPneumo').textContent=st.pneumo?'Seal the pleural space':'Open the pleural space';
+  $('bPneumo').setAttribute('aria-pressed',st.pneumo?'true':'false');
+  $('bPneumo').classList.toggle('solid',st.pneumo);
+}
+
+/* ---------- wiring ---------- */
+function clearChips(box){
+  var bs=$(box).querySelectorAll('.chip');
+  for(var i=0;i<bs.length;i++) bs[i].classList.remove('on');
+}
+function bind(id,key,parse){
+  $(id).addEventListener('input',function(){ st[key]=parse(this.value); clearChips('chips'); refresh(); });
+}
+bind('sA','A',parseFloat); bind('sC','C',parseFloat); bind('sR','R',parseFloat); bind('sF','f',function(v){return parseInt(v,10);});
+$('bPlay').addEventListener('click',function(){
+  playing=!playing; this.textContent=playing?'Pause':'Play';
+  this.setAttribute('aria-pressed',playing?'true':'false');
+});
+$('bPneumo').addEventListener('click',function(){ st.pneumo=!st.pneumo; syncPneumo(); refresh(); });
+$('sRad').addEventListener('input',function(){ lap.rB=parseInt(this.value,10); clearChips('chips2'); drawLap(); });
+$('bSurfOn').addEventListener('click',function(){ lap.surf=true; clearChips('chips2'); syncSurf(); drawLap(); });
+$('bSurfOff').addEventListener('click',function(){ lap.surf=false; clearChips('chips2'); syncSurf(); drawLap(); });
+window.addEventListener('resize',function(){ drawTrace(); });
+
+buildChips(); buildChips2(); syncSurf(); syncPneumo(); refresh(); drawLap();
+
+function loop(now){
+  var dt=(now-last)/1000; last=now;
+  if(playing && dt<0.5) simT+=dt;
+  drawChest(); drawTrace();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(function(n){ last=n; loop(n); });
+})();
+</script>
+</body>
+</html>

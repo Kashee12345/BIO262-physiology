@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Brain as a Control System &mdash; Perfusion and Set Points</title>
+<meta name="description" content="Grow a mass inside a rigid skull and watch CSF, then blood, then pressure give way, and drive the hypothalamic thermostat until it defends a fever it invented itself.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.hide{display:none;}
+.eqn{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px dashed var(--line);border-radius:10px;padding:11px 12px;margin-top:11px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch06.html">&larr; Module 6</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 6</div>
+  <h1>The Brain as a Control System: Perfusion and Set Points</h1>
+  <div class="intro">The brain is a controller that has to be perfused inside a rigid box, and a box whose contents are fixed at about <b>1,400 mL of brain, 150 mL of blood and 150 mL of CSF</b>. Grow something inside it and watch CSF give way, then blood, then pressure. Then move down to the hypothalamus and run its thermostat &mdash; including the version where pyrogens move the set point and the patient shivers at 39 &deg;C because the body is defending its new target.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Perfusion in a rigid box</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">The hypothalamic thermostat</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Try a situation</div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl">Inside the skull</div>
+        <div class="sl"><label for="vol">Volume added to the cranial vault <span class="v" id="volV">0 mL</span></label>
+          <input type="range" id="vol" min="0" max="140" value="0" step="1" aria-label="Volume of a mass lesion or hematoma added inside the skull, in milliliters"></div>
+
+        <div class="lbl">Systemic circulation</div>
+        <div class="sl"><label for="map">Mean arterial pressure <span class="v" id="mapV">93 mmHg</span></label>
+          <input type="range" id="map" min="40" max="180" value="93" step="1" aria-label="Mean arterial pressure in millimeters of mercury"></div>
+        <div class="sl"><label for="co2">Arterial PaCO<sub>2</sub> <span class="v" id="co2V">40 mmHg</span></label>
+          <input type="range" id="co2" min="20" max="80" value="40" step="1" aria-label="Arterial carbon dioxide tension in millimeters of mercury"></div>
+
+        <button class="tog" id="tAuto" type="button" aria-pressed="true"><span class="dot"></span><span>Autoregulation intact <small>Myogenic arteriolar constriction when pressure rises and dilation when it falls, holding flow near constant across a perfusion pressure of roughly 60&ndash;160 mmHg. Switch it off to model a severely injured brain.</small></span></button>
+        <button class="tog" id="tCush" type="button" aria-pressed="false"><span class="dot"></span><span>Let the Cushing reflex respond <small>When perfusion pressure falls too far, the medullary cardiovascular center drives systemic pressure up to restore it, and baroreceptors then slow the heart.</small></span></button>
+
+        <div class="eqn">CPP = MAP &minus; ICP<br><span style="font-size:12.5px;color:var(--muted);font-family:var(--sans);">flow still obeys Q = &Delta;P / R &mdash; only the driving pressure is written specially</span></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Try a situation</div>
+        <div class="chips" id="pre2"></div>
+
+        <div class="lbl">The environment</div>
+        <div class="sl"><label for="amb">Ambient temperature <span class="v" id="ambV">22.0 &deg;C</span></label>
+          <input type="range" id="amb" min="0" max="450" value="220" step="5" aria-label="Ambient air temperature in tenths of a degree Celsius"></div>
+
+        <div class="lbl">The integrator &mdash; the preoptic hypothalamus</div>
+        <div class="sl"><label for="sp">Set point <span class="v" id="spV">37.0 &deg;C</span></label>
+          <input type="range" id="sp" min="365" max="410" value="370" step="1" aria-label="Hypothalamic temperature set point in tenths of a degree Celsius"></div>
+
+        <div class="lbl">The effectors</div>
+        <button class="tog" id="tSweat" type="button" aria-pressed="true"><span class="dot"></span><span>Sweat glands working <small>Sympathetic cholinergic fibers onto muscarinic receptors. Blocked by antimuscarinic drugs, and useless in a patient who has run out of water.</small></span></button>
+        <button class="tog" id="tShiv" type="button" aria-pressed="true"><span class="dot"></span><span>Shivering available <small>Skeletal muscle can raise heat production three- to five-fold. Abolished by deep anesthesia, neuromuscular blockade and exhaustion.</small></span></button>
+
+        <div class="row">
+          <button class="btn solid" id="bRun2" type="button">Pause the clock</button>
+          <button class="btn" id="bReset2" type="button">Reset to 37.0 &deg;C</button>
+        </div>
+        <div class="hint"><b>The loop, labeled.</b> Regulated variable: core body temperature. Sensors: peripheral thermoreceptors in skin and central thermosensitive neurons in the preoptic area. Integrator: the hypothalamus, comparing measured temperature against the set point. Effectors: cutaneous arterioles, sweat glands, skeletal muscle and the thyroid axis. Watch each one move as you change the environment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>The rigid box, and the flow that has to get through it</h2>
+      <canvas id="cv1" width="1040" height="330" aria-label="Diagram of cranial compartment volumes as a stacked bar alongside the intracranial pressure compliance curve, with the current operating point marked"></canvas>
+      <canvas id="cv1b" width="1040" height="300" aria-label="Cerebral autoregulation curve plotting cerebral blood flow against cerebral perfusion pressure, with the current operating point marked"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>A negative feedback loop you can break</h2>
+      <canvas id="cv2" width="1040" height="360" aria-label="Diagram of the thermoregulatory negative feedback loop showing regulated variable, sensors, hypothalamic integrator, effectors and response, with live values"></canvas>
+      <canvas id="cv2b" width="1040" height="250" aria-label="Plot of core body temperature against time alongside the hypothalamic set point"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var mode=1;
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  mode=n;
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =========================================================
+   BENCH 1 -- Monro-Kellie, CPP and autoregulation
+   ========================================================= */
+var BRAIN=1400, BLOOD=150, CSF=150;
+var autoreg=true, cushing=false;
+$('tAuto').onclick=function(){ autoreg=!autoreg; this.setAttribute('aria-pressed',autoreg?'true':'false'); render1(); };
+$('tCush').onclick=function(){ cushing=!cushing; this.setAttribute('aria-pressed',cushing?'true':'false'); render1(); };
+['vol','map','co2'].forEach(function(id){ $(id).addEventListener('input',render1); });
+
+var PRE1=[
+ {n:'Healthy adult', vol:0, map:93, co2:40, a:true, c:false},
+ {n:'Shock &mdash; MAP 55', vol:0, map:55, co2:40, a:true, c:false},
+ {n:'Hypertensive crisis &mdash; MAP 175', vol:0, map:175, co2:40, a:true, c:false},
+ {n:'Hyperventilated to PaCO<sub>2</sub> 25', vol:0, map:93, co2:25, a:true, c:false},
+ {n:'Expanding hematoma 70 mL', vol:70, map:93, co2:40, a:true, c:false},
+ {n:'Herniation risk &mdash; 125 mL', vol:125, map:93, co2:40, a:true, c:true},
+ {n:'Injured brain, autoregulation lost', vol:40, map:70, co2:40, a:false, c:false}
+];
+(function(){
+  var box=$('pre1');
+  PRE1.forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+    b.onclick=function(){
+      $('vol').value=P.vol; $('map').value=P.map; $('co2').value=P.co2;
+      autoreg=P.a; cushing=P.c;
+      $('tAuto').setAttribute('aria-pressed',autoreg?'true':'false');
+      $('tCush').setAttribute('aria-pressed',cushing?'true':'false');
+      render1();
+    };
+    box.appendChild(b);
+  });
+})();
+
+function icpOf(V){ return V<=100 ? (10+0.05*V) : (15*Math.exp(0.038*(V-100))); }
+function cbfOf(cpp,co2,auto){
+  var f;
+  if(auto){
+    if(cpp<60) f=50*cpp/60;
+    else if(cpp<=160) f=50;
+    else f=50*cpp/160;
+  } else {
+    f=50*cpp/80;
+  }
+  f+=1.5*(co2-40);
+  return clamp(f,0,110);
+}
+
+function state1(){
+  var V=+$('vol').value, mapSet=+$('map').value, co2=+$('co2').value;
+  var icp=icpOf(V);
+  var map=mapSet, hr=72, cush=false;
+  var cpp=map-icp;
+  if(cushing && cpp<55){
+    map=Math.min(200, icp+55);
+    if(map>mapSet){ cush=true; hr=Math.max(38, Math.round(72-0.55*(map-93))); }
+    else map=mapSet;
+    cpp=map-icp;
+  }
+  var csfOut=Math.min(V,100), bloodOut=Math.min(Math.max(0,V-100),50);
+  var cbf=cbfOf(cpp,co2,autoreg);
+  return {V:V,icp:icp,map:map,mapSet:mapSet,co2:co2,cpp:cpp,cbf:cbf,hr:hr,cush:cush,
+          csf:CSF-csfOut, blood:BLOOD-bloodOut};
+}
+
+function render1(){
+  var S=state1();
+  $('volV').textContent=S.V+' mL';
+  $('mapV').textContent=S.mapSet+' mmHg';
+  $('co2V').textContent=S.co2+' mmHg';
+  var total=S.cbf*14;
+
+  $('st1').innerHTML=
+    tile('Intracranial pressure',S.icp.toFixed(0),'mmHg &middot; normal is 5 to 15')+
+    tile('Cerebral perfusion pressure',S.cpp.toFixed(0),'mmHg &middot; keep above 60')+
+    tile('Cerebral blood flow',S.cbf.toFixed(0),'mL per 100 g per min &middot; normal 50')+
+    tile('Whole-brain flow',Math.round(total),'mL/min &middot; near 15% of cardiac output')+
+    tile('Mean arterial pressure',S.map.toFixed(0)+(S.cush?' ↑':''),S.cush?'mmHg &middot; driven up by the medulla':'mmHg')+
+    tile('Heart rate',S.hr+(S.cush?' ↓':''),S.cush?'bpm &middot; baroreflex slowing':'bpm at rest')+
+    tile('CSF left in the vault',Math.round(S.csf),'mL of 150 &middot; displaced first')+
+    tile('Venous blood left',Math.round(S.blood),'mL of 150 &middot; displaced second')+
+    tile('Oxygen the brain needs','3.5','mL per 100 g per min, continuously');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(S.cbf<10){
+    cls='verdict bad';
+    txt='Membrane failure &mdash; flow of '+S.cbf.toFixed(0)+' mL/100 g/min is infarction territory<small>Consciousness is lost within about 10 seconds of flow cessation and irreversible injury begins within roughly 4 to 5 minutes. Neurons store essentially no fuel and cannot generate ATP anaerobically for long.</small>';
+    inf='<span class="n">Two thresholds, not one</span>Below about <b>20 mL/100 g/min</b> neurons stop firing &mdash; electrical failure. They are silent but still alive, and this is the ischemic penumbra that reperfusion is trying to rescue. Below about <b>10 mL/100 g/min</b> the ion pumps fail, sodium and water enter, and the cell dies. The whole logic of acute stroke care lives in the gap between those two numbers.';
+  } else if(S.cbf<20){
+    cls='verdict bad';
+    txt='Electrical failure &mdash; '+S.cbf.toFixed(0)+' mL/100 g/min<small>Neurons stop firing at this flow but remain structurally viable for a while. This is the penumbra: tissue that is silent, not yet dead.</small>';
+    inf='<span class="n">Perfusion pressure is what you can actually change</span>CPP = MAP &minus; ICP is currently '+S.cpp.toFixed(0)+' mmHg. There are only two levers: raise the mean arterial pressure or lower the intracranial pressure. Everything done for a swollen brain &mdash; head elevation, sedation, osmotic therapy, CSF drainage, decompressive surgery &mdash; is one of those two things.';
+  } else if(S.cbf<35){
+    cls='verdict warn';
+    txt='Oligemia &mdash; '+S.cbf.toFixed(0)+' mL/100 g/min, below the normal 50<small>The brain compensates by extracting more oxygen from each milliliter of blood, so symptoms may be limited to confusion and slowing at first.</small>';
+    inf='<span class="n">Where the compensation runs out</span>Increased oxygen extraction buys a margin, but not much. '+(S.co2<35?'Note that you have hyperventilated to a PaCO<sub>2</sub> of '+S.co2+' mmHg. Cerebral vessels constrict powerfully in response to low carbon dioxide &mdash; each 1 mmHg change in PaCO<sub>2</sub> moves flow by about 1 to 2 mL/100 g/min. That is why hyperventilation lowers intracranial pressure quickly, and exactly why it is used sparingly: it buys pressure by taking away flow.':'The other lever available here is carbon dioxide. Raise PaCO<sub>2</sub> and cerebral vessels dilate; lower it and they constrict. It is the most powerful single vasomotor stimulus the cerebral circulation has.');
+  } else if(S.icp>=22){
+    cls='verdict bad';
+    txt='Intracranial pressure '+S.icp.toFixed(0)+' mmHg &mdash; compensation is exhausted<small>CSF and venous blood have already been displaced. Beyond that point the pressure&ndash;volume curve turns nearly vertical, and every further milliliter costs far more pressure than the one before it.</small>';
+    inf='<span class="n">The Monro&ndash;Kellie doctrine, made concrete</span>The vault holds a fixed total volume of brain, blood and CSF. When something is added, CSF is displaced first &mdash; it is produced by the choroid plexus at roughly <b>500 mL per day</b>, about 0.35 mL/min, turning the whole 150 mL over three to four times daily, so there is room to move. Then venous blood is squeezed out. Only when both buffers are spent does pressure rise steeply.<div class="dd">'+(S.cush?'You have let the <b>Cushing reflex</b> respond, and you can see its signature in the numbers: mean arterial pressure driven up to '+S.map.toFixed(0)+' mmHg to restore perfusion, and heart rate reflexly slowed to '+S.hr+' as baroreceptors sense the induced hypertension. Hypertension with a widened pulse pressure, bradycardia and irregular breathing is a <b>late</b> sign of impending herniation, not an early warning.':'Switch on the Cushing reflex and watch what the medulla does when perfusion pressure falls this far.')+'</div>';
+  } else if(!autoreg){
+    cls='verdict warn';
+    txt='Autoregulation lost &mdash; cerebral blood flow is now pressure-passive<small>Flow is '+S.cbf.toFixed(0)+' mL/100 g/min and moves in a straight line with perfusion pressure. Drag the mean arterial pressure slider and watch the brain follow it up and down with nothing to buffer it.</small>';
+    inf='<span class="n">Why an injured brain is so much more fragile</span>Normally myogenic arteriolar tone holds flow near 50 mL/100 g/min across a mean arterial pressure of roughly <b>60 to 160 mmHg</b>. After severe traumatic brain injury or in and around ischemic tissue that mechanism fails, and every swing in systemic pressure is transmitted directly to the brain &mdash; hypotension causes ischemia and hypertension causes hyperemia and edema.<div class="dd">Chronic hypertension shifts the whole curve to the right. The vessels are remodeled for higher pressures, so a hypertensive patient tolerates 180 mmHg comfortably and becomes ischemic at a pressure a normal person would find unremarkable. That is why blood pressure is lowered gradually, not abruptly.</div>';
+  } else if(S.cpp>160){
+    cls='verdict warn';
+    txt='Above the upper limit of autoregulation &mdash; hyperperfusion<small>Perfusion pressure '+S.cpp.toFixed(0)+' mmHg has broken through arteriolar constriction, and flow has climbed to '+S.cbf.toFixed(0)+' mL/100 g/min.</small>';
+    inf='<span class="n">Both ends of the curve are dangerous</span>Below the lower limit the brain is underperfused. Above the upper limit the arterioles can no longer constrict enough, pressure is transmitted to the capillaries, the blood&ndash;brain barrier leaks, and vasogenic edema follows. That is hypertensive encephalopathy, and the posterior circulation &mdash; with its sparser sympathetic innervation &mdash; is characteristically affected first.';
+  } else {
+    cls='verdict';
+    txt='Well perfused &mdash; CPP '+S.cpp.toFixed(0)+' mmHg, flow '+S.cbf.toFixed(0)+' mL/100 g/min<small>Inside the autoregulatory plateau, so moderate swings in arterial pressure will not change cerebral flow at all. Whole-brain flow is about '+Math.round(S.cbf*14)+' mL/min for a 1,400 g brain.</small>';
+    inf='<span class="n">Two percent of the body, fifteen percent of the output</span>The brain receives roughly <b>750 mL/min</b>, near 15% of cardiac output, for 2% of body weight &mdash; about 50 mL per 100 g per minute, consuming 3.5 mL of oxygen and 5.5 mg of glucose per 100 g per minute. Neurons store essentially no fuel, which is why the supply must be continuous rather than merely adequate on average.<div class="dd">The <b>blood&ndash;brain barrier</b> is the other half of this arrangement: tight junctions between capillary endothelial cells, reinforced by astrocyte end-feet, admitting oxygen, carbon dioxide, lipid-soluble molecules and glucose through GLUT1 while excluding most proteins and the large majority of drugs. It is why levodopa rather than dopamine is given in Parkinson disease &mdash; only the precursor crosses.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Intracranial pressure '+S.icp.toFixed(0)+' millimeters of mercury with '+S.V+' milliliters added, leaving '+Math.round(S.csf)+' milliliters of CSF and '+Math.round(S.blood)+' of blood.');
+  drawBox(S); drawAuto(S);
+}
+
+function drawBox(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+
+  /* stacked compartment bar */
+  var L=30,R=W/2-30,by=76,bh=54, tot=1700;
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE CRANIAL VAULT — 1,700 mL, and it does not stretch', L, 34);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('Monro–Kellie: add one thing and another must give way', L, 54);
+  var segs=[{v:BRAIN,c:MUT,n:'brain 1,400'},{v:S.blood,c:CORAL,n:'blood '+Math.round(S.blood)},{v:S.csf,c:BLUE,n:'CSF '+Math.round(S.csf)},{v:S.V,c:PURP,n:S.V>0?('lesion '+S.V):''}];
+  var x=L;
+  segs.forEach(function(s){
+    var w=(s.v/tot)*(R-L);
+    if(w<=0) return;
+    g.fillStyle=s.c; g.globalAlpha=0.75; g.fillRect(x,by,w,bh); g.globalAlpha=1;
+    g.strokeStyle='#fff'; g.lineWidth=2; g.strokeRect(x,by,w,bh);
+    x+=w;
+  });
+  g.strokeStyle=TDK; g.lineWidth=2.5; g.strokeRect(L,by,R-L,bh);
+  var lx=L;
+  g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  segs.forEach(function(s,i){
+    if(!s.n) return;
+    g.fillStyle=s.c;
+    g.fillText(s.n, L, by+bh+22+i*17);
+  });
+
+  /* compliance curve */
+  var CL=W/2+70, CR=W-42, CT=52, CB=H-46;
+  function X(v){ return CL+(v/140)*(CR-CL); }
+  function Y(p){ return CB-(clamp(p,0,80)/80)*(CB-CT); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var p=0;p<=80;p+=20){
+    g.beginPath(); g.moveTo(CL,Y(p)); g.lineTo(CR,Y(p)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(p, CL-8, Y(p)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(CL,CT); g.lineTo(CL,CB); g.lineTo(CR,CB); g.stroke();
+  for(var vv=0;vv<=140;vv+=35){
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(vv, X(vv), CB+18);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('milliliters added', (CL+CR)/2, CB+36);
+  g.save(); g.translate(CL-48,(CT+CB)/2); g.rotate(-Math.PI/2);
+  g.fillText('ICP  mmHg',0,0); g.restore();
+
+  /* normal band */
+  g.fillStyle=GREEN; g.globalAlpha=0.12; g.fillRect(CL,Y(15),CR-CL,Y(5)-Y(15)); g.globalAlpha=1;
+  g.fillStyle=GREEN; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('normal 5–15', CL+6, Y(15)+14);
+
+  g.strokeStyle=TEAL; g.lineWidth=3.2; g.beginPath();
+  for(var i=0;i<=140;i++){ var yy=Y(icpOf(i)); if(i===0) g.moveTo(X(i),yy); else g.lineTo(X(i),yy); }
+  g.stroke();
+  g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('CSF and blood absorb it', X(50), Y(28));
+  g.fillStyle=CORAL; g.fillText('compensation spent', X(118), Y(60));
+
+  var px=X(S.V), py=Y(S.icp);
+  g.fillStyle=S.icp>=22?CORAL:TDK;
+  g.beginPath(); g.arc(px,py,8,0,6.3); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2.5; g.stroke();
+  g.fillStyle='#fff'; g.strokeStyle=S.icp>=22?CORAL:TDK; g.lineWidth=2;
+  var bw=118, bx=Math.min(CR-bw,Math.max(CL,px-bw/2));
+  g.fillRect(bx,py-40,bw,26); g.strokeRect(bx,py-40,bw,26);
+  g.fillStyle=S.icp>=22?CORAL:TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('ICP '+S.icp.toFixed(0)+' mmHg', bx+bw/2, py-21);
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('PRESSURE–VOLUME CURVE', CL, 30);
+}
+
+function drawAuto(S){
+  var cv=$('cv1b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=88,R=W-40,T=48,B=H-52;
+  function X(p){ return L+(clamp(p,0,200)/200)*(R-L); }
+  function Y(f){ return B-(clamp(f,0,110)/110)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var f=0;f<=100;f+=25){
+    g.beginPath(); g.moveTo(L,Y(f)); g.lineTo(R,Y(f)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(f, L-8, Y(f)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  for(var p=0;p<=200;p+=40){
+    g.beginPath(); g.moveTo(X(p),B); g.lineTo(X(p),B+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(p, X(p), B+19);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('cerebral perfusion pressure  (MAP − ICP)  mmHg', (L+R)/2, B+37);
+  g.save(); g.translate(L-56,(T+B)/2); g.rotate(-Math.PI/2);
+  g.fillText('CBF  mL/100 g/min',0,0); g.restore();
+  g.textAlign='left'; g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif';
+  g.fillText(autoreg?'AUTOREGULATION INTACT — the plateau runs 60 to 160 mmHg':'AUTOREGULATION LOST — flow is now pressure-passive', L, 28);
+
+  if(autoreg){
+    g.fillStyle=GREEN; g.globalAlpha=0.10; g.fillRect(X(60),T,X(160)-X(60),B-T); g.globalAlpha=1;
+  }
+  /* reference curve at PaCO2 40 */
+  g.strokeStyle=MUT; g.lineWidth=1.8; g.setLineDash([6,5]); g.beginPath();
+  for(var q=0;q<=200;q++){ var y0=Y(cbfOf(q,40,autoreg)); if(q===0) g.moveTo(X(q),y0); else g.lineTo(X(q),y0); }
+  g.stroke(); g.setLineDash([]);
+  /* current curve */
+  g.strokeStyle=TEAL; g.lineWidth=3.4; g.beginPath();
+  for(var q2=0;q2<=200;q2++){ var y1=Y(cbfOf(q2,S.co2,autoreg)); if(q2===0) g.moveTo(X(q2),y1); else g.lineTo(X(q2),y1); }
+  g.stroke();
+  g.fillStyle=TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('at PaCO₂ '+S.co2+' mmHg', R-6, T+16);
+  g.fillStyle=MUT; g.fillText('- -  at PaCO₂ 40', R-6, T+34);
+
+  /* danger lines */
+  [[20,'electrical failure — neurons stop firing',GOLD],[10,'membrane failure — infarction',CORAL]].forEach(function(d){
+    g.strokeStyle=d[2]; g.lineWidth=1.8; g.setLineDash([4,4]);
+    g.beginPath(); g.moveTo(L,Y(d[0])); g.lineTo(R,Y(d[0])); g.stroke(); g.setLineDash([]);
+    g.fillStyle=d[2]; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(d[1], L+8, Y(d[0])-5);
+  });
+
+  var px=X(S.cpp), py=Y(S.cbf);
+  var col=S.cbf<20?CORAL:(S.cbf<35?GOLD:TDK);
+  g.strokeStyle=col; g.lineWidth=1.6; g.setLineDash([3,3]);
+  g.beginPath(); g.moveTo(px,B); g.lineTo(px,py); g.lineTo(L,py); g.stroke(); g.setLineDash([]);
+  g.fillStyle=col; g.beginPath(); g.arc(px,py,8.5,0,6.3); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2.5; g.stroke();
+  g.fillStyle='#fff'; g.strokeStyle=col; g.lineWidth=2;
+  var bw=176, bx=Math.min(R-bw,Math.max(L,px-bw/2)), byy=Math.max(T+2,py-42);
+  g.fillRect(bx,byy,bw,26); g.strokeRect(bx,byy,bw,26);
+  g.fillStyle=col; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('CPP '+S.cpp.toFixed(0)+'  →  CBF '+S.cbf.toFixed(0), bx+bw/2, byy+18);
+}
+
+/* =========================================================
+   BENCH 2 -- the hypothalamic thermostat
+   ========================================================= */
+var coreT=37.0, hist=[], simMin=0, running=true, sweatOn=true, shivOn=true, raf2=null, lastTs=0;
+$('tSweat').onclick=function(){ sweatOn=!sweatOn; this.setAttribute('aria-pressed',sweatOn?'true':'false'); };
+$('tShiv').onclick=function(){ shivOn=!shivOn; this.setAttribute('aria-pressed',shivOn?'true':'false'); };
+$('bReset2').onclick=function(){ coreT=37.0; hist=[]; simMin=0; render2(); };
+$('bRun2').onclick=function(){ running=!running; this.textContent=running?'Pause the clock':'Resume the clock'; };
+['amb','sp'].forEach(function(id){ $(id).addEventListener('input',render2); });
+var PRE2=[
+ {n:'Comfortable room 22 &deg;C', a:220, s:370, sw:true, sh:true},
+ {n:'Cold exposure 5 &deg;C', a:50, s:370, sw:true, sh:true},
+ {n:'Cold, shivering abolished', a:50, s:370, sw:true, sh:false},
+ {n:'Fever &mdash; set point raised to 39 &deg;C', a:220, s:390, sw:true, sh:true},
+ {n:'Hot day 40 &deg;C', a:400, s:370, sw:true, sh:true},
+ {n:'Heat stroke &mdash; sweating has failed', a:420, s:370, sw:false, sh:true}
+];
+(function(){
+  var box=$('pre2');
+  PRE2.forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+    b.onclick=function(){
+      $('amb').value=P.a; $('sp').value=P.s; sweatOn=P.sw; shivOn=P.sh;
+      $('tSweat').setAttribute('aria-pressed',sweatOn?'true':'false');
+      $('tShiv').setAttribute('aria-pressed',shivOn?'true':'false');
+      render2();
+    };
+    box.appendChild(b);
+  });
+})();
+
+function thermo(){
+  var amb=(+$('amb').value)/10, sp=(+$('sp').value)/10;
+  var err=coreT-sp;
+  var shivF=shivOn?clamp(-err/0.8,0,1):0;
+  var sweatF=sweatOn?clamp(err/1.0,0,1):0;
+  var dilF=clamp((err+0.3)/1.0,0,1);
+  var skinFlow=err<0 ? 250*(1-0.9*clamp(-err/1.0,0,1)) : 250+7750*dilF;
+  var k=3.0+12.0*((skinFlow-25)/7975);
+  var P=80*(1+3*shivF);
+  var D=k*(coreT-amb);
+  var E=30+600*sweatF;
+  return {amb:amb,sp:sp,err:err,shivF:shivF,sweatF:sweatF,skinFlow:skinFlow,k:k,P:P,D:D,E:E,net:P-D-E};
+}
+function tick(ts){
+  raf2=requestAnimationFrame(tick);
+  if(!lastTs) lastTs=ts;
+  var dtms=Math.min(60,ts-lastTs); lastTs=ts;
+  if(running){
+    var Th=thermo();
+    var dtSim=(dtms/1000)*240;               /* 1 real second = 4 simulated minutes */
+    coreT=clamp(coreT+Th.net/243000*dtSim,28,45);
+    simMin+=dtSim/60;
+    hist.push([simMin,coreT,Th.sp]);
+    while(hist.length && hist[0][0]<simMin-120) hist.shift();
+  }
+  if(mode===2) render2();
+}
+raf2=requestAnimationFrame(tick);
+
+function render2(){
+  var Th=thermo();
+  $('ambV').textContent=Th.amb.toFixed(1)+' °C';
+  $('spV').textContent=Th.sp.toFixed(1)+' °C';
+
+  $('st2').innerHTML=
+    tile('Core temperature',coreT.toFixed(2),'&deg;C &middot; the regulated variable')+
+    tile('Set point',Th.sp.toFixed(1),'&deg;C &middot; what the hypothalamus is defending')+
+    tile('Error signal',(Th.err>=0?'+':'')+Th.err.toFixed(2),'&deg;C &middot; measured minus set point')+
+    tile('Skin blood flow',Math.round(Th.skinFlow),'mL/min &middot; 250 at rest, up to 6&ndash;8 L/min')+
+    tile('Heat production',Math.round(Th.P),'W &middot; 80 basal, up to 4&times; with shivering')+
+    tile('Heat loss',Math.round(Th.D+Th.E),'W &middot; radiation, convection and evaporation');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(coreT>=40.0){
+    cls='verdict bad';
+    txt='Hyperthermia &mdash; core '+coreT.toFixed(1)+' &deg;C and still climbing<small>The set point is only '+Th.sp.toFixed(1)+' &deg;C. The hypothalamus is calling for maximum heat loss and is not getting it.</small>';
+    inf='<span class="n">Hyperthermia is not fever</span>In fever the set point moves and the body defends the new target, which is why it stops at a temperature and holds there. In <b>hyperthermia</b> the set point is normal and the loop has simply been overwhelmed &mdash; the effectors are running flat out and cannot keep up. '+(!sweatOn?'You have disabled sweating, and with ambient temperature this high, evaporation was the <i>only</i> route left: once air temperature exceeds skin temperature, radiation and convection carry heat <b>into</b> the body rather than out of it.':'')+'<div class="dd">Clinically this is heat stroke, malignant hyperthermia, serotonin syndrome, or anticholinergic toxicity &mdash; hot, dry and delirious, because the drug has blocked the muscarinic receptors on the sweat glands. Antipyretics do nothing for it, because there is no raised set point to lower. Only physical cooling works.</div>';
+  } else if(coreT<=35.0){
+    cls='verdict cool';
+    txt='Hypothermia &mdash; core '+coreT.toFixed(1)+' &deg;C<small>Heat is leaving faster than the body can make it. '+(!shivOn?'Shivering has been disabled, which removes the single largest source of emergency heat production.':'Shivering is running at '+Math.round(Th.shivF*100)+'% and skin flow is down to '+Math.round(Th.skinFlow)+' mL/min.')+'</small>';
+    inf='<span class="n">The two defenses against cold, and how each fails</span>Cutaneous <b>vasoconstriction</b> comes first: skin blood flow falls from about 250 mL/min toward a trickle, so the shell insulates the core. Then <b>shivering</b>, which can raise heat production three- to five-fold. Alcohol defeats the first by causing vasodilation, which is why intoxicated people feel warm while losing heat rapidly. Anesthesia and neuromuscular blockade defeat the second, which is why operating theatres actively warm patients.';
+  } else if(Th.err<-0.25 && Th.sp>37.4){
+    cls='verdict warn';
+    txt='The patient is shivering and feels cold &mdash; at '+coreT.toFixed(1)+' &deg;C<small>Because the set point has been moved to '+Th.sp.toFixed(1)+' &deg;C. Measured temperature is below target, so the loop is behaving exactly as it would in a cold room.</small>';
+    inf='<span class="n">Fever is not a broken loop</span>Pyrogens such as <b>interleukin-1</b> raise the set point itself. Everything downstream then works normally &mdash; and normal, against a target of 39 &deg;C, means vasoconstriction, piloerection and shivering. That is why a febrile patient piles on blankets at a temperature that alarms everyone else in the room.<div class="dd">When the fever breaks, the set point drops back while core temperature is still high. Now the error reverses, the same intact loop calls for maximum heat loss, and the patient flushes and sweats. Antipyretics work by lowering the set point, not by cooling the patient.</div>';
+  } else if(Math.abs(Th.err)<0.25){
+    cls='verdict';
+    txt='Regulated &mdash; core '+coreT.toFixed(2)+' &deg;C against a set point of '+Th.sp.toFixed(1)+' &deg;C<small>Error is only '+Th.err.toFixed(2)+' &deg;C. Heat production '+Math.round(Th.P)+' W, heat loss '+Math.round(Th.D+Th.E)+' W &mdash; and they are matched, which is the whole definition of a steady state.</small>';
+    inf='<span class="n">Every element of the loop is on the diagram above</span>Regulated variable: core temperature. Sensors: peripheral thermoreceptors in skin, central thermosensitive neurons in the preoptic area. Integrator: the hypothalamus, comparing the two against the set point. Effectors: cutaneous arterioles, sweat glands, skeletal muscle and the thyroid axis. Response: whatever moves the variable back toward target.<div class="dd">Notice how small the error signal has to be. Negative feedback does not eliminate error &mdash; it needs error to generate a correction. The hypothalamus holds core temperature at about <b>37 &deg;C with a normal diurnal swing of 0.5 to 1 &deg;C</b>, and it holds plasma osmolality at 275&ndash;295 mOsm/kg by the same logic, using osmoreceptors, thirst and ADH instead.</div>';
+  } else if(Th.err>0){
+    cls='verdict warn';
+    txt='Above set point &mdash; the loop is calling for heat loss<small>Skin blood flow has risen to '+Math.round(Th.skinFlow)+' mL/min and evaporative loss is at '+Math.round(Th.E)+' W. Net balance '+(Th.net>0?'+':'')+Math.round(Th.net)+' W.</small>';
+    inf='<span class="n">Vasodilation first, then sweating</span>Cutaneous blood flow can rise from about <b>250 mL/min to as much as 6&ndash;8 liters per minute</b> &mdash; an enormous redistribution that carries core heat to the surface. Sweating is the second line, and the only one that still works once ambient temperature exceeds skin temperature.<div class="dd">That redistribution has a cardiovascular cost. Diverting several liters per minute to skin steals it from everywhere else, which is why heat stress and exercise together provoke hypotension, and why a dehydrated patient loses the ability to do both at once.</div>';
+  } else {
+    cls='verdict cool';
+    txt='Below set point &mdash; the loop is calling for heat production<small>Shivering at '+Math.round(Th.shivF*100)+'% of maximum, skin blood flow cut to '+Math.round(Th.skinFlow)+' mL/min. Net balance '+(Th.net>0?'+':'')+Math.round(Th.net)+' W.</small>';
+    inf='<span class="n">Watch the correction close the gap</span>Because production now exceeds loss, core temperature is rising, which shrinks the error, which reduces the correction. A negative feedback loop always approaches its target asymptotically and settles a little short of it &mdash; the residual error is what keeps the correction running.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Core temperature '+coreT.toFixed(2)+' degrees against a set point of '+Th.sp.toFixed(1)+', with shivering at '+Math.round(Th.shivF*100)+' percent and sweating at '+Math.round(Th.sweatF*100)+' percent.');
+  drawLoop(Th); drawTemp(Th);
+}
+
+function drawLoop(Th){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var boxes=[
+   {x:40,  y:60, w:200,h:88, t:'REGULATED VARIABLE', s:'core temperature', v:coreT.toFixed(2)+' °C', c:TDK},
+   {x:280, y:60, w:200,h:88, t:'SENSORS', s:'skin + preoptic neurons', v:'measuring', c:BLUE},
+   {x:520, y:60, w:230,h:88, t:'INTEGRATOR', s:'hypothalamus', v:'set point '+Th.sp.toFixed(1)+' °C', c:PURP},
+   {x:790, y:60, w:210,h:88, t:'EFFECTORS', s:'vessels · glands · muscle', v:(Th.err>0?'losing heat':'making heat'), c:CORAL}
+  ];
+  boxes.forEach(function(b,i){
+    g.fillStyle='#fff'; g.strokeStyle=b.c; g.lineWidth=2.6;
+    g.beginPath(); if(g.roundRect) g.roundRect(b.x,b.y,b.w,b.h,12); else g.rect(b.x,b.y,b.w,b.h);
+    g.fill(); g.stroke();
+    g.fillStyle=b.c; g.font='800 11px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(b.t, b.x+b.w/2, b.y+21);
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+    g.fillText(b.s, b.x+b.w/2, b.y+41);
+    g.fillStyle=TDK; g.font='800 17px Inter, system-ui, sans-serif';
+    g.fillText(b.v, b.x+b.w/2, b.y+70);
+    if(i<boxes.length-1){
+      var x0=b.x+b.w, x1=boxes[i+1].x;
+      g.strokeStyle=MUT; g.lineWidth=2.4;
+      g.beginPath(); g.moveTo(x0+4,b.y+b.h/2); g.lineTo(x1-12,b.y+b.h/2); g.stroke();
+      g.beginPath(); g.moveTo(x1-4,b.y+b.h/2); g.lineTo(x1-16,b.y+b.h/2-6); g.lineTo(x1-16,b.y+b.h/2+6); g.closePath();
+      g.fillStyle=MUT; g.fill();
+    }
+  });
+  /* feedback return arrow */
+  g.strokeStyle=GREEN; g.lineWidth=3; g.setLineDash([8,5]);
+  g.beginPath(); g.moveTo(895,148); g.lineTo(895,196); g.lineTo(140,196); g.lineTo(140,152); g.stroke(); g.setLineDash([]);
+  g.beginPath(); g.moveTo(140,146); g.lineTo(133,160); g.lineTo(147,160); g.closePath(); g.fillStyle=GREEN; g.fill();
+  g.fillStyle=GREEN; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('NEGATIVE FEEDBACK — the response opposes the change that produced it', W/2, 214);
+
+  /* effector bars */
+  var bars=[
+   {n:'Cutaneous vasodilation', f:clamp((Th.skinFlow-25)/7975,0,1), c:CORAL, r:Math.round(Th.skinFlow)+' mL/min'},
+   {n:'Sweating', f:Th.sweatF, c:BLUE, r:sweatOn?Math.round(Th.sweatF*100)+'%':'BLOCKED'},
+   {n:'Shivering', f:Th.shivF, c:GOLD, r:shivOn?Math.round(Th.shivF*100)+'%':'BLOCKED'}
+  ];
+  var by=252;
+  bars.forEach(function(b,i){
+    var yy=by+i*34;
+    g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(b.n, 250, yy+13);
+    g.strokeStyle=LINE; g.lineWidth=1; g.strokeRect(266,yy,600,18);
+    g.fillStyle=b.c; g.globalAlpha=(b.r==='BLOCKED')?0.25:1; g.fillRect(266,yy,600*b.f,18); g.globalAlpha=1;
+    g.fillStyle=(b.r==='BLOCKED')?CORAL:TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(b.r, 880, yy+14);
+  });
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('EFFECTOR ACTIVITY RIGHT NOW', 40, by-10);
+}
+
+function drawTemp(Th){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=86,R=W-40,T=32,B=H-46;
+  var t1=Math.max(120,simMin), t0=t1-120;
+  function X(t){ return L+((t-t0)/120)*(R-L); }
+  function Y(v){ return B-((clamp(v,33,42)-33)/9)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var v=33;v<=42;v+=1){
+    g.beginPath(); g.moveTo(L,Y(v)); g.lineTo(R,Y(v)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(v+'°', L-8, Y(v)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('the last two simulated hours', (L+R)/2, B+30);
+
+  g.fillStyle=GREEN; g.globalAlpha=0.10; g.fillRect(L,Y(37.5),R-L,Y(36.5)-Y(37.5)); g.globalAlpha=1;
+  g.fillStyle=GREEN; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('normal diurnal band 36.5–37.5', L+6, Y(37.5)+14);
+
+  g.strokeStyle=PURP; g.lineWidth=2.4; g.setLineDash([7,5]);
+  g.beginPath();
+  if(hist.length){ hist.forEach(function(p,i){ if(i===0) g.moveTo(X(p[0]),Y(p[2])); else g.lineTo(X(p[0]),Y(p[2])); }); }
+  else { g.moveTo(L,Y(Th.sp)); g.lineTo(R,Y(Th.sp)); }
+  g.stroke(); g.setLineDash([]);
+
+  g.strokeStyle=TDK; g.lineWidth=3.2; g.beginPath();
+  if(hist.length){ hist.forEach(function(p,i){ if(i===0) g.moveTo(X(p[0]),Y(p[1])); else g.lineTo(X(p[0]),Y(p[1])); }); }
+  g.stroke();
+  if(hist.length){
+    var last=hist[hist.length-1];
+    g.fillStyle=TDK; g.beginPath(); g.arc(X(last[0]),Y(last[1]),7,0,6.3); g.fill();
+    g.strokeStyle='#fff'; g.lineWidth=2.4; g.stroke();
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('—  core temperature', L+6, T+2);
+  g.fillStyle=PURP; g.fillText('- -  hypothalamic set point', L+186, T+2);
+}
+
+/* boot */
+render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Ventricular Action Potential: Plateau, Calcium and Why Tetanus Is Impossible</title>
+<meta name="description" content="Reshape the five phases of the ventricular action potential, change the calcium delivered to troponin, and fire a test stimulus anywhere on the trace to find the refractory period for yourself.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+table.pt{border-collapse:collapse;width:100%;font-size:12px;margin-top:6px;}
+table.pt th,table.pt td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);line-height:1.4;}
+table.pt th{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+table.pt td:first-child{font-weight:800;color:var(--teal-dk);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch10.html">&larr; Module 10</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 10</div>
+  <h1>The Ventricular Action Potential</h1>
+  <div class="intro">A working ventricular myocyte rests at &minus;90 mV and, once triggered, spends 200&ndash;300 ms depolarized because inward calcium balances outward potassium through a long plateau. Reshape that plateau below, change the calcium that reaches troponin, then <b>fire a test stimulus anywhere on the trace</b> and see for yourself where the cell refuses to answer &mdash; which is why cardiac muscle cannot be tetanized.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>Change something about the cell</h2>
+      <div class="chips" id="drugs"></div>
+      <div class="sl"><label for="sPD">Phase 2 plateau duration <span class="v" id="vPD">200 ms</span></label>
+        <input type="range" id="sPD" min="60" max="320" value="200" step="5" aria-label="Duration of the phase two plateau in milliseconds"></div>
+      <div class="sl"><label for="sRD">Phase 3 repolarization duration <span class="v" id="vRD">75 ms</span></label>
+        <input type="range" id="sRD" min="40" max="220" value="75" step="5" aria-label="Duration of phase three repolarization in milliseconds"></div>
+      <div class="sl"><label for="sCa">Trigger calcium through L-type channels <span class="v" id="vCa">1.00 &times;</span></label>
+        <input type="range" id="sCa" min="0" max="2" value="1" step="0.02" aria-label="Trigger calcium entering through L-type channels, as a multiple of normal"></div>
+      <div class="sl"><label for="sSR">SERCA uptake rate (relaxation speed) <span class="v" id="vSR">1.00 &times;</span></label>
+        <input type="range" id="sSR" min="0.4" max="2" value="1" step="0.02" aria-label="Rate of calcium re-uptake by SERCA, as a multiple of normal"></div>
+      <div class="eq" id="eqCa"></div>
+    </div>
+    <div class="card">
+      <h2>Fire a second stimulus and see what happens</h2>
+      <div class="sl"><label for="sT">Test stimulus arrives at <span class="v" id="vT">150 ms</span></label>
+        <input type="range" id="sT" min="5" max="690" value="150" step="5" aria-label="Time after the first action potential at which a test stimulus is delivered, in milliseconds"></div>
+      <div class="sl"><label for="sStr">Test stimulus strength <span class="v" id="vStr">1.0 &times; threshold</span></label>
+        <input type="range" id="sStr" min="0.5" max="3" value="1" step="0.1" aria-label="Strength of the test stimulus as a multiple of threshold"></div>
+      <div class="row">
+        <button type="button" class="btn" id="bEarly">Land it inside the plateau</button>
+        <button type="button" class="btn" id="bLate">Land it as early as it can work</button>
+      </div>
+      <div class="verdict" id="vStim"></div>
+    </div>
+    <div class="card">
+      <h2>The five phases, for reference</h2>
+      <table class="pt">
+        <thead><tr><th>Phase</th><th>Dominant current</th><th>Membrane result</th></tr></thead>
+        <tbody>
+          <tr><td>0 Upstroke</td><td>Fast Na<sup>+</sup> (I<sub>Na</sub>), inward</td><td>&minus;90 to +20 mV in 1&ndash;2 ms</td></tr>
+          <tr><td>1 Notch</td><td>Transient outward K<sup>+</sup> (I<sub>to</sub>)</td><td>Small dip toward 0 mV</td></tr>
+          <tr><td>2 Plateau</td><td>L-type Ca<sup>2+</sup> against delayed K<sup>+</sup></td><td>Held near 0 mV, 150&ndash;250 ms</td></tr>
+          <tr><td>3 Repolarization</td><td>I<sub>Kr</sub> and I<sub>Ks</sub>, outward</td><td>Return to &minus;90 mV, 50&ndash;100 ms</td></tr>
+          <tr><td>4 Rest</td><td>I<sub>K1</sub>, Na<sup>+</sup>/K<sup>+</sup> ATPase, NCX</td><td>Steady &minus;90 mV</td></tr>
+        </tbody>
+      </table>
+      <div class="hint">Phase 0 is one of physiology&rsquo;s few genuine positive feedback loops &mdash; depolarization opens sodium channels, which causes more depolarization. It is tolerated only because sodium channel inactivation shuts it down within milliseconds.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Membrane, currents, calcium and force</h2>
+      <canvas id="cv" width="660" height="452" aria-label="Three stacked traces: membrane potential through the five phases with the refractory periods shaded, the underlying ionic currents, and the resulting cytosolic calcium transient with the mechanical twitch it produces"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--teal-dk)"></i>Membrane potential</span>
+        <span><i style="background:var(--coral)"></i>I<sub>Na</sub> and tension</span>
+        <span><i style="background:var(--gold)"></i>I<sub>to</sub></span>
+        <span><i style="background:var(--purple)"></i>I<sub>Ca-L</sub></span>
+        <span><i style="background:var(--blue)"></i>Delayed K<sup>+</sup></span>
+        <span><i style="background:var(--green)"></i>Cytosolic Ca<sup>2+</sup></span>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Action potential duration</div><div class="v" id="oAPD">285</div><div class="u">ms &middot; normal 200&ndash;300</div></div>
+        <div class="lab"><div class="k">Absolute refractory</div><div class="v" id="oARP">250</div><div class="u">ms &middot; normal 200&ndash;250</div></div>
+        <div class="lab"><div class="k">Peak cytosolic Ca<sup>2+</sup></div><div class="v" id="oCap">10.0</div><div class="u">&micro;M &middot; rest 0.1</div></div>
+        <div class="lab"><div class="k">Peak tension</div><div class="v" id="oF">100</div><div class="u">% of normal beat</div></div>
+        <div class="lab"><div class="k">Twitch duration</div><div class="v" id="oTw">320</div><div class="u">ms &middot; about 300</div></div>
+        <div class="lab"><div class="k">Ceiling on rate</div><div class="v" id="oMax">200</div><div class="u">beats/min</div></div>
+      </div>
+      <div class="verdict" id="vCell"></div>
+    </div>
+    <div class="card">
+      <h2>Why the plateau is the point</h2>
+      <div class="hint" style="margin-top:2px">Drag the plateau down to 60 ms and the shaded refractory band shrinks with it &mdash; the cell can now be re-excited long before it has relaxed, and twitches would fuse. <b>A tetanized ventricle is a ventricle that never fills, and a heart that never fills produces no output.</b> The plateau is the design feature that guarantees contraction and relaxation alternate.</div>
+      <div class="hint">The other direction is dangerous too. Blocking I<sub>Kr</sub> &mdash; or simply being hypokalemic &mdash; drags phase 3 out, lengthens the action potential and, on the surface ECG, the QT interval (normal corrected QT under about 440 ms). That is the setting for the polymorphic ventricular tachycardia called torsades de pointes, and it is one of the commonest reasons a drug is pulled from a formulary.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#000').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), GOLD = C('gold'), PURPLE = C('purple'), MUTED = C('muted');
+
+  function id(s){ return document.getElementById(s); }
+  function f(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  var sPD = id('sPD'), sRD = id('sRD'), sCa = id('sCa'), sSR = id('sSR'), sT = id('sT'), sStr = id('sStr');
+  var cv = id('cv'), ctx = cv.getContext('2d');
+  var note = '';
+
+  var DRUGS = [
+    {n:'Baseline myocyte', pd:200, rd:75, ca:1, sr:1, note:'A working ventricular myocyte at rest: &minus;90 mV held by I<sub>K1</sub>, a 200 ms plateau, cytosolic calcium rising from 10<sup>&minus;7</sup> M to about 10<sup>&minus;5</sup> M each beat.'},
+    {n:'&beta;<sub>1</sub> sympathetic stimulation', pd:170, rd:65, ca:1.7, sr:1.65, note:'Protein kinase A phosphorylates the L-type channel (more trigger calcium, so a stronger beat) and phospholamban (faster SERCA, so a faster relaxation). Watch the twitch get both taller and shorter &mdash; a heart at 180 per minute has almost no diastole to spare.'},
+    {n:'&beta;-blocker', pd:215, rd:80, ca:0.72, sr:0.85, note:'Less cyclic AMP, less phosphorylation of the L-type channel, less trigger calcium, a weaker and slower beat.'},
+    {n:'Verapamil or diltiazem', pd:120, rd:70, ca:0.42, sr:1, note:'Blocking L-type calcium channels cuts the trigger calcium at its source. The plateau shortens because the inward calcium current that was holding the membrane near 0 mV is gone, and force falls with it.'},
+    {n:'Digoxin', pd:200, rd:75, ca:1.45, sr:0.9, note:'Inhibiting the sodium&ndash;potassium ATPase raises intracellular sodium, which weakens the gradient driving the sodium&ndash;calcium exchanger. Less calcium leaves the cell, more is stored in the sarcoplasmic reticulum, and each beat is stronger.'},
+    {n:'I<sub>Kr</sub> block or hypokalemia', pd:245, rd:195, ca:1.05, sr:1, note:'The delayed rectifier that normally repolarizes the cell is impaired, so phase 3 drags. Action potential duration climbs and the QT interval on the surface ECG lengthens &mdash; the substrate for torsades de pointes.'},
+    {n:'Zero extracellular calcium', pd:75, rd:70, ca:0.02, sr:1, note:'No calcium outside the cell means no trigger calcium through L-type channels, so ryanodine receptors never open and there is no calcium-induced calcium release. The membrane still fires; the cell simply does not contract. Skeletal muscle, which couples the two receptors mechanically, would keep going for a while.'}
+  ];
+
+  var host = id('drugs');
+  DRUGS.forEach(function(d, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (i === 0 ? ' on' : '');
+    b.innerHTML = d.n;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(host.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed','true');
+      sPD.value = d.pd; sRD.value = d.rd; sCa.value = d.ca; sSR.value = d.sr; note = d.note;
+      draw();
+    });
+    host.appendChild(b);
+  });
+
+  function P(){
+    return { PD: +sPD.value, RD: +sRD.value, ca: +sCa.value, sr: +sSR.value, ts: +sT.value, str: +sStr.value };
+  }
+
+  function Vat(t, PD, RD, amp){
+    if(amp === undefined) amp = 1;
+    var v;
+    if(t < 0) v = -90;
+    else if(t < 1.5) v = -90 + 110 * (t / 1.5);
+    else if(t < 10) v = 20 - 15 * ((t - 1.5) / 8.5);
+    else if(t < 10 + PD) v = 5 - 10 * ((t - 10) / PD);
+    else if(t < 10 + PD + RD) v = -5 - 85 * ((t - 10 - PD) / RD);
+    else v = -90;
+    return -90 + (v + 90) * amp;
+  }
+
+  function caAt(t, p){
+    var base = 0.1, peak = 0.1 + 9.9 * p.ca;
+    var riseEnd = 45, fall = 150 / p.sr;
+    if(t < 5) return base;
+    if(t < riseEnd){ var u = (t - 5) / 40; return base + (peak - base) * Math.pow(Math.sin(Math.PI / 2 * u), 2); }
+    if(t < riseEnd + fall){ var w = (t - riseEnd) / fall; return base + (peak - base) * Math.pow(Math.cos(Math.PI / 2 * w), 2); }
+    return base;
+  }
+
+  function hill(c){ return c * c / (c * c + 64); }
+
+  function forceAt(t, p, amp){
+    if(amp === undefined) amp = 1;
+    var peakCa = 0.1 + 9.9 * p.ca * amp;
+    var Fp = hill(peakCa) / hill(10) * 100;
+    var rise = 150, relax = 170 / p.sr;
+    if(t < 10) return 0;
+    if(t < 10 + rise){ var u = (t - 10) / rise; return Fp * Math.pow(Math.sin(Math.PI / 2 * u), 2); }
+    if(t < 10 + rise + relax){ var w = (t - 10 - rise) / relax; return Fp * Math.pow(Math.cos(Math.PI / 2 * w), 2); }
+    return 0;
+  }
+
+  function currents(t, p){
+    var na = 0, to = 0, cal = 0, k = 0;
+    if(t >= 0 && t < 4) na = -Math.exp(-Math.pow((t - 1.2) / 1.0, 2));
+    if(t >= 1.5 && t < 14) to = 0.32 * Math.exp(-(t - 1.5) / 4);
+    if(t >= 2 && t < 10 + p.PD) cal = -0.55 * Math.min(1, (t - 2) / 5) * Math.exp(-(t - 2) / (p.PD * 0.75));
+    if(t >= 6 && t < 10 + p.PD + p.RD){
+      var mid = 10 + p.PD, wdt = Math.max(30, p.RD * 0.9);
+      k = 0.20 + 0.55 * Math.exp(-Math.pow((t - mid) / wdt, 2));
+    }
+    if(t >= 10 + p.PD + p.RD || t < 0) k = 0.12;
+    return { na: na, to: to, cal: cal, k: k };
+  }
+
+  function metrics(p){
+    var APD = 10 + p.PD + p.RD;
+    var ARP = 10 + p.PD + 0.529 * p.RD;
+    var RRP = ARP + 50;
+    var peakCa = 0.1 + 9.9 * p.ca;
+    var Fp = hill(peakCa) / hill(10) * 100;
+    var twitch = 10 + 150 + 170 / p.sr;
+    return { APD: APD, ARP: ARP, RRP: RRP, peakCa: peakCa, Fp: Fp, twitch: twitch, maxRate: 60000 / RRP };
+  }
+
+  function stimResult(p, m){
+    if(p.ts < m.ARP) return { kind: 'none', amp: 0 };
+    if(p.ts < m.RRP) return p.str >= 1.8 ? { kind: 'weak', amp: 0.35 } : { kind: 'none', amp: 0 };
+    return p.str >= 1 ? { kind: 'full', amp: 1 } : { kind: 'none', amp: 0 };
+  }
+
+  var T0 = 0, T1 = 700;
+
+  function draw(){
+    var p = P(), m = metrics(p), res = stimResult(p, m);
+
+    id('vPD').textContent = p.PD + ' ms';
+    id('vRD').textContent = p.RD + ' ms';
+    id('vCa').textContent = f(p.ca, 2) + ' ×';
+    id('vSR').textContent = f(p.sr, 2) + ' ×';
+    id('vT').textContent = p.ts + ' ms';
+    id('vStr').textContent = f(p.str) + ' × threshold';
+
+    id('oAPD').textContent = Math.round(m.APD);
+    id('oARP').textContent = Math.round(m.ARP);
+    id('oCap').textContent = f(m.peakCa);
+    id('oF').textContent = Math.round(m.Fp);
+    id('oTw').textContent = Math.round(m.twitch);
+    id('oMax').textContent = Math.round(m.maxRate);
+
+    id('eqCa').innerHTML =
+      'Trigger calcium enters through L-type channels and opens ryanodine receptors on the sarcoplasmic reticulum &mdash; <b>calcium-induced calcium release</b>. Cytosolic calcium goes from <b class="num">0.1 &micro;M</b> at rest to <b class="num">' + f(m.peakCa) + ' &micro;M</b> at peak here (normal peak 10 &micro;M, i.e. 10<sup>&minus;5</sup> M).<br>' +
+      'Force follows the calcium bound to troponin C, not the voltage: peak tension <b class="num">' + Math.round(m.Fp) + '%</b> of a normal beat. Relaxation needs that calcium removed &mdash; 70 to 80 percent back into the sarcoplasmic reticulum by SERCA2a, most of the rest out through the sodium&ndash;calcium exchanger.';
+
+    drawCanvas(p, m, res);
+    verdicts(p, m, res);
+  }
+
+  function drawCanvas(p, m, res){
+    var w = cv.clientWidth || 660, h = 452, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    var L = 44, R = 10, pw = w - L - R;
+    function X(t){ return L + (t - T0) / (T1 - T0) * pw; }
+
+    var aTop = 16, aBot = 178;
+    function YV(v){ return aBot - (v + 100) / 130 * (aBot - aTop); }
+    var bTop = 198, bBot = 288, bZero = (bTop + bBot) / 2;
+    function YI(i){ return bZero - i * (bBot - bTop) / 2.4; }
+    var cTop = 306, cBot = 434;
+    function YC(c){ return cBot - (c / 22) * (cBot - cTop); }
+    function YF(x){ return cBot - (x / 150) * (cBot - cTop); }
+
+    ctx.font = '700 10px Inter, system-ui, sans-serif';
+
+    ctx.globalAlpha = 0.13; ctx.fillStyle = CORAL;
+    ctx.fillRect(X(0), aTop, X(m.ARP) - X(0), aBot - aTop);
+    ctx.globalAlpha = 0.16; ctx.fillStyle = GOLD;
+    ctx.fillRect(X(m.ARP), aTop, X(m.RRP) - X(m.ARP), aBot - aTop);
+    ctx.globalAlpha = 1;
+
+    ctx.strokeStyle = 'rgba(0,0,0,.10)'; ctx.lineWidth = 1;
+    [-90, -50, 0, 20].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(L, YV(v)); ctx.lineTo(L + pw, YV(v)); ctx.stroke();
+      ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.textAlign = 'right';
+      ctx.fillText(v + (v === 20 ? ' mV' : ''), L - 5, YV(v) + 3);
+    });
+
+    ctx.beginPath(); ctx.strokeStyle = TEALDK; ctx.lineWidth = 2.6;
+    for(var t = T0; t <= T1; t += 1){
+      var y = YV(Vat(t, p.PD, p.RD));
+      if(t === T0) ctx.moveTo(X(t), y); else ctx.lineTo(X(t), y);
+    }
+    ctx.stroke();
+
+    if(res.amp > 0){
+      ctx.beginPath(); ctx.setLineDash([5, 4]); ctx.strokeStyle = TEAL; ctx.lineWidth = 2.2;
+      var pd2 = res.kind === 'weak' ? 60 : p.PD, rd2 = res.kind === 'weak' ? 60 : p.RD;
+      for(var t2 = p.ts; t2 <= Math.min(T1, p.ts + 10 + pd2 + rd2 + 10); t2 += 1){
+        var y2 = YV(Vat(t2 - p.ts, pd2, rd2, res.amp));
+        if(t2 === p.ts) ctx.moveTo(X(t2), y2); else ctx.lineTo(X(t2), y2);
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+
+    ctx.strokeStyle = res.amp > 0 ? GREEN : CORAL; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(p.ts), aTop); ctx.lineTo(X(p.ts), cBot); ctx.stroke();
+    ctx.fillStyle = res.amp > 0 ? GREEN : CORAL; ctx.textAlign = 'left';
+    ctx.font = '800 10.5px Inter, system-ui, sans-serif';
+    ctx.fillText(res.kind === 'none' ? 'stimulus — no response' : (res.kind === 'weak' ? 'stimulus — weak response' : 'stimulus — full response'),
+      Math.min(X(p.ts) + 5, w - 150), aTop + 11);
+
+    ctx.font = '800 10.5px Inter, system-ui, sans-serif';
+    ctx.fillStyle = CORAL; ctx.textAlign = 'center';
+    ctx.fillText('absolute refractory', (X(0) + X(m.ARP)) / 2, aBot - 6);
+    ctx.fillStyle = GOLD;
+    if(X(m.RRP) - X(m.ARP) > 46) ctx.fillText('relative', (X(m.ARP) + X(m.RRP)) / 2, aBot - 6);
+
+    ctx.font = '800 10px Inter, system-ui, sans-serif'; ctx.fillStyle = MUTED;
+    var marks = [[3, '0'], [12, '1'], [10 + p.PD / 2, '2'], [10 + p.PD + p.RD / 2, '3'], [10 + p.PD + p.RD + 60, '4']];
+    marks.forEach(function(mk){ ctx.fillText(mk[1], X(mk[0]), aTop + 12); });
+
+    ctx.strokeStyle = 'rgba(0,0,0,.14)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(L, bZero); ctx.lineTo(L + pw, bZero); ctx.stroke();
+    ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.textAlign = 'right'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    ctx.fillText('out', L - 5, bTop + 10); ctx.fillText('in', L - 5, bBot - 2);
+
+    function curve(key, col, wd){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      for(var t = T0; t <= T1; t += 1){
+        var y = YI(currents(t, p)[key]);
+        if(t === T0) ctx.moveTo(X(t), y); else ctx.lineTo(X(t), y);
+      }
+      ctx.stroke();
+    }
+    curve('na', CORAL, 2); curve('to', GOLD, 1.8); curve('cal', PURPLE, 2.2); curve('k', BLUE, 2.2);
+    ctx.fillStyle = MUTED; ctx.textAlign = 'left'; ctx.font = '800 9.5px Inter, system-ui, sans-serif';
+    ctx.fillText('ionic currents', L + 4, bTop + 10);
+
+    ctx.strokeStyle = 'rgba(0,0,0,.10)';
+    [0, 5, 10, 15, 20].forEach(function(c){
+      ctx.beginPath(); ctx.moveTo(L, YC(c)); ctx.lineTo(L + pw, YC(c)); ctx.stroke();
+      ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.textAlign = 'right'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+      ctx.fillText(c === 0 ? '0' : String(c), L - 5, YC(c) + 3);
+    });
+
+    ctx.beginPath(); ctx.strokeStyle = GREEN; ctx.lineWidth = 2.2;
+    for(var t3 = T0; t3 <= T1; t3 += 1){
+      var yc = YC(caAt(t3, p));
+      if(t3 === T0) ctx.moveTo(X(t3), yc); else ctx.lineTo(X(t3), yc);
+    }
+    ctx.stroke();
+
+    ctx.beginPath(); ctx.strokeStyle = CORAL; ctx.lineWidth = 2.6;
+    for(var t4 = T0; t4 <= T1; t4 += 1){
+      var tot = forceAt(t4, p) + (res.amp > 0 ? forceAt(t4 - p.ts, p, res.amp) : 0);
+      var yf = YF(tot);
+      if(t4 === T0) ctx.moveTo(X(t4), yf); else ctx.lineTo(X(t4), yf);
+    }
+    ctx.stroke();
+
+    if(res.amp > 0){
+      ctx.beginPath(); ctx.setLineDash([4, 4]); ctx.globalAlpha = 0.55; ctx.strokeStyle = CORAL; ctx.lineWidth = 1.6;
+      for(var t5 = p.ts; t5 <= T1; t5 += 1){
+        var yf2 = YF(forceAt(t5 - p.ts, p, res.amp));
+        if(t5 === p.ts) ctx.moveTo(X(t5), yf2); else ctx.lineTo(X(t5), yf2);
+      }
+      ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    }
+
+    ctx.fillStyle = MUTED; ctx.textAlign = 'left'; ctx.font = '800 9.5px Inter, system-ui, sans-serif';
+    ctx.fillText('cytosolic Ca²⁺ (µM)  and  tension (% of a normal beat)', L + 4, cTop + 11);
+
+    ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    for(var g = 0; g <= 700; g += 100){ ctx.fillText(g + (g === 700 ? ' ms' : ''), X(g), h - 3); }
+  }
+
+  function verdicts(p, m, res){
+    var v = id('vStim'), cls = 'verdict', head, sub;
+    var resid = forceAt(p.ts, p);
+    if(res.kind === 'none' && p.ts < m.ARP){
+      cls += ' bad'; head = 'Nothing. The cell cannot answer.';
+      sub = 'At ' + p.ts + ' ms the fast sodium channels are still inactivated by the plateau, and no stimulus of any strength will produce an action potential. The absolute refractory period runs to ' + Math.round(m.ARP) + ' ms. Meanwhile tension is at ' + Math.round(resid) + ' percent of peak &mdash; the cell is still contracting, and it still cannot be re-excited.';
+    } else if(res.kind === 'none'){
+      cls += ' warn'; head = 'Relative refractory: this stimulus is too weak';
+      sub = 'Between ' + Math.round(m.ARP) + ' and ' + Math.round(m.RRP) + ' ms some sodium channels have recovered, so a strong stimulus can just about excite the cell. Yours is ' + f(p.str) + ' times threshold; push it to 1.8 or more and try again.';
+    } else if(res.kind === 'weak'){
+      cls += ' warn'; head = 'A weak, slowly conducted response';
+      sub = 'Only a fraction of sodium channels have recovered, so the upstroke is small and slow &mdash; and a slow upstroke conducts slowly, which is exactly how re-entrant arrhythmias get started. Tension from the first twitch has already fallen to ' + Math.round(resid) + ' percent.';
+    } else {
+      cls += ' ok'; head = 'A full second action potential &mdash; but no summation';
+      sub = 'At ' + p.ts + ' ms the cell is out of its refractory period and fires normally. Look at the tension trace: the first twitch had already decayed to ' + Math.round(resid) + ' percent of its peak before this beat could even begin. That is why cardiac twitches cannot fuse. The earliest a second beat is possible is ' + Math.round(m.RRP) + ' ms, a ceiling of about ' + Math.round(m.maxRate) + ' beats per minute &mdash; and long before that, short diastole limits filling.';
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+
+    var c = id('vCell'), ccls = 'verdict', chead, csub;
+    if(note){
+      ccls += ' cool'; chead = 'What you changed'; csub = note;
+    } else if(m.peakCa < 1){
+      ccls += ' bad'; chead = 'Excitation without contraction';
+      csub = 'Peak calcium is only ' + f(m.peakCa) + ' &micro;M, so tension is ' + Math.round(m.Fp) + ' percent of normal. The membrane is doing everything right; there is simply no calcium at troponin C. Cardiac force is graded by calcium, not by recruitment.';
+    } else if(m.APD > 400){
+      ccls += ' bad'; chead = 'Action potential duration ' + Math.round(m.APD) + ' ms';
+      csub = 'Repolarization is dragging. On the surface ECG this is a long QT interval, and a long QT is the substrate for torsades de pointes. Note also that the refractory period lengthens with it, so the maximum attainable rate falls to about ' + Math.round(m.maxRate) + ' per minute.';
+    } else if(m.APD < 180){
+      ccls += ' warn'; chead = 'A short action potential is a short refractory period';
+      csub = 'Duration is ' + Math.round(m.APD) + ' ms against a normal 200 to 300, and the absolute refractory period is only ' + Math.round(m.ARP) + ' ms while the twitch still lasts ' + Math.round(m.twitch) + ' ms. Slide the test stimulus to ' + Math.round(m.RRP + 5) + ' ms: a second beat now lands while the first is still developing force, and the twitches begin to fuse. That is the situation the plateau exists to prevent.';
+    } else if(m.Fp > 130){
+      ccls += ' cool'; chead = 'A stronger beat, from calcium alone';
+      csub = 'Peak calcium ' + f(m.peakCa) + ' &micro;M gives ' + Math.round(m.Fp) + ' percent of normal tension. Nothing about the number of cells recruited has changed &mdash; gap junctions make every beat all-or-none for the whole chamber, so this is the only way the heart can grade force.';
+    } else {
+      ccls += ' ok'; chead = 'A normal beat';
+      csub = 'Duration ' + Math.round(m.APD) + ' ms, absolute refractory ' + Math.round(m.ARP) + ' ms, peak calcium ' + f(m.peakCa) + ' &micro;M, twitch ' + Math.round(m.twitch) + ' ms. The refractory period covers nearly the whole twitch, which is why summation and tetanus are impossible in cardiac muscle.';
+    }
+    c.className = ccls;
+    c.innerHTML = chead + '<small>' + csub + '</small>';
+  }
+
+  id('bEarly').addEventListener('click', function(){ var p = P(); sT.value = Math.round(10 + p.PD * 0.5); draw(); });
+  id('bLate').addEventListener('click', function(){ var m = metrics(P()); sT.value = Math.min(690, Math.round(m.RRP + 5)); sStr.value = 1; draw(); });
+
+  [sPD, sRD, sCa, sSR].forEach(function(el){
+    el.addEventListener('input', function(){
+      note = '';
+      [].forEach.call(id('drugs').children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      draw();
+    });
+  });
+  [sT, sStr].forEach(function(el){ el.addEventListener('input', draw); });
+  window.addEventListener('resize', draw);
+  note = DRUGS[0].note;
+  draw();
+})();
+</script>
+</body>
+</html>

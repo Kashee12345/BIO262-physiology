@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grading Force &mdash; motor units, frequency, length and fuel</title>
+<meta name="description" content="Recruit motor units smallest first, raise the firing rate until twitches fuse into tetanus, generate a length-tension curve by dragging sarcomere length, and watch three energy systems hand power to one another.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.modeseg button{font-size:12px;padding:11px 4px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.legend span{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{width:13px;height:13px;border-radius:4px;display:block;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch05.html">&larr; Module 5</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 5</div>
+  <h1>Grading Force</h1>
+  <div class="intro">A single fiber barely grades its own force: its action potential is all-or-none and its calcium release is close to saturating. Whole-muscle force is graded in two other ways &mdash; by <b>recruiting</b> motor units in a fixed small-to-large order, and by <b>firing faster</b> until twitches fuse. A third factor, filament <b>overlap</b>, caps what either can achieve. Then something has to pay for it.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Recruitment</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Frequency</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Length&ndash;tension</button>
+        <button id="m4" type="button" role="tab" aria-selected="false">Fuel</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Which muscle are you driving?</div>
+        <div class="chips" id="muscles"></div>
+        <div class="sl"><label for="drive">Descending drive to the motor pool <span class="v" id="driveV">30%</span></label>
+          <input type="range" id="drive" min="0" max="100" value="30" aria-label="Descending excitatory drive to the motor neuron pool, percent"></div>
+        <div class="hint"><b>Why smallest first is automatic.</b> Small motor neurons have a higher input resistance, so the same synaptic current depolarizes them more &mdash; <b>V = I &times; R</b> rearranged. They therefore reach threshold first, and conveniently they innervate small, slow, fatigue-resistant fibers. The order does not change with willpower or with training; only the firing rate and the endpoint change.</div>
+        <div class="legend"><span><i style="background:var(--green)"></i>Type I &mdash; slow oxidative</span><span><i style="background:var(--gold)"></i>Type IIa &mdash; fast oxidative-glycolytic</span><span><i style="background:var(--coral)"></i>Type IIx &mdash; fast glycolytic</span></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Fiber type</div>
+        <div class="chips" id="ftypes"></div>
+        <div class="sl"><label for="freq">Stimulus frequency <span class="v" id="freqV">1 Hz</span></label>
+          <input type="range" id="freq" min="1" max="100" value="1" aria-label="Stimulation frequency in hertz"></div>
+        <div class="lbl">Jump straight to</div>
+        <div class="chips" id="fpresets"></div>
+        <div class="hint"><b>The mismatch that makes it possible.</b> The muscle action potential is over in <b>1 to 5 ms</b>, but the mechanical twitch lasts tens of milliseconds &mdash; about <b>20 ms</b> in a fast fiber and up to <b>100 ms</b> in a slow one. So a second impulse can arrive while calcium is still elevated and tension is still present. Watch the calcium trace underneath: SERCA simply cannot clear it between stimuli.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="sl"><label for="len">Sarcomere length <span class="v" id="lenV">2.20 &micro;m</span></label>
+          <input type="range" id="len" min="120" max="380" value="220" step="2" aria-label="Sarcomere length in hundredths of a micrometer"></div>
+        <div class="lbl">Clinically useful points on the curve</div>
+        <div class="chips" id="lpresets"></div>
+        <div class="hint"><b>The curve is pure geometry.</b> Active tension is a direct readout of how many cross-bridges can form. Optimal length is <b>2.0 to 2.2 &micro;m</b>. Stretch past about <b>3.6 &micro;m</b> and overlap is zero. Compress below <b>2.0 &micro;m</b> and thin filaments from opposite ends interfere with each other; below about <b>1.7 &micro;m</b> the thick filaments jam against the Z discs and tension falls steeply.</div>
+      </div>
+
+      <div id="p4" class="hide">
+        <div class="lbl">How hard is the work?</div>
+        <div class="chips" id="intens"></div>
+        <div class="sl"><label for="dur">Time into the effort <span class="v" id="durV">10 s</span></label>
+          <input type="range" id="dur" min="1" max="300" value="10" aria-label="Elapsed time into the effort, in seconds"></div>
+        <div class="hint"><b>The stores are tiny.</b> A resting fiber holds only about <b>5 mmol of ATP per kilogram</b> &mdash; enough for perhaps <b>2 to 3 seconds</b> of maximal work. <b>Creatine phosphate</b> at 20 to 25 mmol/kg covers the first <b>10 to 15 seconds</b>. <b>Anaerobic glycolysis</b> yields 2 ATP per glucose and sustains intense work for <b>30 seconds to 2 minutes</b>. <b>Oxidative phosphorylation</b> yields about <b>30 to 32 ATP per glucose</b> but takes <b>30 to 60 seconds</b> to ramp up.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>The motor pool, recruited smallest first</h2>
+      <canvas id="cv1" width="1040" height="560" aria-label="A row of motor units ordered by size showing which are recruited at the chosen drive, above a curve of whole-muscle force against descending drive"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Twitch, summation, tetanus</h2>
+      <canvas id="cv2" width="1040" height="620" aria-label="Tension against time for a train of stimuli at the chosen frequency, with the cytosolic calcium trace underneath"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>Length&ndash;tension: force is overlap</h2>
+      <canvas id="cv3" width="1040" height="600" aria-label="Active, passive and total tension plotted against sarcomere length from 1.2 to 3.8 micrometers, with a marker at the chosen length and a small sarcomere drawing"></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+    <div class="card hide" id="r4">
+      <h2>Three systems, handing power to one another</h2>
+      <canvas id="cv4" width="1040" height="600" aria-label="Stacked area chart of ATP supply from stored ATP, creatine phosphate, anaerobic glycolysis and oxidative phosphorylation over five minutes, with sustainable power output above it"></canvas>
+      <div class="stats" id="s4"></div>
+      <div class="verdict" id="v4">&nbsp;</div>
+      <div class="infobox" id="i4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'gray';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var TABS=[1,2,3,4];
+function setMode(n){
+  TABS.forEach(function(k){
+    var b=$('m'+k);
+    b.classList.toggle('on',k===n); b.setAttribute('aria-selected',k===n?'true':'false');
+    $('p'+k).classList.toggle('hide',k!==n); $('r'+k).classList.toggle('hide',k!==n);
+  });
+  if(n===2) render2(); if(n===3) render3(); if(n===4) render4();
+}
+TABS.forEach(function(k){ $('m'+k).onclick=function(){setMode(k);}; });
+
+/* =====================================================
+   BENCH 1 - recruitment and the size principle
+   ===================================================== */
+var MUSCLES=[
+ {k:'eye',n:'Lateral rectus (aims the eye)',units:40,small:5,big:10,note:'roughly 5 to 10 fibers per unit'},
+ {k:'hand',n:'A small hand muscle',units:40,small:20,big:340,note:'fine control with useful strength'},
+ {k:'calf',n:'Gastrocnemius (pushes off)',units:40,small:120,big:2000,note:'1,000 to 2,000 fibers per unit'}
+];
+var mus=MUSCLES[2];
+var mbox=$('muscles');
+MUSCLES.forEach(function(M){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(M.k===mus.k?' on':''); b.textContent=M.n;
+  b.onclick=function(){ mus=M; [].forEach.call(mbox.children,function(c,i){c.classList.toggle('on',MUSCLES[i].k===mus.k);}); render1(); };
+  mbox.appendChild(b);
+});
+$('drive').addEventListener('input',render1);
+function pool(){
+  var N=mus.units, out=[], i;
+  for(i=0;i<N;i++){
+    var f=i/(N-1);
+    var size=Math.round(mus.small*Math.pow(mus.big/mus.small,f));
+    var thr=2+93*Math.pow(f,1.35);
+    var type=f<0.42?'I':(f<0.72?'IIa':'IIx');
+    out.push({i:i,size:size,thr:thr,type:type});
+  }
+  return out;
+}
+function render1(){
+  var drive=+$('drive').value;
+  $('driveV').textContent=drive+'%';
+  var U=pool(), i, total=0, active=0, nAct=0, lastStep=0;
+  for(i=0;i<U.length;i++){ total+=U[i].size; if(drive>=U[i].thr){ active+=U[i].size; nAct++; lastStep=U[i].size; } }
+  var pct=total?active/total*100:0;
+  var stepPct=total?lastStep/total*100:0;
+  var typeCount={I:0,IIa:0,IIx:0};
+  for(i=0;i<U.length;i++){ if(drive>=U[i].thr) typeCount[U[i].type]++; }
+
+  $('s1').innerHTML=
+    tile('Motor units recruited',nAct+' of '+U.length,mus.note)+
+    tile('Fibers now active',active.toLocaleString(),'of '+total.toLocaleString()+' in the muscle')+
+    tile('Force produced',pct.toFixed(1)+'%','of this muscle&rsquo;s maximum')+
+    tile('Smallest unit',U[0].size.toLocaleString(),'fibers &middot; recruited first')+
+    tile('Largest unit',U[U.length-1].size.toLocaleString(),'fibers &middot; recruited last')+
+    tile('Size of the last step',stepPct.toFixed(2)+'%','of maximum force, in one jump');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(nAct===0){
+    cls='verdict info';
+    txt='Nothing is recruited yet<small>Below the threshold of the smallest motor neuron the muscle is silent. Raise the drive a little and the first units in are the smallest, slowest and most fatigue-resistant ones.</small>';
+    inf='<span class="n">The pool is ordered before you ever think about moving</span>The <b>size principle</b> is not a strategy the brain executes. It falls out of cable properties: a small cell body has a high input resistance, so a given synaptic current produces a larger voltage change in it. The nervous system gets an economical recruitment order for free.';
+  } else if(pct<25){
+    cls='verdict';
+    txt='Light work &mdash; only small, slow, fatigue-resistant units are on<small>'+nAct+' units, '+active.toLocaleString()+' fibers, '+pct.toFixed(1)+'% of maximum force. These are the units that hold your posture all day.</small>';
+    inf='<span class="n">Fine control lives at the bottom of the curve</span>Because unit size grows roughly exponentially, the low end of the recruitment range is crowded with small units, so force can be added in tiny increments. The current step is <b>'+stepPct.toFixed(2)+'%</b> of maximum &mdash; that is the resolution of your control at this force.';
+  } else if(pct<75){
+    cls='verdict info';
+    txt='Moderate force &mdash; type IIa units are joining<small>Recruited so far: '+typeCount.I+' type I, '+typeCount.IIa+' type IIa, '+typeCount.IIx+' type IIx. The steps are getting bigger and the muscle is getting less economical.</small>';
+    inf='<span class="n">Recruitment and rate coding work together</span>Recruitment adds units; raising the firing rate makes each recruited unit produce more force, up to three or four times its twitch tension. Real movement uses both continuously, and motor units also fire <b>asynchronously</b>, which smooths whole-muscle force far beyond what any single unit could manage.';
+  } else if(pct<99.5){
+    cls='verdict warn';
+    txt='High force &mdash; the big fatigable units are being called in<small>Each of these adds '+stepPct.toFixed(2)+'% of maximum in a single step. Precision is gone; power is what is on offer.</small>';
+    inf='<span class="n">The muscle chooses its own economy</span>Small units innervate slow oxidative fibers that resist fatigue; large units innervate fast glycolytic fibers that fatigue in seconds. Because recruitment is ordered by size, the system automatically spends the cheap fibers first and reaches for the expensive ones only when the load demands it.';
+  } else {
+    cls='verdict bad';
+    txt='Everything is recruited &mdash; recruitment can add nothing more<small>Beyond this point the only remaining way to add force is to fire faster, and the only remaining way to add endurance is to stop.</small>';
+    inf='<span class="n">Two knobs, and one of them is now at its stop</span>In most human muscles recruitment is complete somewhere around <b>50 to 80 percent</b> of maximal force, and everything above that comes from rate coding. That is why maximal effort is so brief: the units still adding force are the fast glycolytic ones, and they fatigue in seconds.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf+'<div class="dd"><b>Unit size is matched to the job.</b> The muscles that aim the eye have units of roughly <b>5 to 10 fibers</b>, and the laryngeal muscles are similarly fine. The gastrocnemius, which only has to push, has units of <b>1,000 to 2,000</b>. Small units mean fine control; large units mean coarse, powerful steps.</div>';
+  draw1(U,drive,total);
+}
+function draw1(U,drive,total){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=90,R=W-26,A1=[36,250],A2=[318,H-52];
+  var n=U.length, gap=(R-L)/n, bw=gap*0.72;
+  var maxS=U[n-1].size;
+  var i;
+  function col(t){ return t==='I'?GREEN:(t==='IIa'?GOLD:CORAL); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Motor units, ordered small to large  —  filled means recruited', L, A1[0]-10);
+  for(i=0;i<n;i++){
+    var x=L+gap*i+(gap-bw)/2;
+    var h=Math.max(4,(U[i].size/maxS)*(A1[1]-A1[0]-6));
+    var on=drive>=U[i].thr;
+    g.fillStyle=col(U[i].type);
+    g.globalAlpha=on?1:0.16;
+    g.fillRect(x,A1[1]-h,bw,h);
+    g.globalAlpha=1;
+    if(on){ g.strokeStyle=col(U[i].type); g.lineWidth=1.5; g.strokeRect(x,A1[1]-h,bw,h); }
+  }
+  g.strokeStyle=LINE; g.lineWidth=1.5; g.beginPath(); g.moveTo(L,A1[1]); g.lineTo(R,A1[1]); g.stroke();
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('smallest · slowest · most fatigue resistant', L, A1[1]+20);
+  g.textAlign='right';
+  g.fillText('largest · fastest · fatigues in seconds', R, A1[1]+20);
+  g.textAlign='left'; g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('bar height = fibers in that unit ('+U[0].size.toLocaleString()+' → '+U[n-1].size.toLocaleString()+')', L, A1[1]+40);
+
+  /* force vs drive curve */
+  function forceAt(d){ var s=0,k; for(k=0;k<n;k++){ if(d>=U[k].thr) s+=U[k].size; } return total?s/total:0; }
+  function X(d){return L+(d/100)*(R-L);}
+  function Y(f){return A2[1]-f*(A2[1]-A2[0]);}
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y(i/4)); g.lineTo(R,Y(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i*25)+'%',L-9,Y(i/4)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Whole-muscle force as drive rises  —  note the staircase', L, A2[0]-10);
+  g.strokeStyle=TEAL; g.lineWidth=3.5; g.beginPath();
+  var d;
+  for(d=0;d<=100;d+=0.5){ var x2=X(d),y2=Y(forceAt(d)); if(d===0)g.moveTo(x2,y2); else g.lineTo(x2,y2); }
+  g.stroke();
+  g.strokeStyle=GOLD; g.lineWidth=2.5; g.setLineDash([6,4]);
+  g.beginPath(); g.moveTo(X(drive),A2[0]); g.lineTo(X(drive),A2[1]); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('drive '+drive+'%',X(drive),A2[0]+16);
+  g.fillStyle=TDK;
+  g.beginPath(); g.arc(X(drive),Y(forceAt(drive)),6,0,6.3); g.fill();
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=100;i+=20){ g.fillText(i+'%',X(i),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('DESCENDING DRIVE',(L+R)/2,A2[1]+42);
+}
+
+/* =====================================================
+   BENCH 2 - frequency summation and tetanus
+   ===================================================== */
+var FT=[
+ {k:'I',n:'Type I &mdash; slow oxidative',ttp:100,col:'green'},
+ {k:'IIa',n:'Type IIa &mdash; fast oxidative-glycolytic',ttp:50,col:'gold'},
+ {k:'IIx',n:'Type IIx &mdash; fast glycolytic',ttp:20,col:'coral'}
+];
+var ft=FT[2];
+var ftb=$('ftypes');
+FT.forEach(function(F){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(F.k===ft.k?' on':''); b.innerHTML=F.n;
+  b.onclick=function(){ ft=F; [].forEach.call(ftb.children,function(c,i){c.classList.toggle('on',FT[i].k===ft.k);}); render2(); };
+  ftb.appendChild(b);
+});
+var FP=[{n:'Single twitch (1 Hz)',v:1},{n:'Wave summation (12 Hz)',v:12},{n:'Incomplete tetanus (25 Hz)',v:25},{n:'Complete tetanus (60 Hz)',v:60}];
+var fpb=$('fpresets');
+FP.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P.n;
+  b.onclick=function(){ $('freq').value=P.v; render2(); };
+  fpb.appendChild(b);
+});
+$('freq').addEventListener('input',render2);
+
+function simTrain(freqHz,ttp,TOTAL){
+  var dt=0.5, N=Math.round(TOTAL/dt)+1;
+  var tauCa=ttp/1.228, tauM=2.4*ttp;
+  var pool=0, T=0, out=[], i, nextStim=0, iv=1000/freqHz, stims=[];
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    if(t>=nextStim-1e-9 && t<=TOTAL-2){ pool+=9.9; stims.push(t); nextStim+=iv; }
+    pool*=Math.exp(-dt/tauCa);
+    var ca=0.1+pool;
+    var act=Math.pow(ca,4)/(Math.pow(ca,4)+Math.pow(3,4));
+    T+=(act-T)*(dt/tauM);
+    out.push({t:t,ca:ca,T:T});
+  }
+  return {p:out,stims:stims};
+}
+function twitchPeak(ttp){
+  var S=simTrain(0.5,ttp,ttp*8), pk=0, i, tp=0;
+  for(i=0;i<S.p.length;i++){ if(S.p[i].T>pk){pk=S.p[i].T;tp=S.p[i].t;} }
+  return {pk:pk,tp:tp};
+}
+function render2(){
+  var f=+$('freq').value;
+  $('freqV').textContent=f+' Hz';
+  var TOTAL=clamp(Math.max(520,ft.ttp*20,4.5*(1000/f)),520,3000);
+  var S=simTrain(f,ft.ttp,TOTAL), P=S.p;
+  var tw=twitchPeak(ft.ttp);
+  /* measure the ripple only once the plateau has had time to establish */
+  var wms=Math.min(TOTAL*0.40,Math.max(3*(1000/f),TOTAL*0.10));
+  var i, mx=0, mn=1, gmax=0, start=Math.floor((TOTAL-wms)/0.5);
+  for(i=0;i<P.length;i++){ if(P[i].T>gmax)gmax=P[i].T; }
+  for(i=start;i<P.length;i++){ if(P[i].T>mx)mx=P[i].T; if(P[i].T<mn)mn=P[i].T; }
+  var ripple=mx>0.001?(mx-mn)/mx:1;
+  var fusion=clamp(1-ripple,0,1);
+  var xTw=tw.pk>0?gmax/tw.pk:0;
+  mx=gmax;
+
+  var label;
+  if(f<=1.5||ripple>0.85) label='Separate twitches';
+  else if(ripple>0.35) label='Wave summation';
+  else if(ripple>0.05) label='Incomplete (unfused) tetanus';
+  else label='Complete tetanus';
+
+  $('s2').innerHTML=
+    tile('Stimulus frequency',f,'Hz &middot; interval '+(1000/f).toFixed(0)+' ms')+
+    tile('Time to peak, one twitch',tw.tp.toFixed(0),'ms &middot; this fiber type')+
+    tile('Peak tension now',(mx*100).toFixed(0)+'%','of the maximum this fiber can make')+
+    tile('Compared with a twitch',xTw.toFixed(1)+'×','tetanus reaches three to four')+
+    tile('Fusion index',(fusion*100).toFixed(0)+'%','100 is a perfectly smooth plateau')+
+    tile('State',label,'read the ripple on the plateau');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(label==='Separate twitches'){
+    cls='verdict info';
+    txt='One stimulus, one twitch, complete relaxation in between<small>Calcium comes back to 0.1 &micro;M before the next impulse arrives, so nothing accumulates and nothing adds. This is the least useful thing skeletal muscle ever does.</small>';
+    inf='<span class="n">A twitch is a laboratory event, not a working one</span>In life, motor neurons fire in trains. A twitch is what you produce when you deliberately isolate a single impulse; the working state of skeletal muscle is <b>tetanus</b>. Raise the frequency and watch the trace stop returning to baseline.';
+  } else if(label==='Wave summation'){
+    cls='verdict info';
+    txt='Wave summation &mdash; each twitch starts before the last has finished<small>Peak tension is now '+xTw.toFixed(1)+'&times; a single twitch. Look at the calcium trace: the troughs no longer reach 0.1 &micro;M.</small>';
+    inf='<span class="n">Summation is a calcium story before it is a force story</span>A second action potential arriving before SERCA has cleared the cytosol finds troponin still partly occupied. More binding sites stay open, more cross-bridges cycle simultaneously, and tension adds. Nothing about the individual cross-bridge has changed &mdash; only how many of them are working at once.';
+  } else if(label==='Incomplete (unfused) tetanus'){
+    cls='verdict warn';
+    txt='Incomplete tetanus &mdash; a bumpy plateau<small>Around <b>20 to 30 Hz</b> in a fast fiber the twitches are clearly overlapping but calcium still falls measurably between stimuli, so the plateau ripples. Tension is '+xTw.toFixed(1)+'&times; a single twitch.</small>';
+    inf='<span class="n">Where the ripple comes from</span>SERCA is winning slightly between impulses. Each partial fall in calcium lets a few cross-bridges detach before the next release tops it up. In the intact body you rarely see this ripple in whole-muscle force, because motor units fire <b>asynchronously</b> &mdash; one unit&rsquo;s trough coincides with another unit&rsquo;s peak.';
+  } else {
+    cls='verdict';
+    txt='Complete tetanus &mdash; a smooth plateau at '+xTw.toFixed(1)+'× twitch tension<small>Above roughly <b>50 Hz</b> in a fast fiber, cytosolic calcium never falls far enough for troponin to release, so essentially every binding site stays available.</small>';
+    inf='<span class="n">Tetanus is normal, not pathological</span>The word carries a clinical odor because of the disease, but a fused tetanic contraction is simply what a working skeletal muscle does. It generates <b>three to four times</b> the tension of a single twitch, and it is smooth enough to hold a cup steady. Notice the one tissue that must never do this: cardiac muscle, whose 200 to 250 ms refractory period makes summation impossible.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf+'<div class="dd"><b>Fiber type sets the timing.</b> Type I peaks in about <b>100 ms</b> and fuses at low frequencies; type IIa in about <b>50 ms</b>; type IIx in about <b>20 ms</b> and needs the highest frequencies to fuse. Switch fiber type above and watch the fusion frequency move with it.</div>';
+  draw2(S,TOTAL,tw.pk);
+}
+function draw2(S,TOTAL,twpk){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var P=S.p, L=96,R=W-26, A1=[40,352], A2=[418,H-56];
+  function X(t){return L+(t/TOTAL)*(R-L);}
+  function Y1(v){return A1[1]-v*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-(Math.log10(Math.max(0.05,v))-Math.log10(0.05))/(Math.log10(20)-Math.log10(0.05))*(A2[1]-A2[0]);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y1(i/4)); g.lineTo(R,Y1(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i*25)+'%',L-9,Y1(i/4)+5); }
+  g.strokeStyle=GREEN; g.lineWidth=2; g.setLineDash([5,5]);
+  g.beginPath(); g.moveTo(L,Y1(twpk)); g.lineTo(R,Y1(twpk)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GREEN; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('one twitch = '+(twpk*100).toFixed(0)+'% of maximum', L+8, Y1(twpk)-7);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('Tension  (percent of this fiber&rsquo;s maximum)', L, A1[0]-10);
+  g.strokeStyle=TEAL; g.lineWidth=3.5; g.beginPath();
+  for(i=0;i<P.length;i++){ var x=X(P[i].t),y=Y1(P[i].T); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+  /* stimulus marks */
+  S.stims.forEach(function(t){
+    g.strokeStyle=CORAL; g.lineWidth=2;
+    g.beginPath(); g.moveTo(X(t),A1[1]); g.lineTo(X(t),A1[1]+12); g.stroke();
+  });
+  g.fillStyle=CORAL; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('each mark is one action potential — over in 1 to 5 ms', L, A1[1]+30);
+
+  /* calcium */
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0.1,1,10].forEach(function(vv){
+    g.beginPath(); g.moveTo(L,Y2(vv)); g.lineTo(R,Y2(vv)); g.stroke();
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(vv+' µM',L-9,Y2(vv)+5);
+  });
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Cytosolic calcium  (log scale)   —   SERCA cannot clear it between stimuli', L, A2[0]-10);
+  g.strokeStyle=GOLD; g.lineWidth=3; g.beginPath();
+  for(i=0;i<P.length;i++){ var x2=X(P[i].t),y2=Y2(P[i].ca); if(i===0)g.moveTo(x2,y2); else g.lineTo(x2,y2); }
+  g.stroke();
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  var stepT=TOTAL<=520?100:Math.round(TOTAL/6/50)*50;
+  for(i=0;i<=TOTAL;i+=stepT){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A2[1]); g.lineTo(X(i),A2[1]+6); g.stroke();
+    g.fillText(i,X(i),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('MILLISECONDS',(L+R)/2,A2[1]+42);
+}
+
+/* =====================================================
+   BENCH 3 - length-tension
+   ===================================================== */
+var LP=[
+ {n:'Optimal, 2.1 &micro;m',v:210},
+ {n:'Grip with the wrist flexed, 1.75 &micro;m',v:175},
+ {n:'Thick filament jams, 1.55 &micro;m',v:155},
+ {n:'Stretched, 2.9 &micro;m',v:290},
+ {n:'Overlap gone, 3.6 &micro;m',v:360}
+];
+var lpb=$('lpresets');
+LP.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+  b.onclick=function(){ $('len').value=P.v; render3(); };
+  lpb.appendChild(b);
+});
+$('len').addEventListener('input',render3);
+function activeT(L){
+  if(L<=1.27) return 0;
+  if(L<1.70) return (L-1.27)/(1.70-1.27)*0.62;
+  if(L<2.00) return 0.62+(L-1.70)/(2.00-1.70)*0.38;
+  if(L<=2.20) return 1;
+  if(L<3.60) return 1-(L-2.20)/(3.60-2.20);
+  return 0;
+}
+function passiveT(L){
+  if(L<=2.20) return 0;
+  return Math.min(1.15,0.045*(Math.exp((L-2.20)/0.42)-1));
+}
+function render3(){
+  var L=+$('len').value/100;
+  $('lenV').textContent=L.toFixed(2)+' µm';
+  var a=activeT(L), p=passiveT(L), tot=a+p;
+  var overlap=clamp(0.8-Math.max(0,Math.min(0.8,L/2-1.0)),0,0.8);
+  $('s3').innerHTML=
+    tile('Sarcomere length',L.toFixed(2),'&micro;m &middot; optimal is 2.0 to 2.2')+
+    tile('Active tension',(a*100).toFixed(0)+'%','of maximum &mdash; cross-bridges')+
+    tile('Passive tension',(p*100).toFixed(0)+'%','titin and connective tissue')+
+    tile('Total tension',(tot*100).toFixed(0)+'%','what a force transducer would read')+
+    tile('Single-overlap zone',overlap.toFixed(2),'&micro;m per half sarcomere')+
+    tile('Force per 10% shortening',((activeT(L)-activeT(L*0.9))*100).toFixed(0)+'%','change in active tension');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(L>=3.60){
+    cls='verdict bad';
+    txt='Zero active tension &mdash; and it has nothing to do with calcium<small>The thin filaments no longer reach the thick filament, so no cross-bridge can form. Flood the cytosol with calcium and the reading does not move.</small>';
+    inf='<span class="n">Geometry beats chemistry</span>This is the cleanest demonstration in muscle physiology that <b>force is overlap</b>. Every step of excitation&ndash;contraction coupling can be perfect and the muscle still produces nothing, because the two filaments are not in the same place.';
+  } else if(L<1.70){
+    cls='verdict bad';
+    txt='Steeply weak &mdash; the thick filaments are meeting the Z discs<small>Active tension is only '+(a*100).toFixed(0)+'%. Below about 1.7 &micro;m the rigid 1.6 &micro;m thick filament runs out of room and crumples against the Z disc.</small>';
+    inf='<span class="n">Two mechanisms on the ascending limb</span>From 2.0 down to about 1.7 &micro;m the problem is <b>double overlap</b>: thin filaments from opposite Z discs cross the M line and interfere. Below 1.7 &micro;m a harsher limit takes over as the thick filament itself is compressed. That is why the curve is shallow and then suddenly steep.';
+  } else if(L<2.00){
+    cls='verdict warn';
+    txt='On the ascending limb &mdash; thin filaments are interfering with each other<small>Active tension '+(a*100).toFixed(0)+'%. This is the physiology behind a weak grip when the wrist is fully flexed.</small>';
+    inf='<span class="n">Positioning a limb is a physiologic intervention</span>Ask a patient to grip your fingers with the wrist fully flexed and then with the wrist neutral. Grip is dramatically weaker in flexion, because wrist flexion carries the finger flexors below their optimal sarcomere length. Nothing is wrong with the nerve, the receptor or the calcium &mdash; <b>only the overlap has changed</b>.';
+  } else if(L<=2.20){
+    cls='verdict';
+    txt='On the plateau &mdash; maximum active tension<small>Every myosin head that carries a head faces an actin binding site, and no thin filament is in another&rsquo;s way. The plateau has width because the central 0.2 &micro;m of the thick filament is bare of heads.</small>';
+    inf='<span class="n">The body normally keeps you here</span>Joint excursion is limited by the skeleton, so resting muscle sits close to optimal length and you can usually ignore the descending limb in intact skeletal muscle. The heart cannot ignore it: the ascending limb of this same curve is the <b>Frank&ndash;Starling</b> relationship. The more the ventricle fills, the closer its sarcomeres come to optimal overlap, and the harder it contracts.';
+  } else {
+    cls='verdict warn';
+    txt='On the descending limb &mdash; active tension falling, passive tension rising<small>Active '+(a*100).toFixed(0)+'%, passive '+(p*100).toFixed(0)+'%. The total may still look respectable, but the part of it the muscle can control is shrinking.</small>';
+    inf='<span class="n">Two very different kinds of tension</span>Active tension is made by cycling cross-bridges and is under the control of calcium. Passive tension is stored elastic energy, mostly in <b>titin</b>, and it exists whether the muscle is activated or not. A force transducer reads their sum, which is why isolated-muscle experiments always report both curves.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  draw3(L,a,p);
+}
+function draw3(Lv,a,p){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=96,R=W-30,T=200,B=H-70, lo=1.2,hi=3.8;
+  function X(u){return L+((u-lo)/(hi-lo))*(R-L);}
+  function Y(v){return B-v*(B-T);}
+  var i;
+  /* mini sarcomere at the top */
+  var sy=96, PX=90, cx=W/2;
+  var halfS=Lv/2;
+  g.strokeStyle=TEAL; g.lineWidth=5; g.lineCap='round';
+  [[-1],[1]].forEach(function(s){
+    var x0=cx+s[0]*halfS*PX, x1=cx+s[0]*Math.max(0,halfS-1.0)*PX;
+    g.beginPath(); g.moveTo(x0,sy-13); g.lineTo(x1,sy-13); g.stroke();
+    g.beginPath(); g.moveTo(x0,sy+13); g.lineTo(x1,sy+13); g.stroke();
+  });
+  g.strokeStyle=CORAL; g.lineWidth=9;
+  g.beginPath(); g.moveTo(cx-Math.min(0.8,halfS)*PX,sy); g.lineTo(cx+Math.min(0.8,halfS)*PX,sy); g.stroke();
+  g.fillStyle=TDK;
+  g.fillRect(cx-halfS*PX-3,sy-34,6,68); g.fillRect(cx+halfS*PX-3,sy-34,6,68);
+  g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('Z',cx-halfS*PX,sy-42); g.fillText('Z',cx+halfS*PX,sy-42);
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('the same sarcomere, at '+Lv.toFixed(2)+' µm', cx, sy+52);
+
+  /* axes */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y(i/4)); g.lineTo(R,Y(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i*25)+'%',L-9,Y(i/4)+5); }
+  g.fillStyle=GREEN; g.globalAlpha=0.13; g.fillRect(X(2.0),T,X(2.2)-X(2.0),B-T); g.globalAlpha=1;
+  g.fillStyle=GREEN; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('optimal', (X(2.0)+X(2.2))/2, T-8);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Tension against sarcomere length', L, T-30);
+
+  function curve(fn,col,w,dash){
+    g.strokeStyle=col; g.lineWidth=w; if(dash)g.setLineDash(dash);
+    g.beginPath();
+    var u,first=true;
+    for(u=lo;u<=hi+0.001;u+=0.01){ var x=X(u),y=Y(Math.min(1.3,fn(u))); if(first){g.moveTo(x,y);first=false;} else g.lineTo(x,y); }
+    g.stroke(); g.setLineDash([]);
+  }
+  curve(passiveT,GOLD,2.5,[6,4]);
+  curve(function(u){return activeT(u)+passiveT(u);},MUT,2,[3,4]);
+  curve(activeT,TEAL,4);
+
+  g.strokeStyle=CORAL; g.lineWidth=2.5; g.setLineDash([6,4]);
+  g.beginPath(); g.moveTo(X(Lv),T); g.lineTo(X(Lv),B); g.stroke(); g.setLineDash([]);
+  g.fillStyle=TEAL; g.beginPath(); g.arc(X(Lv),Y(a),7,0,6.3); g.fill();
+  g.fillStyle=GOLD; g.beginPath(); g.arc(X(Lv),Y(p),6,0,6.3); g.fill();
+
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  var u2;
+  for(u2=1.2;u2<=3.8;u2+=0.2){ g.fillText(u2.toFixed(1),X(u2),B+22); }
+  g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('SARCOMERE LENGTH (µm)',(L+R)/2,B+44);
+  /* legend */
+  var lx=L+12, ly=T+22;
+  [['active — cross-bridges',TEAL],['passive — titin',GOLD],['total',MUT]].forEach(function(q,k){
+    g.fillStyle=q[1]; g.fillRect(lx,ly+k*20-9,14,4);
+    g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(q[0],lx+20,ly+k*20-3);
+  });
+}
+
+/* =====================================================
+   BENCH 4 - three energy systems
+   ===================================================== */
+var INT=[
+ {k:'max',n:'All-out sprint',d:1.00},
+ {k:'hard',n:'Hard, sustainable for minutes',d:0.60},
+ {k:'mod',n:'Moderate steady work',d:0.32}
+];
+var inten=INT[0];
+var ibox=$('intens');
+INT.forEach(function(I){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(I.k===inten.k?' on':''); b.textContent=I.n;
+  b.onclick=function(){ inten=I; [].forEach.call(ibox.children,function(c,i){c.classList.toggle('on',INT[i].k===inten.k);}); render4(); };
+  ibox.appendChild(b);
+});
+$('dur').addEventListener('input',render4);
+function fuelSim(){
+  var dt=0.25, T=300, N=Math.round(T/dt)+1;
+  var atp=5, cp=22;                 /* mmol per kg */
+  var demandMax=2.2;                /* mmol ATP per kg per second at full power */
+  var glyMax=1.05, oxMax=0.62;      /* mmol ATP per kg per second */
+  var ox=0.02, out=[], i;
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    var demand=demandMax*inten.d;
+    ox+=((oxMax*Math.min(1,inten.d/0.32))-ox)*(dt/25);   /* 30 to 60 s to ramp */
+    if(ox>oxMax) ox=oxMax;
+    var gly=glyMax*(1-Math.exp(-t/8))*(t<25?1:Math.max(0.30,Math.exp(-(t-25)/95)));
+    var need=demand;
+    var fOx=Math.min(ox,need); need-=fOx;
+    var fGly=Math.min(gly,need); need-=fGly;
+    var fCp=0;
+    if(need>0&&cp>0){ fCp=Math.min(need,cp/dt); cp-=fCp*dt; if(cp<0)cp=0; need-=fCp; }
+    var fAtp=0;
+    if(need>0&&atp>3.0){ fAtp=Math.min(need,(atp-3.0)/dt); atp-=fAtp*dt; need-=fAtp; }
+    var supplied=fOx+fGly+fCp+fAtp;
+    var power=demand>0?supplied/demandMax:0;
+    out.push({t:t,ox:fOx,gly:fGly,cp:fCp,atp:fAtp,power:power,cpLeft:cp,atpLeft:atp,demand:demand/demandMax});
+  }
+  return out;
+}
+function render4(){
+  var F=fuelSim(), tSel=+$('dur').value;
+  $('durV').textContent=tSel+' s';
+  var idx=Math.min(F.length-1,Math.round(tSel/0.25));
+  var s=F[idx], i;
+  var tFull=0; for(i=0;i<F.length;i++){ if(F[i].power>=F[i].demand-0.02) tFull=F[i].t; else break; }
+  var tot=s.ox+s.gly+s.cp+s.atp;
+  function pc(x){ return tot>0?(x/tot*100).toFixed(0)+'%':'0%'; }
+
+  $('s4').innerHTML=
+    tile('Power being produced',(s.power*100).toFixed(0)+'%','of this muscle&rsquo;s maximum')+
+    tile('Full power lasted',tFull.toFixed(0),'s before supply fell behind')+
+    tile('Creatine phosphate left',s.cpLeft.toFixed(1),'mmol/kg of about 22 at rest')+
+    tile('ATP left',s.atpLeft.toFixed(1),'mmol/kg &middot; rarely falls below 60% of the resting 5')+
+    tile('Share from glycolysis',pc(s.gly),'2 ATP per glucose')+
+    tile('Share from oxidation',pc(s.ox),'about 30 to 32 ATP per glucose');
+
+  var v=$('v4'),cls='verdict',txt='',inf='';
+  if(tSel<=3&&inten.d>0.8){
+    cls='verdict info';
+    txt='The first three seconds are paid for out of the till<small>Stored ATP is only about <b>5 mmol/kg</b>, which at this power is 2 to 3 seconds of work. It is already being topped up by creatine kinase before you notice it running out.</small>';
+    inf='<span class="n">Creatine phosphate is a phosphate buffer, not a fuel</span>At <b>20 to 25 mmol/kg</b> it holds four or five times as much transferable phosphate as ATP itself, and <b>creatine kinase</b> moves that phosphate to ADP essentially instantaneously. That is why maximal power does not sag at all for the first several seconds.';
+  } else if(tSel<=15&&inten.d>0.8){
+    cls='verdict';
+    txt='Creatine phosphate is carrying the load<small>'+s.cpLeft.toFixed(1)+' mmol/kg remains of about 22. This system covers roughly the first <b>10 to 15 seconds</b>, and it is why a 100 m sprint is run almost entirely without oxygen.</small>';
+    inf='<span class="n">Power and capacity trade off</span>The three systems line up in exactly the opposite order for power and for duration. Creatine phosphate is the most powerful and the shortest. Oxidative phosphorylation is the least powerful per second and effectively unlimited. Glycolysis sits between them &mdash; and it is the one that hurts.';
+  } else if(tSel<=120&&inten.d>0.5){
+    cls='verdict warn';
+    txt='Glycolysis is holding it up &mdash; and power has fallen to '+(s.power*100).toFixed(0)+'%<small>Anaerobic glycolysis produces only <b>2 ATP per glucose</b>, but it produces them fast and without waiting for oxygen. It can sustain intense work for about <b>30 seconds to 2 minutes</b>, at the cost of lactate and hydrogen ion.</small>';
+    inf='<span class="n">Fatigue is not lactic acid burning the muscle</span>And it is almost never literally running out of ATP: ATP rarely falls below <b>60 percent</b> of resting even in exhausting exercise, because the cell shuts down before that. The real contributors are <b>inorganic phosphate</b> interfering with cross-bridge force, <b>hydrogen ion</b> inhibiting key enzymes and calcium handling, <b>potassium</b> accumulating in the T tubules and blunting the action potential, and <b>glycogen depletion</b>. Central drive from the nervous system also declines.<div class="dd">Delayed-onset soreness 24 to 72 hours later is microscopic damage and inflammation &mdash; not lactate, which clears within about an hour.</div>';
+  } else {
+    cls='verdict info';
+    txt='Oxidative phosphorylation now supplies '+pc(s.ox)+' of the ATP<small>It took <b>30 to 60 seconds</b> to ramp up and it is limited by oxygen delivery, but it yields about <b>30 to 32 ATP per glucose</b> and it powers everything beyond a couple of minutes.</small>';
+    inf='<span class="n">This is where fiber type decides the outcome</span><b>Type I</b> fibers are built around this system: many mitochondria, high myoglobin, red, slow (about 100 ms), very fatigue resistant &mdash; posture and the soleus. <b>Type IIa</b> use both routes and resist fatigue moderately &mdash; walking and cycling. <b>Type IIx</b> are glycolytic, pale, fastest (about 20 ms) and fatigue in seconds &mdash; sprinting and jumping. Recruitment order means you spend type I first and reach type IIx only under load.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i4').innerHTML=inf;
+  draw4(F,tSel);
+}
+function draw4(F,tSel){
+  var cv=$('cv4'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=96,R=W-26,A1=[36,258],A2=[326,H-56], TMAX=300;
+  function X(t){return L+(t/TMAX)*(R-L);}
+  function Y1(v){return A1[1]-v*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-(v/2.4)*(A2[1]-A2[0]);}
+  var i;
+  /* power */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y1(i/4)); g.lineTo(R,Y1(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i*25)+'%',L-9,Y1(i/4)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Power the muscle can actually produce', L, A1[0]-10);
+  g.strokeStyle=MUT; g.lineWidth=2; g.setLineDash([5,5]);
+  g.beginPath(); g.moveTo(L,Y1(F[0].demand)); g.lineTo(R,Y1(F[0].demand)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('power demanded', L+8, Y1(F[0].demand)-7);
+  g.strokeStyle=TEAL; g.lineWidth=3.5; g.beginPath();
+  for(i=0;i<F.length;i++){ var x=X(F[i].t),y=Y1(F[i].power); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+
+  /* stacked supply */
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(i=0;i<=2;i++){ g.beginPath(); g.moveTo(L,Y2(i)); g.lineTo(R,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText(i.toFixed(1),L-9,Y2(i)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('ATP supplied  (mmol per kg per second), stacked by source', L, A2[0]-10);
+  function band(keys,key,col){
+    g.beginPath();
+    for(i=0;i<F.length;i++){
+      var lo=0; keys.forEach(function(q){lo+=F[i][q];});
+      if(i===0) g.moveTo(X(F[i].t),Y2(lo+F[i][key])); else g.lineTo(X(F[i].t),Y2(lo+F[i][key]));
+    }
+    for(i=F.length-1;i>=0;i--){
+      var lo2=0; keys.forEach(function(q){lo2+=F[i][q];});
+      g.lineTo(X(F[i].t),Y2(lo2));
+    }
+    g.closePath(); g.globalAlpha=0.62; g.fillStyle=col; g.fill(); g.globalAlpha=1;
+  }
+  band([],'ox',GREEN);
+  band(['ox'],'gly',GOLD);
+  band(['ox','gly'],'cp',BLUE);
+  band(['ox','gly','cp'],'atp',CORAL);
+  var lx=L+12, ly=A2[0]+22;
+  [['oxidative — 30 to 32 ATP per glucose',GREEN],['anaerobic glycolysis — 2 per glucose',GOLD],['creatine phosphate',BLUE],['stored ATP',CORAL]].forEach(function(q,k){
+    g.fillStyle=q[1]; g.globalAlpha=0.75; g.fillRect(lx+(k%2)*430,ly+Math.floor(k/2)*20-10,13,13); g.globalAlpha=1;
+    g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(q[0],lx+(k%2)*430+19,ly+Math.floor(k/2)*20);
+  });
+
+  g.strokeStyle=CORAL; g.lineWidth=2.5; g.setLineDash([6,4]);
+  g.beginPath(); g.moveTo(X(tSel),A1[0]); g.lineTo(X(tSel),A1[1]);
+  g.moveTo(X(tSel),A2[0]); g.lineTo(X(tSel),A2[1]); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(tSel+' s', X(tSel), A1[0]+16);
+
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=300;i+=30){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A2[1]); g.lineTo(X(i),A2[1]+6); g.stroke();
+    g.fillText(i,X(i),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('SECONDS INTO THE EFFORT',(L+R)/2,A2[1]+42);
+}
+
+/* boot */
+render1(); render2(); render3(); render4(); setMode(1);
+})();
+</script>
+</body>
+</html>

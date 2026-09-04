@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Central Dogma Bench &mdash; edit a gene, read the protein</title>
+<meta name="description" content="Mutate a real beta-globin fragment one base at a time and watch transcription, splicing and translation deliver the consequence: silent, missense, nonsense, frameshift or a failed splice site.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.lbl span{float:right;text-transform:none;letter-spacing:0;font-weight:600;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.strand{display:flex;flex-wrap:wrap;gap:2px;margin-top:4px;}
+.cdn{display:flex;gap:1px;margin-right:5px;margin-bottom:4px;position:relative;}
+.b{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;font-weight:700;width:17px;height:24px;line-height:1;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);cursor:pointer;padding:0;}
+.b:hover{border-color:var(--teal);}
+.b.sel{background:var(--teal);color:#fff;border-color:var(--teal);}
+.b.mut{background:var(--coral);color:#fff;border-color:var(--coral);}
+.b.intr{background:var(--line);color:var(--muted);}
+.b.intr.sel{background:var(--teal);color:#fff;}
+.b.site{border-color:var(--gold);border-width:2px;color:var(--gold);}
+.baserow{display:flex;gap:6px;margin-top:10px;}
+.baserow button{flex:1;font-family:ui-monospace,Consolas,monospace;font-size:15px;font-weight:700;padding:9px 0;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--teal-dk);cursor:pointer;}
+.baserow button:hover{border-color:var(--teal);}
+.baserow button:disabled{opacity:.35;cursor:default;}
+.seqbox{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-top:4px;}
+.seq{font-family:ui-monospace,Consolas,monospace;font-size:12px;letter-spacing:.6px;white-space:nowrap;color:var(--ink);line-height:1.7;}
+.seq .in{color:var(--muted);}
+.seq .ch{color:var(--coral);font-weight:700;}
+.seq .lead{color:var(--muted);font-size:10.5px;letter-spacing:0;}
+.pep{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.aa{font-family:var(--sans);font-size:10.5px;font-weight:800;padding:5px 7px;border-radius:7px;background:var(--teal);color:#fff;}
+.aa.same{background:#fff;color:var(--soft);border:1px solid var(--line);}
+.aa.diff{background:var(--coral);}
+.aa.stop{background:var(--teal-dk);}
+.aa.lost{background:#fff;color:var(--muted);border:1px dashed var(--line);text-decoration:line-through;}
+.verdict{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.verdict .tagbig{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.8px;padding:7px 14px;border-radius:20px;color:#fff;background:var(--teal);}
+.verdict .tagbig.ok{background:var(--green);}
+.verdict .tagbig.mis{background:var(--gold);}
+.verdict .tagbig.bad{background:var(--coral);}
+.verdict .tagbig.neu{background:var(--blue);}
+.verdict .sub{font-family:var(--disp);font-size:15px;color:var(--teal-dk);font-weight:600;}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;}
+.hint b{color:var(--soft);}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.arrowrow{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.5px;color:var(--muted);margin:14px 0 2px;}
+.arrowrow .n{background:var(--teal);color:#fff;border-radius:20px;padding:3px 9px;}
+.arrowrow .n.off{background:var(--line);color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch02.html">&larr; Module 2</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 2 &middot; Section 4</div>
+  <h1>Central Dogma Bench</h1>
+  <div class="intro">This is a real fragment of the human <b>&beta;-globin</b> gene: eleven codons, an intron, then twelve more codons. Click any base and change it. Transcription, splicing and translation all rerun immediately, so you can watch a single substitution be <b>silent</b>, or swap one amino acid, or truncate the chain, or shift the reading frame and garble everything downstream.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Coding strand of the gene <span id="posNote">click a base to select it</span></div>
+      <div class="strand" id="strand"></div>
+      <div class="baserow">
+        <button type="button" id="bA" aria-label="Change the selected base to adenine">A</button>
+        <button type="button" id="bC" aria-label="Change the selected base to cytosine">C</button>
+        <button type="button" id="bG" aria-label="Change the selected base to guanine">G</button>
+        <button type="button" id="bT" aria-label="Change the selected base to thymine">T</button>
+        <button type="button" id="bIns" aria-label="Insert one base after the selected position" style="flex:1.6">&#43; insert</button>
+        <button type="button" id="bDel" aria-label="Delete the selected base" style="flex:1.6">&minus; delete</button>
+      </div>
+      <div class="lbl">Or load a mutation that matters</div>
+      <div class="chips" id="presets"></div>
+      <div class="hint"><b>Reading the colors.</b> Teal bases are exon; gray bases are intron. The gold-outlined bases are the intron&rsquo;s <b>GT</b> and <b>AG</b> splice sites &mdash; the spliceosome finds the intron by them, so breaking one is a mutation in its own right even though it changes no codon.</div>
+      <div class="lbl">What the nucleus does before anything is translated</div>
+      <div class="arrowrow"><span class="n">TRANSCRIBE</span>&rarr;<span class="n">5&prime; CAP</span>&rarr;<span class="n" id="nSplice">SPLICE</span>&rarr;<span class="n">POLY-A</span>&rarr;<span class="n">EXPORT</span></div>
+      <div class="hint">Only mature mRNA leaves through a nuclear pore. Separating transcription from translation in space and time is what lets the cell edit, censor and regulate the message before a single peptide bond is formed. The DNA itself never leaves.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>From sequence to protein</h2>
+      <div class="lbl" style="margin-top:2px">Template strand &mdash; read 3&prime; to 5&prime;</div>
+      <div class="seqbox"><div class="seq" id="tmpl"></div></div>
+      <div class="lbl">Pre-mRNA &mdash; synthesized 5&prime; to 3&prime;, U replaces T</div>
+      <div class="seqbox"><div class="seq" id="pre"></div></div>
+      <div class="lbl">Mature mRNA <span id="spliceNote"></span></div>
+      <div class="seqbox"><div class="seq" id="mat"></div></div>
+      <div class="lbl">Polypeptide</div>
+      <div class="pep" id="pep"></div>
+      <div class="verdict"><span class="tagbig ok" id="tag">WILD TYPE</span><span class="sub" id="sub"></span></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Chain length</div><div class="v" id="sLen">22</div><div class="u">amino acids before stop</div></div>
+        <div class="stat"><div class="k">Codons read</div><div class="v" id="sCod">23</div><div class="u">including the stop codon</div></div>
+        <div class="stat"><div class="k">Time to build</div><div class="v" id="sT">3.7&ndash;11</div><div class="u">seconds at 2&ndash;6 aa/s</div></div>
+      </div>
+      <div id="info"><span class="n" id="iName">Wild type</span><span id="iText"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+
+/* ---------- the genetic code (standard table, TCAG order) ---------- */
+var ORDER='TCAG';
+var AAS='FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG';
+var CODE={};
+(function(){
+  var i=0;
+  for(var a=0;a<4;a++)for(var b=0;b<4;b++)for(var c=0;c<4;c++){
+    CODE[ORDER[a]+ORDER[b]+ORDER[c]]=AAS[i++];
+  }
+})();
+var NAME={A:'Ala',R:'Arg',N:'Asn',D:'Asp',C:'Cys',E:'Glu',Q:'Gln',G:'Gly',H:'His',I:'Ile',
+          L:'Leu',K:'Lys',M:'Met',F:'Phe',P:'Pro',S:'Ser',T:'Thr',W:'Trp',Y:'Tyr',V:'Val','*':'STOP'};
+var COMP={A:'T',T:'A',G:'C',C:'G'};
+
+/* ---------- the gene: a real beta-globin fragment ---------- */
+var E1='ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCC';           /* 11 codons: Met Val His Leu Thr Pro Glu Glu Lys Ser Ala */
+var IN='GTGAGTCTATGACCCTTAG';                          /* intron, shortened for display: begins GT, ends AG */
+var E2='GTTACTGCCCTGTGGGGCAAGGTGAACGTGGATTAA';        /* 12 codons: Val Thr Ala Leu Trp Gly Lys Val Asn Val Asp Stop */
+var WT=[]; var sel=-1;
+function build(){
+  var a=[];
+  E1.split('').forEach(function(b){a.push({b:b,r:'e1'});});
+  IN.split('').forEach(function(b){a.push({b:b,r:'in'});});
+  E2.split('').forEach(function(b){a.push({b:b,r:'e2'});});
+  return a;
+}
+WT=build();
+var dna=build();
+var WTSEQ=WT.map(function(x){return x.b;}).join('');
+
+/* ---------- machinery ---------- */
+function regionSeq(r){ return dna.filter(function(x){return x.r===r;}).map(function(x){return x.b;}).join(''); }
+function spliceOK(){
+  var i=regionSeq('in');
+  return i.length>=4 && i.slice(0,2)==='GT' && i.slice(-2)==='AG';
+}
+function matureDNA(){
+  return spliceOK()? regionSeq('e1')+regionSeq('e2') : dna.map(function(x){return x.b;}).join('');
+}
+function toRNA(s){ return s.replace(/T/g,'U'); }
+function translate(rna){
+  var pep=[], cod=[];
+  for(var i=0;i+2<rna.length;i+=3){
+    var c=rna.substr(i,3).replace(/U/g,'T');
+    var aa=CODE[c];
+    if(aa===undefined) break;
+    cod.push(rna.substr(i,3));
+    if(aa==='*'){ pep.push('*'); break; }
+    pep.push(aa);
+  }
+  return {pep:pep,cod:cod};
+}
+function wtProtein(){ return translate(toRNA(E1+E2)); }
+var WTP=wtProtein();
+var WTAA=WTP.pep.filter(function(a){return a!=='*';});
+
+/* ---------- rendering the editable strand ---------- */
+function drawStrand(){
+  var h='', inIdx=[];
+  dna.forEach(function(x,i){ if(x.r==='in') inIdx.push(i); });
+  var siteSet={};
+  if(inIdx.length>=4){ siteSet[inIdx[0]]=1; siteSet[inIdx[1]]=1; siteSet[inIdx[inIdx.length-2]]=1; siteSet[inIdx[inIdx.length-1]]=1; }
+  var lastR=null, open=false, n=0;
+  dna.forEach(function(x,i){
+    if(x.r!==lastR){
+      if(open){ h+='</div>'; open=false; }
+      h+='<div style="flex-basis:100%;height:0"></div>';
+      h+='<div style="font-family:var(--sans);font-size:9.5px;font-weight:800;letter-spacing:.6px;color:var(--muted);width:100%;margin:4px 0 3px">'+
+         (x.r==='e1'?'EXON 1':(x.r==='in'?'INTRON &mdash; spliced out':'EXON 2'))+'</div>';
+      lastR=x.r; n=0;
+    }
+    if(n%3===0){ if(open) h+='</div>'; h+='<div class="cdn">'; open=true; }
+    var cls='b';
+    if(x.r==='in') cls+=' intr';
+    if(siteSet[i]) cls+=' site';
+    if(i===sel) cls+=' sel';
+    else if(WTSEQ.length===dna.length && WTSEQ[i]!==x.b) cls+=' mut';
+    h+='<button type="button" class="'+cls+'" data-i="'+i+'" aria-label="Position '+(i+1)+', base '+x.b+'">'+x.b+'</button>';
+    n++;
+  });
+  if(open) h+='</div>';
+  var el=$('#strand'); el.innerHTML=h;
+  [].forEach.call(el.querySelectorAll('button'),function(b){
+    b.addEventListener('click',function(){ sel=+this.getAttribute('data-i'); render(); });
+  });
+}
+
+/* ---------- controls ---------- */
+['A','C','G','T'].forEach(function(base){
+  $('#b'+base).addEventListener('click',function(){
+    if(sel<0) return; dna[sel].b=base; render();
+  });
+});
+$('#bIns').addEventListener('click',function(){
+  if(sel<0) return; dna.splice(sel+1,0,{b:'A',r:dna[sel].r}); sel=sel+1; render();
+});
+$('#bDel').addEventListener('click',function(){
+  if(sel<0||dna.length<6) return; dna.splice(sel,1); if(sel>=dna.length) sel=dna.length-1; render();
+});
+
+var PRE=[
+ {n:'Wild type (reset)', f:function(){ dna=build(); sel=-1; }},
+ {n:'Sickle cell: GAG&rarr;GTG', f:function(){ dna=build(); dna[19].b='T'; sel=19; }},
+ {n:'Silent: third base wobble', f:function(){ dna=build(); dna[11].b='C'; sel=11; }},
+ {n:'Nonsense: premature stop', f:function(){ dna=build(); dna[24].b='T'; sel=24; }},
+ {n:'Frameshift: delete one base', f:function(){ dna=build(); dna.splice(15,1); sel=15; }},
+ {n:'Frameshift rescued: delete three', f:function(){ dna=build(); dna.splice(15,3); sel=15; }},
+ {n:'Splice site killed: GT&rarr;AT', f:function(){ dna=build(); dna[33].b='A'; sel=33; }}
+];
+var pw=$('#presets');
+PRE.forEach(function(p,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    p.f(); [].forEach.call(pw.children,function(c,j){c.classList.toggle('on',j===i);}); render();
+  });
+  pw.appendChild(b);
+});
+
+/* ---------- classify ---------- */
+function classify(){
+  var okSplice=spliceOK();
+  var seq=dna.map(function(x){return x.b;}).join('');
+  var lenDelta=dna.length-WT.length;
+  var mat=matureDNA();
+  var res=translate(toRNA(mat));
+  var pep=res.pep.filter(function(a){return a!=='*';});
+  var hasStop=res.pep.indexOf('*')>=0;
+
+  if(!okSplice) return {k:'splice',cls:'bad',t:'SPLICE-SITE MUTATION',res:res,pep:pep,hasStop:hasStop};
+  if(mat.substr(0,3)!=='ATG') return {k:'nostart',cls:'bad',t:'START CODON LOST',res:res,pep:pep,hasStop:hasStop};
+  if(lenDelta!==0 && lenDelta%3!==0) return {k:'frameshift',cls:'bad',t:'FRAMESHIFT',res:res,pep:pep,hasStop:hasStop};
+  if(lenDelta!==0) return {k:'inframe',cls:'mis',t:'IN-FRAME INSERTION / DELETION',res:res,pep:pep,hasStop:hasStop};
+  if(seq===WTSEQ) return {k:'wt',cls:'ok',t:'WILD TYPE',res:res,pep:pep,hasStop:hasStop};
+  if(pep.length<WTAA.length) return {k:'nonsense',cls:'bad',t:'NONSENSE',res:res,pep:pep,hasStop:hasStop};
+  var diff=[];
+  for(var i=0;i<Math.max(pep.length,WTAA.length);i++) if(pep[i]!==WTAA[i]) diff.push(i);
+  if(diff.length===0) return {k:'silent',cls:'neu',t:'SILENT',res:res,pep:pep,hasStop:hasStop,diff:diff};
+  return {k:'missense',cls:'mis',t:'MISSENSE',res:res,pep:pep,hasStop:hasStop,diff:diff};
+}
+
+/* ---------- render ---------- */
+function render(){
+  drawStrand();
+  $('#posNote').textContent = sel<0? 'click a base to select it' : ('position '+(sel+1)+' selected');
+  ['bA','bC','bG','bT','bIns','bDel'].forEach(function(id){ $('#'+id).disabled = sel<0; });
+
+  var okSplice=spliceOK();
+  $('#nSplice').className = okSplice?'n':'n off';
+  $('#spliceNote').innerHTML = okSplice? '<span>intron removed, exons ligated</span>' : '<span style="color:var(--coral)">splice site destroyed &mdash; intron retained</span>';
+
+  /* strands */
+  var tm='', pr='', mt='';
+  dna.forEach(function(x,i){
+    var chg = (WTSEQ.length===dna.length && WTSEQ[i]!==x.b);
+    var c = x.r==='in'?'in':'';
+    if(chg) c='ch';
+    tm+='<span class="'+c+'">'+COMP[x.b]+'</span>';
+    pr+='<span class="'+c+'">'+(x.b==='T'?'U':x.b)+'</span>';
+  });
+  $('#tmpl').innerHTML='<span class="lead">3&prime;&nbsp;</span>'+tm+'<span class="lead">&nbsp;5&prime;</span>';
+  $('#pre').innerHTML='<span class="lead">5&prime;&nbsp;</span>'+pr+'<span class="lead">&nbsp;3&prime;</span>';
+
+  var C=classify();
+  var matSeq=matureDNA();
+  var mstr='';
+  if(okSplice){
+    var e1=regionSeq('e1'), e2=regionSeq('e2');
+    mstr='<span>'+toRNA(e1)+'</span><span>'+toRNA(e2)+'</span>';
+  } else {
+    dna.forEach(function(x){ mstr+='<span class="'+(x.r==='in'?'in':'')+'">'+(x.b==='T'?'U':x.b)+'</span>'; });
+  }
+  $('#mat').innerHTML='<span class="lead">5&prime; cap&nbsp;</span>'+mstr+'<span class="lead">&nbsp;AAAA&hellip;</span>';
+
+  /* peptide */
+  var ph='';
+  C.res.pep.forEach(function(aa,i){
+    var cls='aa';
+    if(aa==='*') cls+=' stop';
+    else if(C.k==='wt') cls+='';
+    else if(WTAA[i]===aa) cls+=' same';
+    else cls+=' diff';
+    ph+='<span class="'+cls+'">'+(i+1)+' '+NAME[aa]+'</span>';
+  });
+  if(C.pep.length<WTAA.length && (C.k==='nonsense'||C.k==='frameshift'||C.k==='splice')){
+    var lost=WTAA.length-C.pep.length;
+    ph+='<span class="aa lost">'+lost+' residues never made</span>';
+  }
+  if(!C.hasStop) ph+='<span class="aa lost">no stop codon reached</span>';
+  $('#pep').innerHTML=ph;
+
+  /* verdict + stats */
+  var tag=$('#tag'); tag.textContent=C.t; tag.className='tagbig '+C.cls;
+  $('#sLen').textContent=C.pep.length;
+  $('#sCod').textContent=C.res.cod.length;
+  var lo=(C.pep.length/6), hi=(C.pep.length/2);
+  $('#sT').textContent=lo.toFixed(1)+'–'+hi.toFixed(1);
+
+  var sub='', t='', nm='';
+  if(C.k==='wt'){
+    nm='Wild type';
+    sub='11 exon-1 codons + 12 exon-2 codons';
+    t=' Twenty-two amino acids and a stop, exactly as written. Note the shape of the pipeline: the DNA never moved, a disposable RNA copy was made, edited in the nucleus and exported, and only then was protein built. Now break something.';
+  } else if(C.k==='silent'){
+    nm='Silent mutation';
+    sub='The base changed. The protein did not.';
+    t=' Sixty-four codons specify only 20 amino acids plus stop, so most amino acids have several codons that usually differ at the <b>third</b> position. That is <b>degeneracy</b>, and it is why a great many DNA changes are invisible at the protein level. Move the same change to the first or second base of a codon and watch it stop being silent.';
+  } else if(C.k==='missense'){
+    var i0=C.diff[0];
+    nm='Missense mutation';
+    sub=NAME[WTAA[i0]]+' &rarr; '+NAME[C.pep[i0]]+' at residue '+(i0+1);
+    t=' One amino acid has been substituted. Whether that matters depends entirely on where it sits and what it does to folding. ';
+    if(i0===6 && C.pep[6]==='V'){
+      t+=' <b>You have just built sickle cell disease.</b> GAG became GTG, so valine sits where glutamate belongs at position 6 of the mature &beta;-globin chain (position 7 counting the initiator methionine). One base changes the solubility of deoxygenated hemoglobin, deoxygenated hemoglobin polymerizes, the red cell deforms, and from that single substitution follows the entire clinical picture. Sequence determines folding, folding determines shape, shape determines function.';
+    } else {
+      t+=' Many missense changes are tolerated; some are catastrophic. Try position 20 of the coding strand and compare.';
+    }
+  } else if(C.k==='nonsense'){
+    nm='Nonsense mutation';
+    sub='Premature stop after '+C.pep.length+' residues';
+    t=' A codon has become UAA, UAG or UGA, release factors arrive early and the chain lets go. Everything downstream is simply never built &mdash; here '+(WTAA.length-C.pep.length)+' residues are missing. A truncated protein usually cannot fold, so it is ubiquitin-tagged and destroyed in the proteasome rather than reaching its post.';
+  } else if(C.k==='frameshift'){
+    nm='Frameshift';
+    sub='Reading frame displaced by '+Math.abs((dna.length-WT.length)%3)+' base';
+    t=' The ribosome reads non-overlapping triplets and has no way to know it has lost its place. Insert or delete a number of bases that is not a multiple of three and every codon downstream is garbled &mdash; usually with a premature stop appearing somewhere in the nonsense. This is why frameshifts are so much more destructive than substitutions. Compare with the "delete three" preset, which removes a whole codon and leaves the frame intact.';
+  } else if(C.k==='inframe'){
+    nm='In-frame indel';
+    sub='Whole codons added or removed';
+    t=' The change is a multiple of three, so the reading frame survives and the rest of the protein is built correctly. Only the residues you added or removed are affected. The &Delta;F508 mutation of cystic fibrosis is exactly this: three bases lost, one phenylalanine missing, and a CFTR channel that would conduct chloride perfectly well if it ever reached the membrane. It misfolds, fails quality control and is degraded in the proteasome first. The defect is trafficking, not catalysis &mdash; which is why corrector drugs that rescue folding help.';
+  } else if(C.k==='splice'){
+    nm='Splice-site mutation';
+    sub='Intron retained in the mature message';
+    t=' You changed no codon. You changed the sequence the <b>spliceosome</b> uses to find the intron &mdash; the GT at its start or the AG at its end &mdash; so the intron was never excised. It is now translated along with the exons, and because its length is not a multiple of three it also shifts the frame; a stop codon appears almost immediately. Splicing is not a formality. It is a processing step whose failure is as pathogenic as any coding mutation, and it is one reason roughly 20 000 human genes can support well over 100 000 distinct proteins through alternative splicing.';
+  } else {
+    nm='Start codon lost';
+    sub='The small ribosomal subunit has nothing to scan to';
+    t=' Translation begins when the small subunit finds AUG. Destroy it and the message is exported, capped, tailed and completely inert.';
+  }
+  $('#sub').innerHTML=sub;
+  $('#iName').textContent=nm;
+  $('#iText').innerHTML=t+' <span style="display:block;margin-top:7px;color:var(--muted)">Elongation runs at roughly 2&ndash;6 amino acids per second in human cells, so this '+C.pep.length+'-residue chain takes '+lo.toFixed(1)+'&ndash;'+hi.toFixed(1)+' seconds &mdash; and a full-length 300-residue protein takes roughly one to two minutes. Several ribosomes read the same mRNA at once as a polyribosome, which multiplies output without changing that speed.</span>';
+}
+
+render();
+})();
+</script>
+</body>
+</html>

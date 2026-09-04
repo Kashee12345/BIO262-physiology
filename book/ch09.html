@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>Blood and Blood Vessels &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Blood is the only tissue that flows, and it flows because a pump generates a pressure difference across a network of tubes whose radius the body can change on demand. Everything in this module falls out of that one sentence. Blood">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 9 &middot; Blood and Blood Vessels</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#composition">1 &middot; What blood is made of, and why the recipe matters</a>
+        <a href="#red-cells">2 &middot; Red cells, oxygen carriage and the erythropoietin loop</a>
+        <a href="#hemostasis">3 &middot; Hemostasis: sealing a leak without clotting the whole system</a>
+        <a href="#hemodynamics">4 &middot; Vessels as plumbing: pressure, resistance and flow</a>
+        <a href="#exchange-control">5 &middot; Capillary exchange and the control of blood pressure</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 9</div>
+<h1>Blood and Blood Vessels</h1>
+
+<p class="lede">Blood is the only tissue that flows. It flows because a pump makes a pressure difference. That pressure pushes blood through a network of tubes. The body can change the width of those tubes whenever it needs to. Everything in this module comes out of that one idea. Blood carries oxygen because hemoglobin grabs oxygen and lets it go again. Blood stays inside the vessels because albumin holds an osmotic pull of roughly 25 mmHg. Blood seals a hole in seconds, because platelets and thrombin run one of the few real positive-feedback loops in the body. Blood also reaches every organ at a steady rate. That is because the smooth muscle in arterioles sits under constant nerve, hormone and local control. Flow follows a rule borrowed from electricity, Q = &Delta;P / R. Resistance changes with the fourth power of the radius. So a small change in vessel width makes a large change in flow. Learn the driving forces and the resistances. Then the numbers stop being facts to memorize. Hematocrit, mean arterial pressure and net filtration pressure become quantities you can predict.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Say what is in <b>plasma</b> and what the blood cells are. Explain how <b>hematocrit</b> and <b>viscosity</b>, the thickness of blood, change the resistance to flow.</li>
+<li>Work out arterial <b>oxygen content</b> from the hemoglobin level and the saturation. Explain why dissolved oxygen adds so little.</li>
+<li>Draw the <b>erythropoietin</b> negative-feedback loop. Name the variable, the sensor, the integrator, the effector and the response.</li>
+<li>Tell the <b>ABO</b> and <b>Rh</b> systems apart. Say what happens after a mismatched transfusion or an Rh-mismatched pregnancy.</li>
+<li>Put <b>hemostasis</b>, the sealing of a leak, in order. It runs from vascular spasm to the platelet plug, then the <b>coagulation cascade</b> and <b>fibrinolysis</b>. Point to where positive feedback works and say how the body brakes it.</li>
+<li>Use <b>Q = &Delta;P / R</b> and the fourth-power radius rule. Explain why <b>arterioles</b> are the resistance vessels and veins are the storage vessels.</li>
+<li>Work out <b>mean arterial pressure</b> and <b>pulse pressure</b>. Link them to cardiac output, total peripheral resistance and how stretchy the arteries are.</li>
+<li>Use the four <b>Starling forces</b> to predict whether fluid leaves or returns at a capillary. Use them to explain the four separate ways <b>edema</b>, or swelling, happens.</li>
+<li>Trace the <b>baroreflex</b> and the <b>renin&ndash;angiotensin&ndash;aldosterone system</b>. One holds arterial pressure steady over seconds. The other does it over hours and days.</li>
+</ul></div>
+
+<h2 id="composition"><span class="num">Section 1</span>What blood is made of, and why the recipe matters</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch09_s1.jpg" alt="Spun whole blood separates into plasma (about 55 percent), a thin buffy coat of leukocytes and platelets, and packed red cells (about 45 percent), which is what the hematocrit measures." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Spin whole blood and it splits into three layers. Plasma is about 55 percent. A thin buffy coat holds the leukocytes and platelets. Packed red cells are about 45 percent, and that is what the hematocrit measures. <span class="cred">John Campbell, CC0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Plasma is a solvent that does mechanical work</h3>
+
+<p>An average 70 kg adult carries about 5 L of blood. That is roughly 7 to 8 percent of body weight. Spin a tube of it and it splits into two working parts. On top is a straw-colored fluid called <b>plasma</b>. It makes up about 55 percent of the volume. Below it is a packed column of cells. That is the other 45 percent. Plasma is about 92 percent water by weight. The last 8 percent is the part that does the work. Dissolved in it are electrolytes, which are salts that carry charge. Sodium sits near 140 mEq/L, potassium 3.5 to 5.0 mEq/L, and bicarbonate 22 to 26 mEq/L. Plasma also carries nutrients, hormones, dissolved gases, and waste such as urea and creatinine. And it carries 6 to 8 g/dL of plasma protein.</p>
+
+<p>Those proteins are not just passengers. They make force. <b>Albumin</b> runs 3.5 to 5.0 g/dL. That is roughly 60 percent of the protein mass. Albumin is small, so there are a lot of albumin particles for that weight. That is why it sets most of the <b>colloid osmotic pressure</b> (oncotic pressure) of plasma, about 25 mmHg. The capillary wall lets water and small solutes through freely, but it holds protein back. So that 25 mmHg is a steady inward pull. It works against the outward push of blood pressure. Without it, plasma water would drain away into the space between cells. Albumin also buffers. It is the ride for fatty acids, bilirubin, calcium and many drugs. <b>Globulins</b> carry iron and copper, and they include the antibodies. <b>Fibrinogen</b> runs 200 to 400 mg/dL. It is the dissolved starting material that thrombin turns into the fibrin mesh of a clot. Take fibrinogen out and plasma becomes <b>serum</b>.</p>
+
+<p>Total plasma osmolality sits at 275 to 295 mOsm/kg. Nearly all of that comes from small solutes. Sodium and the anions that ride with it do most of it, along with glucose and urea. Look at the difference in scale. The crystalloid osmotic pressure of plasma is on the order of 5,400 mmHg. The colloid osmotic pressure is only 25 mmHg. Across a capillary wall, only the colloid part counts. Small solutes even out across that wall almost at once, so they pull nothing. Across a cell membrane the story flips. That membrane keeps sodium out, so the crystalloid part decides whether the cell swells or shrinks. Same fluid, different barrier, different effective pull.</p>
+
+<h3>Hematocrit, viscosity and the cost of carrying cells</h3>
+
+<p>The packed cell fraction is the <b>hematocrit</b>. It runs 42 to 52 percent in adult males and 37 to 47 percent in adult females. It is almost all red cells. Leukocytes and platelets make a buffy coat less than 1 percent thick. Hematocrit is a trade-off. Raise it and every milliliter of blood carries more oxygen. But it also raises <b>viscosity</b>, the thickness of blood. Viscosity sits on top in the resistance equation, so thicker blood means more resistance. Whole blood at a normal hematocrit is about 3 to 4 times as thick as water. Push hematocrit to 60 or 65 percent and viscosity climbs steeply. That happens in polycythemia vera and in a poorly managed testosterone regimen. Resistance rises. The heart must make more pressure for the same flow. The risk of clots goes up. Somewhere near 45 percent, oxygen content times flow reaches its highest value. That is exactly where evolution parked it.</p>
+
+<p>Viscosity is not a fixed property of blood. In small vessels the red cells stream toward the center of the tube. That leaves a plasma-rich layer along the wall. So apparent viscosity falls as vessel diameter falls into the 10 to 300 &micro;m range. This is the Fahraeus&ndash;Lindqvist effect. At very low flow rates the opposite happens. Red cells pile up into stacks and viscosity rises again. That is why slow flow in a dehydrated or shocked patient hurts twice over. There is less driving pressure and thicker blood at the same time.</p>
+
+<div class="pearl"><b>Misconception check.</b> Hematocrit does not tell you how much blood a person has. It is a ratio of cells to whole blood. In sudden bleeding the patient loses cells and plasma in the same proportion. So the hematocrit can look completely normal for the first hour or two. It falls only after fluid from between the cells shifts in and dilutes what is left. A normal hematocrit never rules out active bleeding.</div>
+
+<h3>The formed elements, sorted by job</h3>
+
+<p>Every blood cell starts from one <b>hematopoietic stem cell</b> in red bone marrow. In an adult that marrow sits mostly in the pelvis, sternum, ribs, vertebrae, and the upper femur and humerus. The stem cell divides into two lines. The myeloid line makes red cells, platelets, granulocytes and monocytes. The lymphoid line makes T cells, B cells and natural killer cells. Colony-stimulating factors and interleukins steer which branch a cell takes. At a steady state the marrow turns out roughly 2 million red cells every second. Under stress it can raise that several times over.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Element</th><th>Normal count</th><th>Lifespan</th><th>Primary function</th></tr></thead>
+<tbody>
+<tr><td>Erythrocyte</td><td>4.5&ndash;5.5 million/&micro;L</td><td>120 days</td><td>Carries oxygen on hemoglobin. Carries CO<sub>2</sub> as bicarbonate, using carbonic anhydrase</td></tr>
+<tr><td>Neutrophil</td><td>50&ndash;70 percent of WBCs</td><td>6 h&ndash;3 days</td><td>First on the scene when bacteria arrive. Eats them and burns them with oxidants</td></tr>
+<tr><td>Lymphocyte</td><td>20&ndash;40 percent</td><td>Days to years</td><td>Adaptive immunity. Makes antibodies and runs cell-based attacks</td></tr>
+<tr><td>Monocyte</td><td>2&ndash;8 percent</td><td>Months in tissue</td><td>Becomes a macrophage. Eats debris and shows antigens to other cells</td></tr>
+<tr><td>Eosinophil</td><td>1&ndash;4 percent</td><td>8&ndash;12 days</td><td>Fights parasites. Tunes allergic responses</td></tr>
+<tr><td>Basophil</td><td>Under 1 percent</td><td>Hours to days</td><td>Releases histamine and heparin</td></tr>
+<tr><td>Platelet</td><td>150,000&ndash;450,000/&micro;L</td><td>8&ndash;10 days</td><td>Sticks, clumps, and gives a fatty surface for clotting</td></tr>
+</tbody></table></div>
+
+<p>Total leukocyte count runs 4,500 to 11,000/&micro;L. A count above that with mostly neutrophils points to a sudden bacterial infection. A count above that with mostly lymphocytes more often points to a virus. Platelets are not true cells. They are pieces of cytoplasm shed from megakaryocytes. Thrombopoietin controls that shedding. The liver makes thrombopoietin nonstop, and circulating platelets clear it away. So the hormone level rises on its own whenever platelet mass falls. It is a beautifully simple negative feedback.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Packing more red cells into every milliliter raises the oxygen that milliliter carries. But it also thickens the blood. Viscosity sits on top in the resistance equation. Drag the <a href="../lab/ch09/HematocritTradeoffLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch09/HematocritTradeoffLab.html" loading="lazy" title="The Hematocrit Trade-off: Oxygen per Milliliter versus Milliliters per Minute interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Plasma protein makes the 25 mmHg oncotic pull that keeps water inside the vessels. Hematocrit sets a trade-off. More red cells means more oxygen in every milliliter. It also means thicker blood, so the heart has more resistance to push against.</p></div>
+
+<h2 id="red-cells"><span class="num">Section 2</span>Red cells, oxygen carriage and the erythropoietin loop</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch09_s2.jpg" alt="Diagram of a hemoglobin molecule showing four globin subunits, each with a central heme group containing an iron atom bound to oxygen" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Hemoglobin is four globin chains. Each chain holds one heme, and each heme holds one iron. So one molecule can grab and release up to four oxygen molecules. <span class="cred">Bioanthropologist1, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The arithmetic of oxygen delivery</h3>
+
+<p>A mature erythrocyte, or red blood cell, is a disc pinched in at the center. It is about 7.5 &micro;m across and 2 &micro;m thick. It has no nucleus, no mitochondria and no ribosomes. Every one of those missing parts is useful. Losing the nucleus makes room for roughly 250 million hemoglobin molecules per cell. Losing mitochondria means the cell cannot burn the oxygen it is carrying. It runs entirely on anaerobic glycolysis, which is sugar breakdown without oxygen. The pinched shape gives the most surface for gases to cross. It also lets the cell fold like a taco to squeeze through a 5 &micro;m capillary. Having no ribosomes has a cost. The cell cannot replace worn proteins. So it wears out at about 120 days, and macrophages in the spleen remove it.</p>
+
+<p><b>Hemoglobin</b> is a tetramer. That means four chains, two alpha and two beta in the adult (HbA, &alpha;<sub>2</sub>&beta;<sub>2</sub>). Each chain holds one heme with an iron atom at its center. Only Fe<sup>2+</sup> binds oxygen. Oxidize that iron to Fe<sup>3+</sup> and you get methemoglobin, which cannot carry oxygen. One gram of hemoglobin carries 1.34 mL of oxygen when it is full. Normal hemoglobin is 13.5 to 17.5 g/dL in men and 12.0 to 15.5 g/dL in women. Those facts give the central equation of oxygen transport:</p>
+
+<p style="text-align:center"><b>CaO<sub>2</sub> = (1.34 &times; Hb &times; SaO<sub>2</sub>) + (0.003 &times; PaO<sub>2</sub>)</b></p>
+
+<p>Put in normal values. Hb is 15 g/dL, SaO<sub>2</sub> is 0.98, and PaO<sub>2</sub> is 100 mmHg. Arterial oxygen content comes out at about 19.7 + 0.3. That is roughly 20 mL of oxygen per 100 mL of blood. Look at the second term. Dissolved oxygen adds only 0.3 mL/dL, about 1.5 percent of the total. Oxygen barely dissolves in plasma. That is the whole reason hemoglobin exists. It is also why a patient with a hemoglobin of 5 g/dL is in trouble even breathing 100 percent oxygen. You can drive the dissolved term up, but the carried term is what matters. Now multiply content by cardiac output, about 5 L/min. Total oxygen delivery comes to roughly 1,000 mL/min. At rest the body uses about 250 mL/min. That is a four-fold safety margin. Exercise, anemia and low blood oxygen all eat into it.</p>
+
+<h3>Erythropoiesis: a textbook negative-feedback loop</h3>
+
+<p>The controlled variable is not red cell count. It is not hematocrit either. It is <b>oxygen delivery to the renal cortex</b>, the outer layer of the kidney. The sensor is a group of fibroblast cells that sit between the kidney tubules. They make a transcription factor called HIF-2&alpha; nonstop. When oxygen is plentiful, prolyl hydroxylase enzymes tag HIF-2&alpha; for destruction within minutes. Those enzymes need oxygen as a substrate to work. When oxygen falls, they slow down. HIF-2&alpha; survives, enters the nucleus, and switches on the <b>erythropoietin</b> gene. So the sensor and the integrator are the same cell. Oxygen supply is read straight off the speed of an enzyme reaction. That is about as elegant as biological sensing gets.</p>
+
+<p>Erythropoietin travels to red bone marrow. There the effector response is faster survival and division of proerythroblasts. Those are the young red cell precursors. Within 3 to 5 days the <b>reticulocyte</b> count rises. It goes above its normal 0.5 to 1.5 percent. Within a week or two red cell mass goes up. Oxygen delivery to the kidney rises. Prolyl hydroxylase goes back to destroying HIF-2&alpha;. Erythropoietin falls back toward baseline. Variable, sensor, integrator, effector, response. And the response works against the disturbance. That is negative feedback. Here the lag is measured in days rather than seconds. That is why a person who moves to 3,000 m altitude feels awful for a week. It is why they are acclimatized after three.</p>
+
+<p>The loop needs raw material. Iron is the one that runs short first. About 70 percent of body iron sits in hemoglobin. Iron is absorbed in the duodenum. It is carried on transferrin and stored as ferritin. The body guards it jealously. Macrophages destroy old red cells. They hand the iron back instead of throwing it away. Vitamin B<sub>12</sub> and folate are needed to build DNA in dividing erythroblasts. Without them the cell cannot divide on schedule. It keeps making cytoplasm anyway. The result is a <b>megaloblastic</b> anemia, with large, immature-nucleated cells. B<sub>12</sub> absorption also needs intrinsic factor. Parietal cells in the stomach make it. That is why gastric surgery or autoimmune gastritis causes pernicious anemia years later. It appears once liver stores run down.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> Chronic kidney disease destroys the very cells that sense oxygen. So erythropoietin production falls. The marrow is intact and iron stores are fine. The result is a normocytic anemia. It tracks how much kidney has been lost. The treatment is to replace the missing signal. That means recombinant erythropoietin. A kidney tumor that secretes erythropoietin gives the mirror image. That patient has a secondary polycythemia with a normal PaO<sub>2</sub>.</div>
+
+<h3>When the loop fails: anemia and polycythemia</h3>
+
+<p><b>Anemia</b> means the blood carries less oxygen than it should. The mean corpuscular volume, or MCV, sorts the causes out fast. MCV is the average size of a red cell, and it is normally 80 to 100 fL. Microcytic anemia has an MCV under 80. That points to a problem making hemoglobin, above all iron deficiency, then thalassemia. Macrocytic anemia has an MCV over 100. That points to a problem making DNA, so think B<sub>12</sub> or folate deficiency, or alcohol. Normocytic anemia points to blood loss, to red cells breaking apart, or to a marrow that is not making enough. Whatever the cause, the body answers in ways you can predict from the physiology. Cardiac output rises. 2,3-BPG builds up, which shifts the oxygen&ndash;hemoglobin curve right so more oxygen is handed over per gram. Erythropoietin climbs. Pale skin, tiredness, breathlessness on effort and a flow murmur all follow from the lower content and the higher flow.</p>
+
+<p><b>Polycythemia</b> is the loop failing the other way. Primary polycythemia is called polycythemia vera. It is a marrow mutation. The marrow makes red cells without waiting for erythropoietin. So the erythropoietin level is low. Secondary polycythemia is the loop answering real hypoxia correctly. The causes include altitude and chronic lung disease. They also include cyanotic heart disease, obstructive sleep apnea and heavy smoking. There the erythropoietin level is high. Both forms raise viscosity. Both raise the risk of clots. Treatment for the primary form is often simply to remove blood.</p>
+
+<h3>Surface antigens: ABO, Rh and why transfusion has rules</h3>
+
+<p>Red cell membranes carry inherited antigens made of protein and sugar. The <b>ABO</b> system is unusual. People make antibodies against the antigens they lack. They do it even if they have never had a transfusion. That happens because gut bacteria display similar sugar shapes. A type A person has A antigen and anti-B antibodies. Type B has B antigen and anti-A. Type AB has both antigens and neither antibody. Type O has neither antigen and both antibodies. These are IgM antibodies, and they set off complement well. So an ABO-incompatible transfusion is fast and severe. Red cells break apart inside the vessels right away. The patient gets hemoglobin in the urine, low blood pressure and fever. Sudden kidney injury can follow. The reaction starts within minutes.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Blood type</th><th>Antigen on RBC</th><th>Antibody in plasma</th><th>Can receive RBCs from</th></tr></thead>
+<tbody>
+<tr><td>A</td><td>A</td><td>Anti-B</td><td>A, O</td></tr>
+<tr><td>B</td><td>B</td><td>Anti-A</td><td>B, O</td></tr>
+<tr><td>AB</td><td>A and B</td><td>None</td><td>A, B, AB and O. This is the universal recipient</td></tr>
+<tr><td>O</td><td>None</td><td>Anti-A and anti-B</td><td>O only. This is the universal red cell donor</td></tr>
+</tbody></table></div>
+
+<p>The <b>Rh</b> system works differently. About 85 percent of people carry the D antigen, so they are Rh-positive. Rh-negative people do <em>not</em> already have anti-D. They make it only after they meet the antigen. That antibody is IgG, and IgG crosses the placenta. This is where hemolytic disease of the newborn comes from. An Rh-negative mother can be sensitized at a first delivery of an Rh-positive baby. She then makes anti-D. In a later Rh-positive pregnancy that anti-D attacks the fetal red cells. Anti-D immune globulin prevents this. It is given at about 28 weeks and again within 72 hours of delivery. It clears fetal cells from the mother&rsquo;s blood before she can be sensitized. That is a rare case of preventing an immune memory instead of treating what it does.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The controlled variable is not red cell count and not hematocrit. It is oxygen delivery to the renal cortex. Break one link below. Choose the oxygen supply, the kidney that senses it, or the marrow th <a href="../lab/ch09/ErythropoietinLoopSim.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch09/ErythropoietinLoopSim.html" loading="lazy" title="The Erythropoietin Loop: Break a Link, Run the Clock interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Almost all the oxygen in blood rides on hemoglobin. Very little of it is dissolved. The kidney watches oxygen delivery. It closes a negative-feedback loop. When oxygen in the kidney cortex falls, the kidney sends out erythropoietin.</p></div>
+
+<h2 id="hemostasis"><span class="num">Section 3</span>Hemostasis: sealing a leak without clotting the whole system</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch09_s3.jpg" alt="Three-stage diagram of hemostasis showing vascular spasm, platelet plug formation on exposed collagen, and a fibrin mesh trapping red blood cells" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Hemostasis runs in three overlapping stages. They are vascular spasm, the platelet plug, and coagulation. Each stage is faster and each is more permanent than the last. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Vascular spasm and the platelet plug</h3>
+
+<p>Intact endothelium is the lining of a vessel. It actively fights clotting. It offers a smooth, negatively charged surface. It releases prostacyclin and nitric oxide. Those stop platelets clumping and widen the vessel. It carries heparan sulfate, which speeds up antithrombin. It also displays thrombomodulin. So do not picture hemostasis as a switch that flips when a vessel is cut. Picture a steady brake being lifted. Picture a trigger being uncovered at the same time.</p>
+
+<p>The trigger is <b>collagen</b> and tissue factor under the lining. Within seconds the injured smooth muscle and endothelin from the damaged endothelium cause <b>vascular spasm</b>. The vessel narrows and flow drops. Remember that resistance changes with the fourth power of the radius. So even a modest narrowing cuts flow dramatically. Platelets then stick to the exposed collagen. They use <b>von Willebrand factor</b> as a molecular bridge to the platelet GPIb receptor. Von Willebrand factor matters most where blood moves fast and shears hard. That is why von Willebrand disease shows up as bleeding from mucous membranes and skin, in small vessels with high flow.</p>
+
+<p>Sticking to collagen switches the platelet on. It changes shape and puts out arms. It flips negatively charged phosphatidylserine to the outer face of its membrane. It empties its granules, releasing ADP, serotonin and calcium, and it makes thromboxane A<sub>2</sub>. ADP and thromboxane A<sub>2</sub> pull in more platelets and switch them on. Those platelets release more ADP and thromboxane A<sub>2</sub>. This is real <b>positive feedback</b>. The product of the reaction speeds up the reaction. Clumping happens when GPIIb/IIIa receptors on activated platelets grab fibrinogen. That cross-links platelets into a plug within a few minutes. Aspirin blocks cyclooxygenase for good, so no more thromboxane A<sub>2</sub> is made for the platelet&rsquo;s whole 8 to 10 day life. A platelet has no nucleus, so it cannot build new enzyme. That is why one low-dose aspirin works for days.</p>
+
+<div class="pearl"><b>Why positive feedback is safe here.</b> Positive feedback is unstable by its very nature. So the body uses it in very few places. It uses it where an explosive, self-stopping event is wanted. That means the action potential upstroke, oxytocin release in labor, and hemostasis. Each one ends in one of two ways. It runs out of substrate, or a separate braking system stops it. In hemostasis the brakes are prostacyclin and nitric oxide. They come from the healthy endothelium nearby. They keep the plug on the injured patch. Inhibitors in the blood and fibrinolysis help too. Lose the brakes and you get disseminated intravascular coagulation.</div>
+
+<h3>The coagulation cascade is an amplifier</h3>
+
+<p>A platelet plug is fragile. To make it last you need <b>fibrin</b>. The cascade that makes fibrin is a chain of enzymes cutting each other open. One activated enzyme cuts many molecules of the next. So each step amplifies the signal by thousands. In the body the cascade starts with the <b>extrinsic (tissue factor) pathway</b>. Tissue factor uncovered at the injury binds factor VII, and that activates factor X. The <b>intrinsic (contact) pathway</b> uses factors XII, XI, IX and VIII. It keeps the response going and makes it bigger. Both feed into the <b>common pathway</b>. Activated factor X joins factor V, calcium and platelet phospholipid to form prothrombinase. Prothrombinase turns prothrombin (factor II) into <b>thrombin</b>.</p>
+
+<p>Thrombin is the hinge of the whole system. It cuts fibrinogen into fibrin monomers, and those link up into strands. It activates factor XIII, which locks those strands into a mesh with strong bonds. It also loops back to activate factors V, VIII and XI and to switch on more platelets. That last set of jobs is a second positive-feedback arm. It is why a small tissue-factor signal makes a burst of thrombin rather than a trickle. The mesh traps red cells, which is why a clot is red rather than white. Over hours, actin and myosin inside the platelets pull the clot tight. That drags the wound edges together and squeezes out serum.</p>
+
+<p>Calcium (factor IV) is needed at several steps. That is why blood tubes for clotting tests hold citrate, which locks the calcium up. Factors II, VII, IX and X need vitamin K, and so do the braking proteins C and S. Vitamin K lets a carboxyl group be added after the protein is built. That change is what lets these factors bind calcium and anchor to phospholipid surfaces. Warfarin blocks vitamin K epoxide reductase, so it lowers the working level of all six. Warfarin acts on new protein, not on protein already circulating. That is why its effect takes 2 to 3 days to appear, as the existing factors are cleared.</p>
+
+<h3>Braking, dissolving and testing</h3>
+
+<p>Three overlapping systems keep clotting local. <b>Antithrombin III</b> shuts down thrombin and factor Xa. Heparin speeds that reaction up roughly a thousand-fold. Endothelial heparan sulfate does the same. <b>Protein C</b> is switched on by the thrombin&ndash;thrombomodulin complex. That complex sits on intact endothelium. Protein C works with protein S. Together they break down factors Va and VIIIa. Notice how neat that is. Thrombin itself becomes an anticoagulant once it drifts onto healthy lining. <b>Tissue factor pathway inhibitor</b> turns off the starting complex. Last comes <b>fibrinolysis</b>, which takes the clot apart. Endothelium releases tissue plasminogen activator. That turns plasminogen into <b>plasmin</b>. The plasminogen is already caught in the fibrin mesh. Plasmin chews fibrin into fragments, including <b>D-dimer</b>.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Test</th><th>Normal</th><th>Pathway assessed</th><th>Typical use</th></tr></thead>
+<tbody>
+<tr><td>Platelet count</td><td>150,000&ndash;450,000/&micro;L</td><td>Primary hemostasis</td><td>Bleeding risk. Bleeding can start on its own under about 20,000</td></tr>
+<tr><td>PT / INR</td><td>11&ndash;13 s / INR 0.8&ndash;1.1</td><td>Extrinsic and common (VII)</td><td>Watching warfarin. Checking how well the liver builds protein</td></tr>
+<tr><td>aPTT</td><td>25&ndash;35 s</td><td>Intrinsic and common (VIII, IX, XI, XII)</td><td>Watching unfractionated heparin. Checking for hemophilia</td></tr>
+<tr><td>D-dimer</td><td>Under 500 ng/mL FEU</td><td>Fibrinolysis</td><td>Catches nearly every case but flags many that are fine. Useful to rule out VTE</td></tr>
+<tr><td>Fibrinogen</td><td>200&ndash;400 mg/dL</td><td>How much raw material is left</td><td>Falls in DIC and severe liver disease</td></tr>
+</tbody></table></div>
+
+<p><b>Virchow&rsquo;s triad</b> is the best way to predict a harmful clot. It is simply the three ways this physiology can go wrong. First, flow slows down. Think of being immobile, atrial fibrillation, or a long flight. Second, the vessel lining is injured. Think of trauma, surgery, smoking, or a line left in a vein. Third, the blood clots too easily. Think of pregnancy, estrogen therapy, malignancy, or factor V Leiden. Any one raises the risk. Together they multiply it. Notice that two of the three are about flow, not about the blood itself. That is another reminder that blood and vessels are one system.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Intact endothelium actively fights clotting. So clotting begins when that brake is lifted and a trigger is uncovered. What follows is real positive feedback. Activated platelets <a href="../lab/ch09/HemostasisAmplifierLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch09/HemostasisAmplifierLab.html" loading="lazy" title="Hemostasis: An Amplifier With Brakes interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Hemostasis is a positive-feedback amplifier. Platelets switch on and thrombin bursts. The body keeps that burst on the injured patch on purpose. The fencing is done by endothelial prostacyclin and nitric oxide. Antithrombin, protein C and plasmin help.</p></div>
+
+<h2 id="hemodynamics"><span class="num">Section 4</span>Vessels as plumbing: pressure, resistance and flow</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch09_s4.jpg" alt="Comparative cross-sections of an artery, arteriole, capillary, venule and vein showing the three tunics and the progressive thinning of the smooth muscle layer" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Wall build follows job. Elastic arteries store pressure. Arterioles set resistance with thick smooth muscle. Capillaries are one endothelial layer, so things can cross. Veins are thin-walled storage vessels with valves. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Q = &Delta;P / R, and where the resistance actually lives</h3>
+
+<p>Flow through any tube needs a pressure difference to drive it, and resistance holds it back. In the systemic circulation, <b>Q = &Delta;P / R</b>. Q is cardiac output, about 5 L/min at rest. &Delta;P is mean arterial pressure minus right atrial pressure. That is roughly 93 minus 3, so about 90 mmHg. R is total peripheral resistance. Rearrange it and you get MAP = CO &times; TPR. That is the single most useful equation in cardiovascular physiology. Every blood-pressure problem and every blood-pressure drug acts on cardiac output, on peripheral resistance, or on both.</p>
+
+<p>Resistance itself comes from Poiseuille&rsquo;s relationship, <b>R = 8&eta;L / (&pi;r<sup>4</sup>)</b>. Here &eta; is viscosity, L is vessel length and r is radius. Viscosity and length barely move in the short term. Radius does move, and it is raised to the fourth power. Halve the radius of a vessel and resistance rises sixteen-fold. Widen the radius by 19 percent and flow doubles. No other variable in physiology gives the body that much leverage for so little effort. That is why the arteriole is the control point. An arteriole is 10 to 100 &micro;m across with a very thick ring of smooth muscle for its size.</p>
+
+<p>The pressure profile proves it. Mean pressure barely falls from the aorta, about 93 mmHg, to the small arteries, about 90 mmHg. Then it plunges across the arterioles to roughly 35 mmHg at the capillary inlet. It drifts down to about 15 mmHg at the capillary outlet. It arrives at the right atrium near 2 to 5 mmHg. The largest pressure drop sits where the largest resistance sits. So arterioles are the taps of the circulation. Narrow them everywhere and mean arterial pressure rises. Narrow them in one place only and blood is redirected between organs, with almost no change in total output. During exercise the arterioles in skeletal muscle widen under local metabolic control. At the same time the splanchnic arterioles narrow under sympathetic control. Blood is shared out to match.</p>
+
+<h3>Wall structure follows function</h3>
+
+<p>Every vessel except a capillary has three layers, called tunics. The <b>tunica intima</b> is endothelium on a basement membrane. It is the surface that fights clotting, changes vessel width, and controls what crosses. The <b>tunica media</b> is smooth muscle and elastic tissue, and it sets the caliber of the vessel. The <b>tunica externa</b> is collagen that anchors the vessel in place. In large vessels it also holds the vasa vasorum, tiny vessels that feed the outer wall. That wall is too thick to be supplied by diffusion from the lumen.</p>
+
+<p>Elastic arteries, also called conducting arteries, include the aorta. Their media is packed with sheets of elastin. They stretch during systole and recoil during diastole. Muscular arteries, also called distributing arteries, hold more smooth muscle and steer blood to organs. Arterioles are almost pure smooth muscle for their size. Capillaries are a single endothelial layer about 0.5 &micro;m thick with a lumen of 5 to 10 &micro;m. That thinness is the point. Diffusion distance sits on the bottom in Fick&rsquo;s law, J = D &times; A &times; (&Delta;C / &Delta;x). Continuous capillaries leak the least. They are found in muscle and skin, and with tight junctions they form the blood&ndash;brain barrier. Fenestrated capillaries have pores for filtering large volumes. They are found in kidney, intestine and endocrine glands. Sinusoidal capillaries have gaps wide enough to pass whole cells. They are found in liver, spleen and marrow.</p>
+
+<p>Veins have thin medias, wide lumens and one-way valves. Compliance is the change in volume per unit change in pressure, C = &Delta;V / &Delta;P. Veins are roughly 20 times more compliant than arteries. That is why they hold about 60 to 70 percent of total blood volume at any moment, at pressures under 15 mmHg. So veins are the body&rsquo;s reservoir. Sympathetic venoconstriction squeezes that reservoir toward the heart. Venous return and preload go up, and arterial resistance is barely touched. The skeletal-muscle pump and the respiratory pump push blood upward against gravity, from one pair of valves to the next.</p>
+
+<div class="pearl"><b>Misconception check.</b> Drop the idea that arteries carry oxygenated blood. An artery is any vessel carrying blood <em>away from the heart</em>, whatever its oxygen content. The pulmonary arteries carry deoxygenated blood. The pulmonary veins carry the most oxygenated blood in the body. The umbilical vein carries oxygenated blood to the fetus. Direction defines the term, not saturation. And blood is never blue. Deoxygenated blood is dark maroon. Veins look blue only because of the way skin scatters light.</div>
+
+<h3>Compliance, pulse pressure and the windkessel</h3>
+
+<p>The heart ejects in bursts. Yet flow through capillaries is nearly continuous. Elastic arteries do that conversion. During systole the aorta accepts about 70 mL of stroke volume and stretches. It stores roughly half the ejected volume as elastic potential energy. During diastole it recoils. It pushes that stored volume forward. This is the windkessel effect, named after an air chamber. It is why diastolic pressure never falls to zero.</p>
+
+<p>Two useful numbers come out of this. <b>Pulse pressure</b> is systolic minus diastolic. Normally that is about 120 &minus; 80 = 40 mmHg. It rises with a larger stroke volume and with stiffer arteries. <b>Mean arterial pressure</b> is not the plain average. Diastole takes up about two-thirds of the cardiac cycle at rest. So MAP &asymp; DBP + (1/3 &times; pulse pressure) = 80 + 13 &asymp; 93 mmHg. MAP is the pressure that actually perfuses organs. Below about 60 mmHg, kidney and brain autoregulation fail and tissue injury begins. In an older adult, collagen replaces elastin and aortic compliance falls. The same stroke volume then makes a bigger systolic spike and a weaker diastolic recoil. The result is isolated systolic hypertension with a wide pulse pressure. That is a purely mechanical consequence of a stiffer tube.</p>
+
+<h3>Velocity, cross-sectional area and turbulence</h3>
+
+<p>Flow (Q, volume per time) and velocity (v, distance per time) are tied together by Q = v &times; A, where A is total cross-sectional area. Every drop of blood must pass through every level of the tree, so Q is the same at each level. Velocity must therefore fall as total cross-sectional area rises. The aorta has a cross-sectional area of about 2.5 cm<sup>2</sup> and a mean velocity near 30 to 40 cm/s. Multiply those out and you get the resting cardiac output of roughly 5 L/min. The billions of capillaries side by side add up to roughly 2,500 to 3,000 cm<sup>2</sup>. That is about a thousand times more. So velocity there falls to about 0.03 cm/s. A red cell spends 1 to 2 seconds in a capillary. That is exactly the time gases need to equilibrate. Veins reconverge, area falls, and velocity climbs again to about 10 to 15 cm/s in the venae cavae.</p>
+
+<p>Flow is normally <b>laminar</b>. That means it moves in neat rings. The fastest stream runs down the middle. Laminar flow is silent. Flow turns <b>turbulent</b> and audible when velocity, diameter or density rise enough. It also turns turbulent when viscosity falls. That is why a compressed brachial artery makes Korotkoff sounds. You hear them during a blood-pressure measurement. It is why anemia makes a flow murmur, with low viscosity and high output. It is why a narrowed carotid makes a bruit. Turbulence also damages endothelium. That is why atherosclerotic plaques gather at branches and curves. They do not gather along straight segments.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Resistance is R = 8&eta;L / &pi;r4. Viscosity and length are fixed in the short term. Radius is not, and it is raised to the fourth power. Halve a vessel&rsquo;s radius and resistance rises sixteen-fo <a href="../lab/ch09/PoiseuilleFlowBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch09/PoiseuilleFlowBench.html" loading="lazy" title="Q = &Delta;P / R: The Fourth-Power Bench interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Resistance changes with the fourth power of the radius. So arterioles govern total peripheral resistance. They also decide where flow goes. Compliant veins hold most of the blood volume. They act as an adjustable reservoir.</p></div>
+
+<h2 id="exchange-control"><span class="num">Section 5</span>Capillary exchange and the control of blood pressure</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch09_s5.jpg" alt="Capillary bed diagram with arrows showing hydrostatic pressure driving filtration at the arterial end and colloid osmotic pressure driving reabsorption at the venous end, with a lymphatic vessel collecting the excess" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Fluid filters out at the arterial end and is reabsorbed at the venous end. The balance of hydrostatic and colloid osmotic pressures decides which happens. Lymphatics carry the surplus back. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Starling forces: four pressures, one net result</h3>
+
+<p>Most solute exchange across a capillary is simple diffusion down concentration gradients. Oxygen and carbon dioxide go straight through the membrane. Glucose and ions go through clefts and channels. Bulk fluid movement is different. Four pressures govern it, and they are called the <b>Starling forces</b>:</p>
+
+<p style="text-align:center"><b>NFP = (P<sub>c</sub> &minus; P<sub>if</sub>) &minus; (&pi;<sub>c</sub> &minus; &pi;<sub>if</sub>)</b></p>
+
+<p>Capillary hydrostatic pressure (P<sub>c</sub>) pushes fluid out. It falls along the capillary from about 35 mmHg at the arterial end to about 15 mmHg at the venous end. Interstitial hydrostatic pressure (P<sub>if</sub>) is near 0 mmHg and pushes fluid back in. Capillary colloid osmotic pressure (&pi;<sub>c</sub>, about 25 mmHg) pulls fluid in. It does not change along the length, since protein does not leave. Interstitial colloid osmotic pressure (&pi;<sub>if</sub>, about 3 mmHg) pulls fluid out. Do the arithmetic at the arterial end: (35 &minus; 0) &minus; (25 &minus; 3) = +13 mmHg, so fluid filters out. At the venous end: (15 &minus; 0) &minus; (25 &minus; 3) = &minus;7 mmHg, so fluid is reabsorbed. Only one term changed, the hydrostatic pressure. It changed because of resistance along the capillary. Every capillary bed in the body reruns this same sum with different numbers. In the glomerulus &pi;<sub>c</sub> never wins, so filtration continues the whole length. In the intestinal villus reabsorption dominates instead.</p>
+
+<p>Filtration beats reabsorption by a little. Across the whole body roughly 20 L is filtered per day and about 17 L is reabsorbed. That leaves about 3 L. The <b>lymphatic system</b> returns that 3 L to the subclavian veins, along with any protein that escaped. So lymphatic drainage is not an extra service. It is a required term in the fluid balance. Block it on its own and the tissue swells.</p>
+
+<h3>Edema is always a Starling problem</h3>
+
+<p>Edema is fluid you can feel building up between the cells. It has exactly four mechanisms. There is one for each term in the equation. <b>Raised capillary hydrostatic pressure</b> increases filtration. That comes from heart failure or a blocked vein. It also comes from deep vein thrombosis, or from standing for a long time. <b>Reduced plasma colloid osmotic pressure</b> weakens the inward pull. That comes from liver failure that cannot build albumin. It also comes from nephrotic syndrome, which loses albumin in the urine. Severe protein malnutrition does it too. <b>Increased capillary permeability</b> lets protein leak out. That comes from histamine in inflammation, from burns, or from sepsis. It raises &pi;<sub>if</sub> and lowers &pi;<sub>c</sub> at once. <b>Blocked lymphatic drainage</b> removes the return path. That comes from filariasis, from axillary node dissection, or from a tumor. Naming the disturbed term tells you what will help. It also tells you what will not. Infusing albumin is rational in hypoalbuminemia. It is useless in lymphedema.</p>
+
+<div class="pearl"><b>Misconception check.</b> Edema is not simply too much water in the body. A patient can be edematous and short of blood inside the vessels at the same time. That is the classic picture in nephrotic syndrome or advanced cirrhosis. Losing albumin shifts water out of the vessels into the tissue. Total body water is high. Effective circulating volume is low. Give a diuretic without addressing the oncotic deficit and blood pressure can drop sharply.</div>
+
+<h3>The baroreflex: correction in seconds</h3>
+
+<p>Arterial pressure must stay high enough to perfuse the brain. It must also stay low enough not to damage vessels. A classic negative-feedback loop defends it. The <b>variable</b> is mean arterial pressure. The <b>sensors</b> are stretch-sensitive baroreceptors in the carotid sinus and the aortic arch. They fire faster as the wall is stretched, and they respond over roughly 60 to 180 mmHg. Their signals travel on the glossopharyngeal nerve (CN IX) and the vagus nerve (CN X). They reach the <b>integrator</b>, which is the nucleus of the solitary tract and the cardiovascular centers of the medulla. The <b>effectors</b> are the sympathetic and parasympathetic outflows. The <b>response</b> opposes the change.</p>
+
+<p>Stand up quickly and roughly 500 to 800 mL of blood pools in your legs. Venous return falls. Stroke volume falls. Arterial pressure dips. Baroreceptors fire less. The medulla withdraws vagal tone and turns up sympathetic outflow. Heart rate rises. Contractility rises. Arterioles constrict through &alpha;<sub>1</sub> receptors, so total peripheral resistance rises. Veins constrict to restore preload. The whole correction happens within one or two heartbeats. Sometimes it is too slow. That happens in older adults, in dehydration, and with antihypertensive or antidepressant drugs that blunt sympathetic responses. The result is orthostatic hypotension. That means a drop of at least 20 mmHg systolic or 10 mmHg diastolic within three minutes of standing, with dizziness and fall risk.</p>
+
+<p>Two features are worth noticing. First, the reflex works both ways. A rise in pressure makes baroreceptors fire more. The answer is a slower heart and wider vessels. That is why carotid sinus massage can stop a supraventricular tachycardia. Second, the reflex resets. In sustained hypertension the baroreceptors adapt over days. They begin defending the new, higher pressure. So the baroreflex cannot cure chronic hypertension. It steadies pressure moment to moment. It is not a long-term set-point controller.</p>
+
+<h3>Longer-term control: RAAS, ADH and the local endothelium</h3>
+
+<p>Long-term pressure control belongs to the kidney. Only the kidney can change blood volume. When renal perfusion falls, juxtaglomerular cells release <b>renin</b>. Renin cuts angiotensinogen into angiotensin I. Then comes angiotensin-converting enzyme, mostly in the lung lining. It turns angiotensin I into <b>angiotensin II</b>. Angiotensin II narrows vessels strongly on its own. It also triggers <b>aldosterone</b> release. Aldosterone drives sodium reabsorption in the distal nephron and collecting duct. Water follows the sodium. Angiotensin II also triggers ADH release and thirst. And it boosts proximal sodium reabsorption. So it raises both terms of MAP = CO &times; TPR. It raises volume and it raises resistance. That takes minutes to hours. <b>Antidiuretic hormone</b> holds on to water. It acts through V<sub>2</sub> receptors in the collecting duct. At high levels it narrows vessels too, through V<sub>1</sub> receptors. <b>Atrial natriuretic peptide</b> works the other way. The atria release it when stretch signals too much volume. It makes the body dump sodium and water. It widens vessels as well.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Control system</th><th>Onset</th><th>Main effector</th><th>Effect on MAP = CO &times; TPR</th></tr></thead>
+<tbody>
+<tr><td>Baroreflex</td><td>Seconds</td><td>Autonomic nerves</td><td>Both terms. Fast, but resets within days</td></tr>
+<tr><td>Local metabolic autoregulation</td><td>Seconds to minutes</td><td>Arteriolar smooth muscle</td><td>Shares flow out. Small effect on the total</td></tr>
+<tr><td>RAAS</td><td>Minutes to hours</td><td>Angiotensin II, aldosterone</td><td>Raises both. The main long-term control</td></tr>
+<tr><td>ADH</td><td>Minutes to hours</td><td>Collecting duct, V<sub>1</sub> vessels</td><td>Raises volume, then CO</td></tr>
+<tr><td>ANP</td><td>Hours</td><td>Kidney, vessels</td><td>Lowers both</td></tr>
+<tr><td>Renal pressure natriuresis</td><td>Hours to days</td><td>Urine sodium and water output</td><td>Sets the long-term operating point</td></tr>
+</tbody></table></div>
+
+<p>On top of all this sits local control. Local control is what actually matches flow to need. Endothelium releases <b>nitric oxide</b> when blood shears past it. It does the same in answer to acetylcholine. Nitric oxide relaxes the smooth muscle underneath. Injured endothelium releases <b>endothelin-1</b> instead. That is the most potent vasoconstrictor known. Tissue metabolites widen local arterioles. Falling oxygen does it. So do rising carbon dioxide, hydrogen ion, potassium, adenosine and lactate. That widening is <b>active hyperemia</b>. The same mechanism gives <b>reactive hyperemia</b>. That is the flush that follows the release of an occlusion. Myogenic autoregulation adds a mechanical layer. An arteriole stretched by rising pressure contracts. So flow to brain, kidney and heart stays near constant. It holds across a MAP range of roughly 60 to 160 mmHg. Nitroglycerin works because it is a nitric oxide donor. ACE inhibitors work by blocking the making of angiotensin II. Alpha blockers remove the &alpha;<sub>1</sub> squeeze on arterioles, so the vessel dilates. Every antihypertensive drug class acts at a named point on this map.</p>
+
+<div class="pearl"><b>Putting it together.</b> Losing 1 L of blood runs every mechanism in this module. They fire one after another. Seconds: the baroreflex speeds the heart and constricts vessels. Venoconstriction empties the reservoir toward the heart. Minutes: capillary hydrostatic pressure falls. So the Starling balance tips toward reabsorption. Interstitial fluid moves into the vessels on its own. That is also why the hematocrit drops only after an hour or two. Hours: RAAS and ADH conserve sodium and water. Days: renal erythropoietin rises and reticulocytes appear. One insult, four control systems, four different time constants.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Four numbers at the capillary wall decide where fluid sits: NFP = (Pc &minus; Pif) &minus; (&pi;c &minus; &pi;if). The baroreflex defends how hard the blood is pushed within seconds. Move a <a href="../lab/ch09/StarlingAndBaroreflexLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch09/StarlingAndBaroreflexLab.html" loading="lazy" title="Four Pressures and One Reflex interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The Starling equation decides where fluid sits. The baroreflex defends arterial pressure within seconds. The kidney sets the long-term operating point. It does that by controlling blood volume, through RAAS, ADH and pressure natriuresis.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Blood is cells suspended in a protein-rich plasma, and both halves do mechanical work. Albumin makes the 25 mmHg oncotic pull that keeps water inside the vessels. Red cells at a hematocrit near 45 percent balance oxygen content against viscosity. Almost all oxygen travels bound to hemoglobin, about 20 mL per 100 mL of blood. Dissolved gas adds under 2 percent. The kidney senses oxygen delivery to its cortex through HIF-2&alpha;. It closes a negative-feedback loop by releasing erythropoietin to the marrow. When a vessel is breached, the endothelial brake is lifted. Exposed collagen and tissue factor launch a positive-feedback amplifier, which is platelet activation and a thrombin burst. Prostacyclin, nitric oxide, antithrombin, protein C and plasmin confine that amplifier on purpose. Flow through the network obeys Q = &Delta;P / R, and resistance changes with the fourth power of the radius. So arterioles set total peripheral resistance and decide where flow goes. Elastic arteries smooth a pulsing ejection into steady capillary flow. Compliant veins store most of the blood volume. At the capillary, the four Starling forces decide filtration or reabsorption. Disturb any one of them and you get edema. Arterial pressure is defended in seconds by the baroreflex. It is defended over hours to days by the kidney, through RAAS, ADH and pressure natriuresis.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Hematocrit</td><td>The percent of blood volume made of red cells. It is 42&ndash;52 percent in men and 37&ndash;47 percent in women.</td></tr>
+<tr><td>Colloid osmotic pressure</td><td>The inward pull made by plasma proteins that cannot cross the capillary wall. It is about 25 mmHg, and albumin makes most of it.</td></tr>
+<tr><td>Serum</td><td>Plasma after clotting has used up the fibrinogen and the other clotting factors.</td></tr>
+<tr><td>Hemoglobin</td><td>A protein of four chains, each holding one iron-containing heme. It carries 1.34 mL of oxygen per gram when fully saturated.</td></tr>
+<tr><td>Oxygen content (CaO<sub>2</sub>)</td><td>The total oxygen in 100 mL of blood: (1.34 &times; Hb &times; SaO<sub>2</sub>) + (0.003 &times; PaO<sub>2</sub>). It is normally about 20 mL/dL.</td></tr>
+<tr><td>Erythropoietin</td><td>A kidney hormone released when oxygen delivery to the cortex falls. It tells the marrow to make red cells.</td></tr>
+<tr><td>Reticulocyte</td><td>A young red cell just out of the marrow. Normally 0.5&ndash;1.5 percent, and it rises when the marrow is answering well.</td></tr>
+<tr><td>Von Willebrand factor</td><td>A plasma protein that bridges the platelet GPIb receptor to collagen under the lining. It is essential where blood shears fast.</td></tr>
+<tr><td>Thrombin</td><td>The central clotting enzyme. It turns fibrinogen into fibrin, activates factor XIII, and helps make more of itself.</td></tr>
+<tr><td>Fibrinolysis</td><td>Plasmin digesting fibrin, which dissolves a clot. It leaves D-dimer fragments behind.</td></tr>
+<tr><td>Virchow&rsquo;s triad</td><td>Slow flow, injured lining, and blood that clots too easily. These are the three routes to a harmful clot.</td></tr>
+<tr><td>Poiseuille&rsquo;s law</td><td>R = 8&eta;L / (&pi;r<sup>4</sup>). Resistance falls with the fourth power of the vessel radius.</td></tr>
+<tr><td>Total peripheral resistance</td><td>All the systemic vascular resistance added up. Arteriolar tone sets most of it. It is the R in MAP = CO &times; TPR.</td></tr>
+<tr><td>Compliance</td><td>C = &Delta;V / &Delta;P. It is how much a vessel stretches per unit of pressure. Veins are roughly 20 times more compliant than arteries.</td></tr>
+<tr><td>Pulse pressure</td><td>Systolic minus diastolic pressure, about 40 mmHg. It widens with a larger stroke volume or stiffer arteries.</td></tr>
+<tr><td>Mean arterial pressure</td><td>The average pressure that feeds the organs. Estimate it as DBP + (1/3 &times; pulse pressure). It is normally near 93 mmHg.</td></tr>
+<tr><td>Starling forces</td><td>The four pressures (P<sub>c</sub>, P<sub>if</sub>, &pi;<sub>c</sub>, &pi;<sub>if</sub>). Together they decide whether a capillary filters fluid out or takes it back.</td></tr>
+<tr><td>Baroreflex</td><td>Second-to-second negative-feedback control of arterial pressure. It uses stretch receptors in the carotid and the aorta plus the medulla.</td></tr>
+<tr><td>Active hyperemia</td><td>Local widening of arterioles caused by metabolites building up. It matches blood flow to how hard the tissue is working.</td></tr>
+<tr><td>Autoregulation</td><td>An organ holding its own flow nearly constant across a MAP range of roughly 60&ndash;160 mmHg, by myogenic and metabolic means.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">A patient has a hemoglobin of 7.5 g/dL. On room air the SaO<sub>2</sub> is 99 percent and the PaO<sub>2</sub> is 95 mmHg. Work out the arterial oxygen content. Then explain why extra oxygen helps so little.</div><div class="ans">CaO<sub>2</sub> = (1.34 &times; 7.5 &times; 0.99) + (0.003 &times; 95) = 9.95 + 0.29. That is about 10.2 mL/dL, roughly half of normal. Extra oxygen can only raise the dissolved term and the saturation. The saturation is already 99 percent. Even pushing PaO<sub>2</sub> to 500 mmHg raises the dissolved term only to 1.5 mL/dL. That is a gain of about 1.2 mL/dL. The deficit is carrier capacity. So the fix is a transfusion or treating the cause of the anemia, not more oxygen.</div></div>
+
+<div class="qq"><div class="q">Name the variable, sensor, integrator, effector and response of the erythropoietin loop. Then explain why the correction takes days.</div><div class="ans">Variable: oxygen delivery to the renal cortex. Sensor and integrator: the fibroblasts between the kidney tubules. There oxygen-dependent prolyl hydroxylases decide whether HIF-2&alpha; survives. Effector: the red cell precursors in red bone marrow. Response: more red cells are made. So the blood carries more oxygen. That restores oxygen in the cortex and shuts the signal off. The lag is days because the effector must divide and mature first. Reticulocytes appear in 3 to 5 days. Red cell mass rises over weeks.</div></div>
+
+<div class="qq"><div class="q">A 19 percent rise in arteriolar radius roughly doubles flow to a tissue. The same 19 percent rise in aortic radius does almost nothing to total flow. Why?</div><div class="ans">Resistance varies as 1/r<sup>4</sup>. So 1.19<sup>4</sup> is about 2, which doubles flow through that segment for a fixed &Delta;P. But the effect only matters where resistance is large. The aorta adds a negligible part of total peripheral resistance. Mean pressure falls only about 3 mmHg from aorta to small arteries. So changing its radius changes essentially nothing. Arterioles hold the largest single pressure drop, from about 90 to 35 mmHg. That is why they are the control point.</div></div>
+
+<div class="qq"><div class="q">A capillary has P<sub>c</sub> = 30, P<sub>if</sub> = 1, &pi;<sub>c</sub> = 18 and &pi;<sub>if</sub> = 4 mmHg. Work out the net filtration pressure. Is fluid leaving or entering? Which term is abnormal?</div><div class="ans">NFP = (30 &minus; 1) &minus; (18 &minus; 4) = 29 &minus; 14 = +15 mmHg. So fluid is filtering out strongly. The abnormal term is &pi;<sub>c</sub>. It is 18 mmHg instead of about 25. That points to hypoalbuminemia, from liver failure, nephrotic syndrome or protein malnutrition. Expect swelling all over, even though the volume inside the vessels may be low.</div></div>
+
+<div class="qq"><div class="q">The same cardiac output passes through the aorta and the capillaries. Yet blood moves about a thousand times slower in a capillary. Explain why.</div><div class="ans">Q = v &times; A, and Q is the same at every level of the tree, because the circulation is a closed series of parallel networks. Total capillary cross-sectional area is roughly 2,500 to 3,000 cm<sup>2</sup>. The aorta is about 2.5 cm<sup>2</sup>. That is a thousand-fold difference, so velocity must fall by about the same factor. It goes from 30&ndash;40 cm/s to about 0.03 cm/s. The slowdown has a purpose. A red cell dwells 1 to 2 seconds in a capillary, which is enough time for gases to equilibrate.</div></div>
+
+<div class="qq"><div class="q">Find the positive feedback in hemostasis. Then explain the three ways the body stops it from spreading through the whole circulation.</div><div class="ans">Two positive-feedback arms exist. Activated platelets release ADP and thromboxane A<sub>2</sub>. Those switch on more platelets. Thrombin activates factors V, VIII and XI, plus platelets. That makes still more thrombin. Three things contain it. (1) Intact endothelium next to the injury releases prostacyclin and nitric oxide. Both stop platelets clumping. (2) Inhibitors in the blood act. They are antithrombin III, tissue factor pathway inhibitor, and activated protein C with protein S. That last pair breaks down factors Va and VIIIa. (3) Fibrinolysis follows. Tissue plasminogen activator makes plasmin, and plasmin digests the fibrin mesh.</div></div>
+
+<div class="qq"><div class="q">A trauma patient has lost about 1.2 L of blood. The hematocrit on arrival is 44 percent. Should that reassure you?</div><div class="ans">No. Hematocrit is a ratio. Sudden bleeding removes cells and plasma in equal proportion, so it does not fall right away. It drops over the next one to several hours, as interstitial fluid shifts into the vessels along a favorable Starling gradient. It falls further once crystalloid is infused. A fast heart rate, a narrow pulse pressure, cool hands and feet, and low urine output appear earlier and are more reliable.</div></div>
+
+<div class="qq"><div class="q">Warfarin takes 2 to 3 days to work. Heparin works within minutes. Explain the difference in how they act.</div><div class="ans">Heparin acts on protein already in the blood. It binds antithrombin III and speeds up its shutdown of thrombin and factor Xa roughly a thousand-fold. So the effect is immediate. Warfarin inhibits vitamin K epoxide reductase. That blocks the gamma-carboxylation of newly built factors II, VII, IX and X. The factors already circulating keep working until they are cleared. Their half-lives run from about 6 hours for VII to 60 hours for II. That sets the delay.</div></div>
+
+<div class="qq"><div class="q">An Rh-negative woman is pregnant with her second Rh-positive child. Why is the second pregnancy the dangerous one? Why does the same logic not apply to ABO incompatibility?</div><div class="ans">Rh-negative people have no preformed anti-D. Sensitization usually happens at the first delivery. Fetal cells enter the mother&rsquo;s circulation then. The memory response makes IgG anti-D. IgG crosses the placenta. In a later Rh-positive pregnancy it destroys fetal red cells. ABO antibodies are different. They are preformed and they are IgM. IgM activates complement well. But it crosses the placenta poorly. So an ABO mismatch causes a severe immediate transfusion reaction. It causes fairly mild hemolytic disease of the newborn.</div></div>
+
+<div class="qq"><div class="q">Why does the baroreflex fail to correct chronic hypertension? What does correct it over the long term?</div><div class="ans">Baroreceptors adapt. Over hours to days their firing rate resets to the prevailing pressure. So a sustained rise stops being read as an error, and the reflex begins defending the new, higher pressure. Long-term control belongs to the kidney, which alone can change blood volume. It works through RAAS, ADH, ANP, and above all pressure natriuresis. There a rise in arterial pressure increases sodium and water excretion, until volume, and so pressure, returns toward the renal set point.</div></div>
+
+<div class="qq"><div class="q">An 80-year-old has a blood pressure of 165/72. Work out the pulse pressure and the MAP. Then explain the pattern in mechanical terms.</div><div class="ans">Pulse pressure = 165 &minus; 72 = 93 mmHg. That is far above the normal 40. MAP &asymp; 72 + (1/3 &times; 93) = 72 + 31 &asymp; 103 mmHg. The pattern is isolated systolic hypertension from reduced aortic compliance. With age, collagen replaces elastin. The aorta can no longer buffer the stroke volume, so systolic pressure spikes higher. Diastolic recoil is weaker, so diastolic pressure falls. The primary defect is compliance, not resistance.</div></div>
+
+<div class="qq"><div class="q">A patient with cirrhosis has marked ankle edema and ascites. The same patient is dizzy on standing and has a heart rate of 108. Explain how both can be true.</div><div class="ans">Total body water is increased, but effective circulating volume is reduced. The failing liver cannot make enough albumin, so &pi;<sub>c</sub> falls. Portal hypertension raises P<sub>c</sub> in the splanchnic bed. Both push fluid out of the vessels into the interstitium and the peritoneum. So the volume inside the vessels falls. Venous return and stroke volume fall. The baroreflex answers with tachycardia and vasoconstriction. That gives orthostatic symptoms in a patient who looks visibly fluid-overloaded. The lesson is that edema locates fluid. It does not measure it.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch08.html"><span class="k">Previous</span>&larr; Endocrine System</a>
+        <a class="next" href="ch10.html"><span class="k">Next</span>Heart &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

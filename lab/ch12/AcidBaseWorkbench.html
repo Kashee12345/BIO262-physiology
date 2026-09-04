@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Lung as an Acid&ndash;Base Organ</title>
+<meta name="description" content="Move PaCO2 and bicarbonate on a live Henderson-Hasselbalch diagram, name the primary disorder, judge compensation against Winter's formula, then split hypoxemia with the A-a gradient.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin:6px 0;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+.ratio{margin-top:12px;}
+.ratio .bar{display:flex;height:26px;border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+.ratio .bar i{display:block;height:100%;}
+.ratio .cap{display:flex;justify-content:space-between;font-size:10.6px;font-weight:800;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.4px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch12.html">&larr; Module 12</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 12</div>
+  <h1>The Lung as an Acid&ndash;Base Organ</h1>
+  <div class="intro">Metabolism makes about <b>15,000 mmol of CO2 a day</b>, and CO2 hydrates to carbonic acid &mdash; so ventilation is a pH control system. Everything reduces to protecting the <b>20:1</b> ratio of bicarbonate to dissolved CO2. Move each limb below and watch pH, the disorder name and the adequacy of compensation change together; then use the A&ndash;a gradient to decide whether a low PaO2 is a drive problem or an exchange problem.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Draw the blood gas</h2>
+      <div class="sl"><label for="sCO2">PaCO2 &mdash; the respiratory limb <span class="v" id="vCO2">40 mmHg</span></label>
+        <input type="range" id="sCO2" min="10" max="100" value="40" step="1" aria-label="Arterial carbon dioxide tension in millimeters of mercury"></div>
+      <div class="sl"><label for="sHCO3">Bicarbonate &mdash; the metabolic limb <span class="v" id="vHCO3">24 mEq/L</span></label>
+        <input type="range" id="sHCO3" min="4" max="45" value="24" step="1" aria-label="Plasma bicarbonate in milliequivalents per liter"></div>
+      <div class="sl"><label for="sNa">Sodium <span class="v" id="vNa">140 mEq/L</span></label>
+        <input type="range" id="sNa" min="120" max="160" value="140" step="1" aria-label="Plasma sodium in milliequivalents per liter"></div>
+      <div class="sl"><label for="sCl">Chloride <span class="v" id="vCl">104 mEq/L</span></label>
+        <input type="range" id="sCl" min="80" max="125" value="104" step="1" aria-label="Plasma chloride in milliequivalents per liter"></div>
+      <div class="seg2" role="group" aria-label="How long the respiratory disturbance has been present">
+        <button type="button" id="bAcute" class="on" aria-pressed="true">Acute &middot; minutes to hours</button>
+        <button type="button" id="bChronic" aria-pressed="false">Chronic &middot; days</button>
+      </div>
+      <div class="lbl">Load a blood gas</div>
+      <div class="chips" id="chips"></div>
+      <div class="eq" id="eqHH"></div>
+      <div class="hint"><b>The division of labor.</b> The lung disposes of the entire volatile acid load in minutes but can only handle one acid. The kidney handles the 50 to 100 mEq of fixed acid a day &mdash; sulfuric, phosphoric, lactic, keto &mdash; over hours to days, but it can excrete anything and can regenerate bicarbonate. That is why the respiratory limb moves first and the metabolic limb tells you how long this has been going on.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Where the sample sits</h2>
+      <canvas id="cvDav" width="640" height="360" role="img" aria-label="Bicarbonate plotted against pH with carbon dioxide isobars, the normal box, and the current blood gas marked"></canvas>
+      <div class="ratio">
+        <div class="bar" id="ratioBar"><i id="rB"></i><i id="rC"></i></div>
+        <div class="cap"><span id="capB">HCO3 24.0</span><span id="capR">ratio 20 : 1</span><span id="capC">0.03 &times; PaCO2 = 1.20</span></div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">pH</div><div class="v" id="oPH">7.40</div><div class="u">7.35&ndash;7.45</div></div>
+        <div class="lab"><div class="k">Anion gap</div><div class="v" id="oAG">12</div><div class="u">mEq/L &middot; normal 8&ndash;12</div></div>
+        <div class="lab"><div class="k">Expected compensation</div><div class="v" id="oExp">&mdash;</div><div class="u" id="oExpU">no primary disorder</div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div class="hint"><b>Read in a fixed order.</b> First pH: acidemia or alkalemia. Second PaCO2: if it moves in the direction that would explain the pH, the disorder is respiratory. Third bicarbonate: if it explains the pH, the disorder is metabolic. Fourth, check whether the other limb has moved in the compensating direction and by an appropriate amount. Fifth, if there is a metabolic acidosis, take the anion gap.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Now assess the oxygen separately</h2>
+      <div class="hint" style="margin-top:2px">Acid&ndash;base and oxygenation are two different questions asked of the same sample. The PaCO2 you set above carries over into the alveolar gas equation here, because CO2 in the alveolus displaces oxygen.</div>
+      <div class="sl" style="margin-top:14px"><label for="sPaO2">Measured PaO2 <span class="v" id="vPaO2">95 mmHg</span></label>
+        <input type="range" id="sPaO2" min="25" max="600" value="95" step="1" aria-label="Measured arterial oxygen tension in millimeters of mercury"></div>
+      <div class="sl"><label for="sFiO2">Inspired oxygen FiO2 <span class="v" id="vFiO2">21%</span></label>
+        <input type="range" id="sFiO2" min="21" max="100" value="21" step="1" aria-label="Inspired oxygen fraction as a percentage"></div>
+      <div class="sl"><label for="sAge">Age <span class="v" id="vAge">25 years</span></label>
+        <input type="range" id="sAge" min="18" max="90" value="25" step="1" aria-label="Patient age in years"></div>
+      <div class="sl"><label for="sPb">Barometric pressure <span class="v" id="vPb">760 mmHg &middot; sea level</span></label>
+        <input type="range" id="sPb" min="350" max="760" value="760" step="5" aria-label="Barometric pressure in millimeters of mercury"></div>
+      <div class="lbl">Load a hypoxemic patient</div>
+      <div class="chips" id="chips2"></div>
+      <div class="eq" id="eqAa"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Which family of hypoxemia?</h2>
+      <canvas id="cvAa" width="640" height="230" role="img" aria-label="A bar showing inspired oxygen tension, the alveolar oxygen tension after carbon dioxide displacement, and the measured arterial oxygen tension, with the alveolar to arterial gradient marked"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Inspired PO2</div><div class="v" id="oPIO2">150</div><div class="u">mmHg &middot; FiO2 &times; (Pb &minus; 47)</div></div>
+        <div class="lab"><div class="k">Alveolar PAO2</div><div class="v" id="oPAO2">100</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">A&ndash;a gradient</div><div class="v" id="oAa">5</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Expected for age</div><div class="v" id="oAaExp">10</div><div class="u">mmHg &middot; age/4 + 4</div></div>
+      </div>
+      <div class="verdict" id="verdict2"></div>
+      <div class="hint">Same low PaO2, entirely different physiology and entirely different treatment. A <b>normal</b> gradient means the alveolus itself is oxygen-poor &mdash; hypoventilation, or low inspired oxygen as at altitude &mdash; and the answer is ventilation or a higher FiO2. A <b>widened</b> gradient means the alveolus is fine but the blood is not picking oxygen up: V/Q mismatch, shunt or diffusion impairment.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'), LINE=cvar('--line'),
+    MUTED=cvar('--muted'), SOFT=cvar('--soft');
+
+function sizeCanvas(cvs,ratio,minH){
+  var r=cvs.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=Math.max(300,Math.round(r.width)), h=Math.max(minH||0,Math.round(w*ratio));
+  if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr); cvs.height=Math.round(h*dpr);}
+  cvs.style.height=h+'px';
+  var g=cvs.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  return {g:g,w:w,h:h};
+}
+function clearChips(box){var b=$(box).querySelectorAll('.chip');for(var i=0;i<b.length;i++)b[i].classList.remove('on');}
+function buildChips(box,arr,apply){
+  var h='';
+  for(var i=0;i<arr.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+arr[i].n+'</button>';
+  $(box).innerHTML=h;
+  var bs=$(box).querySelectorAll('.chip');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    apply(arr[+this.getAttribute('data-i')]);
+    for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+    this.classList.add('on');
+  });
+  bs[0].classList.add('on');
+}
+
+/* ---------------- state ---------------- */
+var S={co2:40, hco3:24, na:140, cl:104, chronic:false,
+       pao2:95, fio2:0.21, age:25, pb:760};
+
+function pHof(hco3,pco2){ return 6.1 + Math.log(hco3/(0.03*pco2))/Math.LN10; }
+
+function classify(){
+  var ph=pHof(S.hco3,S.co2);
+  var acid = ph<7.35, alk = ph>7.45;
+  var co2High=S.co2>45, co2Low=S.co2<35, hcHigh=S.hco3>26, hcLow=S.hco3<22;
+  var primary='none', note='';
+  if(acid){
+    if(co2High && hcLow) primary='mixed-acidosis';
+    else if(co2High) primary='resp-acidosis';
+    else if(hcLow) primary='met-acidosis';
+    else primary= (S.co2>=40?'resp-acidosis':'met-acidosis');
+  } else if(alk){
+    if(co2Low && hcHigh) primary='mixed-alkalosis';
+    else if(co2Low) primary='resp-alkalosis';
+    else if(hcHigh) primary='met-alkalosis';
+    else primary= (S.co2<=40?'resp-alkalosis':'met-alkalosis');
+  } else {
+    if(!co2High&&!co2Low&&!hcHigh&&!hcLow) primary='normal';
+    else if(ph<7.40) primary = co2High?'resp-acidosis':'met-acidosis';
+    else if(ph>7.40) primary = co2Low?'resp-alkalosis':'met-alkalosis';
+    else primary='mixed-normal-pH';
+  }
+  return {ph:ph, primary:primary};
+}
+function expectation(primary){
+  if(primary==='met-acidosis')  return {label:'PaCO2', val:1.5*S.hco3+8, tol:2, unit:'mmHg', rule:'Winter&rsquo;s formula: expected PaCO2 = (1.5 &times; HCO3) + 8 &plusmn; 2'};
+  if(primary==='met-alkalosis') return {label:'PaCO2', val:40+0.7*(S.hco3-24), tol:2, unit:'mmHg', rule:'Rule of thumb: PaCO2 rises about 0.7 mmHg for every 1 mEq/L of bicarbonate above 24'};
+  if(primary==='resp-acidosis') return {label:'HCO3', val:24 + (S.chronic?4:1)*(S.co2-40)/10, tol:2, unit:'mEq/L',
+      rule:'Bicarbonate rises about '+(S.chronic?'4':'1')+' mEq/L per 10 mmHg of PaCO2 when the change is '+(S.chronic?'chronic':'acute')};
+  if(primary==='resp-alkalosis')return {label:'HCO3', val:24 - (S.chronic?5:2)*(40-S.co2)/10, tol:2, unit:'mEq/L',
+      rule:'Bicarbonate falls about '+(S.chronic?'5':'2')+' mEq/L per 10 mmHg of PaCO2 when the change is '+(S.chronic?'chronic':'acute')};
+  return null;
+}
+
+/* ---------------- presets ---------------- */
+var PRE=[
+ {n:'Normal',c:40,h:24,na:140,cl:104,ch:false},
+ {n:'Diabetic ketoacidosis',c:25,h:11,na:140,cl:100,ch:false},
+ {n:'Metabolic acidosis, tiring',c:40,h:10,na:140,cl:100,ch:false},
+ {n:'Acute respiratory acidosis',c:68,h:27,na:140,cl:102,ch:false},
+ {n:'Chronic respiratory acidosis',c:68,h:36,na:140,cl:96,ch:true},
+ {n:'Anxiety hyperventilation',c:25,h:22,na:140,cl:106,ch:false},
+ {n:'Prolonged vomiting',c:48,h:36,na:140,cl:90,ch:false},
+ {n:'Severe Kussmaul respirations',c:15,h:6,na:138,cl:98,ch:false},
+ {n:'Chronic altitude exposure',c:28,h:18,na:140,cl:108,ch:true}
+];
+var PRE2=[
+ {n:'Healthy 25-year-old',c:40,h:24,o:95,f:0.21,a:25,pb:760},
+ {n:'Opioid overdose',c:72,h:27,o:58,f:0.21,a:40,pb:760},
+ {n:'Lobar pneumonia',c:30,h:22,o:58,f:0.21,a:60,pb:760},
+ {n:'Pulmonary embolism',c:30,h:23,o:62,f:0.21,a:55,pb:760},
+ {n:'Unacclimatized at 5500 m',c:28,h:22,o:31,f:0.21,a:30,pb:380},
+ {n:'Fibrosis on 40% oxygen',c:38,h:24,o:70,f:0.40,a:68,pb:760}
+];
+
+/* ---------------- render ---------------- */
+function render(){
+  $('vCO2').textContent=S.co2+' mmHg';
+  $('vHCO3').textContent=S.hco3+' mEq/L';
+  $('vNa').textContent=S.na+' mEq/L';
+  $('vCl').textContent=S.cl+' mEq/L';
+  $('vPaO2').textContent=S.pao2+' mmHg';
+  $('vFiO2').textContent=Math.round(S.fio2*100)+'%';
+  $('vAge').textContent=S.age+' years';
+  var altM=Math.round(44330*(1-Math.pow(S.pb/760,0.190295)));
+  $('vPb').textContent=S.pb+' mmHg · '+(altM<80?'sea level':altM+' m');
+
+  var c=classify(), ph=c.ph;
+  var denom=0.03*S.co2, ratio=S.hco3/denom;
+  var ag=S.na-(S.cl+S.hco3);
+  $('oPH').textContent=ph.toFixed(2);
+  $('oAG').textContent=ag.toFixed(0);
+
+  /* ratio bar */
+  var total=S.hco3+denom;
+  $('rB').style.width=(S.hco3/total*100)+'%'; $('rB').style.background=TEAL;
+  $('rC').style.width=(denom/total*100)+'%'; $('rC').style.background=CORAL;
+  $('capB').textContent='HCO3 '+S.hco3.toFixed(1);
+  $('capR').textContent='ratio '+ratio.toFixed(1)+' : 1';
+  $('capC').textContent='0.03 × PaCO2 = '+denom.toFixed(2);
+
+  $('eqHH').innerHTML='<b>pH = 6.1 + log([HCO3<sup>&minus;</sup>] / (0.03 &times; PaCO2))</b><br>'+
+    'pH = 6.1 + log(<span class="num">'+S.hco3.toFixed(0)+'</span> / (0.03 &times; <span class="num">'+S.co2+'</span>)) = '+
+    '6.1 + log(<span class="num">'+S.hco3.toFixed(0)+'</span> / <span class="num">'+denom.toFixed(2)+'</span>) = '+
+    '6.1 + log(<span class="num">'+ratio.toFixed(1)+'</span>) = <b class="num">'+ph.toFixed(2)+'</b><br>'+
+    'A ratio of <b>20 : 1</b> gives a pH of 7.40. The numerator is renal and slow; the denominator is respiratory and fast.';
+
+  var exp=expectation(c.primary);
+  if(exp){
+    $('oExp').textContent=exp.val.toFixed(0);
+    $('oExpU').innerHTML=exp.label+' &plusmn; '+exp.tol+' '+exp.unit;
+  } else { $('oExp').textContent='—'; $('oExpU').textContent=(c.primary==='normal'?'no primary disorder':'mixed picture'); }
+
+  renderVerdict(c,exp,ag,ratio);
+  drawDavenport(ph);
+  renderOxy();
+}
+function renderVerdict(c,exp,ag,ratio){
+  var v=$('verdict'), cls='verdict', m='';
+  var names={'resp-acidosis':'Respiratory acidosis','resp-alkalosis':'Respiratory alkalosis',
+             'met-acidosis':'Metabolic acidosis','met-alkalosis':'Metabolic alkalosis'};
+  var measured = (c.primary==='met-acidosis'||c.primary==='met-alkalosis') ? S.co2 : S.hco3;
+  var comp='';
+  if(exp){
+    var diff=measured-exp.val;
+    if(Math.abs(diff)<=exp.tol) comp='appropriate';
+    else if((c.primary==='met-acidosis'&&diff>0)||(c.primary==='met-alkalosis'&&diff>0)) comp='inadequate';
+    else if((c.primary==='met-acidosis'&&diff<0)||(c.primary==='met-alkalosis'&&diff<0)) comp='excessive';
+    else comp = diff>0 ? 'more than expected' : 'less than expected';
+  }
+  if(c.primary==='normal'){
+    cls+=' ok';
+    m='Normal blood gas &mdash; pH '+c.ph.toFixed(2)+', PaCO2 '+S.co2+', HCO3 '+S.hco3+'.<small>The 20:1 ratio is intact at '+ratio.toFixed(1)+':1. Move either limb and the pH follows the log of the ratio, not the absolute value of either number.</small>';
+  } else if(c.primary==='mixed-acidosis'){
+    cls+=' bad';
+    m='Mixed acidosis &mdash; both limbs are pushing the same way.<small>PaCO2 is '+S.co2+' (would acidify) and bicarbonate is '+S.hco3+' (would also acidify). Neither is compensating for the other, so the pH of '+c.ph.toFixed(2)+' is falling faster than either disorder alone would produce. Cardiac arrest and severe sepsis look like this.</small>';
+  } else if(c.primary==='mixed-alkalosis'){
+    cls+=' bad';
+    m='Mixed alkalosis &mdash; both limbs are pushing the same way.<small>PaCO2 '+S.co2+' and bicarbonate '+S.hco3+' both alkalinize, so the pH of '+c.ph.toFixed(2)+' is higher than either would produce alone. Vomiting plus hyperventilation, or a ventilated patient on nasogastric suction.</small>';
+  } else if(c.primary==='mixed-normal-pH'){
+    cls+=' warn';
+    m='Normal pH with abnormal PaCO2 and abnormal bicarbonate &mdash; suspect a mixed disorder.<small>Compensation never fully corrects the pH. If the pH has landed exactly at 7.40 while both limbs are displaced, two disorders are cancelling rather than one being compensated.</small>';
+  } else {
+    var isMet = c.primary.indexOf('met-')===0;
+    cls += (comp==='appropriate') ? ' warn' : ' bad';
+    m=names[c.primary]+(isMet?'':(S.chronic?' — chronic':' — acute'))+'.<small>';
+    m+='pH '+c.ph.toFixed(2)+' names the primary problem: the direction of the pH always does. ';
+    if(exp){
+      m+=exp.rule+', so the expected '+exp.label+' is <b>'+exp.val.toFixed(0)+' '+exp.unit+'</b> and the measured value is <b>'+measured.toFixed(0)+'</b> — compensation is '+comp+'. ';
+      if(comp==='inadequate'&&c.primary==='met-acidosis')
+        m+='A metabolic acidosis with a PaCO2 that high is not simply under-compensating — there is a second, respiratory disorder superimposed, and the patient is tiring. ';
+      if(comp==='appropriate'&&c.primary==='met-acidosis')
+        m+='This is a single primary disorder with appropriate respiratory compensation. Next step is the anion gap, which here is '+ag.toFixed(0)+' mEq/L. ';
+      if(c.primary==='resp-acidosis')
+        m+=(S.chronic?'Bicarbonate this high takes the kidney three to five days to build, so this has been going on for days — correcting the PaCO2 quickly would swing the patient alkalotic. '
+                     :'Bicarbonate has barely moved, so this has been going on for minutes to hours. It is a ventilation emergency. ');
+    }
+    if(isMet && ag>12) m+='The anion gap of '+ag.toFixed(0)+' is raised (normal 8 to 12), so unmeasured anions are present: ketoacids, lactate, or the retained anions of renal failure. ';
+    else if(c.primary==='met-acidosis') m+='The anion gap of '+ag.toFixed(0)+' is normal, which points to bicarbonate loss — diarrhea or a renal tubular acidosis — rather than added acid. ';
+    m+='</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+}
+function drawDavenport(ph){
+  var s=sizeCanvas($('cvDav'),360/640,306), g=s.g, W=s.w, H=s.h;
+  var padL=40,padR=12,padT=12,padB=28;
+  var pw=W-padL-padR, ph2=H-padT-padB;
+  var XLO=7.00, XHI=7.70, YLO=0, YHI=45;
+  function X(p){return padL+(p-XLO)/(XHI-XLO)*pw;}
+  function Y(b){return padT+ph2-(b-YLO)/(YHI-YLO)*ph2;}
+  g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.rect(padL,padT,pw,ph2); g.fill(); g.stroke();
+  g.strokeStyle=LINE; g.font='9.5px Inter,sans-serif'; g.fillStyle=MUTED;
+  for(var p=7.1;p<XHI-0.01;p+=0.1){ g.beginPath(); g.moveTo(X(p),padT); g.lineTo(X(p),padT+ph2); g.stroke(); g.textAlign='center'; g.fillText(p.toFixed(1),X(p),padT+ph2+13); }
+  for(var b=10;b<YHI;b+=10){ g.beginPath(); g.moveTo(padL,Y(b)); g.lineTo(padL+pw,Y(b)); g.stroke(); g.textAlign='right'; g.fillText(b,padL-5,Y(b)+3); }
+  /* isobars */
+  var bars=[10,20,30,40,60,80,100];
+  for(var i=0;i<bars.length;i++){
+    var pc=bars[i];
+    g.strokeStyle=(pc===40)?TEALD:LINE; g.lineWidth=(pc===40)?1.8:1.2;
+    g.setLineDash(pc===40?[]:[3,3]);
+    g.beginPath();
+    var started=false, lastX=0, lastY=0;
+    for(var k=0;k<=120;k++){
+      var pv=XLO+(XHI-XLO)*k/120;
+      var bv=0.03*pc*Math.pow(10,pv-6.1);
+      if(bv>YHI||bv<YLO) { started=false; continue; }
+      var xx=X(pv), yy=Y(bv);
+      if(!started){g.moveTo(xx,yy);started=true;} else g.lineTo(xx,yy);
+      lastX=xx; lastY=yy;
+    }
+    g.stroke(); g.setLineDash([]);
+    if(lastX){ g.fillStyle=(pc===40)?TEALD:MUTED; g.font='800 9px Inter,sans-serif'; g.textAlign='right';
+      g.fillText('PaCO2 '+pc,Math.min(padL+pw-3,lastX-2),Math.max(padT+9,lastY-4)); }
+  }
+  /* normal box */
+  g.fillStyle=GREEN; g.globalAlpha=0.18;
+  g.fillRect(X(7.35),Y(26),X(7.45)-X(7.35),Y(22)-Y(26)); g.globalAlpha=1;
+  g.strokeStyle=GREEN; g.lineWidth=1.4;
+  g.strokeRect(X(7.35),Y(26),X(7.45)-X(7.35),Y(22)-Y(26));
+  /* quadrant labels */
+  g.font='700 9.2px Inter,sans-serif'; g.fillStyle=MUTED; g.textAlign='center';
+  g.fillText('respiratory acidosis',X(7.14),Y(40));
+  g.fillText('metabolic alkalosis',X(7.60),Y(40));
+  g.fillText('metabolic acidosis',X(7.14),Y(5));
+  g.fillText('respiratory alkalosis',X(7.60),Y(5));
+  /* the point */
+  var px=X(Math.max(XLO,Math.min(XHI,ph))), py=Y(Math.max(YLO,Math.min(YHI,S.hco3)));
+  g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([3,3]);
+  g.beginPath(); g.moveTo(px,padT+ph2); g.lineTo(px,py); g.lineTo(padL,py); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.beginPath(); g.arc(px,py,6.5,0,6.2832); g.fill();
+  g.fillStyle='#fff'; g.beginPath(); g.arc(px,py,2.6,0,6.2832); g.fill();
+  g.fillStyle=CORAL; g.font='800 10.5px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('pH '+ph.toFixed(2)+' · HCO3 '+S.hco3,Math.max(padL+58,Math.min(padL+pw-58,px)),Math.max(padT+12,py-12));
+  g.fillStyle=MUTED; g.font='700 9.4px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('arterial pH',padL+pw/2,H-3);
+  g.save(); g.translate(11,padT+ph2/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('bicarbonate (mEq/L)',0,0); g.restore();
+}
+
+/* ---------------- oxygenation ---------------- */
+function renderOxy(){
+  var pio2=S.fio2*(S.pb-47);
+  var pao2Alv=pio2-S.co2/0.8;
+  var aa=pao2Alv-S.pao2;
+  var expAa=S.age/4+4;
+  $('oPIO2').textContent=pio2.toFixed(0);
+  $('oPAO2').textContent=pao2Alv.toFixed(0);
+  $('oAa').textContent=aa.toFixed(0);
+  $('oAaExp').textContent=expAa.toFixed(0);
+
+  $('eqAa').innerHTML='<b>P<sub>A</sub>O2 = (FiO2 &times; (Pb &minus; 47)) &minus; (PaCO2 / 0.8)</b><br>'+
+    'P<sub>A</sub>O2 = (<span class="num">'+S.fio2.toFixed(2)+'</span> &times; <span class="num">'+(S.pb-47)+'</span>) &minus; (<span class="num">'+S.co2+
+    '</span> / 0.8) = <span class="num">'+pio2.toFixed(0)+'</span> &minus; <span class="num">'+(S.co2/0.8).toFixed(0)+'</span> = <b class="num">'+pao2Alv.toFixed(0)+' mmHg</b><br>'+
+    'A&ndash;a gradient = <span class="num">'+pao2Alv.toFixed(0)+'</span> &minus; <span class="num">'+S.pao2+'</span> = <b class="num">'+aa.toFixed(0)+' mmHg</b>, against an expected '+
+    '(age / 4) + 4 = <b class="num">'+expAa.toFixed(0)+' mmHg</b>.';
+
+  var v=$('verdict2'), cls='verdict', m='';
+  var hypox=S.pao2<80 && S.fio2<0.3;
+  if(aa>expAa+8){
+    cls+=' bad';
+    m='Widened A&ndash;a gradient: '+aa.toFixed(0)+' mmHg against an expected '+expAa.toFixed(0)+'.<small>The alveolus is fine &mdash; it holds '+pao2Alv.toFixed(0)+' mmHg &mdash; but the blood is leaving with only '+S.pao2+'. That points to V/Q mismatch, shunt or diffusion impairment. The bedside next step is 100 percent oxygen: mismatch and diffusion problems correct, true shunt does not, because shunted blood never contacts alveolar gas at all.</small>';
+  } else if(S.co2>45 && hypox){
+    cls+=' warn';
+    m='Normal A&ndash;a gradient with hypoxemia and a PaCO2 of '+S.co2+' &mdash; pure hypoventilation.<small>The alveolus is oxygen-poor only because carbon dioxide has displaced oxygen out of it: every 1 mmHg of PaCO2 costs about 1.25 mmHg of alveolar PO2. The lung is innocent; the problem is drive or pump &mdash; opioids, sedation, neuromuscular disease, a fatiguing chest. Oxygen will raise the PaO2 and do nothing whatever about the CO2.</small>';
+  } else if(pio2<120 && hypox){
+    cls+=' cool';
+    m='Normal A&ndash;a gradient with a low inspired PO2 of '+pio2.toFixed(0)+' mmHg.<small>Nothing is wrong with this lung. Barometric pressure is '+S.pb+' mmHg, so the oxygen simply is not in the air. This is the altitude family, and the fix is inspired oxygen or descent &mdash; not ventilation, which will only produce a respiratory alkalosis.</small>';
+  } else if(hypox){
+    cls+=' warn';
+    m='PaO2 '+S.pao2+' mmHg with an A&ndash;a gradient of '+aa.toFixed(0)+' &mdash; borderline.<small>The gradient is at or near the expected '+expAa.toFixed(0)+' mmHg for this age, and the normal gradient widens with age (roughly age divided by four, plus four). Check the PaCO2: if it is high the alveolus is being diluted by CO2, and the problem is ventilation.</small>';
+  } else {
+    cls+=' ok';
+    m='Oxygenation acceptable: PaO2 '+S.pao2+' mmHg with an A&ndash;a gradient of '+aa.toFixed(0)+' mmHg.<small>Remember that this says nothing about ventilation. A patient on supplemental oxygen can hold a perfectly reassuring PaO2 and pulse oximetry while PaCO2 climbs toward 80 &mdash; oximetry measures oxygenation, and only PaCO2 measures ventilation.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+  drawAa(pio2,pao2Alv,aa,expAa);
+}
+function drawAa(pio2,pAlv,aa,expAa){
+  var s=sizeCanvas($('cvAa'),0,188), g=s.g, W=s.w, H=s.h;
+  var padL=104,padR=16,padT=18;
+  var pw=W-padL-padR, bh=30, gap=14;
+  var MAX=Math.max(170, pio2*1.06);
+  function L(v){ return pw*Math.max(0,Math.min(1,v/MAX)); }
+  var rows=[
+    {k:'Inspired PO2',v:pio2,col:BLUE,sub:'FiO2 × (Pb − 47)'},
+    {k:'Alveolar PAO2',v:pAlv,col:TEAL,sub:'after CO2 displaces O2'},
+    {k:'Arterial PaO2',v:S.pao2,col:CORAL,sub:'measured'}
+  ];
+  for(var i=0;i<rows.length;i++){
+    var y=padT+i*(bh+gap);
+    g.fillStyle=LINE; g.fillRect(padL,y,pw,bh);
+    g.fillStyle=rows[i].col; g.fillRect(padL,y,L(rows[i].v),bh);
+    g.fillStyle=SOFT; g.font='800 11px Inter,sans-serif'; g.textAlign='right';
+    g.fillText(rows[i].k,padL-7,y+15);
+    g.fillStyle=MUTED; g.font='9.2px Inter,sans-serif';
+    g.fillText(rows[i].sub,padL-7,y+27);
+    var lw=L(rows[i].v);
+    if(lw>70){ g.fillStyle='#fff'; g.textAlign='left'; g.font='800 12px Inter,sans-serif'; g.fillText(rows[i].v.toFixed(0)+' mmHg',padL+8,y+20); }
+    else { g.fillStyle=rows[i].col; g.textAlign='left'; g.font='800 12px Inter,sans-serif'; g.fillText(rows[i].v.toFixed(0)+' mmHg',padL+lw+8,y+20); }
+  }
+  /* gradient bracket between rows 2 and 3 */
+  var y2=padT+1*(bh+gap), y3=padT+2*(bh+gap);
+  var xA=padL+L(pAlv), xB=padL+L(S.pao2);
+  var wide=aa>expAa+8;
+  g.strokeStyle=wide?CORAL:GREEN; g.lineWidth=2;
+  g.beginPath(); g.moveTo(xA,y2+bh); g.lineTo(xA,y3+bh+16); g.lineTo(xB,y3+bh+16); g.lineTo(xB,y3+bh); g.stroke();
+  g.fillStyle=wide?CORAL:GREEN; g.font='800 11px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('A−a '+aa.toFixed(0)+' mmHg · expected '+expAa.toFixed(0),
+    Math.max(padL+90,Math.min(padL+pw-90,(xA+xB)/2)), y3+bh+32);
+}
+
+/* ---------------- wiring ---------------- */
+buildChips('chips',PRE,function(p){
+  S.co2=p.c; S.hco3=p.h; S.na=p.na; S.cl=p.cl; S.chronic=p.ch;
+  $('sCO2').value=p.c; $('sHCO3').value=p.h; $('sNa').value=p.na; $('sCl').value=p.cl;
+  syncChronic(); render();
+});
+buildChips('chips2',PRE2,function(p){
+  S.co2=p.c; S.hco3=p.h; S.pao2=p.o; S.fio2=p.f; S.age=p.a; S.pb=p.pb;
+  $('sCO2').value=p.c; $('sHCO3').value=p.h; $('sPaO2').value=p.o;
+  $('sFiO2').value=Math.round(p.f*100); $('sAge').value=p.a; $('sPb').value=p.pb;
+  clearChips('chips'); render();
+});
+function bind(id,fn,box){ $(id).addEventListener('input',function(){ fn(this.value); if(box) clearChips(box); render(); }); }
+bind('sCO2',function(v){S.co2=parseInt(v,10);},'chips');
+bind('sHCO3',function(v){S.hco3=parseInt(v,10);},'chips');
+bind('sNa',function(v){S.na=parseInt(v,10);},'chips');
+bind('sCl',function(v){S.cl=parseInt(v,10);},'chips');
+bind('sPaO2',function(v){S.pao2=parseInt(v,10);},'chips2');
+bind('sFiO2',function(v){S.fio2=parseInt(v,10)/100;},'chips2');
+bind('sAge',function(v){S.age=parseInt(v,10);},'chips2');
+bind('sPb',function(v){S.pb=parseInt(v,10);},'chips2');
+function syncChronic(){
+  $('bChronic').classList.toggle('on',S.chronic);
+  $('bAcute').classList.toggle('on',!S.chronic);
+  $('bChronic').setAttribute('aria-pressed',S.chronic?'true':'false');
+  $('bAcute').setAttribute('aria-pressed',S.chronic?'false':'true');
+}
+$('bAcute').addEventListener('click',function(){ S.chronic=false; syncChronic(); render(); });
+$('bChronic').addEventListener('click',function(){ S.chronic=true; syncChronic(); render(); });
+window.addEventListener('resize',render);
+
+syncChronic(); render();
+})();
+</script>
+</body>
+</html>

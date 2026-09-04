@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Respiratory System &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Breathing looks like an act of will, but almost none of it is. The respiratory system exists to hold two partial pressures nearly constant &mdash; an arterial oxygen tension near 100 mmHg and an arterial carbon dioxide tension of ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 12 &middot; Respiratory System</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#mechanics">1 &middot; Moving Air: Pressure, Compliance and Resistance</a>
+        <a href="#volumes">2 &middot; Volumes, Dead Space and Alveolar Ventilation</a>
+        <a href="#exchange">3 &middot; Diffusion, V/Q Matching and Gas Transport</a>
+        <a href="#control">4 &middot; The Control of Breathing</a>
+        <a href="#acidbase">5 &middot; The Lung as an Acid&ndash;Base Organ</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 12</div>
+<h1>The Respiratory System</h1>
+
+<p class="lede">Breathing looks like something you choose to do. Almost none of it is. The respiratory system has one job. It holds two gas pressures nearly steady. Arterial oxygen tension stays near 100 mmHg. Arterial carbon dioxide tension stays at 40 mmHg. It does this with three parts. There is a pump, a membrane, and a feedback loop. The pump is skeletal muscle working on an elastic bag. It moves air only by making a pressure difference. Nothing is ever &ldquo;sucked&rdquo; anywhere. The membrane is half a micrometer thick. It spreads over about 70 square meters. That is a third of a tennis court. So the gases finish crossing it in a third of the time blood spends going by. The feedback loop watches carbon dioxide, not oxygen. Carbon dioxide is an acid. The body guards pH above almost everything else. Learn those three ideas. Gradient, diffusion, feedback. Then the lung stops being a list to memorize. It starts being predictable.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain how <b>Boyle&rsquo;s law</b> and the flow rule <b>Q = &Delta;P / R</b> together make air move. Give the real intrapleural and alveolar pressures across one breath.</li>
+<li>Tell <b>compliance</b>, <b>elastic recoil</b> and <b>surface tension</b> apart. Say how <b>surfactant</b> and the <b>law of Laplace</b> keep small alveoli open.</li>
+<li>Work out <b>alveolar ventilation</b> from tidal volume, <b>dead space</b> and rate. Say why alveolar ventilation sets PaCO2 and minute ventilation does not.</li>
+<li>Read spirometry. Tell an <b>obstructive</b> pattern from a <b>restrictive</b> one using <b>FEV1/FVC</b>.</li>
+<li>Use <b>Fick&rsquo;s law of diffusion</b> and <b>ventilation&ndash;perfusion (V/Q) matching</b> to predict low blood oxygen. Tell <b>shunt</b> apart from <b>alveolar dead space</b>.</li>
+<li>Describe <b>oxygen&ndash;hemoglobin</b> transport. Explain the S-shaped dissociation curve and the <b>P50</b>. Say what causes a right shift (<b>Bohr effect</b>) and what it does.</li>
+<li>Name the three forms of <b>carbon dioxide transport</b>. Explain the <b>chloride shift</b> and the <b>Haldane effect</b>.</li>
+<li>Draw the <b>central chemoreceptor</b> negative feedback loop. Name the regulated variable, the sensor, the integrator, the effector and the response.</li>
+<li>Use the <b>Henderson&ndash;Hasselbalch equation</b> to name the four primary acid&ndash;base disorders. Judge whether the compensation is the right size.</li>
+</ul></div>
+
+<h2 id="mechanics"><span class="num">Section 1</span>Moving Air: Pressure, Compliance and Resistance</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch12_s1.jpg" alt="Diagram of the thoracic cavity showing the diaphragm flattening and rib cage expanding during inspiration, with arrows marking the fall in intrapleural and alveolar pressure" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The diaphragm and external intercostals contract, and the thorax gets bigger. Alveolar pressure drops below atmospheric, so air flows in. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Air flows down a pressure gradient, and nothing else</h3>
+
+<p>Every breath follows one rule: <b>Q = &Delta;P / R</b>. Q is airflow. &Delta;P is the pressure difference between the mouth and the alveoli. Alveoli are the tiny air sacs of the lung. R is airway resistance, meaning whatever slows the air down. The atmosphere sits at 760 mmHg at sea level. It does not change during a breath. So the only way to move air is to change <b>alveolar pressure</b> (P<sub>alv</sub>). And the only way to change alveolar pressure is to change the volume of the alveolar gas. That is <b>Boyle&rsquo;s law</b>. At a steady temperature, P<sub>1</sub>V<sub>1</sub> = P<sub>2</sub>V<sub>2</sub>. Make the container bigger and the pressure inside it falls.</p>
+
+<p>The <b>diaphragm</b> is the dome of muscle under the lungs. It does about 70 percent of the volume change in quiet breathing. It contracts along with the external intercostals, the muscles between the ribs. Together they make the thorax bigger by roughly 500 mL. Alveolar pressure then falls to about 1 cmH2O below atmospheric. That is a tiny push. It is less than 0.1 percent of barometric pressure. Even so, 500 mL of air enters over about two seconds. At the top of the breath the muscles let go. Elastic recoil shrinks the lung. Alveolar pressure rises to roughly +1 cmH2O. The same volume leaves. Quiet breathing out is <b>passive</b>. No muscle does any work. Forced breathing out calls in the internal intercostals and the abdominal wall. Those can drive alveolar pressure to +30 cmH2O or higher.</p>
+
+<p>Notice what did <i>not</i> happen. The chest did not &ldquo;pull air in&rdquo; by suction from a distance. The lung did not inflate itself. A gas cannot be pulled. It can only be pushed. Atmospheric pressure pushes air into the airway because the pressure at the far end became lower. Blood flows for the same reason. So does urine filtering, and so does cerebrospinal fluid circulating. This whole course is one Q = &Delta;P / R problem after another. Only the plumbing changes.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> Students often say breathing in &ldquo;creates a vacuum that sucks air in.&rdquo; There is no suction in physiology. There are only pressure differences. Sometimes a patient cannot get alveolar pressure below atmospheric. That happens with a paralyzed diaphragm, a flail chest, or a large pneumothorax. Then no amount of effort at the mouth will move air. The fix is to push air in from outside at positive pressure. That one idea explains why mechanical ventilators exist. It also explains why they work backwards from normal breathing.</div>
+
+<h3>Intrapleural pressure and the two opposing springs</h3>
+
+<p>The lung and the chest wall are both elastic. They pull in opposite directions. A thin film of <b>pleural fluid</b> holds them together. Left alone, the lung would collapse until almost no air was left. Left alone, the chest wall would spring outward to about 60 percent of total lung capacity. Because they are stuck together, they settle at a compromise volume. That volume is <b>functional residual capacity (FRC)</b>, about 2300 mL. The tug-of-war also pulls the pressure between the two layers below atmospheric. That is <b>intrapleural pressure</b> (P<sub>ip</sub>). It runs roughly &minus;5 cmH2O at rest. It falls to about &minus;8 cmH2O at the peak of a breath in.</p>
+
+<p>What really holds an alveolus open is the <b>transpulmonary pressure</b>. It is P<sub>tp</sub> = P<sub>alv</sub> &minus; P<sub>ip</sub>. At FRC that is 0 &minus; (&minus;5) = +5 cmH2O. That is the pressure stretching the lung open. Every mechanical problem of the lung is a change in this one number. Puncture the pleural space and air rushes in. It keeps coming until P<sub>ip</sub> equals atmospheric. Transpulmonary pressure becomes zero. The lung recoils to its unstressed volume. The chest wall springs out. That is a <b>pneumothorax</b>. It is why the chest of a patient with a large one looks fuller, not flatter, on the affected side.</p>
+
+<p>Pleural pressure sits below atmospheric. That also helps blood get back to the heart. When you breathe in, P<sub>ip</sub> falls. That drop is passed on to the great veins inside the chest and to the right atrium. So the pressure gradient from the abdominal veins to the heart gets bigger. Right ventricular filling rises with a breath in. This is the mechanical reason the pulse normally varies a little from beat to beat. It is also behind clinical signs such as pulsus paradoxus in tamponade.</p>
+
+<h3>Compliance, surface tension and surfactant</h3>
+
+<p><b>Compliance</b> is the volume you gain per unit of stretching pressure. It is C = &Delta;V / &Delta;P. Normal lung compliance is about 200 mL per cmH2O. So a 2.5 cmH2O swing in transpulmonary pressure moves a 500 mL tidal breath. High compliance is not automatically good. <b>Emphysema</b> destroys elastin and raises compliance. The lung fills easily but recoils poorly. Air gets trapped and FRC rises. <b>Pulmonary fibrosis</b>, pulmonary edema and a stiff chest wall lower compliance. The lung is stiff. Volumes fall. The work of breathing climbs steeply.</p>
+
+<p>Two-thirds of the lung&rsquo;s recoil does not come from elastin. It comes from <b>surface tension</b>. A thin layer of water lines every alveolus. Where that water meets air, the water molecules pull on one another. They try to shrink the surface. That means they try to collapse the alveolus. The <b>law of Laplace</b> puts a number on it. For a sphere with one surface, the collapsing pressure is P = 2T / r. T is surface tension and r is radius. Here is the trap. As an alveolus gets smaller, r falls. So P rises. So it collapses faster. Small alveoli should empty into large ones until the lung is a few big bags.</p>
+
+<p>They do not, and here is why. <b>Type II pneumocytes</b> are cells in the alveolar wall. They make <b>surfactant</b>. Surfactant is a phospholipid, chiefly dipalmitoylphosphatidylcholine. It slips in between water molecules and lowers T. The timing is the clever part. Surfactant molecules pack closer together as the alveolus shrinks. So T falls exactly when r falls. The ratio 2T/r stays manageable. Surfactant steadies small alveoli. It raises compliance. It lowers the work of breathing. A fetus makes enough of it around 34&ndash;36 weeks of gestation. A preterm infant born before that develops <b>neonatal respiratory distress syndrome</b>. The lungs are stiff. The baby grunts, which is an attempt to hold positive pressure in at the end of a breath out. Alveoli collapse all through the lung, which is called atelectasis.</p>
+
+<h3>Resistance and the work of breathing</h3>
+
+<p>Airway resistance follows <b>Poiseuille&rsquo;s law</b>. R rises as 1 / r<sup>4</sup>. Halve a bronchiole&rsquo;s radius and its resistance goes up sixteen times. Now the surprise. The greatest single site of resistance is not the terminal bronchioles. It is the medium-sized bronchi. The small airways are so numerous, and they sit side by side, so their combined cross-sectional area is enormous. That anatomical fact matters at the bedside. Early small-airway disease is silent. And the mid-expiratory flow rate (FEF 25&ndash;75) falls before FEV1 does.</p>
+
+<p>Smooth muscle in the bronchial wall tunes resistance. Parasympathetic traffic, by way of the vagus and muscarinic M3 receptors, narrows the airways and makes mucus. Epinephrine in the blood acts on <b>beta-2 receptors</b> and widens them. That is why a short-acting beta-2 agonist is the rescue inhaler in asthma. It is also why an antimuscarinic helps in chronic obstructive pulmonary disease. In quiet breathing, the work of breathing uses only about 3 to 5 percent of resting oxygen consumption. In severe obstructive disease it can pass 30 percent. That is a large part of why these patients lose weight and finally tire out.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Nothing is ever sucked into a lung. Muscle makes the thorax bigger. Boyle&rsquo;s law drops alveolar pressure about 1 cmH2O below atmospheric. Q = &Delta;P / R does the rest. Drive the breath below by <a href="../lab/ch12/BreathingMechanicsLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch12/BreathingMechanicsLab.html" loading="lazy" title="Breathing Mechanics: Gradient, Compliance and Resistance interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Air moves only because muscle contraction changes the volume of the thorax, and that changes alveolar pressure. How much air moves for a given effort depends on two things. One is the lung&rsquo;s compliance, set largely by surfactant and elastin. The other is the resistance of the airways.</p></div>
+
+<h2 id="volumes"><span class="num">Section 2</span>Volumes, Dead Space and Alveolar Ventilation</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch12_s2.jpg" alt="A spirogram separates the four lung volumes from the four capacities; residual volume cannot be measured by spirometry alone." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A spirogram separates the four lung volumes from the four capacities. Residual volume cannot be measured by spirometry alone. <span class="cred">Kapwatt, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The four volumes and the four capacities</h3>
+
+<p>A volume is one single compartment. A capacity is two or more volumes added together. The table below gives typical values for a 70 kg young adult male. Values run 20 to 25 percent lower in females of the same age and height.  Memorizing the numbers is not the point. Knowing which ones move in disease is. <b>Residual volume</b> and <b>FRC</b> rise in obstruction, because air is trapped. In restriction, every volume falls together.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Volume or capacity</th><th>Typical value</th><th>Definition</th></tr></thead>
+<tbody>
+<tr><td>Tidal volume (V<sub>T</sub>)</td><td>500 mL</td><td>Air moved in one quiet breath</td></tr>
+<tr><td>Inspiratory reserve volume</td><td>3000 mL</td><td>Extra air inhaled beyond a tidal breath</td></tr>
+<tr><td>Expiratory reserve volume</td><td>1100 mL</td><td>Extra air exhaled beyond a tidal breath</td></tr>
+<tr><td>Residual volume (RV)</td><td>1200 mL</td><td>Air left after you blow out as hard as you can. It keeps alveoli open</td></tr>
+<tr><td>Inspiratory capacity</td><td>3500 mL</td><td>V<sub>T</sub> + IRV</td></tr>
+<tr><td>Functional residual capacity</td><td>2300 mL</td><td>ERV + RV. The volume the lung rests at</td></tr>
+<tr><td>Vital capacity (VC)</td><td>4600 mL</td><td>IRV + V<sub>T</sub> + ERV. The largest breath you can take</td></tr>
+<tr><td>Total lung capacity (TLC)</td><td>5800 mL</td><td>VC + RV</td></tr>
+</tbody></table></div>
+
+<p>A simple spirometer cannot measure residual volume. You cannot blow out air that will not come out. So it cannot measure FRC or TLC either. Those need helium dilution, nitrogen washout or body plethysmography. FRC matters for a reason. It is a standing reservoir of gas. It keeps alveolar gas from swinging wildly between breaths. Each breath brings in 500 mL of fresh air, and 350 mL of that reaches the alveoli. It mixes into a standing 2300 mL. So alveolar PO2 moves by only a few mmHg across a breathing cycle. Without that reservoir it would swing between 150 and 40 mmHg.</p>
+
+<h3>Dead space, and why minute ventilation lies to you</h3>
+
+<p>Roughly 150 mL of each 500 mL tidal breath never reaches an alveolus. It stops in the conducting zone. That runs from the nose to the terminal bronchioles, generations 0 through 16. There is no capillary bed there, so no gas is traded. This wasted volume is <b>anatomical dead space</b>. It comes to about 2.2 mL per kilogram of ideal body weight. <b>Alveolar dead space</b> is a different thing. Those alveoli get air but get no blood, as in pulmonary embolism. In health it is near zero. Add the two together and you get <b>physiological dead space</b>.</p>
+
+<p>That gives us the most useful equation in respiratory physiology. It is <b>alveolar ventilation V<sub>A</sub> = (V<sub>T</sub> &minus; V<sub>D</sub>) &times; f</b>. Try it out. Take 500 mL breaths, 150 mL of dead space, and 12 breaths per minute. Minute ventilation is 6000 mL/min. But alveolar ventilation is only (500 &minus; 150) &times; 12 = 4200 mL/min. Now change the pattern and hold minute ventilation the same. Breathe 250 mL twenty-four times a minute. Minute ventilation is still 6000 mL/min. But V<sub>A</sub> = (250 &minus; 150) &times; 24 = 2400 mL/min. That is a 43 percent collapse in effective ventilation. Breathe 1000 mL six times a minute instead and V<sub>A</sub> = 5100 mL/min.</p>
+
+<p>So rapid shallow breathing in a tiring patient is a bad sign. The respiratory rate may look reassuring, even &ldquo;compensatory.&rdquo; It is not. Slow deep breathing is the efficient pattern. This is also why PaCO2 runs opposite to alveolar ventilation. The equation is PaCO2 = (VCO2 &times; 0.863) / V<sub>A</sub>. Halve alveolar ventilation and PaCO2 doubles from 40 to 80 mmHg. Double it and PaCO2 falls to 20 mmHg. In practice, arterial carbon dioxide is a direct readout of alveolar ventilation.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> A patient after surgery is on opioids. They breathe 400 mL, 8 times a minute. Minute ventilation is 3200 mL/min. On a flowsheet that does not look alarming. But V<sub>A</sub> = (400 &minus; 150) &times; 8 = 2000 mL/min. That is less than half of normal. PaCO2 will be roughly double normal, at around 80 mmHg. On extra oxygen the pulse oximeter can still read 96 percent. Meanwhile the patient is deeply hypercapnic, which means carbon dioxide is piling up. Oximetry measures oxygenation. It says nothing about ventilation.</div>
+
+<h3>Spirometry: separating obstruction from restriction</h3>
+
+<p>Forced spirometry works like this. The patient breathes in as deeply as possible. Then they blow out as hard and as long as they can. Two numbers do most of the work. <b>FVC</b> is the total volume blown out. <b>FEV1</b> is the volume blown out in the first second. In health, FEV1/FVC is 0.75 to 0.80. A healthy adult empties about four-fifths of the vital capacity in one second.</p>
+
+<p>In <b>obstructive</b> disease the airways narrow or collapse. Asthma, chronic bronchitis, emphysema and bronchiectasis all do this. Flow slows out of proportion to volume. FEV1 falls much more than FVC, and the ratio drops below 0.70. The lung never empties fully, so RV, FRC and often TLC rise. <b>Restrictive</b> disease is the opposite problem. The lung or the chest wall cannot expand. Fibrosis, kyphoscoliosis, obesity and neuromuscular weakness do this. FVC, TLC and FEV1 all fall together, roughly in proportion. So the ratio stays normal or even rises, to 0.85 or above. One more test helps. Give a bronchodilator. If FEV1 improves by at least 12 percent and 200 mL, that supports asthma rather than fixed obstruction.</p>
+
+<p>One mechanical detail explains something strange. In obstructive disease, blowing out harder can cut the flow. Here is why. A forced effort makes pleural pressure strongly positive. That squeezes the airways from the outside. In a normal lung the pressure inside the airway falls along its length. It still stays above pleural pressure until the bronchi, which cartilage holds open. Emphysema destroys the elastic tethers that hold airways open. That shifts the <b>equal pressure point</b> further out, into floppy airways. Those airways then collapse. This is <b>dynamic airway compression</b>. Trying harder makes flow worse. That is why patients with emphysema breathe out slowly through pursed lips. It keeps airway pressure up.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Only the part of each breath that reaches a perfused alveolus counts. Hold minute ventilation fixed at 6000 mL/min. Then change the pattern below. The flowsheet number will not move, but alveolar ventilation will. <a href="../lab/ch12/DeadSpaceAndSpirometry.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch12/DeadSpaceAndSpirometry.html" loading="lazy" title="Dead Space, Alveolar Ventilation and the Spirogram interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Only the part of each breath that reaches perfused alveoli counts. So alveolar ventilation sets PaCO2. Minute ventilation does not. And the FEV1/FVC ratio separates two problems. It tells airways that will not empty from lungs that will not fill.</p></div>
+
+<h2 id="exchange"><span class="num">Section 3</span>Diffusion, V/Q Matching and Gas Transport</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch12_s3.jpg" alt="Cross section of an alveolus and adjacent pulmonary capillary showing the thin respiratory membrane with oxygen diffusing into blood and carbon dioxide diffusing out" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The respiratory membrane has three layers. They are the alveolar epithelium, the fused basement membranes and the capillary endothelium. Together they are about 0.5 micrometers thick, spread across roughly 70 square meters. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Fick&rsquo;s law and why diffusion is almost never the problem</h3>
+
+<p>Gas crosses the respiratory membrane by passive diffusion. <b>Fick&rsquo;s law</b> describes it. The rate of transfer is surface area times the diffusion coefficient times the partial pressure difference. Then divide all that by membrane thickness. The lung is built to make every helpful term as good as it can be. Surface area is about 70 square meters. Thickness is roughly 0.5 micrometers. Three layers make up that thickness. They are the alveolar type I cell, the fused basement membrane and the capillary endothelium. The driving gradient for oxygen is large. Alveolar PO2 (P<sub>A</sub>O2) is about 104 mmHg. Mixed venous PO2 is 40 mmHg.</p>
+
+<p>So the two sides even out fast. A red cell spends about 0.75 seconds in a pulmonary capillary at rest. Its PO2 has matched alveolar PO2 within roughly 0.25 seconds. That is a threefold safety margin. In heavy exercise the transit time falls to about 0.25 seconds. A normal lung still keeps up. This is why a pure diffusion problem rarely causes low blood oxygen at rest. Low blood oxygen is called hypoxemia. A diffusion problem usually shows up only during exercise. It can also show up once interstitial disease has thickened the membrane and destroyed surface area.</p>
+
+<p>Carbon dioxide makes a useful contrast. Its gradient is tiny. It runs from 45 mmHg venous to 40 mmHg alveolar. Yet it crosses just as completely. CO2 is about twenty times more soluble in the membrane than oxygen. So it diffuses roughly twenty times faster. A practical rule follows straight from that. Diffusion problems and V/Q problems cause hypoxemia long before they cause hypercapnia. And a rising PaCO2 nearly always means a ventilation problem, not an exchange problem.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Site</th><th>PO2 (mmHg)</th><th>PCO2 (mmHg)</th><th>Comment</th></tr></thead>
+<tbody>
+<tr><td>Dry atmospheric air</td><td>160</td><td>0.3</td><td>0.209 &times; 760 mmHg</td></tr>
+<tr><td>Humidified tracheal air</td><td>150</td><td>0</td><td>0.209 &times; (760 &minus; 47), after water vapor is subtracted</td></tr>
+<tr><td>Alveolar gas</td><td>104</td><td>40</td><td>Watered down by CO2 and by the gas already in FRC</td></tr>
+<tr><td>Systemic arterial blood</td><td>95&ndash;100</td><td>40</td><td>A little below alveolar because of normal shunt</td></tr>
+<tr><td>Mixed venous blood</td><td>40</td><td>45&ndash;46</td><td>After tissue extraction</td></tr>
+<tr><td>Resting tissue interstitium</td><td>40</td><td>45</td><td>Sets the tissue diffusion gradient</td></tr>
+</tbody></table></div>
+
+<h3>Ventilation&ndash;perfusion matching</h3>
+
+<p>Diffusion only helps if air-filled alveoli sit next to blood-filled capillaries. For the whole lung, divide alveolar ventilation by cardiac output. That is the <b>V/Q</b> ratio. It is about 4.2 L/min divided by 5.0 L/min, or roughly 0.8. But the ratio is not the same everywhere. Standing up, gravity raises both ventilation and perfusion at the base. Perfusion rises far more steeply than ventilation does. So the apex runs a high V/Q near 3.3. It gets relatively too much air, and its PO2 is about 130 mmHg. The base runs a low V/Q near 0.63. It gets relatively too much blood, and its PO2 is about 89 mmHg. More blood drains from the base, so mixed arterial PO2 is pulled down toward the base value. That is one reason arterial PO2 (95&ndash;100 mmHg) sits a little below alveolar PO2 (104 mmHg).</p>
+
+<p>Two extremes mark the ends of the disease range. A V/Q of zero is a <b>shunt</b>. Blood flows past alveoli that get no air. Lobar pneumonia, atelectasis and pulmonary edema all do this. A V/Q of infinity is <b>alveolar dead space</b>. Those alveoli get air but no blood, as in pulmonary embolism. One bedside test tells them apart. Give 100 percent oxygen. Dead space and simple V/Q mismatch correct readily with extra oxygen. A true shunt does not. Shunted blood never touches alveolar gas at all, no matter how rich that gas is.</p>
+
+<p>The lung defends its own matching with local reflexes. <b>Hypoxic pulmonary vasoconstriction</b> is the main one. It does the opposite of what systemic vessels do. When alveolar PO2 falls below about 70 mmHg, pulmonary arterioles narrow. Blood is sent to better-ventilated regions. In one small region that is elegant. Across the whole lung it is a disaster. At altitude, or in advanced chronic lung disease, the entire pulmonary bed narrows. Pulmonary artery pressure rises. The right ventricle finally fails, which is <b>cor pulmonale</b>. Airways make a matching adjustment of their own. A low local PCO2 narrows nearby airways, which shifts air away from units that are short of blood.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> &ldquo;Low oxygen dilates blood vessels.&rdquo; It does, everywhere except the lung. Systemic arterioles widen to hypoxia. That brings more blood to a starving tissue. Pulmonary arterioles narrow instead. Sending more blood to an unventilated alveolus gains nothing. It only dumps deoxygenated blood into the arterial side. The lung is the one circulation whose goal is not to feed the tissue. Its goal is to match flow to gas.</div>
+
+<h3>Oxygen transport and the dissociation curve</h3>
+
+<p>Oxygen barely dissolves in plasma. At a PaO2 of 100 mmHg, dissolved oxygen is only 0.003 mL per dL per mmHg. That gives 0.3 mL/dL. It is about 1.5 percent of all the oxygen the blood carries. The other 98.5 percent rides on <b>hemoglobin</b>. Fully saturated, hemoglobin binds 1.34 mL of oxygen per gram. With 15 g/dL of hemoglobin, oxygen content is roughly (15 &times; 1.34 &times; 0.98) + 0.3. That is about 20 mL per dL of blood. Look hard at what that equation has in it, and what it does not. Content depends on hemoglobin concentration and saturation. It does not depend on PaO2 directly. Take an anemic patient with 7 g/dL hemoglobin and a saturation of 100 percent. That blood carries only 9.7 mL/dL. It is deeply oxygen-poor blood. Yet the PaO2 is perfectly normal, and so is the pulse oximeter reading.</p>
+
+<p>The <b>oxyhemoglobin dissociation curve</b> has an S shape. That is because hemoglobin binds oxygen cooperatively. Each of the four hem groups that binds raises the affinity of the ones still empty. Above a PO2 of about 60 mmHg the curve goes flat. That flat top is a loading safety margin. PaO2 can fall from 100 to 60 mmHg and saturation only drops from 98 to about 90 percent. Below 60 mmHg the curve is steep. That steep part is the unloading zone. In tissue at a PO2 of 40 mmHg, saturation is about 75 percent. So roughly a quarter of the oxygen carried has been delivered at rest. The <b>P50</b> is the PO2 at 50 percent saturation. In normal adult blood it is 26.6 mmHg.</p>
+
+<p>A <b>right shift</b> means hemoglobin holds oxygen less tightly and lets go of it more easily. The conditions inside a working muscle cause it. Those are a higher PCO2 and more hydrogen ion, which is the <b>Bohr effect</b>. A higher temperature does it too. So does more <b>2,3-bisphosphoglycerate</b> (2,3-BPG), which rises in long-standing hypoxemia, anemia and high altitude. A <b>left shift</b> does the opposite and holds oxygen tightly. Alkalosis, hypothermia, low 2,3-BPG, stored bank blood and fetal hemoglobin all shift left. In the fetus that left shift is useful, not accidental. It lets the fetus strip oxygen from maternal blood across the placenta. <b>Carbon monoxide</b> is toxic in two ways at once. It binds hemoglobin with roughly 210 times the affinity of oxygen. It also left-shifts the curve for the sites that are left, so the little oxygen carried is released poorly. Carboxyhemoglobin absorbs light much like oxyhemoglobin does. So a standard pulse oximeter reads falsely normal.</p>
+
+<h3>Carbon dioxide transport and the Haldane effect</h3>
+
+<p>Tissues make roughly 200 mL of CO2 per minute at rest. Blood carries it three ways. About 7 to 10 percent stays dissolved in plasma. About 20 to 23 percent binds to the amino terminal groups of the globin chains as <b>carbaminohemoglobin</b>. Note where it binds. It binds the globin, not the hem. So it does not compete with oxygen for the same site. The remaining 70 percent is turned into <b>bicarbonate</b>.</p>
+
+<p>That conversion happens inside the red cell. <b>Carbonic anhydrase</b> speeds up CO2 + H2O to H2CO3 by a factor of thousands. Carbonic acid then splits into H+ and HCO3-. The bicarbonate leaves the cell in trade for plasma chloride coming in. The band 3 anion exchanger runs that trade. It is called the <b>chloride shift</b>. Meanwhile deoxygenated hemoglobin soaks up the hydrogen ion. In the lung the whole sequence runs backwards. Chloride leaves, bicarbonate re-enters, and CO2 is breathed out.</p>
+
+<p>The <b>Haldane effect</b> closes the loop. Deoxygenated hemoglobin buffers protons better than oxygenated hemoglobin does. It also carries carbamino CO2 better. So handing oxygen to the tissues helps blood pick up CO2. And loading oxygen in the lung drives CO2 off. Bohr and Haldane together make the two gases help each other instead of compete. It is genuinely elegant chemistry, and it needs no nervous or hormonal control at all.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Three separate machines have to work for oxygen to reach a mitochondrion. One is a curve that loads and unloads it. One is a lung that puts air and blood in the same place. One is a membrane half a micrometer thick. See all three below. <a href="../lab/ch12/GasExchangeAndTransport.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch12/GasExchangeAndTransport.html" loading="lazy" title="Diffusion, V/Q Matching and Oxygen Transport interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Gas exchange fails far more often from ventilation&ndash;perfusion mismatch than from diffusion. And oxygen delivery depends on how much hemoglobin there is and where the dissociation curve sits. It does not depend on PaO2 alone.</p></div>
+
+<h2 id="control"><span class="num">Section 4</span>The Control of Breathing</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch12_s4.jpg" alt="Diagram of the brainstem respiratory centers in the medulla and pons with afferent input from central and peripheral chemoreceptors and efferent output to the diaphragm" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Respiratory groups in the medulla and pons take in signals from chemoreceptors and mechanoreceptors. They then drive the phrenic and intercostal nerves. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The brainstem rhythm generator</h3>
+
+<p>Breathing is automatic because a network of neurons in the medulla oscillates on its own. The <b>pre-B&ouml;tzinger complex</b> sits in the ventrolateral medulla. Its neurons act like pacemakers. They depolarize rhythmically and set the basic rate of breathing in. It feeds two groups. The <b>dorsal respiratory group</b> is mostly inspiratory. It drives the phrenic nerve, which comes from C3, C4 and C5 and runs to the diaphragm. The <b>ventral respiratory group</b> holds both inspiratory and expiratory neurons. They are called in mainly for forced breathing. Centers in the pons shape the pattern rather than create it. The pneumotaxic group, also called the pontine respiratory group, limits how long a breath in lasts. It also smooths the switch to breathing out.</p>
+
+<p>Two points matter at the bedside. First, the phrenic nerve starts high in the cord. The old mnemonic says &ldquo;C3, 4, 5 keeps the diaphragm alive.&rdquo; So a cervical cord injury above C3 stops spontaneous breathing completely. A lesion at C6 spares the diaphragm. That patient breathes but cannot cough forcefully. Second, the rhythm is made in the brainstem. So a cortical injury can leave breathing intact while wiping out consciousness. Voluntary override travels by a separate corticospinal path. That is why a person can hold their breath but cannot hold it to the point of death. Rising PaCO2 finally overwhelms the cortical command.</p>
+
+<h3>The central chemoreceptor loop: the system&rsquo;s core negative feedback</h3>
+
+<p>Set it out formally. This is the loop the entire module is built around.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Element</th><th>Identity in this loop</th></tr></thead>
+<tbody>
+<tr><td>Regulated variable</td><td>Arterial PCO2, held near 40 mmHg (normal range 35&ndash;45)</td></tr>
+<tr><td>Stimulus</td><td>A rise in PaCO2. It can come from hypoventilation, exercise, fever or added dead space</td></tr>
+<tr><td>Sensor</td><td>Central chemoreceptors on the front surface of the medulla. They detect H+ in cerebrospinal fluid</td></tr>
+<tr><td>Integrator</td><td>The dorsal and ventral respiratory groups of the medulla, with the pons shaping the pattern</td></tr>
+<tr><td>Effector</td><td>The diaphragm, through the phrenic nerve. The external intercostals, through the intercostal nerves</td></tr>
+<tr><td>Response</td><td>Increased rate and depth, raising alveolar ventilation</td></tr>
+<tr><td>Result</td><td>CO2 is blown off. PaCO2 falls back toward 40 mmHg. The stimulus is removed. That is negative feedback</td></tr>
+</tbody></table></div>
+
+<p>The sensing step is worth a closer look. It explains several bedside facts. Hydrogen ions and bicarbonate cross the blood&ndash;brain barrier poorly. Dissolved <b>CO2 crosses freely</b>. Once it is in the cerebrospinal fluid, CO2 meets carbonic anhydrase and makes H+. CSF holds very little protein buffer. So its pH swings far more per unit of CO2 than blood pH does. That makes the central chemoreceptors extremely sensitive to PaCO2. A rise of just 1 to 2 mmHg makes ventilation go up. Over a PaCO2 range of only 40 to 60 mmHg, the system can multiply minute ventilation several times over. It explains one more thing. A metabolic acidosis drives breathing more slowly than a respiratory one does. The offending H+ has to work its way across the barrier, or act on the peripheral receptors first.</p>
+
+<p>Central chemoreceptors account for roughly 70 percent of the ventilatory response to CO2. Long-standing hypercapnia blunts them. The choroid plexus slowly moves bicarbonate into the CSF. That brings CSF pH back toward normal even though PaCO2 stays high. This is adaptation, not repair. In those patients the hypoxic drive carries more weight. That is the physiology behind the caution about uncontrolled high-flow oxygen in chronic CO2 retainers. Two other things matter at least as much as lost drive. One is loss of hypoxic pulmonary vasoconstriction. The other is the Haldane effect.</p>
+
+<h3>Peripheral chemoreceptors and the hypoxic backup</h3>
+
+<p>The <b>carotid bodies</b> sit where each common carotid artery splits. The <b>aortic bodies</b> sit on the aortic arch. Both sample arterial blood directly. The carotid bodies signal through the glossopharyngeal nerve (CN IX). The aortic bodies signal through the vagus (CN X). They respond to three things. Those are a fall in PaO2, a rise in PaCO2 and a fall in arterial pH. They are the only receptors that sense oxygen. Gram for gram, their blood flow is the highest of any tissue in the body. So the blood they sample is as good as arterial.</p>
+
+<p>Their oxygen response is not a straight line. Firing barely changes until <b>PaO2 falls below about 60 mmHg</b>. That is exactly the shoulder of the oxyhemoglobin dissociation curve. It is where content finally starts to fall steeply. Below that threshold, firing climbs sharply. The design logic is sound. There is no point spending ventilatory work while saturation is still 90 percent. So here is the lesson. Oxygen is a <b>backup</b> controller, not the primary one. Under ordinary circumstances, what makes you breathe is carbon dioxide.</p>
+
+<p>Other inputs adjust the rhythm. The <b>Hering&ndash;Breuer inflation reflex</b> uses vagal stretch receptors. It cuts off very large breaths, above roughly 1.5 L tidal volume. That guards against over-filling the lung. It is stronger in infants than in adults. Irritant receptors set off cough and narrow the airways. Juxtacapillary receptors, called J receptors, sit in the alveolar walls. They fire when the interstitium fills with fluid. They produce the rapid shallow breathing and the breathlessness of heart failure. Receptors in joints and muscles raise ventilation too. So does central command from the motor cortex. Both act at the very onset of exercise, before any blood gas has had time to change.</p>
+
+<p>That last point explains a genuine puzzle. In heavy exercise, minute ventilation may rise from 6 L/min at rest to 100 L/min or more. Yet through the whole moderate range, PaO2, PaCO2 and pH stay very close to resting values. So a chemical error signal is not driving ventilation at all. Neural command and input from moving joints and muscles raise it ahead of time. That is <b>feed-forward</b> control. Chemoreceptors only fine-tune. Ventilation climbs out of proportion only above the anaerobic threshold. There lactate builds up and is buffered to CO2. Only then does pH finally fall.</p>
+
+<div class="pearl"><b>Altitude in three steps.</b> At 5500 m the barometric pressure halves to about 380 mmHg. Inspired PO2 falls to roughly 70 mmHg. Alveolar PO2 falls to about 40. Step one takes minutes. Peripheral chemoreceptors drive hyperventilation. That fixes the oxygen partly. But it blows off CO2 and causes a respiratory alkalosis, and that alkalosis itself holds breathing back. Step two takes one to three days. The kidney excretes bicarbonate. Blood and CSF pH return to normal. Now ventilation is allowed to rise further. Step three takes days to weeks. 2,3-BPG rises and right-shifts the curve. Erythropoietin raises the hematocrit. Acetazolamide speeds up step two by forcing bicarbonate loss. That is why it prevents acute mountain sickness.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The regulated variable is arterial PCO2, held near 40 mmHg. The sensor is the central chemoreceptor, reading H+ in cerebrospinal fluid. The integrator is the medulla. The effector is the diaphragm. Oxygen is only the backup. <a href="../lab/ch12/BreathingControlLoop.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch12/BreathingControlLoop.html" loading="lazy" title="The Control of Breathing: a Loop You Can Break interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Breathing is a rhythm generated in the brainstem. A negative feedback loop regulates it. The variable it senses is carbon dioxide, acting through cerebrospinal fluid H+. Arterial oxygen serves only as a backup. It engages below a PaO2 of about 60 mmHg.</p></div>
+
+<h2 id="acidbase"><span class="num">Section 5</span>The Lung as an Acid&ndash;Base Organ</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch12_s5.jpg" alt="Schematic of the bicarbonate buffer system linking metabolic carbon dioxide, carbonic acid, bicarbonate and hydrogen ion with respiratory and renal compensation arrows" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The bicarbonate buffer links two things. One is a volatile acid the lung regulates. The other is a fixed base the kidney regulates. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Carbon dioxide is an acid, and the lung excretes most of it</h3>
+
+<p>Arterial pH is defended within 7.35 to 7.45. That is a hydrogen ion concentration of only about 40 nanomoles per liter. It is roughly one three-millionth of the sodium concentration. Enzymes, ion channels and protein shapes are all deeply sensitive to H+. A pH below 6.8 or above 7.8 is generally not survivable. Two organs share the defense. The lung carries by far the larger tonnage.</p>
+
+<p>Metabolism generates about 15,000 mmol of CO2 every day. CO2 combines with water to make carbonic acid. So that is a <b>volatile acid</b> load, meaning an acid that can leave as a gas. The lung gets rid of nearly all of it by breathing. Fixed acids are different. They come from protein and phospholipid metabolism. They include sulfuric, phosphoric, lactic and keto acids. They amount to only 50 to 100 mEq per day. The kidney handles those over hours to days. The division of labor matters. The lung responds in minutes and is powerful, but it handles only one acid. The kidney is slow, but it can excrete anything and it can regenerate bicarbonate.</p>
+
+<p>The <b>Henderson&ndash;Hasselbalch equation</b> puts numbers on the bicarbonate system. It is <b>pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2))</b>. Take a normal bicarbonate of 24 mEq/L and a PaCO2 of 40 mmHg. The bottom of the fraction is 1.2 mmol/L. The ratio is 20 to 1. The log of 20 is 1.3. So pH = 7.4. Everything in acid&ndash;base comes down to protecting that 20:1 ratio. The top of the fraction is metabolic and renal. The bottom is respiratory. Change one, and the body changes the other in the same direction to restore the ratio.</p>
+
+<h3>The four primary disorders</h3>
+
+<p>Naming a disorder takes two decisions. First, is the pH acidic or alkaline? Second, which limb of the ratio explains it? If PaCO2 explains it, the disorder is respiratory. If bicarbonate explains it, the disorder is metabolic.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Disorder</th><th>pH</th><th>Primary change</th><th>Compensation</th><th>Typical causes</th></tr></thead>
+<tbody>
+<tr><td>Respiratory acidosis</td><td>Low (below 7.35)</td><td>PaCO2 high (above 45)</td><td>Kidney: holds on to HCO3-, which rises over 3&ndash;5 days</td><td>Opioid overdose, COPD exacerbation, neuromuscular weakness, airway obstruction</td></tr>
+<tr><td>Respiratory alkalosis</td><td>High (above 7.45)</td><td>PaCO2 low (below 35)</td><td>Kidney: gets rid of HCO3- over 2&ndash;3 days</td><td>Anxiety, pain, fever, sepsis, pulmonary embolism, altitude, salicylate early</td></tr>
+<tr><td>Metabolic acidosis</td><td>Low</td><td>HCO3- low (below 22)</td><td>Lung: hyperventilation, within minutes to hours</td><td>Diabetic ketoacidosis, lactic acidosis, renal failure, severe diarrhea</td></tr>
+<tr><td>Metabolic alkalosis</td><td>High</td><td>HCO3- high (above 26)</td><td>Lung: hypoventilation, but only so far</td><td>Prolonged vomiting, nasogastric suction, diuretics, excess antacid</td></tr>
+</tbody></table></div>
+
+<p>Respiratory compensation for a metabolic acidosis is the fastest and most visible response in clinical medicine. Take diabetic ketoacidosis. Ketoacids consume bicarbonate. The pH falls. Chemoreceptors fire. The patient adopts <b>Kussmaul respirations</b>. Those are deep sighing breaths with a high tidal volume. They can drive PaCO2 down to 15 mmHg. You can predict the expected value. Winter&rsquo;s formula gives expected PaCO2 = (1.5 &times; [HCO3-]) + 8, plus or minus 2. A bicarbonate of 10 predicts a PaCO2 of about 23. Now suppose the measured PaCO2 is 40. That patient is not simply under-compensating. They have a second, respiratory disorder on top of the first. And they are tiring.</p>
+
+<p>Compensation never fully corrects the pH, and knowing that is diagnostically powerful. Say a laboratory value shows a completely normal pH with an abnormal PaCO2 and an abnormal bicarbonate. Suspect a mixed disorder rather than perfect compensation. The direction of the pH always reveals the primary problem.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> &ldquo;Hyperventilation means breathing fast.&rdquo; In physiology, hyperventilation means ventilating in excess of metabolic CO2 production. It is defined by a PaCO2 below 35 mmHg, not by a respiratory rate. A patient breathing 34 times a minute with 200 mL breaths is tachypneic and <i>hypo</i>ventilating. A patient in ketoacidosis taking 14 slow enormous breaths is hyperventilating. Rate is a behavior. PaCO2 is the measurement.</div>
+
+<h3>Reading a blood gas, and the A&ndash;a gradient</h3>
+
+<p>Work in a fixed order. First, look at the pH. Is it acidemia or alkalemia? Second, look at the PaCO2. If it moves in the direction that would explain the pH, the disorder is respiratory. That means high with acidemia, or low with alkalemia. Third, look at the bicarbonate. If it moves in the direction that explains the pH, the disorder is metabolic. That means low with acidemia, or high with alkalemia. Fourth, check the other limb. Has it moved in the compensating direction, and by an appropriate amount? Fifth, if a metabolic acidosis is present, calculate the anion gap. It is [Na+] &minus; ([Cl-] + [HCO3-]), normally 8 to 12 mEq/L.</p>
+
+<p>Oxygenation is assessed separately. The single most informative number is the <b>alveolar&ndash;arterial oxygen gradient</b>. First estimate alveolar PO2 with the alveolar gas equation. It is P<sub>A</sub>O2 = (FiO2 &times; 713) &minus; (PaCO2 / 0.8). On room air with a PaCO2 of 40, that is (0.21 &times; 713) &minus; 50 = about 100 mmHg. Then subtract the measured PaO2. A normal A&ndash;a gradient is roughly 5 to 15 mmHg in a young adult. It rises with age, at roughly age divided by 4, plus 4.</p>
+
+<p>The gradient sorts causes of hypoxemia into two families. A <b>normal</b> A&ndash;a gradient with a low PaO2 means the alveolus itself is oxygen-poor. That is either hypoventilation, where PaCO2 will be high, or low inspired oxygen, as at altitude. A <b>widened</b> gradient means the alveolus is fine but the blood is not getting the oxygen. That points to V/Q mismatch, shunt or diffusion impairment. In the opioid-overdose patient the gradient is normal and the problem is drive. In the patient with pneumonia the gradient is wide and the problem is exchange. Same low PaO2. Entirely different physiology, and entirely different treatment.</p>
+
+<div class="pearl"><b>Why the numbers protect you.</b> One patient has a pH of 7.22, a PaCO2 of 68 and an HCO3- of 27. That is an acute respiratory acidosis. Bicarbonate has barely moved, so this has been going on for minutes to hours. It is a ventilation emergency. Another patient has a pH of 7.34, a PaCO2 of 68 and an HCO3- of 36. Same PaCO2, but with days of renal compensation behind it. That one is chronic. Correcting the PaCO2 quickly would swing that patient alkalotic. The PaCO2 alone cannot tell you which patient you have. The bicarbonate tells you how long.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Metabolism makes about 15,000 mmol of CO2 a day. CO2 combines with water to make carbonic acid. So ventilation is a pH control system. It all comes down to protecting the 20:1 ratio of bicarbonate to dissolved CO2. <a href="../lab/ch12/AcidBaseWorkbench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch12/AcidBaseWorkbench.html" loading="lazy" title="The Lung as an Acid&ndash;Base Organ interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>CO2 is an acid, so ventilation is a pH control system. The Henderson&ndash;Hasselbalch equation holds a 20:1 ratio of bicarbonate to carbonic acid. The lung defends that ratio in minutes. The kidney defends it over days. And the direction of the pH always names the primary disorder.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Respiration is four linked problems. First comes mechanics. Skeletal muscle enlarges the thorax. Boyle&rsquo;s law drops alveolar pressure about 1 cmH2O below atmospheric. Then 500 mL of air flows in, following Q = &Delta;P / R. Elastic recoil and surface tension oppose inflation. Surfactant lowers surface tension in step with alveolar size, so small alveoli hold open against the law of Laplace. Second comes distribution. Only the 350 mL that clears the 150 mL of dead space takes part. So alveolar ventilation of about 4200 mL/min sets PaCO2 at 40 mmHg. Minute ventilation does not. Third comes exchange and transport. Diffusion across a 0.5 micrometer membrane is complete in a third of the available transit time. So hypoxemia usually reflects V/Q mismatch or shunt. Delivery depends on hemoglobin content and on where the S-shaped dissociation curve sits. The Bohr and Haldane effects make O2 and CO2 handling help each other. Fourth comes control. Chemoreceptors in the medulla sense the hydrogen ion that CO2 generates in the CSF. They adjust ventilation by negative feedback. The carotid bodies engage only below a PaO2 of 60 mmHg. Because CO2 is an acid, that same loop is the fast arm of acid&ndash;base regulation. It defends the 20:1 bicarbonate ratio the kidney maintains over days.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Alveolar ventilation (V<sub>A</sub>)</td><td>Fresh air reaching perfused alveoli each minute. It is (V<sub>T</sub> &minus; V<sub>D</sub>) &times; rate, about 4200 mL/min. It sets PaCO2.</td></tr>
+<tr><td>Anatomical dead space</td><td>The roughly 150 mL of conducting airway where no gas is traded. It is about 2.2 mL per kg.</td></tr>
+<tr><td>Bohr effect</td><td>More H+ and PCO2 shift the oxyhemoglobin curve right. That helps oxygen unload in active tissue.</td></tr>
+<tr><td>Boyle&rsquo;s law</td><td>At a steady temperature, pressure and volume move in opposite directions. It is the basis of every breath.</td></tr>
+<tr><td>Chloride shift</td><td>Bicarbonate leaves the red cell and plasma chloride comes in. It lets 70 percent of CO2 travel as HCO3-.</td></tr>
+<tr><td>Compliance</td><td>&Delta;V / &Delta;P, about 200 mL per cmH2O. High in emphysema, low in fibrosis.</td></tr>
+<tr><td>Cor pulmonale</td><td>Right ventricular failure caused by pulmonary vascular resistance that stays high.</td></tr>
+<tr><td>FEV1/FVC ratio</td><td>The share of vital capacity blown out in one second. Normally 0.75&ndash;0.80, and below 0.70 in obstruction.</td></tr>
+<tr><td>Functional residual capacity</td><td>The volume left after a quiet breath out, about 2300 mL. It is the buffer that steadies alveolar gas composition.</td></tr>
+<tr><td>Haldane effect</td><td>Deoxygenated hemoglobin carries CO2 and buffers H+ better. So unloading O2 helps load CO2.</td></tr>
+<tr><td>Henderson&ndash;Hasselbalch equation</td><td>pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2)). A 20:1 ratio gives pH 7.4.</td></tr>
+<tr><td>Hypoxic pulmonary vasoconstriction</td><td>Pulmonary arterioles narrow when alveolar PO2 falls. That sends blood to better-ventilated lung.</td></tr>
+<tr><td>Law of Laplace</td><td>Collapsing pressure P = 2T / r. Small alveoli would collapse if surfactant did not lower T.</td></tr>
+<tr><td>P50</td><td>The PO2 at which hemoglobin is 50 percent saturated, normally 26.6 mmHg. It rises with a right shift.</td></tr>
+<tr><td>Shunt</td><td>Blood flow without ventilation (V/Q of zero). The low oxygen does not correct with supplemental oxygen.</td></tr>
+<tr><td>Surfactant</td><td>A phospholipid from type II pneumocytes. It lowers surface tension, raises compliance and prevents atelectasis.</td></tr>
+<tr><td>Transpulmonary pressure</td><td>P<sub>alv</sub> &minus; P<sub>ip</sub>, about +5 cmH2O at FRC. It is the true distending pressure of the lung.</td></tr>
+<tr><td>V/Q ratio</td><td>Alveolar ventilation divided by perfusion, about 0.8 overall. Upright it is 3.3 at the apex and 0.63 at the base.</td></tr>
+<tr><td>Winter&rsquo;s formula</td><td>Expected PaCO2 = (1.5 &times; [HCO3-]) + 8 &plusmn; 2. It tests whether respiratory compensation is adequate.</td></tr>
+<tr><td>A&ndash;a gradient</td><td>Alveolar PO2 minus arterial PO2, normally 5&ndash;15 mmHg. Normal in hypoventilation, wide in shunt or V/Q mismatch.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">One patient breathes 300 mL at 20 breaths per minute. Another breathes 750 mL at 8 breaths per minute. Both have 150 mL of dead space. Who is ventilating better, and by how much?</div><div class="ans">Minute ventilation is the same for both, at 6000 mL/min. So it tells you nothing. Alveolar ventilation is what counts. The first patient: (300 &minus; 150) &times; 20 = 3000 mL/min. The second: (750 &minus; 150) &times; 8 = 4800 mL/min. That is 60 percent better. PaCO2 runs opposite to alveolar ventilation. So the first patient will be hypercapnic despite the faster rate. Rapid shallow breathing wastes the same fixed dead space on every breath.</div></div>
+
+<div class="qq"><div class="q">A preterm infant born at 29 weeks develops respiratory distress. Why does that happen? And what does grunting accomplish?</div><div class="ans">Type II pneumocytes do not make enough surfactant until about 34&ndash;36 weeks. Without it, surface tension is high. Laplace says the collapsing pressure is P = 2T / r. So that pressure is greatest in the smallest alveoli. Alveoli collapse and compliance plummets. The infant has to generate large transpulmonary pressures for tiny volumes. Grunting is breathing out against a partly closed glottis. That holds positive pressure at the end of a breath out and keeps alveoli open between breaths. It is a self-made version of CPAP.</div></div>
+
+<div class="qq"><div class="q">A patient has a PaO2 of 55 mmHg. Giving 100 percent oxygen raises it only to 62 mmHg. What is the likely mechanism? Why does oxygen not help?</div><div class="ans">This is a true right-to-left shunt. Blood is flowing past alveoli that get no air at all. Consolidated pneumonia, atelectasis and pulmonary edema all do this. Richer inspired gas cannot help blood that never contacts alveolar gas. The small rise comes only from extra dissolved oxygen in the units that are ventilated normally. V/Q mismatch and hypoventilation both correct readily with supplemental oxygen. Failure to correct is the clinical signature of shunt.</div></div>
+
+<div class="qq"><div class="q">Two patients both have an oxygen saturation of 99 percent. One has hemoglobin of 15 g/dL. The other has 7 g/dL. Compare their arterial oxygen content.</div><div class="ans">Content = (Hb &times; 1.34 &times; SaO2) + dissolved. The first carries about (15 &times; 1.34 &times; 0.99) + 0.3 = roughly 20 mL/dL. The second carries about (7 &times; 1.34 &times; 0.99) + 0.3 = roughly 9.6 mL/dL. That is less than half. Saturation is the percentage of seats that are filled. It says nothing about how many seats exist. Pulse oximetry cannot detect anemia. This is why oxygen delivery depends on hemoglobin, saturation and cardiac output together.</div></div>
+
+<div class="qq"><div class="q">Name every part of the negative feedback loop that brings PaCO2 back to 40 mmHg after a spell of breath-holding.</div><div class="ans">Regulated variable: arterial PCO2. Stimulus: PaCO2 rising above 40 mmHg during apnea. Sensor: central chemoreceptors on the ventral medulla. They detect the H+ made when CO2 crosses the blood&ndash;brain barrier into CSF. Integrator: the dorsal and ventral respiratory groups of the medulla. Effectors: the diaphragm, through the phrenic nerve, and the external intercostals. Response: rate and tidal volume rise, so alveolar ventilation rises. Outcome: CO2 is exhaled, PaCO2 falls, and the stimulus is removed. The response opposes the change, which is the definition of negative feedback.</div></div>
+
+<div class="qq"><div class="q">Why does the oxyhemoglobin dissociation curve have a flat top and a steep middle? What does each region accomplish?</div><div class="ans">The S shape comes from cooperative binding. Each oxygen bound raises the affinity of the remaining hem groups. The flat plateau above a PO2 of 60 mmHg is a loading safety margin. Alveolar PO2 can fall a long way before saturation drops much. So lung disease and altitude are tolerated. The steep segment between 40 and 60 mmHg is the unloading zone. A small further drop in tissue PO2 releases a large amount of oxygen. So working tissue extracts more without any change in blood flow.</div></div>
+
+<div class="qq"><div class="q">Spirometry shows FVC 3.0 L (60 percent predicted), FEV1 2.6 L, ratio 0.87, and TLC 65 percent predicted. Classify it and explain.</div><div class="ans">Restrictive. FVC and FEV1 are both reduced, but in proportion, so the ratio is normal or high. TLC is reduced, and that confirms restriction rather than a submaximal effort. The lung empties at normal speed. It simply cannot fill. Causes are reduced compliance of the lung, as in fibrosis or edema. Or of the chest wall, as in kyphoscoliosis or obesity. Or a weak neuromuscular pump. An obstructive pattern would look different. It would show a ratio below 0.70 with a raised RV and TLC from air trapping.</div></div>
+
+<div class="qq"><div class="q">Arterial blood gas: pH 7.28, PaCO2 25 mmHg, HCO3- 11 mEq/L. Name the disorder. Judge the compensation.</div><div class="ans">The pH is acidemic. PaCO2 is low, which would cause alkalemia, so it is not the primary problem. HCO3- is low, and that explains the acidemia. So this is a primary metabolic acidosis. The low PaCO2 is respiratory compensation. Winter&rsquo;s formula predicts (1.5 &times; 11) + 8 = 24.5, plus or minus 2. So a measured 25 mmHg is appropriate compensation for a single primary disorder. The next step would be the anion gap, to sort out the cause.</div></div>
+
+<div class="qq"><div class="q">Why does hypoxia narrow pulmonary arterioles when it widens systemic ones? When does this reflex become harmful?</div><div class="ans">Pulmonary blood flow exists to pick oxygen up, not to deliver it. So directing blood toward a poorly ventilated alveolus is pointless. Narrowing shifts perfusion to better-ventilated regions and preserves V/Q matching. Systemic arterioles widen instead, because their job is delivery to a hypoxic tissue. The reflex becomes harmful when hypoxia is global. High altitude, diffuse chronic lung disease and obstructive sleep apnea all do that. Then the entire pulmonary bed narrows. Pulmonary artery pressure rises. The right ventricle eventually fails as cor pulmonale.</div></div>
+
+<div class="qq"><div class="q">A patient from a house fire has a pulse oximetry reading of 98 percent and a PaO2 of 95 mmHg. She is confused. Explain the physiology.</div><div class="ans">Carbon monoxide poisoning. CO binds hemoglobin with roughly 210 times the affinity of oxygen. So the functional carrying capacity collapses. PaO2 measures only dissolved oxygen, and that stays normal. CO also left-shifts the curve for the remaining sites. So the little oxygen carried is released poorly in tissue. Standard pulse oximeters cannot tell carboxyhemoglobin from oxyhemoglobin, so they read falsely high. Diagnosis requires co-oximetry. Treatment is high-flow or hyperbaric oxygen to displace the CO.</div></div>
+
+<div class="qq"><div class="q">Two patients have a PaO2 of 58 mmHg on room air. One has a PaCO2 of 72 mmHg, the other 30 mmHg. Use the A&ndash;a gradient to tell them apart.</div><div class="ans">P<sub>A</sub>O2 = (0.21 &times; 713) &minus; (PaCO2 / 0.8) = 150 &minus; (PaCO2 / 0.8). Patient one: 150 &minus; 90 = 60. So the gradient is 60 &minus; 58 = 2 mmHg. That is normal, near enough. The alveolus is oxygen-poor purely because CO2 has displaced oxygen. This is pure hypoventilation, a drive or pump problem such as opioids or neuromuscular disease. Patient two: 150 &minus; 37.5 = 112.5. So the gradient is about 55 mmHg, which is clearly wide. The alveolus is fine but the blood is not picking up oxygen. That means shunt, V/Q mismatch or diffusion impairment.</div></div>
+
+<div class="qq"><div class="q">Exercise raises minute ventilation from 6 to 100 L/min, yet arterial PCO2 barely changes. Why? And what does that tell you about the control system?</div><div class="ans">If chemoreceptor feedback alone drove the response, PaCO2 would have to rise first to generate an error signal. It does not rise. Ventilation increases at the very onset of exercise. Central command from the motor cortex drives it feed-forward, and so does proprioceptive input from moving joints and muscles. Chemoreceptors only make fine corrections. So the respiratory controller combines anticipatory feed-forward control with negative feedback trimming. Ventilation rises out of proportion only above the anaerobic threshold. There lactate is buffered and generates extra CO2, and only then does pH finally fall.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch11.html"><span class="k">Previous</span>&larr; Lymphatic and Immune Systems</a>
+        <a class="next" href="ch13.html"><span class="k">Next</span>Digestive System &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

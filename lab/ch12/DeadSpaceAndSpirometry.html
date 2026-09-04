@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dead Space, Alveolar Ventilation and the Spirogram</title>
+<meta name="description" content="Change tidal volume and rate at constant minute ventilation to watch alveolar ventilation and PaCO2 diverge, then generate a forced expiratory curve and classify it as obstructive or restrictive.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.labs.four{grid-template-columns:1fr 1fr;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin:4px 0;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch12.html">&larr; Module 12</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 12</div>
+  <h1>Dead Space, Alveolar Ventilation and the Spirogram</h1>
+  <div class="intro">Only the fraction of each breath that reaches a perfused alveolus counts. Hold minute ventilation fixed at 6000 mL/min and change the <i>pattern</i> below &mdash; the flowsheet number will not move, but alveolar ventilation and PaCO2 will. Then blow into a spirometer you control, and separate airways that will not empty from lungs that will not fill.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Set the breathing pattern</h2>
+      <div class="sl"><label for="sVT">Tidal volume V<sub>T</sub> <span class="v" id="vVT">500 mL</span></label>
+        <input type="range" id="sVT" min="120" max="1600" value="500" step="10" aria-label="Tidal volume in milliliters"></div>
+      <div class="sl"><label for="sF">Respiratory rate f <span class="v" id="vF">12 / min</span></label>
+        <input type="range" id="sF" min="4" max="40" value="12" step="1" aria-label="Respiratory rate in breaths per minute"></div>
+      <div class="sl"><label for="sVD">Dead space V<sub>D</sub> <span class="v" id="vVD">150 mL</span></label>
+        <input type="range" id="sVD" min="50" max="600" value="150" step="10" aria-label="Physiological dead space in milliliters"></div>
+      <div class="sl"><label for="sCO2">CO2 production VCO2 <span class="v" id="vCO2">200 mL/min</span></label>
+        <input type="range" id="sCO2" min="100" max="2400" value="200" step="10" aria-label="Carbon dioxide production in milliliters per minute"></div>
+
+      <div class="lbl">Load a patient</div>
+      <div class="chips" id="chips"></div>
+
+      <div class="eq" id="eqVA"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Minute ventilation</div><div class="v" id="oVE">6000</div><div class="u">mL / min &mdash; V<sub>T</sub> &times; f</div></div>
+        <div class="lab"><div class="k">Wasted on dead space</div><div class="v" id="oVD">1800</div><div class="u">mL / min &mdash; V<sub>D</sub> &times; f</div></div>
+        <div class="lab"><div class="k">Alveolar ventilation</div><div class="v" id="oVA">4200</div><div class="u">mL / min</div></div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Fraction wasted</div><div class="v" id="oFrac">30</div><div class="u">% of every breath</div></div>
+        <div class="lab"><div class="k">PaCO2</div><div class="v" id="oPaco">40</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Dead space per kg</div><div class="v" id="oKg">2.2</div><div class="u">mL/kg at 68 kg</div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <div class="hint"><b>Anatomical dead space</b> is the roughly 150 mL of conducting airway &mdash; nose to terminal bronchioles, generations 0 through 16 &mdash; where there is no capillary bed. <b>Alveolar dead space</b> is alveoli that are ventilated but not perfused, near zero in health and large in pulmonary embolism. Push the dead space slider up to model either a long breathing tube or a lung full of unperfused alveoli.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>One minute of breathing, drawn</h2>
+      <canvas id="cvBr" width="640" height="360" role="img" aria-label="A bar for every breath in one minute, showing the dead space portion of each breath in gray and the alveolar portion in color, with minute ventilation, alveolar ventilation and the resulting arterial carbon dioxide tension"></canvas>
+      <div class="hint"><b>The fixed tax.</b> Dead space is subtracted from <i>every</i> breath, so its cost scales with rate, not with volume. Rapid shallow breathing pays the tax more often on a smaller purchase. That is why a fatiguing patient whose respiratory rate looks reassuringly &ldquo;compensatory&rdquo; can be retaining CO2, and why a pulse oximeter reading 96 percent on supplemental oxygen says nothing at all about ventilation.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Blow into the spirometer</h2>
+      <div class="sl"><label for="sObs">Airway obstruction <span class="v" id="vObs">none</span></label>
+        <input type="range" id="sObs" min="0" max="80" value="0" step="1" aria-label="Degree of airway obstruction, zero to eighty"></div>
+      <div class="sl"><label for="sRes">Restriction of the lung or chest wall <span class="v" id="vRes">none</span></label>
+        <input type="range" id="sRes" min="0" max="80" value="0" step="1" aria-label="Degree of restriction of the lung or chest wall, zero to eighty"></div>
+      <div class="sl"><label for="sRev">Bronchodilator reversibility of the obstruction <span class="v" id="vRev">50%</span></label>
+        <input type="range" id="sRev" min="0" max="80" value="50" step="1" aria-label="Percentage of the obstruction that a bronchodilator can reverse"></div>
+      <div class="seg2" role="group" aria-label="Bronchodilator before or after">
+        <button type="button" id="bPre" class="on" aria-pressed="true">Before bronchodilator</button>
+        <button type="button" id="bPost" aria-pressed="false">After bronchodilator</button>
+      </div>
+
+      <div class="lbl">Load a spirometry case</div>
+      <div class="chips" id="chips2"></div>
+
+      <div class="labs">
+        <div class="lab"><div class="k">FVC</div><div class="v" id="oFVC">4.60</div><div class="u">L &middot; <span id="oFVCp">100</span>% predicted</div></div>
+        <div class="lab"><div class="k">FEV1</div><div class="v" id="oFEV">3.59</div><div class="u">L &middot; <span id="oFEVp">100</span>% predicted</div></div>
+        <div class="lab"><div class="k">FEV1 / FVC</div><div class="v" id="oRatio">0.78</div><div class="u">normal 0.75&ndash;0.80</div></div>
+        <div class="lab"><div class="k">TLC</div><div class="v" id="oTLC">5.80</div><div class="u">L &middot; <span id="oTLCp">100</span>% predicted</div></div>
+        <div class="lab"><div class="k">RV</div><div class="v" id="oRV">1.20</div><div class="u">L &middot; <span id="oRVp">100</span>% predicted</div></div>
+        <div class="lab"><div class="k">Emptying time constant</div><div class="v" id="oTau">0.66</div><div class="u">seconds</div></div>
+      </div>
+      <div class="hint">Residual volume, FRC and TLC cannot be measured with a spirometer &mdash; you cannot exhale what will not come out. Those values come from helium dilution, nitrogen washout or body plethysmography. They are shown here because the <b>direction</b> they move is what separates air trapping from a small lung.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The spirogram and the verdict</h2>
+      <canvas id="cvSp" width="640" height="300" role="img" aria-label="Forced expiratory volume against time, with the one-second mark and the healthy reference curve, plus a stacked bar of total lung capacity split into vital capacity and residual volume"></canvas>
+      <div class="verdict" id="verdict2"></div>
+      <div class="eq" id="eqBD"></div>
+      <div class="hint"><b>Why trying harder can make it worse.</b> A forced effort drives pleural pressure strongly positive, compressing airways from the outside. In emphysema the elastic tethers that hold small airways open are gone, so the equal pressure point moves peripherally into floppy airway and those airways collapse &mdash; <b>dynamic airway compression</b>. Pursed-lip breathing works because it keeps pressure inside the airway up and pushes that point back toward cartilage.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CS=getComputedStyle(document.documentElement);
+function cv(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cv('--teal'), TEALD=cv('--teal-dk'), CORAL=cv('--coral'), BLUE=cv('--blue'),
+    GOLD=cv('--gold'), GREEN=cv('--green'), PURPLE=cv('--purple'), LINE=cv('--line'),
+    MUTED=cv('--muted'), SOFT=cv('--soft');
+
+function sizeCanvas(cvs,ratio,minH){
+  var r=cvs.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=Math.max(300,Math.round(r.width)), h=Math.max(minH||0,Math.round(w*ratio));
+  if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr); cvs.height=Math.round(h*dpr);}
+  cvs.style.height=h+'px';
+  var g=cvs.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  return {g:g,w:w,h:h};
+}
+function clearChips(box){var b=$(box).querySelectorAll('.chip');for(var i=0;i<b.length;i++)b[i].classList.remove('on');}
+
+/* =========================================================
+   PART 1 — dead space and alveolar ventilation
+   ========================================================= */
+var ds={VT:500,f:12,VD:150,VCO2:200};
+
+function dsCalc(){
+  var VE=ds.VT*ds.f;
+  var VDv=ds.VD*ds.f;
+  var VA=Math.max(0,(ds.VT-ds.VD))*ds.f;
+  /* PaCO2 is inversely proportional to alveolar ventilation, anchored at the
+     module's normal point: VA 4200 mL/min and VCO2 200 mL/min give 40 mmHg. */
+  var paco2 = VA<=0 ? 999 : Math.min(200, 40*(4200/VA)*(ds.VCO2/200));
+  return {VE:VE,VDv:VDv,VA:VA,paco2:paco2,frac:ds.VD/ds.VT*100};
+}
+var DSPRE=[
+ {n:'Normal · 500 × 12',VT:500,f:12,VD:150,c:200},
+ {n:'Rapid shallow · 250 × 24',VT:250,f:24,VD:150,c:200},
+ {n:'Deep slow · 1000 × 6',VT:1000,f:6,VD:150,c:200},
+ {n:'Postoperative opioid · 400 × 8',VT:400,f:8,VD:150,c:200},
+ {n:'Tachypneic · 300 × 20',VT:300,f:20,VD:150,c:200},
+ {n:'Slow and deep · 750 × 8',VT:750,f:8,VD:150,c:200},
+ {n:'Kussmaul in ketoacidosis',VT:1000,f:14,VD:150,c:200},
+ {n:'Heavy exercise',VT:1500,f:25,VD:180,c:2000},
+ {n:'Large pulmonary embolism',VT:500,f:20,VD:320,c:200}
+];
+function dsRender(){
+  var r=dsCalc();
+  $('vVT').textContent=ds.VT+' mL';
+  $('vF').textContent=ds.f+' / min';
+  $('vVD').textContent=ds.VD+' mL';
+  $('vCO2').textContent=ds.VCO2+' mL/min';
+  $('oVE').textContent=r.VE;
+  $('oVD').textContent=r.VDv;
+  $('oVA').textContent=r.VA;
+  $('oFrac').textContent=Math.min(100,r.frac).toFixed(0);
+  $('oPaco').textContent=r.VA<=0?'∞':Math.min(200,r.paco2).toFixed(0);
+  $('oKg').textContent=(ds.VD/68).toFixed(1);
+
+  $('eqVA').innerHTML='<b>V<sub>A</sub> = (V<sub>T</sub> &minus; V<sub>D</sub>) &times; f</b> = ('+
+    '<span class="num">'+ds.VT+'</span> &minus; <span class="num">'+ds.VD+'</span>) &times; <span class="num">'+ds.f+
+    '</span> = <b class="num">'+r.VA+' mL/min</b><br>'+
+    'Minute ventilation V<sub>E</sub> = <span class="num">'+ds.VT+'</span> &times; <span class="num">'+ds.f+'</span> = <b class="num">'+r.VE+
+    ' mL/min</b> &mdash; the number on the flowsheet, and the one that lies.<br>'+
+    'PaCO2 is inversely proportional to V<sub>A</sub>: halve alveolar ventilation and PaCO2 doubles.';
+
+  var v=$('verdict'), cls='verdict', m='';
+  if(r.VA<=0){
+    cls+=' bad';
+    m='Tidal volume no longer exceeds dead space &mdash; alveolar ventilation is zero.<small>Every breath moves air back and forth inside the conducting airway and never reaches a gas-exchanging surface. The chest is moving, the flowsheet shows a respiratory rate, and no ventilation is occurring at all.</small>';
+  } else if(r.paco2>=60){
+    cls+=' bad';
+    m='PaCO2 about '+r.paco2.toFixed(0)+' mmHg &mdash; severe hypercapnia, with a minute ventilation of '+r.VE+' mL/min.<small>'+
+      Math.round(r.frac)+' percent of every breath is wasted. Because CO2 is an acid, this pH will fall as well. Note that oxygen saturation can still look reassuring, especially on supplemental oxygen &mdash; oximetry measures oxygenation, not ventilation.</small>';
+  } else if(r.paco2>45){
+    cls+=' warn';
+    m='PaCO2 about '+r.paco2.toFixed(0)+' mmHg &mdash; hypoventilating.<small>Alveolar ventilation is '+r.VA+' mL/min against a normal of about 4200. Raise tidal volume rather than rate: each extra milliliter of tidal volume is fully effective, while each extra breath pays the '+ds.VD+' mL dead space toll again.</small>';
+  } else if(r.paco2<35){
+    cls+=' cool';
+    m='PaCO2 about '+r.paco2.toFixed(0)+' mmHg &mdash; hyperventilating by definition.<small>Hyperventilation means ventilating in excess of CO2 production, defined by a PaCO2 below 35 mmHg. It is not defined by respiratory rate: this pattern is '+ds.f+' breaths per minute. Rate is a behavior; PaCO2 is the measurement.</small>';
+  } else {
+    cls+=' ok';
+    m='PaCO2 about '+r.paco2.toFixed(0)+' mmHg &mdash; normal ventilation.<small>Alveolar ventilation of '+r.VA+' mL/min is clearing '+ds.VCO2+' mL of CO2 each minute and holding arterial CO2 in the 35 to 45 mmHg window. Change the pattern without changing minute ventilation and watch how quickly that stops being true.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+  drawBreaths(r);
+}
+function drawBreaths(r){
+  var s=sizeCanvas($('cvBr'),0,330), g=s.g, W=s.w, H=s.h;
+  var padL=46,padR=12,padT=16;
+  var chartH=150, y0=padT, pw=W-padL-padR;
+  var maxV=Math.max(1600,ds.VT*1.1);
+  /* frame */
+  g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.rect(padL,y0,pw,chartH); g.fill(); g.stroke();
+  /* dead space level line */
+  var yDS=y0+chartH-(ds.VD/maxV)*chartH;
+  g.strokeStyle=MUTED; g.setLineDash([4,4]); g.beginPath(); g.moveTo(padL,yDS); g.lineTo(padL+pw,yDS); g.stroke(); g.setLineDash([]);
+  /* bars */
+  var n=ds.f, bw=pw/n, gapw=Math.min(3,bw*0.22);
+  for(var i=0;i<n;i++){
+    var x=padL+i*bw+gapw/2, w=bw-gapw;
+    var hT=(ds.VT/maxV)*chartH;
+    var hD=Math.min(hT,(ds.VD/maxV)*chartH);
+    g.fillStyle=MUTED; g.globalAlpha=0.45;
+    g.fillRect(x,y0+chartH-hD,w,hD);
+    g.globalAlpha=1;
+    g.fillStyle=TEAL;
+    g.fillRect(x,y0+chartH-hT,w,hT-hD);
+  }
+  /* axis */
+  g.fillStyle=MUTED; g.font='9.5px Inter,sans-serif'; g.textAlign='right';
+  g.fillText(Math.round(maxV)+' mL',padL-5,y0+9);
+  g.fillText(ds.VD+' mL',padL-5,yDS+3);
+  g.fillText('0',padL-5,y0+chartH);
+  g.textAlign='left'; g.font='700 10px Inter,sans-serif'; g.fillStyle=SOFT;
+  g.fillText(ds.f+' breaths in one minute — gray is dead space, color reaches alveoli',padL+5,y0+12);
+
+  /* ventilation bars */
+  var by=y0+chartH+26, bh=20, scale=Math.max(12000,r.VE*1.05);
+  function vbar(y,val,col,lab){
+    g.fillStyle=LINE; g.fillRect(padL,y,pw,bh);
+    g.fillStyle=col; g.fillRect(padL,y,pw*Math.min(1,val/scale),bh);
+    g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif'; g.textAlign='right';
+    g.fillText(lab,padL-5,y+14);
+    g.fillStyle='#fff'; g.textAlign='left'; g.font='800 11px Inter,sans-serif';
+    if(pw*Math.min(1,val/scale)>90) g.fillText(Math.round(val)+' mL/min',padL+7,y+14);
+    else { g.fillStyle=SOFT; g.fillText(Math.round(val)+' mL/min',padL+pw*Math.min(1,val/scale)+7,y+14); }
+  }
+  vbar(by,r.VE,BLUE,'V E');
+  vbar(by+bh+9,r.VA,TEAL,'V A');
+  g.fillStyle=MUTED; g.font='9.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('minute ventilation vs alveolar ventilation, same scale',padL,by+2*bh+30);
+
+  /* PaCO2 scale */
+  var py=by+2*bh+46, plo=10, phi=120, ph=18;
+  g.fillStyle=LINE; g.fillRect(padL,py,pw,ph);
+  var nx=padL+(35-plo)/(phi-plo)*pw, nw=(45-35)/(phi-plo)*pw;
+  g.fillStyle=GREEN; g.globalAlpha=0.30; g.fillRect(nx,py,nw,ph); g.globalAlpha=1;
+  var pv=Math.min(phi,Math.max(plo,r.VA<=0?phi:r.paco2));
+  var px=padL+(pv-plo)/(phi-plo)*pw;
+  g.strokeStyle=(r.paco2>45||r.paco2<35)?CORAL:TEALD; g.lineWidth=3;
+  g.beginPath(); g.moveTo(px,py-5); g.lineTo(px,py+ph+5); g.stroke();
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif'; g.textAlign='right';
+  g.fillText('PaCO2',padL-5,py+13);
+  g.textAlign='center'; g.font='9.5px Inter,sans-serif'; g.fillStyle=MUTED;
+  var ticks=[10,20,40,60,80,100,120];
+  for(var t=0;t<ticks.length;t++){
+    var tx=padL+(ticks[t]-plo)/(phi-plo)*pw;
+    g.fillText(ticks[t],tx,py+ph+16);
+  }
+  g.fillStyle=TEALD; g.font='800 11px Inter,sans-serif'; g.textAlign='center';
+  g.fillText((r.VA<=0?'off scale':r.paco2.toFixed(0)+' mmHg'),Math.max(padL+30,Math.min(padL+pw-30,px)),py-9);
+}
+
+/* =========================================================
+   PART 2 — spirometry
+   ========================================================= */
+var sp={o:0,r:0,rev:0.50,post:false};
+var PRED={TLC:5.80,FVC:4.60,FEV1:3.59,RV:1.20};
+
+function spCalc(useObs){
+  var o=useObs, r=sp.r;
+  var TLC=(5.8+0.9*o)*(1-0.5*r);
+  var RV=(1.2+2.5*o)*(1-0.45*r);
+  var FVC=Math.max(0.4,TLC-RV);
+  var tau=0.66*(1+5*o*o)*(1-0.32*r);
+  var FEV1=FVC*(1-Math.exp(-1/tau));
+  return {TLC:TLC,RV:RV,FVC:FVC,tau:tau,FEV1:FEV1,ratio:FEV1/FVC};
+}
+function effObs(){ return sp.post ? sp.o*(1-sp.rev) : sp.o; }
+
+var SPPRE=[
+ {n:'Healthy adult',o:0,r:0,rev:0.5},
+ {n:'Asthma, acute',o:0.40,r:0,rev:0.60},
+ {n:'Emphysema / COPD',o:0.60,r:0,rev:0.06},
+ {n:'Pulmonary fibrosis',o:0,r:0.70,rev:0.5},
+ {n:'Obesity / kyphoscoliosis',o:0,r:0.40,rev:0.5},
+ {n:'Chronic bronchitis with obesity',o:0.35,r:0.30,rev:0.15}
+];
+function spRender(){
+  $('vObs').textContent = sp.o===0?'none':(sp.o*100).toFixed(0)+' / 80';
+  $('vRes').textContent = sp.r===0?'none':(sp.r*100).toFixed(0)+' / 80';
+  $('vRev').textContent = (sp.rev*100).toFixed(0)+'%';
+  var pre=spCalc(sp.o), post=spCalc(sp.o*(1-sp.rev)), cur=spCalc(effObs());
+
+  $('oFVC').textContent=cur.FVC.toFixed(2);
+  $('oFEV').textContent=cur.FEV1.toFixed(2);
+  $('oRatio').textContent=cur.ratio.toFixed(2);
+  $('oTLC').textContent=cur.TLC.toFixed(2);
+  $('oRV').textContent=cur.RV.toFixed(2);
+  $('oTau').textContent=cur.tau.toFixed(2);
+  $('oFVCp').textContent=Math.round(cur.FVC/PRED.FVC*100);
+  $('oFEVp').textContent=Math.round(cur.FEV1/PRED.FEV1*100);
+  $('oTLCp').textContent=Math.round(cur.TLC/PRED.TLC*100);
+  $('oRVp').textContent=Math.round(cur.RV/PRED.RV*100);
+
+  var tlcPct=cur.TLC/PRED.TLC*100, fevPct=cur.FEV1/PRED.FEV1*100;
+  var obstructive=cur.ratio<0.70, restrictive=tlcPct<80;
+  var v=$('verdict2'), cls='verdict', m='';
+  if(obstructive&&restrictive){
+    cls+=' bad';
+    m='Mixed obstructive and restrictive pattern.<small>The ratio is '+cur.ratio.toFixed(2)+', below 0.70, so airflow is obstructed &mdash; yet total lung capacity is only '+tlcPct.toFixed(0)+' percent of predicted, so the lung is also small. Obstruction alone would have raised TLC through air trapping, not lowered it.</small>';
+  } else if(obstructive){
+    var grade = fevPct>=80?'mild':(fevPct>=50?'moderate':(fevPct>=30?'severe':'very severe'));
+    cls+=' bad';
+    m='Obstructive pattern &mdash; '+grade+'.<small>FEV1/FVC = '+cur.ratio.toFixed(2)+', below the 0.70 threshold, because FEV1 has fallen far more than FVC. RV is '+Math.round(cur.RV/PRED.RV*100)+' percent of predicted and TLC '+tlcPct.toFixed(0)+' percent &mdash; the lung is emptying incompletely, so gas is trapped and resting volume climbs. The emptying time constant is '+cur.tau.toFixed(2)+' s against a normal 0.66 s.</small>';
+  } else if(restrictive){
+    cls+=' warn';
+    m='Restrictive pattern.<small>FVC is '+Math.round(cur.FVC/PRED.FVC*100)+' percent of predicted and FEV1 '+Math.round(fevPct)+' percent &mdash; both reduced, and reduced in proportion, so the ratio stays normal or high at '+cur.ratio.toFixed(2)+'. TLC of '+tlcPct.toFixed(0)+' percent confirms restriction rather than a submaximal effort. The lung empties normally fast; it simply cannot fill.</small>';
+  } else {
+    cls+=' ok';
+    m='Normal spirometry.<small>FEV1/FVC of '+cur.ratio.toFixed(2)+' sits in the healthy 0.75 to 0.80 band &mdash; about four-fifths of the vital capacity leaves in the first second &mdash; and TLC is '+tlcPct.toFixed(0)+' percent of predicted. Move either slider and watch which number breaks first.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+
+  var dAbs=(post.FEV1-pre.FEV1)*1000, dPct=(post.FEV1-pre.FEV1)/pre.FEV1*100;
+  var sig = dAbs>=200 && dPct>=12;
+  $('eqBD').innerHTML='<b>Bronchodilator response</b><br>'+
+    'FEV1 before <span class="num">'+pre.FEV1.toFixed(2)+' L</span> &rarr; after <span class="num">'+post.FEV1.toFixed(2)+' L</span> = '+
+    '<b class="num">'+(dAbs>=0?'+':'')+dAbs.toFixed(0)+' mL</b> and <b class="num">'+(dPct>=0?'+':'')+dPct.toFixed(0)+'%</b>.<br>'+
+    (sp.o===0 ? '<span style="color:'+MUTED+'">There is no obstruction to reverse.</span>'
+      : (sig ? '<span style="color:'+GREEN+'"><b>Significant reversibility</b> &mdash; at least 12 percent <i>and</i> 200 mL. This supports asthma rather than fixed obstruction.</span>'
+             : '<span style="color:'+CORAL+'"><b>Not significant</b> &mdash; the criterion is 12 percent <i>and</i> 200 mL, and both must be met. Fixed obstruction behaves this way.</span>'));
+
+  drawSpiro(cur,pre,post);
+}
+function drawSpiro(cur,pre,post){
+  var s=sizeCanvas($('cvSp'),0,344), g=s.g, W=s.w, H=s.h;
+  var wide=W>=470;
+  var padL=42,padR=(wide?110:14),padT=14, ch=190, y0=padT, pw=W-padL-padR;
+  var TMAX=6, VMAX=Math.max(6.4,cur.FVC*1.15);
+  g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.rect(padL,y0,pw,ch); g.fill(); g.stroke();
+  function X(t){return padL+t/TMAX*pw;}
+  function Y(v){return y0+ch-v/VMAX*ch;}
+  /* gridlines */
+  g.strokeStyle=LINE; g.font='9.5px Inter,sans-serif'; g.fillStyle=MUTED;
+  for(var t=1;t<=6;t++){ g.beginPath(); g.moveTo(X(t),y0); g.lineTo(X(t),y0+ch); g.stroke(); g.textAlign='center'; g.fillText(t+'s',X(t),y0+ch+13); }
+  for(var v=1;v<=Math.floor(VMAX);v++){ g.beginPath(); g.moveTo(padL,Y(v)); g.lineTo(padL+pw,Y(v)); g.stroke(); g.textAlign='right'; g.fillText(v+' L',padL-5,Y(v)+3); }
+  function curve(c,col,dash,wdt){
+    g.strokeStyle=col; g.lineWidth=wdt; g.setLineDash(dash);
+    g.beginPath();
+    for(var i=0;i<=180;i++){
+      var tt=i/180*TMAX, vv=c.FVC*(1-Math.exp(-tt/c.tau));
+      if(i===0) g.moveTo(X(tt),Y(vv)); else g.lineTo(X(tt),Y(vv));
+    }
+    g.stroke(); g.setLineDash([]);
+  }
+  /* reference curve is a fully healthy lung: no obstruction, no restriction */
+  var savedR=sp.r; sp.r=0; var ref=spCalc(0); sp.r=savedR;
+  curve(ref,MUTED,[5,4],1.6);
+  if(sp.o>0 && sp.rev>0){ curve(sp.post?pre:post, GOLD, [4,4], 1.6); }
+  curve(cur,TEAL,[],2.6);
+  /* FEV1 marker */
+  g.strokeStyle=CORAL; g.lineWidth=1.6; g.setLineDash([3,3]);
+  g.beginPath(); g.moveTo(X(1),y0+ch); g.lineTo(X(1),Y(cur.FEV1)); g.lineTo(padL,Y(cur.FEV1)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.beginPath(); g.arc(X(1),Y(cur.FEV1),4,0,6.2832); g.fill();
+  /* FVC line */
+  g.strokeStyle=TEALD; g.setLineDash([2,4]); g.beginPath(); g.moveTo(padL,Y(cur.FVC)); g.lineTo(padL+pw,Y(cur.FVC)); g.stroke(); g.setLineDash([]);
+  /* legend */
+  if(wide){
+    var lx=padL+pw+10, ly=y0+8;
+    var key=function(col,dash,txt,yy){
+      g.strokeStyle=col; g.lineWidth=2.4; g.setLineDash(dash);
+      g.beginPath(); g.moveTo(lx,yy); g.lineTo(lx+18,yy); g.stroke(); g.setLineDash([]);
+      g.fillStyle=SOFT; g.font='9.6px Inter,sans-serif'; g.textAlign='left';
+      g.fillText(txt,lx,yy+13);
+    };
+    key(TEAL,[],'this lung',ly);
+    key(MUTED,[5,4],'healthy reference',ly+30);
+    if(sp.o>0&&sp.rev>0) key(GOLD,[4,4],(sp.post?'before':'after')+' dilator',ly+60);
+    g.fillStyle=CORAL; g.font='800 9.6px Inter,sans-serif';
+    g.fillText('FEV1 '+cur.FEV1.toFixed(2)+' L',lx,ly+96);
+    g.fillStyle=TEALD;
+    g.fillText('FVC '+cur.FVC.toFixed(2)+' L',lx,ly+112);
+  } else {
+    g.textAlign='right'; g.font='800 9.6px Inter,sans-serif';
+    g.fillStyle=CORAL; g.fillText('FEV1 '+cur.FEV1.toFixed(2)+' L',padL+pw-6,y0+14);
+    g.fillStyle=TEALD; g.fillText('FVC '+cur.FVC.toFixed(2)+' L',padL+pw-6,y0+28);
+    g.fillStyle=MUTED; g.font='9.2px Inter,sans-serif';
+    g.fillText('dashed gray = healthy reference',padL+pw-6,y0+42);
+  }
+
+  /* stacked lung-volume bar */
+  var by=y0+ch+28, bh=30, sc=pw/8.0;
+  function stack(y,rv,fvc,lab,alpha){
+    g.globalAlpha=alpha;
+    g.fillStyle=PURPLE; g.fillRect(padL,y,rv*sc,bh);
+    g.fillStyle=TEAL; g.fillRect(padL+rv*sc,y,fvc*sc,bh);
+    g.globalAlpha=1;
+    g.fillStyle=SOFT; g.font='700 10px Inter,sans-serif'; g.textAlign='right';
+    g.fillText(lab,padL-5,y+19);
+    g.fillStyle='#fff'; g.font='800 10px Inter,sans-serif'; g.textAlign='left';
+    if(rv*sc>44) g.fillText('RV '+rv.toFixed(1),padL+5,y+19);
+    if(fvc*sc>60) g.fillText('VC '+fvc.toFixed(1),padL+rv*sc+6,y+19);
+    g.fillStyle=SOFT; g.textAlign='left'; g.font='9.6px Inter,sans-serif';
+    g.fillText('TLC '+(rv+fvc).toFixed(2)+' L',padL+(rv+fvc)*sc+7,y+19);
+  }
+  stack(by,PRED.RV,PRED.FVC,'predicted',0.32);
+  stack(by+bh+8,cur.RV,cur.FVC,'this lung',1);
+  g.fillStyle=MUTED; g.font='9.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('residual volume + vital capacity = total lung capacity',padL,by+2*bh+24);
+}
+
+/* =========================================================
+   wiring
+   ========================================================= */
+function buildChips(box,arr,apply){
+  var h='';
+  for(var i=0;i<arr.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+arr[i].n+'</button>';
+  $(box).innerHTML=h;
+  var bs=$(box).querySelectorAll('.chip');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    apply(arr[+this.getAttribute('data-i')]);
+    for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+    this.classList.add('on');
+  });
+  bs[0].classList.add('on');
+}
+buildChips('chips',DSPRE,function(p){
+  ds.VT=p.VT; ds.f=p.f; ds.VD=p.VD; ds.VCO2=p.c;
+  $('sVT').value=p.VT; $('sF').value=p.f; $('sVD').value=p.VD; $('sCO2').value=p.c;
+  dsRender();
+});
+buildChips('chips2',SPPRE,function(p){
+  sp.o=p.o; sp.r=p.r; sp.rev=p.rev; sp.post=false;
+  $('sObs').value=Math.round(p.o*100); $('sRes').value=Math.round(p.r*100); $('sRev').value=Math.round(p.rev*100);
+  syncBD(); spRender();
+});
+function bindDS(id,key,scale){
+  $(id).addEventListener('input',function(){ ds[key]=parseInt(this.value,10); clearChips('chips'); dsRender(); });
+}
+bindDS('sVT','VT'); bindDS('sF','f'); bindDS('sVD','VD'); bindDS('sCO2','VCO2');
+$('sObs').addEventListener('input',function(){ sp.o=parseInt(this.value,10)/100; clearChips('chips2'); spRender(); });
+$('sRes').addEventListener('input',function(){ sp.r=parseInt(this.value,10)/100; clearChips('chips2'); spRender(); });
+$('sRev').addEventListener('input',function(){ sp.rev=parseInt(this.value,10)/100; spRender(); });
+function syncBD(){
+  $('bPre').classList.toggle('on',!sp.post); $('bPost').classList.toggle('on',sp.post);
+  $('bPre').setAttribute('aria-pressed',sp.post?'false':'true');
+  $('bPost').setAttribute('aria-pressed',sp.post?'true':'false');
+}
+$('bPre').addEventListener('click',function(){ sp.post=false; syncBD(); spRender(); });
+$('bPost').addEventListener('click',function(){ sp.post=true; syncBD(); spRender(); });
+window.addEventListener('resize',function(){ dsRender(); spRender(); });
+
+syncBD(); dsRender(); spRender();
+})();
+</script>
+</body>
+</html>

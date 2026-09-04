@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Flow Equation Lab &mdash; Q = &Delta;P / R</title>
+<meta name="description" content="Drag driving pressure, radius, length and viscosity and watch flow through a blood vessel or an airway change in real time.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+.ctl{margin-top:13px;}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.ctl .lab .v{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--teal-dk);}
+.ctl .hint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.stat > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;}
+.stat .k{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .n{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{width:100%;display:block;border-radius:12px;background:var(--card);border:1px solid var(--line);}
+.eq{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);text-align:center;background:var(--card);border:1px dashed var(--line);border-radius:11px;padding:10px 8px;margin-top:12px;line-height:1.4;}
+.eq small{display:block;font-family:var(--sans);font-weight:600;font-size:11.5px;color:var(--muted);margin-top:3px;letter-spacing:.3px;}
+.presets{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:11px;}
+.presets button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 8px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.25;}
+.presets button:hover{border-color:var(--teal);}
+.presets button small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;}
+.exp{border:1px solid var(--line);border-left:5px solid var(--teal);background:var(--card);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--soft);line-height:1.55;}
+.exp b{color:var(--teal-dk);font-weight:700;}
+.exp .h{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);display:block;margin-bottom:4px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch01.html">&larr; Module 1</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 1</div>
+  <h1>The Flow Equation Lab</h1>
+  <div class="intro">Everything that moves in the body moves down a gradient at a rate set by the opposition it meets: <b>Q = &Delta;P / R</b>. Resistance follows Poiseuille's relationship, so it rises with viscosity and length but falls with the <b>fourth power of the radius</b>. Pick a system, then drag the radius and watch what a small change in a tube does to the flow through it.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>1 &middot; Which system are you driving?</h2>
+      <div class="seg" role="group" aria-label="Choose the system">
+        <button type="button" id="bBlood" class="on">Systemic circulation<small>blood, arterioles set R</small></button>
+        <button type="button" id="bAir">Airway<small>air, bronchi set R</small></button>
+      </div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sDP">Driving pressure &Delta;P</label><span class="v" id="vDP">89 mm Hg</span></div>
+        <input type="range" id="sDP" min="20" max="140" step="1" value="89" aria-label="Driving pressure delta P">
+        <div class="hint" id="hDP">Mean arterial pressure (93) minus right atrial pressure (4).</div>
+      </div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sR">Tube radius</label><span class="v" id="vR">100% of normal</span></div>
+        <input type="range" id="sR" min="25" max="200" step="1" value="100" aria-label="Tube radius as a percent of normal">
+        <div class="hint">Radius enters resistance to the fourth power. This is the only control with real leverage.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sL">Tube length</label><span class="v" id="vL">100% of normal</span></div>
+        <input type="range" id="sL" min="50" max="200" step="1" value="100" aria-label="Tube length as a percent of normal">
+      </div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sV">Fluid viscosity</label><span class="v" id="vV">1.00 &times; normal</span></div>
+        <input type="range" id="sV" min="50" max="220" step="1" value="100" aria-label="Fluid viscosity relative to normal">
+        <div class="hint" id="hV">Blood viscosity tracks hematocrit: anemia thins it, polycythemia thickens it.</div>
+      </div>
+
+      <div class="presets" id="presets"></div>
+      <div class="row"><button class="btn solid" type="button" id="bReset">Reset to normal</button></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>2 &middot; What the tube is doing</h2>
+      <canvas id="cv" height="240" role="img" aria-label="Animated cross-section of a tube; particle speed and density show flow rate"></canvas>
+      <div class="stat">
+        <div><div class="k">Resistance R</div><div class="n" id="nR">17.8</div><div class="u" id="uR">mm Hg&middot;min/L</div></div>
+        <div><div class="k">Flow Q</div><div class="n" id="nQ">5.00</div><div class="u" id="uQ">L/min</div></div>
+        <div><div class="k">Q vs normal</div><div class="n" id="nQr">1.00&times;</div><div class="u">R is <span id="nRr">1.00&times;</span></div></div>
+      </div>
+      <div class="eq" id="eq">Q = 89 &divide; 17.8 = 5.00 L/min<small>flow = driving pressure &divide; resistance</small></div>
+      <div class="exp" id="exp" aria-live="polite"></div>
+    </div>
+    <div class="card">
+      <h2>Why the fourth power matters</h2>
+      <div style="font-size:13.5px;color:var(--soft);line-height:1.6;">Halve the radius and resistance rises <b style="color:var(--teal-dk)">sixteen-fold</b> (2<sup>4</sup>), so at a fixed driving pressure flow falls to one-sixteenth. That is why arterioles, not arteries, control where blood goes, and why a bronchiole narrowed by half in an asthma attack collapses airflow &mdash; the driving pressure for quiet breathing is only 1 to 2 mm Hg, so there is nothing spare to overcome it. The same skeleton describes solutes crossing a membrane (gradient = concentration difference, resistance = membrane permeability), heat moving down a temperature gradient, and water moving down osmotic and hydrostatic pressure gradients.</div>
+    </div>
+  </div>
+</div>
+<footer>Human Physiology &middot; <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b></footer>
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var C={teal:css('--teal'),tealdk:css('--teal-dk'),blue:css('--blue'),coral:css('--coral'),gold:css('--gold'),line:css('--line'),muted:css('--muted'),soft:css('--soft'),card:css('--card')};
+
+  var SYS={
+    blood:{
+      label:'Systemic circulation', tint:C.coral, unitQ:'L/min', unitR:'mm Hg·min/L',
+      dp0:89, r0:17.8, q0:5.00, dpMin:20, dpMax:140, dpStep:1, qdp:0,
+      hintDP:'Mean arterial pressure (93) minus right atrial pressure (4).',
+      hintV:'Blood viscosity tracks hematocrit: anemia thins it, polycythemia thickens it.',
+      qFix:2, rFix:1,
+      presets:[
+        ['Resting adult','ΔP 89, normal tube',89,100,100,100],
+        ['Arteriolar constriction','radius 75% — sympathetic tone',89,75,100,100],
+        ['Widespread vasodilation','radius 130%, pressure held',89,130,100,100],
+        ['Peak exercise','ΔP 116 and dilated beds → about 25 L/min',116,140,100,100],
+        ['Polycythemia','viscosity 1.6×, tube normal',89,100,100,160],
+        ['Hemorrhage','ΔP falls to 55 mm Hg',55,100,100,100]
+      ]
+    },
+    air:{
+      label:'Airway', tint:C.blue, unitQ:'L/s', unitR:'mm Hg per L/s',
+      dp0:1.0, r0:1.10, q0:0.91, dpMin:0.5, dpMax:5, dpStep:0.1,
+      hintDP:'Atmospheric minus alveolar pressure — only about 1 to 2 mm Hg in quiet breathing. Q here is the instantaneous inspiratory flow rate.',
+      hintV:'Gas viscosity hardly changes in health; secretions and edema fluid in the lumen behave like an added resistance.',
+      qFix:2, rFix:2,
+      presets:[
+        ['Quiet breathing','ΔP 1.0 mm Hg, open airway',1.0,100,100,100],
+        ['Asthma attack','bronchiole radius halved',1.0,50,100,100],
+        ['Severe bronchospasm','radius 35% of normal',1.0,35,100,100],
+        ['Patient works harder','same narrowing, ΔP 4 mm Hg',4.0,50,100,100],
+        ['Bronchodilator given','radius back to 90%',1.0,90,100,100],
+        ['Airway edema','radius 70%, walls thickened',1.0,70,100,100]
+      ]
+    }
+  };
+
+  var st={sys:'blood', dp:89, r:100, l:100, v:100};
+  var E=function(i){return document.getElementById(i);};
+  var sDP=E('sDP'), sR=E('sR'), sL=E('sL'), sV=E('sV');
+
+  function calc(){
+    var s=SYS[st.sys];
+    var rr=st.r/100, ll=st.l/100, vv=st.v/100;
+    var R=s.r0*vv*ll/Math.pow(rr,4);
+    var Q=st.dp/R;
+    return {s:s,rr:rr,ll:ll,vv:vv,R:R,Q:Q,Rrel:R/s.r0,Qrel:Q/s.q0};
+  }
+
+  function fmt(n,d){return n.toFixed(d);}
+
+  function explain(m){
+    var rFold=1/Math.pow(m.rr,4);
+    var t='<span class="h">'+m.s.label+'</span>';
+    t+='Radius is at <b>'+Math.round(st.r)+'%</b> of normal, so the radius term alone multiplies resistance by <b>'+(rFold>=10?rFold.toFixed(0):rFold.toFixed(2))+'×</b>. ';
+    if(m.vv!==1||m.ll!==1){t+='Viscosity ('+fmt(m.vv,2)+'×) and length ('+fmt(m.ll,2)+'×) scale it linearly. ';}
+    t+='Total resistance is <b>'+(m.Rrel>=10?m.Rrel.toFixed(0):m.Rrel.toFixed(2))+'×</b> normal.<br><br>';
+    t+='With a driving pressure of <b>'+fmt(st.dp,m.s.dpStep<1?1:0)+' mm Hg</b>, flow is <b>'+fmt(m.Q,m.s.qFix)+' '+m.s.unitQ+'</b>, which is <b>'+(m.Qrel>=10?m.Qrel.toFixed(1):m.Qrel.toFixed(2))+'×</b> the normal value of '+fmt(m.s.q0,m.s.qFix)+' '+m.s.unitQ+'. ';
+    if(m.rr<=0.52&&m.rr>=0.48){
+      t+='<br><br>You have halved the radius: resistance is up sixteen-fold and flow, at unchanged pressure, has fallen to one-sixteenth. ';
+      t+=(st.sys==='air')?'This is the asthma attack — and because quiet breathing generates only 1 to 2 mm Hg, the patient must recruit accessory muscles to force any air through. That work is what exhausts them.':'No other single variable in the body has this much leverage, which is why every tube that needs fine flow control is wrapped in smooth muscle.';
+    } else if(m.Qrel<0.4){
+      t+='<br><br>Flow has collapsed. Notice how little the radius had to move to do it — that is the fourth power at work.';
+    } else if(m.Qrel>2){
+      t+='<br><br>A modest widening has multiplied flow enormously. Vasodilation is a cheap way to redirect a large fraction of cardiac output.';
+    }
+    return t;
+  }
+
+  function render(){
+    var m=calc(), s=m.s;
+    E('vDP').textContent=fmt(st.dp,s.dpStep<1?1:0)+' mm Hg';
+    E('vR').textContent=Math.round(st.r)+'% of normal';
+    E('vL').textContent=Math.round(st.l)+'% of normal';
+    E('vV').textContent=fmt(m.vv,2)+' × normal';
+    E('nR').textContent=(m.R>=100?m.R.toFixed(0):m.R.toFixed(s.rFix));
+    E('uR').textContent=s.unitR;
+    E('nQ').textContent=fmt(m.Q,s.qFix);
+    E('uQ').textContent=s.unitQ;
+    E('nQr').textContent=(m.Qrel>=10?m.Qrel.toFixed(1):m.Qrel.toFixed(2))+'×';
+    E('nRr').textContent=(m.Rrel>=10?m.Rrel.toFixed(0):m.Rrel.toFixed(2))+'×';
+    E('eq').innerHTML='Q = '+fmt(st.dp,s.dpStep<1?1:0)+' ÷ '+(m.R>=100?m.R.toFixed(0):m.R.toFixed(s.rFix))+' = '+fmt(m.Q,s.qFix)+' '+s.unitQ+'<small>flow = driving pressure ÷ resistance</small>';
+    E('exp').innerHTML=explain(m);
+    E('hDP').textContent=s.hintDP;
+    E('hV').textContent=s.hintV;
+    cvs.setAttribute('aria-label',s.label+': radius '+Math.round(st.r)+' percent of normal, resistance '+m.Rrel.toFixed(2)+' times normal, flow '+fmt(m.Q,s.qFix)+' '+s.unitQ);
+  }
+
+  var cvs=E('cv'), ctx=cvs.getContext('2d'), W=600, H=240, parts=[];
+  function fit(){
+    var d=window.devicePixelRatio||1;
+    W=cvs.clientWidth||600; H=240;
+    cvs.width=Math.round(W*d); cvs.height=Math.round(H*d);
+    cvs.style.height=H+'px';
+    ctx.setTransform(d,0,0,d,0,0);
+  }
+  function seed(){
+    parts=[];
+    for(var i=0;i<180;i++){parts.push({x:Math.random(),o:Math.random()*2-1,r:1.6+Math.random()*2.2});}
+  }
+  var last=0;
+  function draw(ts){
+    var m=calc(), s=m.s;
+    var dt=last?Math.min(0.06,(ts-last)/1000):0.016; last=ts;
+    var x0=54, x1=W-54, mid=H/2;
+    var hh=Math.max(5,Math.min(78,34*m.rr));
+    ctx.clearRect(0,0,W,H);
+
+    // pressure gradient strip
+    var g=ctx.createLinearGradient(x0,0,x1,0);
+    g.addColorStop(0,s.tint); g.addColorStop(1,C.card);
+    ctx.globalAlpha=.55; ctx.fillStyle=g; ctx.fillRect(x0,16,x1-x0,12); ctx.globalAlpha=1;
+    ctx.strokeStyle=C.line; ctx.lineWidth=1; ctx.strokeRect(x0+.5,16.5,x1-x0-1,11);
+    ctx.font='600 10.5px Inter, system-ui, sans-serif'; ctx.fillStyle=C.muted;
+    ctx.textAlign='left'; ctx.fillText('HIGH PRESSURE', x0, 12);
+    ctx.textAlign='right'; ctx.fillText('LOW PRESSURE', x1, 12);
+    ctx.textAlign='center'; ctx.fillText('ΔP drives flow this way →', (x0+x1)/2, 42);
+
+    // lumen
+    ctx.fillStyle=s.tint; ctx.globalAlpha=.12;
+    ctx.fillRect(x0,mid-hh,x1-x0,hh*2); ctx.globalAlpha=1;
+    // walls
+    ctx.strokeStyle=C.soft; ctx.lineWidth=5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x0,mid-hh); ctx.lineTo(x1,mid-hh);
+    ctx.moveTo(x0,mid+hh); ctx.lineTo(x1,mid+hh); ctx.stroke();
+
+    // particles
+    var vel=Math.max(6,Math.min(900, 70*(m.Qrel/(m.rr*m.rr))));
+    var n=Math.max(4,Math.min(180, Math.round(26*Math.pow(m.Qrel,0.75)*Math.max(0.5,m.rr))));
+    ctx.fillStyle=s.tint;
+    for(var i=0;i<n;i++){
+      var p=parts[i];
+      p.x+=vel*dt/(x1-x0);
+      if(p.x>1) p.x-=1;
+      var py=mid+p.o*(hh-p.r-1);
+      ctx.globalAlpha=.85;
+      ctx.beginPath(); ctx.arc(x0+p.x*(x1-x0),py,p.r,0,6.2832); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+
+    // radius caliper
+    ctx.strokeStyle=C.gold; ctx.lineWidth=2; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x0-16,mid); ctx.lineTo(x0-16,mid-hh); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle=C.gold; ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+    ctx.fillText('r', x0-22, mid-hh/2+4);
+
+    // flow bar
+    var bw=(x1-x0)*Math.max(0.005,Math.min(1,m.Qrel/2));
+    ctx.fillStyle=C.line; ctx.fillRect(x0,H-30,x1-x0,14);
+    ctx.fillStyle=s.tint; ctx.fillRect(x0,H-30,bw,14);
+    ctx.strokeStyle=C.tealdk; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x0+(x1-x0)/2,H-33); ctx.lineTo(x0+(x1-x0)/2,H-13); ctx.stroke();
+    ctx.fillStyle=C.muted; ctx.font='600 10.5px Inter, system-ui, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('flow, relative to normal (tick = normal)', x0, H-36);
+    requestAnimationFrame(draw);
+  }
+
+  function setSys(k){
+    st.sys=k; var s=SYS[k];
+    E('bBlood').classList.toggle('on',k==='blood');
+    E('bAir').classList.toggle('on',k==='air');
+    sDP.min=s.dpMin; sDP.max=s.dpMax; sDP.step=s.dpStep;
+    st.dp=s.dp0; sDP.value=s.dp0;
+    st.r=100; st.l=100; st.v=100;
+    sR.value=100; sL.value=100; sV.value=100;
+    buildPresets(); render();
+  }
+  function buildPresets(){
+    var s=SYS[st.sys], box=E('presets'); box.innerHTML='';
+    s.presets.forEach(function(p){
+      var b=document.createElement('button'); b.type='button';
+      b.innerHTML=p[0]+'<small>'+p[1]+'</small>';
+      b.addEventListener('click',function(){
+        st.dp=p[2]; st.r=p[3]; st.l=p[4]; st.v=p[5];
+        sDP.value=p[2]; sR.value=p[3]; sL.value=p[4]; sV.value=p[5]; render();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  sDP.addEventListener('input',function(){st.dp=parseFloat(this.value);render();});
+  sR.addEventListener('input',function(){st.r=parseFloat(this.value);render();});
+  sL.addEventListener('input',function(){st.l=parseFloat(this.value);render();});
+  sV.addEventListener('input',function(){st.v=parseFloat(this.value);render();});
+  E('bBlood').addEventListener('click',function(){setSys('blood');});
+  E('bAir').addEventListener('click',function(){setSys('air');});
+  E('bReset').addEventListener('click',function(){setSys(st.sys);});
+  window.addEventListener('resize',fit);
+
+  fit(); seed(); buildPresets(); render(); requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Two Signals, Then the Kill</title>
+<meta name="description" content="Set the three T-cell activation signals, then run a viral infection forward and watch cytotoxic T cells and natural killer cells compete for the same target as MHC class I is turned down.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chk{display:flex;flex-direction:column;gap:9px;margin-top:4px;}
+.chk label{display:flex;align-items:flex-start;gap:9px;font-size:12.6px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.35;}
+.chk input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer;flex:none;margin-top:1px;}
+.chk label small{display:block;font-weight:500;font-size:11.5px;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;text-align:left;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:8px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.05);}
+.gate{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.gate div{border-radius:10px;padding:9px 8px;text-align:center;border:1px solid var(--line);background:#fff;}
+.gate .g{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;font-weight:800;color:var(--muted);}
+.gate .s{font-family:var(--disp);font-size:15px;font-weight:700;color:var(--muted);margin-top:2px;}
+.gate div.yes{background:var(--green);border-color:var(--green);} .gate div.yes .g,.gate div.yes .s{color:#fff;}
+.gate div.no{background:var(--coral);border-color:var(--coral);} .gate div.no .g,.gate div.no .s{color:#fff;}
+canvas{display:block;width:100%;height:auto;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch11.html">&larr; Module 11</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 11</div>
+  <h1>Two Signals, Then the Kill</h1>
+  <div class="intro">A T cell that recognizes antigen does nothing unless a second, danger-dependent signal says the antigen matters. Set the three signals below and watch the logic gate resolve into activation or anergy. Then run a viral infection forward: cytotoxic T cells read <b>MHC class I</b>, natural killer cells read its <i>absence</i>, and turning that one dial down opens an escape window where neither can finish the job.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The three signals</h2>
+      <div class="chk">
+        <label><input type="checkbox" id="c1" checked> <span>Signal 1 &mdash; T-cell receptor binds peptide&ndash;MHC<small>with CD8 (class I) or CD4 (class II) as co-receptor</small></span></label>
+        <label><input type="checkbox" id="c2" checked> <span>Signal 2 &mdash; B7 (CD80/CD86) on the APC binds CD28<small>B7 appears only once the presenting cell has itself detected a PAMP or DAMP, so signal 2 encodes danger</small></span></label>
+        <label><input type="checkbox" id="cAb"> <span>Abatacept on board (CTLA-4&ndash;Ig blocks B7)<small>a drug that deliberately removes signal 2 to damp autoimmunity</small></span></label>
+        <label><input type="checkbox" id="cMem"> <span>Memory already present (prior infection or vaccination)<small>more precursors, less co-stimulation needed, effector function in 1&ndash;3 days rather than 7</small></span></label>
+      </div>
+      <div class="hint" style="margin-top:13px">Signal 3 is the <b>cytokine environment</b>, which does not decide <i>whether</i> the cell responds but <i>what kind</i> of response it makes.</div>
+      <div class="chips" id="milieu"></div>
+      <div class="gate" id="gate">
+        <div><div class="g">Signal 1</div><div class="s" id="g1">—</div></div>
+        <div><div class="g">Signal 2</div><div class="s" id="g2">—</div></div>
+        <div><div class="g">Outcome</div><div class="s" id="g3">—</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>The battlefield</h2>
+      <div class="sl"><label for="sCD4">CD4 helper T-cell count <span class="v" id="vCD4">900 /&micro;L</span></label>
+        <input type="range" id="sCD4" min="0" max="1500" step="10" value="900" aria-label="CD4 helper T-cell count in cells per microliter"></div>
+      <div class="sl"><label for="sMHC">MHC class I displayed by infected cells <span class="v" id="vMHC">100 %</span></label>
+        <input type="range" id="sMHC" min="0" max="100" step="1" value="100" aria-label="Percentage of normal MHC class I displayed on the surface of infected cells"></div>
+      <div class="sl"><label for="sPD">PD-L1 on the tissue <span class="v" id="vPD">15 %</span></label>
+        <input type="range" id="sPD" min="0" max="100" step="5" value="15" aria-label="PD-L1 expression on tissue cells, which engages PD-1 and brakes the cytotoxic T cell"></div>
+      <div class="chk" style="margin-top:12px"><label><input type="checkbox" id="cCkp"> <span>Checkpoint inhibitor (anti&ndash;PD-1 / anti&ndash;CTLA-4)<small>releases the brake; the price is autoimmune side effects</small></span></label></div>
+      <div class="hint">Normal CD4 count is <b>500 to 1,500 cells per &micro;L</b>. Below <b>200</b> the patient meets the definition of AIDS and cell-mediated immunity fails first, because most B-cell class switching also needs helper input.</div>
+    </div>
+    <div class="card">
+      <h2>Scenarios</h2>
+      <div class="chips" id="pre"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bRun">Run the infection</button>
+        <button type="button" class="btn" id="bReset">Reset to day 0</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The tissue, live</h2>
+      <canvas id="arena" width="1040" height="470" role="img" aria-label="Animated field of tissue cells showing infected cells, apoptotic cells, patrolling cytotoxic T cells and natural killer cells"></canvas>
+      <div class="labs" id="labs"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <h2>Twenty-four days of the infection</h2>
+      <canvas id="ch" width="1040" height="290" role="img" aria-label="Logarithmic chart of infected cell burden and cytotoxic T-cell clone size over twenty-four days"></canvas>
+      <div class="hint">The cytotoxic T cell forms an immunological synapse and releases <b>perforin</b> and <b>granzymes</b> into a narrow cleft, so neighboring healthy cells are spared. The target dies by <b>apoptosis</b>, not lysis: it shrinks, fragments its DNA including any viral genome, and is packaged into membrane-bound bodies for phagocytosis. Nothing infectious spills out. The killer then detaches, reloads and kills again.</div>
+      <div class="sr" id="live" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var cs=getComputedStyle(document.documentElement);
+function CV(n){return cs.getPropertyValue('--'+n).trim();}
+
+var MIL=[
+ {n:'IL-12 → T<sub>H</sub>1',f:1.20,d:'Interferon-gamma supercharges macrophages against intracellular bacteria; the granuloma is a T<sub>H</sub>1 product, and T<sub>H</sub>1 help is the best support a cytotoxic T cell can get.'},
+ {n:'IL-4 → T<sub>H</sub>2',f:0.70,d:'IL-4, IL-5 and IL-13 drive IgE class switching and eosinophils. Excellent against helminths, misdirected in allergy, and close to useless against a virus hiding inside a cell.'},
+ {n:'IL-6 + TGF-β → T<sub>H</sub>17',f:0.80,d:'Recruits neutrophils to mucosal surfaces against extracellular bacteria and fungi. Wrong tool for an intracellular virus.'},
+ {n:'IL-21 → T<sub>FH</sub>',f:0.90,d:'Follicular helper cells stay in the germinal center and license B cells to class switch and mature affinity. Superb for antibody, indirect for killing infected cells.'},
+ {n:'TGF-β + IL-2 → regulatory T',f:0.15,d:'CD4 with CD25 and FoxP3, secreting IL-10 and TGF-β. This milieu actively suppresses the response &mdash; peripheral tolerance in action, and exactly what you do not want during an acute infection.'}
+];
+var P={s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:100,pd:15,ckp:false};
+var K=1e7, r0=1.5, TMAX=24;
+var t=0, I=500, C=0, peakC=0, cleared=-1, running=false, hist=[[0,500,0]];
+var kills=[];
+
+function state(){
+  var block = P.abat || !P.s2;
+  var act = P.s1 && !block;
+  var help=Math.max(0.10,Math.min(1.3,P.cd4/500));
+  var mil=MIL[P.mil].f;
+  var Cmax=2.0e6*help*mil;
+  var lag=P.mem?1.2:4.0, C0=P.mem?2000:50;
+  var brake = P.ckp ? 1 : (1-0.85*P.pd/100);
+  var ctlPow = 2.2e-6*C*Math.pow(P.mhc/100,1.5)*brake;
+  var nkPow = 1.9*Math.max(0,1-P.mhc/40);
+  return {act:act,block:block,help:help,mil:mil,Cmax:Cmax,lag:lag,C0:C0,brake:brake,ctl:ctlPow,nk:nkPow};
+}
+function step(dt){
+  var s=state();
+  if(s.act){
+    if(t>=s.lag){
+      if(cleared<0) C=Math.min(s.Cmax, Math.max(C,s.C0)*Math.pow(2,dt/0.4));
+      else C=Math.max(peakC*0.075, C*Math.exp(-dt/1.6));
+    } else { C=s.C0; }
+  } else { C=0; }
+  if(C>peakC) peakC=C;
+  var kill=(s.ctl+s.nk);
+  if(cleared>=0){ I=Math.max(0.2, I*Math.exp(-2*dt)); }
+  else {
+    I=I+ (r0*I*(1-I/K) - kill*I)*dt;
+    if(I<1){ I=0.9; cleared=t; }
+    if(I>K) I=K;
+  }
+  t+=dt;
+}
+function reset(){ t=0;I=500;C=0;peakC=0;cleared=-1;hist=[[0,500,0]]; }
+
+var milBox=document.getElementById('milieu');
+MIL.forEach(function(m,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=m.n;
+  b.addEventListener('click',function(){
+    P.mil=i; [].forEach.call(milBox.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    reset(); draw();
+  });
+  milBox.appendChild(b);
+});
+var PRE=[
+ {n:'Healthy adult, first viral infection',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:100,pd:15,ckp:false}},
+ {n:'Vaccinated &mdash; memory present',s:{s1:true,s2:true,abat:false,mem:true,mil:0,cd4:900,mhc:100,pd:15,ckp:false}},
+ {n:'Antigen without danger &rarr; anergy',s:{s1:true,s2:false,abat:false,mem:false,mil:0,cd4:900,mhc:100,pd:15,ckp:false}},
+ {n:'Virus downregulates MHC I to 35 %',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:35,pd:15,ckp:false}},
+ {n:'MHC I stripped to zero &mdash; NK take over',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:0,pd:15,ckp:false}},
+ {n:'HIV, CD4 = 120 /&micro;L',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:120,mhc:100,pd:15,ckp:false}},
+ {n:'Tumor with PD-L1 90 %',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:100,pd:90,ckp:false}},
+ {n:'Same tumor + checkpoint inhibitor',s:{s1:true,s2:true,abat:false,mem:false,mil:0,cd4:900,mhc:100,pd:90,ckp:true}},
+ {n:'Abatacept &mdash; signal 2 removed',s:{s1:true,s2:true,abat:true,mem:false,mil:0,cd4:900,mhc:100,pd:15,ckp:false}}
+];
+var preBox=document.getElementById('pre');
+PRE.forEach(function(p,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    for(var k in p.s){P[k]=p.s[k];}
+    sync(); reset();
+    [].forEach.call(preBox.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    [].forEach.call(milBox.children,function(c,j){c.classList.toggle('on',j===P.mil);});
+    draw();
+  });
+  preBox.appendChild(b);
+});
+function sync(){
+  document.getElementById('c1').checked=P.s1;
+  document.getElementById('c2').checked=P.s2;
+  document.getElementById('cAb').checked=P.abat;
+  document.getElementById('cMem').checked=P.mem;
+  document.getElementById('cCkp').checked=P.ckp;
+  document.getElementById('sCD4').value=P.cd4;
+  document.getElementById('sMHC').value=P.mhc;
+  document.getElementById('sPD').value=P.pd;
+}
+function clearPre(){[].forEach.call(preBox.children,function(c){c.classList.remove('on');});}
+function tog(id,key){document.getElementById(id).addEventListener('change',function(){P[key]=this.checked;clearPre();reset();draw();});}
+tog('c1','s1'); tog('c2','s2'); tog('cAb','abat'); tog('cMem','mem'); tog('cCkp','ckp');
+function sl(id,key){document.getElementById(id).addEventListener('input',function(){P[key]=+this.value;clearPre();reset();draw();});}
+sl('sCD4','cd4'); sl('sMHC','mhc'); sl('sPD','pd');
+
+document.getElementById('bRun').addEventListener('click',function(){
+  running=!running; this.textContent=running?'Pause':'Run the infection';
+  if(running){ if(t>=TMAX) reset(); loop(); }
+});
+document.getElementById('bReset').addEventListener('click',function(){reset();draw();});
+function loop(){
+  if(!running)return;
+  for(var i=0;i<3;i++) step(0.05);
+  hist.push([t,I,C]);
+  if(t>=TMAX){running=false;document.getElementById('bRun').textContent='Run the infection';}
+  draw();
+  if(running) requestAnimationFrame(loop);
+}
+
+/* ---- arena ---- */
+var ar=document.getElementById('arena'), ax=ar.getContext('2d');
+var seedX=[], seedY=[];
+for(var q=0;q<26;q++){ seedX.push(Math.random()); seedY.push(Math.random()); }
+function drawArena(){
+  var W=ar.width,H=ar.height; ax.clearRect(0,0,W,H);
+  var s=state();
+  var cols=24, rows=11, padL=30, padT=48, cw=(W-2*padL)/cols, chh=(H-padT-46)/rows;
+  var frac=Math.min(1, Math.log(Math.max(I,1)+1)/Math.LN10/7);
+  var nInf=Math.round(frac*cols*rows);
+  var killRate=s.ctl+s.nk;
+  var nKill=Math.min(nInf, Math.round(killRate*10));
+  for(var i=0;i<cols*rows;i++){
+    var c=i%cols, rw=Math.floor(i/cols);
+    var x=padL+c*cw+cw/2, y=padT+rw*chh+chh/2, rad=Math.min(cw,chh)*0.33;
+    var inf = i<nInf, dying = inf && i>=nInf-nKill;
+    ax.beginPath(); ax.arc(x,y,dying?rad*0.6:rad,0,6.2832);
+    ax.fillStyle = inf ? (dying?CV('purple'):CV('coral')) : CV('green');
+    ax.globalAlpha = inf ? (dying?0.45:0.85) : 0.22; ax.fill(); ax.globalAlpha=1;
+    if(inf && !dying && P.mhc>0){
+      ax.beginPath(); ax.moveTo(x,y-rad-2); ax.lineTo(x,y-rad-2-6*(P.mhc/100));
+      ax.strokeStyle=CV('teal-dk'); ax.lineWidth=2.2; ax.stroke();
+    }
+  }
+  var nC=Math.min(16, Math.round(Math.log(Math.max(C,1)+1)/Math.log(10)*2.6));
+  var nN=Math.round(6*Math.max(0,1-P.mhc/40));
+  for(var j=0;j<nC;j++){
+    var jx=padL+((seedX[j]+t*0.03)%1)*(W-2*padL), jy=padT+((seedY[j]+t*0.02)%1)*(H-padT-46);
+    ax.beginPath(); ax.moveTo(jx,jy-9); ax.lineTo(jx+8,jy+6); ax.lineTo(jx-8,jy+6); ax.closePath();
+    ax.fillStyle=CV('teal'); ax.globalAlpha=0.35+0.65*(s.brake); ax.fill(); ax.globalAlpha=1;
+  }
+  for(var k=0;k<nN;k++){
+    var kx=padL+((seedY[k+16]+t*0.04)%1)*(W-2*padL), ky=padT+((seedX[k+16]+t*0.05)%1)*(H-padT-46);
+    ax.beginPath(); ax.arc(kx,ky,7,0,6.2832); ax.fillStyle=CV('purple'); ax.fill();
+    ax.beginPath(); ax.arc(kx,ky,7,0,6.2832); ax.strokeStyle='#fff'; ax.lineWidth=2; ax.stroke();
+  }
+  ax.font='800 16px Inter, sans-serif'; ax.textAlign='left';
+  ax.fillStyle=CV('coral'); ax.fillText('● infected',padL,22);
+  ax.fillStyle=CV('purple'); ax.fillText('● apoptotic  ◉ NK cell',padL+120,22);
+  ax.fillStyle=CV('teal'); ax.fillText('▲ cytotoxic T cell',padL+340,22);
+  ax.fillStyle=CV('green'); ax.fillText('● healthy',padL+520,22);
+  ax.fillStyle=CV('teal-dk'); ax.font='700 15px Inter, sans-serif';
+  ax.fillText('the stalk on each infected cell is its MHC class I display ('+P.mhc+'%)',padL,42);
+  ax.fillStyle=CV('muted'); ax.font='600 15px Inter, sans-serif'; ax.textAlign='left';
+  ax.fillText('day '+t.toFixed(1),padL,H-16);
+  ax.textAlign='right';
+  ax.fillText('CTL killing '+s.ctl.toFixed(2)+' /day   ·   NK killing '+s.nk.toFixed(2)+' /day   ·   viral spread '+r0.toFixed(2)+' /day',W-padL,H-16);
+}
+
+/* ---- chart ---- */
+var cv=document.getElementById('ch'), cx=cv.getContext('2d');
+function drawChart(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=76,R=W-24,Tp=18,B=H-38, hi=8;
+  function Y(n){ return B-(Math.log(Math.max(n,1))/Math.LN10/hi)*(B-Tp); }
+  function X(d){ return L+(d/TMAX)*(R-L); }
+  cx.strokeStyle=CV('line'); cx.lineWidth=1.4; cx.font='600 14px Inter, sans-serif';
+  for(var e=0;e<=8;e+=2){
+    var y=B-(e/hi)*(B-Tp);
+    cx.beginPath();cx.moveTo(L,y);cx.lineTo(R,y);cx.stroke();
+    cx.fillStyle=CV('muted');cx.textAlign='right';cx.fillText('10^'+e,L-8,y+5);
+  }
+  for(var d=0;d<=TMAX;d+=4){cx.fillStyle=CV('muted');cx.textAlign='center';cx.fillText('d'+d,X(d),B+22);}
+  function line(idx,col,wd){
+    cx.beginPath();
+    for(var i=0;i<hist.length;i++){
+      var x=X(hist[i][0]), y=Y(hist[i][idx]);
+      if(i===0)cx.moveTo(x,y);else cx.lineTo(x,y);
+    }
+    cx.strokeStyle=col;cx.lineWidth=wd;cx.lineJoin='round';cx.stroke();
+  }
+  line(2,CV('teal'),3);
+  line(1,CV('coral'),3.6);
+  cx.font='800 15px Inter, sans-serif'; cx.textAlign='left';
+  cx.fillStyle=CV('coral'); cx.fillText('infected cells',L+8,Tp+16);
+  cx.fillStyle=CV('teal'); cx.fillText('cytotoxic T-cell clone',L+8,Tp+34);
+  if(cleared>=0){
+    cx.setLineDash([7,5]); cx.beginPath(); cx.moveTo(X(cleared),Tp); cx.lineTo(X(cleared),B); cx.strokeStyle=CV('green'); cx.lineWidth=2.4; cx.stroke(); cx.setLineDash([]);
+    cx.fillStyle=CV('green'); cx.textAlign='center'; cx.fillText('cleared day '+cleared.toFixed(1),X(cleared),B-8);
+  }
+}
+
+function lab(k,v,u){return '<div class="lab"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function big(n){ if(n<1) return '0'; if(n<1000) return n.toFixed(0); if(n<1e6) return (n/1e3).toFixed(1)+'k'; return (n/1e6).toFixed(2)+'M'; }
+
+function draw(){
+  var s=state();
+  document.getElementById('vCD4').textContent=P.cd4+' /µL';
+  document.getElementById('vMHC').textContent=P.mhc+' %';
+  document.getElementById('vPD').textContent=P.pd+' %';
+  document.getElementById('g1').textContent=P.s1?'YES':'NO';
+  document.getElementById('g2').textContent=(P.s2&&!P.abat)?'YES':(P.abat?'BLOCKED':'NO');
+  var out = !P.s1 ? 'NOTHING' : (s.block ? 'ANERGY' : (P.mil===4?'SUPPRESSED':'ACTIVATED'));
+  document.getElementById('g3').textContent=out;
+  var g=document.getElementById('gate').children;
+  g[0].className=P.s1?'yes':'no';
+  g[1].className=(P.s2&&!P.abat)?'yes':'no';
+  g[2].className=(out==='ACTIVATED')?'yes':'no';
+
+  document.getElementById('labs').innerHTML=
+    lab('Infected cells',big(I),'in the tissue')+
+    lab('CTL clone',big(C),'cytotoxic T cells')+
+    lab('CTL killing',s.ctl.toFixed(2),'per day')+
+    lab('NK killing',s.nk.toFixed(2),'per day')+
+    lab('Helper support',(s.help*100).toFixed(0)+' %','from CD4 '+P.cd4+'/µL')+
+    lab('Checkpoint brake',((1-s.brake)*100).toFixed(0)+' %','of killing removed');
+
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  var kill=s.ctl+s.nk;
+  if(!P.s1){
+    cls+='cool'; h='NO SIGNAL 1 &mdash; nothing happens at all<small>Without a T-cell receptor engaging peptide on MHC there is no recognition event, so there is nothing for co-stimulation to license. This is not tolerance; it is simply invisibility. Note that natural killer cells still work, because they need no rearranged receptor and no prior exposure.</small>';
+  } else if(s.block){
+    cls+='bad'; h='ANERGY &mdash; antigen without danger<small>'+(P.abat?'Abatacept is occupying B7, so CD28 cannot be engaged. ':'The presenting cell never detected a PAMP or DAMP, so it never expressed B7. ')+'The T cell gets signal 1 alone and is functionally silenced, or dies. This is <b>peripheral tolerance implemented as a two-key logic gate</b> &mdash; and it is exactly why vaccines contain adjuvants: the adjuvant supplies the innate danger signal that licenses co-stimulation.</small>';
+  } else if(P.mil===4){
+    cls+='warn'; h='SUPPRESSED &mdash; a regulatory milieu<small>'+MIL[4].d+' The clone is capped at '+big(s.Cmax)+' cells, so killing peaks at a fraction of what an IL-12 environment would produce.</small>';
+  } else if(cleared>=0){
+    cls+='ok'; h='CLEARED on day '+cleared.toFixed(1)+'<small>'+(P.mhc>=60?'Cytotoxic T cells did the work, reading foreign peptide on MHC class I.':(P.mhc<=10?'Natural killer cells did the work &mdash; they patrol for cells that have <i>lost</i> class I, a common viral and tumor evasion trick, and kill them by the same perforin and granzyme route.':'Both killers contributed.'))+' As antigen is cleared, signal 1 disappears, most of the expanded clone dies by activation-induced cell death, and roughly 5 to 10 percent persists as memory. That is a genuine negative-feedback loop: the effector output removes its own input.</small>';
+  } else if(t>0.5 && kill<r0*0.95){
+    cls+='bad'; h='NOT CONTROLLED &mdash; killing '+kill.toFixed(2)+'/day against spread '+r0.toFixed(2)+'/day<small>'+
+      (P.mhc>10&&P.mhc<50?'MHC class I is down to '+P.mhc+'%, which is the <b>escape window</b>: too little display for cytotoxic T cells to read, still enough to switch natural killer cells off. That is precisely the level real viruses and tumors aim for.':'')+
+      (P.cd4<200?' CD4 count is '+P.cd4+'/&micro;L, below the 200 threshold that defines AIDS. Losing the conductor disables the whole orchestra &mdash; including antibody, because most class switching needs helper input.':'')+
+      (P.pd>=70&&!P.ckp?' PD-L1 at '+P.pd+'% is engaging PD-1 and removing '+((1-s.brake)*100).toFixed(0)+'% of the killing. Release that brake and watch what happens.':'')+
+      '</small>';
+  } else if(t<=0.5){
+    cls+='cool'; h='DAY 0 &mdash; press Run<small>Clonal expansion will not begin for about '+s.lag.toFixed(1)+' days'+(P.mem?' because memory cells are already present, already class-switched and needing less co-stimulation':' &mdash; this is the several-day symptomatic window of a first infection')+'. Watch how far the virus gets before the adaptive response arrives.</small>';
+  } else {
+    cls+='warn'; h='FIGHT IN PROGRESS &mdash; day '+t.toFixed(1)+'<small>Killing '+kill.toFixed(2)+'/day against a spread rate of '+r0.toFixed(2)+'/day. The clone is at '+big(C)+' and still doubling roughly every 10 hours. Each cytotoxic T cell kills serially: it detaches after inducing apoptosis, reloads its granules and moves to the next target.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+  drawArena(); drawChart();
+  document.getElementById('live').textContent='Day '+t.toFixed(1)+'. Infected cells '+big(I)+', cytotoxic T cell clone '+big(C)+', total killing '+kill.toFixed(2)+' per day.';
+}
+sync(); draw();
+})();
+</script>
+</body>
+</html>

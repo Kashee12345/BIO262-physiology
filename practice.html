@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Practice Questions · BIO 262 Human Physiology — Joyce University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --good:#2f7d4f; --good-lt:#e8f4ec; --bad:#b03a3a; --bad-lt:#fbeceb;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px 90px;}
+  button{font:inherit;}
+
+  header.hero{text-align:center;padding:38px 20px 18px;}
+  header.hero .crest{font-size:30px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;margin:12px 0 8px;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(25px,5.2vw,37px);margin:0 0 10px;color:var(--maroon-dk);}
+  header.hero p.sub{margin:0 auto;max-width:580px;font-size:15px;color:var(--muted);}
+  .backlink{display:inline-block;margin-top:14px;font-size:13px;color:var(--maroon);font-weight:600;}
+  .backlink:hover{text-decoration:underline;}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+        border-radius:var(--r);padding:14px 16px;margin-top:20px;box-shadow:var(--shadow);}
+  .note b{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--maroon-dk);margin-bottom:4px;}
+  .note span{font-size:14px;color:var(--muted);}
+
+  .sl{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--faint);margin:30px 4px 12px;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;}
+  @media(max-width:620px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:13px 11px;text-align:center;box-shadow:var(--shadow);}
+  .stat b{display:block;font-family:var(--disp);font-size:23px;color:var(--maroon-dk);line-height:1.1;}
+  .stat span{display:block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);margin-top:5px;font-weight:600;}
+
+  .modes{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
+  @media(max-width:620px){.modes{grid-template-columns:1fr;}}
+  .mode{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:15px;box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;transition:all .15s;}
+  .mode:hover{border-color:var(--maroon);transform:translateY(-1px);}
+  .mode .ic{font-size:24px;}
+  .mode .tx b{display:block;font-size:14.5px;color:var(--maroon-dk);}
+  .mode .tx span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;}
+
+  .rows{display:flex;flex-direction:column;gap:8px;}
+  .row{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+       padding:13px 15px;box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;transition:border-color .15s;}
+  .row:hover{border-color:var(--maroon);}
+  .row .ic{font-size:20px;flex:0 0 auto;}
+  .row .tx{flex:1;min-width:0;}
+  .row .tx b{display:block;font-size:14.5px;font-weight:700;color:var(--maroon-dk);}
+  .row .tx span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;}
+  .row .rt{flex:0 0 auto;text-align:right;}
+  .row .rt .pct{font-size:14px;font-weight:800;color:var(--maroon);}
+  .row .rt .n{font-size:11px;color:var(--faint);}
+  .bar{height:5px;background:var(--gold-lt);border-radius:3px;overflow:hidden;margin-top:6px;}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--good));transition:width .4s;}
+
+  .qbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+  .qbar .lbl{font-size:12px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);}
+  .qbar .quit{background:none;border:none;color:var(--maroon);font-size:13px;font-weight:600;cursor:pointer;padding:0;}
+  .qbar .quit:hover{text-decoration:underline;}
+  .prog{height:6px;background:var(--gold-lt);border-radius:3px;overflow:hidden;margin-bottom:20px;}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--maroon));transition:width .3s;}
+
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;box-shadow:var(--shadow);}
+  .qmeta{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:9px;}
+  .qtext{font-size:17.5px;font-weight:600;line-height:1.45;margin-bottom:18px;}
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:11px;
+       padding:12px 14px;cursor:pointer;text-align:left;width:100%;transition:border-color .12s,background .12s;}
+  .opt:hover:not(:disabled){border-color:var(--maroon);background:var(--maroon-lt);}
+  .opt:disabled{cursor:default;}
+  .opt .k{flex:0 0 auto;width:23px;height:23px;border-radius:50%;background:var(--gold-lt);color:var(--maroon-dk);
+          font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .opt .v{flex:1;font-size:14.5px;line-height:1.45;}
+  .opt.correct{border-color:var(--good);background:var(--good-lt);}
+  .opt.correct .k{background:var(--good);color:#fff;}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-lt);}
+  .opt.wrong .k{background:var(--bad);color:#fff;}
+  .opt.dim{opacity:.55;}
+
+  .fb{margin-top:16px;border-radius:11px;padding:14px 15px;font-size:14px;line-height:1.55;border:1px solid;}
+  .fb.ok{background:var(--good-lt);border-color:#bfdcc9;color:#1f5636;}
+  .fb.no{background:var(--bad-lt);border-color:#eec9c6;color:#7d2a2a;}
+  .fb b{display:block;font-size:13px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;}
+  .fb .why{margin-top:9px;padding-top:9px;border-top:1px solid rgba(0,0,0,.09);font-size:13.5px;color:var(--muted);}
+
+  .nav{display:flex;gap:10px;margin-top:18px;}
+  .btn{flex:1;background:var(--maroon);color:#fff;border:none;border-radius:11px;padding:14px 18px;font-size:15px;font-weight:700;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .btn.ghost{background:transparent;color:var(--maroon);border:1.5px solid var(--line);}
+
+  .score{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:30px 20px;box-shadow:var(--shadow);}
+  .score .big{font-family:var(--disp);font-size:56px;color:var(--maroon-dk);line-height:1;}
+  .score .of{font-size:15px;color:var(--muted);margin-top:8px;}
+  .score .verdict{margin-top:14px;font-size:15px;font-weight:700;}
+  .rev{margin-top:10px;display:flex;flex-direction:column;gap:9px;}
+  .ritem{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:11px;padding:13px 15px;}
+  .ritem.ok{border-left-color:var(--good);}
+  .ritem .rq{font-size:14px;font-weight:600;margin-bottom:7px;}
+  .ritem .ra{font-size:13px;color:var(--muted);}
+  .ritem .ra em{font-style:normal;font-weight:700;color:var(--good);}
+  .ritem .ra s{color:var(--bad);}
+  .ritem .rw{margin-top:6px;font-size:12.5px;color:var(--faint);}
+
+  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 4px 0;}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);cursor:pointer;}
+  .chk input{accent-color:var(--maroon);width:15px;height:15px;}
+  .reset{background:none;border:none;color:var(--faint);font-size:12.5px;cursor:pointer;padding:0;margin-left:auto;}
+  .reset:hover{color:var(--bad);text-decoration:underline;}
+  .hint{font-size:12.5px;color:var(--faint);margin-top:10px;text-align:center;}
+  footer{text-align:center;padding:36px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="crest">🎯</div>
+    <div class="kicker">Joyce University · BIO 262</div>
+    <h1>Practice Questions</h1>
+    <p class="sub">Original questions written against every module learning outcome — same format and difficulty as your exams, with a rationale on every answer.</p>
+    <a class="backlink" href="index.html">← Back to course hub</a>
+  </header>
+
+  <div class="note">
+    <b>About these questions</b>
+    <span>These are <strong>original practice items</strong> written to match the course learning outcomes. They are not taken from any exam. Getting them right means you understand the material — not that you have seen the test.</span>
+  </div>
+
+  <section id="home">
+    <div class="stats" id="statStrip"></div>
+
+    <div class="sl">Practice modes</div>
+    <div class="modes">
+      <button class="mode" data-mode="mix"><span class="ic">🎲</span><span class="tx"><b>Quick Mix</b><span>20 questions, all modules</span></span></button>
+      <button class="mode" data-mode="missed"><span class="ic">🔁</span><span class="tx"><b>Missed Questions</b><span id="missedN">Retry what you got wrong</span></span></button>
+      <button class="mode" data-mode="unseen"><span class="ic">🆕</span><span class="tx"><b>Fresh Questions</b><span>20 you haven't tried</span></span></button>
+      <button class="mode" data-mode="final"><span class="ic">🏁</span><span class="tx"><b>Final-Only Modules</b><span>Modules 13 &amp; 14 — final-only material</span></span></button>
+    </div>
+
+    <div class="sl">By exam</div>
+    <div class="rows" id="examRows"></div>
+
+    <div class="sl">By module</div>
+    <div class="rows" id="modRows"></div>
+
+    <div class="toolbar">
+      <label class="chk"><input type="checkbox" id="shuf" checked> Shuffle answer order</label>
+      <button class="reset" id="resetBtn">Reset progress</button>
+    </div>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <div class="qbar">
+      <span class="lbl" id="qLabel"></span>
+      <button class="quit" id="quitBtn">Exit to menu</button>
+    </div>
+    <div class="prog"><i id="progBar" style="width:0%"></i></div>
+    <div class="qcard">
+      <div class="qmeta" id="qMeta"></div>
+      <div class="qtext" id="qText"></div>
+      <div class="opts" id="qOpts"></div>
+      <div id="qFb"></div>
+      <div class="nav" id="qNav"></div>
+    </div>
+    <p class="hint">Keyboard: <b>A–E</b> to answer · <b>Enter</b> to continue</p>
+  </section>
+
+  <section id="results" class="hidden">
+    <div class="score">
+      <div class="big" id="sPct">—</div>
+      <div class="of" id="sOf"></div>
+      <div class="verdict" id="sVerdict"></div>
+    </div>
+    <div class="nav" style="margin-top:16px;">
+      <button class="btn ghost" id="againBtn">Try again</button>
+      <button class="btn" id="menuBtn">Back to menu</button>
+    </div>
+    <div class="sl">Review</div>
+    <div class="rev" id="revList"></div>
+  </section>
+
+  <footer>
+    <b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences<br>
+    Original practice bank written by Dr. Akash Garg
+  </footer>
+</div>
+
+<script src="data/modules.js"></script>
+<script src="data/practice/m01.js"></script>
+<script src="data/practice/m02.js"></script>
+<script src="data/practice/m03.js"></script>
+<script src="data/practice/m04.js"></script>
+<script src="data/practice/m05.js"></script>
+<script src="data/practice/m06.js"></script>
+<script src="data/practice/m07.js"></script>
+<script src="data/practice/m08.js"></script>
+<script src="data/practice/m09.js"></script>
+<script src="data/practice/m10.js"></script>
+<script src="data/practice/m11.js"></script>
+<script src="data/practice/m12.js"></script>
+<script src="data/practice/m13.js"></script>
+<script src="data/practice/m14.js"></script>
+<script>
+(function(){
+  "use strict";
+  var P = window.BIO262_PRACTICE || {};
+  var MODULES = window.BIO262_MODULES || [];
+  var KEY = "bio262_practice_v1";
+
+  var store = load();
+  function load(){
+    try{ var r=localStorage.getItem(KEY); if(r){ var o=JSON.parse(r); if(o&&typeof o==="object"){ o.seen=o.seen||{}; o.opts=o.opts||{shuffle:true}; return o; } } }catch(e){}
+    return {seen:{}, opts:{shuffle:true}};
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+
+  /* flatten with stable ids */
+  var ALL=[];
+  for(var m=1;m<=14;m++){
+    var d=P[String(m)]||[];
+    for(var i=0;i<d.length;i++){
+      ALL.push({id:"m"+m+"q"+i, mod:m, q:d[i][0], a:d[i][1], c:d[i][2], r:d[i][3]||""});
+    }
+  }
+  function modInfo(n){ for(var i=0;i<MODULES.length;i++){ if(MODULES[i].n===n) return MODULES[i]; } return {n:n,title:"Module "+n,icon:"📘"}; }
+  function byMod(n){ return ALL.filter(function(q){ return q.mod===n; }); }
+
+  /* BIO 262 exam blueprint: which modules each exam covers */
+  var EXAMS = [
+    {k:"e1", n:"Exam 1", mods:[1,2],        span:"Modules 1–2",  icon:"📝"},
+    {k:"e2", n:"Exam 2", mods:[3,4],        span:"Modules 3–4",  icon:"📝"},
+    {k:"e3", n:"Exam 3", mods:[5,6],        span:"Modules 5–6",  icon:"📝"},
+    {k:"e4", n:"Exam 4", mods:[7,8,9],      span:"Modules 7–9",  icon:"📝"},
+    {k:"e5", n:"Exam 5", mods:[10,11,12],   span:"Modules 10–12",icon:"📝"},
+    {k:"fe", n:"Final Exam", mods:[1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+     span:"Cumulative · Modules 13 & 14 weighted heaviest", icon:"🏁"}
+  ];
+  function byExam(k){
+    for(var i=0;i<EXAMS.length;i++){
+      if(EXAMS[i].k===k){
+        var mods=EXAMS[i].mods;
+        return ALL.filter(function(q){ return mods.indexOf(q.mod)>=0; });
+      }
+    }
+    return [];
+  }
+  function st(id){ return store.seen[id]||null; }
+  function missed(){ return ALL.filter(function(q){ var s=st(q.id); return s && s.n>0 && s.c<s.n; }); }
+  function unseen(){ return ALL.filter(function(q){ return !st(q.id); }); }
+  function pctOf(list){
+    var att=0,cor=0;
+    for(var i=0;i<list.length;i++){ var s=st(list[i].id); if(s){att+=s.n;cor+=s.c;} }
+    return {att:att,cor:cor,pct:att?Math.round(cor/att*100):0};
+  }
+
+  function renderHome(){
+    var att=0,cor=0,touched=0;
+    for(var i=0;i<ALL.length;i++){ var s=st(ALL[i].id); if(s){touched++;att+=s.n;cor+=s.c;} }
+    $("statStrip").innerHTML =
+      '<div class="stat"><b>'+ALL.length+'</b><span>Questions</span></div>'
+     +'<div class="stat"><b>'+touched+'</b><span>Attempted</span></div>'
+     +'<div class="stat"><b>'+(att?Math.round(cor/att*100):0)+'%</b><span>Accuracy</span></div>'
+     +'<div class="stat"><b>'+missed().length+'</b><span>To review</span></div>';
+    var mc=missed().length;
+    $("missedN").textContent = mc ? (mc+" to retry") : "Nothing missed yet";
+
+    var eh="";
+    for(var e=0;e<EXAMS.length;e++){
+      var ex=EXAMS[e], el=byExam(ex.k), ep=pctOf(el);
+      eh+='<button class="row" data-exam="'+ex.k+'">'
+        +'<span class="ic">'+ex.icon+'</span>'
+        +'<span class="tx"><b>'+ex.n+'</b>'
+        +'<span>'+el.length+' questions · '+esc(ex.span)+'</span>'
+        +'<span class="bar"><i style="width:'+ep.pct+'%"></i></span></span>'
+        +'<span class="rt"><span class="pct">'+(ep.att?ep.pct+"%":"—")+'</span><br><span class="n">'+ep.att+' tried</span></span></button>';
+    }
+    $("examRows").innerHTML=eh;
+
+    var h="";
+    for(var k=0;k<MODULES.length;k++){
+      var mod=MODULES[k], list=byMod(mod.n);
+      if(!list.length) continue;
+      var p=pctOf(list);
+      h+='<button class="row" data-mod="'+mod.n+'">'
+        +'<span class="ic">'+mod.icon+'</span>'
+        +'<span class="tx"><b>Module '+mod.n+' · '+esc(mod.title)+'</b>'
+        +'<span>'+list.length+' practice questions</span>'
+        +'<span class="bar"><i style="width:'+p.pct+'%"></i></span></span>'
+        +'<span class="rt"><span class="pct">'+(p.att?p.pct+"%":"—")+'</span><br><span class="n">'+p.att+' tried</span></span></button>';
+    }
+    $("modRows").innerHTML=h;
+    $("shuf").checked = !!store.opts.shuffle;
+  }
+
+  var S=null;
+  function show(v){ ["home","quiz","results"].forEach(function(x){ $(x).classList.toggle("hidden", x!==v); }); window.scrollTo(0,0); }
+
+  function start(list,label,limit){
+    if(!list||!list.length){ alert("No questions in that selection yet."); return; }
+    var q=shuffle(list);
+    if(limit && q.length>limit) q=q.slice(0,limit);
+    S={queue:q,i:0,answers:[],answered:false,order:null,label:label};
+    show("quiz"); render();
+  }
+  function render(){
+    var q=S.queue[S.i]; S.answered=false;
+    $("qLabel").textContent=S.label+" · "+(S.i+1)+" of "+S.queue.length;
+    $("progBar").style.width=(S.i/S.queue.length*100)+"%";
+    $("qMeta").textContent="Module "+q.mod+" · "+modInfo(q.mod).title;
+    $("qText").textContent=q.q;
+    var idx=q.a.map(function(_,i){return i;});
+    if(store.opts.shuffle) idx=shuffle(idx);
+    S.order=idx;
+    var h="";
+    for(var d=0;d<idx.length;d++){
+      h+='<button class="opt" data-d="'+d+'"><span class="k">'+"ABCDE"[d]+'</span><span class="v">'+esc(q.a[idx[d]])+'</span></button>';
+    }
+    $("qOpts").innerHTML=h; $("qFb").innerHTML=""; $("qNav").innerHTML="";
+  }
+  function choose(d){
+    if(S.answered) return;
+    S.answered=true;
+    var q=S.queue[S.i], real=S.order[d], right=(real===q.c), cd=S.order.indexOf(q.c);
+    var rec=store.seen[q.id]||{n:0,c:0}; rec.n++; if(right)rec.c++; store.seen[q.id]=rec; save();
+    S.answers.push({q:q,chosen:real,right:right});
+    var b=$("qOpts").querySelectorAll(".opt");
+    for(var i=0;i<b.length;i++){
+      b[i].disabled=true;
+      if(i===cd) b[i].classList.add("correct");
+      else if(i===d) b[i].classList.add("wrong");
+      else b[i].classList.add("dim");
+    }
+    $("qFb").innerHTML='<div class="fb '+(right?"ok":"no")+'"><b>'+(right?"Correct":"Not quite")+'</b>'
+      +(right?"That's right.":"The correct answer is <strong>"+esc(q.a[q.c])+"</strong>.")
+      +(q.r?'<div class="why">'+esc(q.r)+'</div>':'')+'</div>';
+    var last=(S.i===S.queue.length-1);
+    $("qNav").innerHTML='<button class="btn" id="nx">'+(last?"See results":"Next question")+'</button>';
+    $("nx").addEventListener("click",next); $("nx").focus();
+  }
+  function next(){ if(S.i<S.queue.length-1){S.i++;render();} else finish(); }
+  function finish(){
+    var r=S.answers.filter(function(a){return a.right;}).length, t=S.answers.length;
+    var p=t?Math.round(r/t*100):0;
+    $("sPct").textContent=p+"%";
+    $("sOf").textContent=r+" of "+t+" correct · "+S.label;
+    var v=$("sVerdict");
+    if(p>=90){v.textContent="Excellent — you know this cold.";v.style.color="var(--good)";}
+    else if(p>=80){v.textContent="Solid. Tighten the misses below.";v.style.color="var(--good)";}
+    else if(p>=70){v.textContent="Passing, but review this material.";v.style.color="var(--gold)";}
+    else {v.textContent="Needs work — go back to the module content.";v.style.color="var(--bad)";}
+    var h="";
+    for(var i=0;i<S.answers.length;i++){
+      var a=S.answers[i], q=a.q;
+      h+='<div class="ritem'+(a.right?" ok":"")+'"><div class="rq">'+(i+1)+'. '+esc(q.q)+'</div><div class="ra">'
+       +(a.right?'<em>'+esc(q.a[q.c])+'</em>':'<s>'+esc(q.a[a.chosen])+'</s> &nbsp;→&nbsp; <em>'+esc(q.a[q.c])+'</em>')
+       +'</div>'+(q.r?'<div class="rw">'+esc(q.r)+'</div>':'')+'</div>';
+    }
+    $("revList").innerHTML=h;
+    show("results"); renderHome();
+  }
+
+  document.addEventListener("click",function(ev){
+    var el=ev.target.closest?ev.target.closest("[data-mod],[data-mode],[data-exam]"):null;
+    if(!el) return;
+    if(el.dataset.exam){
+      var xk=el.dataset.exam, xn=xk;
+      for(var i=0;i<EXAMS.length;i++) if(EXAMS[i].k===xk) xn=EXAMS[i].n+" · "+EXAMS[i].span;
+      start(byExam(xk), xn);
+    } else if(el.dataset.mod){
+      var n=parseInt(el.dataset.mod,10);
+      start(byMod(n),"Module "+n+" · "+modInfo(n).title);
+    } else {
+      var mo=el.dataset.mode;
+      if(mo==="mix") start(ALL,"Quick Mix",20);
+      else if(mo==="missed") start(missed(),"Missed Questions");
+      else if(mo==="unseen") start(unseen(),"Fresh Questions",20);
+      else if(mo==="final") start(byMod(13).concat(byMod(14)),"Final Focus · Modules 13 & 14");
+    }
+  });
+  $("qOpts").addEventListener("click",function(ev){
+    var b=ev.target.closest?ev.target.closest(".opt"):null;
+    if(b) choose(parseInt(b.dataset.d,10));
+  });
+  $("quitBtn").addEventListener("click",function(){renderHome();show("home");});
+  $("menuBtn").addEventListener("click",function(){renderHome();show("home");});
+  $("againBtn").addEventListener("click",function(){ if(S) start(S.queue,S.label); });
+  $("shuf").addEventListener("change",function(){store.opts.shuffle=this.checked;save();});
+  $("resetBtn").addEventListener("click",function(){
+    if(confirm("Reset all practice progress?")){store={seen:{},opts:store.opts};save();renderHome();}
+  });
+  document.addEventListener("keydown",function(ev){
+    if($("quiz").classList.contains("hidden")||!S) return;
+    var k=ev.key.toUpperCase(), d="ABCDE".indexOf(k);
+    if(!S.answered && d>=0){
+      var b=$("qOpts").querySelectorAll(".opt");
+      if(d<b.length){ev.preventDefault();choose(d);}
+    } else if(S.answered && (ev.key==="Enter"||ev.key===" ")){ ev.preventDefault(); next(); }
+  });
+
+  if(!ALL.length) $("home").innerHTML='<p>Practice bank failed to load.</p>';
+  else renderHome();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smooth and Cardiac Muscle &mdash; same filaments, different control</title>
+<meta name="description" content="Stimulate skeletal, cardiac and smooth muscle at any frequency and watch which one tetanizes, which one refuses, and which one holds tension for hours almost for free; then trace where each tissue gets its calcium and what that calcium binds.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.cmpwrap{overflow-x:auto;margin-top:12px;}
+table.cmp{border-collapse:collapse;width:100%;min-width:520px;font-size:12.3px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+table.cmp th,table.cmp td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;color:var(--soft);}
+table.cmp thead th{background:var(--line);color:var(--teal-dk);font-weight:800;font-size:11.5px;}
+table.cmp td:first-child,table.cmp th:first-child{font-weight:700;color:var(--ink);white-space:nowrap;}
+table.cmp tbody tr:last-child td{border-bottom:none;}
+table.cmp .sel{color:var(--teal-dk);font-weight:700;box-shadow:inset 3px 0 0 var(--teal);}
+table.cmp thead th.sel{background:var(--teal);color:#fff;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch05.html">&larr; Module 5</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 5</div>
+  <h1>Smooth and Cardiac Muscle</h1>
+  <div class="intro">All three muscle types slide actin past myosin. They differ in only three things: <b>where the calcium comes from</b>, <b>which protein it binds</b>, and <b>whether the cells are electrically joined</b>. Those three differences explain every functional contrast between them. Stimulate each tissue below and watch one tetanize, one refuse to, and one hold tension for hours almost for free.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Stimulate the tissue</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Calcium route</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Cost of holding</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Which tissue?</div>
+        <div class="chips" id="tissues"></div>
+        <div class="sl"><label for="rate" id="rateL">Stimulus frequency <span class="v" id="rateV">50 Hz</span></label>
+          <input type="range" id="rate" min="1" max="100" value="50" aria-label="Stimulus frequency or rate, scaled to the selected tissue"></div>
+        <button class="tog" id="tExt" type="button" aria-pressed="true"><span class="dot"></span><span>Extracellular calcium present <small>Take it away and the three tissues behave completely differently. That difference is the whole of excitation&ndash;contraction coupling in one experiment.</small></span></button>
+        <button class="tog" id="tLatch" type="button" aria-pressed="true"><span class="dot"></span><span>Latch state allowed (smooth muscle only) <small>Dephosphorylated cross-bridges that stay attached. Switch it off and watch a blood vessel try to hold its diameter by cycling.</small></span></button>
+        <div class="hint" id="hint1"></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Which tissue?</div>
+        <div class="chips" id="tissues2"></div>
+        <div class="hint"><b>Read the route, not the list.</b> Skeletal muscle needs <i>no</i> calcium from outside the cell &mdash; the voltage sensor pulls the release channel open mechanically. Cardiac muscle needs a small trigger influx first. Smooth muscle draws on both and switches the <i>myosin head</i> rather than the actin filament. Everything in the table follows from that.</div>
+        <div class="cmpwrap" id="cmp"></div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">What is being held, and for how long?</div>
+        <div class="chips" id="holds"></div>
+        <div class="sl"><label for="hrs">Duration of the hold <span class="v" id="hrsV">8 h</span></label>
+          <input type="range" id="hrs" min="1" max="240" value="80" aria-label="Duration of the sustained contraction, in tenths of an hour"></div>
+        <div class="sl"><label for="ten">Tension being maintained <span class="v" id="tenV">30%</span></label>
+          <input type="range" id="ten" min="5" max="100" value="30" aria-label="Percent of maximal tension being maintained"></div>
+        <div class="hint"><b>Slow is a design choice, not a deficiency.</b> Per cross-sectional area smooth muscle generates force comparable to skeletal muscle. It simply generates that force slowly &mdash; the myosin ATPase is roughly <b>ten times slower</b> &mdash; and then holds it at about <b>one three-hundredth</b> the ATP cost of an equivalent skeletal contraction.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Tension against time</h2>
+      <canvas id="cv1" width="1040" height="560" aria-label="Tension against time for the selected tissue at the selected stimulus rate, with stimulus marks showing which stimuli were accepted and which fell inside the refractory period"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Where the calcium comes from and what it binds</h2>
+      <canvas id="cv2" width="1040" height="600" aria-label="Diagram of the calcium route for the selected tissue, from membrane channels and sarcoplasmic reticulum through the calcium receptor protein to cross-bridge cycling"></canvas>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>The bill for standing still</h2>
+      <canvas id="cv3" width="1040" height="470" aria-label="Bar comparison of the ATP consumed by a skeletal-style cycling contraction and a smooth muscle latch state holding the same tension for the same time"></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'gray';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var TABS=[1,2,3];
+function setMode(n){
+  TABS.forEach(function(k){
+    var b=$('m'+k);
+    b.classList.toggle('on',k===n); b.setAttribute('aria-selected',k===n?'true':'false');
+    $('p'+k).classList.toggle('hide',k!==n); $('r'+k).classList.toggle('hide',k!==n);
+  });
+  if(n===2) render2(); if(n===3) render3();
+}
+TABS.forEach(function(k){ $('m'+k).onclick=function(){setMode(k);}; });
+
+var TIS=[
+ {k:'sk',n:'Skeletal',win:700,ttp:25,tauM:80,tauCa:20,refr:5,col:TEAL},
+ {k:'ca',n:'Cardiac',win:1600,ttp:150,tauM:130,tauCa:122,refr:225,col:CORAL},
+ {k:'sm',n:'Smooth',win:40000,ttp:2500,tauM:2600,tauCa:2200,refr:400,col:PURP}
+];
+var tis=TIS[0], extCa=true, latch=true;
+
+function mkTissueChips(box,cb){
+  TIS.forEach(function(T){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(T.k===tis.k?' on':''); b.textContent=T.n+' muscle';
+    b.onclick=function(){ tis=T; paintTis(); cb(); };
+    box.appendChild(b);
+  });
+}
+function paintTis(){
+  [['tissues'],['tissues2']].forEach(function(id){
+    var box=$(id[0]); if(!box) return;
+    [].forEach.call(box.children,function(c,i){ c.classList.toggle('on',TIS[i].k===tis.k); });
+  });
+}
+mkTissueChips($('tissues'),function(){ setRateLabel(); render1(); render2(); });
+mkTissueChips($('tissues2'),function(){ setRateLabel(); render1(); render2(); });
+$('tExt').onclick=function(){extCa=!extCa;this.setAttribute('aria-pressed',extCa?'true':'false');render1();render2();};
+$('tLatch').onclick=function(){latch=!latch;this.setAttribute('aria-pressed',latch?'true':'false');render1();render3();};
+$('rate').addEventListener('input',render1);
+
+/* =====================================================
+   BENCH 1 - stimulate
+   ===================================================== */
+function rateInfo(){
+  var v=+$('rate').value;
+  if(tis.k==='sk'){ return {f:v, label:v+' Hz', name:'Stimulus frequency'}; }
+  if(tis.k==='ca'){ var bpm=Math.round(40+(v-1)/99*260); return {f:bpm/60, label:bpm+' beats/min', name:'Heart rate'}; }
+  return {f:0.8, label:v+'%', name:'Agonist strength', ag:v/100};
+}
+function setRateLabel(){
+  var R=rateInfo();
+  $('rateL').innerHTML=R.name+' <span class="v" id="rateV">'+R.label+'</span>';
+  var H={sk:'<b>Skeletal muscle is built to tetanize.</b> Each fiber is separately innervated, there is no electrical coupling between fibers, and the refractory period is only a few milliseconds &mdash; so stimuli can arrive far faster than the mechanical twitch can relax. That is the normal working state.',
+         ca:'<b>Cardiac muscle must never tetanize.</b> Its absolute refractory period is <b>200 to 250 ms</b>, almost as long as the contraction itself. Push the rate up and watch stimuli be refused. A tetanized ventricle would never refill and cardiac output would fall to zero.',
+         sm:'<b>Smooth muscle is built to hold.</b> Cross-bridge cycling is roughly ten times slower, and dephosphorylated heads can stay attached in the <b>latch state</b>. Stimulation stops at the dashed line &mdash; watch what happens to tension afterwards.'};
+  $('hint1').innerHTML=H[tis.k];
+}
+function sim1(){
+  var R=rateInfo(), W=tis.win, dt=W/1400;
+  var pool=0,T=0,out=[],stims=[],lastAccept=-1e9,i;
+  var iv=1000/R.f, next=0;
+  var burstEnd=(tis.k==='sm')?W*0.55:W;
+  var beat=0;
+  var amp=1;
+  for(i=0;i<=1400;i++){
+    var t=i*dt;
+    if(t>=next-1e-9){
+      var accepted=(t-lastAccept)>=tis.refr && t<=burstEnd;
+      if(t>burstEnd) accepted=false;
+      if(accepted){
+        lastAccept=t; beat++;
+        var a=1;
+        if(!extCa){
+          if(tis.k==='ca') a=Math.exp(-(beat-1)/1.1);
+          if(tis.k==='sm') a=0.25;
+        }
+        if(tis.k==='sm') a*=(R.ag||1);
+        pool+=9.9*a;
+      }
+      if(t<=burstEnd) stims.push({t:t,ok:accepted});
+      next+=iv;
+    }
+    pool*=Math.exp(-dt/tis.tauCa);
+    var ca=0.1+pool;
+    var act=Math.pow(ca,4)/(Math.pow(ca,4)+Math.pow(3,4));
+    var tau=tis.tauM;
+    if(tis.k==='sm'&&latch&&t>burstEnd&&T>0.05) tau=26000;  /* latch: heads stay attached */
+    T+=(act-T)*(dt/tau);
+    out.push({t:t,ca:ca,T:T,burst:t<=burstEnd});
+  }
+  return {p:out,stims:stims,W:W,burstEnd:burstEnd,R:R};
+}
+function render1(){
+  setRateLabel();
+  var S=sim1(), P=S.p, i, mx=0, mn=1, start=Math.floor(P.length*0.55);
+  var acc=0, blk=0;
+  S.stims.forEach(function(s){ if(s.ok)acc++; else blk++; });
+  for(i=0;i<P.length;i++){ if(P[i].T>mx)mx=P[i].T; }
+  var wstart=(tis.k==='sm')?Math.floor(P.length*0.30):start;
+  var wm=0,wn=1;
+  for(i=wstart;i<(tis.k==='sm'?Math.floor(P.length*0.52):P.length);i++){ if(P[i].T>wm)wm=P[i].T; if(P[i].T<wn)wn=P[i].T; }
+  var ripple=wm>0.01?(wm-wn)/wm:1;
+  var end=P[P.length-1].T;
+  var effRate=acc/(S.burstEnd/1000);
+
+  var canTet=(ripple<=0.10&&acc>3);
+  $('s1').innerHTML=
+    tile('Stimuli delivered',S.stims.length,'over the stimulation period')+
+    tile('Stimuli accepted',acc,blk>0?(blk+' refused by the refractory period'):'none refused')+
+    tile('Effective rate',effRate.toFixed(1),'per second that actually excited the tissue')+
+    tile('Peak tension',(mx*100).toFixed(0)+'%','of this tissue&rsquo;s maximum')+
+    tile('Plateau ripple',(ripple*100).toFixed(0)+'%','0% is a fused, smooth contraction')+
+    tile('Tension at the end',(end*100).toFixed(0)+'%',tis.k==='sm'?'after the agonist was withdrawn':'of maximum');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(tis.k==='ca'&&blk>0){
+    cls='verdict warn';
+    txt=blk+' of '+S.stims.length+' stimuli were refused outright<small>Cardiac muscle has an absolute refractory period of about <b>200 to 250 ms</b>. Any stimulus arriving inside that window finds the sodium channels inactivated and does nothing at all. At this rate the tissue is simply refusing to be driven faster.</small>';
+    inf='<span class="n">The inability to summate is the safety feature</span>A long refractory period is engineered into the plateau of the cardiac action potential, which is itself produced by a slow inward calcium current. Because the refractory period is nearly as long as the contraction, a second action potential cannot arrive while tension is still developing &mdash; so <b>summation and tetanus are impossible</b>. A tetanized ventricle would never relax enough to refill, and cardiac output would collapse.';
+  } else if(tis.k==='ca'){
+    cls='verdict';
+    txt='Individual beats, each complete before the next begins<small>No matter how you set the rate, the trace returns to baseline between beats. That return to baseline is diastole, and it is when the ventricle fills.</small>';
+    inf='<span class="n">Three things make cardiac muscle its own tissue</span><b>One:</b> cells are short, branched and joined by <b>intercalated discs</b> carrying desmosomes for strength and <b>gap junctions</b> for electrical continuity, so each chamber behaves as a <b>functional syncytium</b> &mdash; stimulate one cell and the whole chamber contracts. <b>Two:</b> roughly <b>1 percent</b> of cardiac cells are autorhythmic pacemakers with unstable resting potentials, so the heart needs no nerve to beat; autonomic input only changes rate and force. <b>Three:</b> coupling runs through <b>calcium-induced calcium release</b>.';
+  } else if(tis.k==='sm'&&!latch){
+    cls='verdict bad';
+    txt='Tension collapses as soon as the agonist is withdrawn<small>Without the latch state, holding tone means cycling cross-bridges continuously &mdash; and paying for every cycle. A vessel run this way could not hold its diameter for an afternoon, let alone a lifetime.</small>';
+    inf='<span class="n">The latch state is what makes tone affordable</span>Myosin light-chain phosphatase removes the phosphate from an attached head. A dephosphorylated head detaches very slowly, so it keeps holding tension while consuming almost no ATP. The result is force maintained for hours at about <b>one three-hundredth</b> the ATP cost of an equivalent skeletal contraction. Switch the latch back on and watch the tail of the trace change.';
+  } else if(tis.k==='sm'){
+    cls='verdict';
+    txt='Tone is still '+(end*100).toFixed(0)+'% long after the stimulus stopped<small>Notice how slowly everything happens: seconds, not milliseconds. Smooth muscle&rsquo;s myosin ATPase is roughly <b>ten times slower</b> than skeletal, and that slowness is what allows the latch.</small>';
+    inf='<span class="n">Chemistry worth memorizing, because it is genuinely different</span>Smooth muscle has <b>no troponin</b>. Calcium binds <b>calmodulin</b>, four ions per molecule; the calcium&ndash;calmodulin complex activates <b>myosin light-chain kinase</b>, which phosphorylates the myosin head and only then permits cycling. Regulation is <b>myosin-linked</b>, not actin-linked. Relaxation needs <b>myosin light-chain phosphatase</b> to remove that phosphate &mdash; so the balance between kinase and phosphatase, not calcium alone, sets the tone. Many drugs and second messengers work by shifting that balance rather than by changing calcium at all.<div class="dd">Structurally, the cells are small spindles <b>2 to 10 &micro;m</b> wide and <b>50 to 200 &micro;m</b> long, with filaments running obliquely onto <b>dense bodies</b> rather than aligned Z discs &mdash; which is why there are no striations and why the cell balls up instead of shortening along one axis. Smooth muscle can shorten by up to <b>70 percent</b> of resting length, against about <b>30 percent</b> for skeletal.</div>';
+  } else if(canTet){
+    cls='verdict info';
+    txt='Fused tetanus &mdash; and this is skeletal muscle&rsquo;s normal working state<small>Peak tension '+(mx*100).toFixed(0)+'% with a ripple of only '+(ripple*100).toFixed(0)+'%. Nothing here is pathological; a smooth tetanic contraction is what lets you hold a cup steady.</small>';
+    inf='<span class="n">Why only skeletal muscle can do this</span>Its refractory period is a few milliseconds, so stimuli can arrive far faster than the twitch can relax. Cardiac muscle is forbidden by a <b>200 to 250 ms</b> refractory period. Smooth muscle does not need to: it holds tone through the latch state instead, and does so for a fraction of the cost.';
+  } else {
+    cls='verdict info';
+    txt='Separate or partly summed twitches<small>Raise the frequency and watch the trace stop returning to baseline. Then switch to cardiac muscle and try to do the same thing.</small>';
+    inf='<span class="n">One question, three answers</span>Ask each tissue the same thing &mdash; can you fuse repeated contractions? Skeletal says yes, and does it all day. Cardiac says no, and its refusal is what keeps you alive. Smooth says the question is irrelevant, because it can hold tension without cycling at all.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  if(!extCa){
+    var X={sk:'<div class="dd"><b>Calcium removed, and skeletal muscle did not notice.</b> The DHP receptor is mechanically linked to RyR1, so all the calcium comes from the sarcoplasmic reticulum and none needs to cross the sarcolemma.</div>',
+           ca:'<div class="dd"><b>Calcium removed, and the heart stopped within a few beats.</b> Cardiac coupling needs an extracellular trigger influx through L-type channels to open RyR2 by calcium-induced calcium release. No trigger, no release.</div>',
+           sm:'<div class="dd"><b>Calcium removed, and smooth muscle is badly weakened but not silent.</b> It draws on both a sparse sarcoplasmic reticulum and the extracellular fluid, which is exactly why <b>calcium channel blockers</b> relax vascular smooth muscle so effectively.</div>'};
+    inf+=X[tis.k];
+  }
+  $('i1').innerHTML=inf;
+  draw1(S);
+}
+function draw1(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var P=S.p, L=96,R=W-26, A1=[40,320], A2=[386,H-56];
+  function X(t){return L+(t/S.W)*(R-L);}
+  function Y1(v){return A1[1]-v*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-(Math.log10(Math.max(0.05,v))-Math.log10(0.05))/(Math.log10(20)-Math.log10(0.05))*(A2[1]-A2[0]);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y1(i/4)); g.lineTo(R,Y1(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i*25)+'%',L-9,Y1(i/4)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(tis.n+' muscle — tension (percent of maximum)', L, A1[0]-10);
+  g.strokeStyle=tis.col; g.lineWidth=3.5; g.beginPath();
+  for(i=0;i<P.length;i++){ var x=X(P[i].t),y=Y1(P[i].T); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+  /* stimulus marks */
+  S.stims.forEach(function(s){
+    g.strokeStyle=s.ok?TDK:CORAL; g.lineWidth=s.ok?2:2.5;
+    g.beginPath(); g.moveTo(X(s.t),A1[1]); g.lineTo(X(s.t),A1[1]+13); g.stroke();
+    if(!s.ok){
+      g.beginPath(); g.moveTo(X(s.t)-5,A1[1]+19); g.lineTo(X(s.t)+5,A1[1]+29);
+      g.moveTo(X(s.t)+5,A1[1]+19); g.lineTo(X(s.t)-5,A1[1]+29); g.stroke();
+    }
+  });
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('stimulus marks — a red cross means the stimulus fell inside the refractory period', L, A1[1]+46);
+  if(tis.k==='ca'){
+    g.fillStyle=CORAL; g.globalAlpha=0.10;
+    g.fillRect(X(0),A1[0],X(tis.refr)-X(0),A1[1]-A1[0]); g.globalAlpha=1;
+    g.fillStyle=CORAL; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('absolute refractory 200–250 ms', X(0)+6, A1[0]+16);
+  }
+  if(S.burstEnd<S.W){
+    g.strokeStyle=GOLD; g.lineWidth=2.5; g.setLineDash([7,5]);
+    g.beginPath(); g.moveTo(X(S.burstEnd),A1[0]); g.lineTo(X(S.burstEnd),A2[1]); g.stroke(); g.setLineDash([]);
+    g.fillStyle=GOLD; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('agonist withdrawn', X(S.burstEnd)+7, A1[0]+16);
+  }
+  /* calcium */
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0.1,1,10].forEach(function(vv){
+    g.beginPath(); g.moveTo(L,Y2(vv)); g.lineTo(R,Y2(vv)); g.stroke();
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(vv+' µM',L-9,Y2(vv)+5);
+  });
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Cytosolic calcium (log scale)', L, A2[0]-10);
+  g.strokeStyle=GOLD; g.lineWidth=3; g.beginPath();
+  for(i=0;i<P.length;i++){ var x2=X(P[i].t),y2=Y2(P[i].ca); if(i===0)g.moveTo(x2,y2); else g.lineTo(x2,y2); }
+  g.stroke();
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  var st=S.W/8, unit=(S.W>=10000)?'s':'ms';
+  for(i=0;i<=8;i++){ var tt=i*st;
+    g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(tt),A2[1]); g.lineTo(X(tt),A2[1]+6); g.stroke();
+    g.fillText(unit==='s'?(tt/1000).toFixed(0):tt.toFixed(0),X(tt),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText(unit==='s'?'SECONDS':'MILLISECONDS',(L+R)/2,A2[1]+42);
+}
+
+/* =====================================================
+   BENCH 2 - calcium route and the comparison table
+   ===================================================== */
+var ROWS=[
+ ['Striations / Z discs','Yes, sarcomeres','Yes, sarcomeres','No; dense bodies'],
+ ['Nuclei per cell','Many, peripheral','One or two, central','One, central'],
+ ['Calcium receptor','Troponin C (actin-linked)','Troponin C (actin-linked)','Calmodulin then MLCK (myosin-linked)'],
+ ['Main calcium source','SR only; mechanical DHP–RyR1 link','Extracellular trigger plus SR (CICR)','Extracellular plus limited SR'],
+ ['Electrical coupling','None; each fiber innervated','Gap junctions; syncytium','Gap junctions in single-unit type'],
+ ['Control','Voluntary, somatic motor neuron','Involuntary, autorhythmic','Involuntary; autonomic, hormonal, stretch'],
+ ['Can it tetanize?','Yes, and normally does','No; long refractory period','Sustained tone via latch state'],
+ ['Regeneration','Limited; satellite cells','Essentially none','Good; cells can divide']
+];
+function render2(){
+  paintTis();
+  var idx=(tis.k==='sk')?1:(tis.k==='ca'?2:3);
+  var h='<table class="cmp"><thead><tr><th>Feature</th>'+
+    ['Skeletal','Cardiac','Smooth'].map(function(n,i){return '<th'+(i+1===idx?' class="sel"':'')+'>'+n+'</th>';}).join('')+
+    '</tr></thead><tbody>';
+  ROWS.forEach(function(r){
+    h+='<tr><td>'+r[0]+'</td>';
+    for(var c=1;c<=3;c++){ h+='<td'+(c===idx?' class="sel"':'')+'>'+r[c]+'</td>'; }
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  $('cmp').innerHTML=h;
+
+  var v=$('v2'),cls='verdict info',txt='',inf='';
+  if(tis.k==='sk'){
+    txt='Skeletal: all the calcium comes from inside<small>Depolarization &rarr; T tubule &rarr; the DHP receptor changes shape &rarr; it <b>mechanically pulls RyR1 open</b> &rarr; SR calcium into the cytosol &rarr; troponin C &rarr; tropomyosin off the actin binding sites.</small>';
+    inf='<span class="n">Actin-linked regulation</span>The switch sits on the <b>thin filament</b>. Myosin is always willing; what changes is whether the binding site on actin is exposed. That is why a skeletal fiber in a calcium-free bath keeps contracting for a while &mdash; nothing in the chain needs calcium to cross the membrane.';
+  } else if(tis.k==='ca'){
+    txt='Cardiac: a small influx triggers a large release<small>Calcium enters through <b>L-type channels</b> during the plateau of the cardiac action potential, binds <b>RyR2</b> on the SR, and the SR then releases the bulk of the calcium. Calcium causing calcium release.</small>';
+    inf='<span class="n">Genuine physiologic positive feedback</span><b>Calcium-induced calcium release</b> is one of the few places in the body where positive feedback is used deliberately, and like every safe example of it, it is <b>self-terminating and tightly bounded</b>. It also makes cardiac contraction dependent on extracellular calcium in a way that skeletal contraction is not &mdash; and that dependence is why calcium channel blockers reduce cardiac contractility.';
+  } else {
+    txt='Smooth: calcium switches the myosin head, not the actin filament<small>Calcium enters from outside and from a sparse SR, binds <b>calmodulin</b> (four ions per molecule), and the complex activates <b>myosin light-chain kinase</b>, which phosphorylates the head. Only then can cycling begin.</small>';
+    inf='<span class="n">Myosin-linked regulation, and why it matters clinically</span>Relaxation requires <b>myosin light-chain phosphatase</b>, so tone is set by the <i>balance</i> between kinase and phosphatase rather than by calcium alone. That gives pharmacology two separate handles: change the calcium (calcium channel blockers) or change the balance (nitric oxide and cyclic GMP, which promote dephosphorylation). Most smooth muscle is <b>single-unit</b>, coupled by gap junctions so sheets contract together, often driven by pacemaker cells and only <i>modulated</i> &mdash; not commanded &mdash; by autonomic nerves, hormones and local stretch.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  draw2();
+}
+function draw2(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function box(x,y,w,h,col,title,sub,sub2){
+    g.fillStyle=col; g.globalAlpha=0.13; g.fillRect(x,y,w,h); g.globalAlpha=1;
+    g.strokeStyle=col; g.lineWidth=2.5; g.strokeRect(x,y,w,h);
+    g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(title,x+w/2,y+28);
+    g.fillStyle=MUT; g.font='600 13px Inter, system-ui, sans-serif';
+    if(sub) g.fillText(sub,x+w/2,y+50);
+    if(sub2) g.fillText(sub2,x+w/2,y+70);
+  }
+  function arrow(x1,y1,x2,y2,col,lab,w){
+    g.strokeStyle=col; g.lineWidth=w||4;
+    g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke();
+    var a=Math.atan2(y2-y1,x2-x1);
+    g.fillStyle=col; g.beginPath();
+    g.moveTo(x2,y2);
+    g.lineTo(x2-14*Math.cos(a-0.4),y2-14*Math.sin(a-0.4));
+    g.lineTo(x2-14*Math.cos(a+0.4),y2-14*Math.sin(a+0.4));
+    g.closePath(); g.fill();
+    if(lab){ g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+      g.fillText(lab,(x1+x2)/2,(y1+y2)/2-9); }
+  }
+  g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(tis.n+' muscle', 40, 32);
+
+  if(tis.k==='sk'){
+    box(40,60,250,86,TEAL,'MEMBRANE','action potential','into the T tubule');
+    box(40,230,250,86,BLUE,'DHP RECEPTOR','voltage sensor','in the T tubule');
+    box(400,230,250,86,BLUE,'RyR1','SR release channel','mechanically linked');
+    box(400,60,250,86,GOLD,'SARCOPLASMIC RETICULUM','the only calcium source','');
+    box(760,230,250,86,CORAL,'TROPONIN C','on the thin filament','actin-linked');
+    box(400,430,250,86,PURP,'CROSS-BRIDGES CYCLE','tropomyosin slides aside','');
+    arrow(165,146,165,230,TEAL,'depolarize');
+    arrow(290,273,400,273,BLUE,'pulls it open');
+    arrow(525,146,525,230,GOLD,'stores Ca²⁺');
+    arrow(650,273,760,273,GOLD,'Ca²⁺ 0.1 → 10 µM');
+    arrow(885,316,650,430,CORAL,'unblocks actin');
+    g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('No calcium crosses the sarcolemma at any point.', 40, 470);
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText('This is why a skeletal fiber in a calcium-free bath keeps contracting.', 40, 494);
+  } else if(tis.k==='ca'){
+    box(40,60,250,86,TEAL,'L-TYPE Ca CHANNEL','opens in the plateau','of the action potential');
+    box(400,60,250,86,GOLD,'A SMALL Ca²⁺ INFLUX','the trigger','from outside the cell');
+    box(400,230,250,86,BLUE,'RyR2','opened by calcium itself','calcium-induced release');
+    box(760,230,250,86,GOLD,'SR RELEASES THE BULK','positive feedback','self-terminating');
+    box(400,430,250,86,CORAL,'TROPONIN C','actin-linked, as in skeletal','');
+    arrow(290,103,400,103,TEAL,'Ca²⁺ in');
+    arrow(525,146,525,230,GOLD,'binds RyR2');
+    arrow(650,273,760,273,BLUE,'opens it');
+    arrow(885,316,650,430,GOLD,'Ca²⁺ to troponin');
+    g.strokeStyle=CORAL; g.lineWidth=3; g.setLineDash([7,5]);
+    g.beginPath(); g.moveTo(885,230); g.lineTo(885,150); g.lineTo(600,150); g.stroke(); g.setLineDash([]);
+    g.fillStyle=CORAL; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('released calcium feeds back and opens more RyR2', 740, 140);
+    g.textAlign='left';
+    g.fillText('Remove extracellular calcium and the heart stops within a few beats.', 40, 470);
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText('There is no mechanical DHP–RyR link here; the trigger must arrive from outside.', 40, 494);
+  } else {
+    box(40,60,250,86,TEAL,'MEMBRANE CHANNELS','voltage-gated and','ligand-gated');
+    box(40,230,250,86,GOLD,'SPARSE SR','a limited second source','');
+    box(400,146,250,86,BLUE,'CALMODULIN','four Ca²⁺ per molecule','no troponin here');
+    box(760,146,250,86,BLUE,'MLCK','myosin light-chain kinase','');
+    box(760,340,250,86,CORAL,'MYOSIN HEAD PHOSPHORYLATED','cycling now permitted','myosin-linked');
+    box(400,430,250,86,PURP,'MLCP','phosphatase — removes it','relaxation, or latch');
+    arrow(290,103,400,175,TEAL,'Ca²⁺ from outside');
+    arrow(290,265,400,215,GOLD,'Ca²⁺ from SR');
+    arrow(650,189,760,189,BLUE,'activates');
+    arrow(885,232,885,340,BLUE,'phosphorylates');
+    arrow(760,383,650,455,PURP,'dephosphorylates');
+    g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('Tone is the balance between kinase and phosphatase — not calcium alone.', 40, 470);
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText('Calcium channel blockers work on the left of this diagram; nitric oxide works on the right.', 40, 494);
+  }
+  if(!extCa){
+    g.fillStyle=CORAL; g.globalAlpha=0.10; g.fillRect(20,50,W-40,H-90); g.globalAlpha=1;
+    g.fillStyle=CORAL; g.font='800 17px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('extracellular calcium removed', W-40, 32);
+  }
+}
+
+/* =====================================================
+   BENCH 3 - the cost of holding
+   ===================================================== */
+var HOLDS=[
+ {k:'art',n:'An arteriole holding its diameter',h:80,t:30},
+ {k:'sph',n:'A sphincter staying closed',h:120,t:45},
+ {k:'ut',n:'The uterus in labor',h:6,t:85},
+ {k:'post',n:'Postural skeletal muscle standing',h:20,t:15}
+];
+$('hrs').addEventListener('input',render3);
+$('ten').addEventListener('input',render3);
+var hbox=$('holds');
+HOLDS.forEach(function(Hd){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=Hd.n;
+  b.onclick=function(){ $('hrs').value=Hd.h; $('ten').value=Hd.t; render3(); };
+  hbox.appendChild(b);
+});
+function render3(){
+  var hrs=+$('hrs').value/10, ten=+$('ten').value/100;
+  $('hrsV').textContent=hrs.toFixed(1)+' h';
+  $('tenV').textContent=(ten*100).toFixed(0)+'%';
+  var secs=hrs*3600;
+  var skRate=2.2*ten;                       /* mmol ATP per kg per second, cycling cross-bridges */
+  var smRate=latch?skRate/300:skRate/10;    /* latch state, or a myosin ATPase ten times slower still cycling */
+  var skTotal=skRate*secs, smTotal=smRate*secs;
+  var ratio=smTotal>0?skTotal/smTotal:0;
+  var glucSk=skTotal/31, glucSm=smTotal/31; /* mmol glucose per kg, oxidative at ~31 ATP per glucose */
+
+  $('s3').innerHTML=
+    tile('ATP turned over, cycling',Math.round(skTotal).toLocaleString(),'mmol/kg total over '+hrs.toFixed(1)+' h')+
+    tile('ATP turned over, latch',(smTotal<10?smTotal.toFixed(1):Math.round(smTotal).toLocaleString()),'mmol/kg total, same tension')+
+    tile('Ratio',ratio.toFixed(0)+'×','cheaper to hold than to cycle')+
+    tile('Glucose equivalent, cycling',glucSk.toFixed(0),'mmol/kg at about 31 ATP each')+
+    tile('Glucose equivalent, latch',glucSm.toFixed(2),'mmol/kg')+
+    tile('Resting ATP in the cell','5','mmol/kg &mdash; the store is turned over constantly');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(!latch){
+    cls='verdict bad';
+    txt='With the latch switched off, holding this tension costs '+Math.round(smTotal).toLocaleString()+' mmol/kg<small>That is what a tissue pays when every unit of force requires a cross-bridge to keep cycling. No vessel could sustain it, and the tissue would fatigue like skeletal muscle.</small>';
+    inf='<span class="n">Fatigue is a cost problem</span>Skeletal muscle fatigues because sustained force means sustained cycling, and sustained cycling means inorganic phosphate, hydrogen ion and potassium accumulating faster than they can be cleared. Smooth muscle sidesteps the whole issue by <i>not cycling</i> while it holds.';
+  } else if(hrs>=4){
+    cls='verdict';
+    txt='Held for '+hrs.toFixed(1)+' hours at '+(ten*100).toFixed(0)+'% tension, for '+ratio.toFixed(0)+' times less ATP<small>This is how a blood vessel keeps its diameter all day and how a sphincter stays closed without ever fatiguing.</small>';
+    inf='<span class="n">The latch state, mechanically</span>Myosin light-chain phosphatase removes the phosphate from a head that is already attached. A dephosphorylated head detaches very slowly, so it goes on bearing load while consuming almost nothing. Force is maintained; cycling is not. Combined with a myosin ATPase roughly <b>ten times slower</b> than skeletal to begin with, the cost of tone falls to about <b>one three-hundredth</b> of the equivalent skeletal contraction.';
+  } else if(ten>0.7){
+    cls='verdict warn';
+    txt='High tension, short duration &mdash; this is smooth muscle doing work, not holding<small>Labor, micturition and defaecation are the occasions when smooth muscle spends real energy. Notice how much of the ledger is duration rather than force.</small>';
+    inf='<span class="n">Smooth muscle is not weak</span>Per cross-sectional area it generates force comparable to skeletal muscle. It also shortens further &mdash; up to <b>70 percent</b> of resting length against about <b>30 percent</b> for skeletal &mdash; because its filaments run obliquely onto dense bodies rather than along one axis. That is how a hollow organ can empty almost completely. Consider the uterus in labor, or an arteriole holding systemic pressure against a beating heart.';
+  } else {
+    cls='verdict info';
+    txt='A short hold &mdash; drag the duration slider out to several hours<small>The advantage of the latch state is not visible in a few minutes. It is visible across a working day, which is exactly the timescale smooth muscle was built for.</small>';
+    inf='<span class="n">Different tissues, different questions</span>Skeletal muscle is asked to produce large force briefly and then stop. Cardiac muscle is asked to produce moderate force rhythmically and never stop. Smooth muscle is asked to hold a small force indefinitely. Each has solved its own problem, and the solutions look nothing like one another.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  draw3(skTotal,smTotal,hrs,ten,ratio);
+}
+function draw3(skTotal,smTotal,hrs,ten,ratio){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=210,R=W-60, y1=110, y2=250, bh=76;
+  var mx=Math.max(skTotal,1);
+  g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('ATP consumed holding '+(ten*100).toFixed(0)+'% tension for '+hrs.toFixed(1)+' hours', 40, 46);
+  function bar(y,val,col,name,note){
+    var w=Math.max(3,(val/mx)*(R-L));
+    g.fillStyle=col; g.globalAlpha=0.85; g.fillRect(L,y,w,bh); g.globalAlpha=1;
+    g.strokeStyle=col; g.lineWidth=2; g.strokeRect(L,y,w,bh);
+    g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(name,L-16,y+30);
+    g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+    g.fillText(note,L-16,y+52);
+    g.fillStyle=TDK; g.font='800 17px Fraunces, Georgia, serif'; g.textAlign='left';
+    g.fillText((val<10?val.toFixed(2):Math.round(val).toLocaleString())+' mmol/kg', L+w+12, y+bh/2+6);
+  }
+  bar(y1,skTotal,CORAL,'Cycling cross-bridges','a skeletal-style sustained contraction');
+  bar(y2,smTotal,GREEN,latch?'Smooth muscle latch state':'Smooth muscle, latch disabled',latch?'dephosphorylated heads stay attached':'forced to keep cycling');
+  g.strokeStyle=LINE; g.lineWidth=1.5;
+  g.beginPath(); g.moveTo(L,y1-16); g.lineTo(L,y2+bh+16); g.stroke();
+  g.fillStyle=TDK; g.font='800 20px Fraunces, Georgia, serif'; g.textAlign='center';
+  g.fillText(ratio.toFixed(0)+'× cheaper to hold than to cycle', W/2, H-58);
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+  g.fillText('An arteriole holds its diameter every hour of your life. This is the only reason that is affordable.', W/2, H-30);
+}
+
+/* boot */
+setRateLabel(); render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

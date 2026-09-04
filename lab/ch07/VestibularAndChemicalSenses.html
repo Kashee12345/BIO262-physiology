@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Accelerometers and Chemical Codes &mdash; Balance, Taste and Smell</title>
+<meta name="description" content="Spin a head and watch the cupula bend, decay and rebound while the vestibulo-ocular reflex counter-rotates the eyes, then tilt an otolith organ and read a combinatorial odor code off the olfactory bulb.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--coral);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:12px;}
+.loop div{border:1px solid var(--line);border-radius:9px;padding:7px 8px;background:#fff;}
+.loop .k{font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);font-weight:800;}
+.loop .b{font-size:11.5px;font-weight:700;color:var(--teal-dk);line-height:1.3;margin-top:2px;}
+.modeseg button{font-size:12px !important;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch07.html">&larr; Module 7</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 7</div>
+  <h1>Accelerometers and Chemical Codes</h1>
+  <div class="intro">The vestibular apparatus splits inertia in two. The <b>semicircular canals</b> are phasic and report angular <i>acceleration</i>, which is why a steady spin stops feeling like anything; the <b>otolith organs</b> are tonic and report gravity, which never stops. Spin a head below and watch the cupula bend, decay and rebound while the vestibulo-ocular reflex counter-rotates the eyes. Then tilt an otolith, and read an odor off a pattern of glomeruli.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Canals &amp; VOR</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Otoliths</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Smell</button>
+        <button id="m4" type="button" role="tab" aria-selected="false">Taste</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Spin the chair</div>
+        <div class="row">
+          <button class="btn solid" id="bPlay" type="button">Run the rotation</button>
+          <button class="btn" id="bStop" type="button">Reset</button>
+        </div>
+        <div class="sl"><label for="tscrub">Time <span class="v" id="tscrubV">0.0 s</span></label>
+          <input type="range" id="tscrub" min="0" max="1000" value="0" step="1" aria-label="Scrub through the rotation, in thousandths of the total run"></div>
+        <div class="sl"><label for="vpk">Peak rotation speed <span class="v" id="vpkV">90 &deg;/s</span></label>
+          <input type="range" id="vpk" min="20" max="240" value="90" step="1" aria-label="Peak angular velocity of the chair in degrees per second"></div>
+        <div class="sl"><label for="tacc">Time spent speeding up <span class="v" id="taccV">2.0 s</span></label>
+          <input type="range" id="tacc" min="5" max="60" value="20" step="1" aria-label="Duration of the acceleration phase in tenths of a second"></div>
+        <div class="sl"><label for="vgain">Vestibulo-ocular reflex gain <span class="v" id="vgainV">1.00</span></label>
+          <input type="range" id="vgain" min="0" max="130" value="100" step="1" aria-label="Gain of the vestibulo-ocular reflex, in hundredths"></div>
+        <button class="tog" id="tUni" type="button" aria-pressed="false"><span class="dot"></span><span>Knock out the right labyrinth <small>Acute unilateral vestibular failure. The right afferent goes silent while the left keeps its resting discharge.</small></span></button>
+        <div class="hint"><b>The two moments that matter.</b> Run the rotation and watch the firing rates during the <i>constant speed</i> phase &mdash; they return to baseline within 20&ndash;30 seconds even though you are still spinning. Then watch what happens the instant the chair stops. The fluid keeps moving, the cupula bends the other way, and you feel violent rotation while sitting still.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Tilt the head, or accelerate it</div>
+        <div class="sl"><label for="tilt">Head tilt <span class="v" id="tiltV">0&deg;</span></label>
+          <input type="range" id="tilt" min="-60" max="60" value="0" step="1" aria-label="Head tilt in degrees from upright"></div>
+        <div class="sl"><label for="lacc">Linear acceleration <span class="v" id="laccV">0.00 g</span></label>
+          <input type="range" id="lacc" min="-50" max="50" value="0" step="1" aria-label="Linear acceleration in hundredths of gravity"></div>
+        <div class="chips" id="pre2"></div>
+        <button class="tog" id="tBPPV" type="button" aria-pressed="false"><span class="dot"></span><span>Loose otoconia in the posterior canal <small>Benign paroxysmal positional vertigo. Crystals that belong in the utricle have fallen into a canal, which now responds to gravity.</small></span></button>
+        <div class="hint"><b>The comparison to make.</b> Set a tilt and hold it. The otolith afferent steps up and <i>stays</i> up &mdash; gravity does not stop, so the receptor must not adapt. The canal afferent beside it fires a burst and then dies back to baseline within 20&ndash;30 seconds. Same head, same maneuver, opposite adaptation.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Present an odorant</div>
+        <div class="chips" id="odlist"></div>
+        <div class="sl"><label for="conc">Concentration <span class="v" id="concV">medium</span></label>
+          <input type="range" id="conc" min="0" max="100" value="55" step="1" aria-label="Odorant concentration, arbitrary units"></div>
+        <div class="sl"><label for="sniff">Seconds of continuous exposure <span class="v" id="sniffV">0 s</span></label>
+          <input type="range" id="sniff" min="0" max="180" value="0" step="1" aria-label="Duration of continuous odorant exposure in seconds"></div>
+        <div class="lbl">Knock out one receptor gene</div>
+        <div class="chips" id="korlist"></div>
+        <div class="hint"><b>Why 400 genes can discriminate far more than 400 smells.</b> Every neuron expresses essentially <i>one</i> receptor type, and every odorant activates a particular <i>subset</i> to different degrees. Identity is the pattern, not the line &mdash; so knock out a receptor and most odors are still recognizable, just slightly different.</div>
+      </div>
+
+      <div id="p4" class="hide">
+        <div class="lbl">Put something on the tongue</div>
+        <div class="chips" id="tastelist"></div>
+        <div class="sl"><label for="tconc">Concentration <span class="v" id="tconcV">1.0 mM</span></label>
+          <input type="range" id="tconc" min="-40" max="30" value="0" step="1" aria-label="Tastant concentration, logarithmic, in tenths of a log unit around one millimolar"></div>
+        <button class="tog" id="tNose" type="button" aria-pressed="false"><span class="dot"></span><span>Block the nose &mdash; head cold <small>Removes retronasal olfaction while leaving every taste bud perfectly intact.</small></span></button>
+        <div class="hint"><b>Two mechanisms, five qualities.</b> Salty and sour work through ion channels directly, with no second messenger at all. Sweet, umami and bitter work through G-protein-coupled receptors, gustducin and phospholipase C-beta-2. Watch how far apart the thresholds sit &mdash; and ask why bitter is the one set a thousand-fold lower.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Cupula, firing rates and the eyes</h2>
+      <canvas id="cv1" width="1040" height="330" aria-label="Top view of a head rotating with a horizontal semicircular canal, showing endolymph lagging behind and bending the cupula, plus the firing rates of both labyrinths"></canvas>
+      <canvas id="cv1b" width="1040" height="380" aria-label="Time plots of head velocity, cupula deflection, left and right afferent firing rates, and eye position showing nystagmus"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="loop" id="lp1"></div>
+      <div class="infobox" id="i1"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>Dense crystals on a gelatinous membrane</h2>
+      <canvas id="cv2" width="1040" height="340" aria-label="Otolithic membrane with dense otoconia shearing the hair bundles when the head tilts"></canvas>
+      <canvas id="cv2b" width="1040" height="260" aria-label="Firing rate over time comparing the sustained otolith response with the transient semicircular canal response to the same maintained tilt"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>One chemical, one pattern on the bulb</h2>
+      <canvas id="cv3" width="1040" height="400" aria-label="Map of olfactory glomeruli showing which receptor types are activated and how strongly by the chosen odorant"></canvas>
+      <div class="stats" id="st3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+
+    <div class="card hide" id="r4">
+      <h2>Ion channels on one side, G proteins on the other</h2>
+      <canvas id="cv4" width="1040" height="360" aria-label="Transduction diagram for the chosen taste quality, contrasting direct ion channel entry with the G-protein-coupled cascade"></canvas>
+      <canvas id="cv4b" width="1040" height="230" aria-label="Logarithmic comparison of detection thresholds for the five taste qualities"></canvas>
+      <div class="stats" id="st4"></div>
+      <div class="verdict" id="v4">&nbsp;</div>
+      <div class="infobox" id="i4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var MB=[$('m1'),$('m2'),$('m3'),$('m4')];
+function setMode(n){
+  MB.forEach(function(b,i){ b.classList.toggle('on',n===i+1); b.setAttribute('aria-selected',n===i+1?'true':'false'); });
+  [1,2,3,4].forEach(function(k){
+    $('p'+k).classList.toggle('hide',n!==k);
+    $('r'+k).classList.toggle('hide',n!==k);
+  });
+  if(n===2) render2(); if(n===3) render3(); if(n===4) render4();
+}
+MB.forEach(function(b,i){ b.onclick=function(){ setMode(i+1); }; });
+
+/* =========================================================
+   BENCH 1 -- semicircular canals and the vestibulo-ocular reflex
+   Cupula behaves as a high-pass filter with a time constant near 7 s,
+   so a maintained rotation fades within 20-30 s.
+   ========================================================= */
+var TAU=7, BASE=90, HOLD=20, TAIL=12;
+var uniFail=false, simT=0, raf=null, tStart=0, SIM=null;
+$('tUni').onclick=function(){ uniFail=!uniFail; this.setAttribute('aria-pressed',uniFail?'true':'false'); build(); render1(); };
+['vpk','tacc','vgain'].forEach(function(id){ $(id).addEventListener('input',function(){ build(); render1(); }); });
+$('tscrub').addEventListener('input',function(){ stopPlay(); simT=SIM.T*(+this.value)/1000; render1(); });
+$('bPlay').onclick=function(){ tStart=performance.now()-simT*1000; if(!raf) raf=requestAnimationFrame(loop); };
+$('bStop').onclick=function(){ stopPlay(); simT=0; $('tscrub').value=0; render1(); };
+function stopPlay(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+function loop(ts){
+  simT=(ts-tStart)/1000;
+  if(simT>=SIM.T){ simT=SIM.T; raf=null; }
+  $('tscrub').value=Math.round(1000*simT/SIM.T);
+  render1();
+  if(raf) raf=requestAnimationFrame(loop);
+}
+function build(){
+  var V=+$('vpk').value, ta=(+$('tacc').value)/10, G=(+$('vgain').value)/100;
+  var A=V/ta, t1=ta, t2=t1+HOLD, t3=t2+ta, T=t3+TAIL;
+  var dt=0.02, n=Math.round(T/dt), i, w=0, prevW=0, c=0, eye=0, arr=[];
+  for(i=0;i<=n;i++){
+    var t=i*dt;
+    if(t<t1) w=A*t; else if(t<t2) w=V; else if(t<t3) w=V-A*(t-t2); else w=0;
+    c=c+(w-prevW)-dt*c/TAU; prevW=w;
+    var R=clamp(BASE+0.9*c,0,400), L=clamp(BASE-0.9*c,0,400);
+    if(uniFail) R=0;
+    var perc=(R-L)/1.8;
+    var ev=-G*perc;
+    eye+=ev*dt;
+    var q=false;
+    if(eye>14){ eye=-2; q=true; } if(eye<-14){ eye=2; q=true; }
+    arr.push({t:t,w:w,c:c,R:R,L:L,p:perc,e:eye,ev:ev,slip:w+ev,q:q});
+  }
+  SIM={arr:arr,T:T,dt:dt,t1:t1,t2:t2,t3:t3,V:V,G:G,A:A};
+  if(simT>T) simT=T;
+}
+function at(t){ return SIM.arr[clamp(Math.round(t/SIM.dt),0,SIM.arr.length-1)]; }
+
+function render1(){
+  var V=+$('vpk').value, ta=(+$('tacc').value)/10, G=(+$('vgain').value)/100;
+  $('vpkV').textContent=V+' °/s'; $('taccV').textContent=ta.toFixed(1)+' s'; $('vgainV').textContent=G.toFixed(2);
+  $('tscrubV').textContent=simT.toFixed(1)+' s';
+  var S=at(simT);
+  var phase = simT<SIM.t1 ? 'speeding up' : (simT<SIM.t2 ? 'constant speed' : (simT<SIM.t3 ? 'slowing down' : 'stopped'));
+
+  $('st1').innerHTML=
+    tile('Head velocity',S.w.toFixed(0),'&deg;/s &middot; '+phase)+
+    tile('Angular acceleration',(simT<SIM.t1?SIM.A.toFixed(0):(simT>=SIM.t2&&simT<SIM.t3?(-SIM.A).toFixed(0):'0')),'&deg;/s&sup2; &middot; this is what the canal actually senses')+
+    tile('Cupula signal',(S.c>0?'+':'')+S.c.toFixed(0),'&deg;/s equivalent &middot; decays with a 7 s time constant')+
+    tile('Right afferent',S.R.toFixed(0),'spikes/s &middot; resting discharge 90&ndash;100')+
+    tile('Left afferent',S.L.toFixed(0),'spikes/s &middot; the two work in push-pull')+
+    tile('Retinal slip',Math.abs(S.slip).toFixed(0),'&deg;/s &middot; '+(Math.abs(S.slip)<4?'text stays legible':'the world blurs'));
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(uniFail){
+    cls='verdict bad';
+    txt='Acute unilateral vestibular failure &mdash; violent vertigo with the head completely still<small>The right afferent is silent while the left keeps firing at '+S.L.toFixed(0)+' spikes/s. The brainstem reads the <i>difference</i>, so it computes a rotation of about '+Math.abs(S.p).toFixed(0)+' &deg;/s that is not happening, and drives the eyes accordingly.</small>';
+    inf='<span class="n">Bidirectional coding has a price</span>Vestibular afferents fire tonically at about <b>90&ndash;100 spikes per second at rest</b> so that excitation can be an increase and inhibition a decrease from that baseline. The two ears work in push-pull: rightward rotation excites the right horizontal canal while inhibiting the left, and the brainstem reads the difference.<div class="dd">Take one side away and the difference is no longer zero at rest. That is why vestibular neuritis produces days of severe constant vertigo with nausea and a spontaneous nystagmus &mdash; not because anything is moving, but because the comparison is broken. Central compensation over days to weeks re-balances the resting rates, which is why the vertigo settles even though the nerve does not recover.</div>';
+  } else if(phase==='speeding up'){
+    cls='verdict';
+    txt='Speeding up &mdash; the endolymph is lagging behind and the cupula is bent<small>Cupula signal '+S.c.toFixed(0)+', right afferent up to '+S.R.toFixed(0)+' and left down to '+S.L.toFixed(0)+' spikes/s. The eyes are counter-rotating at '+Math.abs(S.ev).toFixed(0)+' &deg;/s.</small>';
+    inf='<span class="n">Inertia is the whole mechanism</span>The canal wall moves with the skull, but the endolymph inside lags behind. That relative flow bends the <b>cupula</b>, a gelatinous flap that spans the duct and has <i>exactly the same density as the endolymph around it</i>. That equal density is the design feature: the cupula cannot be displaced by gravity, only by relative fluid motion.<div class="dd">Compare that with the otolith organs, whose crystals are deliberately far denser than their surroundings precisely so that gravity <i>can</i> move them.</div>';
+  } else if(phase==='constant speed'){
+    cls= Math.abs(S.c)<8 ? 'verdict cool' : 'verdict info';
+    txt= Math.abs(S.c)<8
+      ? 'Constant speed &mdash; and you can no longer feel that you are spinning<small>You are still rotating at '+S.w.toFixed(0)+' &deg;/s, but the endolymph has caught up with the canal wall, the cupula has sprung back and both afferents are back near their '+BASE+' spikes/s baseline.</small>'
+      : 'Constant speed &mdash; the signal is already fading<small>Cupula signal down to '+S.c.toFixed(0)+' from a peak of '+SIM.V+'. Within 20&ndash;30 seconds it will be gone entirely even though the chair has not slowed at all.</small>';
+    inf='<span class="n">The canals are phasic, and that is not a defect</span>They report the <b>derivative</b> of head position &mdash; angular acceleration &mdash; because that is what a gaze-stabilizing reflex needs. Sustained rotation at a fixed speed is a situation that essentially never occurs outside a laboratory or a fairground, so nothing is lost by letting the signal decay.<div class="dd">Watch the retinal slip climb as the cupula signal fades. With no vestibular signal, the vestibulo-ocular reflex has nothing to drive it, and the world starts to smear.</div>';
+  } else if(phase==='slowing down' || (simT>=SIM.t3 && Math.abs(S.c)>8)){
+    cls='verdict warn';
+    txt='Stopping &mdash; and now it feels as though you are spinning the other way<small>The fluid is still moving while the canal wall has stopped, so the cupula is deflected in the opposite direction: cupula signal '+S.c.toFixed(0)+', right afferent '+S.R.toFixed(0)+', left '+S.L.toFixed(0)+'. The eyes are being driven at '+Math.abs(S.ev).toFixed(0)+' &deg;/s by a rotation that is not happening.</small>';
+    inf='<span class="n">Post-rotatory vertigo, explained completely</span>Inertia works in both directions. Stop suddenly and the endolymph keeps going, bending the cupula the other way and generating a signal of rotation in the reverse direction while the head is genuinely still. That is the spinning sensation after a carnival ride, and the nystagmus that goes with it.<div class="dd">It also explains why the sensation fades over roughly the same 20&ndash;30 seconds. The fluid slows, the cupula springs back and the false signal decays with the same time constant that erased the true one.</div>';
+  } else {
+    cls='verdict';
+    txt='At rest &mdash; both labyrinths firing at their '+BASE+' spikes/s baseline<small>No acceleration, no cupula deflection, no difference between the two sides, no eye movement. Press <b>Run the rotation</b> to start.</small>';
+    inf='<span class="n">The vestibulo-ocular reflex is the fastest reflex you own</span><i>Variable</i>: image stability on the retina during head movement. <i>Sensor</i>: the semicircular canals. <i>Integrator</i>: the vestibular nuclei in the medulla, through a <b>three-neuron arc</b>. <i>Effector</i>: the extraocular muscles via cranial nerves III, IV and VI. <i>Response</i>: the eyes counter-rotate at nearly equal and opposite velocity, gain close to <b>1.0</b>, with a latency of only <b>7&ndash;15 ms</b>.<div class="dd">Shake your head while reading this sentence and it stays legible. Shake the page at the same speed and it blurs. The difference is that the first case has a vestibular signal to work from and a reflex arc short enough to use it; any visually guided correction would be an order of magnitude too slow.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('lp1').innerHTML=
+    '<div><div class="k">Variable</div><div class="b">Image stability on the retina</div></div>'+
+    '<div><div class="k">Sensor</div><div class="b">Semicircular canals, three orthogonal planes</div></div>'+
+    '<div><div class="k">Integrator</div><div class="b">Vestibular nuclei &middot; three-neuron arc</div></div>'+
+    '<div><div class="k">Effector</div><div class="b">Extraocular muscles, CN III, IV and VI</div></div>'+
+    '<div><div class="k">Response</div><div class="b">Eyes counter-rotate in 7&ndash;15 ms, gain near 1.0</div></div>';
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','At '+simT.toFixed(1)+' seconds the head is turning at '+S.w.toFixed(0)+' degrees per second, the cupula signal is '+S.c.toFixed(0)+', and the right and left afferents fire at '+S.R.toFixed(0)+' and '+S.L.toFixed(0)+' spikes per second.');
+  drawHead(S); drawTraces();
+}
+
+function drawHead(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cx=250,cy=H/2+8;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('LOOKING DOWN ON THE HEAD — HORIZONTAL SEMICIRCULAR CANALS',24,28);
+
+  /* head, rotated by the running integral of angular velocity */
+  var headAng=(function(){ var a=0,i,arr=SIM.arr,n=clamp(Math.round(simT/SIM.dt),0,arr.length-1); for(i=0;i<=n;i++){ a+=arr[i].w*SIM.dt; } return a*Math.PI/180; })();
+  g.save(); g.translate(cx,cy); g.rotate(headAng);
+  g.fillStyle=LINE; g.beginPath(); g.arc(0,0,104,0,6.3); g.fill();
+  g.strokeStyle=MUT; g.lineWidth=2; g.stroke();
+  /* nose */
+  g.fillStyle=MUT; g.beginPath(); g.moveTo(0,-104); g.lineTo(-12,-124); g.lineTo(12,-124); g.closePath(); g.fill();
+  /* two canals */
+  [[-1,'L'],[1,'R']].forEach(function(P){
+    var s=P[0];
+    g.strokeStyle=MUT; g.lineWidth=9;
+    g.beginPath(); g.arc(s*46,10,36,0,6.3); g.stroke();
+    g.strokeStyle='#fff'; g.lineWidth=5;
+    g.beginPath(); g.arc(s*46,10,36,0,6.3); g.stroke();
+    /* cupula, tilted by the deflection */
+    var d=clamp(S.c/120,-1,1)*0.5*s*-1;
+    g.save(); g.translate(s*46,10-36); g.rotate(d);
+    g.fillStyle=(Math.abs(S.c)>6)?CORAL:MUT;
+    g.fillRect(-4,-14,8,28); g.restore();
+    g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(P[1],s*46,16);
+  });
+  g.restore();
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('the red flap is the cupula — equal in density to the endolymph, so only relative flow bends it',cx,cy+150);
+
+  /* firing bars */
+  var bx=560, by=76;
+  [['LEFT afferent',S.L,BLUE],['RIGHT afferent',S.R,CORAL]].forEach(function(P,i){
+    var yy=by+i*72;
+    g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(P[0],bx,yy-8);
+    g.fillStyle=LINE; g.fillRect(bx,yy,400,26);
+    g.fillStyle=P[2]; g.fillRect(bx,yy,400*clamp(P[1]/300,0,1),26);
+    g.strokeStyle=TDK; g.lineWidth=2;
+    g.beginPath(); g.moveTo(bx+400*(BASE/300),yy-5); g.lineTo(bx+400*(BASE/300),yy+31); g.stroke();
+    g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif';
+    g.fillText(P[1].toFixed(0)+' /s',bx+408,yy+19);
+  });
+  g.fillStyle=TDK; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('the vertical bar is the '+BASE+' spikes/s resting discharge — firing rises above it on one side and falls below it on the other',bx,by+152);
+
+  /* eyes */
+  var ey=by+192;
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif';
+  g.fillText('EYES',bx,ey-10);
+  [-1,1].forEach(function(s){
+    var ox=bx+120+s*70;
+    g.fillStyle='#fff'; g.strokeStyle=MUT; g.lineWidth=2.5;
+    g.beginPath(); g.arc(ox,ey+18,26,0,6.3); g.fill(); g.stroke();
+    g.fillStyle=TDK;
+    g.beginPath(); g.arc(ox+clamp(S.e,-14,14)*1.4,ey+18,10,0,6.3); g.fill();
+  });
+  g.fillStyle=Math.abs(S.slip)<4?GREEN:CORAL; g.font='800 12.5px Inter, system-ui, sans-serif';
+  g.fillText(Math.abs(S.slip)<4?'gaze is stable — retinal slip '+Math.abs(S.slip).toFixed(0)+' °/s':'the world is smearing — retinal slip '+Math.abs(S.slip).toFixed(0)+' °/s',bx+230,ey+22);
+}
+
+function drawTraces(){
+  var cv=$('cv1b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=88,R=W-26;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(t){ return L+(t/SIM.T)*(R-L); }
+  var rows=[
+    {t:'HEAD VELOCITY  °/s',f:function(a){return a.w;},min:-40,max:SIM.V*1.15,col:TDK,brk:false},
+    {t:'CUPULA SIGNAL — what the canal is reporting',f:function(a){return a.c;},min:-SIM.V*1.1,max:SIM.V*1.1,col:CORAL,brk:false},
+    {t:'AFFERENT FIRING  spikes/s',f:null,min:0,max:300,col:BLUE,brk:false},
+    {t:'EYE POSITION  ° — slow phase plus quick resets',f:function(a){return a.e;},min:-16,max:16,col:GREEN,brk:true}
+  ];
+  var rh=(H-46)/rows.length;
+  rows.forEach(function(Rw,i){
+    var T0=14+i*rh, B0=T0+rh-24;
+    function Y(v2){ return B0-((v2-Rw.min)/(Rw.max-Rw.min))*(B0-T0); }
+    g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.moveTo(L,B0); g.lineTo(R,B0); g.stroke();
+    if(Rw.min<0){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(L,Y(0)); g.lineTo(R,Y(0)); g.stroke(); }
+    g.fillStyle=MUT; g.font='800 10.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(Rw.t,L+6,T0+11);
+    if(Rw.f){
+      g.strokeStyle=Rw.col; g.lineWidth=2.6; g.beginPath();
+      SIM.arr.forEach(function(a,k){ if(k%2) return; var x=X(a.t),y=Y(Rw.f(a)); if(k===0) g.moveTo(x,y); else if(Rw.brk && a.q) g.moveTo(x,y); else g.lineTo(x,y); });
+      g.stroke();
+    } else {
+      [['R',function(a){return a.R;},CORAL],['L',function(a){return a.L;},BLUE]].forEach(function(P){
+        g.strokeStyle=P[2]; g.lineWidth=2.4; g.beginPath();
+        SIM.arr.forEach(function(a,k){ if(k%2) return; var x=X(a.t),y=Y(P[1](a)); if(k===0) g.moveTo(x,y); else g.lineTo(x,y); });
+        g.stroke();
+      });
+      g.strokeStyle=MUT; g.lineWidth=1.4; g.setLineDash([4,4]);
+      g.beginPath(); g.moveTo(L,Y(BASE)); g.lineTo(R,Y(BASE)); g.stroke(); g.setLineDash([]);
+      g.fillStyle=MUT; g.font='700 10px Inter, system-ui, sans-serif'; g.textAlign='right';
+      g.fillText('90 /s rest',L-6,Y(BASE)+4);
+      g.fillStyle=CORAL; g.textAlign='left'; g.fillText('right',R-64,T0+11);
+      g.fillStyle=BLUE; g.fillText('left',R-30,T0+11);
+    }
+    /* phase shading */
+    g.fillStyle=GOLD; g.globalAlpha=0.10;
+    g.fillRect(X(0),T0,X(SIM.t1)-X(0),B0-T0);
+    g.fillRect(X(SIM.t2),T0,X(SIM.t3)-X(SIM.t2),B0-T0);
+    g.globalAlpha=1;
+    /* playhead */
+    g.strokeStyle=TEAL; g.lineWidth=2;
+    g.beginPath(); g.moveTo(X(simT),T0); g.lineTo(X(simT),B0); g.stroke();
+  });
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('shaded bands are the acceleration and deceleration phases — the only times the canal has anything to say',W/2,H-8);
+  g.textAlign='left';
+  g.fillText('0 s',L,H-8); g.textAlign='right'; g.fillText(SIM.T.toFixed(0)+' s',R,H-8);
+}
+
+/* =========================================================
+   BENCH 2 -- otolith organs
+   ========================================================= */
+var bppv=false;
+$('tBPPV').onclick=function(){ bppv=!bppv; this.setAttribute('aria-pressed',bppv?'true':'false'); render2(); };
+['tilt','lacc'].forEach(function(id){ $(id).addEventListener('input',render2); });
+(function(){
+  var pre=$('pre2');
+  [['Upright',0,0],['Head tilted 30°',30,0],['Lying on one side',60,0],['Car accelerating',0,30],['Elevator starting down',0,-25]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('tilt').value=P[1]; $('lacc').value=P[2]; render2(); };
+    pre.appendChild(b);
+  });
+})();
+function render2(){
+  var th=+$('tilt').value, a=(+$('lacc').value)/100;
+  var shear=Math.sin(th*Math.PI/180)+a;
+  var rate=clamp(90+62*shear,0,260);
+  var canalPeak=Math.abs(th)>2?Math.min(120,Math.abs(th)*2.2):0;
+  $('tiltV').textContent=th+'°';
+  $('laccV').textContent=(a>0?'+':'')+a.toFixed(2)+' g';
+
+  $('st2').innerHTML=
+    tile('Shear on the macula',(shear>0?'+':'')+shear.toFixed(2),'gravity component plus linear acceleration')+
+    tile('Otolith afferent',rate.toFixed(0),'spikes/s &middot; sustained for as long as the tilt lasts')+
+    tile('Otoconia density','2.7','g/cm&sup3; &middot; far heavier than the fluid around them')+
+    tile('Utricular macula','horizontal','head tilt and horizontal acceleration')+
+    tile('Saccular macula','vertical','vertical acceleration &mdash; the lurch of an elevator')+
+    tile('Adaptation','tonic','gravity never stops, so the receptor must not');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(bppv){
+    cls='verdict bad';
+    txt='Otoconia loose in the posterior canal &mdash; benign paroxysmal positional vertigo<small>Crystals that belong on the utricular macula have fallen into a semicircular canal. That canal is now gravity-sensitive, which it was never supposed to be, so rolling over in bed produces a burst of vertigo lasting under a minute with a characteristic nystagmus.</small>';
+    inf='<span class="n">A purely mechanical fault with a purely mechanical cure</span>Recall the design rule from the canal bench: the <b>cupula has the same density as the endolymph</b> precisely so that gravity cannot move it. Drop dense crystals into that duct and you have broken the rule &mdash; the canal now reports head position as though it were head rotation.<div class="dd">Nothing is inflamed, degenerating or ischemic. That is why a repositioning maneuver, which simply rolls the crystals back out of the canal and into the utricle, works so well and so quickly.</div>';
+  } else if(Math.abs(shear)<0.05){
+    cls='verdict info';
+    txt='Upright and still &mdash; the afferent fires at its '+rate.toFixed(0)+' spikes/s baseline<small>Gravity is acting perpendicular to the utricular macula, so there is no shear along the plane of the hair bundles. Tilt the head and watch the firing rate step up and stay there.</small>';
+  } else if(Math.abs(th)>2 && Math.abs(a)<0.02){
+    cls='verdict';
+    txt='Head tilted '+th+'&deg; &mdash; a maintained signal of '+rate.toFixed(0)+' spikes/s<small>Inertia drags the weighted otolithic membrane down the slope, shearing the stereocilia beneath it. Because the crystals are far denser than the fluid, gravity itself is the stimulus.</small>';
+    inf='<span class="n">Why tonic, and why the crystals are heavy</span>Hair cells of the <b>utricle</b> and <b>saccule</b> project into an otolithic membrane studded with calcium carbonate crystals &mdash; <b>otoconia</b> &mdash; of density near <b>2.7 g/cm&sup3;</b>, far heavier than the surrounding fluid. When the head tilts or accelerates linearly, inertia drags that weighted mass and shears the bundles beneath it.<div class="dd">Unlike the canals, the otolith organs are <b>tonic</b>: gravity never stops, so head tilt must produce a maintained signal. Look at the lower panel &mdash; the otolith trace steps and holds while the canal trace, given the same maneuver, spikes and dies away.</div>';
+  } else {
+    cls='verdict cool';
+    txt='Linear acceleration of '+(a>0?'+':'')+a.toFixed(2)+' g &mdash; '+rate.toFixed(0)+' spikes/s<small>The same weighted membrane lags behind an accelerating head exactly as it slides down a tilted one. Shear is shear.</small>';
+    inf='<span class="n">Tilt and acceleration produce the same shear</span>A macula cannot, by itself, tell a steady tilt from a steady linear acceleration &mdash; both produce the same force along its plane. The brain resolves the ambiguity by combining otolith input with the <b>semicircular canals</b>, which report the rotation that a genuine tilt requires and that a pure translation does not.<div class="dd">The <b>utricular macula</b> is oriented roughly horizontally and responds best to horizontal acceleration and head tilt; the <b>saccular macula</b> is oriented vertically and responds to vertical acceleration, including the lurch of a lift starting to move.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  if(!inf) inf='<span class="n">Balance is a three-input problem</span>Vestibular, visual and proprioceptive signals are combined continuously, and each can substitute for the others up to a point &mdash; which is why standing on one leg is harder with the eyes shut. <b>Motion sickness</b> is what happens when the three disagree, and that is exactly why reading in a moving car is worse than looking at the horizon: the vestibular system reports motion while the visual system reports a stationary page.<div class="dd">The same reasoning gives you a triage rule. Seconds of true spinning triggered by rolling over points to displaced otoconia; days of severe constant vertigo with nausea points to unilateral vestibular failure; lightheadedness on standing is a blood pressure problem and not vestibular at all.</div>';
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Otolithic membrane with '+th+' degrees of tilt and '+a.toFixed(2)+' g of linear acceleration, producing a shear of '+shear.toFixed(2)+' and a firing rate of '+rate.toFixed(0)+' spikes per second.');
+  drawOto(th,a,shear,rate); drawTonicPhasic(rate,canalPeak);
+}
+function drawOto(th,a,shear,rate){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cx=300,cy=H/2+10;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE MACULA, TILTED '+th+'°',24,28);
+  g.save(); g.translate(cx,cy); g.rotate(th*Math.PI/180);
+  /* epithelium */
+  g.fillStyle=LINE; g.fillRect(-190,20,380,26);
+  /* gelatinous membrane, displaced by the shear */
+  var shift=clamp(shear,-1.2,1.2)*36;
+  g.fillStyle=BLUE; g.globalAlpha=0.22; g.fillRect(-180+shift,-34,360,54); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=2; g.strokeRect(-180+shift,-34,360,54);
+  /* otoconia */
+  var i;
+  for(i=0;i<34;i++){
+    var ox=-172+shift+ (i%17)*21, oy=-28+Math.floor(i/17)*18;
+    g.fillStyle=GOLD; g.fillRect(ox,oy,11,11);
+    g.strokeStyle=MUT; g.lineWidth=0.8; g.strokeRect(ox,oy,11,11);
+  }
+  /* hair bundles, sheared */
+  for(i=0;i<9;i++){
+    var hx=-160+i*40;
+    g.strokeStyle=TDK; g.lineWidth=5; g.lineCap='round';
+    g.beginPath(); g.moveTo(hx,20); g.lineTo(hx+shift*0.7,-6); g.stroke();
+  }
+  g.restore();
+  /* gravity arrow, always straight down */
+  g.strokeStyle=CORAL; g.lineWidth=4;
+  g.beginPath(); g.moveTo(cx,cy+92); g.lineTo(cx,cy+142); g.stroke();
+  g.beginPath(); g.moveTo(cx,cy+150); g.lineTo(cx-9,cy+134); g.lineTo(cx+9,cy+134); g.closePath();
+  g.fillStyle=CORAL; g.fill();
+  g.fillStyle=CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('gravity — 1 g, always',cx,cy+170);
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('otoconia, 2.7 g/cm³ — heavier than the fluid, so gravity CAN move them',24,H-40);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('contrast the cupula, built at the same density as endolymph so gravity CANNOT move it',24,H-18);
+
+  /* rate bar */
+  var bx=W-390, by=90;
+  g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('OTOLITH AFFERENT — tonic',bx,by-8);
+  g.fillStyle=LINE; g.fillRect(bx,by,340,28);
+  g.fillStyle=TEAL; g.fillRect(bx,by,340*clamp(rate/260,0,1),28);
+  g.strokeStyle=TDK; g.lineWidth=2;
+  g.beginPath(); g.moveTo(bx+340*(90/260),by-5); g.lineTo(bx+340*(90/260),by+33); g.stroke();
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif';
+  g.fillText(rate.toFixed(0)+' spikes/s',bx,by+56);
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+  g.fillText('shear = sin(tilt) + linear acceleration = '+shear.toFixed(2),bx,by+80);
+  if(bppv){
+    g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif';
+    g.fillText('OTOCONIA HAVE ESCAPED INTO THE POSTERIOR CANAL',bx,by+112);
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+    g.fillText('that canal is now gravity-sensitive; rolling over gives',bx,by+132);
+    g.fillText('a burst of vertigo lasting under a minute',bx,by+150);
+  }
+}
+function drawTonicPhasic(rate,canalPeak){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=76,R=W-26,T=40,B=H-42,TMAX=40;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(t){ return L+(t/TMAX)*(R-L); }
+  function Y(r){ return B-(clamp(r,0,260)/260)*(B-T); }
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE SAME MANEUVER, TWO RECEPTORS — hold the tilt from 4 s onward',24,26);
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,90,180,260].forEach(function(r){
+    g.beginPath(); g.moveTo(L,Y(r)); g.lineTo(R,Y(r)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(r,L-8,Y(r)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  var t;
+  for(t=0;t<=TMAX;t+=10){
+    g.beginPath(); g.moveTo(X(t),B); g.lineTo(X(t),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(t+' s',X(t),B+20);
+  }
+  g.fillStyle=GOLD; g.globalAlpha=0.12; g.fillRect(X(4),T,X(TMAX)-X(4),B-T); g.globalAlpha=1;
+  g.fillStyle=GOLD; g.font='800 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('TILT HELD',X(4)+8,T+14);
+
+  /* otolith: step and hold */
+  g.strokeStyle=TEAL; g.lineWidth=3.2; g.beginPath();
+  for(t=0;t<=TMAX;t+=0.1){
+    var r = t<4 ? 90 : 90+(rate-90)*(1-Math.exp(-(t-4)/0.35));
+    var x=X(t),y=Y(r); if(t===0) g.moveTo(x,y); else g.lineTo(x,y);
+  }
+  g.stroke();
+  /* canal: burst and decay */
+  g.strokeStyle=CORAL; g.lineWidth=3.2; g.beginPath();
+  for(t=0;t<=TMAX;t+=0.1){
+    var rc = t<4 ? 90 : 90+canalPeak*Math.exp(-(t-4)/7)*(1-Math.exp(-(t-4)/0.3));
+    var x2=X(t),y2=Y(rc); if(t===0) g.moveTo(x2,y2); else g.lineTo(x2,y2);
+  }
+  g.stroke();
+  g.fillStyle=TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('otolith afferent — TONIC, still reporting at 40 s',X(16),Y(rate)-12);
+  g.fillStyle=CORAL;
+  g.fillText('semicircular canal afferent — PHASIC, back to baseline in 20–30 s',X(14),Y(120)+40);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('a receptor guarding a variable that never switches off must not adapt; a receptor reporting change must',W/2,H-10);
+}
+
+/* =========================================================
+   BENCH 3 -- combinatorial olfactory coding
+   ========================================================= */
+var ORS=['OR1','OR2','OR3','OR4','OR5','OR6','OR7','OR8','OR9','OR10','OR11','OR12'];
+var ODS=[
+ {n:'Vanillin',v:[0.9,0.2,0.0,0.7,0.1,0.0,0.5,0.0,0.3,0.0,0.6,0.1],th:0.10},
+ {n:'Banana ester',v:[0.7,0.4,0.1,0.6,0.0,0.2,0.4,0.1,0.5,0.0,0.4,0.0],th:0.12},
+ {n:'Coffee volatiles',v:[0.3,0.9,0.6,0.2,0.8,0.4,0.1,0.7,0.2,0.5,0.1,0.6],th:0.06},
+ {n:'Rose',v:[0.5,0.1,0.2,0.9,0.3,0.1,0.8,0.0,0.6,0.2,0.7,0.0],th:0.09},
+ {n:'Rotting egg — thiol',v:[0.0,0.1,0.9,0.0,0.2,1.0,0.0,0.8,0.0,0.9,0.0,0.3],th:0.001},
+ {n:'Cut grass',v:[0.2,0.5,0.3,0.4,0.9,0.2,0.3,0.4,0.1,0.3,0.2,0.8],th:0.08}
+];
+var od=ODS[0], koIdx=-1;
+(function(){
+  var box=$('odlist');
+  ODS.forEach(function(O){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(O===od?' on':''); b.textContent=O.n;
+    b.onclick=function(){ od=O; [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',ODS[i]===od); }); render3(); };
+    box.appendChild(b);
+  });
+  var kb=$('korlist');
+  var none=document.createElement('button'); none.type='button'; none.className='chip on'; none.textContent='none';
+  none.onclick=function(){ koIdx=-1; [].slice.call(kb.children).forEach(function(c,i){ c.classList.toggle('on',i===0); }); render3(); };
+  kb.appendChild(none);
+  ORS.slice(0,6).forEach(function(nm,i){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=nm;
+    b.onclick=function(){ koIdx=i; [].slice.call(kb.children).forEach(function(c,k){ c.classList.toggle('on',k===i+1); }); render3(); };
+    kb.appendChild(b);
+  });
+})();
+['conc','sniff'].forEach(function(id){ $(id).addEventListener('input',render3); });
+function pattern(){
+  var c=(+$('conc').value)/100, s=+$('sniff').value;
+  var adapt=Math.exp(-s/45);                                  /* rapid, calcium-dependent adaptation */
+  var out=od.v.map(function(w,i){
+    if(i===koIdx) return 0;
+    var drive=w*c;
+    return drive<od.th ? 0 : clamp((drive-od.th)/(1-od.th),0,1)*adapt;
+  });
+  return {out:out,c:c,s:s,adapt:adapt};
+}
+function render3(){
+  var P=pattern();
+  var active=P.out.filter(function(x){return x>0.02;}).length;
+  var strongest=0,si=0,i;
+  for(i=0;i<P.out.length;i++){ if(P.out[i]>strongest){ strongest=P.out[i]; si=i; } }
+  $('concV').textContent=P.c<0.2?'faint':(P.c<0.6?'medium':'strong');
+  $('sniffV').textContent=P.s+' s';
+
+  $('st3').innerHTML=
+    tile('Receptor types activated',active+' of 12','each neuron expresses essentially one gene')+
+    tile('Strongest response',ORS[si],(strongest*100).toFixed(0)+'% of maximum')+
+    tile('Human receptor genes','about 400','functional olfactory receptors')+
+    tile('Glomeruli in the bulb','1,000&ndash;2,000','each collecting thousands of axons')+
+    tile('Signal remaining',(P.adapt*100).toFixed(0)+'%','after '+P.s+' s of continuous exposure')+
+    tile('Turnover of the neurons','30&ndash;60 days','regenerated from basal stem cells');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(P.c<0.05 || active===0){
+    cls='verdict cool';
+    txt='Below threshold &mdash; nothing is being detected<small>Odorants must first dissolve in the mucus bathing the olfactory cilia before they can bind anything at all. Raise the concentration.</small>';
+  } else if(P.adapt<0.25){
+    cls='verdict warn';
+    txt='Adapted &mdash; only '+(P.adapt*100).toFixed(0)+'% of the original signal is left<small>After '+P.s+' seconds of continuous exposure the odor has essentially disappeared, even though the molecules are still there and still binding.</small>';
+    inf='<span class="n">Calcium turns the receptor down</span>Binding activates the G protein <b>G<sub>olf</sub></b>, then adenylyl cyclase III, raising cAMP, which opens a cyclic-nucleotide-gated channel. Calcium entering through that channel binds calmodulin and lowers the channel&rsquo;s affinity for cAMP &mdash; so the same odorant now opens fewer channels.<div class="dd">That is why you stop noticing your own perfume within a minute or two, and why olfactory receptor neurons are classic <b>phasic</b> receptors. Step outside and come back and it is there again.</div>';
+  } else if(koIdx>=0){
+    cls='verdict';
+    txt=ORS[koIdx]+' knocked out &mdash; and the odor is still identifiable<small>'+active+' receptor types are still responding. The pattern has changed shape but has not been destroyed, because identity was never carried by any single line.</small>';
+    inf='<span class="n">This is exactly what combinatorial coding buys</span>Discrimination far outruns the receptor count because any odorant activates a particular <i>subset</i> of the roughly 400 receptor types to different degrees. Identity is the <b>pattern</b>, not the line &mdash; so the code degrades gracefully instead of failing outright.<div class="dd">All neurons expressing the same receptor project to the same one or two <b>glomeruli</b> in the olfactory bulb, so a chemical becomes a spatial map on the bulb surface. That is what the diagram above is drawing.</div>';
+  } else {
+    cls='verdict';
+    txt=od.n+' &mdash; '+active+' receptor types responding, with '+ORS[si]+' hardest hit<small>Compare this pattern with another odorant. Some receptors overlap; the <i>combination</i> is what differs, and the combination is what you smell.</small>';
+    inf='<span class="n">One neuron, one receptor, one glomerulus</span>Olfactory receptor neurons are true bipolar neurons in the epithelium at the roof of the nasal cavity, with cilia bathed in mucus. Each expresses essentially <b>one</b> of about 400 functional receptor genes, and all the neurons expressing that gene converge on the same one or two of the <b>1,000&ndash;2,000 glomeruli</b>.<div class="dd">Two features make olfaction unique. It is the only sensory modality that reaches cortex &mdash; piriform, amygdala, entorhinal &mdash; <b>without an obligatory thalamic relay</b>, which is the anatomical basis for the immediate emotional and memory pull of a familiar smell. And its receptor neurons regenerate from basal stem cells every 30&ndash;60 days. Because the axons pass through the tiny holes of the <b>cribriform plate</b>, a shearing head injury can transect them and cause permanent anosmia, and progressive smell loss is an early feature of both Parkinson and Alzheimer disease.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  $('cv3').setAttribute('aria-label','Glomerular activation pattern for '+od.n+': '+active+' of 12 receptor types active, strongest at '+ORS[si]+'.');
+  drawBulb(P);
+}
+function drawBulb(P){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('OLFACTORY BULB — EACH CIRCLE IS ONE GLOMERULUS, ONE RECEPTOR TYPE',24,28);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('brightness is how hard that receptor type is being driven by '+od.n,24,48);
+  var cols=6, cw=(W-120)/cols, cy0=110;
+  P.out.forEach(function(val,i){
+    var cxi=60+cw*(i%cols)+cw/2, cyi=cy0+Math.floor(i/cols)*130;
+    g.fillStyle=LINE;
+    g.beginPath(); g.arc(cxi,cyi,44,0,6.3); g.fill();
+    g.fillStyle=(i===koIdx)?CORAL:TEAL; g.globalAlpha=(i===koIdx)?0.25:clamp(val,0,1);
+    g.beginPath(); g.arc(cxi,cyi,44,0,6.3); g.fill(); g.globalAlpha=1;
+    g.strokeStyle=(i===koIdx)?CORAL:MUT; g.lineWidth=2;
+    g.beginPath(); g.arc(cxi,cyi,44,0,6.3); g.stroke();
+    g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(ORS[i],cxi,cyi+70);
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif';
+    g.fillText((i===koIdx)?'knocked out':(val*100).toFixed(0)+'%',cxi,cyi+86);
+    /* converging axons */
+    g.strokeStyle=LINE; g.lineWidth=1.2;
+    var k;
+    for(k=-2;k<=2;k++){ g.beginPath(); g.moveTo(cxi+k*13,cyi+44); g.lineTo(cxi+k*4,cyi+58); g.stroke(); }
+  });
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('about 400 receptor genes, but the number of distinguishable patterns across them is vastly larger',W/2,H-14);
+}
+
+/* =========================================================
+   BENCH 4 -- taste
+   ========================================================= */
+/* logth is log10 of the detection threshold in moles per liter */
+var TASTES=[
+ {n:'Salty',s:'Na⁺',mech:'ion',path:['Na⁺ in solution','epithelial Na⁺ channel (ENaC)','direct depolarization','ATP released onto the afferent'],
+  logth:-2.0,logic:'Electrolyte and volume balance. You need sodium, and at low concentration salt is attractive.',col:BLUE},
+ {n:'Sour',s:'H⁺',mech:'ion',path:['H⁺ from acids','OTOP1 proton channel','direct depolarization','ATP released onto the afferent'],
+  logth:-3.5,logic:'Detects acid — spoilage, fermentation, unripe fruit.',col:GREEN},
+ {n:'Sweet',s:'sugars',mech:'gpcr',path:['sugar binds T1R2 + T1R3','gustducin','phospholipase C-β2','Ca²⁺ from intracellular stores','TRPM5 opens','ATP through CALHM1/3'],
+  logth:-2.0,logic:'Finds carbohydrate energy. Attractive from low concentrations upward.',col:CORAL},
+ {n:'Umami',s:'glutamate',mech:'gpcr',path:['glutamate binds T1R1 + T1R3','gustducin','phospholipase C-β2','Ca²⁺ from intracellular stores','TRPM5 opens','ATP through CALHM1/3'],
+  logth:-3.0,logic:'Finds protein. Glutamate and nucleotides mark it.',col:GOLD},
+ {n:'Bitter',s:'alkaloids',mech:'gpcr',path:['alkaloid binds one of ~25 T2Rs','gustducin','phospholipase C-β2','Ca²⁺ from intracellular stores','TRPM5 opens','ATP through CALHM1/3'],
+  logth:-5.0,logic:'Poison avoidance. A false alarm is cheap; a missed alkaloid is not.',col:PURP}
+];
+var ta=TASTES[4], noseBlocked=false;
+$('tNose').onclick=function(){ noseBlocked=!noseBlocked; this.setAttribute('aria-pressed',noseBlocked?'true':'false'); render4(); };
+$('tconc').addEventListener('input',render4);
+(function(){
+  var box=$('tastelist');
+  TASTES.forEach(function(T){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(T===ta?' on':''); b.textContent=T.n;
+    b.onclick=function(){ ta=T; [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',TASTES[i]===ta); }); render4(); };
+    box.appendChild(b);
+  });
+})();
+function concLabel(M){
+  if(M>=1e-3) return (M*1000).toFixed(M>=1e-2?0:2)+' mM';
+  if(M>=1e-6) return (M*1e6).toFixed(M>=1e-5?0:1)+' µM';
+  return (M*1e9).toFixed(0)+' nM';
+}
+function render4(){
+  var logc=(+$('tconc').value)/10;                          /* slider spans four log units below 1 mM to three above */
+  var lg=-3+logc, conc=Math.pow(10,lg);
+  var supra=lg-ta.logth;                                    /* log units above threshold */
+  var resp=clamp(supra/3,0,1)*100;
+  $('tconcV').textContent=concLabel(conc);
+
+  $('st4').innerHTML=
+    tile('Quality',ta.n,'stimulus: '+ta.s)+
+    tile('Transduction',ta.mech==='ion'?'Ion channel':'GPCR',ta.mech==='ion'?'direct, no second messenger':'gustducin and PLC-&beta;2')+
+    tile('Detection threshold',concLabel(Math.pow(10,ta.logth)),'bitter sits about a thousand-fold below sweet')+
+    tile('Response',resp.toFixed(0)+'%','of maximum at this concentration')+
+    tile('Taste buds','about 5,000','tongue papillae, palate, pharynx, epiglottis')+
+    tile('Cell turnover','about 10 days','50&ndash;100 receptor cells per bud');
+
+  var v=$('v4'),cls='verdict',txt='',inf='';
+  if(noseBlocked){
+    cls='verdict warn';
+    txt='Nose blocked &mdash; taste is intact but flavor has collapsed<small>Every taste bud is working perfectly. '+ta.n+' still registers at '+resp.toFixed(0)+'% of maximum. What has gone is retronasal olfaction, and with it almost everything people call taste.</small>';
+    inf='<span class="n">The most common misconception in the whole module</span>Most of what people call taste is <b>retronasal olfaction</b> &mdash; volatiles released in the mouth traveling up the back of the nose. That is why food is bland with a head cold even though the taste buds are untouched, and why <b>complete loss of taste is rare while loss of flavor is common</b>.<div class="dd">The other classic error is the &ldquo;tongue map&rdquo; with sweet at the tip and bitter at the back. It is a century-old mistranslation and simply wrong: every taste bud region responds to all five qualities, with only modest threshold differences.</div>';
+  } else if(resp<5){
+    cls='verdict cool';
+    txt='Below threshold &mdash; nothing is being tasted<small>The detection threshold for '+ta.n.toLowerCase()+' is about '+concLabel(Math.pow(10,ta.logth))+'. Raise the concentration.</small>';
+  } else if(ta.mech==='ion'){
+    cls='verdict';
+    txt=ta.n+' &mdash; transduced by an ion channel, with no second messenger anywhere<small>Response '+resp.toFixed(0)+'% of maximum. '+ta.s+' enters the receptor cell directly and depolarizes it, which then releases transmitter onto the afferent fiber.</small>';
+    inf='<span class="n">Two mechanisms, split along chemical lines</span><b>Salty</b> and <b>sour</b> are ions, and ions can be detected by letting them through a channel: sodium through the <b>epithelial sodium channel</b>, protons through the proton channel <b>OTOP1</b>. No receptor protein, no G protein, no cascade.<div class="dd"><b>'+ta.logic+'</b></div>';
+  } else {
+    cls='verdict';
+    txt=ta.n+' &mdash; transduced by a G-protein-coupled receptor<small>Response '+resp.toFixed(0)+'% of maximum. The molecules are large and varied, so they need a receptor protein and a cascade rather than a channel of their own.</small>';
+    inf='<span class="n">Why sweet, umami and bitter need a cascade</span>These are not ions. <b>T1R2 + T1R3</b> detect sugars, <b>T1R1 + T1R3</b> detect glutamate and nucleotides, and about <b>25 different T2R</b> receptors between them cover the chemically diverse universe of plant alkaloids. All signal through <b>gustducin</b> and <b>phospholipase C-&beta;2</b> to release calcium from intracellular stores, which opens <b>TRPM5</b> and releases ATP through <b>CALHM1/3</b> channels onto the afferent nerve.<div class="dd"><b>'+ta.logic+'</b> Notice in the lower panel how far the bitter threshold sits below the others &mdash; roughly a thousand-fold. That asymmetry is not an accident of chemistry; it is a risk calculation.</div><div class="dd">Three cranial nerves carry taste &mdash; <b>VII</b> for the anterior two-thirds of the tongue, <b>IX</b> for the posterior third, <b>X</b> for the epiglottis &mdash; converging on the nucleus of the solitary tract, then the ventral posteromedial thalamus, then the insular cortex. Because the pathway is triply redundant, complete loss of taste is rare.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i4').innerHTML=inf;
+  $('cv4').setAttribute('aria-label','Transduction pathway for '+ta.n+', a '+(ta.mech==='ion'?'direct ion channel':'G-protein-coupled')+' mechanism, responding at '+resp.toFixed(0)+' percent of maximum.');
+  drawTaste(resp); drawThresh();
+}
+function drawTaste(resp){
+  var cv=$('cv4'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(ta.n.toUpperCase()+' — '+(ta.mech==='ion'?'DIRECT ION ENTRY':'G-PROTEIN-COUPLED CASCADE'),24,28);
+  var steps=ta.path, n=steps.length, bw=(W-70)/n, y=90, bh=88;
+  steps.forEach(function(s,i){
+    var x=35+i*bw;
+    g.fillStyle=ta.col; g.globalAlpha=0.14+0.5*clamp(resp/100,0,1); g.fillRect(x+4,y,bw-14,bh); g.globalAlpha=1;
+    g.strokeStyle=ta.col; g.lineWidth=2; g.strokeRect(x+4,y,bw-14,bh);
+    g.fillStyle=TDK; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    wrapText(g,s,x+bw/2-5,y+bh/2,bw-28,15);
+    if(i<n-1){ g.strokeStyle=MUT; g.lineWidth=2; g.beginPath(); g.moveTo(x+bw-8,y+bh/2); g.lineTo(x+bw+2,y+bh/2); g.stroke(); }
+  });
+  /* afferent and pathway */
+  var py=232;
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('AND THEN OUT OF THE MOUTH',35,py-8);
+  var route=['CN VII, IX or X','nucleus of the solitary tract','VPM thalamus','insular cortex'];
+  route.forEach(function(s,i){
+    var x=35+i*((W-70)/4);
+    g.fillStyle=LINE; g.fillRect(x,py+6,(W-70)/4-16,44);
+    g.fillStyle=TDK; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    wrapText(g,s,x+((W-70)/4-16)/2,py+30,(W-70)/4-30,14);
+  });
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('VII carries the anterior two-thirds of the tongue, IX the posterior third, X the epiglottis — a triply redundant pathway',35,H-38);
+  g.fillStyle=noseBlocked?CORAL:MUT; g.font='700 12px Inter, system-ui, sans-serif';
+  g.fillText(noseBlocked?'retronasal olfaction is BLOCKED — the taste system is intact, but flavor is gone'
+    :'retronasal olfaction is running alongside all of this, and supplies most of what you call flavor',35,H-16);
+}
+function wrapText(g,text,cx,cy,maxw,lh){
+  var words=text.split(' '),line='',lines=[],i;
+  for(i=0;i<words.length;i++){
+    var test=line?line+' '+words[i]:words[i];
+    if(g.measureText(test).width>maxw && line){ lines.push(line); line=words[i]; } else line=test;
+  }
+  lines.push(line);
+  var y=cy-(lines.length-1)*lh/2;
+  lines.forEach(function(L){ g.fillText(L,cx,y); y+=lh; });
+}
+var SUPS={'-6':'10⁻⁶ M','-5':'10⁻⁵ M','-4':'10⁻⁴ M','-3':'10⁻³ M','-2':'10⁻² M','-1':'10⁻¹ M','0':'1 M'};
+function drawThresh(){
+  var cv=$('cv4b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=90,R=W-40,T=44,B=H-42;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(lg){ return L+((clamp(lg,-6,0)+6)/6)*(R-L); }    /* 10^-6 M .. 1 M */
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('DETECTION THRESHOLDS — note where bitter sits',24,26);
+  var i;
+  for(i=-6;i<=0;i++){
+    g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.moveTo(X(i),T); g.lineTo(X(i),B); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(SUPS[String(i)],X(i),B+18);
+  }
+  var rh=(B-T)/TASTES.length;
+  TASTES.forEach(function(T2,k){
+    var y=T+k*rh+rh/2;
+    g.fillStyle=T2===ta?TDK:MUT; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(T2.n,L-12,y+4);
+    g.strokeStyle=LINE; g.lineWidth=9; g.lineCap='round';
+    g.beginPath(); g.moveTo(X(T2.logth),y); g.lineTo(X(0),y); g.stroke();
+    g.strokeStyle=T2.col; g.lineWidth=9;
+    g.beginPath(); g.moveTo(X(T2.logth),y); g.lineTo(X(T2.logth)+10,y); g.stroke();
+    g.fillStyle=T2.col;
+    g.beginPath(); g.arc(X(T2.logth),y,7,0,6.3); g.fill();
+    if(T2===ta){ g.strokeStyle=TDK; g.lineWidth=2.4; g.beginPath(); g.arc(X(T2.logth),y,12,0,6.3); g.stroke(); }
+  });
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('molar concentration, logarithmic — bitter is aversive at concentrations about a thousand-fold below sweet',W/2,H-8);
+}
+
+/* boot */
+build(); render1(); render2(); render3(); render4(); setMode(1);
+})();
+</script>
+</body>
+</html>

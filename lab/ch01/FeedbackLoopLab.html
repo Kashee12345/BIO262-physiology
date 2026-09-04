@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feedback Loop Lab &mdash; break the loop and watch</title>
+<meta name="description" content="Apply a disturbance to a live homeostatic loop, break the sensor, integrator or effector, and watch the regulated variable run away.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.ctl{margin-top:13px;}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.ctl .lab .v{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--teal-dk);}
+.ctl .hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.45;}
+.breaks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:11px;}
+.breaks button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 6px;font-family:var(--sans);font-weight:800;font-size:11.5px;color:var(--ink);cursor:pointer;line-height:1.25;}
+.breaks button small{display:block;font-weight:600;font-size:10px;color:var(--green);margin-top:3px;letter-spacing:.4px;}
+.breaks button.broken{border-color:var(--coral);background:var(--card);color:var(--coral);}
+.breaks button.broken small{color:var(--coral);}
+.dist{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:11px;}
+.dist button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 9px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.25;}
+.dist button:hover{border-color:var(--teal);}
+.dist button.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.dist button small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;}
+.dist button.on small{color:rgba(255,255,255,.88);}
+canvas{width:100%;display:block;border-radius:12px;background:var(--card);border:1px solid var(--line);}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.stat > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;}
+.stat .k{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .n{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+.exp{border:1px solid var(--line);border-left:5px solid var(--teal);background:var(--card);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--soft);line-height:1.55;}
+.exp b{color:var(--teal-dk);font-weight:700;}
+.exp .h{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);display:block;margin-bottom:4px;}
+.node rect{fill:var(--card);stroke:var(--teal);stroke-width:2;}
+.node.off rect{stroke:var(--coral);stroke-dasharray:5 4;}
+.node text{font-family:var(--sans);font-weight:800;font-size:10px;fill:var(--teal-dk);letter-spacing:.4px;}
+.node.off text{fill:var(--coral);}
+.node tspan.sub{font-weight:600;font-size:9px;fill:var(--muted);}
+.arw{stroke:var(--teal);stroke-width:2.2;fill:none;}
+.arw.dead{stroke:var(--line);}
+.arw.pos{stroke:var(--coral);}
+.xmark{stroke:var(--coral);stroke-width:3;stroke-linecap:round;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch01.html">&larr; Module 1</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 1</div>
+  <h1>Feedback Loop Lab</h1>
+  <div class="intro">Every homeostatic loop has the same five parts: a <b>regulated variable</b>, a <b>sensor</b>, an <b>integrator</b>, an <b>effector</b>, and a <b>response</b>. Push the variable off its set point with a disturbance, then break one component at a time and watch the variable run away. Change the loop gain and see the rule that proportional feedback corrects most of an error but never all of it.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The loop &mdash; click a part to break it</h2>
+      <svg viewBox="0 0 560 200" role="img" aria-labeledby="loopTitle">
+        <title id="loopTitle">Negative feedback loop: variable, sensor, integrator, effector, response returning to the variable</title>
+        <g class="arw" id="aDist"><path d="M60 22 L60 56" marker-end="url(#ah)"/></g>
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"/></marker>
+        </defs>
+        <text x="72" y="22" style="font-family:var(--sans);font-weight:800;font-size:10px;fill:var(--gold);">DISTURBANCE</text>
+
+        <g class="node" id="nVar"><rect x="14" y="58" width="106" height="52" rx="11"/>
+          <text x="67" y="80" text-anchor="middle">VARIABLE<tspan class="sub" x="67" dy="14" id="tVar">core temp</tspan></text></g>
+        <path class="arw" d="M122 84 L152 84" marker-end="url(#ah)" id="a1"/>
+
+        <g class="node" id="nSen"><rect x="154" y="58" width="106" height="52" rx="11"/>
+          <text x="207" y="80" text-anchor="middle">SENSOR<tspan class="sub" x="207" dy="14" id="tSen">thermoreceptors</tspan></text></g>
+        <path class="arw" d="M262 84 L292 84" marker-end="url(#ah)" id="a2"/>
+
+        <g class="node" id="nInt"><rect x="294" y="58" width="112" height="52" rx="11"/>
+          <text x="350" y="80" text-anchor="middle">INTEGRATOR<tspan class="sub" x="350" dy="14" id="tInt">hypothalamus</tspan></text></g>
+        <path class="arw" d="M408 84 L438 84" marker-end="url(#ah)" id="a3"/>
+
+        <g class="node" id="nEff"><rect x="440" y="58" width="106" height="52" rx="11"/>
+          <text x="493" y="80" text-anchor="middle">EFFECTOR<tspan class="sub" x="493" dy="14" id="tEff">vessels, sweat</tspan></text></g>
+
+        <path class="arw" id="aRet" d="M493 112 L493 158 L67 158 L67 114" marker-end="url(#ah)"/>
+        <text x="280" y="176" text-anchor="middle" id="tRet" style="font-family:var(--sans);font-weight:800;font-size:10px;fill:var(--teal);">RESPONSE &mdash; opposes the change</text>
+        <g id="xSen" style="display:none"><line class="xmark" x1="192" y1="70" x2="222" y2="98"/><line class="xmark" x1="222" y1="70" x2="192" y2="98"/></g>
+        <g id="xInt" style="display:none"><line class="xmark" x1="335" y1="70" x2="365" y2="98"/><line class="xmark" x1="365" y1="70" x2="335" y2="98"/></g>
+        <g id="xEff" style="display:none"><line class="xmark" x1="478" y1="70" x2="508" y2="98"/><line class="xmark" x1="508" y1="70" x2="478" y2="98"/></g>
+      </svg>
+
+      <div class="breaks" role="group" aria-label="Break a component of the loop">
+        <button type="button" id="bSen">SENSOR<small id="lSen">INTACT</small></button>
+        <button type="button" id="bInt">INTEGRATOR<small id="lInt">INTACT</small></button>
+        <button type="button" id="bEff">EFFECTOR<small id="lEff">INTACT</small></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Loop and disturbance</h2>
+      <div class="seg" role="group" aria-label="Choose a loop">
+        <button type="button" id="mThermo" class="on">Thermoregulation<small>core temperature</small></button>
+        <button type="button" id="mBaro">Baroreflex<small>mean arterial pressure</small></button>
+      </div>
+      <div class="dist" id="dist"></div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sG">Loop gain</label><span class="v" id="vG">3.0</span></div>
+        <input type="range" id="sG" min="0" max="6" step="0.1" value="3" aria-label="Loop gain">
+        <div class="hint">The baroreflex has a gain of roughly 2 to 3, so it removes about two-thirds to three-quarters of an acute pressure change &mdash; never the whole thing.</div>
+      </div>
+
+      <div class="ctl">
+        <div class="lab"><label for="sD">Loop delay</label><span class="v" id="vD">normal</span></div>
+        <input type="range" id="sD" min="1" max="60" step="1" value="18" aria-label="Loop delay">
+        <div class="hint">Sensing, integrating and responding all take time, so the correction arrives late and overshoots. That is why a healthy variable oscillates instead of sitting on a flat line.</div>
+      </div>
+
+      <div class="row">
+        <button class="btn" type="button" id="bSign">Switch to positive feedback</button>
+        <button class="btn" type="button" id="bFever">Fever: reset set point</button>
+      </div>
+      <div class="row"><button class="btn solid" type="button" id="bReset">Reset the whole loop</button></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The regulated variable over time</h2>
+      <canvas id="cv" height="270" role="img" aria-label="Live plot of the regulated variable against time"></canvas>
+      <div class="stat">
+        <div><div class="k">Current value</div><div class="n" id="nNow">37.00</div><div class="u" id="uNow">&deg;C</div></div>
+        <div><div class="k">Set point</div><div class="n" id="nSP">37.0</div><div class="u">defended target</div></div>
+        <div><div class="k">Error corrected</div><div class="n" id="nPct">75%</div><div class="u">gain / (1 + gain)</div></div>
+      </div>
+      <div class="exp" id="exp" aria-live="polite"></div>
+    </div>
+    <div class="card">
+      <h2>Positive feedback is not a mistake</h2>
+      <div style="font-size:13.5px;color:var(--soft);line-height:1.6;">Amplifying loops exist wherever the body wants an <b style="color:var(--teal-dk)">endpoint</b>, not a steady state. In labor, head pressure on the cervix drives oxytocin, which drives stronger contractions &mdash; and stops at delivery. In hemostasis, activated platelets recruit more platelets and thrombin catalyzes its own production &mdash; and stops when the plug seals the vessel. In the action potential upstroke, sodium entry opens more sodium channels &mdash; and stops when those channels inactivate within about a millisecond. Every physiologic positive loop is short, explosive, and self-terminating. When the brake fails, you get disseminated intravascular coagulation or the downward spiral of cardiogenic shock.</div>
+    </div>
+  </div>
+</div>
+<footer>Human Physiology &middot; <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b></footer>
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var C={teal:css('--teal'),tealdk:css('--teal-dk'),blue:css('--blue'),coral:css('--coral'),gold:css('--gold'),green:css('--green'),line:css('--line'),muted:css('--muted'),soft:css('--soft'),card:css('--card')};
+  var E=function(i){return document.getElementById(i);};
+
+  var LOOPS={
+    thermo:{
+      name:'Thermoregulation', unit:'°C', sp:37.0, dec:2, alpha:0.05,
+      lo:33, hi:43, band:[36.5,37.5], danger:41.0, dangerTxt:'enzymes denature',
+      vLab:'core temp', sLab:'thermoreceptors', iLab:'hypothalamus', eLab:'vessels, sweat',
+      feverSP:38.9,
+      dists:[
+        ['Cold room','open-loop pull of −3.0 °C',-3.0],
+        ['Hot humid day','open-loop push of +2.4 °C',2.4],
+        ['Shivering exercise','open-loop push of +1.6 °C',1.6],
+        ['No disturbance','let it settle',0]
+      ],
+      effOn:'cutaneous vasodilation and sweating (about 580 kcal lost per liter evaporated), or vasoconstriction &mdash; skin flow can drop from 250 mL/min to under 30 mL/min &mdash; plus shivering'
+    },
+    baro:{
+      name:'Baroreflex', unit:'mm Hg', sp:93, dec:1, alpha:0.14,
+      lo:35, hi:150, band:[70,100], danger:0, dangerTxt:'',
+      vLab:'mean arterial P', sLab:'baroreceptors', iLab:'medulla', eLab:'heart, arterioles',
+      feverSP:0,
+      dists:[
+        ['Stand up suddenly','open-loop fall of 28 mm Hg',-28],
+        ['Hemorrhage 900 mL','open-loop fall of 42 mm Hg',-42],
+        ['Pressor infusion','open-loop rise of 34 mm Hg',34],
+        ['No disturbance','let it settle',0]
+      ],
+      effOn:'sympathetic outflow rises and parasympathetic outflow falls, so heart rate, contractility and arteriolar constriction all increase and MAP = CO × TPR is dragged back up &mdash; all within one or two heartbeats'
+    }
+  };
+
+  var st={k:'thermo', G:3, delay:18, D:0, sign:-1, fever:false,
+          sen:true, integ:true, eff:true, x:37.0, meas:37.0, hist:[]};
+
+  function L(){return LOOPS[st.k];}
+  function SP(){return (st.k==='thermo'&&st.fever)?L().feverSP:L().sp;}
+
+  function setLoop(k){
+    st.k=k; var l=LOOPS[k];
+    st.x=l.sp; st.meas=l.sp; st.D=0; st.fever=false; st.sign=-1;
+    st.sen=st.integ=st.eff=true;
+    st.G=(k==='thermo')?3:2.5; E('sG').value=st.G;
+    st.delay=(k==='thermo')?18:6; E('sD').value=st.delay;
+    st.hist=[];
+    E('mThermo').classList.toggle('on',k==='thermo');
+    E('mBaro').classList.toggle('on',k==='baro');
+    E('tVar').textContent=l.vLab; E('tSen').textContent=l.sLab;
+    E('tInt').textContent=l.iLab; E('tEff').textContent=l.eLab;
+    E('bFever').style.display=(k==='thermo')?'':'none';
+    buildDist(); syncUI();
+  }
+
+  function buildDist(){
+    var box=E('dist'); box.innerHTML='';
+    L().dists.forEach(function(d,i){
+      var b=document.createElement('button'); b.type='button'; b.dataset.i=i;
+      b.innerHTML=d[0]+'<small>'+d[1]+'</small>';
+      b.addEventListener('click',function(){
+        st.D=d[2];
+        [].forEach.call(box.children,function(c){c.classList.remove('on');});
+        b.classList.add('on'); syncUI();
+      });
+      box.appendChild(b);
+    });
+    box.children[box.children.length-1].classList.add('on');
+  }
+
+  function syncUI(){
+    var l=L();
+    E('vG').textContent=st.G.toFixed(1);
+    E('vD').textContent=st.delay<=6?'fast (seconds)':(st.delay<=22?'normal':'sluggish');
+    E('nSP').textContent=SP().toFixed(l.dec===2?1:0);
+    E('uNow').textContent=l.unit;
+    var pct=st.sign<0?(st.G/(1+st.G)*100):0;
+    E('nPct').textContent=(st.sen&&st.integ&&st.eff&&st.sign<0)?pct.toFixed(0)+'%':'0%';
+    E('bSign').textContent=st.sign<0?'Switch to positive feedback':'Back to negative feedback';
+    E('bSen').classList.toggle('broken',!st.sen); E('lSen').textContent=st.sen?'INTACT':'BROKEN';
+    E('bInt').classList.toggle('broken',!st.integ); E('lInt').textContent=st.integ?'INTACT':'BROKEN';
+    E('bEff').classList.toggle('broken',!st.eff); E('lEff').textContent=st.eff?'INTACT':'BROKEN';
+    E('nSen').classList.toggle('off',!st.sen); E('nInt').classList.toggle('off',!st.integ); E('nEff').classList.toggle('off',!st.eff);
+    E('xSen').style.display=st.sen?'none':'';
+    E('xInt').style.display=st.integ?'none':'';
+    E('xEff').style.display=st.eff?'none':'';
+    var dead=!(st.sen&&st.integ&&st.eff);
+    ['a1','a2','a3','aRet'].forEach(function(id){
+      var e=E(id); e.classList.toggle('dead',dead); e.classList.toggle('pos',!dead&&st.sign>0);
+    });
+    E('tRet').textContent=dead?'RESPONSE — the loop is open':(st.sign<0?'RESPONSE — opposes the change':'RESPONSE — AMPLIFIES the change');
+    E('tRet').style.fill=dead?C.muted:(st.sign<0?C.teal:C.coral);
+    explain();
+  }
+
+  function loopOpen(){return !(st.sen&&st.integ&&st.eff);}
+
+  function explain(){
+    var l=L(), sp=SP(), t='<span class="h">'+l.name+'</span>';
+    if(!st.sen){
+      t+='The <b>sensor is broken</b>, so the integrator is comparing a stale measurement to the set point and computes an error of zero. Nothing is commanded, and the variable drifts all the way to wherever the disturbance takes it. A loop without a sensor is not a loop &mdash; it is an open pathway.';
+    } else if(!st.integ){
+      t+='The <b>integrator is broken</b>. The sensor still measures correctly, but nothing compares that measurement to the set point, so no error signal and no command exist. Damage to the preoptic hypothalamus or the medullary cardiovascular centers produces exactly this pattern: accurate information, no correction.';
+    } else if(!st.eff){
+      t+='The <b>effector is broken</b>. The error is sensed and the command is issued, but no muscle, gland or transport protein carries it out. This is the anhidrotic patient who cannot sweat, or the denervated heart that will not accelerate &mdash; the intent is intact and the response is not.';
+    } else if(st.sign>0){
+      t+='<b>Positive feedback.</b> The response now adds to the original change instead of opposing it, so with a gain above 1 the variable accelerates away from the set point and never returns. The body uses this deliberately only where a fast endpoint is wanted &mdash; and every such loop has a definite terminating event built into it. Here there is none, so it simply runs away.';
+    } else {
+      var res=st.D/(1+st.G), pct=st.G/(1+st.G)*100;
+      t+='Negative feedback is working. With a disturbance that would have moved the variable by <b>'+st.D.toFixed(l.dec===2?1:0)+' '+l.unit+'</b> on its own and a gain of <b>'+st.G.toFixed(1)+'</b>, the loop removes <b>'+pct.toFixed(0)+'%</b> of it and leaves a steady-state error of <b>'+res.toFixed(l.dec===2?2:1)+' '+l.unit+'</b>. ';
+      t+='The response depends on the size of the error, so the error can never reach zero while the response is still needed. That is why blood pressure still dips when a patient stands up quickly &mdash; the reflex buffers the fall, it does not abolish it.<br><br>';
+      t+='The effector step here: '+l.effOn+'.';
+      if(st.k==='thermo'&&st.fever){
+        t+='<br><br><b>Set point reset to 38.9 &deg;C.</b> The machinery is not failing; it is aiming at a new number. Pyrogens raised the target, so 37 &deg;C now reads as too cold and the patient vasoconstricts and shivers on the way up. Above about 41 to 42 &deg;C, enzymes begin to denature &mdash; which is why 40 &deg;C is an emergency rather than an uncomfortable fever.';
+      }
+      if(st.delay>32){t+='<br><br>You have made the loop sluggish. Watch the overshoot grow: a late correction arrives after the variable has already moved, so it pushes too far and the variable hunts around the set point.';}
+    }
+    E('exp').innerHTML=t;
+  }
+
+  // ----- simulation -----
+  var cvs=E('cv'), ctx=cvs.getContext('2d'), W=600, H=270;
+  function fit(){
+    var d=window.devicePixelRatio||1;
+    W=cvs.clientWidth||600;
+    cvs.width=Math.round(W*d); cvs.height=Math.round(H*d);
+    cvs.style.height=H+'px'; ctx.setTransform(d,0,0,d,0,0);
+  }
+  var MAXH=420, acc=0, last=0;
+
+  function step(){
+    var l=L(), sp=SP();
+    // the sensor reports with a lag: that lag is what makes the loop overshoot
+    st.meas+=(st.x-st.meas)*(1/Math.max(1,st.delay));
+    var meas=st.meas;
+    if(!st.sen||!st.integ) meas=sp;
+    var corr=st.sign*st.G*(meas-sp);
+    if(!st.eff||!st.sen||!st.integ) corr=0;
+    var target=sp+st.D+corr;
+    st.x+=(target-st.x)*l.alpha;
+    st.x+=(Math.random()-0.5)*(l.dec===2?0.012:0.16);
+    st.x=Math.max(l.lo-4,Math.min(l.hi+4,st.x));
+    st.hist.push(st.x); if(st.hist.length>MAXH) st.hist.shift();
+  }
+
+  function y(v){var l=L(); return H-28-((v-l.lo)/(l.hi-l.lo))*(H-52);}
+
+  function draw(ts){
+    var dt=last?(ts-last):16; last=ts;
+    acc+=dt; while(acc>28){step();acc-=28;}
+    var l=L(), sp=SP();
+    ctx.clearRect(0,0,W,H);
+    var x0=44, x1=W-10;
+
+    // normal band
+    ctx.fillStyle=C.green; ctx.globalAlpha=.12;
+    ctx.fillRect(x0,y(l.band[1]),x1-x0,y(l.band[0])-y(l.band[1])); ctx.globalAlpha=1;
+    ctx.fillStyle=C.muted; ctx.font='600 10px Inter, system-ui, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('normal range '+l.band[0]+' to '+l.band[1]+' '+l.unit, x0+4, y(l.band[1])-4);
+
+    // axes
+    ctx.strokeStyle=C.line; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x0,14); ctx.lineTo(x0,H-24); ctx.lineTo(x1,H-24); ctx.stroke();
+    ctx.fillStyle=C.muted; ctx.textAlign='right'; ctx.font='600 10px Inter, system-ui, sans-serif';
+    var ticks=(st.k==='thermo')?[34,36,38,40,42]:[40,60,80,100,120,140];
+    ticks.forEach(function(v){
+      ctx.fillText(String(v), x0-5, y(v)+3.5);
+      ctx.strokeStyle=C.line; ctx.beginPath(); ctx.moveTo(x0,y(v)); ctx.lineTo(x1,y(v)); ctx.stroke();
+    });
+    ctx.textAlign='center'; ctx.fillText('time →', (x0+x1)/2, H-8);
+
+    // danger line
+    if(l.danger){
+      ctx.strokeStyle=C.coral; ctx.setLineDash([3,4]); ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.moveTo(x0,y(l.danger)); ctx.lineTo(x1,y(l.danger)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle=C.coral; ctx.textAlign='right'; ctx.fillText(l.dangerTxt+' → '+l.danger+' '+l.unit, x1-4, y(l.danger)-4);
+    }
+
+    // set point
+    ctx.strokeStyle=C.tealdk; ctx.setLineDash([6,5]); ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x0,y(sp)); ctx.lineTo(x1,y(sp)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=C.tealdk; ctx.textAlign='left'; ctx.font='800 10px Inter, system-ui, sans-serif';
+    ctx.fillText('SET POINT '+sp.toFixed(l.dec===2?1:0), x0+4, y(sp)-5);
+
+    // open-loop destination
+    if(st.D!==0){
+      ctx.strokeStyle=C.gold; ctx.setLineDash([2,5]); ctx.lineWidth=1.5;
+      var ol=Math.max(l.lo,Math.min(l.hi,sp+st.D));
+      ctx.beginPath(); ctx.moveTo(x0,y(ol)); ctx.lineTo(x1,y(ol)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle=C.gold; ctx.textAlign='left'; ctx.fillText('where it would go with no loop', x0+4, y(ol)+(st.D<0?12:-5));
+    }
+
+    // trace
+    var n=st.hist.length;
+    if(n>1){
+      ctx.strokeStyle=loopOpen()?C.coral:(st.sign>0?C.coral:C.teal);
+      ctx.lineWidth=2.4; ctx.lineJoin='round'; ctx.beginPath();
+      for(var i=0;i<n;i++){
+        var px=x1-(n-1-i)*((x1-x0)/MAXH);
+        if(px<x0) continue;
+        var py=Math.max(10,Math.min(H-26,y(st.hist[i])));
+        if(i===0||px===x0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      }
+      ctx.stroke();
+      var lastY=Math.max(10,Math.min(H-26,y(st.hist[n-1])));
+      ctx.fillStyle=ctx.strokeStyle;
+      ctx.beginPath(); ctx.arc(x1-1,lastY,4.5,0,6.2832); ctx.fill();
+    }
+
+    E('nNow').textContent=st.x.toFixed(l.dec);
+    requestAnimationFrame(draw);
+  }
+
+  // ----- wiring -----
+  E('sG').addEventListener('input',function(){st.G=parseFloat(this.value);syncUI();});
+  E('sD').addEventListener('input',function(){st.delay=parseInt(this.value,10);syncUI();});
+  E('bSen').addEventListener('click',function(){st.sen=!st.sen;syncUI();});
+  E('bInt').addEventListener('click',function(){st.integ=!st.integ;syncUI();});
+  E('bEff').addEventListener('click',function(){st.eff=!st.eff;syncUI();});
+  E('bSign').addEventListener('click',function(){st.sign=st.sign<0?1:-1;syncUI();});
+  E('bFever').addEventListener('click',function(){st.fever=!st.fever;this.textContent=st.fever?'Break the fever (37.0 °C)':'Fever: reset set point';syncUI();});
+  E('bReset').addEventListener('click',function(){E('bFever').textContent='Fever: reset set point';setLoop(st.k);});
+  E('mThermo').addEventListener('click',function(){setLoop('thermo');});
+  E('mBaro').addEventListener('click',function(){setLoop('baro');});
+  window.addEventListener('resize',fit);
+
+  fit(); setLoop('thermo'); requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

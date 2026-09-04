@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>Intro to Physiology and the Chemical Level &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Physiology is the science of how the body works, and &ldquo;how&rdquo; almost always means the same three things: a gradient, a resistance, and a control loop that watches the result. A molecule moves because a difference in conce">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 1 &middot; Intro to Physiology</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#what-physiology-is">1 &middot; Physiology asks how, not what</a>
+        <a href="#homeostasis">2 &middot; Homeostasis and the logic of feedback</a>
+        <a href="#chemical-level">3 &middot; Atoms, bonds, water, and the body fluids</a>
+        <a href="#acid-base">4 &middot; Acids, bases, and the defense of pH</a>
+        <a href="#macromolecules-energy">5 &middot; Macromolecules, enzymes, and the ATP economy</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 1</div>
+<h1>Intro to Physiology and the Chemical Level</h1>
+
+<p class="lede">Physiology is the science of how the body works. &ldquo;How&rdquo; almost always comes down to the same three things. There is a gradient, a difference that pushes. There is a resistance, something that pushes back. And there is a control loop that watches the result. A molecule moves because a difference in concentration, pressure, or charge pushes it. It moves fast or slow depending on what stands in the way. Whatever it does to the inside of the body gets sensed. That value is compared against a set point. Then it is corrected. Every organ system in this course is a version of that same story. That is why we start at the chemical level. Water, ions, pH, and the four families of biological molecules are not background trivia. They are the physical machinery that gradients act on. Learn why sodium sits outside the cell and potassium sits inside. Learn why blood pH is guarded within 0.1 units. Learn why heat wrecks protein shape. Half of the rest of physiology then becomes predictable instead of memorized.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Say what <b>physiology</b> means. It is the study of mechanism, of how a thing works. Place any structure at the right <b>level of organization</b>, from atom to organism.</li>
+<li>Use the flow rule <b>Q = &Delta;P / R</b> for blood flow, airflow, and ion movement. Name the driving force and the resistance each time.</li>
+<li>Draw a <b>negative feedback</b> loop. Label the regulated <b>variable</b>, the <b>sensor</b>, the <b>integrator</b>, the <b>effector</b>, and the response. Use body temperature and the <b>baroreflex</b> as your examples.</li>
+<li>Tell negative feedback from <b>positive feedback</b>. Explain why labor, clotting, and the action potential upstroke are fair exceptions.</li>
+<li>Compare <b>ionic</b>, <b>polar covalent</b>, <b>nonpolar covalent</b>, and <b>hydrogen</b> bonds. Predict what will dissolve in water from how polar the bond is.</li>
+<li>Work out <b>plasma osmolality</b> and say what it means. Tell <b>osmolarity</b> from <b>tonicity</b> using effective and ineffective osmoles.</li>
+<li>Use the <b>Henderson&ndash;Hasselbalch</b> relationship. Explain how the bicarbonate buffer, the lungs, and the kidneys hold arterial pH at 7.35 to 7.45.</li>
+<li>Link <b>protein</b> shape to enzyme activity. Explain <b>denaturation</b>, <b>activation energy</b>, and saturation in body terms.</li>
+<li>Describe how a cell spends <b>ATP</b>. Say why the <b>Na+/K+ ATPase</b> uses roughly a fifth to a third of resting energy.</li>
+</ul></div>
+
+<h2 id="what-physiology-is"><span class="num">Section 1</span>Physiology asks how, not what</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch01_s1.jpg" alt="Diagram of the levels of structural organization of the human body, from atoms and molecules through cells, tissues, organs, organ systems, and the whole organism" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The levels of organization run from atom to organism. Each level is explained by how the level below it behaves. <span class="cred">Morou&#231;o, P.; Fernandes, C.; Lattanzi, W, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Mechanism is the whole point</h3>
+
+<p>Anatomy asks what a structure is called and where it sits. Physiology asks what it does. It asks what forces make it do that. It asks what happens when those forces change. The two belong together. A structure&rsquo;s shape is usually the reason it acts the way it does. In this course, anatomy always serves function. In Module 12 you meet the alveolus, the air sac of the lung. You will care that its wall is about 0.5 &mu;m thick. That thinness is what lets oxygen cross in about 0.25 seconds. When you meet the loop of Henle in Module 14, watch its two limbs. The descending limb lets water through. The ascending limb does not. That one difference is the whole trick behind concentrating urine.</p>
+
+<p>So the right question to ask about any new topic is short. <i>What is the driving force? What is the resistance? What is being regulated?</i> Physiology is a small number of ideas used over and over. Blood flowing through vessels. Air flowing through airways. Filtration at the glomerulus, the filter unit of the kidney. Oxygen spreading into a capillary. Sodium sliding through an open channel. All five are the same sentence. Something moves down a gradient. Its speed is set by whatever pushes back.</p>
+
+<p>This is also why physiology leans on numbers and anatomy does not. Saying the heart pumps &ldquo;a lot&rdquo; of blood tells you nothing. Saying it pumps about 5 L/min at rest tells you something real. A healthy adult reaches 20 to 25 L/min at peak exercise. An elite endurance athlete reaches 35 L/min or more. Those numbers show what the system can do, and what failing looks like. Hold on to the numbers all through this book. Normal ranges are the reference points. Every problem you meet in your later nursing courses is defined against them.</p>
+
+<h3>Levels of organization, and why they matter functionally</h3>
+
+<p>The body is built in layers. Atoms join into molecules. Molecules build organelles, the small working parts inside a cell. Organelles build cells. Cells build tissues. Tissues build organs. Organs build organ systems. Organ systems build an organism. That list is usually taught as a vocabulary drill. Treat it as a chain of explanation instead. Each level is the mechanism of the level above it. The organism holds blood pressure steady because organs act as pumps and resistors. Those organs are the heart, the vessels, and the kidney. The heart contracts because muscle cells shorten. Muscle cells shorten because myosin heads split ATP and pull on actin. Myosin can do that because of the chemistry of one phosphoanhydride bond. Follow the chain far enough and every body function ends up in chemistry. That is why this module starts there.</p>
+
+<p>An organ is a working unit made of at least two tissue types together. An organ system is a group of organs that share one job. The difference matters at the bedside. Failure at one level shows up at another. Take a single changed letter in one hemoglobin gene. That is the molecular level. It makes sickled red blood cells at the cell level. It plugs vessels at the tissue level. It kills bone, spleen, and lung tissue at the organ level. Nothing in that chain is mysterious. The levels cause one another.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Level</th><th>Example</th><th>The question it answers</th></tr></thead>
+<tbody>
+<tr><td>Chemical (atoms, ions, molecules)</td><td>Na+, K+, water, ATP, glucose</td><td>What are the gradients and fuels made of?</td></tr>
+<tr><td>Organelle</td><td>Mitochondrion, sarcoplasmic reticulum</td><td>Where is energy made? Where is calcium stored?</td></tr>
+<tr><td>Cell</td><td>Cardiac myocyte, nephron epithelial cell</td><td>What is the smallest unit that does the job?</td></tr>
+<tr><td>Tissue</td><td>Cardiac muscle, simple squamous epithelium</td><td>How do matching cells work together?</td></tr>
+<tr><td>Organ</td><td>Heart, kidney, lung</td><td>How do a few tissues make a pump, a filter, or an exchanger?</td></tr>
+<tr><td>Organ system</td><td>Cardiovascular, renal, respiratory</td><td>Which organs share the care of one regulated value?</td></tr>
+<tr><td>Organism</td><td>The patient</td><td>Is the inside of the body being held steady?</td></tr>
+</tbody>
+</table></div>
+
+<h3>One equation, many systems: Q = &Delta;P / R</h3>
+
+<p>The most useful relationship in physiology is the flow equation. It works like Ohm&rsquo;s law from electricity: <b>Q = &Delta;P / R</b>. Q is flow. &Delta;P is the pressure difference driving it. R is resistance, the opposition to flow. In the body&rsquo;s main circulation, Q is cardiac output, about 5 L/min at rest. &Delta;P is mean arterial pressure minus right atrial pressure. That is roughly 93 minus 4, so about 89 mm Hg. R is total peripheral resistance, and arterioles set most of it. In the airway, Q is airflow. &Delta;P is the gap between the pressure outside and the pressure in the alveoli. That gap is only about 1 to 2 mm Hg during quiet breathing. R is airway resistance, and medium-sized bronchi set most of it.</p>
+
+<p>Resistance in a tube follows Poiseuille&rsquo;s relationship. R rises with the thickness of the fluid. It rises with the length of the tube. R falls with the fourth power of the radius. That fourth power does a lot of work. It is why arterioles, not arteries, control blood flow. It is why a narrow bronchiole matters so much. Halve its radius in an asthma attack and resistance rises sixteen-fold. Almost nothing else in the body has that kind of leverage. So look for fine control of flow. Where you find it, you find a tube wrapped in smooth muscle. That tube can change its radius.</p>
+
+<p>The same skeleton fits movement that is not bulk flow. For a solute crossing a membrane, the driving force is a concentration difference. For ions, an electrical difference pushes as well. The resistance is the membrane itself. It sets how hard the crossing is for that solute. For heat, the gradient is temperature. For water, it is osmotic and hydrostatic pressure. Name the gradient and name the resistance. An unfamiliar system turns into a familiar one.</p>
+
+<div class="pearl"><b>Pearl.</b> A gradient on its own tells you nothing about speed. Carbon dioxide faces a small partial-pressure gradient across the alveolar membrane. It is only about 5 to 6 mm Hg. Oxygen faces roughly 60 mm Hg. Carbon dioxide still crosses as fast or faster. It dissolves in water about twenty-four times more easily. So it diffuses about twenty times more readily. Sometimes two solutes act differently than their gradients alone predict. The answer then sits in the resistance term. Look at solubility, particle size, channel numbers, or membrane thickness. Do not look at the driving force.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Arterial pH is not set by bicarbonate alone. It is not set by carbon dioxide alone. It is set by the ratio of the two: pH = 6.1 + log([HCO3&minus;] &divide; (0.03 &times; PaCO2)). Move either side and watch what the pH does. <a href="../lab/ch01/AcidBaseLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch01/AcidBaseLab.html" loading="lazy" title="Acid&ndash;Base Lab &mdash; the Henderson&ndash;Hasselbalch ratio interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Physiology explains function as flow. Something moves down a gradient against a resistance. The rule is Q = &Delta;P / R. It works the same way for blood, air, solutes, water, and heat.</p></div>
+
+<h2 id="homeostasis"><span class="num">Section 2</span>Homeostasis and the logic of feedback</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch01_s2.jpg" alt="Schematic of a negative feedback control loop showing a stimulus, receptor or sensor, afferent pathway, control center, efferent pathway, effector, and the response returning the variable toward its set point" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Every homeostatic loop has the same five parts. They are the regulated variable, the sensor, the integrator, the effector, and the response. <span class="cred">ChristiaanPR, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The five parts of a control loop</h3>
+
+<p><b>Homeostasis</b> is keeping the inside of the body fairly steady. The outside world changes anyway. Claude Bernard called that inside world the <i>milieu int&eacute;rieur</i>, French for the internal environment. He pointed out that the freedom of complex animals depends on it. A cell puts up with only a narrow range. That covers temperature, pH, osmolality, and ion concentration. Osmolality is how concentrated a fluid is. So the organism must hold those conditions steady around every single cell. The outside world gets no vote.</p>
+
+<p>The machinery is always the same. There is a <b>regulated variable</b>, the thing being held steady. That is core temperature, mean arterial pressure, plasma glucose, arterial pH, or plasma osmolality. There is a <b>sensor</b>, also called a receptor, that measures it. There is an <b>integrator</b>, or control center. It compares the measured value to a <b>set point</b> and works out the error. It usually sits in the hypothalamus, the brainstem, or a hormone gland. There is an <b>effector</b> that the integrator gives orders to. That is a muscle, a gland, or a transport protein. And there is a <b>response</b> that moves the variable back toward the set point. The sensor then measures it again. The loop closes on itself. That is what makes it feedback and not a one-way reflex.</p>
+
+<p>Temperature control shows every part clearly. Core temperature sits near 37.0 &deg;C. It normally runs from about 36.5 to 37.5 &deg;C. It swings roughly 0.5 &deg;C across the day. Two sets of sensors report in. Central thermoreceptors sit in the preoptic area of the hypothalamus. Peripheral thermoreceptors sit in the skin. The hypothalamus is the integrator. The effectors are skin arterioles, sweat glands, and skeletal muscle. Cool the body and the skin arterioles narrow. That can cut skin blood flow from about 250 mL/min to under 30 mL/min. Body hair stands up, and shivering begins, which raises heat production several-fold. Warm the body and the vessels widen and you sweat. Sweating removes about 580 kcal for every liter that evaporates.</p>
+
+<h3>Why negative feedback corrects but never perfects</h3>
+
+<p>Negative feedback works against the direction of change. A rise sets off a response that lowers. A fall sets off a response that raises. Two things follow that students often miss. First, a negative feedback loop <b>oscillates</b>. Sensing, comparing, and responding all take time. So the fix arrives a little late and overshoots. The variable hunts around the set point instead of sitting on it. Core temperature, plasma glucose, and arterial pressure all trace small waves. The graph of a healthy variable is never a flat line.</p>
+
+<p>Second, a proportional negative feedback system fixes only part of the disturbance. The size of the response depends on the size of the error. So the error can never reach zero while the response is still needed. Physiologists call this gain. The baroreflex has a gain of roughly 2 to 3. So it removes about two-thirds to three-quarters of a sudden pressure change. It does not remove all of it. This is exactly why blood pressure still drops when a patient stands up quickly. The reflex softens the fall. It does not abolish it.</p>
+
+<p>The baroreflex is worth memorizing as the template. It is the reflex that guards blood pressure. Stretch receptors sit in the carotid sinus and the aortic arch. They fire in step with how far the artery wall is stretched. Their traffic runs along cranial nerves IX and X. It ends at the cardiovascular centers in the medulla. When pressure falls, baroreceptor firing falls. The medulla then turns parasympathetic outflow down and sympathetic outflow up. Heart rate, contractility, and vessel narrowing all rise. That raises cardiac output and total peripheral resistance. Mean arterial pressure rises too, since MAP = CO &times; TPR. The whole loop runs within one to two heartbeats. That is why it is the body&rsquo;s first defense against bleeding. It is the first defense against standing up too.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Loop</th><th>Variable (normal range)</th><th>Sensor</th><th>Integrator</th><th>Effectors and response</th></tr></thead>
+<tbody>
+<tr><td>Temperature control</td><td>Core temperature (36.5 to 37.5 &deg;C)</td><td>Heat sensors in the hypothalamus and skin</td><td>Preoptic hypothalamus</td><td>Skin arterioles, sweat glands, skeletal muscle. Widen and sweat, or narrow and shiver</td></tr>
+<tr><td>Baroreflex</td><td>Mean arterial pressure (about 70 to 100 mm Hg)</td><td>Stretch sensors in the carotid sinus and aortic arch</td><td>Cardiovascular centers in the medulla</td><td>Heart and arterioles. Change heart rate, contractility, and resistance within seconds</td></tr>
+<tr><td>Glucose control</td><td>Plasma glucose (fasting 70 to 99 mg/dL)</td><td>Beta and alpha cells in the pancreas</td><td>The islet cells themselves, acting as a gland</td><td>Liver, muscle, fat. Insulin stores glucose, glucagon releases it, over minutes to hours</td></tr>
+<tr><td>Water balance</td><td>Plasma osmolality (275 to 295 mOsm/kg)</td><td>Concentration sensors in the hypothalamus</td><td>Hypothalamus and back of the pituitary</td><td>Kidney collecting duct, using ADH. Water is kept or passed out, plus thirst</td></tr>
+</tbody>
+</table></div>
+
+<h3>Positive feedback and feedforward: the honorable exceptions</h3>
+
+<p><b>Positive feedback</b> makes the original change bigger instead of opposing it. So it is unstable by nature. It drives a variable fast toward an endpoint. The body uses it on purpose. It picks the spots that need an endpoint. A steady state is not the goal there. In labor, the fetal head presses on the cervix. That triggers oxytocin release. Oxytocin strengthens the uterine contraction, which pushes the head harder against the cervix. The loop breaks only at delivery. Hemostasis is the making of a blood clot. Activated platelets release ADP and thromboxane A2. Those pull in more platelets. Activated thrombin drives the making of more thrombin. That loop breaks when the plug seals the vessel. The body&rsquo;s own anticoagulants then fence it in. In the action potential upstroke, sodium entry depolarizes the membrane. That opens more voltage-gated sodium channels, which lets in more sodium. That loop breaks when those channels inactivate within about one millisecond.</p>
+
+<p>Notice the pattern. Every positive feedback loop in the body is short. Each one has a definite stopping event. Each one gives an explosive, all-or-none result. When positive feedback escapes its brake, it becomes disease. Disseminated intravascular coagulation is one example. So is the downward spiral of cardiogenic shock. Falling blood flow to the heart weakens the very pump that makes that flow.</p>
+
+<p><b>Feedforward</b> control is a third pattern worth naming. Here the body acts ahead of a disturbance instead of waiting to sense it. The cephalic phase of digestion releases saliva, stomach acid, and insulin. The sight and smell of food is enough to start it. Not one glucose molecule has been absorbed yet. Heart rate climbs at the start of exercise. No waste product has built up yet. Feedforward is fast but blind. Negative feedback always corrects it in the end. Negative feedback is the system that knows the truth.</p>
+
+<div class="pearl"><b>Pearl &mdash; a common misconception.</b> Homeostasis is not the same as constancy, and the set point is not fixed. Fever is not a failure of temperature control. It is a deliberate move of the target upward. Pyrogens raise the hypothalamic set point to, say, 38.9 &deg;C. The patient then feels cold and shivers, because 37 &deg;C now sits below the target. All the machinery is working perfectly. It is simply aiming at a new number. The same reset logic covers long-standing high blood pressure. The baroreflex ends up defending it. The reflex has adjusted to the higher pressure.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A protein works only in the shape it folds into. Weak bonds hold that shape, and heat or a pH swing can undo them. Pick a protein. Drag substrate to find where it saturates. Then drag temperature and pH and watch it fail. <a href="../lab/ch01/EnzymeKineticsLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch01/EnzymeKineticsLab.html" loading="lazy" title="Enzyme and ATP Lab &mdash; saturation, shape, and the cost of a gradient interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Negative feedback is the organizing idea of the whole course. It has five parts. They are the variable, the sensor, the integrator, the effector, and the response. Positive feedback shows up only where a fast, self-stopping endpoint is the goal.</p></div>
+
+<h2 id="chemical-level"><span class="num">Section 3</span>Atoms, bonds, water, and the body fluids</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch01_s3.jpg" alt="Illustration of water molecules showing polar covalent bonds, partial negative charge on oxygen and partial positive charges on hydrogen, and hydrogen bonding between adjacent molecules" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Water is bent and polar, and it forms hydrogen bonds. Those two facts explain most of what water does in the body. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Bonds decide behavior</h3>
+
+<p>Only about two dozen elements show up in the body. Four of them make up roughly 96 percent of body mass. They are oxygen, carbon, hydrogen, and nitrogen. What matters in physiology is not the list. It is the electrons. An atom&rsquo;s outer shell decides whether it gives electrons away, takes them, or shares them. That decides what kind of bond it makes. And the bond decides how it behaves in water.</p>
+
+<p><b>Ionic bonds</b> form when one atom hands an electron over outright. Sodium chloride, table salt, is the example. In a dry crystal the pull is strong. In water the ions come apart almost completely. That is why the body&rsquo;s ionic compounds float free as <b>electrolytes</b>. Electrolytes are particles that carry an electrical charge. Na+, K+, Cl-, Ca2+, and HCO3- are the ones to know. They carry charge and build the gradients that drive membrane potentials. <b>Covalent bonds</b> share electrons instead, and they are much stronger. A carbon&ndash;carbon bond runs roughly 350 to 400 kJ/mol. That is why the carbon skeletons of biological molecules hold together at body temperature. It is why enzymes have to take them apart. Sometimes the sharing is uneven, as between oxygen and hydrogen. Then the bond is <b>polar covalent</b>, and the molecule carries partial charges. Sometimes it is even, as between two carbons. Then the bond is <b>nonpolar</b>, and the molecule will not dissolve in water.</p>
+
+<p><b>Hydrogen bonds</b> are weak attractions. They pull a slightly positive hydrogen toward a slightly negative oxygen or nitrogen nearby. One on its own is feeble, about 20 kJ/mol. That is roughly a twentieth of a covalent bond. They break and re-form constantly at 37 &deg;C. As a group, though, they decide a lot. They hold the alpha helix of a protein. They hold the double helix of DNA. They hold the liquid structure of water itself. Their weakness is the design feature. Physiology needs shapes it can build, hold, and release within milliseconds. Only a bond that ordinary heat can break is fast enough for that.</p>
+
+<h3>Water is not a passive background</h3>
+
+<p>Water is 55 to 60 percent of adult body mass. That is about 42 L in a 70 kg man. It is somewhat less in women and in older people. Fat tissue holds little water. Four properties earn water that share. It is an excellent <b>solvent</b> for polar and charged substances. Its partial charges wrap each ion in a shell of water. That is how nutrients, wastes, gases, and hormones travel dissolved in plasma. It has a high <b>specific heat</b>, 4.18 J per gram per &deg;C. So large heat loads change core temperature only slowly. That buys the temperature loop time to respond. It has a very high <b>heat of vaporization</b>. Evaporating one liter of sweat removes roughly 580 kcal. It is the single most powerful cooling tool the body has. And water takes part in the chemistry itself. It is used in every hydrolysis reaction that breaks a polymer apart. It is used in every dehydration synthesis that builds one.</p>
+
+<p>Water molecules also cling to one another, and that creates surface tension. It matters more than it sounds. In the alveolus, the air&ndash;water surface pulls inward and tries to collapse the sac. Laplace&rsquo;s relationship describes that pull: P = 2T / r. Small alveoli would empty into large ones if nothing stopped them. Surfactant stops them. It lowers T more and more as the alveolus shrinks. That is a Module 12 problem, but it is a Module 1 chemistry fact.</p>
+
+<h3>Compartments, osmolality, and tonicity</h3>
+
+<p>Body water is not one pool. About two-thirds of it, roughly 28 L, is <b>intracellular fluid</b> (ICF), the water inside cells. The other third, roughly 14 L, is <b>extracellular fluid</b> (ECF), the water outside cells. About three-quarters of the ECF is interstitial fluid, the water between cells, at 10.5 L. The other quarter is plasma, at 3.5 L. The barrier between ICF and ECF is the plasma membrane. Water crosses it freely, but most solutes cannot. The barrier between plasma and the fluid between cells is the capillary wall. Water and small solutes cross it, but plasma proteins cannot. Because those barriers differ, the fluids differ in ways worth memorizing. Sodium is about 140 mEq/L outside the cell and only 10 to 15 mEq/L inside. Potassium is 3.5 to 5.0 mEq/L outside and 140 to 150 mEq/L inside. Free calcium inside the cell is held near 100 nmol/L. Ionized calcium in the ECF runs 1.1 to 1.3 mmol/L. The level inside is roughly ten thousand times lower. The gradient is that steep. Open a calcium channel for a few milliseconds. That alone sets off a contraction or a secretion.</p>
+
+<p><b>Osmolarity</b> counts dissolved particles per liter of solution. Osmolality counts them per kilogram of water. In dilute body fluids the two are close enough to use either way. Normal plasma osmolality is 275 to 295 mOsm/kg. You can estimate it as 2 &times; [Na+] + glucose/18 + BUN/2.8. Use glucose and urea nitrogen in mg/dL. Sodium and its partner anions supply most of plasma osmolality. That is why sodium balance and water balance cannot be pulled apart in Module 14.</p>
+
+<p><b>Tonicity</b> is a different idea, and it is more useful at the bedside. It counts only the <b>effective osmoles</b>. Those are the particles that cannot cross the membrane. So they are the ones that actually pull water. Water always moves from lower to higher effective osmolality, and it moves fast. It evens out across a cell membrane in seconds. A hypotonic setting swells cells. A hypertonic one shrinks them. In the brain, the skull allows no swelling. That is why correcting a sodium problem too fast is dangerous. It is also why 0.9 percent saline is the default fluid for resuscitation. That saline is about 308 mOsm/L, near enough to isotonic.</p>
+
+<h3>Diffusion, and why distance is the enemy</h3>
+
+<p>Diffusion is the net movement of particles from higher to lower concentration. Random heat-driven motion does it. Fick&rsquo;s law gives the rate: <b>J = D &times; A &times; &Delta;C / &Delta;x</b>. J is the net flux, the amount that crosses. D is the diffusion coefficient, how easily that substance moves. A is the surface area on offer. &Delta;C is the concentration difference. &Delta;x is the distance to be crossed. Read that equation as a design brief. You can then predict the shape of every exchange surface in the body. Maximize area. Minimize thickness. Keep the gradient up. The lung offers roughly 70 m<sup>2</sup> of alveolar surface across a 0.2 to 0.5 &mu;m barrier. The small intestine multiplies its area with folds, villi, and microvilli to some 200 m<sup>2</sup>. The systemic capillary bed offers hundreds of square meters with walls one cell thick.</p>
+
+<p>The cruel part of diffusion is the distance term. The time to diffuse rises with the <i>square</i> of the distance. A molecule needs microseconds to cross 1 &mu;m. It needs milliseconds to cross 10 &mu;m. It needs minutes to move a millimeter. That single fact is why multicellular animals need a circulatory system at all. It is why no cell sits far from a capillary. The limit is about 100 &mu;m. It is also why edema causes hypoxia, a shortage of oxygen in the tissue. Extra fluid between the cells widens &Delta;x. So flux falls, even though the oxygen gradient has not changed.</p>
+
+<div class="pearl"><b>Pearl &mdash; a common misconception.</b> Osmolarity and tonicity are not two words for one thing. A urea solution at 300 mOsm/L has the same osmolarity as plasma. It is still deeply <i>hypotonic</i>. Urea crosses cell membranes freely. It evens out across the membrane instead of holding water outside. So the cell&rsquo;s own trapped solutes pull water in. Red cells placed in that solution will burst. Only particles that cannot cross are effective osmoles. Take 5 percent dextrose in water. Once the glucose is used up, it acts like plain water. It is also why it does not expand blood volume.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Every homeostatic loop has the same five parts. They are a regulated variable, a sensor, an integrator, an effector, and a response. Push the variable off its set point with a disturbance. Then break one part and watch what happens. <a href="../lab/ch01/FeedbackLoopLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch01/FeedbackLoopLab.html" loading="lazy" title="Feedback Loop Lab &mdash; break the loop and watch interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Water&rsquo;s polarity gives the body its solvent, its compartments, and its osmotic gradients. Only solutes that cannot cross a membrane create tonicity. Diffusion is fast only across micrometer distances.</p></div>
+
+<h2 id="acid-base"><span class="num">Section 4</span>Acids, bases, and the defense of pH</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch01_s4.jpg" alt="pH scale from 0 to 14 showing common substances including gastric acid, urine, blood, and the narrow survivable range of arterial blood pH" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The pH scale is logarithmic. So the narrow arterial band of 7.35 to 7.45 covers a real change in hydrogen ion concentration. <span class="cred">Huang Z, Yin Z, Xu J, Fei Y, Heng BC, Jiang X, Chen W and Shen W, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>What pH actually measures</h3>
+
+<p>An acid gives away hydrogen ions. A base takes them up. <b>pH</b> is the negative logarithm of the hydrogen ion concentration. Two things follow from that. It runs backwards, so a low pH means a high H+ concentration. And it is logarithmic, so every whole unit is a ten-fold change. Arterial blood is held between pH 7.35 and 7.45. That comes out to a hydrogen ion concentration of only 35 to 45 nmol/L. Use 40 nmol/L as the reference. Inside cells, pH runs a little lower, near 7.0 to 7.2. Values below 6.8 or above 7.8 are generally not survivable for more than a short time.</p>
+
+<p>Why does so tiny a concentration matter so much? Because hydrogen ions grab hard onto the negatively charged side chains of proteins. That changes their shape. Enzyme active sites depend on where the charge sits. So do ion channel gates, hemoglobin&rsquo;s grip on oxygen, and receptor binding pockets. Shift the pH by 0.2 units and thousands of proteins shift shape with it. Acidemia is too much acid in the blood. It weakens the heart&rsquo;s squeeze and blunts how vessels answer catecholamines. Alkalemia, too little acid, lowers ionized calcium by making more of it stick to albumin. That is why a hyperventilating patient gets tingling around the mouth. It is why the hands and feet cramp.</p>
+
+<p>The acid load the body has to get rid of is large. Aerobic metabolism makes roughly 200 mL of carbon dioxide per minute. That gets hydrated to carbonic acid. It adds up to about 15,000 mmol of volatile acid daily. Breaking down protein and phospholipid adds more. That makes 50 to 100 mEq of fixed acid per day. The body still holds H+ at 40 nmol/L. That is one of its most impressive regulatory feats.</p>
+
+<h3>Buffers and the bicarbonate system</h3>
+
+<p>A <b>buffer</b> is a weak acid paired with its matching base. The pair soaks up added H+ or OH- with only a small change in pH. The body&rsquo;s main buffer outside cells is the carbonic acid and bicarbonate pair. One reaction ties them together: CO2 + H2O &harr; H2CO3 &harr; H+ + HCO3-. An enzyme called carbonic anhydrase speeds that reaction up enormously. It does so in red blood cells and in kidney tubule cells.</p>
+
+<p>The <b>Henderson&ndash;Hasselbalch</b> equation captures how it behaves: <b>pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2))</b>. Put in the normal values. Bicarbonate is 24 mEq/L and PaCO2 is 40 mm Hg. So the bottom of the fraction is 1.2 mmol/L. You get pH = 6.1 + log(20) = 6.1 + 1.3 = 7.4. Understand this equation rather than memorize it. It tells you the one thing that matters at the bedside. pH depends on the <i>ratio</i> of bicarbonate to dissolved carbon dioxide. It does not depend on either value alone. A patient can have a badly abnormal bicarbonate and a near-normal pH. PaCO2 only has to move the same way. That is exactly what compensation means.</p>
+
+<p>On paper the bicarbonate system looks like a poor buffer. Its pK is 6.1, more than a unit away from 7.4. Buffers work best near their pK. It works superbly anyway, because it is an <b>open system</b>. The lungs can blow off the CO2 side. The kidneys can rebuild the HCO3- side. So neither part is ever used up. Other buffers matter too. Phosphate is important inside cells and in urine. Proteins, hemoglobin among them, handle roughly half of the total load. Bone carbonate soaks up long-term acid burdens. But only the bicarbonate system has two whole organs dedicated to adjusting it.</p>
+
+<h3>Three lines of defense, on three timescales</h3>
+
+<p>The body defends pH in a set order. <b>Chemical buffers</b> act within seconds, but they only spread the load around. <b>Respiratory compensation</b> acts within minutes. Central chemoreceptors in the medulla sense the drop in cerebrospinal fluid pH that CO2 causes. Peripheral chemoreceptors in the carotid and aortic bodies add their own signal. Breathing rises and PaCO2 falls. PaCO2 sits on the bottom of the Henderson&ndash;Hasselbalch fraction. So blowing off carbon dioxide raises pH. Kussmaul respirations in diabetic ketoacidosis are this loop running at full power. <b>Renal compensation</b> is slow and takes hours to days. It is also the only route that permanently removes fixed acid. The kidney pushes H+ into the tubule. It buffers that H+ with phosphate and ammonia. Then it reclaims or builds new bicarbonate.</p>
+
+<p>From this you can read any simple acid&ndash;base problem. A primary problem in PaCO2 is respiratory. A primary problem in bicarbonate is metabolic. Compensation always moves the other value in the same direction as the first change. It never fully normalizes the pH. That is the Section 2 rule again. Proportional feedback corrects most of an error, never all of it. Say the pH is fully normal but both values are abnormal. Suspect a mixed disorder, not perfect compensation.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Quantity</th><th>Normal value</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Arterial pH</td><td>7.35 to 7.45</td><td>Ratio of bicarbonate to dissolved CO2</td></tr>
+<tr><td>[H+]</td><td>35 to 45 nmol/L (about 40)</td><td>The particle actually being regulated</td></tr>
+<tr><td>PaCO2</td><td>35 to 45 mm Hg</td><td>The breathing side. It is adjusted in minutes</td></tr>
+<tr><td>Serum HCO3-</td><td>22 to 26 mEq/L</td><td>The metabolic side. It is adjusted in hours to days</td></tr>
+<tr><td>PaO2</td><td>80 to 100 mm Hg</td><td>Oxygen level. It is separate from acid&ndash;base status</td></tr>
+<tr><td>Volatile acid load</td><td>About 15,000 mmol CO2 per day</td><td>Removed entirely by the lungs</td></tr>
+<tr><td>Fixed acid load</td><td>50 to 100 mEq per day</td><td>Removed only by the kidneys</td></tr>
+</tbody>
+</table></div>
+
+<div class="pearl"><b>Pearl &mdash; a common misconception.</b> Students often assume that because blood is buffered, hydrogen ions must be everywhere. They are not. At pH 7.4 the H+ concentration is 40 nmol/L. That is roughly three million times lower than the sodium concentration of 140 mmol/L. The body is not fighting a big pile of acid. It is guarding an extremely dilute particle. Tiny changes in it have enormous effects on protein charge. That is why acid&ndash;base is reported in pH units. It is why a change from 7.4 to 7.1 doubles the H+ concentration.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Everything that moves in the body moves down a gradient. Its rate is set by the opposition it meets: Q = &Delta;P / R. Resistance follows Poiseuille&rsquo;s rule. It rises with thickness and length. It falls steeply as the radius grows. <a href="../lab/ch01/FlowEquationLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch01/FlowEquationLab.html" loading="lazy" title="The Flow Equation Lab &mdash; Q = &Delta;P / R interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Arterial pH is set by the ratio of [HCO3-] to (0.03 &times; PaCO2). It is defended in three stages. Buffers act in seconds, breathing acts in minutes, and the kidneys act over days.</p></div>
+
+<h2 id="macromolecules-energy"><span class="num">Section 5</span>Macromolecules, enzymes, and the ATP economy</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch01_s5.jpg" alt="Comparison of the four classes of biological macromolecules, showing carbohydrate, lipid, protein, and nucleic acid structures with their monomer subunits" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Carbohydrates, lipids, proteins, and nucleic acids each buy the cell a different ability. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Four families, four jobs</h3>
+
+<p>Biological molecules are built by <b>dehydration synthesis</b>. That reaction pulls out a water molecule to join two building blocks. They are taken apart by <b>hydrolysis</b>. That reaction puts a water molecule back in to break the bond. Every digestive enzyme in Module 13 runs a hydrolysis reaction. So does every breakdown step in metabolism. What sets the four families apart is not really their chemistry. It is the problem each one solves for the body.</p>
+
+<p><b>Carbohydrates</b> solve the problem of fast fuel that dissolves in water. Glucose circulates at 70 to 99 mg/dL fasting. It is stored as glycogen in the liver, roughly 100 g. That buys only about 12 hours of fasting glucose. After that gluconeogenesis, the making of new glucose, must take over. Skeletal muscle stores roughly 400 g more, but muscle can use that only locally. Glucose is also the brain&rsquo;s required fuel under normal conditions. The brain uses about 120 g per day. <b>Lipids</b> solve two problems. The first is dense storage. Fat carries 9 kcal/g against 4 kcal/g for carbohydrate and protein. The second is building membranes. The phospholipid bilayer exists because these molecules are <b>amphipathic</b>. They carry a polar phosphate head that likes water. They also carry two nonpolar fatty acid tails that do not. So they line themselves up into a barrier. That barrier separates ICF from ECF and makes every gradient in this book possible. Steroids are built on a four-ring cholesterol skeleton. They are lipid enough to cross membranes freely. That is why steroid hormones have receptors inside the cell. It is why their effects are slow and work through gene transcription.</p>
+
+<p><b>Proteins</b> solve the problem of specificity. They are the enzymes, channels, pumps, transporters, receptors, antibodies, and contractile filaments. <b>Nucleic acids</b> solve the problem of information. DNA stores it and RNA carries it to the ribosome. Notice how directly each class maps onto a later module. Membranes go to Module 2. Contractile proteins go to Module 5. Steroid hormones go to Module 8. Plasma proteins and oncotic pressure go to Module 9.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Class</th><th>Monomer</th><th>The job it does</th><th>Numbers worth knowing</th></tr></thead>
+<tbody>
+<tr><td>Carbohydrate</td><td>Monosaccharide (glucose)</td><td>Fast fuel, and glycocalyx name tags on the cell surface</td><td>4 kcal/g. Fasting glucose 70 to 99 mg/dL. The brain uses about 120 g/day</td></tr>
+<tr><td>Lipid</td><td>Fatty acid and glycerol</td><td>Energy store, membranes, and steroid hormones</td><td>9 kcal/g. A membrane is about 7 nm thick</td></tr>
+<tr><td>Protein</td><td>Amino acid (20 kinds)</td><td>Enzymes, pumps, channels, receptors, contraction</td><td>4 kcal/g. Serum albumin 3.5 to 5.0 g/dL. It supplies most of the roughly 25 mm Hg plasma oncotic pressure</td></tr>
+<tr><td>Nucleic acid</td><td>Nucleotide</td><td>Storing information and passing it on</td><td>About 3 billion base pairs. Roughly 20,000 protein-coding genes</td></tr>
+</tbody>
+</table></div>
+
+<h3>Shape is function, and heat destroys shape</h3>
+
+<p>A protein starts as a string of amino acids. That is its primary structure. The string folds into local helices and sheets held by hydrogen bonds. That is the secondary structure. Those fold again into one three-dimensional shape, the tertiary structure. Hydrogen bonds, ionic attractions, disulfide bridges, and hydrophobic clustering hold it there. Sometimes several folded chains join into one unit. That is the quaternary structure, as in hemoglobin&rsquo;s four chains. Only the folded shape works. A receptor binds its ligand because a pocket fits it. A channel picks potassium over sodium for the same reason. Its filter is a ring of carbonyl oxygens, spaced just so.</p>
+
+<p>All of that except the disulfide bond is weak-bond chemistry. So the shape is fragile. <b>Denaturation</b> is the loss of that three-dimensional shape without breaking the peptide bonds. Heat causes it. So do pH extremes, heavy metals, and organic solvents. Human enzymes work best near 37 &deg;C. They begin to lose activity above about 41 to 42 &deg;C. So a core temperature above 40 &deg;C is a medical emergency. It is not just an uncomfortable fever. The same logic covers pepsin and trypsin. Stomach pepsin works at pH 2. Pancreatic trypsin works at pH 8. Each folds correctly only in its own setting. So pepsin shuts down the moment chyme is neutralized in the duodenum.</p>
+
+<p><b>Enzymes</b> speed reactions up by lowering the <b>activation energy</b>. That is the hump a reaction must climb before it can go. Enzymes do not change whether a reaction is favorable, and they are not used up. Their rate climbs as substrate rises, until every active site is busy. After that the enzyme is <b>saturated</b> and the rate levels off. Saturation is not an abstract idea. It is why the kidney&rsquo;s glucose reabsorption has a transport maximum. That ceiling sits near a plasma glucose of 180 to 200 mg/dL. Above that, glucose spills into the urine. It is also why some drugs shift from first-order to zero-order elimination at high doses.</p>
+
+<h3>ATP: the currency, not the savings account</h3>
+
+<p><b>ATP</b> is adenosine with three phosphates on it. Splitting off the last phosphate leaves ADP plus free phosphate. That releases about 30.5 kJ/mol under standard conditions. Inside a real cell it is closer to 50 kJ/mol. The energy is <b>coupled</b> to work. A pump moves an ion uphill. A myosin head swivels. A synthetase builds a bond. Coupling is the key idea. Cells do not burn fuel into heat and hope for the best. They hand the energy to one specific protein at one specific step.</p>
+
+<p>Cells hold only about 5 mmol/L of ATP. That is enough to run a working muscle for a few seconds. What sustains life is not storage. It is <b>turnover</b>. An adult rebuilds roughly their own body weight in ATP over 24 hours. Exercise pushes that figure much higher. Aerobic metabolism of one glucose molecule yields roughly 30 to 32 ATP. Anaerobic glycolysis yields only 2. So oxygen delivery matters enormously. Much of the cardiovascular and respiratory system exists to protect it.</p>
+
+<p>Where does the ATP go? A large share goes to holding the gradients you met in Section 3. The <b>Na+/K+ ATPase</b> pumps 3 Na+ out and 2 K+ in for every ATP. It moves net charge, so it is electrogenic. It uses on the order of 20 to 30 percent of resting metabolic rate. In a neuron it takes more than half the energy budget. That spending holds the resting membrane potential near -70 mV. It keeps cells from swelling. It powers secondary active transport of glucose, amino acids, and calcium. So most of the energy in a resting body goes to keeping chemical gradients loaded. Later a signal arrives. The cell then only has to open a gate and let physics do the work.</p>
+
+<div class="pearl"><b>Pearl &mdash; a common misconception.</b> The phosphate bonds of ATP are not &ldquo;high energy&rdquo; in the usual sense. They do not hold stored energy that waits to pour out. Energy is released because the products are more stable than the reactant. ADP and phosphate hold their negative charges farther apart, and water surrounds them better. ATP is also not a fuel tank. The whole cellular pool would run dry in seconds without constant rebuilding. Think of ATP as cash moving through your hands, not savings in a vault.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Osmolarity counts every dissolved particle. Tonicity counts only the effective osmoles. Those are the particles that cannot cross the membrane. So they are the ones that actually pull water. Build a patient&rsquo;s plasma and watch what the cell does. <a href="../lab/ch01/TonicityLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch01/TonicityLab.html" loading="lazy" title="Osmolality and Tonicity Lab interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Function follows molecular shape. Enzymes work only inside narrow temperature and pH windows. And most resting ATP is spent holding ion gradients. Those gradients later do the body&rsquo;s work.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2>
+<p>Physiology explains function as flow. Something moves down a gradient at a rate set by a resistance. Q = &Delta;P / R sums that up. It fits blood, air, ions, water, and heat alike. Radius enters resistance to the fourth power, so small tubes control large flows. A negative feedback loop watches whatever the flow achieves. It has five parts: regulated variable, sensor, integrator, effector, and response. That loop corrects most of a disturbance but never all of it. It also oscillates, because responses arrive late. Positive feedback shows up only where an explosive, self-stopping endpoint is wanted. Labor, clotting, and the action potential upstroke are the three examples. The chemistry underneath makes all of this possible. Water&rsquo;s polarity gives the solvent and the hydration shells. It gives the heat buffering. It gives the 580 kcal per liter of evaporative cooling. Membranes split 42 L of body water into 28 L inside cells and 14 L outside. Sodium sits outside and potassium sits inside. Only solutes that cannot cross create tonicity. pH is held at 7.35 to 7.45 by the ratio of bicarbonate to dissolved carbon dioxide. Buffers defend it in seconds, the lungs in minutes, and the kidneys in days. Proteins work only when folded correctly. Enzymes saturate. And roughly a quarter of resting ATP is spent holding gradients ready for use.</p>
+</div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Physiology</td><td>The study of how living structures work. It looks at mechanism, driving forces, and control, not at naming.</td></tr>
+<tr><td>Homeostasis</td><td>Keeping the inside of the body fairly steady with control loops. The outside can change all it likes.</td></tr>
+<tr><td>Set point</td><td>The target value a control system defends. The body can reset it on purpose, as it does in fever.</td></tr>
+<tr><td>Negative feedback</td><td>A loop whose response works against the original change. It brings the variable most of the way back to its set point.</td></tr>
+<tr><td>Positive feedback</td><td>A loop whose response makes the original change bigger. It is used only where a fast, self-stopping endpoint is needed.</td></tr>
+<tr><td>Feedforward</td><td>Control that acts before the disturbance is even sensed. Insulin released at the sight of food is one example.</td></tr>
+<tr><td>Gradient</td><td>A difference in concentration, pressure, charge, or temperature between two points. It is the driving force for all movement.</td></tr>
+<tr><td>Resistance</td><td>The opposition to flow. In a tube it falls with the fourth power of the radius.</td></tr>
+<tr><td>Electrolyte</td><td>A substance that splits into ions in water, so it can carry charge. Na+, K+, Cl-, and HCO3- are examples.</td></tr>
+<tr><td>Polar covalent bond</td><td>A shared-electron bond where the sharing is uneven. That makes partial charges, as it does in water.</td></tr>
+<tr><td>Hydrogen bond</td><td>A weak pull between a slightly positive hydrogen and a nearby slightly negative atom. One is fragile. Many together decide protein and DNA shape.</td></tr>
+<tr><td>Amphipathic</td><td>Having a water-loving part and a water-fearing part. That is what lets phospholipids line up into membranes.</td></tr>
+<tr><td>Osmolality</td><td>Solute particles per kilogram of water. Normal plasma runs 275 to 295 mOsm/kg.</td></tr>
+<tr><td>Tonicity</td><td>What a solution does to cell volume. Only the particles that cannot cross, the effective osmoles, decide it.</td></tr>
+<tr><td>Diffusion</td><td>Net movement of particles down a concentration gradient by heat-driven motion. The rate follows J = D &times; A &times; &Delta;C / &Delta;x.</td></tr>
+<tr><td>Buffer</td><td>A weak acid and its matching base working together to resist a change in pH.</td></tr>
+<tr><td>Henderson&ndash;Hasselbalch equation</td><td>pH = 6.1 + log([HCO3-] / (0.03 &times; PaCO2)). It shows that pH depends on a ratio, not on either term alone.</td></tr>
+<tr><td>Denaturation</td><td>Loss of a protein&rsquo;s three-dimensional shape, and so of its job. Heat, pH extremes, or chemicals cause it, without breaking peptide bonds.</td></tr>
+<tr><td>Activation energy</td><td>The energy barrier a reaction must cross. Enzymes speed reactions by lowering it, not by changing the outcome.</td></tr>
+<tr><td>ATP</td><td>Adenosine triphosphate, the cell&rsquo;s ready cash for energy. It sits at only about 5 mmol/L but is rebuilt without pause.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">A bronchiole&rsquo;s radius falls by half during an asthma attack. What happens to that airway&rsquo;s resistance? Why does it matter more than the same change in a large bronchus?</div><div class="ans">Resistance rises about sixteen-fold. Resistance falls with the fourth power of the radius. So halving r multiplies R by 2 to the fourth power. It matters because Q = &Delta;P / R. The driving pressure for quiet breathing is only a few mm Hg. A sixteen-fold rise in resistance collapses airflow unless the patient makes far more pressure. That extra effort is the work of breathing that wears an asthmatic out.</div></div>
+
+<div class="qq"><div class="q">Name every part of the baroreflex loop. Say which way each one moves when a patient stands up suddenly.</div><div class="ans">Variable: mean arterial pressure. It falls as blood pools in the legs. Sensor: baroreceptors in the carotid sinus and aortic arch. Their firing rate falls. Integrator: the cardiovascular centers in the medulla. Effectors: the heart and the blood vessels. Heart rate and contractility rise, because sympathetic outflow rises and parasympathetic outflow falls. Arterioles and veins narrow. Response: cardiac output and total peripheral resistance rise. So MAP = CO &times; TPR climbs back toward the set point. It gets only partway. That is why a brief drop in pressure and a moment of lightheadedness still happen.</div></div>
+
+<div class="qq"><div class="q">Why is fever not proof that temperature control has failed?</div><div class="ans">Because pyrogens raise the hypothalamic set point instead of breaking the loop. The target now sits above 37 &deg;C. The intact system reads the current temperature as too low. So it answers correctly, with narrowed vessels and shivering. That is why patients feel cold while their temperature climbs. Real failure of temperature control looks different. In heat stroke the temperature rises and sweating has shut down. The set point has not moved.</div></div>
+
+<div class="qq"><div class="q">Give the three classic examples of positive feedback in the body. Say what stops each loop.</div><div class="ans">Labor: cervical stretch drives oxytocin release, which drives stronger contractions. It stops at delivery of the fetus. Hemostasis: activated platelets pull in more platelets. Thrombin drives the making of more thrombin. It stops when the plug seals the vessel. The body&rsquo;s own anticoagulants then fence the clot in. Action potential upstroke: sodium entry opens more voltage-gated sodium channels. It stops when those channels inactivate within about a millisecond. All three are short, explosive, and self-limiting. That is what makes them safe.</div></div>
+
+<div class="qq"><div class="q">A 70 kg man has roughly 42 L of body water. Spread it across the compartments. Name the barrier between each one.</div><div class="ans">About 28 L sits inside cells and 14 L outside them. Of that extracellular fluid, roughly 10.5 L lies between cells and 3.5 L is plasma. The plasma membrane separates the fluid inside cells from the fluid outside. Water crosses it, but most solutes do not. The capillary wall separates plasma from the fluid between cells. Water and small solutes cross it, but plasma proteins do not. Those trapped proteins, albumin above all, generate about 25 mm Hg of oncotic pressure.</div></div>
+
+<div class="qq"><div class="q">A patient has Na+ 140 mEq/L, glucose 90 mg/dL, and BUN 14 mg/dL. Estimate the plasma osmolality. Is it normal?</div><div class="ans">Osmolality is about 2 &times; 140 + 90/18 + 14/2.8 = 280 + 5 + 5 = 290 mOsm/kg. That sits inside the normal range of 275 to 295 mOsm/kg. Notice that sodium and its anions supply about 280 of the 290. That is why a sodium concentration is really a statement about water balance.</div></div>
+
+<div class="qq"><div class="q">A 300 mOsm/L urea solution has the same osmolarity as plasma. Why will red cells burst in it?</div><div class="ans">Because urea crosses the plasma membrane freely. Osmolarity counts every particle. Only the particles that cannot cross, the effective osmoles, hold water outside the cell. Urea evens out across the membrane. So it stops opposing the cell&rsquo;s own trapped solutes. The solution then acts like plain water. Water moves in, and the cell swells and bursts. Isosmotic and isotonic are not the same thing.</div></div>
+
+<div class="qq"><div class="q">Edema roughly doubles the distance from capillary to cell. Use Fick&rsquo;s law to explain what that does to oxygen delivery.</div><div class="ans">J = D &times; A &times; &Delta;C / &Delta;x. Doubling &Delta;x halves the flux. That holds even when nothing else moves. The oxygen gradient, the surface area, and the diffusion coefficient can all stay the same. Diffusion time actually rises with the square of the distance. That is why no cell normally sits more than about 100 &mu;m from a capillary. It is also why swollen tissue runs short of oxygen and heals poorly.</div></div>
+
+<div class="qq"><div class="q">A patient&rsquo;s pH is 7.4, PaCO2 is 40 mm Hg, and bicarbonate is 24 mEq/L. Show that Henderson&ndash;Hasselbalch predicts this pH. Say what the equation means at the bedside.</div><div class="ans">pH = 6.1 + log(24 / (0.03 &times; 40)) = 6.1 + log(24 / 1.2) = 6.1 + log 20 = 6.1 + 1.3 = 7.4. At the bedside it means pH tracks the <i>ratio</i> of bicarbonate to dissolved carbon dioxide. So a patient can show a near-normal pH with a badly abnormal bicarbonate. PaCO2 only has to shift in the same direction. That is compensation.</div></div>
+
+<div class="qq"><div class="q">Rank the three defenses of pH by speed. Say which one actually removes fixed acid from the body.</div><div class="ans">Chemical buffers act within seconds, but they only move the hydrogen ion load around. Respiratory compensation acts within minutes. It changes ventilation, and so PaCO2. That clears the volatile acid load of roughly 15,000 mmol of CO2 per day. Renal compensation takes hours to days. It is the only route that clears fixed acid. The body makes 50 to 100 mEq of it each day. It rebuilds bicarbonate while doing it.</div></div>
+
+<div class="qq"><div class="q">Why is a core temperature above 40 &deg;C a medical emergency, in molecular terms?</div><div class="ans">Because weak interactions hold a protein&rsquo;s three-dimensional shape. Hydrogen bonds, ionic attractions, and hydrophobic clustering do that work. Heat energy can break them. Human enzymes are tuned near 37 &deg;C. They begin to denature above about 41 to 42 &deg;C. Denatured enzymes, channels, and receptors lose their shape and so lose their job. Most of that damage cannot be undone. The threat is the loss of the whole catalytic machinery, not simple discomfort.</div></div>
+
+<div class="qq"><div class="q">A resting cell holds only about 5 mmol/L of ATP. Yet an adult rebuilds roughly their own body weight in ATP every day. Where does most of that resting energy go? What does the body buy with it?</div><div class="ans">A large share goes to the Na+/K+ ATPase. That is on the order of 20 to 30 percent of resting metabolic rate. In a neuron it is more than half the budget. The pump sends 3 Na+ out and brings 2 K+ in for every ATP. It buys the sodium and potassium gradients. Those gradients hold the resting membrane potential near -70 mV. They stop cells from swelling. They power secondary active transport of glucose, amino acids, and calcium. The body spends at rest to set that up. Later a signal need only open a channel. The stored gradient does the work.</div></div>
+
+</div>
+      <div class="chapnav">
+        <span class="disabled"><span class="k">Previous</span>&mdash; beginning of the book &mdash;</span>
+        <a class="next" href="ch02.html"><span class="k">Next</span>CELLULAR LEVEL OF ORGANIZATION &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

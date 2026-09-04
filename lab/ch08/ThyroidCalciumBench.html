@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Two Set Points: Metabolic Rate and Ionized Calcium</title>
+<meta name="description" content="Run the thyroid follicle from the iodide trap to peripheral T3, then run the parathyroid loop where the sensor is also the effector, and watch what a few tenths of a milligram per deciliter of calcium do to an excitable membrane.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;white-space:nowrap;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.modeseg{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:13px;}
+.modeseg button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13.5px;padding:12px 8px;cursor:pointer;font-family:var(--sans);line-height:1.2;}
+.modeseg button small{display:block;font-weight:600;font-size:10.5px;color:var(--muted);margin-top:2px;}
+.modeseg button.on{background:var(--teal);color:#fff;} .modeseg button.on small{color:rgba(255,255,255,.86);}
+svg{display:block;width:100%;height:auto;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#fff;}
+.lab .k{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10px;color:var(--muted);line-height:1.3;}
+.pill{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:4px;}
+.pill.normal{background:#fff;color:var(--green);border:1px solid var(--green);}
+.pill.high{background:var(--coral);color:#fff;}
+.pill.low{background:var(--blue);color:#fff;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.bar{display:flex;align-items:center;gap:9px;margin:7px 0;}
+.bar .nm{width:118px;flex:none;font-size:11.4px;font-weight:800;color:var(--soft);line-height:1.25;}
+.bar .tr{flex:1;height:14px;border-radius:7px;background:var(--line);overflow:hidden;}
+.bar .fl{height:100%;border-radius:7px;background:var(--teal);transition:width .3s;}
+.bar .n{width:76px;flex:none;text-align:right;font-size:11px;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.flux{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.flux div{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;text-align:center;}
+.flux .k{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:800;}
+.flux .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);}
+.flux .u{font-size:10px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch08.html">&larr; Module 8</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 8</div>
+  <h1>Two Set Points: Metabolic Rate and Ionized Calcium</h1>
+  <div class="intro">One neck, two completely different control strategies. The thyroid stores months of hormone outside its cells, releases it slowly under pituitary command, and sets the pace of every mitochondrion in the body. The parathyroid keeps no store at all: its chief cell is <b>both the sensor and the effector</b>, reads ionized calcium through a surface receptor and answers within seconds. Break each one here and watch what the loop does about it.</div>
+</header>
+
+<div class="modeseg" style="max-width:1120px;margin:0 auto 14px;" role="tablist" aria-label="Choose a system">
+  <button type="button" id="mT" class="on" role="tab" aria-selected="true">Thyroid<small>iodide trap &rarr; T4 &rarr; T3 &rarr; metabolic rate</small></button>
+  <button type="button" id="mC" role="tab" aria-selected="false">Parathyroid<small>calcium-sensing receptor &rarr; PTH &rarr; bone, kidney, gut</small></button>
+</div>
+
+<div class="wrap">
+  <div>
+    <!-- ===================== THYROID CONTROLS ===================== -->
+    <div class="card" id="ctlT">
+      <div class="lbl">Try a situation</div>
+      <div class="chips" id="tPre"></div>
+
+      <div class="sl"><label for="tI">Dietary iodide <span class="v" id="tIv">150 &micro;g/day</span></label>
+        <input type="range" id="tI" min="0" max="600" value="150" step="5" aria-label="Dietary iodide intake in micrograms per day"></div>
+      <div class="sl"><label for="tP">Thyroid peroxidase activity <span class="v" id="tPv">100%</span></label>
+        <input type="range" id="tP" min="0" max="140" value="100" step="1" aria-label="Thyroid peroxidase activity, percent of normal"></div>
+      <div class="sl"><label for="tM">Follicular cell mass <span class="v" id="tMv">100%</span></label>
+        <input type="range" id="tM" min="0" max="300" value="100" step="1" aria-label="Thyroid follicular cell mass, percent of normal"></div>
+      <div class="sl"><label for="tA">TSH-independent drive <span class="v" id="tAv">0</span></label>
+        <input type="range" id="tA" min="0" max="600" value="0" step="5" aria-label="Drive on the gland that does not come from TSH, such as a stimulating antibody or an autonomous nodule"></div>
+      <div class="sl"><label for="tD">Peripheral deiodinase activity <span class="v" id="tDv">100%</span></label>
+        <input type="range" id="tD" min="20" max="140" value="100" step="1" aria-label="Peripheral deiodinase activity converting T4 to T3, percent of normal"></div>
+      <div class="sl"><label for="tB">Thyroxine-binding globulin <span class="v" id="tBv">100%</span></label>
+        <input type="range" id="tB" min="40" max="300" value="100" step="5" aria-label="Thyroxine binding globulin level, percent of normal"></div>
+      <div class="hint"><b>Only the free fraction counts.</b> Over 99 percent of circulating T4 travels bound to thyroxine-binding globulin. The bound pool is a buffer, not a signal &mdash; the pituitary reads only the free hormone. Raise the binding protein and watch the total climb while the free level and TSH refuse to move.</div>
+    </div>
+
+    <!-- ===================== CALCIUM CONTROLS ===================== -->
+    <div class="card" id="ctlC" hidden>
+      <div class="lbl">Try a situation</div>
+      <div class="chips" id="cPre"></div>
+
+      <div class="sl"><label for="cT">Parathyroid tissue remaining <span class="v" id="cTv">100%</span></label>
+        <input type="range" id="cT" min="0" max="120" value="100" step="1" aria-label="Functioning parathyroid tissue remaining, percent of normal"></div>
+      <div class="sl"><label for="cS">Calcium-sensing receptor set point <span class="v" id="cSv">4.75 mg/dL</span></label>
+        <input type="range" id="cS" min="400" max="580" value="475" step="1" aria-label="Ionized calcium set point read by the calcium sensing receptor, in milligrams per deciliter times one hundred"></div>
+      <div class="sl"><label for="cD">Dietary calcium <span class="v" id="cDv">1000 mg/day</span></label>
+        <input type="range" id="cD" min="150" max="2200" value="1000" step="25" aria-label="Dietary calcium intake in milligrams per day"></div>
+      <div class="sl"><label for="cV">25-hydroxyvitamin D status <span class="v" id="cVv">100%</span></label>
+        <input type="range" id="cV" min="0" max="150" value="100" step="1" aria-label="Stored 25 hydroxyvitamin D status, percent of normal"></div>
+      <div class="sl"><label for="cK">Renal 1-alpha-hydroxylase <span class="v" id="cKv">100%</span></label>
+        <input type="range" id="cK" min="0" max="130" value="100" step="1" aria-label="Renal one alpha hydroxylase activity, percent of normal"></div>
+      <div class="sl"><label for="cA">Serum albumin <span class="v" id="cAv">4.0 g/dL</span></label>
+        <input type="range" id="cA" min="150" max="550" value="400" step="5" aria-label="Serum albumin in grams per deciliter times one hundred"></div>
+      <div class="hint"><b>The set-point slider is the whole point of the loop.</b> The chief cell reads ionized calcium through a surface <b>calcium-sensing receptor</b>. Move the set point and the cell defends a different number &mdash; that is what a parathyroid adenoma does, and it is why such a patient shows a high calcium with a PTH that looks deceptively normal.</div>
+    </div>
+  </div>
+
+  <div>
+    <!-- ===================== THYROID OUTPUT ===================== -->
+    <div class="card" id="outT">
+      <h2>Inside the follicle</h2>
+      <svg id="svgT" viewBox="0 0 700 300" role="img" aria-label="Diagram of a thyroid follicle showing the iodide trap, thyroglobulin secretion into colloid, peroxidase iodination and coupling, and TSH driven release, with each step shaded by how well it is working"></svg>
+      <div class="labs">
+        <div class="lab"><div class="k">TSH</div><div class="v" id="oTSH">1.80</div><div class="u">mU/L &middot; 0.4&ndash;4.0</div><div id="pTSH"></div></div>
+        <div class="lab"><div class="k">Free T4</div><div class="v" id="oFT4">1.20</div><div class="u">ng/dL &middot; 0.8&ndash;1.8</div><div id="pFT4"></div></div>
+        <div class="lab"><div class="k">Total T3</div><div class="v" id="oT3">130</div><div class="u">ng/dL &middot; 80&ndash;180</div><div id="pT3"></div></div>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="bar"><span class="nm">Total T4 (bound + free)</span><span class="tr"><span class="fl" id="bTT4"></span></span><span class="n" id="nTT4">1.0&times;</span></div>
+        <div class="bar"><span class="nm">Reverse T3 (inactive)</span><span class="tr"><span class="fl" id="brT3"></span></span><span class="n" id="nrT3">1.0&times;</span></div>
+        <div class="bar"><span class="nm">Colloid store</span><span class="tr"><span class="fl" id="bStore"></span></span><span class="n" id="nStore">2.5 mo</span></div>
+      </div>
+      <div class="verdict" id="vT">&nbsp;</div>
+      <div class="hint"><b>T4 is mostly a prohormone.</b> About 90 percent of what the gland secretes is T4. Peripheral deiodinases strip one iodine to make <b>T3</b>, which binds the nuclear receptor with roughly ten times the affinity. Take the iodine off the other ring instead and you get <b>reverse T3</b>, which is inactive &mdash; a regulated off-switch that rises in starvation and critical illness to lower metabolic demand. Drag the deiodinase slider down and watch TSH stay perfectly normal while T3 collapses.</div>
+    </div>
+
+    <!-- ===================== CALCIUM OUTPUT ===================== -->
+    <div class="card" id="outC" hidden>
+      <h2>The one-step loop</h2>
+      <svg id="svgC" viewBox="0 0 700 250" role="img" aria-label="Diagram of a parathyroid chief cell sensing ionized calcium and acting on bone, kidney and gut, with arrow thickness showing how hard each route is working"></svg>
+      <div class="labs">
+        <div class="lab"><div class="k">Ionized calcium</div><div class="v" id="oCa">4.90</div><div class="u">mg/dL &middot; 4.5&ndash;5.3</div><div id="pCa"></div></div>
+        <div class="lab"><div class="k">PTH</div><div class="v" id="oPTH">40</div><div class="u">pg/mL &middot; 10&ndash;65</div><div id="pPTH"></div></div>
+        <div class="lab"><div class="k">Total calcium</div><div class="v" id="oTot">9.7</div><div class="u">mg/dL &middot; 8.5&ndash;10.5</div><div id="pTot"></div></div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Ionized, SI units</div><div class="v" id="oMm">1.22</div><div class="u">mmol/L &middot; 1.1&ndash;1.3</div></div>
+        <div class="lab"><div class="k">Albumin-corrected total</div><div class="v" id="oCorr">9.7</div><div class="u">mg/dL</div></div>
+        <div class="lab"><div class="k">Gut absorption</div><div class="v" id="oAbs">30</div><div class="u">percent of intake</div></div>
+      </div>
+      <canvas id="cvC" width="700" height="250" aria-label="Curve of parathyroid hormone secretion against ionized calcium, with the current operating point marked"></canvas>
+      <div class="flux">
+        <div><div class="k">Gut, net in</div><div class="v" id="fGut">200</div><div class="u">mg/day</div></div>
+        <div><div class="k">Bone, net</div><div class="v" id="fBone">0</div><div class="u">mg/day</div></div>
+        <div><div class="k">Urine, out</div><div class="v" id="fUr">200</div><div class="u">mg/day</div></div>
+      </div>
+      <div class="verdict" id="vC">&nbsp;</div>
+      <div class="hint"><b>Why the number has to be this tight.</b> Extracellular calcium stabilizes voltage-gated sodium channels. Let it fall and the firing threshold drops, so nerves discharge on their own &mdash; perioral tingling, carpopedal spasm, laryngospasm. Let it rise and the threshold climbs, giving lethargy, weakness and constipation. Calcium is also the trigger for muscle contraction, exocytosis and clotting, so it is not allowed to drift.</div>
+      <div class="hint"><b>Albumin changes the number without changing the physiology.</b> Roughly 40 percent of plasma calcium is bound to albumin. Drop albumin from 4.0 to 2.0 g/dL and the <b>total</b> falls about 1.6 mg/dL &mdash; but the ionized calcium, the part the sensing receptor actually reads, has not moved and the patient has no symptoms. Correct for albumin, or measure the ionized level, before treating a number.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function V(n){return CS.getPropertyValue(n).trim();}
+var C_TEAL=V('--teal'),C_TEALD=V('--teal-dk'),C_CORAL=V('--coral'),C_LINE=V('--line'),C_MUTED=V('--muted'),
+    C_GOLD=V('--gold'),C_BLUE=V('--blue'),C_PURPLE=V('--purple'),C_GREEN=V('--green'),C_SOFT=V('--soft');
+
+/* ================= mode switching ================= */
+function setMode(t){
+  document.getElementById('mT').classList.toggle('on',t);
+  document.getElementById('mC').classList.toggle('on',!t);
+  document.getElementById('mT').setAttribute('aria-selected',t?'true':'false');
+  document.getElementById('mC').setAttribute('aria-selected',t?'false':'true');
+  document.getElementById('ctlT').hidden=!t; document.getElementById('outT').hidden=!t;
+  document.getElementById('ctlC').hidden=t;  document.getElementById('outC').hidden=t;
+  if(t) renderT(); else renderC();
+}
+document.getElementById('mT').addEventListener('click',function(){setMode(true);});
+document.getElementById('mC').addEventListener('click',function(){setMode(false);});
+
+function pill(v,lo,hi){
+  if(v<lo) return '<span class="pill low">Low</span>';
+  if(v>hi) return '<span class="pill high">High</span>';
+  return '<span class="pill normal">Normal</span>';
+}
+function setBar(id,frac,col){
+  var e=document.getElementById(id);
+  e.style.width=(Math.max(2,Math.min(100,frac*100)))+'%';
+  e.style.background=col;
+}
+
+/* ======================================================================
+   THYROID
+   Free T4 = capacity x 0.6667 x (TSH + independent drive)
+   TSH     = 112.5 x exp(-3.446 x free T4)     [the log-linear TSH curve]
+   ====================================================================== */
+var tI=150,tP=1,tM=1,tA=0,tD=1,tB=1;
+var TPRE=[
+ {t:'Healthy',v:{I:150,P:100,M:100,A:0,D:100,B:100}},
+ {t:'Dietary iodide deficiency',v:{I:20,P:100,M:130,A:0,D:100,B:100}},
+ {t:'Peroxidase blocked',v:{I:150,P:12,M:100,A:0,D:100,B:100}},
+ {t:'Gland destroyed',v:{I:150,P:100,M:7,A:0,D:100,B:100}},
+ {t:'Stimulating antibody',v:{I:150,P:100,M:130,A:300,D:100,B:100}},
+ {t:'Pregnancy / estrogen',v:{I:150,P:100,M:100,A:0,D:100,B:230}},
+ {t:'Critical illness',v:{I:150,P:100,M:100,A:0,D:42,B:100}}
+];
+var tpre=document.getElementById('tPre');
+TPRE.forEach(function(p,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.textContent=p.t;
+  b.setAttribute('aria-pressed',i===0?'true':'false');
+  b.addEventListener('click',function(){
+    document.getElementById('tI').value=p.v.I; document.getElementById('tP').value=p.v.P;
+    document.getElementById('tM').value=p.v.M; document.getElementById('tA').value=p.v.A;
+    document.getElementById('tD').value=p.v.D; document.getElementById('tB').value=p.v.B;
+    readT();
+    [].forEach.call(tpre.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    this.classList.add('on'); this.setAttribute('aria-pressed','true'); renderT();
+  });
+  tpre.appendChild(b);
+});
+['tI','tP','tM','tA','tD','tB'].forEach(function(id){
+  document.getElementById(id).addEventListener('input',function(){
+    readT();
+    [].forEach.call(tpre.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    renderT();
+  });
+});
+function readT(){
+  tI=+document.getElementById('tI').value;
+  tP=+document.getElementById('tP').value/100;
+  tM=+document.getElementById('tM').value/100;
+  tA=+document.getElementById('tA').value/100;
+  tD=+document.getElementById('tD').value/100;
+  tB=+document.getElementById('tB').value/100;
+  document.getElementById('tIv').textContent=tI+' µg/day';
+  document.getElementById('tPv').textContent=Math.round(tP*100)+'%';
+  document.getElementById('tMv').textContent=Math.round(tM*100)+'%';
+  document.getElementById('tAv').textContent=tA===0?'none':(tA.toFixed(1)+' × a TSH unit');
+  document.getElementById('tDv').textContent=Math.round(tD*100)+'%';
+  document.getElementById('tBv').textContent=Math.round(tB*100)+'%';
+}
+function solveT(){
+  var cap=Math.min(1,tI/120)*tP*tM, T=1.2, TSH=1.8;
+  for(var i=0;i<500;i++){
+    TSH=112.5*Math.exp(-3.446*T);
+    var Tn=cap*0.6667*(TSH+tA);
+    T=T+(Tn-T)*0.06;
+  }
+  return {cap:cap,ft4:Math.max(0,T),tsh:Math.max(0.001,TSH)};
+}
+function renderT(){
+  var r=solveT();
+  var t3=130*(r.ft4/1.2)*tD;
+  var rt3=1+2.2*(1-tD);
+  var tt4=(r.ft4/1.2)*tB;
+  var store=2.5*Math.min(1,Math.min(1,tI/120)*tP);
+  document.getElementById('oTSH').textContent=r.tsh<0.1?r.tsh.toFixed(3):r.tsh.toFixed(2);
+  document.getElementById('oFT4').textContent=r.ft4.toFixed(2);
+  document.getElementById('oT3').textContent=Math.round(t3);
+  document.getElementById('pTSH').innerHTML=pill(r.tsh,0.4,4.0);
+  document.getElementById('pFT4').innerHTML=pill(r.ft4,0.8,1.8);
+  document.getElementById('pT3').innerHTML=pill(t3,80,180);
+  setBar('bTT4',tt4/3,tt4>1.6?C_CORAL:(tt4<0.6?C_BLUE:C_TEAL));
+  setBar('brT3',rt3/3.5,rt3>1.5?C_PURPLE:C_TEAL);
+  setBar('bStore',store/2.5,store<1?C_CORAL:C_TEAL);
+  document.getElementById('nTT4').textContent=tt4.toFixed(2)+'×';
+  document.getElementById('nrT3').textContent=rt3.toFixed(2)+'×';
+  document.getElementById('nStore').textContent=store.toFixed(1)+' mo';
+  drawFollicle(r);
+
+  var v=document.getElementById('vT'), cls='ok', head='', sub='';
+  if(r.ft4>1.8 && r.tsh<0.4){
+    cls='bad'; head='High free T4 with a suppressed TSH &mdash; the gland is running without permission.';
+    sub='Metabolic rate is up, and because T3 upregulates beta-1 adrenergic receptors in the heart you get tachycardia, palpitations, a wide pulse pressure and a fine tremor that all look sympathetic even though catecholamine levels are normal. Heat intolerance, sweating, weight loss despite a good appetite, frequent stools.';
+  } else if(r.ft4<0.8 && r.tsh>4.0){
+    cls='bad'; head='Low free T4 with a high TSH &mdash; primary hypothyroidism. The gland is the problem.';
+    sub='The pituitary is working perfectly: it senses the low free T4 and drives TSH hard. Expect a low metabolic rate and weight gain on the same intake, cold intolerance, dry skin, bradycardia, slowed thought and delayed reflex relaxation, constipation.';
+  } else if(tD<0.7 && t3<80 && r.tsh>=0.4 && r.tsh<=4.0){
+    cls='cool'; head='Low T3 with a normal TSH and a high reverse T3 &mdash; the gland is innocent.';
+    sub='This is the deiodinase switch, not thyroid disease. In starvation and critical illness the body diverts T4 down the reverse-T3 path, which is inactive, and metabolic demand falls. The pituitary sees a normal free T4, so TSH does not move.';
+  } else if(tB>1.5 && r.ft4>=0.8 && r.ft4<=1.8){
+    cls='cool'; head='High total T4, normal free T4, normal TSH &mdash; not thyroid disease at all.';
+    sub='Estrogen raises thyroxine-binding globulin, so more hormone rides in the bound pool and the total climbs. Only free hormone is active and only free hormone is sensed by the feedback loop. A normal TSH confirms the pituitary is seeing a normal free level.';
+  } else if(tI<80 && r.tsh>4.0){
+    cls='warn'; head='Iodide is the limiting reagent &mdash; TSH is rising and the gland is being told to grow.';
+    sub='The sodium-iodide symporter can pump against a 20- to 40-fold gradient, but it cannot invent iodine that is not in the diet. Substrate runs out, hormone output falls, TSH climbs, and sustained TSH is a growth signal to the follicular cell &mdash; the classic goitre.';
+  } else if(r.ft4>=0.8 && r.ft4<=1.8 && r.tsh>=0.4 && r.tsh<=4.0){
+    cls='ok'; head='Euthyroid &mdash; free T4 and TSH are both where they belong.';
+    sub='Note what a big buffer this is. Over 99 percent of T4 is protein-bound, its half-life is about seven days, and the colloid holds two to three months of supply, so day-to-day intake barely moves the free level.';
+  } else {
+    cls='warn'; head='The pair is drifting &mdash; read TSH and free T4 together, never one alone.';
+    sub='A TSH that looks normal beside an abnormal free T4 is not reassuring; it is inappropriate.';
+  }
+  v.className='verdict '+cls; v.innerHTML=head+'<small>'+sub+'</small>';
+}
+function drawFollicle(r){
+  var s='<rect x="0" y="0" width="700" height="300" fill="#fff"/>';
+  s+='<defs><marker id="fa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+C_TEALD+'"/></marker></defs>';
+  /* colloid lumen */
+  var storeF=Math.min(1,Math.min(1,tI/120)*tP);
+  s+='<ellipse cx="350" cy="140" rx="180" ry="86" fill="'+C_GOLD+'" opacity="'+(0.10+0.34*storeF)+'"/>';
+  s+='<ellipse cx="350" cy="140" rx="180" ry="86" fill="none" stroke="'+C_GOLD+'" stroke-width="2.5"/>';
+  s+='<text x="350" y="132" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="'+C_TEALD+'">COLLOID</text>';
+  s+='<text x="350" y="152" text-anchor="middle" font-family="Inter" font-size="11.5" font-weight="600" fill="'+C_SOFT+'">thyroglobulin, iodinated tyrosines</text>';
+  s+='<text x="350" y="170" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="'+C_MUTED+'">the only gland that stores hormone outside its cells</text>';
+  /* step boxes */
+  var steps=[
+   {x:14,y:16,w:206,t:'1 · Iodide trap',d:'Na⁺/I⁻ symporter pumps iodide in against a 20&ndash;40 fold gradient',ok:Math.min(1,tI/120)},
+   {x:480,y:16,w:206,t:'2 · Thyroglobulin out',d:'tyrosine-rich protein secreted into the colloid',ok:Math.min(1,tM)},
+   {x:14,y:224,w:206,t:'3 · Peroxidase',d:'oxidize, iodinate, then couple: DIT+DIT&rarr;T4, MIT+DIT&rarr;T3',ok:Math.min(1,tP)},
+   {x:480,y:224,w:206,t:'4 · TSH endocytoses',d:'colloid droplets taken back in, lysosomes cut hormone free',ok:Math.min(1,r.tsh/1.8+ (tA>0?1:0))}
+  ];
+  steps.forEach(function(b){
+    var col=b.ok>0.75?C_TEAL:(b.ok>0.35?C_GOLD:C_CORAL);
+    s+='<rect x="'+b.x+'" y="'+b.y+'" width="'+b.w+'" height="62" rx="12" fill="'+col+'" opacity="'+(0.10+0.16*b.ok)+'"/>';
+    s+='<rect x="'+b.x+'" y="'+b.y+'" width="'+b.w+'" height="62" rx="12" fill="none" stroke="'+col+'" stroke-width="2"/>';
+    s+='<text x="'+(b.x+12)+'" y="'+(b.y+20)+'" font-family="Inter" font-size="12" font-weight="800" fill="'+C_TEALD+'">'+b.t+'</text>';
+    var words=b.d.split(' '), ln='', y=b.y+36;
+    for(var i=0;i<words.length;i++){
+      if((ln+words[i]).length>34){ s+='<text x="'+(b.x+12)+'" y="'+y+'" font-family="Inter" font-size="10.5" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>'; ln=''; y+=13; }
+      ln+=words[i]+' ';
+    }
+    s+='<text x="'+(b.x+12)+'" y="'+y+'" font-family="Inter" font-size="10.5" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>';
+  });
+  s+='<path d="M222 48 L300 90" stroke="'+C_TEALD+'" stroke-width="2.4" marker-end="url(#fa)"/>';
+  s+='<path d="M478 48 L400 90" stroke="'+C_TEALD+'" stroke-width="2.4" marker-end="url(#fa)"/>';
+  s+='<path d="M300 192 L222 236" stroke="'+C_TEALD+'" stroke-width="2.4" marker-end="url(#fa)"/>';
+  s+='<path d="M400 192 L478 236" stroke="'+C_TEALD+'" stroke-width="2.4" marker-end="url(#fa)"/>';
+  document.getElementById('svgT').innerHTML=s;
+}
+
+/* ======================================================================
+   CALCIUM
+   PTH   = tissue x [5 + 115/(1+exp((Ca - setpoint)/0.18))]      pg/mL
+   dCa   : gut in + bone net - urine out, integrated to steady state
+   ====================================================================== */
+var cT=1,cS=4.75,cD=1000,cV=1,cK=1,cA=4.0;
+var CPRE=[
+ {t:'Healthy',v:{T:100,S:475,D:1000,V:100,K:100,A:400}},
+ {t:'Parathyroids injured at surgery',v:{T:5,S:475,D:1000,V:100,K:100,A:400}},
+ {t:'Parathyroid adenoma',v:{T:100,S:545,D:1000,V:100,K:100,A:400}},
+ {t:'Vitamin D deficiency',v:{T:100,S:475,D:600,V:12,K:100,A:400}},
+ {t:'Chronic kidney disease',v:{T:100,S:475,D:1000,V:100,K:12,A:400}},
+ {t:'Low albumin, normal calcium',v:{T:100,S:475,D:1000,V:100,K:100,A:200}}
+];
+var cpre=document.getElementById('cPre');
+CPRE.forEach(function(p,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.textContent=p.t;
+  b.setAttribute('aria-pressed',i===0?'true':'false');
+  b.addEventListener('click',function(){
+    document.getElementById('cT').value=p.v.T; document.getElementById('cS').value=p.v.S;
+    document.getElementById('cD').value=p.v.D; document.getElementById('cV').value=p.v.V;
+    document.getElementById('cK').value=p.v.K; document.getElementById('cA').value=p.v.A;
+    readC();
+    [].forEach.call(cpre.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    this.classList.add('on'); this.setAttribute('aria-pressed','true'); renderC();
+  });
+  cpre.appendChild(b);
+});
+['cT','cS','cD','cV','cK','cA'].forEach(function(id){
+  document.getElementById(id).addEventListener('input',function(){
+    readC();
+    [].forEach.call(cpre.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    renderC();
+  });
+});
+function readC(){
+  cT=+document.getElementById('cT').value/100;
+  cS=+document.getElementById('cS').value/100;
+  cD=+document.getElementById('cD').value;
+  cV=+document.getElementById('cV').value/100;
+  cK=+document.getElementById('cK').value/100;
+  cA=+document.getElementById('cA').value/100;
+  document.getElementById('cTv').textContent=Math.round(cT*100)+'%';
+  document.getElementById('cSv').textContent=cS.toFixed(2)+' mg/dL';
+  document.getElementById('cDv').textContent=cD+' mg/day';
+  document.getElementById('cVv').textContent=Math.round(cV*100)+'%';
+  document.getElementById('cKv').textContent=Math.round(cK*100)+'%';
+  document.getElementById('cAv').textContent=cA.toFixed(1)+' g/dL';
+}
+function pthOf(ca){ return cT*(5+115/(1+Math.exp((ca-cS)/0.18))); }
+function fluxes(ca){
+  var pth=pthOf(ca), rel=Math.min(3.2,pth/40);
+  var calc=Math.min(1.7,cV*cK*(0.35+0.65*rel));
+  var frac=0.10+0.20*calc;
+  var gut=cD*frac-100;
+  var bone=Math.max(-60,Math.min(450,300*(rel-1)));
+  var ur=Math.max(6,153.8*Math.max(0,ca-3.6)*(1-0.25*(rel-1)));
+  return {pth:pth,rel:rel,calc:calc,frac:frac,gut:gut,bone:bone,ur:ur,net:gut+bone-ur};
+}
+function solveC(){
+  var M=4.9*200;
+  for(var i=0;i<6000;i++){
+    var ca=Math.max(1.6,Math.min(8.4,M/200));
+    var f=fluxes(ca);
+    M+=f.net*0.05;
+    M=Math.max(1.6*200,Math.min(8.4*200,M));
+  }
+  var ca=M/200;
+  return {ca:ca,f:fluxes(ca)};
+}
+var cvC=document.getElementById('cvC'), ctxC=cvC.getContext('2d');
+(function(){var d=Math.min(2,window.devicePixelRatio||1);cvC.width=700*d;cvC.height=250*d;ctxC.setTransform(d,0,0,d,0,0);})();
+function drawCurve(ca,pth){
+  var W=700,H=250,L=50,R=16,T=16,B=38,pw=W-L-R,ph=H-T-B;
+  var x0=3.4,x1=6.6,y1=Math.max(130,cT*125);
+  ctxC.clearRect(0,0,W,H);
+  ctxC.strokeStyle=C_LINE;ctxC.lineWidth=1;ctxC.fillStyle=C_MUTED;ctxC.font='600 10.5px Inter,system-ui,sans-serif';
+  for(var g=0;g<=4;g++){var y=T+ph*g/4;ctxC.beginPath();ctxC.moveTo(L,y);ctxC.lineTo(L+pw,y);ctxC.stroke();
+    ctxC.textAlign='right';ctxC.fillText(Math.round(y1*(1-g/4)),L-7,y+3.5);}
+  for(var i=0;i<=8;i++){var x=L+pw*i/8;ctxC.textAlign='center';ctxC.fillText((x0+(x1-x0)*i/8).toFixed(1),x,H-B+15);}
+  ctxC.fillText('ionized calcium (mg/dL)',L+pw/2,H-B+29);
+  ctxC.save();ctxC.translate(13,T+ph/2);ctxC.rotate(-Math.PI/2);ctxC.textAlign='center';
+  ctxC.fillText('PTH (pg/mL)',0,0);ctxC.restore();
+  /* normal ionized band 4.5 - 5.3 */
+  var bx1=L+pw*(4.5-x0)/(x1-x0), bx2=L+pw*(5.3-x0)/(x1-x0);
+  ctxC.fillStyle=C_GREEN;ctxC.globalAlpha=.12;ctxC.fillRect(bx1,T,bx2-bx1,ph);ctxC.globalAlpha=1;
+  ctxC.fillStyle=C_GREEN;ctxC.font='700 9.5px Inter,system-ui,sans-serif';ctxC.textAlign='center';
+  ctxC.fillText('normal ionized calcium',(bx1+bx2)/2,T+11);
+  /* curve */
+  ctxC.beginPath();ctxC.strokeStyle=C_TEAL;ctxC.lineWidth=3;
+  for(var i2=0;i2<=200;i2++){
+    var cx=x0+(x1-x0)*i2/200, cy=pthOf(cx);
+    var px=L+pw*i2/200, py=T+ph*(1-Math.min(1,cy/y1));
+    i2?ctxC.lineTo(px,py):ctxC.moveTo(px,py);
+  }
+  ctxC.stroke();
+  /* set point marker */
+  var sx=L+pw*(cS-x0)/(x1-x0);
+  ctxC.setLineDash([4,4]);ctxC.strokeStyle=C_PURPLE;ctxC.lineWidth=1.8;
+  ctxC.beginPath();ctxC.moveTo(sx,T);ctxC.lineTo(sx,T+ph);ctxC.stroke();ctxC.setLineDash([]);
+  ctxC.fillStyle=C_PURPLE;ctxC.font='800 10px Inter,system-ui,sans-serif';ctxC.textAlign='left';
+  ctxC.fillText('sensing-receptor set point',sx+5,T+ph-6);
+  /* operating point */
+  var ox=L+pw*(ca-x0)/(x1-x0), oy=T+ph*(1-Math.min(1,pth/y1));
+  ctxC.beginPath();ctxC.arc(ox,oy,7,0,6.2832);ctxC.fillStyle=C_CORAL;ctxC.fill();
+  ctxC.strokeStyle='#fff';ctxC.lineWidth=2.4;ctxC.stroke();
+  ctxC.strokeStyle=C_LINE;ctxC.lineWidth=1;
+  ctxC.beginPath();ctxC.moveTo(L,T);ctxC.lineTo(L,T+ph);ctxC.lineTo(L+pw,T+ph);ctxC.stroke();
+}
+function drawChief(ca,f){
+  var s='<rect x="0" y="0" width="700" height="250" fill="#fff"/>';
+  s+='<defs><marker id="caRt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+C_TEAL+'"/></marker></defs>';
+  var drive=Math.min(1,f.rel/2.2);
+  s+='<rect x="18" y="74" width="192" height="102" rx="16" fill="'+C_PURPLE+'" opacity=".12"/>';
+  s+='<rect x="18" y="74" width="192" height="102" rx="16" fill="none" stroke="'+C_PURPLE+'" stroke-width="2"/>';
+  s+='<text x="114" y="100" text-anchor="middle" font-family="Inter" font-size="12.5" font-weight="800" fill="'+C_TEALD+'">Parathyroid chief cell</text>';
+  s+='<text x="114" y="120" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="'+C_SOFT+'">calcium-sensing receptor</text>';
+  s+='<text x="114" y="148" text-anchor="middle" font-family="Fraunces" font-size="22" font-weight="700" fill="'+C_PURPLE+'">'+Math.round(f.pth)+'</text>';
+  s+='<text x="114" y="165" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="700" fill="'+C_MUTED+'">pg/mL PTH</text>';
+  s+='<text x="18" y="46" font-family="Inter" font-size="11" font-weight="800" fill="'+C_MUTED+'">SENSOR AND EFFECTOR IN ONE CELL &mdash; NO PITUITARY INVOLVED</text>';
+  var routes=[
+   {y:34,t:'BONE',d:'PTH binds osteoblasts &rarr; RANK ligand &rarr; osteoclasts free calcium and phosphate',v:Math.round(f.bone)+' mg/day net',w:Math.min(9,2+Math.abs(f.bone)/60),col:C_CORAL},
+   {y:104,t:'KIDNEY',d:'more calcium reabsorbed distally, phosphate dumped proximally, calcitriol switched on',v:Math.round(f.ur)+' mg/day lost',w:Math.min(9,2+f.rel*2.4),col:C_BLUE},
+   {y:174,t:'GUT (via calcitriol)',d:'nuclear receptor induces calcium-binding transport proteins &mdash; hours to days',v:Math.round(f.frac*100)+'% of intake absorbed',w:Math.min(9,2+f.calc*3.4),col:C_GREEN}
+  ];
+  routes.forEach(function(rt){
+    s+='<path d="M216 125 C 270 125, 270 '+(rt.y+26)+', 318 '+(rt.y+26)+'" fill="none" stroke="'+rt.col+'" stroke-width="'+rt.w+'" opacity=".7" marker-end="url(#caRt)"/>';
+    s+='<rect x="326" y="'+rt.y+'" width="358" height="54" rx="12" fill="'+rt.col+'" opacity=".10"/>';
+    s+='<text x="338" y="'+(rt.y+19)+'" font-family="Inter" font-size="12" font-weight="800" fill="'+C_TEALD+'">'+rt.t+'</text>';
+    s+='<text x="676" y="'+(rt.y+19)+'" text-anchor="end" font-family="Inter" font-size="11" font-weight="800" fill="'+rt.col+'">'+rt.v+'</text>';
+    var words=rt.d.split(' '), ln='', y=rt.y+35;
+    for(var i=0;i<words.length;i++){
+      if((ln+words[i]).length>58){ s+='<text x="338" y="'+y+'" font-family="Inter" font-size="10.5" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>'; ln=''; y+=13; }
+      ln+=words[i]+' ';
+    }
+    s+='<text x="338" y="'+y+'" font-family="Inter" font-size="10.5" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>';
+  });
+  document.getElementById('svgC').innerHTML=s;
+}
+function renderC(){
+  var r=solveC(), ca=r.ca, f=r.f;
+  var tot=ca*1.98-0.8*(4.0-cA), corr=ca*1.98, mm=ca/4.008;
+  document.getElementById('oCa').textContent=ca.toFixed(2);
+  document.getElementById('oPTH').textContent=Math.round(f.pth);
+  document.getElementById('oTot').textContent=tot.toFixed(1);
+  document.getElementById('oMm').textContent=mm.toFixed(2);
+  document.getElementById('oCorr').textContent=corr.toFixed(1);
+  document.getElementById('oAbs').textContent=Math.round(f.frac*100);
+  document.getElementById('pCa').innerHTML=pill(ca,4.5,5.3);
+  document.getElementById('pPTH').innerHTML=pill(f.pth,10,65);
+  document.getElementById('pTot').innerHTML=pill(tot,8.5,10.5);
+  document.getElementById('fGut').textContent=Math.round(f.gut);
+  document.getElementById('fBone').textContent=(f.bone>0?'+':'')+Math.round(f.bone);
+  document.getElementById('fUr').textContent=Math.round(f.ur);
+  drawCurve(ca,f.pth);
+  drawChief(ca,f);
+
+  var v=document.getElementById('vC'), cls='ok', head='', sub='';
+  if(ca<4.2){
+    cls='bad'; head='Ionized calcium '+ca.toFixed(2)+' mg/dL &mdash; tetany territory.';
+    sub='Extracellular calcium normally stabilizes voltage-gated sodium channels. With calcium this low the firing threshold drops and nerves discharge spontaneously: perioral tingling first, then carpopedal spasm, and laryngospasm at the dangerous end. This is exactly what happens when the parathyroids are injured during thyroid surgery.';
+  } else if(ca<4.5){
+    cls='warn'; head='Ionized calcium is below range &mdash; the membrane is getting twitchy.';
+    sub='Expect paraesthesia and a positive Chvostek or Trousseau sign before frank tetany. Notice how hard the loop is already working to hold the number here.';
+  } else if(ca>5.3 && f.pth>20){
+    cls='bad'; head='High calcium with a PTH that is not suppressed &mdash; the sensor is defending the wrong number.';
+    sub='A normal-looking PTH beside a high calcium is inappropriate: a healthy chief cell facing this much calcium would be nearly silent. That is a set-point problem, and it is what a parathyroid adenoma does. Meanwhile the high threshold gives lethargy, weakness, constipation, and the kidney is dumping calcium into the urine.';
+  } else if(ca>5.3){
+    cls='warn'; head='High calcium with PTH properly suppressed &mdash; the loop is doing its job.';
+    sub='The chief cell has switched itself off, so if calcium is still high the source is somewhere other than the parathyroid.';
+  } else if(f.pth>65){
+    cls='cool'; head='Calcium is in range, but only because PTH is working overtime.';
+    sub='This is a compensated loop. When calcitriol production falls, gut absorption drops toward the unassisted 10&ndash;15 percent, calcium sags, PTH climbs and holds the number up by pulling calcium out of bone. The laboratory value looks acceptable; the skeleton is paying for it &mdash; look at the bone flux figure.';
+  } else if(cA<3.0){
+    cls='cool'; head='Total calcium looks low, ionized calcium is normal &mdash; do not treat this number.';
+    sub='Roughly 40 percent of plasma calcium rides on albumin. With albumin at '+cA.toFixed(1)+' g/dL the total reads '+tot.toFixed(1)+' mg/dL, but the corrected value is '+corr.toFixed(1)+' and the ionized level the sensing receptor actually reads is '+ca.toFixed(2)+'. The patient has no symptoms because nothing physiological has changed.';
+  } else {
+    cls='ok'; head='Ionized calcium '+ca.toFixed(2)+' mg/dL &mdash; held inside a band a few tenths wide.';
+    sub='PTH corrects minute to minute from bone and kidney; calcitriol handles the daily balance from the gut and takes hours to days. Calcitonin from the parafollicular C cells opposes PTH, but in adult humans its contribution is minor &mdash; people with no thyroid at all keep normal calcium.';
+  }
+  v.className='verdict '+cls; v.innerHTML=head+'<small>'+sub+'</small>';
+}
+
+readT(); readC(); renderT();
+})();
+</script>
+</body>
+</html>

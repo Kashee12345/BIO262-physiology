@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From Pressure Wave to Firing Rate &mdash; Impedance, Tonotopy and the Hair Cell</title>
+<meta name="description" content="Rebuild the middle ear's 22-fold pressure gain, drive a traveling wave along the basilar membrane to find where each frequency peaks, and deflect a stereocilium against the plus 80 millivolt endocochlear battery.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:12px;}
+.loop div{border:1px solid var(--line);border-radius:9px;padding:7px 8px;background:#fff;}
+.loop .k{font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);font-weight:800;}
+.loop .b{font-size:11.5px;font-weight:700;color:var(--teal-dk);line-height:1.3;margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch07.html">&larr; Module 7</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 7</div>
+  <h1>From Pressure Wave to Firing Rate</h1>
+  <div class="intro">Airborne sound striking a fluid-filled cochlea would lose about <b>30 dB</b> at the boundary, so the middle ear buys it back mechanically with an area ratio and a lever. Inside, frequency is sorted <b>before any neuron fires</b>, by a stiffness gradient along the basilar membrane. Rebuild all three stages below: the pressure gain, the traveling wave, and the hair cell running on a +80 mV potassium battery.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Middle ear</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Traveling wave</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Hair cell</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Middle ear state</div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl">The two multipliers</div>
+        <div class="sl"><label for="atm">Effective vibrating area of the eardrum <span class="v" id="atmV">55 mm&sup2;</span></label>
+          <input type="range" id="atm" min="60" max="700" value="550" step="1" aria-label="Effective vibrating area of the tympanic membrane in tenths of a square millimeter"></div>
+        <div class="sl"><label for="afp">Area of the stapes footplate <span class="v" id="afpV">3.2 mm&sup2;</span></label>
+          <input type="range" id="afp" min="15" max="90" value="32" step="1" aria-label="Area of the stapes footplate in tenths of a square millimeter"></div>
+        <div class="sl"><label for="lev">Malleus&ndash;incus lever ratio <span class="v" id="levV">1.30</span></label>
+          <input type="range" id="lev" min="100" max="200" value="130" step="1" aria-label="Ossicular lever ratio in hundredths"></div>
+
+        <div class="lbl">The acoustic reflex</div>
+        <div class="chips" id="pre1b"></div>
+        <div class="sl"><label for="spl">Incoming sound level <span class="v" id="splV">70 dB SPL</span></label>
+          <input type="range" id="spl" min="0" max="130" value="70" step="1" aria-label="Incoming sound level in decibels sound pressure level"></div>
+        <div class="hint"><b>Try breaking it.</b> Drop the eardrum area to 20 mm&sup2; &mdash; a perforation &mdash; and watch the gain fall and a conductive loss appear, with a perfectly healthy cochlea sitting behind it. Then pick the gunshot and see why a reflex with a 50&ndash;100 ms latency cannot protect you from impulse noise.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Play a pure tone</div>
+        <div class="sl"><label for="freq">Frequency <span class="v" id="freqV">1,000 Hz</span></label>
+          <input type="range" id="freq" min="0" max="1000" value="586" step="1" aria-label="Tone frequency, logarithmic, from twenty hertz to twenty thousand hertz"></div>
+        <div class="chips" id="pre2"></div>
+        <div class="sl"><label for="lev2">Level <span class="v" id="lev2V">60 dB SPL</span></label>
+          <input type="range" id="lev2" min="0" max="110" value="60" step="1" aria-label="Tone level in decibels sound pressure level"></div>
+        <button class="tog" id="tRW" type="button" aria-pressed="true"><span class="dot"></span><span>Round window free to bulge <small>Perilymph is incompressible. Without a compliant relief window, the stapes cannot move the fluid at all.</small></span></button>
+        <button class="tog" id="tImp" type="button" aria-pressed="false"><span class="dot"></span><span>Show a cochlear implant electrode array <small>Twelve to twenty-two contacts laid along the same map.</small></span></button>
+        <div class="hint"><b>The point of the bench.</b> Sweep the frequency and watch the peak of the traveling wave walk along the membrane. No neuron has fired yet. The cochlea is a bank of tuned filters made of collagen and geometry, and the map it produces is preserved all the way to auditory cortex.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Deflect the stereocilia</div>
+        <div class="sl"><label for="defl">Deflection <span class="v" id="deflV">0 nm</span></label>
+          <input type="range" id="defl" min="-100" max="100" value="0" step="1" aria-label="Stereocilia deflection in nanometers, positive toward the tallest stereocilium"></div>
+        <div class="chips" id="pre3"></div>
+
+        <div class="lbl">The battery</div>
+        <div class="sl"><label for="ep">Endocochlear potential <span class="v" id="epV">+80 mV</span></label>
+          <input type="range" id="ep" min="0" max="100" value="80" step="1" aria-label="Endocochlear potential in millivolts"></div>
+        <div class="sl"><label for="vhc">Hair cell resting potential <span class="v" id="vhcV">&minus;45 mV</span></label>
+          <input type="range" id="vhc" min="-70" max="-20" value="-45" step="1" aria-label="Hair cell resting membrane potential in millivolts"></div>
+        <button class="tog" id="tOHC" type="button" aria-pressed="true"><span class="dot"></span><span>Outer hair cells and prestin working <small>The cochlear amplifier. Roughly 12,000 outer hair cells change length in step with the sound and push energy back into the basilar membrane.</small></span></button>
+        <div class="hint"><b>Two experiments.</b> Deflect the bundle negatively and watch firing fall <i>below</i> the resting rate &mdash; the hair cell reports in both directions. Then drive the endocochlear potential toward zero, as an aminoglycoside or a high-dose loop diuretic does to the stria vascularis, and watch transduction collapse even though every structure is still present.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Buying back thirty decibels</h2>
+      <canvas id="cv1" width="1040" height="380" aria-label="Diagram of the middle ear showing the tympanic membrane, ossicular lever and stapes footplate, with the area ratio and pressure gain"></canvas>
+      <canvas id="cv1b" width="1040" height="240" aria-label="Timeline of the acoustic reflex showing sound onset, reflex latency and the attenuation achieved"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="loop" id="lp1"></div>
+      <div class="infobox" id="i1"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>The basilar membrane, uncoiled</h2>
+      <canvas id="cv2" width="1040" height="420" aria-label="The uncoiled basilar membrane from stiff narrow base to floppy wide apex, with a traveling wave envelope peaking at the place matched to the current frequency"></canvas>
+      <canvas id="cv2b" width="1040" height="220" aria-label="Map of characteristic frequency against distance from the base of the cochlea"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>Tip links, a potassium battery, and a motor</h2>
+      <canvas id="cv3" width="1040" height="400" aria-label="Hair cell with stereocilia and tip links, showing the endolymph potential, the driving force on potassium and the resulting receptor potential"></canvas>
+      <canvas id="cv3b" width="1040" height="250" aria-label="Tuning curve of a single auditory nerve fiber, sharp with the cochlear amplifier working and broad and elevated without it"></canvas>
+      <div class="stats" id="st3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(P){
+    P[0].classList.toggle('on',n===P[1]);
+    P[0].setAttribute('aria-selected',n===P[1]?'true':'false');
+  });
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =========================================================
+   BENCH 1 -- impedance matching and the acoustic reflex
+   ========================================================= */
+var MISMATCH=30, GNORM=20*Math.log10((55/3.2)*1.3);   /* about 27 dB */
+var extraLoss=0, condName='Normal middle ear';
+var STIMS=[
+ {n:'Sustained noise',dur:4000,imp:false,txt:'a continuous industrial noise'},
+ {n:'Your own voice',dur:1200,imp:false,txt:'self-vocalisation, which pre-activates the reflex'},
+ {n:'Gunshot — impulse noise',dur:1,imp:true,txt:'an impulse lasting under a millisecond'}
+];
+var curStim=STIMS[0];
+(function(){
+  var pre=$('pre1');
+  [['Normal middle ear',550,32,130,0],['Perforated eardrum',220,32,130,6],['Otosclerosis — fixed stapes',550,32,130,35],
+   ['Middle ear effusion',550,32,130,26],['Ossicular discontinuity',550,32,100,45]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('atm').value=P[1]; $('afp').value=P[2]; $('lev').value=P[3]; extraLoss=P[4]; condName=P[0]; render1(); };
+    pre.appendChild(b);
+  });
+  var pre2=$('pre1b');
+  STIMS.forEach(function(S){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(S===curStim?' on':''); b.textContent=S.n;
+    b.onclick=function(){ curStim=S; [].slice.call(pre2.children).forEach(function(c,i){ c.classList.toggle('on',STIMS[i]===curStim); }); render1(); };
+    pre2.appendChild(b);
+  });
+})();
+['atm','afp','lev','spl'].forEach(function(id){ $(id).addEventListener('input',render1); });
+
+function mid(){
+  var A=(+$('atm').value)/10, a=(+$('afp').value)/10, L=(+$('lev').value)/100, spl=+$('spl').value;
+  var ratio=A/a, gainX=ratio*L, gainDB=20*Math.log10(gainX);
+  var loss=Math.max(0,GNORM-gainDB)+extraLoss;
+  var thr=85, fires=(spl>=thr && !curStim.imp), att=fires?Math.min(15,(spl-thr)*0.65+8):0;
+  return {A:A,a:a,L:L,ratio:ratio,gainX:gainX,gainDB:gainDB,loss:loss,spl:spl,thr:thr,att:att,fires:fires};
+}
+function render1(){
+  var S=mid();
+  $('atmV').textContent=S.A.toFixed(1)+' mm²';
+  $('afpV').textContent=S.a.toFixed(1)+' mm²';
+  $('levV').textContent=S.L.toFixed(2);
+  $('splV').textContent=S.spl+' dB SPL';
+
+  $('st1').innerHTML=
+    tile('Area ratio',S.ratio.toFixed(1)+':1','eardrum to footplate &middot; normal about 17:1')+
+    tile('Total pressure gain',S.gainX.toFixed(1)+'&times;','area ratio &times; lever &middot; normal about 22&times;')+
+    tile('Gain in decibels',S.gainDB.toFixed(1),'dB &middot; normal about 25&ndash;27 dB')+
+    tile('Loss at the air&ndash;fluid boundary',MISMATCH,'dB &middot; about 99.9% of energy reflected')+
+    tile('Net conductive loss',S.loss.toFixed(0),'dB &middot; air&ndash;bone gap on an audiogram')+
+    tile('Acoustic reflex',S.fires?'&minus;'+S.att.toFixed(0)+' dB':'not triggered',S.fires?'attenuation, mainly below 1&ndash;2 kHz':'threshold is about 70&ndash;90 dB above hearing threshold');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(S.loss>25){
+    cls='verdict bad';
+    txt=condName+' &mdash; conductive loss of about '+S.loss.toFixed(0)+' dB<small>The pressure gain has fallen from '+GNORM.toFixed(1)+' dB to '+S.gainDB.toFixed(1)+' dB'+(extraLoss?', plus '+extraLoss+' dB of additional transmission loss':'')+'. The cochlea behind it is completely normal and completely wasted.</small>';
+    inf='<span class="n">Conductive loss is a plumbing failure, not a sensory one</span>Everything from the hair cells inward is intact. What has been lost is the mechanical transformer that concentrates airborne force onto a small, stiff piston. Amplification helps a conductive loss enormously, precisely because the sensory apparatus is fine &mdash; give it more energy and it works.<div class="dd">Contrast that with sensorineural loss, where the hair cells themselves are gone. Turning up the volume there restores loudness but not frequency selectivity, which is why the classic complaint is &ldquo;I can hear you, I just cannot understand you in a restaurant.&rdquo;</div>';
+  } else if(S.loss>8){
+    cls='verdict warn';
+    txt=condName+' &mdash; a mild conductive loss of about '+S.loss.toFixed(0)+' dB<small>Pressure gain is '+S.gainDB.toFixed(1)+' dB against a normal '+GNORM.toFixed(1)+' dB. Every decibel the middle ear fails to deliver is a decibel the cochlea never sees.</small>';
+    inf='<span class="n">Force per unit area, twice over</span>Pressure = force / area, so concentrating the <i>same</i> total force from a '+S.A.toFixed(0)+' mm&sup2; eardrum onto a '+S.a.toFixed(1)+' mm&sup2; footplate multiplies pressure by '+S.ratio.toFixed(1)+'. The malleus&ndash;incus lever adds about '+S.L.toFixed(2)+' more. Multiply them and you get '+S.gainX.toFixed(1)+'-fold, or '+S.gainDB.toFixed(1)+' dB.<div class="dd">Change the eardrum area slider and watch how directly the two are coupled. A perforation does not just make a hole &mdash; it removes vibrating surface from the numerator of that ratio.</div>';
+  } else {
+    cls='verdict';
+    txt='Impedance matched &mdash; '+S.gainX.toFixed(1)+'-fold pressure gain, '+S.gainDB.toFixed(1)+' dB<small>That very nearly cancels the '+MISMATCH+' dB that would otherwise be lost at the air&ndash;fluid boundary. Residual conductive loss about '+S.loss.toFixed(0)+' dB.</small>';
+    inf='<span class="n">Why the middle ear exists at all</span>Sound in air is a low-pressure, high-displacement wave; cochlear fluid needs a high-pressure, low-displacement one. Aim airborne sound straight at a water surface and about <b>99.9% of the energy reflects</b> &mdash; a loss of roughly 30 dB.<div class="dd">The ossicles fix that with two purely mechanical tricks: an <b>area ratio</b> near 17:1 from the effective eardrum area to the stapes footplate, and a <b>lever</b> of about 1.3 in the malleus&ndash;incus arrangement. Together, about 22-fold pressure gain, roughly 25&ndash;27 dB. The evolution of hearing on land is largely the story of these three small bones.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('lp1').innerHTML=
+    '<div><div class="k">Variable</div><div class="b">Sound intensity reaching the cochlea</div></div>'+
+    '<div><div class="k">Sensor / afferent</div><div class="b">Cochlea &rarr; CN VIII &rarr; ventral cochlear nucleus</div></div>'+
+    '<div><div class="k">Integrator</div><div class="b">Superior olivary complex, both sides</div></div>'+
+    '<div><div class="k">Effectors</div><div class="b">Stapedius (CN VII) and tensor tympani (CN V)</div></div>'+
+    '<div><div class="k">Response</div><div class="b">Ossicular chain stiffens, transmission falls 10&ndash;15 dB</div></div>';
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Middle ear with an area ratio of '+S.ratio.toFixed(1)+' to one and a lever of '+S.L.toFixed(2)+', giving '+S.gainDB.toFixed(1)+' decibels of pressure gain.');
+  drawMid(S); drawReflex(S);
+}
+function drawMid(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cy=190;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('PRESSURE = FORCE / AREA, APPLIED TWICE',24,28);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('the circles below are drawn to scale in area',24,48);
+
+  /* eardrum, drawn as a disc of the right relative area */
+  var scale=2.6;
+  var r1=Math.sqrt(S.A/Math.PI)*scale*3.2, r2=Math.sqrt(S.a/Math.PI)*scale*3.2;
+  g.fillStyle=TEAL; g.globalAlpha=0.22; g.beginPath(); g.arc(180,cy,r1,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=TEAL; g.lineWidth=3; g.beginPath(); g.arc(180,cy,r1,0,6.3); g.stroke();
+  g.fillStyle=TEAL; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('tympanic membrane',180,cy+r1+24);
+  g.fillText(S.A.toFixed(1)+' mm²',180,cy+r1+42);
+
+  /* ossicular lever */
+  g.strokeStyle=GOLD; g.lineWidth=8; g.lineCap='round';
+  g.beginPath(); g.moveTo(180+r1,cy); g.lineTo(430,cy-40); g.lineTo(560,cy); g.stroke();
+  g.fillStyle=GOLD; g.beginPath(); g.arc(430,cy-40,10,0,6.3); g.fill();
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('malleus–incus lever ×'+S.L.toFixed(2),430,cy-62);
+
+  /* footplate */
+  g.fillStyle=CORAL; g.globalAlpha=0.30; g.beginPath(); g.arc(600,cy,r2,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=CORAL; g.lineWidth=3; g.beginPath(); g.arc(600,cy,r2,0,6.3); g.stroke();
+  g.fillStyle=CORAL; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('stapes footplate',600,cy+56);
+  g.fillText(S.a.toFixed(1)+' mm²',600,cy+74);
+
+  /* fluid */
+  g.fillStyle=BLUE; g.globalAlpha=0.14; g.fillRect(640,60,W-660,H-100); g.globalAlpha=1;
+  g.fillStyle=BLUE; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('COCHLEAR FLUID',660,90);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('far harder to move than air —',660,112);
+  g.fillText('99.9% of airborne energy would reflect here,',660,132);
+  g.fillText('a loss of about 30 dB',660,152);
+
+  /* gain readout */
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('area ratio '+S.ratio.toFixed(1)+'  ×  lever '+S.L.toFixed(2)+'  =  '+S.gainX.toFixed(1)+'-fold',660,200);
+  g.fillStyle=S.loss>8?CORAL:GREEN; g.font='800 22px Inter, system-ui, sans-serif';
+  g.fillText(S.gainDB.toFixed(1)+' dB of gain',660,236);
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+  g.fillText('against a 30 dB mismatch loss → net '+(S.gainDB-MISMATCH).toFixed(1)+' dB',660,260);
+
+  /* conductive loss bar */
+  var bx=660,by=282,bw=W-700;
+  g.fillStyle=LINE; g.fillRect(bx,by,bw,20);
+  g.fillStyle=S.loss>25?CORAL:(S.loss>8?GOLD:GREEN);
+  g.fillRect(bx,by,bw*clamp(S.loss/60,0,1),20);
+  g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('conductive loss '+S.loss.toFixed(0)+' dB',bx,by+38);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(condName,W/2,H-12);
+}
+function drawReflex(S){
+  var cv=$('cv1b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=70,R=W-30,T=60,B=H-46,TMAX=400;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(t){ return L+(t/TMAX)*(R-L); }
+  function Y(d){ return B-(clamp(d,0,130)/130)*(B-T); }
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE ACOUSTIC REFLEX AGAINST THE CLOCK — '+curStim.n.toUpperCase(),24,28);
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+  g.fillText('latency 50–100 ms; attenuation 10–15 dB, chiefly below 1–2 kHz',24,46);
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,40,80,120].forEach(function(d){
+    g.beginPath(); g.moveTo(L,Y(d)); g.lineTo(R,Y(d)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(d+' dB',L-8,Y(d)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  [0,100,200,300,400].forEach(function(t){
+    g.beginPath(); g.moveTo(X(t),B); g.lineTo(X(t),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(t+' ms',X(t),B+20);
+  });
+  /* stimulus present */
+  var dur=Math.min(curStim.dur,TMAX);
+  g.fillStyle=GOLD; g.globalAlpha=0.14; g.fillRect(X(0),T,X(dur)-X(0),B-T); g.globalAlpha=1;
+
+  /* the level actually reaching the cochlea */
+  g.strokeStyle=TEAL; g.lineWidth=3.4; g.beginPath();
+  var t;
+  for(t=0;t<=TMAX;t+=2){
+    var lvl = t<=curStim.dur ? S.spl : 0;
+    if(S.fires && t>=75) lvl=Math.max(0,lvl-S.att*clamp((t-75)/40,0,1));
+    var x=X(t),y=Y(lvl);
+    if(t===0) g.moveTo(x,y); else g.lineTo(x,y);
+  }
+  g.stroke();
+  if(S.fires){
+    g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([5,4]);
+    g.beginPath(); g.moveTo(X(75),T); g.lineTo(X(75),B); g.stroke(); g.setLineDash([]);
+    g.fillStyle=CORAL; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('stapedius contracts — 75 ms after onset',X(75)+8,T+16);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.5; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(L,Y(S.thr)); g.lineTo(R,Y(S.thr)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=MUT; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('reflex threshold ≈ '+S.thr+' dB',R,Y(S.thr)-6);
+
+  g.fillStyle=curStim.imp?CORAL:(S.fires?GREEN:MUT); g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(curStim.imp
+    ? 'the gunshot is over in under a millisecond — the reflex has not even begun to contract'
+    : (S.fires? 'protected: '+S.att.toFixed(0)+' dB of attenuation, but only after the first 75 ms'
+              : 'below reflex threshold — the ossicular chain stays compliant'),W/2,H-12);
+}
+
+/* =========================================================
+   BENCH 2 -- the traveling wave and tonotopy
+   Greenwood: f = 165.4 (10^(2.1 x) - 0.88), x = fraction of length from the apex
+   ========================================================= */
+var BMLEN=35, rwOpen=true, showImp=false;
+$('tRW').onclick=function(){ rwOpen=!rwOpen; this.setAttribute('aria-pressed',rwOpen?'true':'false'); render2(); };
+$('tImp').onclick=function(){ showImp=!showImp; this.setAttribute('aria-pressed',showImp?'true':'false'); render2(); };
+['freq','lev2'].forEach(function(id){ $(id).addEventListener('input',render2); });
+(function(){
+  var pre=$('pre2');
+  [['20 Hz',20],['100 Hz',100],['500 Hz',500],['1 kHz',1000],['4 kHz',4000],['10 kHz',10000],['20 kHz',20000]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('freq').value=Math.round(1000*Math.log10(P[1]/20)/Math.log10(1000)); render2(); };
+    pre.appendChild(b);
+  });
+})();
+function fOf(s){ return 20*Math.pow(1000,s/1000); }                    /* 20 Hz .. 20 kHz */
+function placeFromBase(f){
+  var x=(1/2.1)*Math.log10(clamp(f,20,20000)/165.4+0.88);              /* fraction from apex */
+  return BMLEN*(1-clamp(x,0,1));
+}
+function render2(){
+  var f=fOf(+$('freq').value), lev=+$('lev2').value;
+  var d=placeFromBase(f);
+  var width=0.1+0.4*(d/BMLEN);
+  var phase = f<=1000 ? 'tight' : (f<4500 ? 'weakening' : 'gone');
+  $('freqV').textContent=(f>=1000?(f/1000).toFixed(f>=10000?0:1)+' kHz':f.toFixed(0)+' Hz');
+  $('lev2V').textContent=lev+' dB SPL';
+
+  $('st2').innerHTML=
+    tile('Peak of the traveling wave',d.toFixed(1),'mm from the base of a '+BMLEN+' mm membrane')+
+    tile('Membrane width there',width.toFixed(2),'mm &middot; 0.1 at the base, 0.5 at the apex')+
+    tile('Stiffness',d<12?'high':(d<24?'intermediate':'low'),'about a hundredfold change end to end')+
+    tile('Place coding',(f>=20?'yes':'&mdash;'),'the only cue available above 4&ndash;5 kHz')+
+    tile('Phase locking',phase==='tight'?'tight':(phase==='weakening'?'weakening':'absent'),phase==='gone'?'faded out by 4&ndash;5 kHz':'fibers fire at a consistent point in the cycle')+
+    tile('Human range','20 Hz &ndash; 20 kHz','the young ear &middot; the top end goes first with age');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(!rwOpen){
+    cls='verdict bad';
+    txt='Round window sealed &mdash; no wave at all<small>Perilymph is essentially incompressible. If the stapes pushes in and nothing can bulge out somewhere else, the fluid simply cannot move and the basilar membrane never deflects.</small>';
+    inf='<span class="n">Two windows, one fluid</span>The stapes pistons on the <b>oval window</b>, and the <b>round window</b> bulges outward to accommodate the displaced volume. That compliant relief is not a detail &mdash; it is a requirement for any fluid-filled transducer.<div class="dd">Clinically, this is why round window pathology causes conductive loss, and why the round window is treated with such care in ear surgery and in cochlear implantation.</div>';
+  } else if(f>=4500){
+    cls='verdict cool';
+    txt='High frequency &mdash; the wave peaks '+d.toFixed(1)+' mm from the base, on the stiff narrow end<small>Only place coding is available up here. Phase locking has faded out completely by about 4&ndash;5 kHz because auditory nerve fibers cannot fire reliably at a fixed point in a cycle that short.</small>';
+    inf='<span class="n">Frequency analysis before biology</span>The basilar membrane is about 32&ndash;35 mm long, roughly 0.1 mm wide and stiff at the base, 0.5 mm wide and floppy at the apex, with stiffness varying about a <b>hundredfold</b> end to end. Georg von B&eacute;k&eacute;sy showed that this gradient makes the traveling wave peak at a place set by frequency.<div class="dd">No neuron has been involved yet. The cochlea is a bank of tuned mechanical filters made of collagen and geometry, and the spatial map it produces &mdash; <b>tonotopy</b> &mdash; is preserved faithfully all the way to auditory cortex.</div>';
+  } else if(f<=250){
+    cls='verdict';
+    txt='Low frequency &mdash; the wave travels almost the whole membrane and peaks '+d.toFixed(1)+' mm from the base<small>The apex is wide and compliant, so low frequencies keep going until they find it. Down here phase locking is tight and timing carries frequency information as well as place.</small>';
+    inf='<span class="n">Two codes for low frequencies, one for high</span>Below roughly 4&ndash;5 kHz auditory nerve fibers <b>phase lock</b>, firing at a consistent point in the sound cycle; the locking is tightest under about 1,000 Hz. So low-frequency sound is encoded twice over, by place and by timing.<div class="dd">That redundancy pays off in localization. Interaural timing differences as small as <b>10 microseconds</b> are used to place a sound in the horizontal plane, a computation performed in the superior olivary complex &mdash; the first point in the auditory pathway where input from the two ears converges.</div>';
+  } else {
+    cls='verdict info';
+    txt='Mid frequency &mdash; the wave peaks '+d.toFixed(1)+' mm from the base<small>This is the region that carries most of the information in speech, and the region a cochlear implant works hardest to reproduce. Both place and timing cues are available here.</small>';
+    inf='<span class="n">Why an implant can work at all</span>Because the map is spatial and orderly, a surgeon can thread an electrode array along the scala tympani and stimulate contacts at the right <i>place</i> for each frequency band. The implant does not recreate hearing; it exploits the fact that the cochlea had already turned frequency into position before any neuron was involved.<div class="dd">Turn the electrode array on in the controls and see the contacts laid out along the same axis. Each contact is assigned the frequency band belonging to its position.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Traveling wave for '+f.toFixed(0)+' hertz peaking '+d.toFixed(1)+' millimeters from the base of the basilar membrane.');
+  drawBM(f,d,lev); drawMap(f,d);
+}
+function drawBM(f,d,lev){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=70,R=W-40,cy=210;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(mm){ return L+(mm/BMLEN)*(R-L); }
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('BASE — NARROW AND STIFF',L,34);
+  g.textAlign='right'; g.fillText('APEX — WIDE AND FLOPPY',R,34);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('oval window and round window here',L,54);
+
+  /* membrane, widening toward the apex */
+  g.beginPath();
+  var mm;
+  g.moveTo(X(0),cy-6);
+  for(mm=0;mm<=BMLEN;mm+=0.5){ g.lineTo(X(mm),cy-6-((0.1+0.4*(mm/BMLEN))*46)); }
+  for(mm=BMLEN;mm>=0;mm-=0.5){ g.lineTo(X(mm),cy+6+((0.1+0.4*(mm/BMLEN))*46)); }
+  g.closePath();
+  g.fillStyle=LINE; g.fill();
+  g.strokeStyle=MUT; g.lineWidth=1.5; g.stroke();
+
+  if(!rwOpen){
+    g.fillStyle=CORAL; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('ROUND WINDOW SEALED — the incompressible perilymph cannot move, so nothing vibrates',W/2,cy);
+  } else {
+    /* traveling wave envelope: rises, peaks at d, cuts off sharply apical to the peak */
+    var amp=18+((lev/110)*68);
+    function env(mm){
+      if(mm<=d) return amp*Math.pow(mm/Math.max(d,0.2),1.6);
+      var g2=Math.exp(-Math.pow((mm-d)/2.4,2));
+      return amp*g2;
+    }
+    [1,-1].forEach(function(s){
+      g.strokeStyle=TEAL; g.lineWidth=2.6; g.beginPath();
+      for(mm=0;mm<=BMLEN;mm+=0.2){ var x=X(mm),y=cy+s*env(mm); if(mm===0) g.moveTo(x,y); else g.lineTo(x,y); }
+      g.stroke();
+    });
+    /* the instantaneous wave inside the envelope */
+    g.strokeStyle=GOLD; g.lineWidth=2.2; g.beginPath();
+    for(mm=0;mm<=BMLEN;mm+=0.1){
+      var ph=Math.sin(mm*(0.9+2.6*(1-d/BMLEN))+0.0);
+      var x2=X(mm),y2=cy+env(mm)*ph;
+      if(mm===0) g.moveTo(x2,y2); else g.lineTo(x2,y2);
+    }
+    g.stroke();
+    /* peak marker */
+    g.strokeStyle=CORAL; g.lineWidth=2.5; g.setLineDash([5,4]);
+    g.beginPath(); g.moveTo(X(d),cy-130); g.lineTo(X(d),cy+130); g.stroke(); g.setLineDash([]);
+    g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText((f>=1000?(f/1000).toFixed(f>=10000?0:1)+' kHz':f.toFixed(0)+' Hz')+' peaks here',X(d),cy-140);
+    g.font='700 11.5px Inter, system-ui, sans-serif';
+    g.fillText(d.toFixed(1)+' mm from the base',X(d),cy+152);
+  }
+
+  /* scale */
+  g.strokeStyle=MUT; g.lineWidth=1.4;
+  g.beginPath(); g.moveTo(L,H-56); g.lineTo(R,H-56); g.stroke();
+  [0,5,10,15,20,25,30,35].forEach(function(mm){
+    g.beginPath(); g.moveTo(X(mm),H-56); g.lineTo(X(mm),H-50); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillText(mm,X(mm),H-34);
+  });
+  g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif';
+  g.fillText('millimeters from the base',W/2,H-14);
+
+  if(showImp){
+    var k;
+    for(k=0;k<22;k++){
+      var mmk=1+ k*(28/21);
+      g.fillStyle=PURP; g.beginPath(); g.arc(X(mmk),cy+112,5,0,6.3); g.fill();
+    }
+    g.fillStyle=PURP; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('cochlear implant electrode contacts — each assigned the frequency band of its position',L,cy+138);
+  }
+}
+function drawMap(f,d){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=70,R=W-30,T=34,B=H-44;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(mm){ return L+(mm/BMLEN)*(R-L); }
+  function Y(fr){ return B-(Math.log10(clamp(fr,20,20000)/20)/3)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [20,100,1000,10000,20000].forEach(function(fr){
+    g.beginPath(); g.moveTo(L,Y(fr)); g.lineTo(R,Y(fr)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(fr>=1000?(fr/1000)+'k':fr,L-8,Y(fr)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.strokeStyle=TEAL; g.lineWidth=3.2; g.beginPath();
+  var mm;
+  for(mm=0;mm<=BMLEN;mm+=0.2){
+    var x=(BMLEN-mm)/BMLEN;
+    var fr=165.4*(Math.pow(10,2.1*x)-0.88);
+    if(mm===0) g.moveTo(X(mm),Y(fr)); else g.lineTo(X(mm),Y(fr));
+  }
+  g.stroke();
+  g.fillStyle=CORAL; g.beginPath(); g.arc(X(d),Y(f),8,0,6.3); g.fill();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('characteristic frequency against position — the tonotopic map',L+10,T+16);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('this same ordering survives in the cochlear nuclei, the inferior colliculus and auditory cortex',W/2,H-12);
+}
+
+/* =========================================================
+   BENCH 3 -- hair cell transduction and the cochlear amplifier
+   ========================================================= */
+var ohc=true;
+$('tOHC').onclick=function(){ ohc=!ohc; this.setAttribute('aria-pressed',ohc?'true':'false'); render3(); };
+['defl','ep','vhc'].forEach(function(id){ $(id).addEventListener('input',render3); });
+(function(){
+  var pre=$('pre3');
+  [['Resting, no sound',0],['Toward the tallest — excitation',55],['Away — inhibition',-55],['Just 1 nm, at threshold',1]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('defl').value=P[1]; render3(); };
+    pre.appendChild(b);
+  });
+  var pre2=document.createElement('div'); pre2.className='chips'; pre2.style.marginTop='6px';
+  [['Aminoglycoside — stria poisoned',18],['High-dose loop diuretic',35],['Healthy stria vascularis',80]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('ep').value=P[1]; render3(); };
+    pre2.appendChild(b);
+  });
+  $('pre3').parentNode.insertBefore(pre2,$('pre3').nextSibling);
+})();
+
+function hair(){
+  var x=+$('defl').value, EP=+$('ep').value, V=+$('vhc').value;
+  var xe=x*(ohc?1.0:0.006);                                /* effective deflection at the bundle: without the amplifier the same sound moves it far less */
+  var po=0.15+0.75*(1/(1+Math.exp(-(xe-14)/13)));          /* open probability, about 15% at rest */
+  var drive=EP-V;                                          /* driving force on K+ entering from endolymph */
+  var I=po*drive*0.9;                                      /* arbitrary current units */
+  var Irest=0.15*(80-(-45))*0.9;
+  var dV=(I-Irest)*0.13;
+  var Vm=V+dV;
+  var rate=clamp(60+dV*7.5,0,320);
+  return {x:x,xe:xe,EP:EP,V:V,po:po,drive:drive,I:I,dV:dV,Vm:Vm,rate:rate};
+}
+function render3(){
+  var S=hair();
+  $('deflV').textContent=(S.x>0?'+':'')+S.x+' nm';
+  $('epV').textContent='+'+S.EP+' mV';
+  $('vhcV').textContent=S.V+' mV';
+
+  $('st3').innerHTML=
+    tile('Transduction channels open',(S.po*100).toFixed(0)+'%','about 15% at rest, so both directions are readable')+
+    tile('Driving force on K<sup>+</sup>',S.drive.toFixed(0),'mV &middot; endolymph +'+S.EP+' minus cell '+S.V)+
+    tile('Receptor potential',(S.dV>0?'+':'')+S.dV.toFixed(1),'mV from rest')+
+    tile('Afferent firing',S.rate.toFixed(0),'spikes/s &middot; resting discharge about 60')+
+    tile('Cochlear amplifier',ohc?'+45 dB':'lost',ohc?'outer hair cells and prestin working':'40&ndash;50 dB of gain gone, tuning broadened')+
+    tile('Otoacoustic emissions',ohc?'present':'absent',ohc?'the basis of newborn hearing screening':'a failed screen points here');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(S.EP<30){
+    cls='verdict bad';
+    txt='The battery is flat &mdash; driving force only '+S.drive.toFixed(0)+' mV<small>Endolymph should sit at about +80 mV against a hair cell interior near &minus;45 mV, giving 125&ndash;140 mV of driving force. At +'+S.EP+' mV, potassium barely moves and the receptor potential collapses.</small>';
+    inf='<span class="n">Why potassium, of all ions, flows <i>in</i></span>Scala media is filled with <b>endolymph</b>: about 150 mM K<sup>+</sup> and only about 1 mM Na<sup>+</sup>, secreted by the <b>stria vascularis</b> and held at an endocochlear potential of about <b>+80 mV</b>. The hair cell interior sits near &minus;45 mV. Both the chemical and the electrical gradient therefore push potassium into the cell through the apical channels &mdash; the exact opposite of what potassium does almost everywhere else in physiology.<div class="dd">That battery is metabolically expensive, which is why the cochlea is so vulnerable to ischemia and to ototoxic drugs. <b>Aminoglycosides</b> and <b>high-dose loop diuretics</b> poison the stria and the hair cells, and the hearing loss they cause can be permanent.</div>';
+  } else if(!ohc){
+    cls='verdict warn';
+    txt='Outer hair cells lost &mdash; about 45 dB of gain gone, and tuning has broadened<small>The same '+Math.abs(S.x)+' nm of basilar membrane motion now produces almost nothing at the bundle. Firing sits at '+S.rate.toFixed(0)+' spikes/s.</small>';
+    inf='<span class="n">Two hair cell populations, two completely different jobs</span>The roughly <b>3,500 inner hair cells</b> are the true sensors: they receive about 95% of the afferent fibers in cranial nerve VIII and release glutamate onto them. The roughly <b>12,000 outer hair cells</b> are mostly motors. They carry <b>prestin</b> in their lateral membranes, change length in step with the sound, and inject mechanical energy back into the basilar membrane on every cycle.<div class="dd">That cochlear amplifier adds <b>40&ndash;50 dB</b> of gain and sharpens tuning enormously. Noise-induced and age-related hearing loss kill outer hair cells first, and mammals cannot regenerate them. Losing the amplifier costs gain <i>and</i> selectivity, which is why the complaint is not &ldquo;everything is quiet&rdquo; but &ldquo;I cannot understand you in a restaurant.&rdquo; Turning up the volume does not restore frequency selectivity.</div>';
+  } else if(S.x>4){
+    cls='verdict';
+    txt='Excitation &mdash; tip links stretched, channels pulled open<small>'+ (S.po*100).toFixed(0)+'% of channels open, receptor potential +'+S.dV.toFixed(1)+' mV, firing '+S.rate.toFixed(0)+' spikes/s against a resting discharge near 60.</small>';
+    inf='<span class="n">Mechanical gating, with no second messenger anywhere</span>Adjacent stereocilia are joined at their tips by protein <b>tip links</b> built from cadherin-23 and protocadherin-15. Deflection toward the tallest stereocilium stretches those links and mechanically pulls the transduction channels open <b>within microseconds</b>.<div class="dd">Compare that with phototransduction, where a G protein and an enzyme cascade stand between stimulus and channel and the response takes tens of milliseconds. Hearing needs microsecond timing &mdash; interaural differences of 10 &micro;s are used for localization &mdash; so the ear cannot afford a chemical intermediate.</div>';
+  } else if(S.x<-4){
+    cls='verdict cool';
+    txt='Inhibition &mdash; tip links slackened, channels closing below the resting rate<small>Only '+(S.po*100).toFixed(0)+'% of channels open, receptor potential '+S.dV.toFixed(1)+' mV, firing down to '+S.rate.toFixed(0)+' spikes/s.</small>';
+    inf='<span class="n">Why a resting open probability matters</span>About 15% of the transduction channels are open with no sound at all, so the cell sits partway up its operating curve. Deflect one way and the current rises; deflect the other and it falls <i>below</i> baseline. A hair cell therefore reports both halves of the sound cycle, which is what makes phase locking possible at low frequencies.<div class="dd">Sit at rest and note the afferent still fires near 60 spikes/s. Silence is not zero in the auditory nerve any more than darkness is zero in a photoreceptor.</div>';
+  } else {
+    cls='verdict info';
+    txt='At rest &mdash; about 15% of channels open, afferent firing near '+S.rate.toFixed(0)+' spikes/s<small>Driving force on potassium is '+S.drive.toFixed(0)+' mV. Now move the deflection slider in either direction and watch firing rise above and fall below this baseline.</small>';
+    inf='<span class="n">The numbers are almost unbelievable</span>A hair cell answers to a deflection of about <b>1 nanometer</b>. Scaled up, that is the Eiffel Tower swaying by the width of a thumb. The tip link converts that displacement into channel opening directly, with no amplifying chemistry in between &mdash; the amplification instead comes from outside, from the outer hair cells pushing on the membrane.<div class="dd">Set the deflection to 1 nm and note that there is still a measurable response. That is threshold hearing.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  $('cv3').setAttribute('aria-label','Hair cell with '+S.x+' nanometers of deflection, '+(S.po*100).toFixed(0)+' percent of channels open and a receptor potential of '+S.dV.toFixed(1)+' millivolts.');
+  drawHair(S); drawTuning();
+}
+function drawHair(S){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('SCALA MEDIA — ENDOLYMPH, 150 mM K⁺, +'+S.EP+' mV',24,28);
+  /* endolymph band */
+  g.fillStyle=GOLD; g.globalAlpha=0.10+0.25*(S.EP/100); g.fillRect(0,40,W,86); g.globalAlpha=1;
+
+  var cx=330, base=300;
+  /* hair cell body */
+  g.fillStyle=TEAL; g.globalAlpha=0.18; g.fillRect(cx-58,126,116,150); g.globalAlpha=1;
+  g.strokeStyle=TEAL; g.lineWidth=2.5; g.strokeRect(cx-58,126,116,150);
+  g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('hair cell '+S.V+' mV',cx,208);
+  g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif';
+  g.fillText('perilymph outside, about 0 mV',cx,242);
+
+  /* stereocilia bundle, tilted by the deflection */
+  var tilt=clamp(S.x/100,-1,1)*0.42;
+  var k;
+  for(k=0;k<5;k++){
+    var hgt=36+k*16, bx=cx-40+k*20;
+    g.strokeStyle=TDK; g.lineWidth=7; g.lineCap='round';
+    g.beginPath(); g.moveTo(bx,126); g.lineTo(bx+hgt*Math.sin(tilt),126-hgt*Math.cos(tilt)); g.stroke();
+  }
+  /* tip links */
+  for(k=0;k<4;k++){
+    var h1=36+k*16, h2=36+(k+1)*16, x1=cx-40+k*20, x2=cx-40+(k+1)*20;
+    var p1x=x1+h1*Math.sin(tilt), p1y=126-h1*Math.cos(tilt);
+    var p2x=x2+h2*Math.sin(tilt)-4, p2y=126-(h2-12)*Math.cos(tilt);
+    g.strokeStyle=S.x>2?CORAL:(S.x<-2?LINE:MUT); g.lineWidth=S.x>2?3.4:2;
+    g.beginPath(); g.moveTo(p1x,p1y);
+    if(S.x<-2){ g.quadraticCurveTo((p1x+p2x)/2,(p1y+p2y)/2+14,p2x,p2y); } else { g.lineTo(p2x,p2y); }
+    g.stroke();
+  }
+  g.fillStyle=S.x>2?CORAL:MUT; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(S.x>2?'tip links STRETCHED — channels pulled open':(S.x<-2?'tip links SLACK — channels closing':'tip links at resting tension'),cx,44);
+
+  /* K+ arrows into the cell, thickness by open probability */
+  g.strokeStyle=GOLD; g.lineWidth=Math.max(1.5,14*S.po*(S.drive/125));
+  for(k=0;k<4;k++){
+    var ax=cx-30+k*20;
+    g.beginPath(); g.moveTo(ax,96); g.lineTo(ax,126); g.stroke();
+  }
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('K⁺ in — driving force '+S.drive.toFixed(0)+' mV',cx+70,110);
+
+  /* readouts */
+  var bx2=W-460, by=90;
+  [['Open probability',(S.po*100).toFixed(0)+'%',S.po,TEAL],
+   ['Receptor potential',(S.dV>0?'+':'')+S.dV.toFixed(1)+' mV',clamp((S.dV+12)/30,0,1),BLUE],
+   ['Afferent firing rate',S.rate.toFixed(0)+' spikes/s',S.rate/320,CORAL]].forEach(function(P,i){
+    var yy=by+i*74;
+    g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(P[0],bx2,yy-8);
+    g.fillStyle=LINE; g.fillRect(bx2,yy,400,26);
+    g.fillStyle=P[3]; g.fillRect(bx2,yy,400*clamp(P[2],0,1),26);
+    g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif';
+    g.fillText(P[1],bx2+408,yy+19);
+  });
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('inner hair cells: about 3,500, and they take 95% of the afferent fibers in CN VIII',bx2,by+250);
+  g.fillText('outer hair cells: about 12,000, and they are mostly motors',bx2,by+272);
+}
+function drawTuning(){
+  var cv=$('cv3b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=70,R=W-30,T=36,B=H-44;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(f){ return L+(Math.log10(clamp(f,100,20000)/100)/Math.log10(200))*(R-L); }
+  function Y(db){ return T+(clamp(db,-10,100)+10)/110*(B-T); }
+  var CF=4000;
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,20,40,60,80,100].forEach(function(db){
+    g.beginPath(); g.moveTo(L,Y(db)); g.lineTo(R,Y(db)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(db,L-8,Y(db)+4);
+  });
+  [100,1000,10000].forEach(function(f){
+    g.beginPath(); g.moveTo(X(f),B); g.lineTo(X(f),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(f>=1000?(f/1000)+' kHz':f+' Hz',X(f),B+20);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('TUNING CURVE OF ONE AUDITORY NERVE FIBER — threshold against frequency',L,26);
+
+  function curve(sharp,col,dash,lab,ly){
+    g.strokeStyle=col; g.lineWidth=3; if(dash) g.setLineDash([6,5]);
+    g.beginPath();
+    var f,first=true;
+    for(f=100;f<=20000;f*=1.02){
+      var oct=Math.log2(f/CF);
+      var thr = sharp ? (18+Math.pow(Math.abs(oct),1.35)*46+(oct>0?Math.pow(oct,2)*40:0))
+                      : (62+Math.pow(Math.abs(oct),1.6)*13);
+      var y=Y(thr);
+      if(thr>105) { first=true; continue; }
+      if(first){ g.moveTo(X(f),y); first=false; } else g.lineTo(X(f),y);
+    }
+    g.stroke(); g.setLineDash([]);
+    g.fillStyle=col; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(lab,L+14,ly);
+  }
+  curve(false,MUT,true,'without the cochlear amplifier — threshold up 40–50 dB, tip gone',T+34);
+  if(ohc) curve(true,TEAL,false,'with outer hair cells working — a sharp tip at the characteristic frequency',T+16);
+  g.strokeStyle=CORAL; g.lineWidth=1.6; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(X(CF),T); g.lineTo(X(CF),B); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('characteristic frequency',X(CF),B-8);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('the amplifier does not only make sound louder — it makes neighboring frequencies separable',W/2,H-12);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

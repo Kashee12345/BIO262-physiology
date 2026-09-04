@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2 — The Cellular Level of Organization | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 2 — The Cellular Level of Organization</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit1">
+
+<h2>Module 2 &nbsp;•&nbsp; The Cellular Level of Organization &nbsp;<span class="chip">Exam 1</span></h2>
+<div class="box obj"><ol><li>Identify the physiological functions of the cell membrane.</li><li>Describe the processes of diffusion and osmosis.</li><li>Describe the functions of major cellular organelles in maintaining homeostasis.</li><li>Describe the significance of transcription, translation and mitosis.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Diffusion moves <b>solute</b>; osmosis moves <b>water</b>. Neither costs ATP.</li><li>Water moves toward the <b>higher</b> solute concentration.</li><li>Glycolysis: cytoplasm, anaerobic, ~2 ATP. Aerobic respiration: mitochondria, ~30–32 ATP.</li><li>Transcription = nucleus (DNA→mRNA). Translation = ribosome (mRNA→protein).</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">The membrane decides everything</h4><div class="read">A cell is defined by what it lets in. The plasma membrane is a phospholipid bilayer — water-loving heads
+out, water-fearing tails in — and it is <b>selectively permeable</b>: some things cross freely, some need
+help, some are refused.<br><br>
+Small nonpolar molecules like oxygen and carbon dioxide slip straight through. Charged ions and large polar
+molecules cannot, so the membrane studs itself with proteins: <b>transport</b> proteins move things,
+<b>anchoring</b> proteins hold the cytoskeleton, <b>enzyme</b> proteins catalyze, <b>adhesion</b> proteins
+join neighboring cells, and <b>antigen</b> proteins act as an identity badge saying <i>this cell is one of
+ours</i>.</div>
+<h4 class="topic">Passive versus active — the only distinction that matters</h4><div class="read">Ask one question of any transport process: <b>does it cost ATP?</b><br><br>
+If the answer is no, it is <b>passive</b>, and it must be moving <i>down</i> a gradient. <b>Simple diffusion</b>
+is solute drifting from crowded to empty. <b>Facilitated diffusion</b> is the same thing but through a
+protein, because the molecule cannot cross the lipid alone — it still costs nothing. <b>Osmosis</b> is the
+special case where <i>water</i> moves, and water always moves toward the <b>higher solute</b> concentration.
+The phrase to hold onto is: water follows salt.<br><br>
+If the answer is yes, it is <b>active</b>, and it can push <i>against</i> a gradient. The sodium–potassium
+pump throws three Na⁺ out and pulls two K⁺ in for every ATP. Because it exports more positive charge than it
+imports, it leaves the inside slightly negative — which is where the resting membrane potential comes from,
+and why this pump reappears in the nerve and muscle modules.</div>
+<h4 class="topic">Organelles as jobs, not vocabulary</h4><div class="read">Learn each organelle as <i>structure → function → what fails</i>. The <b>nucleus</b> holds DNA and runs
+transcription. The <b>nucleolus</b> inside it builds ribosomes. <b>Ribosomes</b> translate mRNA into protein.
+<b>Rough ER</b> is studded with ribosomes and processes those proteins; <b>smooth ER</b> has none and instead
+makes lipids and detoxifies. The <b>Golgi</b> modifies and packages for shipping. <b>Mitochondria</b> make
+ATP. <b>Lysosomes</b> digest waste; <b>peroxisomes</b> handle fatty acids and free radicals.<br><br>
+The pattern predicts cell type. A cell secreting protein hormone will be crammed with rough ER and Golgi.
+A cell making steroids will be full of smooth ER. A muscle cell that never tires will be dense with
+mitochondria.</div>
+<h4 class="topic">From gene to protein, and why mitosis matters</h4><div class="read"><b>Transcription</b> happens in the nucleus: DNA is copied into mRNA. <b>Translation</b> happens at the
+ribosome: mRNA is read three letters at a time and the matching amino acids are strung together. Three RNAs
+do the work — <b>mRNA</b> carries the message, <b>tRNA</b> ferries amino acids, and <b>rRNA</b> forms the
+ribosome itself and catalyzes the bonds.<br><br>
+<b>Mitosis</b> produces two genetically <i>identical</i> daughter cells. That is the whole point: growth and
+repair need faithful copies. Contrast this with meiosis in Module 14, which deliberately produces variety.</div>
+<h4 class="topic">What osmosis actually moves</h4><div class="read"><b>Osmosis</b> is the diffusion of water, and only water. The solute stays where it is, because the membrane is <b>selectively permeable</b> — it lets water through and holds the solute back. The water crosses instead, moving toward the side with <b>more</b> solute — the side where water is scarce. Say it to yourself as: water follows salt.<br><br>
+<b>Tonicity</b> describes what a solution does to a cell placed in it. In an <b>isotonic</b> solution water moves equally both ways and the cell keeps its shape. In a <b>hypotonic</b> solution water floods in and a red cell swells and <b>lyses</b>. In a <b>hypertonic</b> solution water leaves and the cell shrivels, or <b>crenates</b>. Which is why free water infused fast is dangerous — a cell cannot refuse water, and a swelling brain has nowhere to go.</div>
+<h4 class="topic">Facilitated diffusion is still passive</h4><div class="read">The word facilitated makes you assume energy is being spent. It is not. <b>Facilitated diffusion</b> uses a membrane protein — either a <b>channel</b> or a <b>carrier</b> — but the molecule still travels down its concentration gradient, from high to low, and the cell pays nothing for the trip. The protein is there only because the molecule is too large or too charged to cross the oily interior of the bilayer alone. Glucose slips into most cells on a carrier; potassium leaks out through channels.<br><br>
+What separates it from <b>simple diffusion</b> is <b>saturation</b>: transporters are finite, so once they are all occupied, raising the concentration moves nothing extra. Any carrier can be saturated, which is why glucose spills into the urine once blood sugar climbs — the kidney's glucose carriers are already full.</div>
+<h4 class="topic">The pump that pays for everything</h4><div class="read">The <b>sodium-potassium pump</b> is the largest energy bill most cells pay, and it earns it. For every ATP it spends, it pushes three sodium ions out and pulls two potassium ions in, both against their gradients — <b>primary active transport</b>, ATP spent directly on what is moved.<br><br>
+Two things follow. The pump keeps potassium high inside and sodium low, and potassium leaking back out down that gradient is the main reason the interior stays negative — the <b>resting membrane potential</b> nerve and muscle depend on; the uneven exchange adds a little more. And sodium, held low, strains to rush back in, so the cell hitches a passenger to that rush — <b>secondary active transport</b>, how glucose is reclaimed in gut and kidney, and why a failing pump starves the cell of glucose too.</div>
+<h4 class="topic">When the molecule is too big to transport</h4><div class="read">Channels and pumps move one small molecule at a time. Anything larger — a bacterium, a droplet of fluid, a finished protein — has to be wrapped in membrane instead.<br><br>
+<b>Endocytosis</b> brings material in, and it takes three forms. <b>Phagocytosis</b> is cell eating: the membrane pushes out arms — <b>pseudopods</b> — around a solid particle, which is how neutrophils and macrophages clear bacteria. <b>Pinocytosis</b> is cell drinking, an indiscriminate sip of extracellular fluid. <b>Receptor-mediated endocytosis</b> is the selective one — a receptor must bind its specific ligand before the membrane pits inward. <b>Exocytosis</b> runs the process backwards, fusing a vesicle with the membrane to release hormones, neurotransmitters or enzymes outward. Which is why a defective LDL receptor leaves cholesterol circulating — the cell cannot import what it cannot grip.</div>
+<h4 class="topic">The cell cycle and its checkpoints</h4><div class="read">Most of a cell's life is not mitosis. <b>Interphase</b> occupies the great majority of it and has three parts: <b>G1</b>, where the cell grows and does its actual job; <b>S phase</b>, where the DNA is copied so each daughter cell will receive a complete set; and <b>G2</b>, where the copy is proofread and the machinery of division is built.<br><br>
+<b>Mitosis</b> then divides the nucleus in four stages — <b>prophase</b>, <b>metaphase</b>, <b>anaphase</b>, <b>telophase</b> — and <b>cytokinesis</b> pinches the cytoplasm into two cells. At fixed points in the cycle sit <b>checkpoints</b> that halt everything if DNA is damaged or chromosomes are misaligned, and cells beyond repair are told to self-destruct by <b>apoptosis</b>. Which is why cancer is at heart a checkpoint failure — damaged cells that should have stopped keep dividing.</div>
+<h3>Reference tables</h3>
+<h4>Every organelle</h4><table><tr><th>Organelle</th><th>Function</th><th>Failure consequence</th></tr><tr><td>Nucleus</td><td>Stores DNA; site of transcription</td><td>No protein blueprint</td></tr><tr><td>Nucleolus</td><td>Assembles ribosomal subunits</td><td>No ribosomes made</td></tr><tr><td>Ribosome</td><td>Translation — builds protein from mRNA</td><td>Protein synthesis stops</td></tr><tr><td>Rough ER</td><td>Ribosome-studded; processes/folds protein</td><td>Misfolded secreted proteins</td></tr><tr><td>Smooth ER</td><td>Lipid and steroid synthesis; detoxification</td><td>Poor lipid handling</td></tr><tr><td>Golgi apparatus</td><td>Modifies, sorts and packages protein</td><td>Nothing shipped correctly</td></tr><tr><td>Mitochondrion</td><td>Aerobic ATP production</td><td>Energy failure; cell death</td></tr><tr><td>Lysosome</td><td>Digests waste and worn organelles</td><td>Waste accumulation</td></tr><tr><td>Peroxisome</td><td>Breaks down fatty acids; neutralizes free radicals</td><td>Oxidative damage</td></tr><tr><td>Cytoskeleton</td><td>Shape, support, intracellular transport</td><td>Loss of shape and trafficking</td></tr><tr><td>Cell membrane</td><td>Selectively permeable boundary</td><td>Loss of internal control</td></tr></table>
+<h4>Every transport mechanism</h4><table><tr><th>Type</th><th>ATP?</th><th>Direction</th><th>Example</th></tr><tr><td>Simple diffusion</td><td>No</td><td>Down gradient</td><td>O₂, CO₂</td></tr><tr><td>Facilitated diffusion</td><td>No</td><td>Down gradient (via protein)</td><td>Glucose via GLUT</td></tr><tr><td>Osmosis</td><td>No</td><td>Water toward high solute</td><td>Water across any membrane</td></tr><tr><td>Primary active transport</td><td>Yes</td><td>Against gradient</td><td>Na⁺/K⁺ pump (3 out, 2 in)</td></tr><tr><td>Endocytosis</td><td>Yes</td><td>Bulk in</td><td>Phagocytosis</td></tr><tr><td>Exocytosis</td><td>Yes</td><td>Bulk out</td><td>Neurotransmitter release</td></tr></table>
+<h4>The three RNAs</h4><table><tr><th>RNA</th><th>Role</th></tr><tr><td>mRNA</td><td>Carries the code from DNA to the ribosome</td></tr><tr><td>tRNA</td><td>Delivers amino acids to the ribosome</td></tr><tr><td>rRNA</td><td>Forms the ribosome and catalyzes peptide bonds</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Osmosis moves solute."</b> Osmosis moves <b>water</b>. Diffusion moves solute.</li><li><b>"Facilitated diffusion uses ATP."</b> It uses a protein but no ATP. Only active transport costs energy.</li><li><b>"Water moves toward low solute."</b> Backwards. Water follows solute, moving toward the more concentrated side.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 2 — p.11 · Module 2 live-class deck, slide 11 · Module 2 live-class deck, slide 12 · Module 2 live-class deck, slide 13 · Module 2 live-class deck, slide 14 · Module 2 live-class deck, slide 15 · Module 2 live-class deck, slide 16 · Module 2 live-class deck, slide 17 · Module 2 live-class deck, slide 18 · Module 2 live-class deck, slide 19</p>
+<h3>Practice questions <span class="small">(53)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> The defining functional property of the plasma membrane is that it is:</summary><ol class="opts" type="A"><li>Freely permeable</li><li>Completely impermeable</li><li>Permeable only to water</li><li>Permeable only to lipids</li><li class="key">Selectively permeable</li></ol><div class="ans show"><b>Answer: E.</b> Selective permeability lets the cell admit what it needs and exclude what it doesn't — the basis of cellular homeostasis.<span class="ref">Module 2 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q2.</b> Which membrane protein anchors the cytoskeleton to the inner membrane surface?</summary><ol class="opts" type="A"><li class="key">Anchoring protein</li><li>Transport protein</li><li>Membrane enzyme protein</li><li>Antigen marker protein</li><li>Receptor protein</li></ol><div class="ans show"><b>Answer: A.</b> Anchoring proteins physically tether the cytoskeleton, maintaining cell shape and mechanical strength.<span class="ref">Module 2 live-class deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q3.</b> A membrane protein that identifies the cell as belonging to 'self' is a:</summary><ol class="opts" type="A"><li>Transport carrier protein</li><li class="key">Antigen (identifier) protein</li><li>Membrane-bound enzyme protein</li><li>Cytoskeletal anchoring protein</li><li>Ion channel (pore) protein</li></ol><div class="ans show"><b>Answer: B.</b> Antigen proteins are the molecular ID badge the immune system reads to distinguish self from non-self.<span class="ref">Module 2 live-class deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q4.</b> Which membrane protein type catalyzes chemical reactions at the membrane surface?</summary><ol class="opts" type="A"><li>Anchoring</li><li>Antigen</li><li class="key">Enzyme</li><li>Cell adhesion</li><li>Channel</li></ol><div class="ans show"><b>Answer: C.</b> Membrane-bound enzymes speed reactions occurring at or near the membrane.<span class="ref">Module 2 live-class deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q5.</b> If a cell membrane lost selective permeability, the most immediate consequence would be:</summary><ol class="opts" type="A"><li>Increased ATP production by the mitochondria</li><li>Faster protein synthesis at the ribosomes</li><li>More efficient DNA repair inside the nucleus</li><li class="key">Loss of control over intracellular composition</li><li>Faster mitosis and more frequent cell division</li></ol><div class="ans show"><b>Answer: D.</b> Without selectivity, ions and solutes equilibrate freely with the exterior and the internal environment collapses.<span class="ref">Module 2 live-class deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q6.</b> Cell adhesion molecules primarily function to:</summary><ol class="opts" type="A"><li>Move ions across the membrane against gradients</li><li>Digest worn-out organelles and cellular debris</li><li>Synthesize lipids and steroid hormones</li><li>Store genetic material inside the nucleus</li><li class="key">Bind cells to neighboring cells and matrix</li></ol><div class="ans show"><b>Answer: E.</b> Adhesion molecules hold tissues together and support communication between adjacent cells.<span class="ref">Module 2 live-class deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q7.</b> Simple diffusion is best characterized as movement of solute:</summary><ol class="opts" type="A"><li class="key">Down its gradient, no ATP required</li><li>Against its gradient, ATP required</li><li>Down its gradient, ATP required</li><li>Against its gradient, no ATP required</li><li>Only through protein channels</li></ol><div class="ans show"><b>Answer: A.</b> Diffusion is passive: solute moves from high to low concentration and no energy is consumed.<span class="ref">Module 2 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q8.</b> Facilitated diffusion differs from simple diffusion in that it:</summary><ol class="opts" type="A"><li>Requires ATP hydrolysis to drive the solute uphill</li><li class="key">Uses a transport protein but still requires no ATP</li><li>Moves solute against its concentration gradient</li><li>Moves only water molecules and never any solutes</li><li>Occurs only in excitable nerve and muscle cells</li></ol><div class="ans show"><b>Answer: B.</b> Facilitated diffusion uses a carrier or channel for molecules that cannot cross the lipid bilayer, but it is still passive.<span class="ref">Module 2 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q9.</b> Osmosis specifically describes the movement of:</summary><ol class="opts" type="A"><li>Ions</li><li>Glucose</li><li class="key">Water</li><li>Proteins</li><li>Lipids</li></ol><div class="ans show"><b>Answer: C.</b> Osmosis is the diffusion of WATER across a selectively permeable membrane.<span class="ref">Module 2 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q10.</b> In osmosis, water moves toward the compartment with:</summary><ol class="opts" type="A"><li>Lower solute concentration</li><li>Equal solute concentration</li><li>Lower temperature and viscosity</li><li class="key">Higher solute concentration</li><li>Higher pH and thicker membrane</li></ol><div class="ans show"><b>Answer: D.</b> Water follows solute. It moves from dilute to concentrated until osmotic equilibrium is reached.<span class="ref">Module 2 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q11.</b> Does osmosis require ATP?</summary><ol class="opts" type="A"><li>Yes, always</li><li>Only in animal cells</li><li>Only across the nuclear membrane</li><li>Only when solute is glucose</li><li class="key">No, it is passive</li></ol><div class="ans show"><b>Answer: E.</b> Osmosis is driven by the osmotic gradient, not by cellular energy.<span class="ref">Module 2 live-class deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q12.</b> Which is an example of ACTIVE transport?</summary><ol class="opts" type="A"><li class="key">The sodium-potassium pump</li><li>Oxygen entering a capillary</li><li>Water crossing a membrane</li><li>Carbon dioxide leaving a cell</li><li>Glucose moving down its gradient via GLUT</li></ol><div class="ans show"><b>Answer: A.</b> The Na+/K+ pump moves both ions against their gradients and consumes ATP.<span class="ref">Module 2 live-class deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q13.</b> A red blood cell placed in a hypotonic solution will:</summary><ol class="opts" type="A"><li>Shrink and crenate</li><li class="key">Swell and possibly lyse</li><li>Remain unchanged in volume</li><li>Actively pump out water</li><li>Increase its ATP output</li></ol><div class="ans show"><b>Answer: B.</b> Hypotonic means the outside is more dilute, so water moves INTO the cell, swelling it.<span class="ref">Module 2 live-class deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q14.</b> A cell placed in a hypertonic solution will:</summary><ol class="opts" type="A"><li>Swell with water</li><li>Burst open (lyse)</li><li class="key">Shrink (crenate)</li><li>Stay the same size</li><li>Divide by mitosis</li></ol><div class="ans show"><b>Answer: C.</b> Hypertonic means the outside is more concentrated, so water leaves the cell and it shrivels.<span class="ref">Module 2 live-class deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q15.</b> Endocytosis and exocytosis are classified as:</summary><ol class="opts" type="A"><li>Simple diffusion (passive)</li><li>Carrier-mediated diffusion</li><li>Osmosis of water across a membrane</li><li class="key">Vesicular (active) transport</li><li>Passive hydrostatic filtration</li></ol><div class="ans show"><b>Answer: D.</b> Both move bulk material in membrane-bound vesicles and require ATP.<span class="ref">Module 2 live-class deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q16.</b> The sodium-potassium pump moves:</summary><ol class="opts" type="A"><li>3 Na+ in and 2 K+ out</li><li>2 Na+ out and 3 K+ in</li><li>Equal amounts of both</li><li>Sodium only, no potassium</li><li class="key">3 Na+ out and 2 K+ in</li></ol><div class="ans show"><b>Answer: E.</b> Three sodium out, two potassium in, per ATP — a net export of positive charge that helps set the resting potential.<span class="ref">Module 2 live-class deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q17.</b> Which substance crosses the lipid bilayer most readily by simple diffusion?</summary><ol class="opts" type="A"><li class="key">Oxygen</li><li>Sodium ion</li><li>Glucose</li><li>Protein</li><li>Potassium ion</li></ol><div class="ans show"><b>Answer: A.</b> Small nonpolar gases pass freely. Charged ions and large polar molecules need transport proteins.<span class="ref">Module 2 live-class deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q18.</b> Which organelle is the primary site of ATP production?</summary><ol class="opts" type="A"><li>Nucleus</li><li class="key">Mitochondrion</li><li>Golgi apparatus</li><li>Lysosome</li><li>Smooth ER</li></ol><div class="ans show"><b>Answer: B.</b> The mitochondrion runs the Krebs cycle and electron transport chain, generating the bulk of cellular ATP.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q19.</b> The organelle containing hydrolytic enzymes that digest worn-out organelles is the:</summary><ol class="opts" type="A"><li>Ribosome</li><li>Golgi apparatus</li><li class="key">Lysosome</li><li>Nucleolus</li><li>Peroxisome</li></ol><div class="ans show"><b>Answer: C.</b> Lysosomes are the cell's recycling and disposal compartment.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q20.</b> Rough endoplasmic reticulum is distinguished by the presence of:</summary><ol class="opts" type="A"><li>Stored lipid droplets</li><li>Digestive hydrolytic enzymes</li><li>Green chlorophyll pigment</li><li class="key">Ribosomes on its surface</li><li>Motile cilia and flagella</li></ol><div class="ans show"><b>Answer: D.</b> The ribosomes studding rough ER give it its texture and its role in protein processing.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q21.</b> Smooth endoplasmic reticulum is primarily responsible for:</summary><ol class="opts" type="A"><li>Protein synthesis on attached ribosomes</li><li>DNA replication and repair</li><li>ATP production by oxidation</li><li>Waste digestion and recycling</li><li class="key">Lipid synthesis and detoxification</li></ol><div class="ans show"><b>Answer: E.</b> Smooth ER lacks ribosomes and instead makes lipids and steroids, and detoxifies drugs.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q22.</b> Which organelle modifies, sorts and packages proteins for shipment?</summary><ol class="opts" type="A"><li class="key">Golgi apparatus</li><li>Cell nucleus</li><li>Lysosomal vesicle</li><li>Mitochondrion</li><li>Free ribosome</li></ol><div class="ans show"><b>Answer: A.</b> The Golgi is the finishing and dispatch department of the cell.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q23.</b> The main function of the nucleus is to:</summary><ol class="opts" type="A"><li>Produce ATP by aerobic respiration</li><li class="key">Store and transmit genetic information</li><li>Digest waste with hydrolytic enzymes</li><li>Synthesize lipids and steroid hormones</li><li>Package and ship proteins in vesicles</li></ol><div class="ans show"><b>Answer: B.</b> The nucleus houses DNA and is the site of transcription.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q24.</b> A cell that secretes large amounts of protein hormone would be expected to have abundant:</summary><ol class="opts" type="A"><li>Smooth ER and lysosomes</li><li>Lysosomes and vacuoles</li><li class="key">Rough ER and Golgi</li><li>Peroxisomes only</li><li>Microvilli and cilia</li></ol><div class="ans show"><b>Answer: C.</b> Protein secretion requires ribosome-studded rough ER for synthesis and Golgi for packaging.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q25.</b> A muscle cell that fatigues rapidly is most likely deficient in:</summary><ol class="opts" type="A"><li>Lysosomes</li><li>Golgi stacks</li><li>Peroxisomes</li><li class="key">Mitochondria</li><li>Smooth ER sacs</li></ol><div class="ans show"><b>Answer: D.</b> Fewer mitochondria means less aerobic ATP, so the cell tires quickly.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q26.</b> Where does glycolysis occur?</summary><ol class="opts" type="A"><li>Mitochondrial matrix</li><li>Nucleus</li><li>Golgi apparatus</li><li>Lysosome</li><li class="key">Cytoplasm</li></ol><div class="ans show"><b>Answer: E.</b> Glycolysis is cytoplasmic and anaerobic. Only the later aerobic stages occur in the mitochondrion.<span class="ref">Module 2 live-class deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q27.</b> Which sequence correctly orders ATP production?</summary><ol class="opts" type="A"><li class="key">Glycolysis → Krebs cycle → electron transport chain</li><li>Krebs cycle → glycolysis → electron transport chain</li><li>Electron transport chain → glycolysis → Krebs cycle</li><li>Glycolysis → electron transport → Krebs cycle</li><li>Krebs cycle → electron transport → glycolysis</li></ol><div class="ans show"><b>Answer: A.</b> Glucose is split in the cytoplasm, then pyruvate enters the mitochondrion for the Krebs cycle and finally the electron transport chain.<span class="ref">Module 2 live-class deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which stage of cellular respiration yields the MOST ATP?</summary><ol class="opts" type="A"><li>Anaerobic glycolysis</li><li class="key">Electron transport chain</li><li>The Krebs (citric acid) cycle</li><li>Lactic acid fermentation</li><li>Substrate phosphorylation</li></ol><div class="ans show"><b>Answer: B.</b> The electron transport chain produces the large majority of ATP and requires oxygen as the final electron acceptor.<span class="ref">Module 2 live-class deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q29.</b> Transcription occurs in the ____ and produces ____.</summary><ol class="opts" type="A"><li>cytoplasm; protein</li><li>nucleus; protein</li><li class="key">nucleus; mRNA</li><li>ribosome; mRNA</li><li>mitochondrion; ATP</li></ol><div class="ans show"><b>Answer: C.</b> DNA is copied into messenger RNA inside the nucleus.<span class="ref">Module 2 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q30.</b> Translation occurs at the ____ and produces ____.</summary><ol class="opts" type="A"><li>nucleus; new mRNA</li><li>Golgi; packaged lipid</li><li>lysosome; enzyme</li><li class="key">ribosome; protein</li><li>nucleolus; new DNA</li></ol><div class="ans show"><b>Answer: D.</b> The ribosome reads mRNA codons and assembles the corresponding amino acid chain.<span class="ref">Module 2 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q31.</b> Which RNA carries amino acids to the ribosome?</summary><ol class="opts" type="A"><li>mRNA</li><li>rRNA</li><li>siRNA</li><li>DNA</li><li class="key">tRNA</li></ol><div class="ans show"><b>Answer: E.</b> Transfer RNA matches its anticodon to the mRNA codon and delivers the correct amino acid.<span class="ref">Module 2 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q32.</b> Which RNA forms a structural and catalytic part of the ribosome itself?</summary><ol class="opts" type="A"><li class="key">rRNA</li><li>mRNA</li><li>tRNA</li><li>miRNA</li><li>snRNA</li></ol><div class="ans show"><b>Answer: A.</b> Ribosomal RNA builds the ribosome and catalyzes peptide bond formation.<span class="ref">Module 2 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q33.</b> Which RNA carries the genetic message from DNA to the cytoplasm?</summary><ol class="opts" type="A"><li>tRNA</li><li class="key">mRNA</li><li>rRNA</li><li>Ribozyme</li><li>Plasmid</li></ol><div class="ans show"><b>Answer: B.</b> Messenger RNA is the transcript that travels from nucleus to ribosome.<span class="ref">Module 2 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q34.</b> The end product of mitosis is:</summary><ol class="opts" type="A"><li>Four genetically different haploid cells</li><li>A single haploid daughter cell</li><li class="key">Two genetically identical diploid cells</li><li>Four haploid gametes with half the DNA</li><li>Two haploid cells with half the chromosomes</li></ol><div class="ans show"><b>Answer: C.</b> Mitosis produces two identical diploid daughter cells — the basis of growth and repair.<span class="ref">Module 2 live-class deck, slide 21</span></div></details>
+<details class="q"><summary><b>Q35.</b> Why is mitosis essential to an adult organism?</summary><ol class="opts" type="A"><li>It creates genetic diversity through crossing over</li><li>It produces sperm and egg cells for reproduction</li><li>It reduces the chromosome number by half in daughter cells</li><li class="key">It replaces damaged and dying cells with identical copies</li><li>It generates the ATP that cells need for energy</li></ol><div class="ans show"><b>Answer: D.</b> Tissue maintenance depends on faithful replacement of lost cells.<span class="ref">Module 2 live-class deck, slide 21</span></div></details>
+<details class="q"><summary><b>Q36.</b> A drug that blocks tRNA function would most directly impair:</summary><ol class="opts" type="A"><li>DNA replication</li><li>Transcription</li><li>Mitosis</li><li>Lipid synthesis</li><li class="key">Translation</li></ol><div class="ans show"><b>Answer: E.</b> Without tRNA delivering amino acids, the ribosome cannot build the polypeptide.<span class="ref">Module 2 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q37.</b> If a cell's ribosomes were destroyed, which process would halt first?</summary><ol class="opts" type="A"><li class="key">Protein synthesis</li><li>ATP production</li><li>DNA replication</li><li>Osmosis of water</li><li>Lipid droplet storage</li></ol><div class="ans show"><b>Answer: A.</b> Ribosomes are the machinery of translation, so protein synthesis stops immediately.<span class="ref">Module 2 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q38.</b> A mutation that changes a single mRNA codon would most directly alter:</summary><ol class="opts" type="A"><li>The DNA sequence in the original gene</li><li class="key">The amino acid inserted at that position</li><li>The number of mitochondria in the cell</li><li>Membrane permeability to sodium and chloride</li><li>The rate of osmosis across the membrane</li></ol><div class="ans show"><b>Answer: B.</b> Each codon specifies one amino acid, so an altered codon can change the protein's primary structure.<span class="ref">Module 2 live-class deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q39.</b> Which structure gives the plasma membrane its basic framework?</summary><ol class="opts" type="A"><li>Solid protein sheet</li><li>Rigid cellulose wall</li><li class="key">Phospholipid bilayer</li><li>Collagen fiber mesh</li><li>Stored glycogen granules</li></ol><div class="ans show"><b>Answer: C.</b> Amphipathic phospholipids self-assemble into a bilayer, hydrophilic heads out.<span class="ref">Module 2 live-class deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q40.</b> A cell placed in an isotonic solution will:</summary><ol class="opts" type="A"><li>Swell and gain water quickly</li><li>Shrink and crenate</li><li>Lyse almost immediately</li><li class="key">Show no net water movement</li><li>Actively pump water out</li></ol><div class="ans show"><b>Answer: D.</b> Equal solute concentrations mean water moves equally in both directions.<span class="ref">Module 2 live-class deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q41.</b> Which process would STOP if a cell ran out of ATP?</summary><ol class="opts" type="A"><li>Simple diffusion of oxygen</li><li>Osmosis of water into cells</li><li>Facilitated glucose diffusion</li><li>Gas exchange in the lungs</li><li class="key">The sodium-potassium pump</li></ol><div class="ans show"><b>Answer: E.</b> Only active transport requires ATP; passive processes continue.<span class="ref">Module 2 live-class deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q42.</b> Cilia and flagella are built from:</summary><ol class="opts" type="A"><li class="key">Microtubules</li><li>Microfilaments</li><li>Intermediate filaments</li><li>Ribosomes</li><li>Lysosomes</li></ol><div class="ans show"><b>Answer: A.</b> Microtubules in a 9+2 arrangement generate their beating motion.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q43.</b> The main role of the cytoskeleton is to:</summary><ol class="opts" type="A"><li>Produce ATP for the cell by oxidative phosphorylation</li><li class="key">Maintain cell shape and enable intracellular movement</li><li>Store genetic material and direct transcription</li><li>Digest cellular waste and destroy invading bacteria</li><li>Synthesize lipids and detoxify circulating drugs</li></ol><div class="ans show"><b>Answer: B.</b> It provides structural support and tracks for transport.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q44.</b> Peroxisomes primarily function to:</summary><ol class="opts" type="A"><li>Synthesize proteins from messenger RNA templates</li><li>Produce ATP by mitochondrial oxidative phosphorylation</li><li class="key">Break down fatty acids and neutralize free radicals</li><li>Package and sort proteins into transport vesicles</li><li>Store calcium ions needed for muscle contraction</li></ol><div class="ans show"><b>Answer: C.</b> They detoxify harmful substances including hydrogen peroxide.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q45.</b> Which sequence describes the secretory pathway correctly?</summary><ol class="opts" type="A"><li>Golgi, rough ER, vesicle, plasma membrane</li><li>Lysosome, Golgi, rough ER, plasma membrane</li><li>Nucleus, lysosome, Golgi, vesicle</li><li class="key">Rough ER, Golgi, vesicle, plasma membrane</li><li>Smooth ER, lysosome, nucleus, vesicle</li></ol><div class="ans show"><b>Answer: D.</b> Proteins are made at rough ER, modified in the Golgi, then shipped in vesicles.<span class="ref">Module 2 live-class deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q46.</b> The nucleolus is the site of:</summary><ol class="opts" type="A"><li>DNA replication and repair</li><li>Aerobic ATP synthesis</li><li>Lipid and steroid production</li><li>Protein sorting and packaging</li><li class="key">Ribosome subunit assembly</li></ol><div class="ans show"><b>Answer: E.</b> The nucleolus manufactures rRNA and assembles ribosomal subunits.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q47.</b> Which describes a hypertonic solution relative to the cell?</summary><ol class="opts" type="A"><li class="key">Higher solute outside, so water leaves the cell</li><li>Lower solute outside, so water enters the cell</li><li>Equal solute inside and out, so no net water shift</li><li>No solute present, so water cannot move</li><li>Water cannot cross the membrane at all</li></ol><div class="ans show"><b>Answer: A.</b> Water follows solute, so it exits toward the more concentrated exterior.<span class="ref">Module 2 live-class deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q48.</b> Codons are read during translation from:</summary><ol class="opts" type="A"><li>DNA directly</li><li class="key">mRNA</li><li>tRNA</li><li>rRNA only</li><li>Protein</li></ol><div class="ans show"><b>Answer: B.</b> The ribosome reads mRNA codons, each specifying one amino acid.<span class="ref">Module 2 live-class deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q49.</b> Which stage of mitosis features chromosomes aligned at the cell equator?</summary><ol class="opts" type="A"><li>Prophase</li><li>Anaphase</li><li class="key">Metaphase</li><li>Telophase</li><li>Interphase</li></ol><div class="ans show"><b>Answer: C.</b> Metaphase is defined by alignment on the metaphase plate.<span class="ref">Module 2 live-class deck, slide 21</span></div></details>
+<details class="q"><summary><b>Q50.</b> A cell specialized for lipid and steroid synthesis would be rich in:</summary><ol class="opts" type="A"><li>Rough ER</li><li>Lysosomes</li><li>Ribosomes only</li><li class="key">Smooth ER</li><li>Nucleoli</li></ol><div class="ans show"><b>Answer: D.</b> Smooth ER lacks ribosomes and handles lipid and steroid production.<span class="ref">Module 2 live-class deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q51.</b> Facilitated diffusion requires:</summary><ol class="opts" type="A"><li>ATP hydrolysis by a pump</li><li>A concentration gradient against the flow</li><li>Vesicles that engulf the solute</li><li>Active pumping against the gradient</li><li class="key">A transport protein but no ATP</li></ol><div class="ans show"><b>Answer: E.</b> It is passive but needs a carrier or channel for molecules that cannot cross the bilayer.<span class="ref">Module 2 live-class deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q52.</b> Which best explains why the sodium-potassium pump is electrogenic?</summary><ol class="opts" type="A"><li class="key">It exports 3 Na+ for every 2 K+ imported, leaving the interior more negative</li><li>It exchanges equal numbers of sodium and potassium ions in each direction</li><li>It transports only potassium ions inward and leaves sodium completely untouched</li><li>It works without using any ATP, so it adds no net charge to the membrane</li><li>It pumps water molecules rather than charged ions across the cell membrane</li></ol><div class="ans show"><b>Answer: A.</b> The unequal exchange contributes to the negative resting membrane potential.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+<details class="q"><summary><b>Q53.</b> Apoptosis is best described as:</summary><ol class="opts" type="A"><li>Accidental cell death from injury</li><li class="key">Programd, controlled cell death</li><li>Uncontrolled cell division and growth</li><li>Failure of protein synthesis</li><li>Loss of membrane potential</li></ol><div class="ans show"><b>Answer: B.</b> Apoptosis is an orderly, regulated dismantling of the cell.<span class="ref">Lecture Outline, Module 2 — p.11</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

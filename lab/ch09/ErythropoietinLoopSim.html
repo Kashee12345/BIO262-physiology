@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Erythropoietin Loop: Break a Link, Run the Clock</title>
+<meta name="description" content="Damage the kidney, the marrow or the oxygen supply and run the erythropoietin negative-feedback loop forward over ninety days, then read hemoglobin and erythropoietin together to name the lesion.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:22px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.pill{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:4px;}
+.pill.normal{background:#fff;color:var(--green);border:1px solid var(--green);}
+.pill.high{background:var(--coral);color:#fff;}
+.pill.low{background:var(--blue);color:#fff;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.row{display:flex;gap:9px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.06);}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.6;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.loop{margin-top:4px;}
+.loop text{font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch09.html">&larr; Module 9</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 9</div>
+  <h1>The Erythropoietin Loop</h1>
+  <div class="intro">The controlled variable is not red cell count and not hematocrit &mdash; it is <b>oxygen delivery to the renal cortex</b>. Break one link below (the oxygen supply, the kidney that senses it, or the marrow that answers) and run the clock forward ninety days. Then do the thing that localizes every one of these disorders: <b>read hemoglobin and erythropoietin together</b>.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Pick a disturbance</div>
+      <div class="chips" id="chips"></div>
+
+      <div class="sl"><label for="sO">Arterial PaO&#8322; <span class="v" id="vO">100 mmHg</span></label>
+        <input type="range" id="sO" min="35" max="110" value="100" step="1" aria-label="Arterial oxygen partial pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sK">Kidney &mdash; erythropoietin-making capacity <span class="v" id="vK">100%</span></label>
+        <input type="range" id="sK" min="0" max="150" value="100" step="1" aria-label="Renal erythropoietin producing capacity, percent of normal"></div>
+      <div class="sl"><label for="sM">Marrow &mdash; iron, B&#8321;&#8322; and folate supply <span class="v" id="vM">100%</span></label>
+        <input type="range" id="sM" min="5" max="100" value="100" step="1" aria-label="Marrow raw material availability, percent of normal"></div>
+      <div class="sl"><label for="sE">Erythropoietin the loop cannot switch off <span class="v" id="vE">0&times;</span></label>
+        <input type="range" id="sE" min="0" max="200" value="0" step="1" aria-label="Erythropoietin from an injection or a tumor, as a multiple of baseline, independent of feedback"></div>
+      <div class="sl"><label for="sA">Marrow output the loop cannot switch off <span class="v" id="vA">0%</span></label>
+        <input type="range" id="sA" min="0" max="200" value="0" step="1" aria-label="Autonomous erythropoietin-independent red cell production, percent of normal daily output"></div>
+
+      <div class="row">
+        <button type="button" class="btn solid" id="bRun">&#9654; Run 90 days</button>
+        <button type="button" class="btn" id="bStep">Step 10 days</button>
+        <button type="button" class="btn" id="bReset">Reset</button>
+      </div>
+      <div class="hint" id="sHint"></div>
+    </div>
+    <div class="card">
+      <h2>The loop, drawn</h2>
+      <svg class="loop" viewBox="0 0 520 208" role="img" aria-label="Diagram of the erythropoietin negative feedback loop: renal cortical oxygen delivery is sensed by prolyl hydroxylase and HIF-2 alpha, erythropoietin acts on marrow, red cell mass raises oxygen delivery">
+        <g id="lp"></g>
+      </svg>
+      <div class="hint">The sensor and the integrator are the <b>same cell</b>. Peritubular fibroblasts make HIF-2&alpha; continuously; oxygen-requiring prolyl hydroxylases destroy it within minutes when oxygen is plentiful. Oxygen availability is read directly as the rate of an enzyme reaction.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2 id="dayHead">Day 0</h2>
+      <canvas id="cv" width="640" height="300" aria-label="Time course of hemoglobin, erythropoietin and reticulocyte count over ninety days"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--coral)"></i>Hemoglobin g/dL</span>
+        <span><i style="background:var(--purple)"></i>Erythropoietin (&times; baseline)</span>
+        <span><i style="background:var(--green)"></i>Reticulocytes %</span>
+        <span><i style="background:var(--blue)"></i>Renal O&#8322; delivery</span>
+      </div>
+      <div class="hint" style="margin-top:7px">The numbered axis is hemoglobin in g/dL. The other three traces share the plot on their own scales &mdash; erythropoietin on a log scale from baseline, reticulocytes 0 to 24 percent, oxygen delivery 0 to 1,600 mL/min &mdash; so you can watch the <b>order and the lag</b> of the responses rather than compare their heights.</div>
+      <div class="labs">
+        <div class="lab"><div class="k">Hemoglobin</div><div class="v" id="oHb">15.0</div><div class="u">g/dL</div><span class="pill normal" id="pHb">normal</span></div>
+        <div class="lab"><div class="k">Hematocrit</div><div class="v" id="oHct">45</div><div class="u">percent</div></div>
+        <div class="lab"><div class="k">SaO&#8322;</div><div class="v" id="oSat">98</div><div class="u">percent</div></div>
+        <div class="lab"><div class="k">CaO&#8322;</div><div class="v" id="oCa">20.0</div><div class="u">mL/dL</div></div>
+        <div class="lab"><div class="k">O&#8322; delivery</div><div class="v" id="oDo">1000</div><div class="u">mL/min</div></div>
+        <div class="lab"><div class="k">Erythropoietin</div><div class="v" id="oEpo">1.0</div><div class="u">&times; baseline</div><span class="pill normal" id="pEpo">normal</span></div>
+        <div class="lab"><div class="k">Reticulocytes</div><div class="v" id="oRet">1.0</div><div class="u">percent</div></div>
+        <div class="lab"><div class="k">MCV</div><div class="v" id="oMcv">90</div><div class="u">fL</div></div>
+        <div class="lab"><div class="k">Cardiac output</div><div class="v" id="oCo">5.0</div><div class="u">L/min</div></div>
+      </div>
+      <div class="verdict" id="verd"></div>
+      <div class="eq" id="calc"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#333').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), PURPLE = C('purple'), GOLD = C('gold'), LINE = C('line'), MUTED = C('muted');
+
+  var DO2REF = 1002, HB0 = 15, LIFE = 120, LAGDAYS = 4, DT = 0.25, TMAX = 90;
+
+  function sat(p){ var q = p * p * p; return q / (q + 17576); }
+  function cao2(hb, p){ return 1.34 * hb * sat(p) + 0.003 * p; }
+  function co(ca){ var v = 5 * Math.sqrt(20.05 / Math.max(2, ca)); return Math.max(3, Math.min(10, v)); }
+  function epoMult(dO2, kid, exo){
+    var e = kid * Math.exp(8 * (1 - dO2 / DO2REF)) + exo;
+    return Math.max(0, Math.min(400, e));
+  }
+  function prodMult(e){ return e <= 1 ? e : 1 + 5 * (e - 1) / (e - 1 + 4); }
+
+  var SCEN = [
+    {n:'Healthy, sea level', o:100, k:100, m:100, e:0, a:0, hb:15, mcv:90,
+     h:'Steady state. Production of about 0.125 g/dL of hemoglobin a day exactly replaces the 1/120 of the red cell mass that dies each day.'},
+    {n:'Altitude 3,000 m', o:60, k:100, m:100, e:0, a:0, hb:15, mcv:90,
+     h:'Cortical oxygen falls, prolyl hydroxylase slows, HIF-2&alpha; survives and switches on the erythropoietin gene. Watch the lag: reticulocytes move in 3 to 5 days, hemoglobin over weeks. That lag is why the first week at altitude feels awful and the third does not.'},
+    {n:'Altitude 4,500 m', o:45, k:100, m:100, e:0, a:0, hb:15, mcv:90,
+     h:'Deeper hypoxia, a bigger answer. The loop keeps raising red cell mass until oxygen delivery to the cortex is back at baseline &mdash; and it will do that even though saturation never recovers.'},
+    {n:'Chronic lung disease / OSA', o:55, k:100, m:100, e:0, a:0, hb:15, mcv:90,
+     h:'A secondary polycythemia, and an entirely appropriate one: erythropoietin is high because the hypoxia is real. Compare the erythropoietin level here with the polycythemia vera chip &mdash; same high hematocrit, opposite signal.'},
+    {n:'Acute hemorrhage, 1 L', o:100, k:100, m:100, e:0, a:0, hb:12, mcv:90,
+     h:'A liter out of five is a fifth of the red cell mass. Note that the hematocrit only reads low once interstitial fluid has shifted in over the first hours &mdash; this simulation starts after that equilibration.'},
+    {n:'Chronic kidney disease', o:100, k:20, m:100, e:0, a:0, hb:15, mcv:90,
+     h:'The disease destroys the very cells that sense oxygen. The marrow is intact and iron stores are adequate; the missing item is the signal.'},
+    {n:'CKD on recombinant EPO', o:100, k:20, m:100, e:50, a:0, hb:15, mcv:90,
+     h:'Replacing the missing signal. Push the exogenous dose higher and watch hemoglobin overshoot &mdash; more viscosity, more thrombotic risk, which is exactly why targets are modest.'},
+    {n:'Iron deficiency', o:100, k:100, m:18, e:0, a:0, hb:15, mcv:72,
+     h:'The signal is loud and the marrow is willing, but about 70 percent of body iron sits in hemoglobin and there is none to spare. Microcytic: the cell keeps dividing without filling.'},
+    {n:'B&#8321;&#8322; or folate deficiency', o:100, k:100, m:30, e:0, a:0, hb:15, mcv:112,
+     h:'A DNA-synthesis problem. The cell cannot divide on schedule but keeps making cytoplasm, so it comes out large &mdash; megaloblastic, MCV above 100.'},
+    {n:'Polycythemia vera', o:100, k:100, m:100, e:0, a:120, hb:15, mcv:90,
+     h:'A marrow mutation making red cells independent of erythropoietin. The loop responds correctly by shutting the signal off &mdash; which is why the erythropoietin level ends up LOW beside a very high hemoglobin.'},
+    {n:'EPO-secreting renal tumor', o:100, k:100, m:100, e:90, a:0, hb:15, mcv:90,
+     h:'The mirror image of chronic kidney disease: a secondary polycythemia with a completely normal PaO&#8322;, driven by a signal the loop cannot switch off.'}
+  ];
+
+  var sO = document.getElementById('sO'), sK = document.getElementById('sK'),
+      sM = document.getElementById('sM'), sE = document.getElementById('sE'), sA = document.getElementById('sA');
+  var chips = document.getElementById('chips'), cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  var st = null, timer = null, mcv = 90, note = SCEN[0].h;
+
+  function fmt(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  function fresh(hb0){
+    var n = Math.round(LAGDAYS / DT);
+    var buf = []; for(var i = 0; i < n; i++) buf.push(1);
+    return { t: 0, hb: hb0, buf: buf, hist: [] };
+  }
+
+  function sample(){
+    var p = parseFloat(sO.value), kid = parseFloat(sK.value) / 100,
+        mar = parseFloat(sM.value) / 100, exo = parseFloat(sE.value) / 100,
+        auto = parseFloat(sA.value) / 100;
+    var ca = cao2(st.hb, p), Q = co(ca), dO2 = ca * Q * 10;
+    var E = epoMult(dO2, kid, exo), pm = prodMult(E);
+    return { p: p, kid: kid, mar: mar, exo: exo, auto: auto, ca: ca, Q: Q, dO2: dO2, E: E, pm: pm };
+  }
+
+  function stepOnce(){
+    var s = sample();
+    st.buf.push(s.pm * s.mar);
+    var delayed = st.buf.shift();
+    var prod = (HB0 / LIFE) * delayed + (HB0 / LIFE) * s.auto;
+    var dest = st.hb / LIFE;
+    st.hb = Math.max(2, Math.min(26, st.hb + (prod - dest) * DT));
+    st.t += DT;
+    if(st.hist.length === 0 || st.t - st.hist[st.hist.length - 1].t >= 0.5){
+      st.hist.push({ t: st.t, hb: st.hb, E: s.E, ret: 1.0 * s.pm * s.mar, dO2: s.dO2 });
+    }
+  }
+
+  function drawLoop(){
+    var g = document.getElementById('lp');
+    var boxes = [
+      { x: 8,   y: 8,   w: 150, h: 44, t: 'Renal cortical', s: 'oxygen delivery', c: BLUE },
+      { x: 186, y: 8,   w: 150, h: 44, t: 'Prolyl hydroxylase', s: 'HIF-2α survives', c: TEAL },
+      { x: 364, y: 8,   w: 148, h: 44, t: 'Erythropoietin', s: 'from the kidney', c: PURPLE },
+      { x: 364, y: 82,  w: 148, h: 44, t: 'Red bone marrow', s: 'proerythroblasts', c: GOLD },
+      { x: 186, y: 82,  w: 150, h: 44, t: 'Reticulocytes', s: '3 to 5 days later', c: GREEN },
+      { x: 8,   y: 82,  w: 150, h: 44, t: 'Red cell mass', s: 'over 1 to 3 weeks', c: CORAL }
+    ];
+    var h = '';
+    boxes.forEach(function(b){
+      h += '<rect x="' + b.x + '" y="' + b.y + '" width="' + b.w + '" height="' + b.h + '" rx="10" fill="#fff" stroke="' + b.c + '" stroke-width="2"></rect>';
+      h += '<text x="' + (b.x + b.w / 2) + '" y="' + (b.y + 19) + '" text-anchor="middle" font-size="11.5" font-weight="800" fill="' + b.c + '">' + b.t + '</text>';
+      h += '<text x="' + (b.x + b.w / 2) + '" y="' + (b.y + 34) + '" text-anchor="middle" font-size="10" fill="' + MUTED + '">' + b.s + '</text>';
+    });
+    function ar(x1, y1, x2, y2){
+      return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="' + LINE + '" stroke-width="2.5" marker-end="url(#ah)"></line>';
+    }
+    h = '<defs>' +
+        '<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="' + LINE + '"></path></marker>' +
+        '<marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="' + CORAL + '"></path></marker>' +
+        '</defs>' + h;
+    h += ar(158, 30, 184, 30) + ar(336, 30, 362, 30);
+    h += '<line x1="438" y1="52" x2="438" y2="78" stroke="' + LINE + '" stroke-width="2.5" marker-end="url(#ah)"></line>';
+    h += ar(362, 104, 338, 104) + ar(184, 104, 160, 104);
+    h += '<path d="M83 126 L83 152 L266 152 L266 172" fill="none" stroke="' + CORAL + '" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#ac)"></path>';
+    h += '<text x="260" y="192" text-anchor="middle" font-size="10.6" font-weight="800" fill="' + CORAL + '">more oxygen reaches the cortex, so the signal switches itself off</text>';
+    h += '<text x="260" y="205" text-anchor="middle" font-size="9.8" fill="' + MUTED + '">negative feedback: the response opposes the disturbance</text>';
+    g.innerHTML = h;
+  }
+
+  function plot(){
+    var w = cv.clientWidth || 640, hh = 300, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = hh * dpr; cv.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, hh);
+    var L = 40, R = 12, T = 12, B = 28, pw = w - L - R, ph = hh - T - B;
+    function X(t){ return L + t / TMAX * pw; }
+    function Y(v){ return T + ph - Math.max(0, Math.min(1, v)) * ph; }
+
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.42)'; ctx.textAlign = 'right';
+    for(var i = 0; i <= 4; i++){
+      var y = T + ph - i / 4 * ph;
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+      ctx.fillText(String(i * 6), L - 6, y + 3);
+    }
+    ctx.textAlign = 'center';
+    for(var d = 0; d <= 90; d += 15){ ctx.fillText(d + 'd', X(d), hh - 9); }
+    ctx.textAlign = 'left';
+
+    ctx.fillStyle = 'rgba(31,91,115,.06)';
+    ctx.fillRect(L, Y(17.5 / 24), pw, Y(13.5 / 24) - Y(17.5 / 24));
+
+    if(st.hist.length > 1){
+      function line(key, col, scale, wd){
+        ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd || 2.4;
+        st.hist.forEach(function(p, i){
+          var y = Y(scale(p));
+          if(i === 0) ctx.moveTo(X(p.t), y); else ctx.lineTo(X(p.t), y);
+        });
+        ctx.stroke();
+      }
+      line('dO2', BLUE, function(p){ return p.dO2 / 1600; }, 1.6);
+      line('ret', GREEN, function(p){ return p.ret / 24; }, 1.9);
+      line('E', PURPLE, function(p){ return Math.log(1 + p.E) / Math.log(1 + 24); }, 2.2);
+      line('hb', CORAL, function(p){ return p.hb / 24; }, 3);
+    }
+    ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.font = '700 10px Inter, system-ui, sans-serif';
+    ctx.fillText('shaded band = normal male hemoglobin 13.5 to 17.5 g/dL', L + 6, T + 12);
+  }
+
+  function pill(el, v, lo, hi){
+    el.className = 'pill ' + (v < lo ? 'low' : (v > hi ? 'high' : 'normal'));
+    el.textContent = v < lo ? 'low' : (v > hi ? 'high' : 'normal');
+  }
+
+  function render(){
+    var s = sample();
+    document.getElementById('dayHead').textContent = 'Day ' + Math.round(st.t);
+    document.getElementById('oHb').textContent = fmt(st.hb);
+    document.getElementById('oHct').textContent = Math.round(st.hb * 3);
+    document.getElementById('oSat').textContent = fmt(sat(s.p) * 100);
+    document.getElementById('oCa').textContent = fmt(s.ca);
+    document.getElementById('oDo').textContent = Math.round(s.dO2);
+    document.getElementById('oEpo').textContent = s.E >= 10 ? fmt(s.E, 0) : fmt(s.E, 2);
+    document.getElementById('oRet').textContent = fmt(1.0 * s.pm * s.mar);
+    document.getElementById('oMcv').textContent = mcv;
+    document.getElementById('oCo').textContent = fmt(s.Q);
+    pill(document.getElementById('pHb'), st.hb, 13.5, 17.5);
+    pill(document.getElementById('pEpo'), s.E, 0.8, 1.3);
+
+    document.getElementById('calc').innerHTML =
+      'CaO<sub>2</sub> = (1.34 &times; <b class="num">' + fmt(st.hb) + '</b> &times; <b class="num">' + fmt(sat(s.p), 3) + '</b>) + (0.003 &times; ' + Math.round(s.p) + ') = <b class="num">' + fmt(s.ca) + ' mL/dL</b>. ' +
+      'Dissolved oxygen contributes <b class="num">' + fmt(0.003 * s.p, 2) + '</b> mL/dL, about ' + fmt(0.003 * s.p / s.ca * 100) + ' percent of the total.<br>' +
+      'Delivery = CaO<sub>2</sub> &times; cardiac output = ' + fmt(s.ca) + ' &times; ' + fmt(s.Q * 10) + ' dL/min = <b class="num">' + Math.round(s.dO2) + ' mL/min</b>, against a resting demand of 250 mL/min.';
+
+    var v = document.getElementById('verd'), cls = 'verdict', head, sub;
+    var satNow = sat(s.p);
+    var drift = (HB0 / LIFE) * (s.pm * s.mar) + (HB0 / LIFE) * s.auto - st.hb / LIFE;
+    var settled = Math.abs(drift) < 0.005;
+    var anemic = st.hb < 13.0, poly = st.hb > 17.6, epoHi = s.E > 1.4, epoLo = s.E < 0.8;
+    if(anemic && epoHi && s.mar < 0.6){
+      cls += ' bad'; head = 'Low hemoglobin, HIGH erythropoietin, poor marrow response';
+      sub = 'The loop is working perfectly &mdash; the signal is ' + fmt(s.E) + ' times baseline. What has failed is the effector’s raw material. Reticulocytes sit at ' + fmt(1.0 * s.pm * s.mar) + ' percent, far below what an erythropoietin level this high should produce. Look at the MCV: ' + mcv + ' fL points to ' + (mcv < 80 ? 'a hemoglobin-production problem, iron deficiency above all.' : (mcv > 100 ? 'a DNA-synthesis problem &mdash; B₁₂ or folate.' : 'blood loss, hemolysis or marrow underproduction.'));
+    } else if(anemic && epoHi){
+      cls += ' warn'; head = 'Low hemoglobin, HIGH erythropoietin';
+      sub = 'An appropriate response to a real deficit. Erythropoietin is ' + fmt(s.E) + ' times baseline, reticulocytes are ' + fmt(1.0 * s.pm * s.mar) + ' percent, and cardiac output has risen to ' + fmt(s.Q) + ' L/min to defend delivery. Keep running the clock and hemoglobin should climb back.';
+    } else if(anemic && !epoHi){
+      cls += ' bad'; head = 'Low hemoglobin with erythropoietin that is NOT raised';
+      sub = 'This is the diagnostic pair. At a hemoglobin of ' + fmt(st.hb) + ' g/dL the level should be many times baseline, and it is only ' + fmt(s.E, 2) + '. The sensor itself is gone &mdash; the disease has destroyed the peritubular fibroblasts that read cortical oxygen. Marrow and iron are innocent; replace the missing signal.';
+    } else if(poly && epoLo){
+      cls += ' cool'; head = 'High hemoglobin with LOW erythropoietin';
+      sub = 'Primary polycythemia. The marrow is making red cells without being asked, so the intact loop does the only sensible thing and switches the signal off &mdash; ' + fmt(s.E, 2) + ' times baseline. Hematocrit is ' + Math.round(st.hb * 3) + ' percent, viscosity and thrombotic risk are climbing, and the classic treatment is simply to remove blood.';
+    } else if(satNow < 0.94 && st.hb > 15.6){
+      cls += ' warn'; head = 'Secondary polycythemia &mdash; and an appropriate one';
+      sub = 'SaO₂ is ' + fmt(satNow * 100) + ' percent, so the hypoxia driving the signal is genuine. Hemoglobin has been pushed to ' + fmt(st.hb) + ' g/dL and hematocrit to ' + Math.round(st.hb * 3) + ' percent, which brings oxygen content back to ' + fmt(s.ca) + ' mL/dL and delivery to ' + Math.round(s.dO2) + ' mL/min &mdash; almost exactly the normal 1,000. The loop defended <b>delivery</b>, not saturation, and the extra content per milliliter was bought with extra viscosity.';
+    } else if(poly){
+      cls += ' warn'; head = 'High hemoglobin, erythropoietin NOT suppressed, normal PaO&#8322;';
+      sub = 'A hemoglobin of ' + fmt(st.hb) + ' g/dL with a normal PaO₂ should have driven erythropoietin close to zero; instead it reads ' + fmt(s.E, 2) + ' times baseline. That mismatch means the hormone is coming from somewhere the loop cannot reach &mdash; an autonomous source or an injection.';
+    } else if(settled && Math.abs(st.hb - 15) < 0.6){
+      cls += ' ok'; head = 'Steady state';
+      sub = 'Production and destruction are balanced: about ' + fmt(HB0 / LIFE, 3) + ' g/dL made and the same amount lost each day, because red cells last 120 days. Erythropoietin sits at baseline, reticulocytes at ' + fmt(1.0 * s.pm * s.mar) + ' percent (normal 0.5 to 1.5).';
+    } else if(settled){
+      cls += ' cool'; head = 'A new steady state, at a different hemoglobin';
+      sub = 'Production and destruction are balanced again &mdash; the loop is closed, just around a different value. Hemoglobin has settled at ' + fmt(st.hb) + ' g/dL with erythropoietin at ' + fmt(s.E, 2) + ' times baseline, and oxygen delivery is back to ' + Math.round(s.dO2) + ' mL/min against the normal 1,000. Notice what the loop actually defended: not hemoglobin, not hematocrit, but <b>delivery to the renal cortex</b>.';
+    } else {
+      cls += ''; head = 'In transit';
+      sub = 'Hemoglobin ' + fmt(st.hb) + ' g/dL, erythropoietin ' + fmt(s.E, 2) + ' times baseline, reticulocytes ' + fmt(1.0 * s.pm * s.mar) + ' percent. Keep running &mdash; the effector takes days to answer and weeks to finish.';
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+    document.getElementById('sHint').innerHTML = note;
+    plot();
+  }
+
+  function syncLabels(){
+    document.getElementById('vO').textContent = sO.value + ' mmHg';
+    document.getElementById('vK').textContent = sK.value + '%';
+    document.getElementById('vM').textContent = sM.value + '%';
+    document.getElementById('vE').textContent = fmt(parseFloat(sE.value) / 100, 2) + '×';
+    document.getElementById('vA').textContent = sA.value + '%';
+  }
+
+  function stop(){ if(timer){ cancelAnimationFrame(timer); timer = null; } document.getElementById('bRun').innerHTML = '▶ Run 90 days'; }
+
+  function run(){
+    if(timer){ stop(); return; }
+    if(st.t >= TMAX) reset(false);
+    document.getElementById('bRun').innerHTML = '⏸ Pause';
+    (function tick(){
+      for(var i = 0; i < 3 && st.t < TMAX; i++) stepOnce();
+      render();
+      if(st.t < TMAX) timer = requestAnimationFrame(tick); else stop();
+    })();
+  }
+
+  function reset(rerender){
+    stop();
+    st = fresh(startHb);
+    st.hist.push({ t: 0, hb: st.hb, E: 1, ret: 1, dO2: DO2REF });
+    if(rerender !== false) render();
+  }
+
+  var startHb = 15;
+
+  SCEN.forEach(function(s){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.innerHTML = s.n; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(chips.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      sO.value = s.o; sK.value = s.k; sM.value = s.m; sE.value = s.e; sA.value = s.a;
+      mcv = s.mcv; startHb = s.hb; note = s.h;
+      syncLabels(); reset();
+    });
+    chips.appendChild(b);
+  });
+  chips.children[0].classList.add('on');
+  chips.children[0].setAttribute('aria-pressed', 'true');
+
+  [sO, sK, sM, sE, sA].forEach(function(el){
+    el.addEventListener('input', function(){ syncLabels(); render(); });
+  });
+  document.getElementById('bRun').addEventListener('click', run);
+  document.getElementById('bStep').addEventListener('click', function(){
+    stop();
+    var target = Math.min(TMAX, st.t + 10);
+    while(st.t < target) stepOnce();
+    render();
+  });
+  document.getElementById('bReset').addEventListener('click', function(){ reset(); });
+  window.addEventListener('resize', plot);
+
+  drawLoop(); syncLabels(); reset();
+})();
+</script>
+</body>
+</html>

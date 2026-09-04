@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nervous Tissue &mdash; the resting voltage, summation and the reflex loop</title>
+<meta name="description" content="Move ions across the membrane and compute Nernst and resting potentials live, block the sodium-potassium pump and watch the voltage decay, sum graded potentials at the trigger zone, then break the stretch reflex one component at a time.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.modeseg button{font-size:12.5px;padding:11px 5px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.off{background:var(--coral);border-color:var(--coral);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+.eq{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.85;font-variant-numeric:tabular-nums;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+.parts{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch05.html">&larr; Module 5</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 5</div>
+  <h1>Nervous Tissue</h1>
+  <div class="intro">Every cell holds a voltage across its membrane; excitable cells simply exploit it. Set the ion concentrations and the permeability and the <b>Nernst</b> and resting potentials are computed live &mdash; then block the pump and watch the voltage decay. Next, sum graded potentials at the <b>trigger zone</b> and see whether the cell fires. Finally, break the <b>stretch reflex</b> one component at a time and watch a negative-feedback loop stop being negative.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Resting potential</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Trigger zone</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Stretch reflex</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Start from a known cell</div>
+        <div class="chips" id="cells"></div>
+        <div class="sl"><label for="ko">Extracellular potassium <span class="v" id="koV">5.0 mM</span></label>
+          <input type="range" id="ko" min="15" max="120" value="50" aria-label="Extracellular potassium concentration in tenths of a millimole per liter"></div>
+        <div class="sl"><label for="ki">Intracellular potassium <span class="v" id="kiV">140 mM</span></label>
+          <input type="range" id="ki" min="100" max="165" value="140" aria-label="Intracellular potassium concentration in millimoles per liter"></div>
+        <div class="sl"><label for="nao">Extracellular sodium <span class="v" id="naoV">145 mM</span></label>
+          <input type="range" id="nao" min="110" max="165" value="145" aria-label="Extracellular sodium concentration in millimoles per liter"></div>
+        <div class="sl"><label for="nai">Intracellular sodium <span class="v" id="naiV">15 mM</span></label>
+          <input type="range" id="nai" min="5" max="40" value="15" aria-label="Intracellular sodium concentration in millimoles per liter"></div>
+        <div class="sl"><label for="perm">Potassium permeability relative to sodium <span class="v" id="permV">25 : 1</span></label>
+          <input type="range" id="perm" min="5" max="150" value="25" aria-label="Ratio of potassium to sodium permeability at rest"></div>
+        <div class="sl"><label for="cao">Extracellular calcium <span class="v" id="caoV">1.2 mM</span></label>
+          <input type="range" id="cao" min="4" max="24" value="12" aria-label="Extracellular ionized calcium in tenths of a millimole per liter"></div>
+        <button class="tog" id="tPump" type="button" aria-pressed="true"><span class="dot"></span><span>Sodium&ndash;potassium ATPase running <small>3 Na out for every 2 K in, one ATP per cycle. Switch it off &mdash; ouabain, or ischemia &mdash; and watch the gradients run down.</small></span></button>
+        <div class="eq">E<sub>ion</sub> = (61 / z) &times; log ( [ion] outside / [ion] inside )  mV
+          <span class="r">the Nernst equation at 37 degrees Celsius</span></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Four inputs, four distances from the axon hillock</div>
+        <div class="sl"><label for="e1">Excitatory synapse A &mdash; 0.15 mm away <span class="v" id="e1V">0 Hz</span></label>
+          <input type="range" id="e1" min="0" max="120" value="0" aria-label="Firing rate of excitatory synapse A in hertz"></div>
+        <div class="sl"><label for="e2">Excitatory synapse B &mdash; 0.45 mm away <span class="v" id="e2V">0 Hz</span></label>
+          <input type="range" id="e2" min="0" max="120" value="0" aria-label="Firing rate of excitatory synapse B in hertz"></div>
+        <div class="sl"><label for="e3">Excitatory synapse C &mdash; 0.90 mm away <span class="v" id="e3V">0 Hz</span></label>
+          <input type="range" id="e3" min="0" max="120" value="0" aria-label="Firing rate of excitatory synapse C in hertz"></div>
+        <div class="sl"><label for="i1">Inhibitory synapse D &mdash; 0.20 mm away <span class="v" id="i1V">0 Hz</span></label>
+          <input type="range" id="i1" min="0" max="120" value="0" aria-label="Firing rate of inhibitory synapse D in hertz"></div>
+        <div class="sl"><label for="lam">Length constant of this dendrite <span class="v" id="lamV">0.50 mm</span></label>
+          <input type="range" id="lam" min="10" max="100" value="50" aria-label="Membrane length constant in hundredths of a millimeter"></div>
+        <div class="lbl">Try these</div>
+        <div class="chips" id="sumpresets"></div>
+        <div class="hint"><b>Graded potentials decay with distance.</b> Current leaks out through the membrane as it spreads, so a <b>10 mV</b> potential may be only <b>4 mV</b> a fraction of a millimeter away. The distance over which it falls to <b>37 percent</b> of its starting value is the <b>length constant</b>, typically <b>0.1 to 1 mm</b>. That is why graded potentials cannot carry information far &mdash; and why they are still the currency of integration.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Break a component of the loop</div>
+        <div class="chips" id="parts"></div>
+        <div class="sl"><label for="stretch">Size of the stretch applied <span class="v" id="stretchV">1.0×</span></label>
+          <input type="range" id="stretch" min="20" max="220" value="100" aria-label="Magnitude of the applied stretch, as a multiplier"></div>
+        <button class="tog" id="tDesc" type="button" aria-pressed="true"><span class="dot"></span><span>Descending inhibition intact <small>Lose it &mdash; an upper motor neuron lesion &mdash; and the same tap produces a brisk, exaggerated reflex.</small></span></button>
+        <button class="tog" id="tSign" type="button" aria-pressed="false"><span class="dot"></span><span>Flip the sign: make the loop <i>positive</i> feedback <small>Same five components, response now amplifies the change instead of opposing it. Watch the variable leave the page.</small></span></button>
+        <div class="hint"><b>Name every element as you watch it.</b> Regulated variable: <b>muscle length</b>. Sensor: the <b>muscle spindle</b>. Afferent: a large <b>Ia</b> fiber, among the fastest in the body at <b>80 to 120 m/s</b>. Integrator: the <b>spinal cord</b>, through a <b>monosynaptic</b> Ia-to-alpha-motor-neuron connection, which is why the whole loop takes only <b>20 to 40 ms</b>. Effector: the extrafusal muscle. Response: contraction.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Where this membrane sits</h2>
+      <canvas id="cv1" width="1040" height="640" aria-label="A voltage ladder from minus 100 to plus 130 millivolts showing the equilibrium potentials for potassium, chloride, sodium and calcium, the threshold, and the calculated resting membrane potential, with a twenty-minute trace of what happens when the sodium-potassium pump is blocked"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Arithmetic at the axon hillock</h2>
+      <canvas id="cv2" width="1040" height="620" aria-label="A neuron with four synapses at different distances from the axon hillock, above a trace of membrane potential at the trigger zone with the threshold marked and action potentials shown when it is reached"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>A loop that opposes the change that provoked it</h2>
+      <canvas id="cv3" width="1040" height="640" aria-label="The stretch reflex drawn as a feedback loop with sensor, afferent, integrator and effector, above a trace of muscle length, spindle firing and motor neuron firing after a stretch is applied"></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'gray';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var TABS=[1,2,3];
+function setMode(n){
+  TABS.forEach(function(k){
+    var b=$('m'+k);
+    b.classList.toggle('on',k===n); b.setAttribute('aria-selected',k===n?'true':'false');
+    $('p'+k).classList.toggle('hide',k!==n); $('r'+k).classList.toggle('hide',k!==n);
+  });
+  if(n===2) render2(); if(n===3) render3();
+}
+TABS.forEach(function(k){ $('m'+k).onclick=function(){setMode(k);}; });
+
+/* =====================================================
+   BENCH 1 - the resting membrane potential
+   ===================================================== */
+var pump=true;
+$('tPump').onclick=function(){pump=!pump;this.setAttribute('aria-pressed',pump?'true':'false');render1();};
+var CELLS=[
+ {n:'Typical neuron',ko:50,ki:140,nao:145,nai:15,perm:25,cao:12},
+ {n:'Skeletal muscle fiber',ko:40,ki:155,nao:145,nai:15,perm:100,cao:12},
+ {n:'Hyperkalemia 7.0 mM',ko:70,ki:140,nao:145,nai:15,perm:25,cao:12},
+ {n:'Severe hyperkalemia 9.0 mM',ko:90,ki:140,nao:145,nai:15,perm:25,cao:12},
+ {n:'Hypokalemia 2.5 mM',ko:25,ki:140,nao:145,nai:15,perm:25,cao:12},
+ {n:'Hypocalcemia 0.6 mM',ko:50,ki:140,nao:145,nai:15,perm:25,cao:6}
+];
+var cbox=$('cells');
+CELLS.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){ $('ko').value=K.ko; $('ki').value=K.ki; $('nao').value=K.nao; $('nai').value=K.nai; $('perm').value=K.perm; $('cao').value=K.cao; render1(); };
+  cbox.appendChild(b);
+});
+['ko','ki','nao','nai','perm','cao'].forEach(function(id){ $(id).addEventListener('input',render1); });
+function nernst(z,out,inn){ return (61/z)*Math.log10(out/inn); }
+function ghk(Ko,Ki,Nao,Nai,ratio){ return 61*Math.log10((ratio*Ko+Nao)/(ratio*Ki+Nai)); }
+function state1(){
+  var Ko=+$('ko').value/10, Ki=+$('ki').value, Nao=+$('nao').value, Nai=+$('nai').value;
+  var ratio=+$('perm').value, Cao=+$('cao').value/10;
+  var EK=nernst(1,Ko,Ki), ENa=nernst(1,Nao,Nai), ECl=nernst(-1,110,8), ECa=nernst(2,Cao,0.0001);
+  var Vm=ghk(Ko,Ki,Nao,Nai,ratio)+(pump?-3:0);
+  var thr=-55-12*(Math.log(1.2/Cao)/Math.log(2));
+  var h=1/(1+Math.exp((Vm+60)/5));
+  return {Ko:Ko,Ki:Ki,Nao:Nao,Nai:Nai,ratio:ratio,Cao:Cao,EK:EK,ENa:ENa,ECl:ECl,ECa:ECa,Vm:Vm,thr:thr,h:h};
+}
+function pumpDecay(S){
+  /* gradients run down over minutes once the pump stops */
+  var out=[],t;
+  for(t=0;t<=20;t+=0.1){
+    var f=pump?0:(1-Math.exp(-t/6));
+    var Ki=S.Ki-(S.Ki-S.Ko)*0.55*f;
+    var Ko=S.Ko+(S.Ki-S.Ko)*0.055*f;
+    var Nai=S.Nai+(S.Nao-S.Nai)*0.55*f;
+    var Nao=S.Nao-(S.Nao-S.Nai)*0.055*f;
+    out.push({t:t,v:ghk(Ko,Ki,Nao,Nai,S.ratio)+(pump?-3:0)});
+  }
+  return out;
+}
+function render1(){
+  var S=state1();
+  $('koV').textContent=S.Ko.toFixed(1)+' mM';
+  $('kiV').textContent=S.Ki+' mM';
+  $('naoV').textContent=S.Nao+' mM';
+  $('naiV').textContent=S.Nai+' mM';
+  $('permV').textContent=S.ratio+' : 1';
+  $('caoV').textContent=S.Cao.toFixed(1)+' mM';
+  var gap=S.thr-S.Vm;
+
+  $('s1').innerHTML=
+    tile('E<sub>K</sub>',S.EK.toFixed(0),'mV &middot; textbook value about −90')+
+    tile('E<sub>Na</sub>','+'+S.ENa.toFixed(0),'mV &middot; textbook value about +60')+
+    tile('Resting V<sub>m</sub>',S.Vm.toFixed(0),'mV &middot; from the two permeabilities')+
+    tile('Threshold',S.thr.toFixed(0),'mV &middot; −55 at a normal calcium')+
+    tile('Gap to threshold',gap.toFixed(0),'mV of depolarization still needed')+
+    tile('Na channels available',(S.h*100).toFixed(0)+'%','not yet inactivated at this V<sub>m</sub>');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(!pump){
+    cls='verdict bad';
+    txt='Pump blocked &mdash; the resting potential is decaying<small>The trace below shows the next twenty minutes. Potassium leaks out and is not returned, sodium leaks in and is not removed, and the gradients that <i>are</i> the resting potential disappear.</small>';
+    inf='<span class="n">The pump matters for what it maintains, not for what it makes</span>The <b>sodium&ndash;potassium ATPase</b> moves 3 sodium out for every 2 potassium in, consuming one ATP per cycle. Because the exchange is unequal it is electrogenic, but it contributes only <b>a few millivolts directly</b>. What makes it indispensable is that it maintains the concentration gradients. The brain spends on the order of <b>half its enormous ATP budget</b> on this pump alone &mdash; which is exactly why neurons die so quickly in ischemia.';
+  } else if(S.Vm>=S.thr-3){
+    cls='verdict bad';
+    txt='The membrane is sitting at or above threshold &mdash; and only '+(S.h*100).toFixed(0)+'% of sodium channels are still available<small>A cell chronically depolarized to this level cannot fire, because its voltage-gated sodium channels are inactivated rather than merely closed. Sustained depolarization is a way of being silenced.</small>';
+    inf='<span class="n">Why hyperkalemia kills the heart</span>Raise extracellular potassium and E<sub>K</sub> moves toward zero, so the resting potential depolarizes. Cells become <b>transiently more excitable</b> because they sit closer to threshold, and then <b>inexcitable</b> as sodium channels inactivate. The sequence &mdash; peaked T waves, then a widening QRS, then a sine wave and arrest &mdash; is that transition happening in cardiac tissue.';
+  } else if(S.Ko>6.0){
+    cls='verdict warn';
+    txt='Depolarized toward threshold by the extracellular potassium<small>V<sub>m</sub> is '+S.Vm.toFixed(0)+' mV and threshold is '+S.thr.toFixed(0)+' mV, so only '+gap.toFixed(0)+' mV separates them. The cell is closer to firing than it should be &mdash; the transiently hyperexcitable phase.</small>';
+    inf='<span class="n">Read the Nernst equation as a clinical instrument</span>E<sub>K</sub> = 61 &times; log([K]outside / [K]inside). Raising the outside term makes the ratio less extreme, so the logarithm moves toward zero and E<sub>K</sub> becomes less negative. Because resting V<sub>m</sub> tracks E<sub>K</sub> closely &mdash; potassium permeability dominates &mdash; the whole membrane follows. Notice how little the intracellular value has to change to do the same thing, and how rarely it does.';
+  } else if(S.Cao<0.9){
+    cls='verdict warn';
+    txt='Threshold has moved down to '+S.thr.toFixed(0)+' mV &mdash; and the resting potential has not moved at all<small>Extracellular calcium screens negative charge on the outer face of the voltage-gated sodium channel. Lower it and the channel behaves as though the membrane were already partly depolarized, so it opens more easily at any given voltage.</small>';
+    inf='<span class="n">The tetany of hypocalcemia</span>This is the second clinical rule that falls straight out of these mechanics, and it catches people because <b>calcium itself carries almost none of the resting current</b>. It is not changing the resting potential; it is changing the threshold. Nerves then fire spontaneously &mdash; perioral and acral paraesthesia, cramps, Chvostek and Trousseau signs, and in the extreme, laryngospasm.';
+  } else if(S.ratio>=70){
+    cls='verdict info';
+    txt='Very high potassium permeability &mdash; V<sub>m</sub> has walked almost all the way to E<sub>K</sub><small>V<sub>m</sub> '+S.Vm.toFixed(0)+' mV against an E<sub>K</sub> of '+S.EK.toFixed(0)+' mV. This is why a skeletal muscle fiber rests near −90 mV while a neuron rests near −70.</small>';
+    inf='<span class="n">The resting potential is a weighted average</span>Each ion pulls the membrane toward its own equilibrium potential, and the weighting is <b>permeability</b>. At rest the membrane is <b>25 to 100 times</b> more permeable to potassium than to sodium, so V<sub>m</sub> sits near E<sub>K</sub> and is only dragged a few millivolts positive by the small standing sodium leak. Skeletal muscle also carries a large resting chloride conductance, and because E<sub>Cl</sub> sits near the resting potential it acts as a stabilizer, holding the fiber even closer to E<sub>K</sub>.';
+  } else {
+    cls='verdict';
+    txt='A resting membrane: '+S.Vm.toFixed(0)+' mV, '+gap.toFixed(0)+' mV below threshold<small>Inside negative relative to outside, sitting close to E<sub>K</sub> at '+S.EK.toFixed(0)+' mV and a long way from E<sub>Na</sub> at +'+S.ENa.toFixed(0)+' mV. That distance from E<sub>Na</sub> is the stored energy an action potential spends.</small>';
+    inf='<span class="n">Three facts produce the resting potential</span><b>One:</b> concentration gradients &mdash; potassium roughly 140 mM inside and 5 mM outside, sodium roughly 15 mM inside and 145 mM outside. <b>Two:</b> selective permeability &mdash; open potassium leak channels make the membrane 25 to 100 times more permeable to potassium than to sodium. <b>Three:</b> impermeant intracellular anions, proteins and phosphates, that cannot follow potassium out.<div class="dd">The pump then maintains those gradients, spending one ATP for every 3 sodium out and 2 potassium in. It adds only a few millivolts of its own &mdash; switch it off above and watch what actually happens.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  draw1(S);
+}
+function draw1(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=150,R=W-40,T=40,B=346, lo=-110,hi=140;
+  function Y(v){return B-((v-lo)/(hi-lo))*(B-T);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=-100;i<=140;i+=20){
+    g.beginPath(); g.moveTo(L,Y(i)); g.lineTo(R,Y(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i>0?'+':'')+i,L-10,Y(i)+5);
+  }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Millivolts  —  every ion pulls the membrane toward its own equilibrium potential', L, T-12);
+  function mark(v,col,name,note,side){
+    var y=Y(clamp(v,lo,hi));
+    g.strokeStyle=col; g.lineWidth=3;
+    g.beginPath(); g.moveTo(L,y); g.lineTo(R,y); g.stroke();
+    g.fillStyle=col; g.font='800 14px Inter, system-ui, sans-serif';
+    g.textAlign=side==='r'?'right':'left';
+    g.fillText(name+'  '+(v>0?'+':'')+v.toFixed(0)+' mV', side==='r'?R-8:L+8, y-8);
+    if(note){ g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+      g.fillText(note, side==='r'?R-8:L+8, y+16); }
+  }
+  mark(S.ECa,PURP,'E Ca','calcium: about +120 mV','r');
+  mark(S.ENa,CORAL,'E Na','sodium: about +60 mV','r');
+  g.strokeStyle=GOLD; g.lineWidth=3; g.setLineDash([8,5]);
+  g.beginPath(); g.moveTo(L,Y(S.thr)); g.lineTo(R,Y(S.thr)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('THRESHOLD  '+S.thr.toFixed(0)+' mV', R-8, Y(S.thr)-8);
+  mark(S.ECl,BLUE,'E Cl','chloride: about −70 mV','l');
+  mark(S.EK,GREEN,'E K','potassium: about −90 mV','l');
+  /* the membrane itself */
+  var yv=Y(clamp(S.Vm,lo,hi));
+  g.fillStyle=TDK;
+  g.fillRect(L,yv-4,R-L,8);
+  g.beginPath(); g.moveTo(L-6,yv); g.lineTo(L-26,yv-13); g.lineTo(L-26,yv+13); g.closePath(); g.fill();
+  g.font='800 19px Fraunces, Georgia, serif'; g.textAlign='center';
+  g.fillText('Vm  '+S.Vm.toFixed(0)+' mV', (L+R)/2, yv-14);
+  /* gap arrow */
+  g.strokeStyle=GOLD; g.lineWidth=2; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo((L+R)/2+230,yv); g.lineTo((L+R)/2+230,Y(S.thr)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText((S.thr-S.Vm).toFixed(0)+' mV to threshold', (L+R)/2+238, (yv+Y(S.thr))/2+4);
+
+  /* pump block trace */
+  var A=[420,H-56], PL=150, PR=W-40;
+  var D=pumpDecay(S);
+  function X2(t){return PL+(t/20)*(PR-PL);}
+  function Y2(v){return A[1]-((v+110)/(110+20))*(A[1]-A[0]);}
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=-100;i<=20;i+=20){ g.beginPath(); g.moveTo(PL,Y2(i)); g.lineTo(PR,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((i>0?'+':'')+i,PL-10,Y2(i)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(pump?'If the sodium–potassium ATPase were blocked (switch it off to run this)':'Sodium–potassium ATPase BLOCKED — twenty minutes of run-down', PL, A[0]-12);
+  g.strokeStyle=pump?LINE:CORAL; g.lineWidth=pump?2:4;
+  if(pump) g.setLineDash([6,5]);
+  g.beginPath();
+  for(i=0;i<D.length;i++){ var x=X2(D[i].t),y=Y2(clamp(D[i].v,-110,20)); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke(); g.setLineDash([]);
+  g.strokeStyle=GOLD; g.lineWidth=2; g.setLineDash([6,4]);
+  g.beginPath(); g.moveTo(PL,Y2(S.thr)); g.lineTo(PR,Y2(S.thr)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('threshold', PR-6, Y2(S.thr)-6);
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=20;i+=4){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X2(i),A[1]); g.lineTo(X2(i),A[1]+6); g.stroke();
+    g.fillText(i,X2(i),A[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('MINUTES',(PL+PR)/2,A[1]+42);
+}
+
+/* =====================================================
+   BENCH 2 - summation at the trigger zone
+   ===================================================== */
+var SYN=[
+ {id:'e1',n:'A',d:0.15,amp:10,exc:true,col:TEAL},
+ {id:'e2',n:'B',d:0.45,amp:10,exc:true,col:BLUE},
+ {id:'e3',n:'C',d:0.90,amp:10,exc:true,col:PURP},
+ {id:'i1',n:'D',d:0.20,amp:-8,exc:false,col:CORAL}
+];
+var SP=[
+ {n:'One input, once &mdash; nothing happens',v:[8,0,0,0]},
+ {n:'Temporal summation (A at 90 Hz)',v:[90,0,0,0]},
+ {n:'Spatial summation (A + B + C together)',v:[45,45,45,0]},
+ {n:'Add inhibition and it stops firing',v:[45,45,45,70]},
+ {n:'The distant synapse alone',v:[0,0,110,0]}
+];
+var spb=$('sumpresets');
+SP.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+  b.onclick=function(){ SYN.forEach(function(s,i){ $(s.id).value=P.v[i]; }); render2(); };
+  spb.appendChild(b);
+});
+SYN.forEach(function(s){ $(s.id).addEventListener('input',render2); });
+$('lam').addEventListener('input',render2);
+function sim2(){
+  var lam=+$('lam').value/100;
+  var dt=0.25, TOT=400, N=Math.round(TOT/dt)+1;
+  var rates=SYN.map(function(s){ return +$(s.id).value; });
+  var arr=SYN.map(function(s){ return s.amp*Math.exp(-s.d/lam); });
+  var next=SYN.map(function(){ return 1e9; });
+  SYN.forEach(function(s,i){ if(rates[i]>0) next[i]=6; });
+  var state=SYN.map(function(){ return 0; });
+  var out=[], spikes=[], i, k, refr=-1e9;
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    for(k=0;k<SYN.length;k++){
+      if(rates[k]>0 && t>=next[k]){ state[k]+=arr[k]; next[k]+=1000/rates[k]; }
+      state[k]*=Math.exp(-dt/9);          /* graded potentials decay in time as well as space */
+    }
+    var sum=0; for(k=0;k<SYN.length;k++) sum+=state[k];
+    var vm=-70+sum;
+    var spiked=false;
+    if(vm>=-55 && (t-refr)>3){ refr=t; spiked=true; spikes.push(t); }
+    out.push({t:t,vm:vm,spike:spiked,parts:state.slice()});
+  }
+  return {p:out,spikes:spikes,arr:arr,lam:lam,rates:rates,TOT:TOT};
+}
+function render2(){
+  SYN.forEach(function(s){ $(s.id+'V').textContent=$(s.id).value+' Hz'; });
+  $('lamV').textContent=(+$('lam').value/100).toFixed(2)+' mm';
+  var S=sim2(), P=S.p, i, mx=-100;
+  for(i=0;i<P.length;i++){ if(P[i].vm>mx)mx=P[i].vm; }
+  var rate=S.spikes.length/(S.TOT/1000);
+  var exc=S.rates[0]+S.rates[1]+S.rates[2], inh=S.rates[3];
+
+  $('s2').innerHTML=
+    tile('At synapse A',SYN[0].amp+' mV','before it travels anywhere')+
+    tile('Arriving at the hillock',S.arr[0].toFixed(1)+' mV','after 0.15 mm of decay')+
+    tile('From synapse C',S.arr[2].toFixed(1)+' mV','the same 10 mV, 0.90 mm away')+
+    tile('Peak V<sub>m</sub> at the trigger zone',mx.toFixed(0),'mV &middot; threshold is −55')+
+    tile('Action potentials fired',S.spikes.length,'in 400 ms')+
+    tile('Output firing rate',rate.toFixed(0),'Hz');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(S.spikes.length===0&&exc===0&&inh===0){
+    cls='verdict info';
+    txt='Silent &mdash; the neuron is sitting at −70 mV<small>Turn one synapse up slowly and watch what a single graded potential is worth by the time it reaches the decision point.</small>';
+    inf='<span class="n">The regions of a neuron map onto its functions</span><b>Dendrites</b> are short, branched and unmyelinated, maximizing surface area for receiving inputs &mdash; a single cortical neuron may receive <b>10,000</b>. The <b>soma</b> holds the nucleus and Nissl bodies and does the biosynthetic work for a cell whose farthest process may be a meter away. The <b>axon hillock</b> is the trigger zone, packed with voltage-gated sodium channels and possessing the <b>lowest threshold in the cell</b>. The axon conducts the output; the terminals convert it back into chemistry.';
+  } else if(S.spikes.length===0&&inh>0&&exc>0){
+    cls='verdict warn';
+    txt='Excitation is arriving and the cell still does not fire<small>Inhibitory input subtracts just as really as excitatory input adds. The trigger zone is running a continuous weighted vote, and this vote is being lost.</small>';
+    inf='<span class="n">Inhibition is not the absence of excitation</span>An inhibitory postsynaptic potential hyperpolarizes, moving the membrane <i>away</i> from threshold, and it is summed algebraically with everything else. A neuron receiving 10,000 inputs is not counting excitatory ones &mdash; it is adding signed numbers and comparing the total with a threshold.';
+  } else if(S.spikes.length===0&&S.rates[2]>0&&exc===S.rates[2]){
+    cls='verdict warn';
+    txt='The distant synapse cannot reach the hillock on its own<small>10 mV at the synapse becomes only '+S.arr[2].toFixed(1)+' mV by the time it has travelled 0.90 mm with a length constant of '+S.lam.toFixed(2)+' mm.</small>';
+    inf='<span class="n">Decay with distance is the whole reason axons exist</span>Current leaks out through the membrane as it spreads, so a graded potential falls to <b>37 percent</b> of its amplitude over one length constant &mdash; typically <b>0.1 to 1 mm</b>. Graded potentials therefore cannot carry information far. The <b>action potential</b> exists precisely to solve that: it is regenerated at every patch of membrane, so it arrives at the terminal exactly as large as it started.';
+  } else if(S.spikes.length===0){
+    cls='verdict info';
+    txt='Sub-threshold &mdash; depolarized to '+mx.toFixed(0)+' mV but never to −55<small>Graded potentials are proportional to the stimulus and they decay. Add another synapse, or fire the same one faster, and see which route gets you there.</small>';
+    inf='<span class="n">Two ways to add</span><b>Temporal summation</b> adds inputs arriving in quick succession at the <i>same</i> synapse, before the first has decayed. <b>Spatial summation</b> adds inputs arriving simultaneously at <i>different</i> synapses. The arithmetic is identical; only the source differs.';
+  } else if(S.rates[0]>=60&&S.rates[1]===0&&S.rates[2]===0){
+    cls='verdict';
+    txt='Temporal summation &mdash; one synapse firing fast enough to stack its own potentials<small>Output '+rate.toFixed(0)+' Hz. Each individual potential is worth only '+S.arr[0].toFixed(1)+' mV, and no single one of them could ever reach threshold.</small>';
+    inf='<span class="n">Speed converted into amplitude</span>A graded potential decays over roughly ten milliseconds. Deliver the next one before that decay is complete and the two add. This is how a synapse that is individually far too weak becomes decisive &mdash; and it is why presynaptic <i>rate</i> carries information at all.';
+  } else if(exc>0&&S.spikes.length>0){
+    cls='verdict';
+    txt='Threshold reached &mdash; '+S.spikes.length+' action potentials in 400 ms<small>Peak V<sub>m</sub> '+mx.toFixed(0)+' mV against a threshold of −55. Once the sum crosses that line the output is <b>all-or-none</b>: the size of the spike says nothing about the size of the input.</small>';
+    inf='<span class="n">The decision is made in one place</span>The axon hillock has the highest density of voltage-gated sodium channels in the cell and therefore the lowest threshold. Everything arriving on the dendrites and soma is summed algebraically <i>there</i>, and if the total reaches about <b>−55 mV</b> an impulse is sent. If not, nothing happens at all.<div class="dd">Notice how the neuron encodes intensity: not by making bigger spikes, but by making <b>more of them</b>. Turn the excitatory synapses up and watch the output rate rather than the output amplitude change.</div>';
+  } else {
+    cls='verdict info';
+    txt='Integrating<small>Watch the colored contributions in the lower panel: each synapse&rsquo;s share of the total, signed.</small>';
+    inf='<span class="n">A continuous weighted vote</span>Inhibitory inputs subtract from the total just as really as excitatory ones add to it, and inputs closer to the trigger zone carry more weight because they have decayed less.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  draw2(S);
+}
+function draw2(S){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  /* neuron sketch */
+  var soma={x:300,y:110,r:44};
+  g.strokeStyle=MUT; g.lineWidth=3;
+  SYN.forEach(function(s,i){
+    var ang=Math.PI*(0.72+i*0.24), rr=60+s.d*145;
+    var x=soma.x+Math.cos(ang)*rr, y=soma.y-Math.sin(ang)*rr;
+    g.strokeStyle=MUT; g.lineWidth=4;
+    g.beginPath(); g.moveTo(soma.x+Math.cos(ang)*soma.r,soma.y-Math.sin(ang)*soma.r); g.lineTo(x,y); g.stroke();
+    g.fillStyle=s.col; g.beginPath(); g.arc(x,y,13,0,6.3); g.fill();
+    g.fillStyle='#fff'; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(s.n,x,y+5);
+    g.fillStyle=s.col; g.font='700 12px Inter, system-ui, sans-serif';
+    g.fillText(s.d.toFixed(2)+' mm · '+(s.exc?'+':'')+s.amp+' mV',x,y-22);
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+    g.fillText('→ '+S.arr[i].toFixed(1)+' mV at the hillock',x,y+30);
+  });
+  g.fillStyle=TDK; g.globalAlpha=0.12; g.beginPath(); g.arc(soma.x,soma.y,soma.r,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=TDK; g.lineWidth=3; g.beginPath(); g.arc(soma.x,soma.y,soma.r,0,6.3); g.stroke();
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('soma',soma.x,soma.y+5);
+  g.strokeStyle=TDK; g.lineWidth=9; g.lineCap='round';
+  g.beginPath(); g.moveTo(soma.x+soma.r,soma.y+18); g.lineTo(W-120,soma.y+18); g.stroke();
+  g.fillStyle=GOLD; g.beginPath(); g.arc(soma.x+soma.r+26,soma.y+18,15,0,6.3); g.fill();
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('axon hillock — the trigger zone, lowest threshold in the cell',soma.x+soma.r+46,soma.y+10);
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+  g.fillText('axon: output is all-or-none and does not decay',soma.x+soma.r+46,soma.y+34);
+
+  /* trace */
+  var L=110,R=W-30,A=[302,H-56];
+  function X(t){return L+(t/S.TOT)*(R-L);}
+  function Yv(v){return A[1]-((v+80)/60)*(A[1]-A[0]);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=-80;i<=-20;i+=10){ g.beginPath(); g.moveTo(L,Yv(i)); g.lineTo(R,Yv(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-10,Yv(i)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Membrane potential at the trigger zone  (mV)', L, A[0]-12);
+  g.strokeStyle=GOLD; g.lineWidth=2.5; g.setLineDash([7,5]);
+  g.beginPath(); g.moveTo(L,Yv(-55)); g.lineTo(R,Yv(-55)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('threshold −55 mV', L+8, Yv(-55)-8);
+  g.strokeStyle=GREEN; g.lineWidth=1.8; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(L,Yv(-70)); g.lineTo(R,Yv(-70)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GREEN; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('rest −70 mV', L+8, Yv(-70)+18);
+  var P=S.p;
+  g.strokeStyle=TEAL; g.lineWidth=3; g.beginPath();
+  for(i=0;i<P.length;i++){ var x=X(P[i].t),y=Yv(clamp(P[i].vm,-80,-20)); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+  /* spikes */
+  S.spikes.forEach(function(t){
+    g.strokeStyle=CORAL; g.lineWidth=2.5;
+    g.beginPath(); g.moveTo(X(t),Yv(-55)); g.lineTo(X(t),A[0]+6); g.stroke();
+  });
+  if(S.spikes.length){
+    g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(S.spikes.length+' action potentials', R-6, A[0]+20);
+  }
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=400;i+=50){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A[1]); g.lineTo(X(i),A[1]+6); g.stroke();
+    g.fillText(i,X(i),A[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('MILLISECONDS',(L+R)/2,A[1]+42);
+}
+
+/* =====================================================
+   BENCH 3 - the stretch reflex
+   ===================================================== */
+var PARTS=[
+ {k:'none',n:'Everything intact'},
+ {k:'sensor',n:'Break the sensor (spindle)'},
+ {k:'aff',n:'Cut the Ia afferent'},
+ {k:'integ',n:'Break the integrator (cord)'},
+ {k:'eff',n:'Break the effector (muscle)'}
+];
+var broken='none', desc=true, positive=false;
+var pbx=$('parts');
+PARTS.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(P.k===broken?' on':''); b.textContent=P.n;
+  b.onclick=function(){ broken=P.k; [].forEach.call(pbx.children,function(c,i){c.classList.toggle('on',PARTS[i].k===broken);}); render3(); };
+  pbx.appendChild(b);
+});
+$('tDesc').onclick=function(){desc=!desc;this.setAttribute('aria-pressed',desc?'true':'false');render3();};
+$('tSign').onclick=function(){positive=!positive;this.setAttribute('aria-pressed',positive?'true':'false');render3();};
+$('stretch').addEventListener('input',render3);
+function sim3(){
+  var mag=+$('stretch').value/100;
+  var dt=1, TOT=500, N=TOT+1;
+  var delay=Math.round(28/dt);            /* 20 to 40 ms round trip, monosynaptic */
+  var gain=desc?1.0:2.3;
+  var Lm=0, buf=[], out=[], i;
+  for(i=0;i<delay;i++) buf.push(0);
+  var motor=0;
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    var push=(t>=60&&t<80)?(0.005*mag):0;      /* the tendon is tapped */
+    var spindle=(broken==='sensor')?0:Math.max(0,Lm)*100;
+    var afferent=(broken==='aff')?0:spindle;
+    var cord=(broken==='integ')?0:afferent*gain;
+    buf.push(cord);
+    var arrived=buf.shift();
+    motor+=(arrived-motor)*0.16;
+    var force=(broken==='eff')?0:motor;
+    var response=(positive?+1:-1)*force*0.000067;
+    Lm+=push+response-Lm*0.0008;
+    if(Lm>1.2)Lm=1.2; if(Lm<-0.4)Lm=-0.4;
+    out.push({t:t,L:Lm,sp:spindle,mn:force});
+  }
+  return {p:out,TOT:TOT,delay:delay,gain:gain};
+}
+function render3(){
+  var mag=+$('stretch').value/100;
+  $('stretchV').textContent=mag.toFixed(1)+'×';
+  var S=sim3(), P=S.p, i, pk=0, pkT=0, end=P[P.length-1].L, mnPk=0;
+  for(i=0;i<P.length;i++){ if(P[i].L>pk){pk=P[i].L;pkT=P[i].t;} if(P[i].mn>mnPk)mnPk=P[i].mn; }
+  var settle=P[P.length-1].L;
+  var corrected=pk>0.001?clamp((pk-settle)/pk*100,0,100):0;
+
+  $('s3').innerHTML=
+    tile('Peak stretch reached',(pk*100).toFixed(1)+'%','of resting muscle length')+
+    tile('Length after 500 ms',(settle*100).toFixed(1)+'%','above resting length')+
+    tile('Change corrected',corrected.toFixed(0)+'%','of the peak deviation removed')+
+    tile('Loop delay','28','ms &middot; monosynaptic, the whole loop 20 to 40')+
+    tile('Ia conduction','80–120','m/s &middot; among the fastest fibers in the body')+
+    tile('Peak motor output',mnPk.toFixed(0),'relative units &middot; loop gain '+S.gain.toFixed(1)+'×');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(positive&&broken==='none'){
+    cls='verdict bad';
+    txt='Positive feedback &mdash; the variable has run away<small>Every component is intact and every component is working. Only the <i>sign</i> of the response changed, and the loop now amplifies the deviation instead of removing it.</small>';
+    inf='<span class="n">Negative and positive feedback differ in one thing only</span>Not in complexity, not in speed, not in the parts list &mdash; only in whether the response <b>opposes</b> or <b>reinforces</b> the change that triggered it. Physiologic positive feedback exists, and it is always either self-terminating or bounded: <b>calcium-induced calcium release</b> in cardiac muscle, the oxytocin surge of labor, the sodium influx of the action potential upstroke. Take away the boundary and you get a runaway.';
+  } else if(broken==='sensor'){
+    cls='verdict bad';
+    txt='No sensor &mdash; the loop never learns that anything happened<small>The spindle is silent, so the afferent is silent, so the cord has nothing to integrate. The stretch simply persists and decays passively.</small>';
+    inf='<span class="n">The muscle spindle</span>A bundle of <b>intrafusal fibers</b> lying in parallel with the working extrafusal fibers, wrapped in sensory endings that fire faster the more the muscle is stretched. It is the sensor in a textbook negative-feedback loop, and because it lies in parallel it reports <i>length</i>, not force. Break it and the loop is not slow or weak &mdash; it is <b>absent</b>.';
+  } else if(broken==='aff'){
+    cls='verdict bad';
+    txt='Afferent cut &mdash; the sensor is firing and nobody is listening<small>Watch the middle trace: the spindle is reporting the stretch perfectly. The information never reaches the cord.</small>';
+    inf='<span class="n">Where a reflex can break</span>A reflex arc has five places to fail, and the bedside examination is designed to localize which one. An absent deep tendon reflex means a break somewhere in the arc: sensor, afferent, cord segment, efferent or muscle. A <b>brisk</b> reflex means the arc is intact but has lost its descending inhibition &mdash; an upper motor neuron problem, not a lower one.';
+  } else if(broken==='integ'){
+    cls='verdict bad';
+    txt='Integrator broken &mdash; the signal arrives and no command leaves<small>This is the segment of spinal cord where the Ia fiber synapses directly on the alpha motor neuron. It is a single synapse, which is exactly why the loop is so fast.</small>';
+    inf='<span class="n">Monosynaptic is the whole point</span>The stretch reflex is the only common human reflex with just one synapse between afferent and efferent. That is why the entire loop &mdash; stretch, sense, conduct, synapse, conduct, contract &mdash; takes only <b>20 to 40 milliseconds</b>. Every additional interneuron would add roughly half a millisecond of synaptic delay and a great deal of opportunity for modulation.';
+  } else if(broken==='eff'){
+    cls='verdict bad';
+    txt='Effector broken &mdash; the command is issued and nothing moves<small>Motor output is present on the bottom trace and muscle length does not respond. Sensing without effecting is not feedback; it is just measurement.</small>';
+    inf='<span class="n">A loop needs all five parts</span><b>Variable</b>: muscle length. <b>Sensor</b>: the muscle spindle. <b>Integrator</b>: the spinal cord. <b>Effector</b>: the extrafusal fibers. <b>Response</b>: contraction. Remove any one and the remaining four cannot regulate anything at all &mdash; which is why the vocabulary is worth using precisely rather than loosely.';
+  } else if(!desc){
+    cls='verdict warn';
+    txt='Brisk &mdash; the same tap produces a much larger response<small>Gain is now '+S.gain.toFixed(1)+'&times;. The loop is intact and it is over-correcting; look at how much motor output the same stretch now produces.</small>';
+    inf='<span class="n">Hyperreflexia is a release phenomenon</span>Descending pathways normally hold the segmental reflex under tonic inhibition. Damage them &mdash; stroke, spinal cord injury, multiple sclerosis &mdash; and the reflex is <i>released</i> rather than damaged. That is why a brisk reflex points upward in the neuraxis and an absent one points to the arc itself.';
+  } else {
+    cls='verdict';
+    txt='Negative feedback &mdash; '+corrected.toFixed(0)+'% of the deviation has been removed<small>The muscle was stretched, the spindle reported it, the cord issued a contraction, and the contraction shortened the muscle &mdash; which reduced the very stretch that started the sequence.</small>';
+    inf='<span class="n">Sensed change opposed: negative feedback in one sentence</span>Tap the patellar tendon and you are testing this loop. The regulated variable is <b>muscle length</b>; the sensor is the <b>muscle spindle</b>; the afferent is a large <b>Ia</b> fiber conducting at <b>80 to 120 m/s</b>; the integrator is the <b>spinal cord</b> through a monosynaptic connection onto the alpha motor neuron; the effector is the extrafusal muscle; the response is contraction. The whole loop takes <b>20 to 40 ms</b>.<div class="dd">Muscle and nerve close the loop here, which is why they are studied together. A neuron specialized in moving charge quickly and precisely, a muscle fiber specialized in converting ATP into force, and one chemical synapse between them whose only job is to turn a voltage change in one cell into a voltage change in another.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  draw3(S);
+}
+function draw3(S){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  /* loop diagram */
+  var nodes=[
+   {x:120,y:66,w:180,h:56,t:'VARIABLE',s:'muscle length',ok:true,col:TEAL},
+   {x:340,y:66,w:180,h:56,t:'SENSOR',s:'muscle spindle',ok:broken!=='sensor',col:BLUE},
+   {x:560,y:66,w:180,h:56,t:'AFFERENT',s:'Ia, 80–120 m/s',ok:broken!=='aff',col:BLUE},
+   {x:780,y:66,w:180,h:56,t:'INTEGRATOR',s:'spinal cord',ok:broken!=='integ',col:PURP},
+   {x:560,y:166,w:180,h:56,t:'EFFECTOR',s:'extrafusal fibers',ok:broken!=='eff',col:GOLD},
+   {x:340,y:166,w:180,h:56,t:'RESPONSE',s:positive?'contraction (+)':'contraction (−)',ok:true,col:positive?CORAL:GREEN}
+  ];
+  nodes.forEach(function(n){
+    g.fillStyle=n.ok?n.col:CORAL; g.globalAlpha=n.ok?0.14:0.22; g.fillRect(n.x,n.y,n.w,n.h); g.globalAlpha=1;
+    g.strokeStyle=n.ok?n.col:CORAL; g.lineWidth=n.ok?2.5:3.5;
+    if(!n.ok) g.setLineDash([6,4]);
+    g.strokeRect(n.x,n.y,n.w,n.h); g.setLineDash([]);
+    g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(n.t,n.x+n.w/2,n.y+24);
+    g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+    g.fillText(n.s,n.x+n.w/2,n.y+43);
+    if(!n.ok){
+      g.strokeStyle=CORAL; g.lineWidth=4;
+      g.beginPath(); g.moveTo(n.x+n.w-22,n.y+10); g.lineTo(n.x+n.w-8,n.y+24);
+      g.moveTo(n.x+n.w-8,n.y+10); g.lineTo(n.x+n.w-22,n.y+24); g.stroke();
+    }
+  });
+  function link(a,b,vert){
+    g.strokeStyle=MUT; g.lineWidth=3;
+    g.beginPath();
+    if(vert){ g.moveTo(a.x+a.w/2,a.y+a.h); g.lineTo(b.x+b.w/2,b.y); }
+    else { g.moveTo(a.x+a.w,a.y+a.h/2); g.lineTo(b.x,b.y+b.h/2); }
+    g.stroke();
+    var ex=vert?b.x+b.w/2:b.x, ey=vert?b.y:b.y+b.h/2;
+    g.fillStyle=MUT; g.beginPath();
+    if(vert){ g.moveTo(ex,ey); g.lineTo(ex-7,ey-12); g.lineTo(ex+7,ey-12); }
+    else { g.moveTo(ex,ey); g.lineTo(ex-12,ey-7); g.lineTo(ex-12,ey+7); }
+    g.closePath(); g.fill();
+  }
+  link(nodes[0],nodes[1]); link(nodes[1],nodes[2]); link(nodes[2],nodes[3]);
+  g.strokeStyle=MUT; g.lineWidth=3;
+  g.beginPath(); g.moveTo(nodes[3].x+nodes[3].w/2,nodes[3].y+nodes[3].h); g.lineTo(nodes[3].x+nodes[3].w/2,194); g.lineTo(nodes[4].x+nodes[4].w,194); g.stroke();
+  g.fillStyle=MUT; g.beginPath(); g.moveTo(nodes[4].x+nodes[4].w,194); g.lineTo(nodes[4].x+nodes[4].w+12,187); g.lineTo(nodes[4].x+nodes[4].w+12,201); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(nodes[4].x,194); g.lineTo(nodes[5].x+nodes[5].w,194); g.stroke();
+  g.strokeStyle=positive?CORAL:GREEN; g.lineWidth=3.5;
+  g.beginPath(); g.moveTo(nodes[5].x+nodes[5].w/2,nodes[5].y); g.lineTo(nodes[5].x+nodes[5].w/2,144); g.lineTo(210,144); g.lineTo(210,122); g.stroke();
+  g.fillStyle=positive?CORAL:GREEN; g.beginPath(); g.moveTo(210,122); g.lineTo(203,134); g.lineTo(217,134); g.closePath(); g.fill();
+  g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(positive?'response REINFORCES the change (+)':'response OPPOSES the change (−)',232,140);
+
+  /* traces */
+  var L=110,R=W-30,A1=[262,406],A2=[452,H-56];
+  var P=S.p, i, pk=0, mxS=0.001;
+  for(i=0;i<P.length;i++){ if(P[i].L>pk)pk=P[i].L; if(P[i].sp>mxS)mxS=P[i].sp; if(P[i].mn>mxS)mxS=P[i].mn; }
+  var yTop=Math.max(0.14,pk*1.25), yBot=-yTop*0.30;
+  function X(t){return L+(t/S.TOT)*(R-L);}
+  function Y1(v){return A1[1]-((v-yBot)/(yTop-yBot))*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-clamp(v/(mxS*1.15),0,1)*(A2[1]-A2[0]);}
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=0;i<=4;i++){
+    var vv=yBot+(yTop-yBot)*i/4;
+    g.beginPath(); g.moveTo(L,Y1(vv)); g.lineTo(R,Y1(vv)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText((vv*100).toFixed(1)+'%',L-10,Y1(vv)+5);
+  }
+  g.strokeStyle=GREEN; g.lineWidth=2; g.setLineDash([5,5]);
+  g.beginPath(); g.moveTo(L,Y1(0)); g.lineTo(R,Y1(0)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GREEN; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('resting muscle length — the set point', L+8, Y1(0)-8);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('The regulated variable: muscle length', L, A1[0]-12);
+  g.strokeStyle=TEAL; g.lineWidth=3.5; g.beginPath();
+  for(i=0;i<P.length;i++){ var x=X(P[i].t),y=Y1(clamp(P[i].L,yBot,yTop)); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+  g.fillStyle=GOLD; g.globalAlpha=0.22; g.fillRect(X(60),A1[0],X(80)-X(60),A1[1]-A1[0]); g.globalAlpha=1;
+  g.fillStyle=GOLD; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('tendon tapped', X(60)+6, A1[0]+16);
+
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y2(mxS*1.15*i/4)); g.lineTo(R,Y2(mxS*1.15*i/4)); g.stroke(); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Spindle firing (blue) and motor neuron output (coral), 28 ms apart', L, A2[0]-12);
+  g.strokeStyle=BLUE; g.lineWidth=3; g.beginPath();
+  for(i=0;i<P.length;i++){ var x2=X(P[i].t),y2=Y2(P[i].sp); if(i===0)g.moveTo(x2,y2); else g.lineTo(x2,y2); }
+  g.stroke();
+  g.strokeStyle=CORAL; g.lineWidth=3; g.beginPath();
+  for(i=0;i<P.length;i++){ var x3=X(P[i].t),y3=Y2(P[i].mn); if(i===0)g.moveTo(x3,y3); else g.lineTo(x3,y3); }
+  g.stroke();
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=500;i+=50){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A2[1]); g.lineTo(X(i),A2[1]+6); g.stroke();
+    g.fillText(i,X(i),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('MILLISECONDS',(L+R)/2,A2[1]+42);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

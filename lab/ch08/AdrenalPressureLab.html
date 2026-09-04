@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Salt, Sugar and Speed: RAAS, Cortisol and the Permissive Effect</title>
+<meta name="description" content="Bleed a patient, restrict salt, block the renin system at four different points and watch blood pressure move through both terms of Q times R, then take cortisol away and find out why pressors stop working.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;white-space:nowrap;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.dr.on{background:var(--coral);border-color:var(--coral);}
+svg{display:block;width:100%;height:auto;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.bp{display:flex;align-items:baseline;gap:12px;border:1px solid var(--line);border-radius:12px;padding:12px 15px;background:#fff;margin-top:12px;}
+.bp .big{font-family:var(--disp);font-size:34px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1;}
+.bp .sm{font-size:12px;color:var(--muted);font-weight:700;line-height:1.4;}
+.eq{border:1px dashed var(--line);border-radius:11px;padding:10px 12px;margin-top:10px;text-align:center;font-size:14px;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.eq span{color:var(--muted);font-weight:700;font-size:11.5px;display:block;margin-top:4px;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#fff;}
+.lab .k{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10px;color:var(--muted);line-height:1.3;}
+.pill{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:4px;}
+.pill.normal{background:#fff;color:var(--green);border:1px solid var(--green);}
+.pill.high{background:var(--coral);color:#fff;}
+.pill.low{background:var(--blue);color:#fff;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:16px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch08.html">&larr; Module 8</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 8</div>
+  <h1>Salt, Sugar and Speed</h1>
+  <div class="intro">One gland, two embryological origins, three jobs. The cortex defends <b>volume</b> with aldosterone and <b>fuel</b> with cortisol over hours; the medulla delivers a catecholamine surge in seconds &mdash; and cortisol is what makes that surge work at all. Use <b>&Delta;P = Q &times; R</b> as your guide: bleed the patient, restrict salt, block the renin system at four different points, and watch which term on the right actually moved.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Do something to the patient</div>
+      <div class="chips" id="chal"></div>
+
+      <div class="lbl">Block the system somewhere</div>
+      <div class="chips" id="drugs"></div>
+
+      <div class="sl"><label for="sV">Extracellular volume before the loop responds <span class="v" id="vV">100%</span></label>
+        <input type="range" id="sV" min="70" max="120" value="100" step="1" aria-label="Extracellular fluid volume as a percent of normal, before the renin system responds"></div>
+      <div class="sl"><label for="sC">Cortisol available <span class="v" id="vC">100%</span></label>
+        <input type="range" id="sC" min="0" max="200" value="100" step="1" aria-label="Cortisol available, percent of a normal morning level"></div>
+      <div class="row">
+        <button class="btn" type="button" id="bPress">Sympathetic surge / give a pressor</button>
+        <button class="btn solid" type="button" id="bHydro">Give hydrocortisone</button>
+      </div>
+      <div class="hint"><b>The medulla is not a gland in the usual sense.</b> Chromaffin cells are modified postganglionic sympathetic neurons that lost their axons: preganglionic fibers release acetylcholine onto them and they secrete straight into the blood. That is why the catecholamine effect reaches tissues with no sympathetic innervation and outlasts nerve traffic by a few minutes &mdash; and why cortical venous blood, extremely rich in cortisol, drains through the medulla and induces the enzyme that turns norepinephrine into epinephrine. The stress axis physically feeds itself.</div>
+    </div>
+
+    <div class="card">
+      <h2>The cortisol clock</h2>
+      <canvas id="cvC" width="700" height="240" aria-label="Twenty-four hour curve of plasma cortisol showing the early morning peak and the near-midnight trough, with a marker at the selected time of day"></canvas>
+      <div class="sl"><label for="sT">Time of day <span class="v" id="vT">07:00</span></label>
+        <input type="range" id="sT" min="0" max="235" value="70" step="1" aria-label="Time of day, in tenths of an hour"></div>
+      <div class="chips" id="clockChips" style="margin-top:8px;"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Plasma cortisol now</div><div class="v" id="oCort">16.0</div><div class="u">&micro;g/dL</div></div>
+        <div class="lab"><div class="k">Daily output</div><div class="v" id="oOut">17</div><div class="u">mg/day</div></div>
+        <div class="lab"><div class="k">ACTH pattern</div><div class="v" id="oACTH" style="font-size:15px;">Normal</div><div class="u">read with cortisol</div></div>
+      </div>
+      <div class="hint" id="clockNote"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Renin &rarr; angiotensin &rarr; aldosterone, live</h2>
+      <svg id="casc" viewBox="0 0 700 330" role="img" aria-label="Flow diagram of the renin angiotensin aldosterone system with live levels at each step and crosses where a drug is blocking"></svg>
+      <div class="bp">
+        <div class="big" id="mapBig">93</div>
+        <div class="sm">mmHg mean arterial pressure<br><span id="mapNote">baseline, nothing done</span></div>
+      </div>
+      <div class="eq" id="eq">&Delta;P = Q &times; R</div>
+      <div class="labs">
+        <div class="lab"><div class="k">Renin</div><div class="v" id="oRen">1.00</div><div class="u">&times; normal</div></div>
+        <div class="lab"><div class="k">Angiotensin II at AT1</div><div class="v" id="oAng">1.00</div><div class="u">&times; normal</div></div>
+        <div class="lab"><div class="k">Aldosterone effect</div><div class="v" id="oAld">1.00</div><div class="u">&times; normal</div></div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Serum sodium</div><div class="v" id="oNa">140</div><div class="u">mEq/L</div><div id="pNa"></div></div>
+        <div class="lab"><div class="k">Serum potassium</div><div class="v" id="oK">4.0</div><div class="u">mEq/L &middot; 3.5&ndash;5.0</div><div id="pK"></div></div>
+        <div class="lab"><div class="k">Volume after the loop</div><div class="v" id="oVol">100</div><div class="u">percent of normal</div></div>
+      </div>
+      <div class="verdict" id="verd">&nbsp;</div>
+    </div>
+
+    <div class="card">
+      <h2>Why cortisol has to be there</h2>
+      <svg id="perm" viewBox="0 0 700 130" role="img" aria-label="Bar comparison showing how much vasoconstriction the same catecholamine signal produces at the current cortisol level"></svg>
+      <div class="hint"><b>Permissive means one hormone must be present for another to work at full strength.</b> Without cortisol, catecholamines cannot maintain vascular tone. That is precisely why an adrenal crisis presents as hypotension that responds poorly to fluids and to pressors <b>until hydrocortisone is given</b>. Drop the cortisol slider to zero, press the pressor button, and watch how little happens; then give hydrocortisone.</div>
+      <div class="hint"><b>Read the pair, again.</b> Low cortisol with a <b>high</b> ACTH means the adrenal cortex has failed &mdash; and because the zona glomerulosa fails too, expect hyponatremia, hyperkalemia and hyperpigmentation from the ACTH precursor peptide. Low cortisol with a <b>low</b> ACTH means the pituitary has failed or steroids were withdrawn; aldosterone, which is driven by angiotensin II and potassium rather than by ACTH, is largely preserved, so potassium is usually normal.</div>
+      <div class="hint"><b>A note on the model.</b> Baseline mean arterial pressure is taken as 93 mmHg and every hormone here is expressed as a multiple of its normal value, so you can see the direction and the relative size of each change. The baroreceptor reflex from Module 6 would blunt these swings within a few heartbeats &mdash; this panel deliberately shows the hormonal contribution on its own.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function V(n){return CS.getPropertyValue(n).trim();}
+var C_TEAL=V('--teal'),C_TEALD=V('--teal-dk'),C_CORAL=V('--coral'),C_LINE=V('--line'),C_MUTED=V('--muted'),
+    C_GOLD=V('--gold'),C_BLUE=V('--blue'),C_PURPLE=V('--purple'),C_GREEN=V('--green'),C_SOFT=V('--soft');
+
+var CHAL=[
+ {id:'norm',t:'Nothing &mdash; baseline',vol:100,cort:100,glom:1,ren:1,auto:0,k:0,acth:'Normal'},
+ {id:'hem',t:'Hemorrhage, 15% of volume',vol:85,cort:130,glom:1,ren:1,auto:0,k:0,acth:'Raised (stress)'},
+ {id:'salt',t:'Low-salt diet',vol:78,cort:100,glom:1,ren:1.9,auto:0,k:0,acth:'Normal'},
+ {id:'kup',t:'Plasma K⁺ up 0.2 mEq/L',vol:100,cort:100,glom:1,ren:1,auto:0,k:0.2,acth:'Normal'},
+ {id:'conn',t:'Autonomous aldosterone',vol:100,cort:100,glom:1,ren:0.06,auto:3.0,k:0,acth:'Normal'},
+ {id:'addi',t:'Primary adrenal failure',vol:96,cort:12,glom:0.08,ren:1,auto:0,k:0,acth:'HIGH'},
+ {id:'sec',t:'Pituitary failure',vol:100,cort:30,glom:1,ren:1,auto:0,k:0,acth:'Low'},
+ {id:'with',t:'Prednisone stopped abruptly',vol:100,cort:6,glom:1,ren:1,auto:0,k:0,acth:'Low'}
+];
+var DRUGS=[
+ {id:'acei',t:'ACE inhibitor'},
+ {id:'arb',t:'Angiotensin receptor blocker'},
+ {id:'spir',t:'Aldosterone antagonist'},
+ {id:'bb',t:'Beta-1 blocker (less renin)'}
+];
+var chal=CHAL[0], dr={acei:false,arb:false,spir:false,bb:false}, volS=1, cortS=1, pressor=false, tod=7.0, stress=false, exo=false;
+
+var cc=document.getElementById('chal');
+CHAL.forEach(function(c,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=c.t;
+  b.setAttribute('aria-pressed',i===0?'true':'false');
+  b.addEventListener('click',function(){
+    chal=c; volS=c.vol/100; cortS=c.cort/100;
+    document.getElementById('sV').value=c.vol; document.getElementById('sC').value=c.cort;
+    document.getElementById('vV').textContent=c.vol+'%'; document.getElementById('vC').textContent=c.cort+'%';
+    [].forEach.call(cc.children,function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+    this.classList.add('on'); this.setAttribute('aria-pressed','true'); render();
+  });
+  cc.appendChild(b);
+});
+var dc=document.getElementById('drugs');
+DRUGS.forEach(function(d){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip dr'; b.textContent=d.t; b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',function(){
+    dr[d.id]=!dr[d.id]; this.classList.toggle('on',dr[d.id]);
+    this.setAttribute('aria-pressed',dr[d.id]?'true':'false'); render();
+  });
+  dc.appendChild(b);
+});
+document.getElementById('sV').addEventListener('input',function(){volS=+this.value/100;document.getElementById('vV').textContent=this.value+'%';render();});
+document.getElementById('sC').addEventListener('input',function(){cortS=+this.value/100;document.getElementById('vC').textContent=this.value+'%';render();});
+document.getElementById('bPress').addEventListener('click',function(){pressor=!pressor;this.classList.toggle('solid',pressor);
+  this.textContent=pressor?'Stop the pressor':'Sympathetic surge / give a pressor';render();});
+document.getElementById('bHydro').addEventListener('click',function(){
+  cortS=1;document.getElementById('sC').value=100;document.getElementById('vC').textContent='100%';render();});
+
+/* ---------- clock ---------- */
+var CLK=[{id:'stress',t:'Major stress (surgery, sepsis)'},{id:'exo',t:'On long-term prednisone'}];
+var kc=document.getElementById('clockChips');
+CLK.forEach(function(c){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'; b.textContent=c.t; b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',function(){
+    if(c.id==='stress'){stress=!stress;this.classList.toggle('on',stress);this.setAttribute('aria-pressed',stress?'true':'false');}
+    else {exo=!exo;this.classList.toggle('on',exo);this.setAttribute('aria-pressed',exo?'true':'false');}
+    drawClock();
+  });
+  kc.appendChild(b);
+});
+document.getElementById('sT').addEventListener('input',function(){tod=+this.value/10;drawClock();});
+function cortAt(t){
+  var v;
+  if(t>=3 && t<7) v=4.17+11.83*(0.5-0.5*Math.cos(Math.PI*(t-3)/4));
+  else if(t>=7 && t<23) v=3.6+12.4*Math.exp(-(t-7)/5.2);
+  else { var u=(t>=23)?t-23:t+1; v=4.17-0.8*Math.sin(Math.PI*u/4); }
+  if(exo) v=Math.min(v,0.9);
+  if(stress) v=v*3.1+8;
+  return v;
+}
+var cvC=document.getElementById('cvC'), ctxC=cvC.getContext('2d');
+(function(){var d=Math.min(2,window.devicePixelRatio||1);cvC.width=700*d;cvC.height=240*d;ctxC.setTransform(d,0,0,d,0,0);})();
+function drawClock(){
+  var W=700,H=240,L=46,R=14,T=14,B=34,pw=W-L-R,ph=H-T-B, ymax=stress?62:24;
+  ctxC.clearRect(0,0,W,H);
+  ctxC.strokeStyle=C_LINE;ctxC.lineWidth=1;ctxC.fillStyle=C_MUTED;ctxC.font='600 10.5px Inter,system-ui,sans-serif';
+  for(var g=0;g<=4;g++){var y=T+ph*g/4;ctxC.beginPath();ctxC.moveTo(L,y);ctxC.lineTo(L+pw,y);ctxC.stroke();
+    ctxC.textAlign='right';ctxC.fillText(Math.round(ymax*(1-g/4)),L-7,y+3.5);}
+  for(var i=0;i<=8;i++){var x=L+pw*i/8;ctxC.textAlign='center';ctxC.fillText((i*3)+':00',x,H-B+15);}
+  ctxC.fillText('time of day',L+pw/2,H-B+29);
+  ctxC.save();ctxC.translate(13,T+ph/2);ctxC.rotate(-Math.PI/2);ctxC.textAlign='center';ctxC.fillText('cortisol (µg/dL)',0,0);ctxC.restore();
+  /* morning peak band 10-20 */
+  var y10=T+ph*(1-10/ymax), y20=T+ph*(1-Math.min(1,20/ymax));
+  ctxC.fillStyle=C_GOLD;ctxC.globalAlpha=.13;ctxC.fillRect(L,y20,pw,y10-y20);ctxC.globalAlpha=1;
+  ctxC.fillStyle=C_GOLD;ctxC.font='700 9.5px Inter,system-ui,sans-serif';ctxC.textAlign='left';
+  ctxC.fillText('morning peak band, 10–20 µg/dL',L+6,y20-3);
+  var y5=T+ph*(1-5/ymax);
+  ctxC.strokeStyle=C_BLUE;ctxC.setLineDash([4,4]);ctxC.beginPath();ctxC.moveTo(L,y5);ctxC.lineTo(L+pw,y5);ctxC.stroke();ctxC.setLineDash([]);
+  ctxC.fillStyle=C_BLUE;ctxC.fillText('midnight trough, under 5 µg/dL',L+6,y5-4);
+  ctxC.beginPath();ctxC.strokeStyle=C_TEAL;ctxC.lineWidth=3;
+  for(var i2=0;i2<=480;i2++){
+    var t=i2/20, v=cortAt(t), x=L+pw*t/24, y=T+ph*(1-Math.min(1,v/ymax));
+    i2?ctxC.lineTo(x,y):ctxC.moveTo(x,y);
+  }
+  ctxC.stroke();
+  var cx=L+pw*tod/24, cv=cortAt(tod), cy=T+ph*(1-Math.min(1,cv/ymax));
+  ctxC.strokeStyle=C_CORAL;ctxC.lineWidth=1.6;ctxC.beginPath();ctxC.moveTo(cx,T);ctxC.lineTo(cx,T+ph);ctxC.stroke();
+  ctxC.beginPath();ctxC.arc(cx,cy,6.5,0,6.2832);ctxC.fillStyle=C_CORAL;ctxC.fill();
+  ctxC.strokeStyle='#fff';ctxC.lineWidth=2.2;ctxC.stroke();
+  ctxC.strokeStyle=C_LINE;ctxC.lineWidth=1;ctxC.beginPath();ctxC.moveTo(L,T);ctxC.lineTo(L,T+ph);ctxC.lineTo(L+pw,T+ph);ctxC.stroke();
+
+  var hh=Math.floor(tod), mm=Math.round((tod-hh)*60); if(mm===60){mm=0;hh++;}
+  document.getElementById('vT').textContent=(hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm;
+  document.getElementById('oCort').textContent=cv.toFixed(1);
+  document.getElementById('oOut').textContent=exo?'<2':(stress?'50–90':'15–20');
+  document.getElementById('clockNote').innerHTML=exo
+    ? '<b>Suppressed.</b> Exogenous glucocorticoid inhibits both CRH and ACTH, so the endogenous rhythm flattens. Keep this up for weeks and the zona fasciculata atrophies &mdash; and then an abrupt stop leaves a gland that cannot answer a demand. That is an adrenal crisis waiting for its trigger.'
+    : (stress
+      ? '<b>Stressed.</b> Surgery, sepsis, trauma and hypoglycemia all drive the axis several-fold above the usual 15&ndash;20 mg a day. The rhythm is still there; the whole curve has simply been lifted.'
+      : '<b>Normal rhythm.</b> Hypothalamic CRH pulses put the peak at around 6&ndash;8 a.m. (roughly 10&ndash;20 &micro;g/dL) and the trough near midnight (under about 5 &micro;g/dL). A single cortisol value means nothing until you know what time it was drawn.');
+}
+
+/* ---------- model ---------- */
+function model(){
+  var renin=1*(1+3.6*(1-volS))*chal.ren*(dr.bb?0.42:1);
+  if(chal.auto>0) renin=0.06;
+  renin=Math.max(0.04,Math.min(8,renin));
+  var ang1=renin;
+  var angII=ang1*(dr.acei?0.18:1);
+  var at1=angII*(dr.arb?0.15:1);
+  var kStim=1+2.2*chal.k;
+  var aldo=chal.auto>0 ? chal.auto : chal.glom*(0.25+0.75*at1)*kStim;
+  var aldoEff=aldo*(dr.spir?0.20:1);
+  var aE=Math.max(0,Math.min(3,aldoEff));
+  var vol=volS*(1+0.08*(aE-1));
+  var Q=Math.pow(Math.max(0.4,vol),2.0)*(pressor?1.08:1);
+  var perm=0.62+0.38*Math.min(1.3,cortS);
+  var R=(1+0.12*(at1-1))*perm*(pressor?(1+0.30*Math.min(1.3,cortS)):1);
+  var map=93*Q*R;
+  var K, Na, kEff=aE*Math.max(0.5,Math.min(1.5,vol));
+  if(aE<1){K=4.0+1.4*(1-aE); Na=140-7*(1-aE);}
+  else {K=4.0-0.45*Math.max(0,kEff-1); Na=140+1.5*(aE-1);}
+  K+=chal.k; K=Math.max(2.2,Math.min(7.6,K)); Na=Math.max(118,Math.min(150,Na));
+  return {renin:renin,angII:angII,at1:at1,aldo:aldo,aldoEff:aE,vol:vol,Q:Q,R:R,map:map,K:K,Na:Na,perm:perm};
+}
+
+/* ---------- cascade drawing ---------- */
+function drawCasc(m){
+  var s='<rect x="0" y="0" width="700" height="330" fill="#fff"/>';
+  s+='<defs><marker id="ra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+C_TEALD+'"/></marker></defs>';
+  var boxes=[
+   {x:12,t:'Juxtaglomerular cell',d:'low perfusion pressure, beta-1 drive, low NaCl at macula densa',v:m.renin.toFixed(2)+'× renin',col:C_TEAL,blocked:dr.bb},
+   {x:186,t:'Angiotensinogen',d:'made by the liver, always circulating',v:'substrate',col:C_MUTED,blocked:false},
+   {x:360,t:'Angiotensin I',d:'converted by ACE in pulmonary capillary endothelium',v:m.angII.toFixed(2)+'× Ang II',col:C_BLUE,blocked:dr.acei},
+   {x:534,t:'AT1 receptor',d:'vasoconstriction, thirst and ADH, aldosterone',v:m.at1.toFixed(2)+'× signal',col:C_PURPLE,blocked:dr.arb}
+  ];
+  boxes.forEach(function(b,i){
+    s+='<rect x="'+b.x+'" y="16" width="154" height="92" rx="12" fill="'+b.col+'" opacity=".11"/>';
+    s+='<rect x="'+b.x+'" y="16" width="154" height="92" rx="12" fill="none" stroke="'+b.col+'" stroke-width="2"/>';
+    s+='<text x="'+(b.x+10)+'" y="36" font-family="Inter" font-size="11.5" font-weight="800" fill="'+C_TEALD+'">'+b.t+'</text>';
+    var words=b.d.split(' '), ln='', y=52;
+    for(var w=0;w<words.length;w++){
+      if((ln+words[w]).length>25){s+='<text x="'+(b.x+10)+'" y="'+y+'" font-family="Inter" font-size="9.6" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>';ln='';y+=11.5;}
+      ln+=words[w]+' ';
+    }
+    s+='<text x="'+(b.x+10)+'" y="'+y+'" font-family="Inter" font-size="9.6" font-weight="600" fill="'+C_SOFT+'">'+ln+'</text>';
+    s+='<text x="'+(b.x+10)+'" y="101" font-family="Inter" font-size="11.5" font-weight="800" fill="'+b.col+'">'+b.v+'</text>';
+    if(i<3){ s+='<path d="M'+(b.x+158)+' 62 L'+(b.x+180)+' 62" stroke="'+C_TEALD+'" stroke-width="2.4" marker-end="url(#ra)"/>'; }
+    if(b.blocked){ s+='<text x="'+(b.x+150)+'" y="40" text-anchor="end" font-family="Inter" font-size="19" font-weight="800" fill="'+C_CORAL+'">✕</text>'; }
+  });
+  /* branches */
+  var br=[
+   {x:12,t:'Arteriolar constriction',v:'R = '+m.R.toFixed(2)+'× normal',col:C_CORAL,f:Math.min(1,m.R/1.6)},
+   {x:245,t:'Thirst and ADH',v:'water retained',col:C_BLUE,f:Math.min(1,m.at1/2)},
+   {x:478,t:'Aldosterone',v:m.aldoEff.toFixed(2)+'× effect'+(dr.spir?' (blocked)':''),col:C_GOLD,f:Math.min(1,m.aldoEff/2)}
+  ];
+  br.forEach(function(b){
+    s+='<path d="M611 112 C 611 140, '+(b.x+100)+' 130, '+(b.x+100)+' 156" fill="none" stroke="'+b.col+'" stroke-width="'+(2+3*b.f)+'" opacity=".75" marker-end="url(#ra)"/>';
+    s+='<rect x="'+b.x+'" y="160" width="210" height="52" rx="12" fill="'+b.col+'" opacity=".11"/>';
+    s+='<text x="'+(b.x+12)+'" y="182" font-family="Inter" font-size="11.5" font-weight="800" fill="'+C_TEALD+'">'+b.t+'</text>';
+    s+='<text x="'+(b.x+12)+'" y="200" font-family="Inter" font-size="11" font-weight="700" fill="'+b.col+'">'+b.v+'</text>';
+  });
+  /* collecting duct */
+  s+='<rect x="12" y="230" width="676" height="86" rx="13" fill="'+C_TEAL+'" opacity=".08"/>';
+  s+='<rect x="12" y="230" width="676" height="86" rx="13" fill="none" stroke="'+C_TEAL+'" stroke-width="2"/>';
+  s+='<text x="26" y="252" font-family="Inter" font-size="12" font-weight="800" fill="'+C_TEALD+'">Collecting duct principal cell &mdash; aldosterone is a steroid, so this takes 1&ndash;2 hours</text>';
+  s+='<text x="26" y="272" font-family="Inter" font-size="10.8" font-weight="600" fill="'+C_SOFT+'">More epithelial sodium channels on the apical side, more Na⁺/K⁺-ATPase on the basolateral side.</text>';
+  s+='<text x="26" y="288" font-family="Inter" font-size="10.8" font-weight="600" fill="'+C_SOFT+'">Sodium in, water follows osmotically, potassium and hydrogen ion out into the tubular fluid.</text>';
+  s+='<text x="26" y="306" font-family="Inter" font-size="11" font-weight="800" fill="'+C_TEAL+'">Volume now '+Math.round(m.vol*100)+'% of normal &nbsp;·&nbsp; Q = '+m.Q.toFixed(2)+'× normal &nbsp;·&nbsp; serum K⁺ '+m.K.toFixed(1)+' mEq/L</text>';
+  document.getElementById('casc').innerHTML=s;
+}
+function drawPerm(m){
+  var base=1.0, got=Math.min(1.3,cortS);
+  var full=0.62+0.38*1.0, now=m.perm;
+  var s='<rect x="0" y="0" width="700" height="130" fill="#fff"/>';
+  s+='<text x="14" y="20" font-family="Inter" font-size="11.5" font-weight="800" fill="'+C_MUTED+'">THE SAME CATECHOLAMINE SIGNAL, AT TWO CORTISOL LEVELS</text>';
+  var rows=[{y:34,t:'With normal cortisol',f:1,col:C_TEAL},{y:80,t:'At your current cortisol ('+Math.round(cortS*100)+'%)',f:now/full,col:(now/full<0.8?C_CORAL:C_TEAL)}];
+  rows.forEach(function(r){
+    s+='<text x="14" y="'+(r.y+13)+'" font-family="Inter" font-size="11.5" font-weight="800" fill="'+C_TEALD+'">'+r.t+'</text>';
+    s+='<rect x="14" y="'+(r.y+20)+'" width="560" height="18" rx="9" fill="'+C_LINE+'"/>';
+    s+='<rect x="14" y="'+(r.y+20)+'" width="'+Math.max(6,560*r.f)+'" height="18" rx="9" fill="'+r.col+'"/>';
+    s+='<text x="586" y="'+(r.y+34)+'" font-family="Inter" font-size="12" font-weight="800" fill="'+r.col+'">'+Math.round(r.f*100)+'% of the tone</text>';
+  });
+  document.getElementById('perm').innerHTML=s;
+}
+function pill(v,lo,hi){
+  if(v<lo) return '<span class="pill low">Low</span>';
+  if(v>hi) return '<span class="pill high">High</span>';
+  return '<span class="pill normal">Normal</span>';
+}
+
+function render(){
+  var m=model();
+  drawCasc(m); drawPerm(m);
+  document.getElementById('mapBig').textContent=Math.round(m.map);
+  document.getElementById('oRen').textContent=m.renin.toFixed(2);
+  document.getElementById('oAng').textContent=m.at1.toFixed(2);
+  document.getElementById('oAld').textContent=m.aldoEff.toFixed(2);
+  document.getElementById('oNa').textContent=Math.round(m.Na);
+  document.getElementById('oK').textContent=m.K.toFixed(1);
+  document.getElementById('oVol').textContent=Math.round(m.vol*100);
+  document.getElementById('pNa').innerHTML=pill(m.Na,135,145);
+  document.getElementById('pK').innerHTML=pill(m.K,3.5,5.0);
+  document.getElementById('oACTH').textContent=chal.acth;
+  document.getElementById('eq').innerHTML='&Delta;P = Q &times; R &nbsp;&rarr;&nbsp; '+Math.round(m.map)+' mmHg = 93 &times; '+m.Q.toFixed(2)+' &times; '+m.R.toFixed(2)+
+    '<span>flow term Q comes from the volume aldosterone retains &middot; resistance term R comes from angiotensin II and from catecholamines that need cortisol to work</span>';
+  document.getElementById('mapNote').innerHTML=chal.t+(pressor?' &middot; pressor running':'')+
+    (dr.acei||dr.arb||dr.spir||dr.bb?' &middot; system blocked':'');
+
+  var v=document.getElementById('verd'), cls='ok', head='', sub='';
+  if(m.map<62){
+    cls='bad'; head='Mean arterial pressure '+Math.round(m.map)+' mmHg &mdash; this is shock.';
+    sub=(cortS<0.4)
+      ? 'Look at the resistance term. Without cortisol, catecholamines cannot hold vascular tone, so R has collapsed and a pressor barely moves it. Fluids will not fix this either. Give hydrocortisone and watch R recover &mdash; that is the permissive effect, seen as a number.'
+      : 'Both terms are down: volume has fallen so Q fell, and there is not enough angiotensin II to raise R. The renin system is trying, but it takes 1&ndash;2 hours for aldosterone to build sodium channels, because it is a steroid and must transcribe.';
+  } else if(m.map<78){
+    cls='warn'; head='Pressure is low at '+Math.round(m.map)+' mmHg &mdash; find out which term moved.';
+    sub='Q is '+m.Q.toFixed(2)+'× and R is '+m.R.toFixed(2)+'×. Blocking the renin system anywhere removes both: angiotensin II was raising R by constricting arterioles, and aldosterone was raising Q by expanding the volume that fills the vascular compartment. That is exactly why ACE inhibitors, receptor blockers and aldosterone antagonists are such effective antihypertensives.';
+  } else if(m.map>108){
+    cls='cool'; head='Pressure is high at '+Math.round(m.map)+' mmHg.';
+    sub=(chal.id==='conn')
+      ? 'Aldosterone is being made autonomously, so renin is suppressed by the expanded volume &mdash; a high aldosterone with a low renin is the fingerprint. Sodium and water are retained together, so serum sodium barely rises while volume climbs; potassium and hydrogen ion are dumped, so the potassium falls.'
+      : 'Volume and resistance are both above normal. Remember that aldosterone retains sodium <b>and</b> water, so it expands the compartment rather than raising the sodium concentration.';
+  } else {
+    cls='ok'; head='Mean arterial pressure '+Math.round(m.map)+' mmHg &mdash; defended.';
+    sub='Renin '+m.renin.toFixed(2)+'×, angiotensin II signal '+m.at1.toFixed(2)+'×, aldosterone effect '+m.aldoEff.toFixed(2)+'×. Watch how a fall in perfusion pressure, a beta-1 signal, or a low sodium chloride load at the macula densa all start the same cascade.';
+  }
+  if(m.K>5.0){
+    sub+=' <b>Potassium is '+m.K.toFixed(1)+' mEq/L.</b> Aldosterone normally drives potassium secretion in the collecting duct, so less aldosterone means less potassium loss &mdash; which is why blocking this system anywhere tends to raise serum potassium.';
+  } else if(m.K<3.5){
+    sub+=' <b>Potassium is '+m.K.toFixed(1)+' mEq/L.</b> Too much aldosterone secretes too much potassium.';
+  }
+  if(chal.k>0){
+    sub+=' <b>Note the second trigger.</b> A rise in plasma potassium of only 0.1&ndash;0.2 mEq/L stimulates aldosterone directly, without renin at all &mdash; which makes aldosterone the primary defense of potassium balance as well as of volume.';
+  }
+  if(chal.id==='addi'){
+    sub+=' <b>Read the pair:</b> low cortisol with a HIGH ACTH means the cortex itself failed, and the zona glomerulosa failed with it &mdash; hence the low sodium and high potassium here.';
+  }
+  if(chal.id==='sec'||chal.id==='with'){
+    sub+=' <b>Read the pair:</b> low cortisol with a LOW ACTH points above the gland. Aldosterone is driven by angiotensin II and potassium rather than by ACTH, so it is largely preserved and the potassium stays normal.';
+  }
+  v.className='verdict '+cls; v.innerHTML=head+'<small>'+sub+'</small>';
+}
+drawClock(); render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>Bones and Skeletal Physiology &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Bone looks like the most static tissue in the body and is in fact one of the busiest. It is a living two-phase composite &mdash; mineral crystals grown inside a collagen scaffold &mdash; that is continuously torn down and rebuilt ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 4 &middot; Bones and Skeletal Physiology</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#bone-as-tissue">1 &middot; Bone as a Working Tissue: Composite Mechanics and Cellular Machinery</a>
+        <a href="#ossification">2 &middot; Building the Skeleton: Ossification, the Growth Plate and Modeling</a>
+        <a href="#remodeling">3 &middot; Remodeling: The Mechanostat and the RANKL Switch</a>
+        <a href="#mineral-homeostasis">4 &middot; Calcium and Phosphate Homeostasis: The Skeleton as a Bank</a>
+        <a href="#joints-and-repair">5 &middot; Joints, Levers and Repair: The Skeleton in Motion and After Injury</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 4</div>
+<h1>Bones and Skeletal Physiology</h1>
+
+<p class="lede">Bone looks like the most still tissue in the body. It is really one of the busiest. Bone is a living two-phase composite. Mineral crystals grow inside a scaffold of collagen. Cell teams tear it down and build it back all the time. Those teams take orders from two different bosses. The first boss is mechanics. Osteocytes are bone cells buried in the matrix. They read the strain made by every step you take. Then they change the local bone mass to match. The skeleton ends up exactly as strong as its loading history demands. The second boss is chemistry. The skeleton holds roughly 1,000&ndash;1,200 g of calcium and about 600 g of phosphorus. The parathyroid glands will spend that mineral without hesitation. They do it to hold plasma ionized calcium within a few percent of 1.2 mmol/L. This module treats bone as physiology. That means gradients, pumps, feedback loops, forces and time courses. The named structures are only the hardware those processes run on.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain what the <b>mineral</b> and <b>collagen</b> parts of bone matrix each do. Mineral handles squeezing. Collagen handles pulling. Predict how bone fails when either part is faulty.</li>
+<li>Describe who does what among <b>osteoprogenitor cells</b>, <b>osteoblasts</b>, <b>osteocytes</b> and <b>osteoclasts</b>. Include the proton pump and the <b>cathepsin K</b> steps of resorption, which is bone breakdown.</li>
+<li>Compare <b>intramembranous</b> and <b>endochondral ossification</b>. Ossification means bone forming. Explain how the <b>epiphyseal plate</b> works as a cartilage conveyor that makes bone longer.</li>
+<li>Trace the <b>bone remodeling</b> cycle in real time. Explain the <b>RANKL / OPG / RANK</b> switch that sets how fast bone is removed.</li>
+<li>State the <b>mechanostat</b> model in microstrain. Predict what bone does with disuse, with normal loading and with overload.</li>
+<li>Draw the negative feedback loop that controls <b>ionized calcium</b>. Name the variable, the sensor (the <b>calcium-sensing receptor</b>), the integrator, the effectors and the responses. Give normal values and time courses.</li>
+<li>Explain what <b>parathyroid hormone</b>, <b>calcitriol</b>, <b>FGF23</b> and <b>calcitonin</b> do to gut, kidney and bone. Read a corrected calcium.</li>
+<li>Explain why joints have so little friction, using <b>interstitial fluid pressurization</b>. Work out muscle force from lever arms in a third-class lever.</li>
+<li>Put the stages of <b>fracture healing</b> in order. Explain why interfragmentary strain decides whether callus or direct bone union forms.</li>
+</ul></div>
+
+<h2 id="bone-as-tissue"><span class="num">Section 1</span>Bone as a Working Tissue: Composite Mechanics and Cellular Machinery</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch04_s1.jpg" alt="Cross-section of a long bone showing dense outer cortical bone, inner trabecular lattice, marrow cavity, periosteum and osteon structure with central canals" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Bone comes in two builds. One is a dense cortical shell. One is a porous trabecular lattice. Both are the same material. They are only arranged for different loads. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>A two-phase composite: why bone is stiff and tough at the same time</h3>
+
+<p>Engineering materials usually force a trade. Ceramics are stiff and resist being crushed. But they shatter. Polymers stretch and soak up energy. But they sag under load. Bone refuses to choose. By wet weight the matrix is roughly 65 percent mineral, 25 percent organic material and 10 percent water. About 90 percent of the organic part is <b>type I collagen</b>. The rest is a small set of non-collagenous proteins such as osteocalcin and osteopontin. They are few, but the tissue needs them. The mineral is <b>hydroxyapatite</b>, roughly Ca10(PO4)6(OH)2. It is laid down as flat, plate-like crystals. They are only 2&ndash;5 nm thick and about 50 nm long. Those crystals start <i>inside</i> the collagen fibril. They form in the 40 nm gap zones. Those gaps come from the staggered 67 nm packing of tropocollagen molecules. So bone is not a mixture. It is one material threaded through another at the nanometer scale.</p>
+
+<p>That build explains the mechanical numbers. Cortical bone has an elastic modulus near 17&ndash;20 GPa along its long axis. Elastic modulus, also called Young&rsquo;s modulus, is a measure of stiffness. Bone takes a squeeze of roughly 170&ndash;190 MPa before it fails. It takes a pull of roughly 120&ndash;135 MPa. The mineral carries most of the squeeze. The collagen carries most of the pull. Shear is the weak direction, at about 50&ndash;70 MPa. Shear means one layer sliding past another. That is why twisting injuries make spiral fractures. They do it at loads far below what the same bone handles in pure squeezing. Bone is also <b>anisotropic</b>. That means it is stronger in one direction than in another. It is about twice as strong along its usual loading line as across it. Bone is <b>viscoelastic</b> too. It is stiffer and stronger when the load comes on fast. A fall loads bone in milliseconds. It finds bone stiff but brittle. Slow loading finds bone softer and better at soaking up energy.</p>
+
+<p>In the clinic the two phases fail on their own, and the failures look different. In <b>osteogenesis imperfecta</b> the collagen phase is faulty. The mineral-to-matrix ratio can even be high. The bones are brittle and break with almost no force. In <b>osteomalacia</b> and rickets the mineral phase is short. Calcium or phosphate or vitamin D is not enough. The collagen scaffold gets laid down normally. It simply never hardens. So bone bends, aches, and shows wide unmineralized osteoid seams. Osteoid is bone matrix that has not taken on mineral yet. In <b>osteoporosis</b> the material itself is basically normal. There is just less bone. Three diseases. Three different points of attack on the same composite.</p>
+
+<div class="pearl"><b>Misconception.</b> &ldquo;Osteoporosis is a calcium deficiency disease.&rdquo; It is not, at least not the way students usually mean. The bone that is left has a normal mineral-to-matrix ratio. Sometimes it is even a little high. There is simply less of that bone. The trabecular struts have thinned and lost their connections. Calcium in the diet lets bone be built. It does not cause the disease. The real problem is a remodeling imbalance. Each cycle takes away slightly more than it puts back. Osteomalacia is the true mineralization defect. The two can sit in one patient, an older person low on vitamin D.</div>
+
+<h3>Four cell types, one coordinated unit</h3>
+
+<p>Every job bone does comes from four cell types working in order. <b>Osteoprogenitor cells</b> are mesenchymal stem cells. They live in the periosteum, the endosteum and the marrow stroma. Two signals, Runx2 and osterix, lock them into the osteoblast line. <b>Osteoblasts</b> are boxy cells that secrete. They lay down unmineralized matrix called <b>osteoid</b> at roughly 1 &micro;m per day. Then they set off its mineralization. Their key enzyme trick is <b>alkaline phosphatase</b>. This enzyme breaks apart inorganic pyrophosphate. Pyrophosphate is a strong natural blocker of crystal growth. Where alkaline phosphatase is working, pyrophosphate drops. Hydroxyapatite is then allowed to start forming. Where the enzyme is missing, the matrix stays soft. This is why serum alkaline phosphatase rises whenever bone is being built fast. It is also why children run values that would look abnormal in an adult and are completely normal for them.</p>
+
+<p>About 10&ndash;20 percent of osteoblasts get buried in their own product. Those become <b>osteocytes</b>. Osteocytes make up 90&ndash;95 percent of all bone cells. They can live 20&ndash;25 years. Each one sits in a small space called a lacuna. It reaches out with fine arms through tiny tunnels called canaliculi. The arms touch each other, so the cells form one connected web. The total cell surface in that web runs to about a thousand square meters in an adult skeleton. This web is the sense organ of bone. Section 3 is mostly about what it senses. The osteoblasts left on the surface flatten out into <b>bone lining cells</b>. They cover resting surfaces and act as a gate.</p>
+
+<p><b>Osteoclasts</b> come from a completely different family line. They grow from the monocyte and macrophage line. They are giant cells with 4&ndash;20 nuclei each. A working osteoclast seals off a patch of bone with a ring of actin rich in integrin. Then it acts like a tiny stomach turned upside down. Carbonic anhydrase II makes H+ and HCO3- out of CO2 and water. A vacuolar H+-ATPase pumps the H+ across the ruffled border into the sealed pocket. The pH there drops to about 4.5. A chloride channel sends chloride along to balance the charge. A Cl-/HCO3- exchanger on the far side keeps the cell itself from turning alkaline. Acid dissolves hydroxyapatite. Next comes <b>cathepsin K</b>. It is a protein-cutting enzyme that works best in acid. It digests the type I collagen the acid just exposed. Both halves are needed. Block the pump and the mineral will not dissolve. That happens in some forms of osteopetrosis, and with certain drugs. Block cathepsin K and demineralized collagen piles up.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Cell</th><th>Origin</th><th>Core job</th><th>Key machinery</th></tr></thead>
+<tbody>
+<tr><td>Osteoprogenitor</td><td>Mesenchymal stem cell</td><td>Keep the osteoblast supply going</td><td>Runx2, osterix, Wnt signaling</td></tr>
+<tr><td>Osteoblast</td><td>Mesenchymal</td><td>Lay down osteoid, allow mineralization</td><td>Type I collagen, alkaline phosphatase, RANKL, P1NP release</td></tr>
+<tr><td>Osteocyte</td><td>Buried osteoblast</td><td>Feel strain, direct remodeling, release FGF23</td><td>Canalicular network, sclerostin, RANKL, FGF23</td></tr>
+<tr><td>Bone lining cell</td><td>Flattened osteoblast</td><td>Cover the resting surface, control access</td><td>Tight surface layer, digests leftover osteoid</td></tr>
+<tr><td>Osteoclast</td><td>Monocyte/macrophage</td><td>Dissolve the mineral, then the matrix</td><td>H+-ATPase, carbonic anhydrase II, cathepsin K, TRAP, RANK</td></tr>
+</tbody>
+</table></div>
+
+<h3>Architecture follows loading: cortical shell, trabecular lattice</h3>
+
+<p>The same material shows up in two arrangements with two different jobs. <b>Cortical (compact) bone</b> is only 5&ndash;10 percent open space. It forms the shaft walls of long bones. It holds roughly 80 percent of skeletal mass. Yet it carries only about 20 percent of the inside surface area. It is built out of <b>osteons</b>. An osteon is a set of bone rings wrapped around a central canal. That canal carries a capillary and a nerve. The collagen fibers change direction from ring to ring, like the layers in plywood. A crack that starts gets turned aside instead of running through. <b>Trabecular (cancellous) bone</b> is 50&ndash;90 percent open space. It fills the vertebral bodies and the ends of long bones. It flips the ratio. It is 20 percent of the mass and 80 percent of the surface.</p>
+
+<p>Two things follow right away. First, mechanics. A hollow tube resists bending far better per gram than a solid rod. Bending stiffness rises with the fourth power of the radius. So putting cortical bone out at the edge and leaving the middle for marrow is smart design, not an accident. Second, physiology. Cells work on surfaces. So trabecular bone turns over about 25 percent per year. Cortical bone turns over about 3 percent per year. That is why any state of fast bone removal shows up in trabecular sites first. Loss of estrogen does it. So do hyperparathyroidism, steroid therapy and long bed rest. The first places to show it are the vertebrae, the femoral neck and the distal radius. It is also why a crushed vertebra is often the first event in osteoporosis.</p>
+
+<p>Bone also takes far more blood than students expect. It gets roughly 5&ndash;10 percent of resting cardiac output. A nutrient artery drills into the shaft and feeds the inner two-thirds of the cortex. Periosteal vessels feed the outer third. Metaphyseal and epiphyseal vessels feed the ends. This double supply matters a great deal in trauma. Strip the periosteum during surgery and healing slows. Cut the nutrient artery in a mid-shaft fracture and healing slows too. A few sites get their blood backwards, from the far end. A fracture there can cut the supply off completely. The femoral head, the scaphoid and the talus all work this way. That is why fractures there carry a real risk of avascular necrosis, which is bone dying for lack of blood.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Bone is one material threaded through another. Hydroxyapatite crystals grow inside collagen fibrils. The mineral carries squeezing and the collagen carries pulling. Damage one phase at a time and watch the bone fail in a different way. <a href="../lab/ch04/BoneCompositeLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch04/BoneCompositeLab.html" loading="lazy" title="The Bone Composite Bench &mdash; mineral, collagen and the osteoclast interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Bone is a tiny-scale composite. Mineral carries squeezing. Collagen carries pulling. It is built as a dense outer tube for stiffness and a high-surface inner lattice for trading chemicals.</p></div>
+
+<h2 id="ossification"><span class="num">Section 2</span>Building the Skeleton: Ossification, the Growth Plate and Modeling</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch04_s2.jpg" alt="Histology of the epiphyseal growth plate showing resting, proliferative, hypertrophic, calcification and ossification zones in sequence from epiphysis to diaphysis" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The epiphyseal plate works like a conveyor belt of cartilage. Cells are born at the top. They swell in the middle. Bone replaces them at the bottom. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Two routes to bone, one mineralization mechanism</h3>
+
+<p>Bone forms by two routes. They differ in the middle step, not in the end result. In <b>intramembranous ossification</b>, mesenchymal cells gather and turn straight into osteoblasts. Those cells secrete osteoid inside a fibrous membrane. This route makes the flat bones of the skull cap, the face bones and the collarbone. The plates harden from centers outward. So the edges are still unjoined at birth. Those soft gaps are the <b>fontanelles</b>. They let the skull mold as it passes through the birth canal. They also leave room for huge brain growth in the first year. The front fontanelle closes between 12 and 24 months. In <b>endochondral ossification</b>, the body builds a hyaline cartilage model first. Then it replaces that model with bone, step by step. Nearly every other bone forms this way. That includes long bones, vertebrae, the pelvis and the base of the skull. The process keeps running into the late teens. It is how bones get longer.</p>
+
+<p>The endochondral sequence is worth tracing. Each step opens the door for the next. Chondrocytes are cartilage cells. The ones in the middle of the model swell up. They release vascular endothelial growth factor, a signal that calls in blood vessels. The sleeve around the model, the perichondrium, turns into periosteum. It lays down a collar of bone by the intramembranous route. The swollen chondrocytes then load their matrix with mineral. That cuts off diffusion. Cartilage has no blood vessels and lives by diffusion alone. So those chondrocytes die and leave empty spaces behind. A periosteal bud pushes into those spaces. It carries capillaries, osteoprogenitor cells and osteoclast precursors. That creates the <b>primary ossification center</b>. After birth the same thing happens at each end of the bone. Each of those is a <b>secondary ossification center</b>. Cartilage survives in exactly two places. One is the joint surface. The other is the epiphyseal plate.</p>
+
+<p>Mineralization uses the same chemistry on both routes. Osteoblasts pinch off tiny sacs called <b>matrix vesicles</b>. Each sac is loaded with calcium, phosphate transporters and alkaline phosphatase. Phosphate builds up inside the sac. Alkaline phosphatase destroys the pyrophosphate that was blocking crystals. The first crystals form. Then the sac bursts and seeds crystal growth into the collagen gap zones. Fresh osteoid does not take on mineral right away. There is a <b>mineralization lag time</b> of about 10&ndash;15 days. That is why an osteoid seam 10&ndash;15 &micro;m wide is normal on a biopsy. A seam of 30 &micro;m or more points to osteomalacia. Primary mineralization reaches roughly 70 percent of the final mineral content in days to weeks. <b>Secondary mineralization</b> is the slow tidying of crystal size and packing. It takes months to years. It is what makes older bone stiffer but easier to snap.</p>
+
+<h3>The growth plate as a conveyor belt</h3>
+
+<p>Bones get longer at the <b>epiphyseal plate</b> and nowhere else. The plate has five zones. Those zones are really five stages of one chondrocyte moving down a production line. The line runs from the epiphysis, the bone end, toward the diaphysis, the shaft. The plate is not used up as growth goes on. It does not get thinner either. Cartilage is added at the top just as fast as bone replaces it at the bottom. So the plate stays about the same thickness. The shaft lengthens under it. The bone end gets carried further and further from the middle of the shaft.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Zone (epiphysis to diaphysis)</th><th>What the cell is doing</th><th>Why it matters</th></tr></thead>
+<tbody>
+<tr><td>Resting (reserve)</td><td>Chondrocytes sit still, matrix is stored</td><td>Holds the stem cell supply. Anchors the plate to the bone end.</td></tr>
+<tr><td>Proliferation</td><td>Fast cell division, cells stack in columns</td><td>Growth hormone acts here through IGF-1. Sets how fast new cells arrive.</td></tr>
+<tr><td>Hypertrophy</td><td>Cell volume grows 5&ndash;10 fold</td><td>Gives most of the real lengthening each day. The swollen cells make this the weakest zone, so it is where the bone gives way in slipped capital femoral epiphysis.</td></tr>
+<tr><td>Calcification</td><td>Matrix takes on mineral, diffusion stops, chondrocytes die</td><td>Gets the scaffold ready. This zone fails in rickets, where it never takes on mineral.</td></tr>
+<tr><td>Ossification</td><td>Vessels move in, osteoblasts lay bone on cartilage struts</td><td>Turns the scaffold into trabecular bone of the metaphysis.</td></tr>
+</tbody>
+</table></div>
+
+<p>The rates are worth knowing. Peak height velocity is roughly 9 cm per year in girls, at about age 12. It is roughly 10 cm per year in boys, at about age 14. The plate at the lower end of the femur alone adds on the order of 9&ndash;10 mm per year in mid-childhood. Growth hormone drives the dividing zone. It works mostly through <b>IGF-1</b>, made in the liver and locally in the plate. Thyroid hormone is required as well. Chondrocytes cannot mature and bone cannot form normally without it. That is why untreated hypothyroidism from birth causes very short stature. Too much glucocorticoid shuts the plate down. That is why long-term steroid therapy stunts growth.</p>
+
+<p>The surprising controller is <b>estrogen</b>. It works the same way in both sexes. Estrogen climbs at puberty. At first it speeds growth up. Then it shuts the plate down by using up the pool of dividing cells. The plates usually fuse at 14&ndash;16 years in girls and 16&ndash;18 in boys. The clinical proof is striking. Some men cannot make estrogen because they lack aromatase. Others cannot respond to it because their estrogen receptor is broken. These men keep growing into adulthood. They reach extreme height. Their plates are still open on x-ray into their twenties. Give such a man estrogen and the plates close. Testosterone alone does not do it. Testosterone turned into estradiol does.</p>
+
+<div class="pearl"><b>Misconception.</b> &ldquo;Long bones get longer because the shaft stretches as you grow.&rdquo; Bone matrix that holds mineral cannot expand from the inside. Growth from within is impossible in bone. All lengthening is <b>interstitial growth of cartilage</b> at the plate. Interstitial means growth from the inside, and it happens in cartilage only. That cartilage is turned into bone right away. All widening is <b>appositional</b>. It is added on the outer surface. This is also why a growth-plate fracture in a child, called a Salter&ndash;Harris fracture, is a different injury from the same break in an adult. Damage the plate and that limb may stop growing, or grow crooked.</div>
+
+<h3>Modeling: changing shape while keeping strength</h3>
+
+<p><b>Modeling</b> means osteoblasts and osteoclasts working on <i>different</i> surfaces, each on its own. It changes a bone&rsquo;s shape and size. It is the main process in childhood. The periosteum adds bone to the outside. The endosteum takes bone away from the inside. So the shaft gets wider and the marrow cavity gets bigger. The cortex never becomes absurdly thick. The flared end of the shaft gets narrowed as the shaft grows. Osteoclasts trim it from the outside. That trimming is called funnelization. Compare this with <b>remodeling</b> in Section 3. There, removal and building are linked on the <i>same</i> surface. The goal is renewal, not reshaping.</p>
+
+<p>Adding bone to the outer surface never fully stops. Even after the plates fuse, adults keep adding bone to the outside of the cortex. They keep losing it from the inside. Bending resistance depends on the fourth power of the outer radius. So getting wider partly makes up for walls getting thinner with age. A bone with thin walls but a wide shaft keeps much of its bending strength. Men widen this way more than women do. That is part of why male bones stay more forgiving with age, even when a bone density scan looks the same.</p>
+
+<p>Peak bone mass arrives in the late teens to the late twenties. The exact age depends on the site. Roughly 90 percent of it is banked by age 18. The message is blunt. The biggest single thing that sets your fracture risk at 75 is how much bone you banked before 25. After about age 40, both sexes lose about 0.5&ndash;1 percent of bone mineral density per year. Women lose another 2&ndash;3 percent per year at trabecular sites. That extra loss runs for 5&ndash;10 years after menopause. Estrogen leaving takes the brake off osteoclast recruitment.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Bone matrix that holds mineral cannot expand from within. So a bone lengthens in exactly one place: the epiphyseal plate. Cartilage is made at the top and replaced by bone at the bottom. Drive the conveyor and watch the bone grow. <a href="../lab/ch04/GrowthPlateConveyor.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch04/GrowthPlateConveyor.html" loading="lazy" title="The Growth Plate Conveyor &mdash; how a bone gets longer and wider interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Bones get longer only by replacing cartilage at the epiphyseal plate. They get wider only by adding bone on the outer surface. Growth hormone, thyroid hormone and estrogen drive it. Estrogen both speeds growth up and finally ends it.</p></div>
+
+<h2 id="remodeling"><span class="num">Section 3</span>Remodeling: The Mechanostat and the RANKL Switch</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch04_s3.jpg" alt="Diagram of the bone remodeling cycle showing activation, osteoclast resorption of a lacuna, reversal, osteoblast formation of osteoid, mineralization and return to quiescent lining cells" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A basic multicellular unit digs out one patch of bone and fills it back in. The whole job takes four to eight months. <span class="cred">Tao Chen, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The remodeling cycle in real time</h3>
+
+<p>Roughly 10 percent of the adult skeleton is replaced every year. The work is done by <b>basic multicellular units</b>, or BMUs. About 1&ndash;2 million of them are active at any moment. A new one starts somewhere in your skeleton about every 10 seconds. The cycle always runs in the same order. Its timeline is lopsided, and that matters. <b>Activation</b> comes first. Osteocytes signal that a patch needs work. Lining cells pull back. Osteoclast precursors are called in. <b>Resorption</b> is next. Osteoclasts dig out a cavity 50&ndash;100 &micro;m deep over about 2&ndash;3 weeks. On trabecular surfaces they cut a trench. Through cortical bone they tunnel a &ldquo;cutting cone&rdquo;. <b>Reversal</b> is a 1&ndash;2 week pause. Single-nucleus cells clean the surface and lay down a cement line. <b>Formation</b> follows. Osteoblasts refill the cavity with osteoid over 3&ndash;4 months. Mineralization comes after that. <b>Quiescence</b> ends the cycle. Lining cells cover the surface again.</p>
+
+<p>That lopsided timing matters more than any other number here. Three weeks to dig. Four months to refill. It drives much of bone pharmacology and bone disease. Anything that starts more BMUs per unit time leaves more half-finished holes open at once. That temporary shortfall is called the <b>remodeling space</b>. It explains a lot. Hyperthyroidism, hyperparathyroidism and early menopause all cause a fast drop in measured bone density. Part of that drop can be undone. It also explains the first year on an antiresorptive drug. Density jumps 3&ndash;5 percent right away. The drug simply lets the holes already dug get filled in.</p>
+
+<p>Why remodel at all? There are three reasons. The first is repair. Loading over and over makes <b>microcracks</b> roughly 30&ndash;100 &micro;m long. Those cracks cut osteocyte arms. The dying osteocytes are the signal that marks the spot. The BMU then takes out the cracked bone. The second reason is adaptation. Remodeling lets bone re-aim itself when the loading changes. The third is mineral access. Remodeling is one of the levers the calcium loop of Section 4 can pull. Shut remodeling down too hard for too long and microcracks pile up. That is the mechanism behind unusual femur fractures after many years of bisphosphonate use.</p>
+
+<h3>Mechanotransduction: how the osteocyte reads a footstep</h3>
+
+<p>Whole-bone strain is tiny. Hard activity bends cortical bone by about 1,000&ndash;1,500 <b>microstrain</b> (&micro;&epsilon;). A total of 1,000 &micro;&epsilon; equals a 0.1 percent change in length. That is far too small for a cell to feel by membrane stretch alone. Fluid is the amplifier. Loading squeezes the network of lacunae and canaliculi. That drives fluid past the osteocyte arms. The moving fluid drags on the cell membrane and its anchor threads. That drag runs about 0.8&ndash;3 Pa. The drag is what the cell actually senses. The signal is fluid <i>flow</i>. So it exists only while the strain is <i>changing</i>. A steady load makes no flow and sends no signal. This is why standing still all day does nothing for bone. It is also why the loading that builds bone must move, come on fast, and hit the bone in an unusual pattern.</p>
+
+<p>Harold Frost called this the <b>mechanostat</b>. It is a plain negative feedback controller. It aims at a range, not at a single set point. Below roughly 200 &micro;&epsilon; the bone counts as unused. Removal wins and bone is lost. Between roughly 200 and 2,500 &micro;&epsilon; the bone sits in its adapted window. Building matches removal. Above roughly 2,500&ndash;4,000 &micro;&epsilon; the bone is overloaded. Modeling adds bone. Bone starts to give way near 7,000 &micro;&epsilon;. It fractures near 25,000 &micro;&epsilon;. Now name the loop parts. The <b>variable</b> is local tissue strain. The <b>sensor</b> is the osteocyte. The <b>integrator</b> is which genes that osteocyte turns on. The <b>effectors</b> are osteoblasts and osteoclasts. The <b>response</b> is a change in local bone mass that pulls strain back toward the window. Notice what is controlled. It is strain, not mass. Bone mass is only how the system hits its strain target.</p>
+
+<p>The molecular output is neat and cheap. A loaded osteocyte makes <i>less</i> <b>sclerostin</b>. Sclerostin blocks the Wnt/&beta;-catenin pathway, a growth signal inside the cell. Less sclerostin means more Wnt signaling in osteoblast precursors. More Wnt signaling means more bone built. An unloaded osteocyte does the reverse. It also puts out more RANKL. This is why bed rest or spaceflight costs roughly 1&ndash;1.5 percent of bone per month at the hip and spine. One month of unloading costs about what a whole year of ordinary age-related loss does. It is also why romosozumab, an antibody against sclerostin, builds bone. And it explains the loading advice that works. Impact and resistance build bone. That means jumping, running and heavy lifting, not swimming or cycling. About 40 loading cycles use up the response. So short bouts with rest between them beat one long, dull session.</p>
+
+<div class="pearl"><b>Misconception.</b> &ldquo;Exercise builds bone all over the body.&rdquo; The strain signal is <i>local</i>. Tennis players carry 10&ndash;20 percent more cortical bone in their playing arm. Their other arm shows almost no difference. Both arms share one bloodstream and the same hormones. Body-wide factors set how strong the response can be. Mechanics decides where it lands. A walking program will not protect the wrist.</div>
+
+<h3>RANKL, OPG and the final common pathway</h3>
+
+<p>Almost every hormone and drug that changes bone mass works through one switch. That switch has three proteins. Osteoblasts and osteocytes make <b>RANKL</b>. The full name is receptor activator of nuclear factor kappa-B ligand. Osteoclast precursors carry its receptor, called <b>RANK</b>. RANKL binds RANK. With M-CSF also present, that makes the precursors fuse, mature, switch on and stay alive. The same osteoblast family also puts out <b>osteoprotegerin</b> (OPG). OPG is a decoy receptor that floats free. It soaks up RANKL before RANKL can reach RANK. So the rate of bone removal is not set by RANKL alone. It is set by the <b>RANKL/OPG ratio</b>. That design has a deep consequence. Most hormones cannot order osteoclasts around directly, because osteoclasts lack the receptors. The bone-building family tells the bone-removing family what to do.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Signal</th><th>Effect on RANKL/OPG</th><th>Net bone effect</th><th>Note for the clinic</th></tr></thead>
+<tbody>
+<tr><td>PTH, continuous</td><td>Ratio rises sharply</td><td>Net bone removal</td><td>Primary hyperparathyroidism. Cortical bone is lost.</td></tr>
+<tr><td>PTH, intermittent daily pulse</td><td>Building wins</td><td>Net bone building</td><td>Teriparatide. Same molecule, opposite result, set by timing.</td></tr>
+<tr><td>Calcitriol</td><td>Ratio rises (plus gut Ca absorption)</td><td>Frees mineral, allows mineralization</td><td>The net effect on bone depends on how much calcium is coming in.</td></tr>
+<tr><td>Estrogen</td><td>Ratio falls. More osteoclasts die.</td><td>Bone is spared</td><td>Menopause takes the brake off. Trabecular bone is lost fast.</td></tr>
+<tr><td>Glucocorticoid excess</td><td>Ratio rises. Osteoblasts die.</td><td>Strong bone loss</td><td>The most common cause of drug-induced osteoporosis.</td></tr>
+<tr><td>Mechanical loading</td><td>Ratio falls. Sclerostin falls.</td><td>Bone is built</td><td>Local. Needs movement. Depends on how fast the load comes on.</td></tr>
+<tr><td>IL-1, IL-6, TNF (inflammation)</td><td>Ratio rises</td><td>Loss at the spot and body-wide</td><td>Erosions in rheumatoid arthritis. Holes in myeloma.</td></tr>
+<tr><td>Denosumab (anti-RANKL antibody)</td><td>RANKL neutralized</td><td>Strong block on bone removal</td><td>A drug that acts like OPG. Bone is lost fast if it stops suddenly.</td></tr>
+</tbody>
+</table></div>
+
+<p>Two clinical facts drop straight out of that table. The first is the parathyroid hormone paradox. Given nonstop, it destroys bone. Given as one shot a day, it builds bone. A short pulse helps osteoblasts survive and turns on Wnt signaling. Steady exposure keeps RANKL high instead. Timing flips the sign, not dose size. The second is coupling. Removal and building are <b>coupled</b>. Osteoclasts release TGF-&beta; and IGF-1 that were stored in the matrix. Those signals call in osteoblasts. So any drug that stops removal will slow building too, in time. No drug blocks bone removal and leaves bone formation untouched.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> You can measure bone turnover in blood. Formation markers include bone-specific alkaline phosphatase and <b>P1NP</b>. P1NP is a piece clipped off procollagen as it is secreted. Resorption markers include <b>CTX</b> and NTX. Those are collagen fragments freed when cathepsin K cuts the crosslinks. These markers move within weeks. A bone density scan cannot see anything that early. So they are how you tell early whether a treatment is working, or whether the patient is taking it.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Bone does not regulate its own mass. It regulates strain, and mass is only how it hits the target. Load a skeleton and watch strain walk back into the window as bone is added. Then work the RANKL switch and see what changes. <a href="../lab/ch04/MechanostatRemodelingSim.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch04/MechanostatRemodelingSim.html" loading="lazy" title="The Mechanostat and the RANKL Switch &mdash; how bone decides how much of itself to keep interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Osteocytes turn mechanical strain into a chemical signal. They do it by adjusting sclerostin and RANKL. The RANKL/OPG ratio is the final switch. Loading, hormones, inflammation and drugs all set the rate of bone removal through it.</p></div>
+
+<h2 id="mineral-homeostasis"><span class="num">Section 4</span>Calcium and Phosphate Homeostasis: The Skeleton as a Bank</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch04_s4.jpg" alt="Diagram of calcium homeostasis showing parathyroid glands sensing low blood calcium and PTH acting on bone, kidney and intestine via calcitriol to restore normal calcium" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The calcium loop uses three organs, and each answers at a different speed. The kidney answers in minutes. Bone answers in hours. The gut answers in a day or two. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The regulated variable and the daily ledger</h3>
+
+<p>Total plasma calcium normally runs 8.5&ndash;10.5 mg/dL (2.12&ndash;2.62 mmol/L). That number is only bookkeeping. Roughly 45 percent of plasma calcium is stuck to protein, mostly albumin. About 10 percent is tied up with citrate, phosphate and bicarbonate. Only about 45&ndash;50 percent floats free as <b>ionized calcium</b>. That is 4.4&ndash;5.4 mg/dL, or 1.10&ndash;1.35 mmol/L. Ionized calcium is the part that does the work. It is also the part the body regulates. It steadies voltage-gated sodium channels. It sets off neurotransmitter release. It links excitation to contraction. It takes part in the clotting cascade. The control system does not know or care what the total is.</p>
+
+<p>Two corrections follow. The first is for albumin. Every 1 g/dL of albumin carries roughly 0.8 mg/dL of the measured total calcium. So use corrected calcium = measured Ca + 0.8 &times; (4.0 &minus; albumin in g/dL). Take a malnourished patient with albumin 2.0 g/dL and calcium 7.6 mg/dL. The corrected calcium is 9.2 mg/dL. That patient is perfectly normocalcemic. The second correction is for acid and base. Alkalosis uncovers more negative charge on albumin. Albumin then grabs more calcium. So ionized calcium falls roughly 0.05 mmol/L for every 0.1 unit rise in pH. Total calcium does not change at all. This is what causes the tingling lips and the cramped hands of a sudden hyperventilation attack. It is also why an anxious patient can have real tetany with a completely normal calcium panel.</p>
+
+<p>The daily ledger puts the numbers in perspective for a typical adult. Diet brings in about 1,000 mg per day. Roughly 300 mg of that gets absorbed. About 100 mg is secreted back into the gut. So the net gain is about 200 mg. The kidneys filter a huge load. It runs on the order of 10,000 mg per day of the calcium not bound to protein. They take back about 98 percent of it. So urine carries out about 200 mg per day. Intake matches output, so the person is in balance. Meanwhile remodeling moves roughly 500 mg per day out of bone and 500 mg per day back in. That bone traffic is the buffer. The fluid outside the cells holds only about 1,000 mg of calcium in total. Without a store you can reach fast, one missed meal would be dangerous.</p>
+
+<h3>The loop, component by component</h3>
+
+<p>Say the loop out loud. The <b>variable</b> is plasma ionized calcium. The <b>sensor</b> is the <b>calcium-sensing receptor</b> (CaSR). It is a G-protein-coupled receptor on the parathyroid chief cell. Its set point sits near 1.2 mmol/L. The <b>integrator</b> is the parathyroid gland. It turns how full the receptor is into a secretion rate. The <b>effectors</b> are the kidney tubule, bone and, by an indirect route, the intestine. The <b>response</b> is a rise in ionized calcium. That rise refills the CaSR and turns the signal off. Now notice the backwards logic that catches every student. The CaSR <i>blocks</i> secretion. Calcium binding <i>shuts PTH down</i>. So when calcium falls, the block lifts and secretion rises. The curve is a steep inverse S-shape. A fall of only 0.1 mmol/L in ionized calcium can double PTH within minutes.</p>
+
+<p><b>Parathyroid hormone</b> is a peptide of 84 amino acids. Its half-life in plasma is only 2&ndash;4 minutes. That makes it a fast signal the body can steer tightly. It has three actions. In the <b>kidney</b>, within minutes, it takes back more calcium. It does that in the distal convoluted tubule and the connecting tubule, by putting the TRPV5 channel into the membrane. At the same time it dumps phosphate into the urine. It pulls the NaPi-IIa cotransporter out of the proximal tubule to do that. In <b>bone</b>, over hours, PTH raises the RANKL/OPG ratio. That frees calcium and phosphate together. Back in the <b>kidney again</b>, PTH switches on <b>1-alpha-hydroxylase</b> (CYP27B1). That enzyme turns 25-hydroxyvitamin D into active <b>calcitriol</b>. Calcitriol then raises calcium absorption in the gut over 24&ndash;48 hours. The three arms run on purposely different clocks. The kidney arm covers the next hour. The bone arm covers the rest of the day. The gut arm covers the day or two after that.</p>
+
+<p>Why dump the phosphate? Because breaking down bone releases calcium and phosphate together. They come out in the fixed ratio of hydroxyapatite. If the phosphate stayed, the calcium&ndash;phosphate product would climb. The two ions would settle out in soft tissue. Ionized calcium would then fall. That is the exact opposite of what the body wants. Sending phosphate out in the urine is what lets PTH raise calcium <i>on its own</i>. It is one of the tidiest pieces of teamwork in endocrine physiology. It is also why primary hyperparathyroidism shows a high calcium with a <i>low</i> phosphate.</p>
+
+<h3>Calcitriol, FGF23 and the minor player</h3>
+
+<p><b>Vitamin D</b> is not really a vitamin. It is a steroid prohormone. Ultraviolet B light hits the skin. It turns 7-dehydrocholesterol into cholecalciferol, or D3. The liver adds an OH group at position 25. That makes 25-hydroxyvitamin D. This is the storage form, with a half-life of 2&ndash;3 weeks. It is the form the lab measures. Levels above 30 ng/mL are generally counted as enough. The kidney then adds the activating OH group at position 1. That makes 1,25-dihydroxyvitamin D, better known as calcitriol. Calcitriol circulates at only 20&ndash;60 pg/mL and lasts hours. It behaves like the steroid hormone it is. It enters gut lining cells and binds a receptor in the nucleus. It then turns up production of the TRPV6 calcium channel, the shuttle protein calbindin-D9k, and the calcium pump on the far side of the cell. On a normal intake the gut absorbs roughly 25&ndash;35 percent of the calcium you eat. That is the 300 mg out of 1,000 mg in the ledger above. That share can be pushed to 60&ndash;70 percent during growth, pregnancy and breastfeeding, or when vitamin D is short.</p>
+
+<p><b>FGF23</b> is the phosphate version of the same idea. Tellingly, osteocytes secrete it. Bone regulates its own raw material supply. Rising phosphate and rising calcitriol both trigger its release. FGF23 works through a co-receptor called Klotho. It pulls the NaPi cotransporters out of the proximal tubule, so phosphate leaves in the urine. At the same time it <i>shuts down</i> 1-alpha-hydroxylase. Less calcitriol is made. So the gut absorbs less phosphate too. It is a clean negative feedback loop for phosphate. It runs alongside the calcium loop, and sometimes against it.</p>
+
+<p><b>Calcitonin</b> comes from the parafollicular C cells of the thyroid. It is released when calcium rises. It shuts down the osteoclast ruffled border within minutes. It is genuinely powerful in fish. It matters in mammals that are growing fast or making milk. In adult humans it is close to useless. Patients with medullary thyroid carcinoma have huge calcitonin levels and normal calcium. Patients whose thyroid has been removed entirely have no calcitonin and normal calcium. Calcitonin is a handy tumor marker and a modest drug. It is not a pillar of calcium control.</p>
+
+<div class="pearl"><b>Misconception.</b> &ldquo;Calcitonin is the mirror image of PTH.&rdquo; That symmetry is textbook tidiness, not human physiology. Take out all the calcitonin with a total thyroidectomy and plasma calcium does not move. Take out the parathyroids and the patient is in tetany within a day. Calcium control in adult humans is one-sided. It is built to defend against <i>low</i> calcium. Low ionized calcium kills quickly through laryngospasm and seizures. A mildly high calcium is tolerated for weeks.</div>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Hormone</th><th>What triggers its release</th><th>Gut</th><th>Kidney</th><th>Bone</th><th>Net on plasma Ca / PO4</th></tr></thead>
+<tbody>
+<tr><td>PTH</td><td>Low ionized calcium (via CaSR)</td><td>Indirect, through calcitriol</td><td>Takes back more Ca. Sends out more phosphate. Turns 1&alpha;-hydroxylase up.</td><td>Breakdown up (via RANKL)</td><td>Ca up, PO4 down</td></tr>
+<tr><td>Calcitriol</td><td>PTH, low phosphate, low calcium</td><td>Takes in more Ca and PO4</td><td>Takes back a little more Ca and PO4</td><td>Allows mineralization. Frees mineral when needed.</td><td>Ca up, PO4 up</td></tr>
+<tr><td>FGF23</td><td>High phosphate, high calcitriol</td><td>Takes in less PO4 (less calcitriol)</td><td>Sends out more phosphate. Turns 1&alpha;-hydroxylase down.</td><td>Made by osteocytes</td><td>PO4 down</td></tr>
+<tr><td>Calcitonin</td><td>High calcium</td><td>Almost none</td><td>Sends out slightly more Ca and PO4</td><td>Slows osteoclasts for a short time</td><td>Ca down (small in adult humans)</td></tr>
+</tbody>
+</table></div>
+
+<h3>When the loop breaks</h3>
+
+<p>Low ionized calcium makes nerve and muscle too excitable. That sounds backwards until you look at the channel. Calcium outside the cell masks negative charge on the outer face of the voltage-gated sodium channel. Drop the calcium and that mask comes off. The channel&rsquo;s voltage sensor then acts as if the membrane were already part way to firing. Threshold slides closer to the resting potential. Nerves start firing on their own. So you see tingling around the mouth, in the hands and in the feet. You see muscle cramps. You see a positive Chvostek sign, a facial twitch when you tap the facial nerve. You see a Trousseau sign, a hand cramp after three minutes with a cuff inflated. The ECG shows a long QT interval. In severe cases the voice box spasms shut and the patient seizes. The usual causes are simple. The parathyroids get injured during thyroid surgery. Vitamin D runs low. The kidneys fail. Or the blood turns alkaline fast.</p>
+
+<p>High calcium does the opposite. It raises threshold and quiets excitable tissue. Patients get sleepy, confused and constipated. They feel sick and weak. The QT interval gets short. They also pass a lot of urine. Here is why. Calcium switches on the CaSR in the thick ascending limb. That cuts sodium and calcium reabsorption. It also blocks the action of antidiuretic hormone in the collecting duct. The result is a nephrogenic diabetes insipidus. All that urine dries the patient out. A dry patient clears less calcium. Calcium then climbs higher still. It is a vicious cycle. That is why the first treatment for severe hypercalcemia is intravenous saline. Ninety percent of high calcium has one of two causes. One is primary hyperparathyroidism, usually a single adenoma found by accident. The other is cancer. That is usually PTH-related peptide from a solid tumor, or bone eaten away locally in myeloma.</p>
+
+<p>Chronic kidney disease breaks several arms of the loop at once. It is worth seeing as a whole-system failure. The failing kidney cannot get rid of phosphate, so phosphate rises. It cannot make calcitriol, so the gut absorbs less calcium. Both changes push PTH up. The parathyroids are stimulated for years and grow larger. That is <b>secondary hyperparathyroidism</b>. The high PTH strips the skeleton, so bone turnover runs too fast. Meanwhile the high calcium&ndash;phosphate product lays mineral down in blood vessels. FGF23 rises before any of these other markers, sometimes by years. It rises before phosphate even looks abnormal on a lab report. It is a doomed effort to hold phosphate normal.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Plasma ionized calcium is held near 1.2 mmol/L. The sensor works backwards. Calcium binding to the CaSR shuts PTH down, so a fall releases the brake. Knock calcium down and watch the kidney answer in minutes, bone in hours and the gut in a day. <a href="../lab/ch04/CalciumLoopSim.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch04/CalciumLoopSim.html" loading="lazy" title="The Calcium Loop &mdash; three effectors, three time constants interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Plasma ionized calcium is held near 1.2 mmol/L by a backwards sensor, the CaSR. When calcium falls, PTH rises. The kidney arm is fast, the bone arm is slower, and the gut arm through calcitriol is slowest. PTH also dumps phosphate, so the mineral it frees does not simply settle out again.</p></div>
+
+<h2 id="joints-and-repair"><span class="num">Section 5</span>Joints, Levers and Repair: The Skeleton in Motion and After Injury</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch04_s5.jpg" alt="Cutaway diagram of a synovial joint showing articular cartilage on both bone ends, joint capsule, synovial membrane and the fluid-filled joint cavity" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A synovial joint slides with less friction than ice on ice. It does that by pressurizing water inside the cartilage, not by any coating. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Cartilage and synovial fluid: lubrication by pressurized water</h3>
+
+<p>Articular cartilage is 65&ndash;80 percent water by weight. Its solid part is type II collagen plus a giant molecule called <b>aggrecan</b>. Aggrecan is packed with sulfate and carboxyl groups. Those give the tissue a strong fixed negative charge. Positive ions get pulled in. Water follows them by osmosis. So the tissue is always swollen and pushing against the collagen net that holds it. It sits under tension before you even step on it. Load the joint and the water cannot get out fast. Cartilage lets fluid through very slowly. So the load is carried by <b>interstitial fluid pressurization</b>. In the first seconds of loading, more than 90 percent of the stress rides on pressurized fluid, not on the solid matrix. Fluid cannot carry a sideways sliding force. So healthy cartilage on cartilage has a friction coefficient of only about 0.002&ndash;0.03. That is lower than ice sliding on ice.</p>
+
+<p>Synovial fluid starts as a filtered version of plasma. Synovial cells add <b>hyaluronan</b> at 3&ndash;4 mg/mL and a glycoprotein called <b>lubricin</b>. A normal knee holds only about 0.5&ndash;2 mL of it. The fluid thins out the faster it is sheared. It is thick and syrupy at low shear rates, which is good for carrying load. It runs thin at high shear rates, which is good for fast movement. Lubricin takes over when fluid pressure has bled away under a long steady load. That is exactly why standing still on a joint for an hour is harder on cartilage than walking for an hour.</p>
+
+<p>Cartilage has no blood vessels, no nerves and no lymphatics. Chondrocytes make up only 1&ndash;5 percent of the tissue volume. They live on nutrients that seep in from synovial fluid. Loading the joint over and over pumps that fluid in and out and helps a great deal. Two things follow. First, hurting cartilage does not hurt. The pain of osteoarthritis comes from the bone underneath, the synovium, the capsule and the tissues around the joint. That is why x-ray damage and reported pain match so poorly. Second, cartilage heals badly or not at all. No blood means no clot. It means no inflammatory cells arrive and no repair cells move in. So a defect that does not reach the bone simply stays. A defect deep enough to break into the bone underneath <i>does</i> bleed and does fill in. But it fills with fibrocartilage, which is mechanically weaker. Immobilizing a joint stops the loading that pumps in nutrition. The cartilage thins within weeks.</p>
+
+<div class="pearl"><b>Misconception.</b> &ldquo;Joints are lubricated by a slippery fluid coating, like oil in an engine.&rdquo; The main mechanism is not a coating at all. It is water pressurized <i>inside</i> the cartilage, carrying the load so the solid surfaces barely touch. That is why lubrication gets worse under a long steady load, as the fluid slowly seeps out. It is also why it recovers once the load comes off. The joint at risk is the one held still, not the one being moved.</div>
+
+<h3>Levers: why muscles pull far harder than the loads they lift</h3>
+
+<p>The skeleton is a set of stiff links. The muscles are the motors. So joint torque follows simple statics. Torque equals force times the straight-line distance from the axis of rotation. Most human joints are <b>third-class levers</b>. In one of those the effort sits between the fulcrum and the load. The muscle insertion is the effort. The joint is the fulcrum. That layout has a mechanical advantage well under 1. So the muscle must pull far harder than the load weighs. Hold a 10 kg weight, which is 98 N, in your hand with the elbow bent to 90 degrees. The biceps inserts about 4 cm from the elbow axis. The hand is about 32 cm out. So the muscle force needed is about 98 N &times; 32 / 4. That is about 780 N, or nearly eight times the load. The force pressing through the joint itself is larger still.</p>
+
+<p>That looks like poor design until you see what it buys. The insertion sits close to the axis. So 1 cm of muscle shortening swings the hand through 8 cm. The lever trades force away and buys <b>range and speed</b>. For a limb that has to throw, run and reach, that is the right trade. It also explains something worth holding on to. In ordinary life the loads on joints and bones come mostly from muscle pull, not from body weight. Standing on one leg presses the hip joint with 2.5&ndash;3 times body weight. Lifting 20 kg with a bent spine can push more than 3,000 N through the L4&ndash;L5 disc. The erector spinae work on a lever arm of a few centimeters against a load arm of 30 or 40 cm. Lifting technique is lever physics applied to a person.</p>
+
+<p>The same statics explain torn-off attachments and overuse injuries. A muscle can pull hard enough to rip its own attachment off the bone before the muscle itself fails. That happens most in teenagers, whose attachment site is still cartilage. Bone adapts to a new habitual strain over weeks. Training loads can be raised in days. So a sudden jump in mileage pushes bone into the overload zone of the mechanostat faster than remodeling can answer. Microcracks pile up faster than BMUs can fix them. The result is a <b>stress fracture</b>. This is not weakness. It is a mismatch in speed between the demand signal and the repair response.</p>
+
+<h3>Fracture repair: a staged program with one genuine positive feedback step</h3>
+
+<p>Bone is one of very few tissues that heals by regrowing itself instead of scarring. A healed fracture is bone, not fibrous tissue. The repair program runs in overlapping stages. In the first minutes to 48 hours, torn vessels bleed. A <b>fracture hematoma</b> forms. Here is the one true positive feedback in this module. It is the coagulation cascade. Thrombin turns on factors V, VIII and XI, which make more thrombin. Positive feedback is rare in physiology, and for good reason. It amplifies instead of steadying. It drives the variable further from where it started. Something outside the loop has to stop it. So it shows up only where the body needs a fast, complete, one-way switch. Clotting is one. So are the action potential upstroke, ovulation and labor. Here the explosive quality is exactly right. Antithrombin, protein C and the physical size of the wound hold it in.</p>
+
+<p>That clot is not waste. It is the scaffold and the store of signals. Days 1 to 7 bring the <b>inflammatory</b> stage. Macrophages clear the debris. They release BMP-2, TGF-&beta;, PDGF and VEGF. Those signals call in mesenchymal stem cells from periosteum and marrow and start new vessel growth. Weeks 2 to 3 build the <b>soft callus</b>. The recruited cells turn into chondrocytes where oxygen is low, away from vessels. Elsewhere they become fibroblasts. Together they splint the break and give it rough stability. From about week 4 through weeks 8 to 12 the <b>hard callus</b> forms. Woven bone replaces the cartilage callus by endochondral ossification. That is the embryo program of Section 2 played again in an adult. Finally, over months to years, <b>remodeling</b> takes over. It turns messy woven bone into lamellar bone lined up with the loading. It uses the same BMUs from Section 3. In a child the shape can come back so completely that the fracture disappears.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Stage</th><th>Timing</th><th>Main cells</th><th>Mechanical state</th></tr></thead>
+<tbody>
+<tr><td>Hematoma</td><td>0&ndash;48 hours</td><td>Platelets, clotting factors</td><td>No stability. The scaffold and the store of signals form.</td></tr>
+<tr><td>Inflammation</td><td>Days 1&ndash;7</td><td>Neutrophils, macrophages, MSCs</td><td>None. Growth factors go out and new vessels grow.</td></tr>
+<tr><td>Soft callus</td><td>Weeks 2&ndash;3</td><td>Chondrocytes, fibroblasts</td><td>A springy splint. Pain settles and motion drops.</td></tr>
+<tr><td>Hard callus</td><td>Weeks 4&ndash;12</td><td>Osteoblasts, osteoclasts</td><td>Woven bone bridges the gap. The fracture counts as united.</td></tr>
+<tr><td>Remodeling</td><td>Months to years</td><td>BMUs</td><td>Woven bone becomes lamellar bone, lined up with the load.</td></tr>
+</tbody>
+</table></div>
+
+<p>The physical variable in charge is <b>interfragmentary strain</b>. That is the change in gap length divided by the original gap width. Tissues differ in how much strain they take before their cells are torn. Granulation tissue survives up to about 100 percent. Cartilage takes about 10&ndash;15 percent. Bone takes only about 2 percent. So a healing fracture lays down whatever tissue can survive the strain there. That tissue then stiffens the site. Stiffness lowers the strain. Lower strain lets the next tissue up the ladder move in. This is a self-limiting negative feedback loop. The callus grows until motion is small enough for bone. It also explains how fixation is chosen. A rigid compression plate drops strain below 2 percent. Then healing goes by <b>primary (direct) union</b>. Osteoclast cutting cones tunnel straight across the fracture line, and no callus shows up at all. A cast or a rod inside the bone allows small movement. That gives classic <b>secondary healing</b> with plenty of callus. The middle ground is the trap. A construct too floppy for direct healing but too stiff for callus is where nonunion lives. About 5&ndash;10 percent of fractures fail to unite on schedule. Poor blood supply hurts the program. So do smoking, diabetes, poor nutrition and infection. Nicotine narrows vessels and blocks new vessel growth. Each one fails the program at a point you can name.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> A fracture that will not unite is usually failing on one of three things. Blood supply. Mechanics. Or biology, meaning cells and signals. Ask which one. An open tibial fracture with the periosteum stripped is a blood supply problem. A wobbly fixation is a strain problem. A smoker on long-term steroids who is low on vitamin D is a biology problem. The treatment is completely different for each answer.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Three mechanical stories share one skeleton. Muscles work through third-class levers, so they must pull many times harder than the loads they lift. Joints slide on water pressurized inside cartilage. And a fracture heals up a ladder of tissues set by strain. <a href="../lab/ch04/LeverAndFractureLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch04/LeverAndFractureLab.html" loading="lazy" title="Levers, Cartilage and the Strain Ladder &mdash; the skeleton in motion and after injury interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Joints move on pressurized water inside cartilage. They move through third-class levers that multiply muscle force several times over. A fracture heals up a ladder of tissues controlled by strain. Each rung stiffens the site until bone can survive the motion that is left.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Bone is a living composite. Hydroxyapatite crystals grow inside collagen fibrils. The result resists squeezing at about 170 MPa and pulling at about 120 MPa. It is built as a dense cortical tube for bending stiffness. Inside sits a porous trabecular lattice. That lattice carries four times the internal surface on a quarter of the mass. So it turns over about eight times faster. Four cell types run the tissue. Osteoblasts secrete osteoid. They let it take on mineral by destroying pyrophosphate with alkaline phosphatase. Osteoclasts dissolve mineral with a proton pump that drops local pH to 4.5. Then they digest collagen with cathepsin K. Osteocytes are buried and joined to each other. They feel the fluid shear that changing strain creates. They tune sclerostin and RANKL to match. The skeleton lengthens only at the epiphyseal plate. There cartilage is made, swollen and replaced by bone. Growth hormone, thyroid hormone and estrogen drive it, and estrogen finally closes the plate. Over all of this runs the calcium loop. The calcium-sensing receptor holds PTH down while ionized calcium is enough. A fall of 0.1 mmol/L lets PTH go within minutes. PTH reclaims calcium in the distal tubule and dumps phosphate further upstream. It frees bone mineral within hours. It raises calcitriol so the gut absorbs calcium within a day. Mechanics and mineral want the same tissue. Bone spends itself for calcium every time.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Hydroxyapatite</td><td>The crystal mineral of bone, Ca10(PO4)6(OH)2. It forms inside the gap zones in collagen. It carries squeezing loads.</td></tr>
+<tr><td>Osteoid</td><td>Fresh bone matrix from osteoblasts, before mineral is added. It takes on mineral after a lag of about 10&ndash;15 days.</td></tr>
+<tr><td>Osteocyte</td><td>An osteoblast walled into the matrix. It is 90&ndash;95 percent of bone cells. It senses strain and makes sclerostin and FGF23.</td></tr>
+<tr><td>Cathepsin K</td><td>An enzyme that works best in acid. It digests type I collagen after osteoclast acid has dissolved the mineral.</td></tr>
+<tr><td>RANKL / RANK / OPG</td><td>The switch that controls osteoclast formation. RANKL from the osteoblast family turns on RANK on precursors. OPG is a decoy that soaks RANKL up.</td></tr>
+<tr><td>Sclerostin</td><td>A blocker of Wnt signaling made by osteocytes. It falls when bone is loaded, which lets bone be built.</td></tr>
+<tr><td>Basic multicellular unit (BMU)</td><td>The osteoclast&ndash;osteoblast team that digs out and refills one patch of bone. It takes roughly four to eight months.</td></tr>
+<tr><td>Microstrain</td><td>A unit of stretch. 1,000 &micro;&epsilon; equals a 0.1 percent change in length. Everyday loading is about 1,000&ndash;1,500 &micro;&epsilon;.</td></tr>
+<tr><td>Mechanostat</td><td>Frost&rsquo;s model. Bone mass is adjusted to keep habitual strain inside a window of roughly 200&ndash;2,500 &micro;&epsilon;.</td></tr>
+<tr><td>Modeling vs remodeling</td><td>Modeling changes a bone&rsquo;s shape by acting on different surfaces on its own. Remodeling renews bone by linked action on the same surface.</td></tr>
+<tr><td>Epiphyseal plate</td><td>The cartilage growth plate, with five zones. It is the only place a bone gets longer. Estrogen closes it.</td></tr>
+<tr><td>Ionized calcium</td><td>The free, working 45&ndash;50 percent of plasma calcium, 1.10&ndash;1.35 mmol/L. This is what the body actually regulates.</td></tr>
+<tr><td>Calcium-sensing receptor (CaSR)</td><td>A GPCR on parathyroid chief cells. Calcium binding to it <i>blocks</i> PTH release. It is the sensor of the calcium loop.</td></tr>
+<tr><td>Parathyroid hormone (PTH)</td><td>A peptide of 84 amino acids, half-life 2&ndash;4 minutes. It raises calcium through kidney, bone and calcitriol, and lowers phosphate.</td></tr>
+<tr><td>Calcitriol</td><td>1,25-dihydroxyvitamin D. A steroid hormone made by renal 1-alpha-hydroxylase. It drives calcium absorption in the gut.</td></tr>
+<tr><td>FGF23</td><td>A hormone from osteocytes. It lowers phosphate by sending it out in urine and by shutting calcitriol production down.</td></tr>
+<tr><td>Corrected calcium</td><td>Measured Ca + 0.8 &times; (4.0 &minus; albumin g/dL). It adjusts total calcium for how much rides on protein.</td></tr>
+<tr><td>Interstitial fluid pressurization</td><td>Pressurized water inside cartilage carries most of the joint load. The friction coefficient comes out near 0.005.</td></tr>
+<tr><td>Interfragmentary strain</td><td>Gap motion divided by gap width. It decides whether a fracture fills with granulation tissue, cartilage or bone.</td></tr>
+<tr><td>Secondary hyperparathyroidism</td><td>PTH stays high because calcium is chronically low or phosphate chronically high. The classic setting is chronic kidney disease.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">A child breaks bones with almost no force. Serum calcium, phosphate and vitamin D are all normal. Which part of the bone composite is likely at fault? Why do the labs look normal?</div><div class="ans">The organic part, type I collagen. This is osteogenesis imperfecta. Mineral handling still works, so calcium, phosphate and vitamin D are normal. The tissue takes on mineral fine. Its pulling scaffold is faulty, so the bone is brittle. Compare osteomalacia. There the mineral phase fails and the labs are abnormal. You see low vitamin D, low or low-normal calcium, low phosphate and high alkaline phosphatase. Those bones bend rather than shatter.</div></div>
+
+<div class="qq"><div class="q">Explain, step by step, how an osteoclast dissolves bone. Name the two chemically different jobs and the machinery for each.</div><div class="ans">First comes demineralization. Carbonic anhydrase II makes H+ and HCO3- from CO2 and water. A vacuolar H+-ATPase pumps the H+ across the ruffled border into a pocket sealed by an actin ring. The pH there drops to about 4.5. Chloride follows through a channel. A Cl-/HCO3- exchanger on the far side protects the pH inside the cell. Acid dissolves hydroxyapatite. Second comes matrix digestion. Cathepsin K is a protein-cutting enzyme that works best in acid. It cuts the type I collagen the acid exposed. Block either step and resorption stops.</div></div>
+
+<div class="qq"><div class="q">Why does trabecular bone lose mass faster than cortical bone in early menopause?</div><div class="ans">Cells work on surfaces. Trabecular bone holds about 80 percent of the skeleton&rsquo;s inside surface on only 20 percent of its mass. So it turns over about 25 percent per year. Cortical bone turns over about 3 percent. Losing estrogen raises the RANKL/OPG ratio. That takes a brake off osteoclast recruitment and survival. So the site with the most active surface shows the change first. That means the vertebrae, the femoral neck and the distal radius.</div></div>
+
+<div class="qq"><div class="q">A 19-year-old man comes from a family of unusually tall people. He is still getting taller. His x-rays show open growth plates. What hormone problem explains this? Why is testosterone not the answer?</div><div class="ans">Aromatase deficiency, or an estrogen receptor that does not work. Estrogen, not testosterone, uses up the pool of dividing chondrocytes and fuses the epiphyseal plate. It does this in both sexes. Testosterone helps the pubertal growth spurt mostly after it is turned into estradiol. That conversion is called aromatization. Without it, or without a working receptor, the plate never closes and growth goes on into adulthood. Give estrogen and the plates close.</div></div>
+
+<div class="qq"><div class="q">Starting a strong antiresorptive drug raises measured bone density 3&ndash;5 percent in the first year. That is far more bone than could actually be built. Explain.</div><div class="ans">It is the remodeling space. Resorption takes 2&ndash;3 weeks. Refilling takes 3&ndash;4 months. So at any moment the skeleton holds many holes that are dug but not yet filled. Suppressing the start of new BMUs lets the existing holes finish filling. No new ones get dug, so the shortfall closes. The gain is mostly old cavities filling in, plus older bone going on with secondary mineralization. It is not much new bone.</div></div>
+
+<div class="qq"><div class="q">A competitive swimmer and a competitive gymnast have similar body weight, diet and hormone levels. The gymnast has much higher bone density at the wrist and spine. What does that tell you about the variable bone actually controls?</div><div class="ans">It tells you the controlled variable is local mechanical strain. Bone senses that strain as fluid shear across osteocyte arms. It is not any body-wide factor. Swimming is nearly gravity-free, so strain size and strain rate stay low. Gymnastics delivers big, fast, oddly aimed impact loads. Those push local tissue above the roughly 2,500 &micro;&epsilon; overload threshold. Adaptation happens site by site. The same bloodstream serves both skeletons.</div></div>
+
+<div class="qq"><div class="q">Why does parathyroid hormone build bone as one daily injection but destroy bone when the same hormone stays high all the time?</div><div class="ans">Because the osteoblast responds to how long the exposure lasts. A short pulse helps osteoblasts survive. It turns on Wnt signaling and raises IGF-1. Building wins before RANKL-driven osteoclast recruitment can get going. Steady exposure keeps the RANKL/OPG ratio high. Then osteoclasts mature and survive, and net removal wins. Teriparatide uses the pulse. Primary hyperparathyroidism shows the continuous state.</div></div>
+
+<div class="qq"><div class="q">Name every part of the calcium negative feedback loop. Give the direction of each step when a patient&rsquo;s ionized calcium falls by 0.1 mmol/L.</div><div class="ans">Variable: plasma ionized calcium. Sensor: the calcium-sensing receptor on parathyroid chief cells. Integrator: the parathyroid gland. Effectors: the distal kidney tubule, bone, and the intestine through calcitriol. When calcium falls, less of it sits on the CaSR. The block on secretion lifts, and PTH can roughly double within minutes. PTH then takes back more calcium in the distal tubule, within minutes. It sends more phosphate out from the proximal tubule. It raises the RANKL/OPG ratio to free bone mineral, over hours. It switches on 1-alpha-hydroxylase, so calcitriol raises gut calcium absorption over 24&ndash;48 hours. Rising ionized calcium then refills the CaSR and shuts PTH off.</div></div>
+
+<div class="qq"><div class="q">Why must PTH dump phosphate in the urine at the same moment it frees calcium from bone?</div><div class="ans">Bone breakdown releases calcium and phosphate together, in the fixed ratio of hydroxyapatite. If the body kept both, the calcium&ndash;phosphate product would rise. The two ions would settle out in soft tissue and vessels. Free ionized calcium would then fall, which defeats the whole point. PTH pulls the NaPi-IIa cotransporter out of the proximal tubule and sends phosphate into the urine. That lets calcium rise on its own. This is why primary hyperparathyroidism shows high calcium with low phosphate.</div></div>
+
+<div class="qq"><div class="q">A panicking patient hyperventilates and gets tingling around the mouth and a cramped hand. Total serum calcium is 9.4 mg/dL. Explain the tetany.</div><div class="ans">Respiratory alkalosis uncovers more negative charge on albumin. Albumin then binds more calcium. Ionized calcium falls roughly 0.05 mmol/L for every 0.1 unit rise in pH, while total calcium does not change. Less calcium outside the cell means less charge masking at the voltage-gated sodium channel. Activation shifts toward the resting potential. So nerves fire at a lower stimulus. That gives tingling, cramps and a positive Trousseau sign. The fix is to correct the alkalosis, not to give calcium.</div></div>
+
+<div class="qq"><div class="q">You hold a 98 N load in your hand with the elbow bent to 90 degrees. The biceps inserts 4 cm from the joint axis and the load sits 32 cm out. What force must the biceps produce? What is gained by such an inefficient arrangement?</div><div class="ans">Balance the torques. Muscle force = 98 N &times; 32 cm / 4 cm. That is about 780 N, roughly eight times the load. This third-class lever has a mechanical advantage well under 1. But the same 8:1 ratio means 1 cm of muscle shortening moves the hand 8 cm. The design trades force for range and speed. That is the right trade for a limb that must reach and throw. It also explains why joint and bone loads in daily life come mostly from muscle force, not from body weight.</div></div>
+
+<div class="qq"><div class="q">Two tibial fractures are fixed in different ways. One gets a rigid compression plate. One goes in a cast. One shows plenty of callus on x-ray and one shows almost none. Which is which, and what physical variable explains it?</div><div class="ans">The variable is interfragmentary strain, the gap motion divided by the gap width. Granulation tissue takes about 100 percent strain. Cartilage takes 10&ndash;15 percent. Bone takes about 2 percent. A rigid compression plate drops strain below roughly 2 percent. Bone can then form straight across the line by osteoclast cutting cones. That is primary union, with essentially no callus. The cast allows small movement. So the fracture builds cartilage and woven bone callus first. That callus stiffens the site, which lowers strain, which lets bone form. It is a self-limiting negative feedback ladder. A construct in between, too floppy for direct healing and too stiff for callus, is where nonunion happens.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch03.html"><span class="k">Previous</span>&larr; Tissues</a>
+        <a class="next" href="ch05.html"><span class="k">Next</span>Muscle Tissue and Nervous &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Bone Composite Bench &mdash; mineral, collagen and the osteoclast</title>
+<meta name="description" content="Damage the mineral phase or the collagen phase of bone and watch the stress-strain curve change shape, then run an osteoclast and block its proton pump or its cathepsin K.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);} .btn:disabled{opacity:.42;cursor:default;}
+.srow{display:grid;grid-template-columns:150px 1fr 84px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.srow .nm{color:var(--soft);font-weight:700;line-height:1.2;}
+.srow .nm small{display:block;font-weight:500;color:var(--muted);font-size:10px;}
+.srow .tr{height:13px;border-radius:7px;background:rgba(0,0,0,.055);overflow:hidden;}
+.srow .fl{height:100%;border-radius:7px;transition:width .3s;background:var(--blue);}
+.srow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.eq{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.9;font-variant-numeric:tabular-nums;}
+.eq .t{color:var(--coral);font-weight:700;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch04.html">&larr; Module 4</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 4 &middot; Section 1</div>
+  <h1>The Bone Composite Bench</h1>
+  <div class="intro">Bone is an interpenetrating composite: <b>hydroxyapatite crystals grown inside collagen fibrils</b>, where mineral carries compression and collagen carries tension. Damage one phase at a time and watch the stress&ndash;strain curve change shape &mdash; brittle, soft, or simply too little bone. Then switch to the osteoclast bench and take away its proton pump or its cathepsin K.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Composite bench</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Osteoclast bench</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Clinical presets</div>
+        <div class="chips" id="presets"></div>
+
+        <div class="sl">
+          <label for="minS">Mineral phase &mdash; hydroxyapatite <span class="v" id="minV">100%</span></label>
+          <input type="range" id="minS" min="10" max="120" value="100" aria-label="Mineral phase integrity, percent of normal">
+        </div>
+        <div class="sl">
+          <label for="colS">Organic phase &mdash; type I collagen <span class="v" id="colV">100%</span></label>
+          <input type="range" id="colS" min="10" max="120" value="100" aria-label="Collagen phase integrity, percent of normal">
+        </div>
+        <div class="sl">
+          <label for="qtyS">How much bone is there <span class="v" id="qtyV">100%</span></label>
+          <input type="range" id="qtyS" min="30" max="115" value="100" aria-label="Bone quantity, percent of young adult">
+        </div>
+        <div class="hint">Matrix by wet weight is about <b>65% mineral, 25% organic, 10% water</b>; roughly 90% of the organic fraction is type I collagen. The third slider changes <i>how much</i> bone there is without changing what it is made of.</div>
+
+        <div class="lbl">How is it being loaded?</div>
+        <div class="chips" id="modes"></div>
+
+        <button class="tog" id="rateT" type="button" aria-pressed="false"><span class="dot"></span><span>Fast loading &mdash; a fall, milliseconds <small>Bone is viscoelastic: fast loading finds it stiffer and stronger, but more brittle</small></span></button>
+        <button class="tog" id="axisT" type="button" aria-pressed="true"><span class="dot"></span><span>Loaded along the habitual axis <small>Bone is anisotropic &mdash; roughly twice as strong along its loading history as across it</small></span></button>
+
+        <div class="row"><button class="btn solid" id="loadIt" type="button">Load it to failure</button></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">The sealed resorption lacuna</div>
+        <div class="hint" style="margin-top:0">A resorbing osteoclast seals a patch of bone with an integrin-rich actin ring and behaves like a miniature stomach turned upside down. <b>Two chemically separate jobs</b> have to happen in order: dissolve the mineral with acid, then digest the exposed collagen with a protease. Switch pieces of the machinery off and see which job stops.</div>
+
+        <button class="tog" id="tSeal" type="button" aria-pressed="true"><span class="dot"></span><span>Actin sealing ring <small>Integrin-rich ring that isolates the lacuna from extracellular fluid</small></span></button>
+        <button class="tog" id="tCA" type="button" aria-pressed="true"><span class="dot"></span><span>Carbonic anhydrase II <small>Makes H&#8314; and HCO&#8323;&#8315; from CO&#8322; and water inside the cell</small></span></button>
+        <button class="tog" id="tPump" type="button" aria-pressed="true"><span class="dot"></span><span>Vacuolar H&#8314;-ATPase <small>Pumps protons across the ruffled border into the sealed lacuna</small></span></button>
+        <button class="tog" id="tCl" type="button" aria-pressed="true"><span class="dot"></span><span>Chloride channel + basolateral Cl&#8315;/HCO&#8323;&#8315; exchanger <small>Supplies the accompanying anion and stops the cell alkalinizing itself</small></span></button>
+        <button class="tog" id="tCK" type="button" aria-pressed="true"><span class="dot"></span><span>Cathepsin K <small>Acid-optimum protease that cleaves type I collagen once mineral is gone</small></span></button>
+
+        <div class="lbl">Lesions to try</div>
+        <div class="chips" id="lesions"></div>
+
+        <div class="row">
+          <button class="btn solid" id="runOc" type="button">Start resorbing</button>
+          <button class="btn" id="resetOc" type="button">Reset the pit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="rightCard">
+      <h2 id="rightTitle">Stress&ndash;strain curve of the current material</h2>
+      <canvas id="cv1" width="1040" height="520" aria-label="Stress strain curve for the current bone material, with the normal adult cortical bone curve shown for comparison"></canvas>
+      <div class="stats" id="stats1"></div>
+      <div id="bars1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="info1"></div>
+    </div>
+    <div class="card hide" id="rightCard2">
+      <h2>Inside the sealed lacuna</h2>
+      <canvas id="cv2" width="1040" height="460" aria-label="Animated cross-section of an osteoclast resorbing bone, showing lacunar pH, the depth of the pit and any undigested demineralized collagen"></canvas>
+      <div class="stats" id="stats2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="info2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple'),INK=C('--ink');
+function $(i){return document.getElementById(i);}
+
+/* ---------- tabs ---------- */
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false');
+  m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('rightCard').classList.toggle('hide',n!==1); $('rightCard2').classList.toggle('hide',n!==2);
+  if(n===2) drawOc();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =========================================================
+   BENCH 1 - the composite
+   ========================================================= */
+var minS=$('minS'),colS=$('colS'),qtyS=$('qtyS');
+var mode='comp', fastRate=false, axisAlong=true;
+
+var MODES=[
+ {k:'comp',n:'Compression',base:180,wm:0.85,note:'Compression is carried mainly by the mineral, which resists being crushed. Cortical bone takes roughly 170&ndash;190 MPa.'},
+ {k:'tens',n:'Tension',base:128,wm:0.25,note:'Tension is carried mainly by collagen, which resists being pulled apart. Cortical bone takes roughly 120&ndash;135 MPa.'},
+ {k:'shear',n:'Shear / torsion',base:60,wm:0.40,note:'Shear is the weak axis at about 50&ndash;70 MPa. That is why twisting injuries produce spiral fractures at loads far below what the same bone tolerates in pure compression.'}
+];
+var modeBox=$('modes');
+MODES.forEach(function(M){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(M.k===mode?' on':''); b.textContent=M.n;
+  b.setAttribute('aria-pressed',M.k===mode?'true':'false');
+  b.onclick=function(){mode=M.k;[].forEach.call(modeBox.children,function(c,i){c.classList.toggle('on',MODES[i].k===mode);c.setAttribute('aria-pressed',MODES[i].k===mode?'true':'false');});render1();};
+  modeBox.appendChild(b);
+});
+
+var PRESETS=[
+ {n:'Normal adult cortical bone',m:100,c:100,q:100},
+ {n:'Osteogenesis imperfecta',m:105,c:35,q:85},
+ {n:'Osteomalacia / rickets',m:45,c:100,q:100},
+ {n:'Osteoporosis',m:100,c:100,q:55},
+ {n:'Elderly, vitamin D deplete',m:62,c:95,q:62}
+];
+var pBox=$('presets');
+PRESETS.forEach(function(P){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'; b.textContent=P.n;
+  b.onclick=function(){minS.value=P.m;colS.value=P.c;qtyS.value=P.q;render1();};
+  pBox.appendChild(b);
+});
+
+$('rateT').onclick=function(){fastRate=!fastRate;this.setAttribute('aria-pressed',fastRate?'true':'false');render1();};
+$('axisT').onclick=function(){axisAlong=!axisAlong;this.setAttribute('aria-pressed',axisAlong?'true':'false');render1();};
+[minS,colS,qtyS].forEach(function(s){s.addEventListener('input',render1);});
+
+/* teaching model: each phase contributes to stiffness, strength and ductility
+   with a different weight, so the three diseases separate cleanly */
+function mat(m,c,mk,fast,along){
+  var M=null,i; for(i=0;i<MODES.length;i++){ if(MODES[i].k===mk) M=MODES[i]; }
+  var E=18*(0.80*m+0.20*c);                 /* GPa */
+  var S=M.base*(M.wm*m+(1-M.wm)*c);         /* MPa, plastic ultimate */
+  var ef=1.8*c/(0.5+0.5*m);                 /* percent strain to failure */
+  if(!along){S*=0.52;E*=0.55;ef*=0.85;}
+  if(fast){S*=1.15;E*=1.15;ef*=0.72;}
+  if(E<0.2)E=0.2;
+  var Sy=0.72*S, ey=Sy/(10*E), brittle=(ef<=ey), sult, U;
+  if(brittle){ sult=E*10*ef; U=0.5*sult*ef; }
+  else { sult=S; U=0.5*Sy*ey+0.5*(Sy+S)*(ef-ey); }
+  return {E:E,S:S,Sy:Sy,ey:ey,ef:ef,sult:sult,U:U,brittle:brittle};
+}
+var NORM={}; MODES.forEach(function(M){NORM[M.k]=mat(1,1,M.k,false,true);});
+
+var anim=null, animT=0;
+$('loadIt').onclick=function(){ animT=0; if(anim) cancelAnimationFrame(anim); stepAnim(); };
+function stepAnim(){ animT+=0.018; if(animT>1.35){animT=0;render1();return;} render1(); anim=requestAnimationFrame(stepAnim); }
+
+function render1(){
+  var m=+minS.value/100,c=+colS.value/100,q=+qtyS.value/100;
+  $('minV').textContent=minS.value+'%'; $('colV').textContent=colS.value+'%'; $('qtyV').textContent=qtyS.value+'%';
+  var R=mat(m,c,mode,fastRate,axisAlong), N=NORM[mode];
+  var relLoad=q*(R.sult/N.sult)*100;
+  var relTough=(R.U/NORM.comp.U)*100;
+
+  /* stats */
+  $('stats1').innerHTML=
+    tile('Young&rsquo;s modulus',R.E.toFixed(1),'GPa &middot; normal 17&ndash;20')+
+    tile('Ultimate strength',Math.round(R.sult),'MPa &middot; this loading mode')+
+    tile('Strain at failure',R.ef.toFixed(2),'% &middot; normal ~1.8')+
+    tile('Toughness',Math.round(relTough),'% of normal energy absorbed')+
+    tile('Whole-bone failure load',Math.round(relLoad),'% of young adult')+
+    tile('Failure style',R.brittle?'Brittle':'Ductile',R.brittle?'snaps in the elastic region':'yields, then fails');
+
+  /* bars for all three loading modes */
+  var html='<div class="lbl" style="margin-top:14px">Strength in each loading mode, with normal cortical bone as the ruler</div>';
+  MODES.forEach(function(M){
+    var r=mat(m,c,M.k,fastRate,axisAlong), n=NORM[M.k];
+    var pct=Math.max(2,Math.min(100,r.sult/200*100));
+    var col=(M.k===mode)?CORAL:BLUE;
+    html+='<div class="srow"><div class="nm">'+M.n+'<small>normal '+Math.round(n.sult)+' MPa</small></div>'+
+      '<div class="tr"><div class="fl" style="width:'+pct+'%;background:'+col+'"></div></div>'+
+      '<div class="tv">'+Math.round(r.sult)+' MPa</div></div>';
+  });
+  $('bars1').innerHTML=html;
+
+  /* verdict */
+  var v=$('v1'),cls='verdict',txt='';
+  if(c<0.62&&m>=0.85){
+    cls='verdict bad';
+    txt='Brittle bone &mdash; the tensile scaffold has failed<small>This is the pattern of <b>osteogenesis imperfecta</b>. The mineral-to-matrix ratio can even be high, so the material is stiff, but it fractures in the elastic region with trivial force. Serum calcium, phosphate and vitamin D are normal, because mineral handling is intact.</small>';
+  } else if(m<0.72&&c>=0.82){
+    cls='verdict warn';
+    txt='Soft bone &mdash; the mineral phase never hardened<small>This is <b>osteomalacia</b> or rickets. The collagen scaffold is laid down normally, so strain to failure is high &mdash; bone bends and aches rather than shattering &mdash; but stiffness and strength collapse. On biopsy the osteoid seam is 30 &micro;m or wider instead of the normal 10&ndash;15 &micro;m.</small>';
+  } else if(q<0.78&&m>0.85&&c>0.85){
+    cls='verdict warn';
+    txt='Normal material &mdash; there is simply less of it<small>This is <b>osteoporosis</b>. Every material property on this curve is normal; only the whole-bone failure load has fallen, because trabecular struts have thinned and disconnected. Dietary calcium is permissive, not causal &mdash; the primary lesion is a remodeling imbalance.</small>';
+  } else if(m<0.72&&c<0.72){
+    cls='verdict bad';
+    txt='Both phases are impaired<small>Stiffness, strength and toughness all fall together. In an elderly, vitamin D&ndash;deplete patient osteoporosis and osteomalacia genuinely coexist, and the two lesions have different treatments.</small>';
+  } else {
+    cls='verdict';
+    txt='Healthy composite &mdash; stiff <i>and</i> tough<small>Ceramics are stiff but shatter; polymers stretch but sag. Bone refuses to choose, because 2&ndash;5 nm hydroxyapatite plates nucleate <i>inside</i> the 40 nm gap zones of the collagen fibril. It is not a mixture &mdash; it is an interpenetrating composite at the nanometer scale.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  /* info */
+  var M=null,i; for(i=0;i<MODES.length;i++){ if(MODES[i].k===mode) M=MODES[i]; }
+  var extra='';
+  if(fastRate) extra+=' Loaded fast, this specimen is stiffer and stronger but has lost about a quarter of its strain to failure &mdash; a fall loads bone in milliseconds and finds it <i>brittle</i>.';
+  if(!axisAlong) extra+=' Loaded across the habitual axis, strength has roughly halved: bone is <b>anisotropic</b> and only builds strength in the directions it is actually used.';
+  $('info1').innerHTML='<span class="n">'+M.n+'</span>'+M.note+extra;
+
+  drawCurve(R,N);
+}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+function curvePts(R){
+  var pts=[];
+  if(R.brittle){ pts.push([0,0]); pts.push([R.ef,R.sult]); }
+  else{
+    pts.push([0,0]); pts.push([R.ey,R.Sy]);
+    var n=14,i;
+    for(i=1;i<=n;i++){
+      var t=i/n, e=R.ey+(R.ef-R.ey)*t;
+      var s=R.Sy+(R.S-R.Sy)*(1-Math.pow(1-t,1.7));
+      pts.push([e,s]);
+    }
+  }
+  return pts;
+}
+function drawCurve(R,N){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H);
+  var L=78,Rt=W-30,T=26,B=H-56;
+  var xmax=3.2, ymax=230;
+  function X(e){return L+(e/xmax)*(Rt-L);}
+  function Y(s){return B-(s/ymax)*(B-T);}
+  /* grid */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 15px Inter, system-ui, sans-serif';
+  var i;
+  for(i=0;i<=ymax;i+=50){ g.beginPath(); g.moveTo(L,Y(i)); g.lineTo(Rt,Y(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-9,Y(i)+5); }
+  for(i=0;i<=3;i+=1){ g.beginPath(); g.moveTo(X(i),T); g.lineTo(X(i),B); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(i+'%',X(i),B+24); }
+  g.fillStyle=MUT; g.textAlign='center'; g.font='800 14px Inter, system-ui, sans-serif';
+  g.fillText('STRAIN  (% length change)',(L+Rt)/2,B+46);
+  g.save(); g.translate(20,(T+B)/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('STRESS  (MPa)',0,0); g.restore();
+
+  /* normal reference */
+  var np=curvePts(N);
+  g.strokeStyle=LINE; g.lineWidth=6; g.beginPath();
+  np.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y(p[1])); else g.lineTo(X(p[0]),Y(p[1])); });
+  g.stroke();
+  g.fillStyle=MUT; g.font='700 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('normal cortical bone', X(np[np.length-1][0])+8, Y(np[np.length-1][1])-4);
+
+  /* current curve, area shaded */
+  var pts=curvePts(R);
+  g.beginPath(); g.moveTo(X(0),Y(0));
+  pts.forEach(function(p){g.lineTo(X(p[0]),Y(p[1]));});
+  g.lineTo(X(pts[pts.length-1][0]),Y(0)); g.closePath();
+  g.globalAlpha=0.13; g.fillStyle=R.brittle?CORAL:TEAL; g.fill(); g.globalAlpha=1;
+  g.strokeStyle=R.brittle?CORAL:TEAL; g.lineWidth=4; g.beginPath();
+  pts.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y(p[1])); else g.lineTo(X(p[0]),Y(p[1])); });
+  g.stroke();
+
+  /* failure marker */
+  var fx=X(R.ef),fy=Y(R.sult);
+  g.fillStyle=R.brittle?CORAL:TEAL; g.beginPath(); g.arc(fx,fy,7,0,6.284); g.fill();
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText(Math.round(R.sult)+' MPa at '+R.ef.toFixed(2)+'%', fx-12, fy-10);
+
+  /* yield marker */
+  if(!R.brittle){
+    g.fillStyle=GOLD; g.beginPath(); g.arc(X(R.ey),Y(R.Sy),5.5,0,6.284); g.fill();
+    g.fillStyle=GOLD; g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('yield', X(R.ey)+9, Y(R.Sy)+18);
+  }
+
+  /* traveling marker during "load it" */
+  if(animT>0){
+    var t=Math.min(1,animT), e=R.ef*t, s;
+    if(R.brittle) s=R.sult*t;
+    else if(e<=R.ey) s=R.E*10*e;
+    else { var u=(e-R.ey)/(R.ef-R.ey); s=R.Sy+(R.S-R.Sy)*(1-Math.pow(1-u,1.7)); }
+    g.fillStyle=PURP; g.beginPath(); g.arc(X(e),Y(s),9,0,6.284); g.fill();
+    if(animT>1){
+      g.fillStyle=CORAL; g.font='800 26px Fraunces, Georgia, serif'; g.textAlign='center';
+      g.fillText(R.brittle?'SHATTERS':'FAILS', (L+Rt)/2, T+40);
+    }
+    /* specimen bar */
+    var bx=Rt-150, by=T+16, bw=120, bh=26;
+    var strainVis=1+(R.brittle?e/100*8:e/100*8);
+    g.fillStyle=LINE; g.fillRect(bx,by,bw,bh);
+    g.fillStyle=R.brittle?CORAL:TEAL;
+    g.fillRect(bx,by,bw/strainVis,bh);
+    if(animT>1){ g.fillStyle='#fff'; g.fillRect(bx+bw*0.45,by,7,bh); }
+  }
+}
+
+/* =========================================================
+   BENCH 2 - the osteoclast
+   ========================================================= */
+var OC={seal:true,ca:true,pump:true,cl:true,ck:true};
+var pit=0, residue=0, ocRun=false, ocAnim=null, ctxRel=0;
+function bindTog(id,key){ var b=$(id); b.onclick=function(){OC[key]=!OC[key]; b.setAttribute('aria-pressed',OC[key]?'true':'false'); drawOc();}; }
+bindTog('tSeal','seal'); bindTog('tCA','ca'); bindTog('tPump','pump'); bindTog('tCl','cl'); bindTog('tCK','ck');
+
+var LES=[
+ {n:'Everything intact',s:{seal:1,ca:1,pump:1,cl:1,ck:1}},
+ {n:'H&#8314;-ATPase blocked',s:{seal:1,ca:1,pump:0,cl:1,ck:1}},
+ {n:'Carbonic anhydrase II deficiency',s:{seal:1,ca:0,pump:1,cl:1,ck:1}},
+ {n:'Chloride channel lost',s:{seal:1,ca:1,pump:1,cl:0,ck:1}},
+ {n:'Cathepsin K blocked',s:{seal:1,ca:1,pump:1,cl:1,ck:0}},
+ {n:'Sealing ring will not form',s:{seal:0,ca:1,pump:1,cl:1,ck:1}}
+];
+var lBox=$('lesions');
+LES.forEach(function(L){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=L.n;
+  b.onclick=function(){
+    OC.seal=!!L.s.seal; OC.ca=!!L.s.ca; OC.pump=!!L.s.pump; OC.cl=!!L.s.cl; OC.ck=!!L.s.ck;
+    ['tSeal','tCA','tPump','tCl','tCK'].forEach(function(id,i){
+      var k=['seal','ca','pump','cl','ck'][i]; $(id).setAttribute('aria-pressed',OC[k]?'true':'false');
+    });
+    pit=0; residue=0; ctxRel=0; drawOc();
+  };
+  lBox.appendChild(b);
+});
+$('runOc').onclick=function(){ ocRun=!ocRun; this.textContent=ocRun?'Pause':'Start resorbing'; if(ocRun) tickOc(); };
+$('resetOc').onclick=function(){ pit=0; residue=0; ctxRel=0; drawOc(); };
+
+function ocEff(){
+  var e=1;
+  e*= OC.pump?1:0;
+  e*= OC.ca?1:0.22;
+  e*= OC.cl?1:0.30;
+  e*= OC.seal?1:0.15;
+  return e;
+}
+function tickOc(){
+  if(!ocRun) return;
+  var e=ocEff();
+  var demin=e*0.006;
+  pit=Math.min(1,pit+demin);
+  var exposed=demin;                       /* newly demineralized collagen */
+  var digested=OC.ck?Math.min(residue+exposed,exposed*1.8+0.002):0;
+  residue=Math.max(0,Math.min(1,residue+exposed-digested));
+  ctxRel=digested*160;
+  drawOc();
+  ocAnim=requestAnimationFrame(tickOc);
+}
+function drawOc(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H);
+  var e=ocEff();
+  var pH=7.4-2.9*e;
+
+  /* bone slab */
+  var boneTop=210, k;
+  g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=LINE; g.fillRect(0,boneTop,W,H-boneTop);
+  g.fillStyle=MUT; g.globalAlpha=0.35;
+  for(k=0;k<520;k++){ var rx=(k*97)%W, ry=boneTop+((k*53)%(H-boneTop)); g.fillRect(rx,ry,3,2); }
+  g.globalAlpha=1;
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('MINERALIZED BONE MATRIX', 22, H-18);
+
+  /* the pit */
+  var px=W/2, pw=300, pd=pit*118;
+  if(pd>1){
+    g.fillStyle='#fff'; g.beginPath();
+    g.moveTo(px-pw/2,boneTop);
+    g.bezierCurveTo(px-pw/2+30,boneTop+pd,px+pw/2-30,boneTop+pd,px+pw/2,boneTop);
+    g.closePath(); g.fill();
+    /* undigested demineralized collagen */
+    if(residue>0.01){
+      g.fillStyle=CORAL; g.globalAlpha=0.55; g.beginPath();
+      var rd=pd*Math.min(1,residue*3.2);
+      g.moveTo(px-pw/2+8,boneTop+pd-rd);
+      g.bezierCurveTo(px-pw/2+34,boneTop+pd,px+pw/2-34,boneTop+pd,px+pw/2-8,boneTop+pd-rd);
+      g.closePath(); g.fill(); g.globalAlpha=1;
+      g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+      g.fillText('undigested demineralized collagen', px, boneTop+pd+26);
+    }
+  }
+
+  /* osteoclast body */
+  var oy=boneTop-8, ow=380;
+  g.fillStyle=TEAL; g.globalAlpha=0.16;
+  g.beginPath(); g.moveTo(px-ow/2,oy); g.bezierCurveTo(px-ow/2,oy-150,px+ow/2,oy-150,px+ow/2,oy); g.closePath(); g.fill();
+  g.globalAlpha=1; g.strokeStyle=TEAL; g.lineWidth=3; g.stroke();
+  /* nuclei */
+  g.fillStyle=TEAL; g.globalAlpha=0.55;
+  [[-110,-70],[-55,-92],[0,-78],[55,-92],[110,-68],[-28,-46],[35,-48]].forEach(function(p){
+    g.beginPath(); g.ellipse(px+p[0],oy+p[1],17,13,0,0,6.284); g.fill(); });
+  g.globalAlpha=1;
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('OSTEOCLAST  (4–20 nuclei, monocyte/macrophage lineage)', px, oy-130);
+
+  /* ruffled border */
+  g.strokeStyle=OC.pump?TEAL:MUT; g.lineWidth=3; g.beginPath();
+  for(k=0;k<=28;k++){ var xx=px-pw/2+ (pw/28)*k; g.lineTo(xx, oy-(k%2?16:2)); }
+  g.stroke();
+  g.fillStyle=OC.pump?TDK:MUT; g.font='700 13px Inter, system-ui, sans-serif';
+  g.fillText('ruffled border', px, oy-30);
+
+  /* sealing ring */
+  g.fillStyle=OC.seal?GOLD:CORAL;
+  g.fillRect(px-pw/2-26,oy-14,26,16); g.fillRect(px+pw/2,oy-14,26,16);
+  g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText(OC.seal?'actin ring sealed':'ring broken — acid leaks out', px-pw/2-32, oy-2);
+
+  /* protons */
+  if(OC.pump&&e>0.05){
+    g.fillStyle=CORAL; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+    var t=Date.now()/380;
+    for(k=0;k<11;k++){
+      var f=((t+k*0.32)%1);
+      var hx=px-pw/2+30+(pw-60)*(k/10);
+      g.globalAlpha=0.35+0.6*(1-f);
+      g.fillText('H+', hx, oy+6+f*(pd>6?pd*0.8:14));
+    }
+    g.globalAlpha=1;
+  }
+
+  /* pH gauge */
+  var gx=40,gy=44,gw=250,gh=16;
+  g.fillStyle=LINE; g.fillRect(gx,gy,gw,gh);
+  var frac=(7.4-pH)/2.9;
+  g.fillStyle=frac>0.7?CORAL:(frac>0.25?GOLD:BLUE);
+  g.fillRect(gx,gy,gw*frac,gh);
+  g.fillStyle=TDK; g.textAlign='left'; g.font='800 16px Inter, system-ui, sans-serif';
+  g.fillText('Lacunar pH  '+pH.toFixed(2), gx, gy-10);
+  g.fillStyle=MUT; g.font='600 13px Inter, system-ui, sans-serif';
+  g.fillText('7.40 (plasma)', gx, gy+gh+18);
+  g.textAlign='right'; g.fillText('4.50 (fully acidified)', gx+gw, gy+gh+18);
+
+  /* stats + verdict */
+  $('stats2').innerHTML=
+    tile('Lacunar pH',pH.toFixed(2),'plasma 7.40 &rarr; target 4.50')+
+    tile('Mineral dissolved',Math.round(pit*100),'% of the patch')+
+    tile('Collagen left undigested',Math.round(residue*100),'% of what was exposed')+
+    tile('Demineralization rate',(e*100).toFixed(0),'% of normal')+
+    tile('CTX release',ctxRel>0.5?Math.round(ctxRel):'0','resorption marker, arbitrary units')+
+    tile('Net resorption',(e>0.5&&OC.ck)?'Normal':(e<0.1?'Blocked':'Impaired'),'both jobs must succeed');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(!OC.seal){
+    cls='verdict bad';
+    txt='No sealed compartment &mdash; no pit at all<small>Without the integrin-rich actin ring the osteoclast cannot isolate a patch of matrix. Protons dissipate into extracellular fluid instead of accumulating, and the pH of the vast extracellular pool barely moves.</small>';
+    inf='<span class="n">Why the seal comes first</span>Acid only works if it is <b>concentrated</b>. The sealing zone turns a few square micrometers of bone surface into a closed chamber, so a modest pumping rate can drop pH from 7.40 to about <b>4.5</b> &mdash; nearly a thousand-fold rise in proton concentration. Attachment defects therefore cause the same phenotype as pump defects.';
+  } else if(!OC.pump||!OC.ca||!OC.cl){
+    cls='verdict bad';
+    txt='The lacuna will not acidify &mdash; mineral is untouched<small>Hydroxyapatite dissolves in acid and in essentially nothing else the cell can make. With pH near 7.4 the crystals stay exactly where they are, however much cathepsin K is available, because the protease cannot reach collagen buried inside mineral.</small>';
+    inf='<span class="n">Three parts, one acid</span><b>Carbonic anhydrase II</b> generates H&#8314; and HCO&#8323;&#8315; from CO&#8322; and water; the <b>vacuolar H&#8314;-ATPase</b> pushes the protons across the ruffled border; a <b>chloride channel</b> supplies the accompanying anion so charge does not build up, while a basolateral Cl&#8315;/HCO&#8323;&#8315; exchanger stops the cell alkalinizing itself. Lose any one and the whole acid arm fails &mdash; which is why several genetically distinct lesions all produce <b>osteopetrosis</b>: dense, disorganized, paradoxically fragile bone with marrow crowding and cranial nerve compression.';
+  } else if(!OC.ck){
+    cls='verdict warn';
+    txt='Acid works, protease does not &mdash; demineralized collagen piles up<small>The mineral dissolves on schedule but the exposed type I collagen is never cleaved, so the pit fills with soft, undigested matrix and resorption stalls half-finished.</small>';
+    inf='<span class="n">Two chemically distinct jobs</span>Resorption is <b>demineralization then proteolysis</b>. <b>Cathepsin K</b> has an acidic pH optimum precisely because it is meant to work inside the lacuna after the acid has done its half. Blocking it is a real pharmacologic strategy &mdash; resorption falls without killing the osteoclast, so the coupled signals that recruit osteoblasts are partly preserved. The inherited version is pycnodysostosis.';
+  } else {
+    cls='verdict';
+    txt='Normal resorption &mdash; acid first, then protease<small>The lacuna acidifies to about pH 4.5, hydroxyapatite dissolves, and cathepsin K digests the exposed collagen. Telopeptide fragments (CTX, NTX) appear in blood within hours &mdash; long before densitometry could detect anything.</small>';
+    inf='<span class="n">A stomach turned upside down</span>The osteoclast seals a patch, then pumps protons <i>outward</i> into that sealed space. Everything else follows: <b>carbonic anhydrase II</b> supplies the protons, the <b>H&#8314;-ATPase</b> moves them, a <b>chloride channel</b> balances the charge, acid dissolves the <b>hydroxyapatite</b>, and <b>cathepsin K</b> cleaves the type I collagen underneath. Block either half and the patch is not resorbed.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('info2').innerHTML=inf;
+}
+
+/* boot */
+render1();
+drawOc();
+setMode(1);
+})();
+</script>
+</body>
+</html>

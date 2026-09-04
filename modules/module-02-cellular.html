@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 2 &middot; The Cellular Level &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 2 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>The Cellular Level</h1>
+    <p class="sub">The membrane decides what gets in. Almost everything else follows from that.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Describe the cell membrane and say why only some things cross it</li>
+      <li>Tell passive transport from active transport, and give an example of each</li>
+      <li>Predict what a cell does in a hypotonic, isotonic, or hypertonic solution</li>
+      <li>Explain what the sodium&ndash;potassium pump does and why it costs ATP</li>
+      <li>Say where ATP is made, and why a cell without it dies fast</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>A membrane that chooses</h2>
+  <p class="lead">Every cell is wrapped in a double layer of fat with proteins floating in it.</p>
+  <p>That double layer is the <span class="keyword" title="The double layer of fat molecules that forms the cell membrane">phospholipid bilayer</span>. The water-loving heads face out. The water-fearing tails tuck inside.</p>
+  <p>This makes a barrier. Small, greasy, uncharged things slip through easily. Oxygen, carbon dioxide, and steroid hormones all cross on their own.</p>
+  <p>Charged or large things cannot cross at all. So sodium, potassium, calcium, glucose, and amino acids each need <b>a protein to let them through</b>.</p>
+  <p>Those proteins are the control panel. When a drug, a hormone, or a disease changes physiology, it usually does it by changing one of these proteins.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>The membrane is a nightclub wall, not a nightclub door. Nothing gets through the wall. Everything happens at the doors, and every door has its own bouncer.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Passive transport &mdash; downhill, and free</h2>
+  <p class="lead">If something moves from where there is more of it to where there is less, the cell pays nothing.</p>
+  <ul>
+    <li><b>Simple diffusion.</b> Straight through the membrane. Oxygen and carbon dioxide do this all day. That is the basis of gas exchange.</li>
+    <li><b>Facilitated diffusion.</b> Still downhill, but through a protein. Glucose enters most cells this way.</li>
+    <li><b>Osmosis.</b> The special case. This is <em>water</em> moving toward the side with more dissolved solute.</li>
+  </ul>
+  <p>One word matters here: <b>gradient</b>. Everything in passive transport runs down one. None of it needs ATP.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>Osmosis and tonicity &mdash; what a solution does to a cell</h2>
+  <p class="lead">Water follows solute. That one sentence answers most tonicity questions on an exam.</p>
+  <div class="demo">
+    <div class="dh">Put a red blood cell in three solutions</div>
+    <div class="stage" id="stage" style="height:170px;">
+      <div id="cell" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:radial-gradient(circle at 35% 32%,#d9636b,#8a2f36);transition:width .5s,height .5s,border-radius .5s;"></div>
+      <div id="arrows" style="position:absolute;left:0;right:0;top:14px;text-align:center;font-size:22px;color:#3a7aa8;letter-spacing:8px;"></div>
+      <div id="statelabel" style="position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:13px;font-weight:700;color:#7a6f63;"></div>
+    </div>
+    <div class="ctrls">
+      <label for="solute">Solute outside the cell</label>
+      <input type="range" id="solute" min="0" max="100" step="1" value="50">
+      <span class="readout" id="tonout"></span>
+    </div>
+  </div>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>Solution</th><th>Solute outside</th><th>Water moves</th><th>The cell</th></tr>
+    <tr><td><b>Hypotonic</b></td><td>Less than inside</td><td>Into the cell</td><td>Swells, and may burst</td></tr>
+    <tr><td><b>Isotonic</b></td><td>Same as inside</td><td>Both ways, equally</td><td>Stays the same</td></tr>
+    <tr><td><b>Hypertonic</b></td><td>More than inside</td><td>Out of the cell</td><td>Shrivels</td></tr>
+  </table>
+  </div>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>This is why IV fluids are chosen on purpose. Hang the wrong bag and you can swell cells that must not swell. Brain cells are the worst case, because there is no room for them to expand.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Active transport &mdash; uphill, and it costs</h2>
+  <p class="lead">Moving something <em>against</em> its gradient always takes energy.</p>
+  <p>The main example is the <span class="keyword" title="A membrane pump that moves 3 sodium out and 2 potassium in, using one ATP">sodium&ndash;potassium pump</span>. For each ATP it burns, it pushes <b>3 sodium out</b> and pulls <b>2 potassium in</b>. Both moves are uphill.</p>
+  <ol class="steps">
+    <li><b>It keeps sodium low inside.</b> So sodium always has somewhere to rush when a channel opens.</li>
+    <li><b>It keeps potassium high inside.</b> That is what sets the resting membrane potential.</li>
+    <li><b>Three out, two in.</b> Each cycle removes one net positive charge, which helps make the inside negative.</li>
+  </ol>
+  <p>About a fifth to a quarter of your resting energy goes to this one pump. That is the price of being ready to fire.</p>
+  <div class="note"><p><b>Bulk transport</b> handles anything too big for a protein. <b>Endocytosis</b> brings material in by wrapping the membrane around it. Phagocytosis is the version immune cells use to eat bacteria. <b>Exocytosis</b> pushes material out. That is how neurons release neurotransmitter and glands release hormone.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Where the ATP comes from</h2>
+  <p class="lead">Everything above runs on one kind of energy, and it is made in one place.</p>
+  <p>Glucose is broken down in the cytoplasm. It is finished off inside the <b>mitochondria</b>, using oxygen.</p>
+  <p>That is why oxygen delivery is what every emergency turns on. No oxygen means no ATP. No ATP means the pumps stop. When the pumps stop, sodium and water pour into the cell, and it swells and dies.</p>
+  <p>Cells with high energy needs are packed with mitochondria. Heart muscle, kidney tubules, and neurons are the big three. They are also the first to be injured when blood flow fails.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>ATP is not stored in a cellar like fat. It is made minute to minute, like a kitchen cooking to order. Cut off the ingredients and service stops almost at once.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has a bench where you move ions across a membrane one at a time and watch the gradient build &mdash; <a href="../labs.html">Membrane Transport benches</a>. It goes past what the exam asks. Open it once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "A red blood cell is put in a solution and starts to swell. What kind of solution is it?",
+    "a": ["Hypertonic","Isotonic","Hypotonic","Saturated with sodium"],
+    "c": 2,
+    "fb": [
+      "Hypertonic means more solute outside. Water would leave and the cell would shrivel.",
+      "Isotonic means no net movement, so the cell would keep its shape.",
+      "Correct. Less solute outside means water moves in, and the cell swells.",
+      "Extra sodium outside would pull water out, not in."
+    ]
+  },
+  {
+    "q": "Which one of these costs the cell ATP?",
+    "a": ["Oxygen diffusing into a cell","The sodium&ndash;potassium pump","Water moving by osmosis","Glucose entering through a carrier, down its gradient"],
+    "c": 1,
+    "fb": [
+      "Oxygen moves down its gradient, straight through the membrane. That is free.",
+      "Right. It moves both ions uphill, and uphill always costs ATP.",
+      "Osmosis is passive. Water follows solute without the cell paying.",
+      "Downhill through a protein is facilitated diffusion, which is still passive."
+    ]
+  },
+  {
+    "q": "Why can oxygen cross the membrane on its own when sodium cannot?",
+    "a": ["Oxygen is small and uncharged, and sodium is charged","Oxygen is heavier than sodium","Sodium is too big to fit anywhere","Oxygen dissolves in water and sodium does not"],
+    "c": 0,
+    "fb": [
+      "Exactly. The oily middle of the membrane blocks charged particles and lets small uncharged ones pass.",
+      "Weight is not the barrier. Charge is.",
+      "Sodium is actually a very small ion. Its charge is the problem, not its size.",
+      "Both are dissolved in water. The difference is charge."
+    ]
+  },
+  {
+    "q": "A patient's cells lose their oxygen supply. Why do the cells swell?",
+    "a": ["Oxygen normally pushes water out","No ATP means the sodium pump stops, sodium builds up inside, and water follows","The membrane dissolves without oxygen","Carbon dioxide replaces the water inside"],
+    "c": 1,
+    "fb": [
+      "Oxygen does not move water directly.",
+      "Correct. This same sequence is behind cell injury everywhere in the body.",
+      "The membrane stays intact until very late. The pump fails first.",
+      "Carbon dioxide does build up, but sodium and water cause the swelling."
+    ]
+  },
+  {
+    "q": "A macrophage wraps its membrane around a bacterium and swallows it. What is that called?",
+    "a": ["Exocytosis","Facilitated diffusion","Phagocytosis, a type of endocytosis","Active transport by a pump"],
+    "c": 2,
+    "fb": [
+      "Exocytosis moves material out of the cell, not in.",
+      "Facilitated diffusion moves single small molecules through a protein.",
+      "Right. This is bulk transport inward, and phagocytosis is the cell-eating version.",
+      "Pumps move ions one at a time. A whole bacterium is far too big."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var sl=document.getElementById("solute"), cell=document.getElementById("cell"),
+    out=document.getElementById("tonout"), lab=document.getElementById("statelabel"),
+    arr=document.getElementById("arrows");
+function draw(){
+  var v=+sl.value, d=v-50, size=88-d*0.62, name, color, note, glyph;
+  if(Math.abs(d)<6){ name="Isotonic"; color="#3f6b4e"; note="no net water movement &mdash; the cell holds its shape"; glyph="&harr; &harr; &harr;"; }
+  else if(d<0){ name="Hypotonic"; color="#3a7aa8"; note="water moves IN &mdash; the cell swells, and may burst"; glyph="&darr; &darr; &darr;"; }
+  else { name="Hypertonic"; color="#8a2f36"; note="water moves OUT &mdash; the cell shrivels"; glyph="&uarr; &uarr; &uarr;"; }
+  size=Math.max(38,Math.min(126,size));
+  cell.style.width=size+"px"; cell.style.height=size+"px";
+  cell.style.borderRadius = (d>26) ? "44% 56% 52% 48% / 50% 44% 56% 50%" : "50%";
+  arr.innerHTML=glyph; arr.style.color=color;
+  out.innerHTML="<span style='color:"+color+"'>"+name+"</span>";
+  lab.innerHTML=note; lab.style.color=color;
+}
+sl.addEventListener("input",draw); draw();
+
+})();
+</script>
+</body>
+</html>

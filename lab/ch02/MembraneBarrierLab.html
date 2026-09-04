@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Bilayer Barrier &mdash; permeability, fluidity and &tau; = R &times; C</title>
+<meta name="description" content="Send different solutes at a bare lipid bilayer, buffer its fluidity with cholesterol, then treat the same membrane as a capacitor and measure its time constant.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:12px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff;}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.list{max-height:none;}
+.it .p{margin-left:auto;font-size:11px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;}
+.it.on .p{color:rgba(255,255,255,.9);}
+.hide{display:none;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:14px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{font-size:13px;color:var(--soft);margin-top:7px;line-height:1.55;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch02.html">&larr; Module 2</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 2 &middot; Section 1</div>
+  <h1>The Bilayer Barrier</h1>
+  <div class="intro">A lipid bilayer is an oily sheet about 3 nm thick between two salt solutions. That single fact decides what crosses, how fast, and &mdash; because a thin insulator between two conductors is a <b>capacitor</b> &mdash; how quickly the cell&rsquo;s voltage can change. Throw solutes at the membrane below, buffer its fluidity with cholesterol, then switch modes and measure the membrane time constant <b>&tau; = R &times; C</b> for yourself.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="mA" role="tab" aria-selected="true" class="on">Who gets through?</button>
+        <button id="mB" role="tab" aria-selected="false">Membrane as a capacitor</button>
+      </div>
+
+      <div id="panA">
+        <div class="lbl">Pick a solute to send at the bare bilayer</div>
+        <div class="list" id="solList"></div>
+        <div class="lbl">Add a protein to the lipid</div>
+        <button class="tog" id="tAqp" aria-pressed="false"><span class="dot"></span><span>Insert aquaporins<small>Water channels &mdash; the lipid is unchanged</small></span></button>
+        <button class="tog" id="tNaCh" aria-pressed="false"><span class="dot"></span><span>Open one Na&#8314; channel<small>An aqueous pore, up to 10&#8312; ions per second</small></span></button>
+        <div class="lbl">Tune the lipid itself</div>
+        <div class="sl"><label for="chol">Cholesterol content <span class="v" id="cholV">25&#37;</span></label><input type="range" id="chol" min="0" max="50" step="1" value="25" aria-label="Cholesterol content of the membrane, percent of lipid"></div>
+        <div class="sl"><label for="temp">Temperature <span class="v" id="tempV">37 &deg;C</span></label><input type="range" id="temp" min="5" max="45" step="1" value="37" aria-label="Membrane temperature in degrees Celsius"></div>
+        <svg id="fluidPlot" viewBox="0 0 320 150" role="img" aria-label="Graph of membrane fluidity against temperature, comparing a cholesterol-free bilayer with the current cholesterol content"></svg>
+        <div class="hint">Cholesterol is a <b>fluidity buffer</b>. Watch the two curves cross: at body temperature cholesterol makes the membrane <i>stiffer</i>; in the cold it stops the lipid gelling. Both effects push fluidity toward the middle.</div>
+      </div>
+
+      <div id="panB" class="hide">
+        <div class="lbl">The membrane as an electrical component</div>
+        <div class="hint" style="margin-top:0">Specific capacitance sits near <b>1 microfarad per square centimeter</b> in essentially every cell studied, because bilayer thickness is nearly universal. What differs between cells is the <b>resistance</b> &mdash; how many channels sit in parallel with that capacitor.</div>
+        <div class="sl"><label for="res">Channel density &rarr; specific membrane resistance <span class="v" id="resV">5 000 &Omega;&middot;cm&sup2;</span></label><input type="range" id="res" min="1000" max="20000" step="250" value="5000" aria-label="Specific membrane resistance in ohm centimeters squared"></div>
+        <div class="hint" style="margin-top:2px">Slide left for a leaky, channel-rich membrane (low R); slide right for a tightly sealed one (high R).</div>
+        <div class="row"><button class="btn solid" id="inject">Inject a current step</button><button class="btn" id="ghost">Freeze this trace to compare</button></div>
+        <div class="stats">
+          <div class="stat"><div class="k">Resistance R</div><div class="v" id="sR">5 000</div><div class="u">&Omega;&middot;cm&sup2;</div></div>
+          <div class="stat"><div class="k">Capacitance C</div><div class="v">1.0</div><div class="u">&micro;F/cm&sup2; (fixed)</div></div>
+          <div class="stat"><div class="k">Time constant &tau;</div><div class="v" id="sTau">5.0</div><div class="u">milliseconds</div></div>
+        </div>
+        <div class="mnem"><b>Read the units.</b> 5 000 &Omega;&middot;cm&sup2; &times; 1 &times; 10&#8315;&#8310; F/cm&sup2; = 5 &times; 10&#8315;&#179; s = 5 ms. The cm&sup2; cancels, so &tau; does not depend on how big the cell is &mdash; only on how leaky its membrane is.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="resA">
+      <h2>Live membrane</h2>
+      <canvas id="mem" width="680" height="300" aria-label="Animated cross-section of a phospholipid bilayer with solute particles attempting to cross"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Relative permeability</div><div class="v" id="sP">1</div><div class="u">O&#8322; = 1</div></div>
+        <div class="stat"><div class="k">Success rate</div><div class="v" id="sOdds">1 in 1</div><div class="u">encounters that cross</div></div>
+        <div class="stat"><div class="k">Membrane fluidity</div><div class="v" id="sF">0.79</div><div class="u" id="sFw">fluid, ordered</div></div>
+      </div>
+      <svg id="permBar" viewBox="0 0 340 250" role="img" aria-label="Logarithmic bar chart of relative membrane permeability for ten solutes"></svg>
+      <div class="infobox"><span class="n" id="iName">Oxygen</span><span id="iWhy"></span><div class="dd" id="iExtra"></div></div>
+    </div>
+
+    <div class="card hide" id="resB">
+      <h2>Voltage response to a current step</h2>
+      <canvas id="rc" width="680" height="330" aria-label="Plot of membrane voltage against time during and after an injected current step, showing the exponential charge and discharge"></canvas>
+      <div class="infobox">
+        <span class="n">Why &tau; matters</span>
+        <span id="rcText"></span>
+        <div class="dd">Physiological membranes land in the <b>1&ndash;20 ms</b> range. &tau; is the time the voltage needs to travel <b>63&#37;</b> of the way to its new value &mdash; and a large part of why action potentials rise and spread at the speed they do (Modules 5 and 6).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+
+/* ---------- data ---------- */
+var SOL=[
+ {id:'o2',  n:'Oxygen (O₂)',        p:1,      lipo:true,  ic:'●', why:' is small and non-polar, so it dissolves straight into the hydrophobic core and out the far side. Nothing but the gradient limits it — which is why gas exchange never needs a transporter.'},
+ {id:'co2', n:'Carbon dioxide',          p:0.9,    lipo:true,  ic:'●', why:' behaves like oxygen: small, non-polar, freely permeant. The lung moves it on a pressure gradient alone.'},
+ {id:'ster',n:'Steroid hormone',         p:0.4,    lipo:true,  ic:'◆', why:' is lipid-soluble by construction, so it walks through the membrane and finds an intracellular receptor. Peptide hormones cannot, and must signal from the outside.'},
+ {id:'etoh',n:'Ethanol',                 p:0.2,    lipo:true,  ic:'◆', why:' is small and only weakly polar. It crosses every membrane in the body, including the blood–brain barrier, without help.'},
+ {id:'h2o', n:'Water',                   p:1e-3,   lipo:false, ic:'○', why:' is polar but very small, so it trickles across the bare bilayer slowly. Where aquaporins are inserted it moves fast — add them on the left and watch.'},
+ {id:'urea',n:'Urea',                    p:1e-5,   lipo:false, ic:'○', why:' is polar and larger, so it crosses slowly but genuinely. That slow leak is exactly why urea is an <b>ineffective osmole</b> — it equilibrates and stops pulling water (Section 3).'},
+ {id:'glc', n:'Glucose',                 p:1e-7,   lipo:false, ic:'○', why:' is big and heavily hydroxylated. Effectively no glucose crosses naked lipid; every cell in your body imports it on a GLUT or SGLT protein instead.'},
+ {id:'cl',  n:'Chloride (Cl⁻)',     p:1e-8,   lipo:false, ic:'⊖', why:' is charged, so entering lipid means shedding its hydration shell — an enormous energy cost. Chloride moves through channels or it does not move.'},
+ {id:'k',   n:'Potassium (K⁺)',     p:1e-9,   lipo:false, ic:'⊕', why:' is excluded by the bare bilayer just like sodium. Its famous resting leak is entirely through K⁺ channels, not through the lipid.'},
+ {id:'na',  n:'Sodium (Na⁺)',       p:1e-9,   lipo:false, ic:'⊕', why:' carries a shell of oriented water molecules. Stripping that shell to enter the oily core costs so much energy that the bare bilayer is roughly a <b>billion times</b> less permeable to Na⁺ than to O₂. That exclusion is what makes sodium movement controllable — and therefore useful.'}
+];
+var cur=SOL[0], aqp=false, nach=false, chol=0.25, tempC=37;
+
+/* ---------- fluidity model ---------- */
+function fluidNoChol(T){ return 1/(1+Math.exp(-(T-24)/3)); }
+function fluidity(T,c){ var f=fluidNoChol(T); var v=f + c*(0.5-f)*1.6; return Math.max(0.02,Math.min(0.99,v)); }
+var FLUID_REF=0.55+0.9*fluidity(37,0.25); /* reference membrane: 37 C, 25% cholesterol */
+
+function effP(s){
+  var p=s.p;
+  if(s.id==='h2o' && aqp) p=1;
+  if(s.id==='na'  && nach) p=1;
+  if(s.lipo){ var f=fluidity(tempC,chol); p=p*(0.55+0.9*f)/FLUID_REF; }
+  return Math.max(1e-12,Math.min(1.2,p));
+}
+function fmtP(p){
+  if(p>=0.05) return p.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+  var e=Math.floor(Math.log10(p)); var m=p/Math.pow(10,e);
+  return (m<1.15?'10':(Math.round(m*10)/10)+'×10') + '⁻' + supr(-e);
+}
+function supr(n){ var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'}; return String(n).split('').map(function(d){return m[d];}).join(''); }
+function odds(p){
+  var n=1/p;
+  if(n<1.6) return 'nearly every';
+  if(n<1000) return '1 in '+Math.round(n);
+  var e=Math.floor(Math.log10(n));
+  return '1 in 10'+supr(e);
+}
+
+/* ---------- solute list ---------- */
+var list=$('#solList');
+SOL.forEach(function(s,i){
+  var b=document.createElement('button');
+  b.className='it'+(i===0?' on':''); b.type='button'; b.setAttribute('data-i',i);
+  b.innerHTML='<span class="ic" aria-hidden="true">'+s.ic+'</span><span><span class="nm">'+s.n+'</span></span><span class="p" id="pv'+i+'"></span>';
+  b.addEventListener('click',function(){ cur=SOL[i]; [].forEach.call(list.children,function(c,j){c.classList.toggle('on',j===i);}); render(); });
+  list.appendChild(b);
+});
+
+/* ---------- toggles ---------- */
+function bindTog(el,setter){
+  el.addEventListener('click',function(){
+    var on=el.getAttribute('aria-pressed')!=='true';
+    el.setAttribute('aria-pressed',on?'true':'false'); setter(on); render();
+  });
+}
+bindTog($('#tAqp'),function(v){aqp=v;});
+bindTog($('#tNaCh'),function(v){nach=v;});
+$('#chol').addEventListener('input',function(){ chol=+this.value/100; $('#cholV').textContent=this.value+'%'; render(); });
+$('#temp').addEventListener('input',function(){ tempC=+this.value; $('#tempV').textContent=this.value+' °C'; render(); });
+
+/* ---------- permeability bar chart ---------- */
+function drawBars(){
+  var svg=$('#permBar'), h='', y=8, rowH=23;
+  h+='<text x="0" y="8" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--muted)" letter-spacing="0.6">RELATIVE PERMEABILITY, LOG SCALE (O₂ = 1)</text>';
+  y=20;
+  SOL.forEach(function(s){
+    var p=effP(s);
+    var frac=Math.max(0.012,Math.min(1,(Math.log10(p)+10)/10));
+    var w=Math.max(3,frac*172);
+    var on=(s.id===cur.id);
+    var col= on?'var(--teal)':(s.lipo?'var(--green)':'var(--blue)');
+    h+='<rect x="106" y="'+y+'" width="'+w.toFixed(1)+'" height="12" rx="3" fill="'+col+'" opacity="'+(on?1:0.5)+'"></rect>';
+    h+='<text x="102" y="'+(y+9.6)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="9.4" font-weight="'+(on?'800':'600')+'" fill="'+(on?'var(--teal-dk)':'var(--soft)')+'">'+s.n.replace(/ \(.*\)/,'')+'</text>';
+    h+='<text x="'+(106+w+4)+'" y="'+(y+9.6)+'" font-family="Inter,sans-serif" font-size="8.6" font-weight="700" fill="var(--muted)">'+fmtP(p)+'</text>';
+    y+=rowH;
+  });
+  h+='<line x1="106" y1="18" x2="106" y2="'+(y-8)+'" stroke="var(--line)" stroke-width="1"></line>';
+  svg.setAttribute('viewBox','0 0 340 '+(y+4));
+  svg.innerHTML=h;
+}
+
+/* ---------- fluidity plot ---------- */
+function drawFluid(){
+  var svg=$('#fluidPlot'), W=320,H=150, x0=34,x1=306, y0=124,y1=22;
+  function X(T){ return x0+(T-5)/40*(x1-x0); }
+  function Y(f){ return y0+(0-f)*(y0-y1); }
+  var a='',b='';
+  for(var T=5;T<=45;T+=1){
+    a+=(T===5?'M':'L')+X(T).toFixed(1)+' '+Y(fluidNoChol(T)).toFixed(1)+' ';
+    b+=(T===5?'M':'L')+X(T).toFixed(1)+' '+Y(fluidity(T,chol)).toFixed(1)+' ';
+  }
+  var h='';
+  h+='<rect x="'+x0+'" y="'+y1+'" width="'+(x1-x0)+'" height="'+(y0-y1)+'" fill="none" stroke="var(--line)"></rect>';
+  h+='<path d="'+a+'" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 3"></path>';
+  h+='<path d="'+b+'" fill="none" stroke="var(--teal)" stroke-width="2.6"></path>';
+  h+='<circle cx="'+X(tempC).toFixed(1)+'" cy="'+Y(fluidity(tempC,chol)).toFixed(1)+'" r="4.5" fill="var(--coral)"></circle>';
+  h+='<line x1="'+X(37)+'" y1="'+y1+'" x2="'+X(37)+'" y2="'+y0+'" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 3"></line>';
+  h+='<text x="'+X(37)+'" y="'+(y1-5)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" font-weight="800" fill="var(--gold)">37 °C</text>';
+  h+='<text x="'+x0+'" y="'+(y0+13)+'" font-family="Inter,sans-serif" font-size="8.5" fill="var(--muted)">5 °C</text>';
+  h+='<text x="'+x1+'" y="'+(y0+13)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="8.5" fill="var(--muted)">45 °C</text>';
+  h+='<text x="4" y="'+(y1+8)+'" font-family="Inter,sans-serif" font-size="8.5" font-weight="800" fill="var(--muted)">FLUID</text>';
+  h+='<text x="4" y="'+y0+'" font-family="Inter,sans-serif" font-size="8.5" font-weight="800" fill="var(--muted)">GEL</text>';
+  h+='<text x="'+(x0+6)+'" y="'+(y1+11)+'" font-family="Inter,sans-serif" font-size="8.6" font-weight="700" fill="var(--teal)">with cholesterol</text>';
+  h+='<text x="'+(x0+6)+'" y="'+(y1+23)+'" font-family="Inter,sans-serif" font-size="8.6" font-weight="700" fill="var(--muted)">pure phospholipid</text>';
+  svg.innerHTML=h;
+}
+
+/* ---------- membrane animation ---------- */
+var cvs=$('#mem'), ctx=cvs.getContext('2d'), CW=cvs.width, CH=cvs.height;
+var memY=CH*0.5, memH=52, parts=[], lastT=0;
+function newPart(){
+  var above=Math.random()<0.72;
+  return {x:20+Math.random()*(CW-40), y: above? 18+Math.random()*(memY-memH/2-30) : memY+memH/2+18+Math.random()*(CH-memY-memH/2-36),
+          vx:(Math.random()-0.5)*46, vy:(Math.random()-0.5)*46+(above?26:-26), r:5};
+}
+for(var i=0;i<58;i++) parts.push(newPart());
+
+function crossProb(){
+  var p=effP(cur);
+  return Math.max(0.0008,Math.min(1,Math.pow(10,Math.log10(p)/3)));
+}
+function soluteColour(){ return cur.lipo?'var(--green)':(cur.p<=1e-8?'var(--coral)':'var(--blue)'); }
+
+function drawMem(dt){
+  ctx.clearRect(0,0,CW,CH);
+  var css=getComputedStyle(document.body);
+  var teal=css.getPropertyValue('--teal')||'#1f5b73';
+  var tealdk=css.getPropertyValue('--teal-dk')||'#0f3040';
+  var gold=css.getPropertyValue('--gold')||'#b8862f';
+  var line=css.getPropertyValue('--line')||'#ebe3d5';
+  var muted=css.getPropertyValue('--muted')||'#8d8270';
+  var green=css.getPropertyValue('--green')||'#2f9e5b';
+  var blue=css.getPropertyValue('--blue')||'#2f6f9f';
+  var coral=css.getPropertyValue('--coral')||'#d1495b';
+  var pc = cur.lipo?green:(cur.p<=1e-8?coral:blue);
+
+  /* aqueous compartments */
+  ctx.fillStyle='rgba(47,111,159,0.05)'; ctx.fillRect(0,0,CW,memY-memH/2);
+  ctx.fillStyle='rgba(184,134,47,0.05)'; ctx.fillRect(0,memY+memH/2,CW,CH-memY-memH/2);
+  ctx.font='700 12px Inter, sans-serif'; ctx.fillStyle=muted;
+  ctx.fillText('EXTRACELLULAR FLUID',12,20);
+  ctx.fillText('CYTOSOL',12,CH-12);
+
+  /* bilayer */
+  var f=fluidity(tempC,chol);
+  var spacing=13;
+  ctx.fillStyle='rgba(31,91,115,0.10)'; ctx.fillRect(0,memY-memH/2,CW,memH);
+  for(var x=8;x<CW;x+=spacing){
+    var wob=Math.sin((x*0.07)+lastT*0.0016*(0.4+f))*2.2;
+    /* upper leaflet */
+    ctx.strokeStyle='rgba(31,91,115,0.55)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x,memY-memH/2+9+wob); ctx.lineTo(x-1.5,memY-3+wob); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+3,memY-memH/2+9+wob); ctx.lineTo(x+4,memY-3+wob); ctx.stroke();
+    ctx.fillStyle=teal; ctx.beginPath(); ctx.arc(x+1.5,memY-memH/2+5+wob,4.4,0,6.2832); ctx.fill();
+    /* lower leaflet */
+    ctx.beginPath(); ctx.moveTo(x,memY+memH/2-9-wob); ctx.lineTo(x-1.5,memY+3-wob); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+3,memY+memH/2-9-wob); ctx.lineTo(x+4,memY+3-wob); ctx.stroke();
+    ctx.fillStyle=teal; ctx.beginPath(); ctx.arc(x+1.5,memY+memH/2-5-wob,4.4,0,6.2832); ctx.fill();
+  }
+  /* cholesterol wedges */
+  var nch=Math.round(chol*26);
+  for(var c=0;c<nch;c++){
+    var cx=18+((c*97)%(CW-36));
+    ctx.fillStyle='rgba(184,134,47,0.75)';
+    ctx.fillRect(cx,memY-memH/2+8,3.4,15); ctx.fillRect(cx,memY+memH/2-23,3.4,15);
+  }
+  /* proteins */
+  if(aqp||nach){
+    var px=[CW*0.30,CW*0.68];
+    var labels=[];
+    if(aqp) labels.push({x:px[0],t:'AQP',c:blue});
+    if(nach) labels.push({x:px[aqp?1:0],t:'Na⁺ ch',c:coral});
+    labels.forEach(function(L){
+      ctx.fillStyle=L.c;
+      ctx.beginPath();
+      ctx.moveTo(L.x-19,memY-memH/2-4); ctx.lineTo(L.x-8,memY); ctx.lineTo(L.x-19,memY+memH/2+4);
+      ctx.lineTo(L.x-30,memY+memH/2+4); ctx.lineTo(L.x-30,memY-memH/2-4); ctx.closePath(); ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(L.x+19,memY-memH/2-4); ctx.lineTo(L.x+8,memY); ctx.lineTo(L.x+19,memY+memH/2+4);
+      ctx.lineTo(L.x+30,memY+memH/2+4); ctx.lineTo(L.x+30,memY-memH/2-4); ctx.closePath(); ctx.fill();
+      ctx.font='800 10px Inter, sans-serif'; ctx.fillStyle=tealdk;
+      ctx.fillText(L.t,L.x-13,memY-memH/2-9);
+    });
+  }
+
+  /* particles */
+  var prob=crossProb();
+  var poreZones=[];
+  if(aqp&&cur.id==='h2o') poreZones.push(CW*0.30);
+  if(nach&&cur.id==='na') poreZones.push(aqp?CW*0.68:CW*0.30);
+  parts.forEach(function(p){
+    var ny=p.y+p.vy*dt, nx=p.x+p.vx*dt;
+    var top=memY-memH/2, bot=memY+memH/2;
+    var inPore=poreZones.some(function(z){return Math.abs(nx-z)<9;});
+    if(p.y<top && ny>=top){
+      if(!(inPore||Math.random()<prob)){ ny=top-1; p.vy=-Math.abs(p.vy); }
+    } else if(p.y>bot && ny<=bot){
+      if(!(inPore||Math.random()<prob)){ ny=bot+1; p.vy=Math.abs(p.vy); }
+    }
+    p.x=nx; p.y=ny;
+    if(p.x<8){p.x=8;p.vx=Math.abs(p.vx);} if(p.x>CW-8){p.x=CW-8;p.vx=-Math.abs(p.vx);}
+    if(p.y<10){p.y=10;p.vy=Math.abs(p.vy);} if(p.y>CH-10){p.y=CH-10;p.vy=-Math.abs(p.vy);}
+    p.vx+=(Math.random()-0.5)*22*dt; p.vy+=(Math.random()-0.5)*22*dt;
+    var sp=Math.sqrt(p.vx*p.vx+p.vy*p.vy); if(sp>70){p.vx*=70/sp;p.vy*=70/sp;}
+    ctx.fillStyle=pc; ctx.globalAlpha=0.9;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.2832); ctx.fill();
+    ctx.globalAlpha=1;
+  });
+  ctx.font='600 10.5px Inter, sans-serif'; ctx.fillStyle=muted;
+  ctx.fillText('visual crossing rate is log-compressed — the real ratios are in the chart below',12,CH-30);
+}
+
+var prev=0;
+function loop(t){
+  var dt=Math.min(0.05,(t-prev)/1000)||0.016; prev=t; lastT=t;
+  drawMem(dt);
+  if(!modeB) requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* ---------- render mode A ---------- */
+function render(){
+  var p=effP(cur), f=fluidity(tempC,chol);
+  $('#sP').textContent=fmtP(p);
+  $('#sOdds').textContent=odds(p);
+  $('#sF').textContent=f.toFixed(2);
+  $('#sFw').textContent = f<0.25?'stiff, near gel' : (f>0.85?'very fluid':'fluid but ordered');
+  $('#iName').textContent=cur.n;
+  var extra='';
+  if(cur.id==='h2o'&&aqp) extra='<b>Aquaporins inserted.</b> The lipid did not change at all &mdash; you added a protein, and water permeability jumped about a thousand-fold. This is the whole point of the section: the lipid does the excluding, the proteins do the admitting.';
+  else if(cur.id==='na'&&nach) extra='<b>One channel is open.</b> The most-excluded solute on the list is now the fastest. A single aqueous pore passes up to 10⁸ ions per second, and it can be gated by voltage, by ligand or by stretch &mdash; so permeability is not a fixed property of a cell, it changes second to second.';
+  else if(cur.lipo) extra='Fluidity matters here. At '+tempC+' °C with '+Math.round(chol*100)+'% cholesterol the bilayer scores '+f.toFixed(2)+' on the fluidity scale, and a more ordered membrane slows lipid-soluble traffic a little. It does <i>not</i> rescue the ions — no amount of fluidity makes lipid friendly to charge.';
+  else if(cur.p<=1e-8) extra='No cholesterol setting and no temperature will let this ion through naked lipid. It needs a protein. Try the toggles on the left.';
+  else extra='Polar but small. Note where it sits on the log chart &mdash; between the gases and the ions, which is exactly the region where physiology gets interesting.';
+  $('#iWhy').innerHTML=cur.n.replace(/ \(.*\)/,'')+cur.why;
+  $('#iExtra').innerHTML=extra;
+  SOL.forEach(function(s,i){ var el=document.getElementById('pv'+i); if(el) el.textContent=fmtP(effP(s)); });
+  drawBars(); drawFluid();
+}
+
+/* ---------- RC bench ---------- */
+var rcC=$('#rc'), rx=rcC.getContext('2d'), RW=rcC.width, RH=rcC.height;
+var Rm=5000, Cm=1e-6, ghostTau=null, anim=null, animStart=0;
+function tauMs(){ return Rm*Cm*1000; }
+function drawRC(progress){
+  var css=getComputedStyle(document.body);
+  var teal=css.getPropertyValue('--teal')||'#1f5b73';
+  var tealdk=css.getPropertyValue('--teal-dk')||'#0f3040';
+  var gold=css.getPropertyValue('--gold')||'#b8862f';
+  var line=css.getPropertyValue('--line')||'#ebe3d5';
+  var muted=css.getPropertyValue('--muted')||'#8d8270';
+  var coral=css.getPropertyValue('--coral')||'#d1495b';
+  rx.clearRect(0,0,RW,RH);
+  var x0=54,x1=RW-16,y0=RH-48,y1=26, TMAX=70;
+  function X(t){ return x0+t/TMAX*(x1-x0); }
+  function Y(v){ return y0-v*(y0-y1); }
+  /* grid */
+  rx.strokeStyle=line; rx.lineWidth=1;
+  for(var g=0;g<=7;g++){ var gx=X(g*10); rx.beginPath(); rx.moveTo(gx,y1); rx.lineTo(gx,y0); rx.stroke(); }
+  for(var v=0;v<=1.001;v+=0.25){ var gy=Y(v); rx.beginPath(); rx.moveTo(x0,gy); rx.lineTo(x1,gy); rx.stroke(); }
+  rx.font='600 10px Inter, sans-serif'; rx.fillStyle=muted;
+  for(var g2=0;g2<=7;g2++){ rx.fillText((g2*10)+'',X(g2*10)-6,y0+15); }
+  rx.fillText('ms',x1-14,y0+30);
+  rx.fillText('100%',6,Y(1)+4); rx.fillText('63%',12,Y(0.632)+4); rx.fillText('0',22,Y(0)+4);
+  rx.save(); rx.translate(14,(y0+y1)/2); rx.rotate(-Math.PI/2);
+  rx.font='800 10px Inter, sans-serif'; rx.fillStyle=muted; rx.fillText('ΔVm',-14,0); rx.restore();
+
+  /* 63% line */
+  rx.strokeStyle=gold; rx.setLineDash([5,4]); rx.lineWidth=1.4;
+  rx.beginPath(); rx.moveTo(x0,Y(0.632)); rx.lineTo(x1,Y(0.632)); rx.stroke(); rx.setLineDash([]);
+
+  var tOn=6, tOff=40, tau=tauMs();
+  function V(t){
+    if(t<tOn) return 0;
+    if(t<=tOff) return 1-Math.exp(-(t-tOn)/tau);
+    var vOff=1-Math.exp(-(tOff-tOn)/tau);
+    return vOff*Math.exp(-(t-tOff)/tau);
+  }
+  /* current step marker */
+  rx.fillStyle='rgba(31,91,115,0.07)'; rx.fillRect(X(tOn),y1,X(tOff)-X(tOn),y0-y1);
+  rx.font='800 10px Inter, sans-serif'; rx.fillStyle=teal;
+  rx.fillText('current ON',X(tOn)+5,y1+13);
+
+  /* ghost */
+  if(ghostTau){
+    rx.strokeStyle=muted; rx.lineWidth=1.8; rx.setLineDash([4,4]); rx.beginPath();
+    for(var t=0;t<=TMAX;t+=0.4){
+      var gt=t<tOn?0:(t<=tOff?1-Math.exp(-(t-tOn)/ghostTau):(1-Math.exp(-(tOff-tOn)/ghostTau))*Math.exp(-(t-tOff)/ghostTau));
+      if(t===0) rx.moveTo(X(t),Y(gt)); else rx.lineTo(X(t),Y(gt));
+    }
+    rx.stroke(); rx.setLineDash([]);
+    rx.font='700 10px Inter, sans-serif'; rx.fillStyle=muted;
+    rx.fillText('frozen: τ = '+ghostTau.toFixed(1)+' ms',x1-118,y1+13);
+  }
+  /* live trace */
+  var upto = progress==null? TMAX : TMAX*progress;
+  rx.strokeStyle=teal; rx.lineWidth=3; rx.beginPath();
+  for(var t2=0;t2<=upto;t2+=0.4){ if(t2===0) rx.moveTo(X(t2),Y(V(t2))); else rx.lineTo(X(t2),Y(V(t2))); }
+  rx.stroke();
+
+  /* tau marker */
+  if(tOn+tau<=tOff){
+    rx.strokeStyle=coral; rx.setLineDash([4,3]); rx.lineWidth=1.6;
+    rx.beginPath(); rx.moveTo(X(tOn+tau),y0); rx.lineTo(X(tOn+tau),Y(0.632)); rx.stroke(); rx.setLineDash([]);
+    rx.fillStyle=coral; rx.beginPath(); rx.arc(X(tOn+tau),Y(0.632),5,0,6.2832); rx.fill();
+    rx.font='800 11px Inter, sans-serif';
+    rx.fillText('τ = '+tau.toFixed(1)+' ms',X(tOn+tau)+8,Y(0.632)-9);
+  }
+  rx.fillStyle=tealdk; rx.font='800 11px Inter, sans-serif';
+}
+function rcText(){
+  var t=tauMs();
+  var s = t<3 ? 'A leaky, channel-rich membrane charges fast. Signals appear and vanish quickly, and brief inputs are not summed for long.'
+        : t>12 ? 'A tightly sealed, high-resistance membrane charges slowly. It holds charge, so inputs arriving milliseconds apart add together — useful for integrating, costly for speed.'
+        : 'A middling membrane: charged most of the way in about '+t.toFixed(0)+' ms.';
+  $('#rcText').innerHTML=' You set R = '+Rm.toLocaleString('en-US')+' Ω·cm² against a fixed C of 1 µF/cm², so τ = '+t.toFixed(1)+' ms. '+s;
+}
+$('#res').addEventListener('input',function(){
+  Rm=+this.value; $('#resV').textContent=Rm.toLocaleString('en-US')+' Ω·cm²';
+  $('#sR').textContent=Rm.toLocaleString('en-US'); $('#sTau').textContent=tauMs().toFixed(1);
+  drawRC(null); rcText();
+});
+$('#ghost').addEventListener('click',function(){ ghostTau=tauMs(); drawRC(null); });
+$('#inject').addEventListener('click',function(){
+  if(anim) cancelAnimationFrame(anim);
+  animStart=performance.now();
+  (function step(now){
+    var pr=Math.min(1,(now-animStart)/1400);
+    drawRC(pr);
+    if(pr<1) anim=requestAnimationFrame(step); else anim=null;
+  })(animStart);
+});
+
+/* ---------- mode switching ---------- */
+var modeB=false;
+function setMode(b){
+  var was=modeB; modeB=b;
+  $('#mA').classList.toggle('on',!b); $('#mB').classList.toggle('on',b);
+  $('#mA').setAttribute('aria-selected',b?'false':'true');
+  $('#mB').setAttribute('aria-selected',b?'true':'false');
+  $('#panA').classList.toggle('hide',b); $('#panB').classList.toggle('hide',!b);
+  $('#resA').classList.toggle('hide',b); $('#resB').classList.toggle('hide',!b);
+  if(b){ drawRC(null); rcText(); } else if(was){ prev=0; requestAnimationFrame(loop); }
+}
+$('#mA').addEventListener('click',function(){setMode(false);});
+$('#mB').addEventListener('click',function(){setMode(true);});
+
+render();
+})();
+</script>
+</body>
+</html>

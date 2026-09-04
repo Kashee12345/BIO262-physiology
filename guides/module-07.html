@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 7 — Special Senses — Vision, Hearing &amp; Equilibrium | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 7 — Special Senses — Vision, Hearing &amp; Equilibrium</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit4">
+
+<h2>Module 7 &nbsp;•&nbsp; Special Senses — Vision, Hearing &amp; Equilibrium &nbsp;<span class="chip">Exam 4</span></h2>
+<div class="box obj"><ol><li>Describe the physiology of the eye.</li><li>Explain the processing of visual information.</li><li>Describe the physiology behind equilibrium.</li><li>Describe the physiology behind hearing.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Near vision = lens <b>rounds up</b>. Far vision = lens <b>flattens</b>.</li><li>Rods = dim light, no color, periphery. Cones = color and detail, fovea.</li><li>Semicircular canals = <b>rotation</b>. Utricle/saccule + otoliths = <b>gravity and linear acceleration</b>.</li><li>20/200 is far <b>worse</b> than 20/20; 20/15 is better than average.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">How the eye focuses</h4><div class="read">The <b>cornea</b> does most of the bending of light; the <b>lens</b> does the fine adjustment. For a near
+object the ciliary muscle contracts and the lens <b>rounds up</b>, bending light more. For a distant object
+it <b>flattens</b>. This is <b>accommodation</b>, and it is the reverse of what most students first guess.<br><br>
+As the lens stiffens with age it can no longer round up, which is presbyopia — the reason reading glasses
+arrive in middle age.</div>
+<h4 class="topic">Turning light into a signal</h4><div class="read">The retina has two photoreceptors with opposite specialities. <b>Rods</b> are extremely light-sensitive but
+give no color and poor detail, and sit in the periphery — they are your night vision. <b>Cones</b> need
+bright light but give color and sharp detail, and cluster at the fovea, which is why you turn your eyes
+toward whatever you want to see clearly.<br><br>
+Light strikes <b>opsin</b>, which changes shape and starts a cascade. The signal passes photoreceptor →
+<b>bipolar cell</b> → <b>ganglion cell</b>, and ganglion cell axons leave the eye as the optic nerve. Where
+they exit there are no photoreceptors at all — your blind spot.</div>
+<h4 class="topic">Hearing is a chain of energy conversions</h4><div class="read">Sound starts as pressure waves in air. The <b>pinna</b> collects them. The <b>tympanic membrane</b>
+converts them into mechanical vibration. The three <b>ossicles</b> amplify that vibration and drive the oval
+window. That moves fluid inside the <b>cochlea</b>, which bends hair cells, and <i>there</i> the mechanical
+becomes electrical. Cranial nerve VIII carries it to the temporal lobe.<br><br>
+Break the chain early — wax, a perforated drum, stiff ossicles — and you get conductive loss. Break it at
+the hair cells or nerve and you get sensorineural loss.</div>
+<h4 class="topic">Balance: two different questions</h4><div class="read">The inner ear answers two separate questions with two separate structures. <b>Am I tilted, or
+accelerating in a straight line?</b> is answered by the utricle and saccule, where calcium crystals called
+<b>otoliths</b> sit on a gel and drag on hair cells when gravity or acceleration pulls them.<br><br>
+<b>Am I rotating?</b> is answered by the three <b>semicircular canals</b>, set at right angles to each other.
+When your head turns, the fluid inside lags behind and bends hair cells in the ampulla. That lag is also why
+you still feel like you are spinning for a few seconds after you stop.</div>
+<h4 class="topic">Where the image goes after the retina</h4><div class="read">Light becomes a signal in the retina, but you do not see anything until the occipital lobe assembles it. Axons of the <b>ganglion cells</b> leave the eye as the <b>optic nerve</b>. At the <b>optic chiasm</b> only the fibers from the nasal half of each retina cross, while the temporal fibers stay on their own side, so each <b>optic tract</b> carries the opposite half of the visual world rather than the opposite eye.<br><br>
+The signal then relays in the <b>lateral geniculate nucleus</b> of the thalamus and travels through the optic radiations to the <b>primary visual cortex</b>. Damage before the chiasm blinds one eye; damage at the chiasm — classically a pituitary tumor — removes both outer fields, which is why such a patient clips door frames on both sides.</div>
+<h4 class="topic">Color, detail, and seeing in the dark</h4><div class="read">Where photoreceptors sit matters as much as how they work. <b>Cones</b> come in three kinds, tuned to short, medium and long wavelengths, and your brain reads color from the ratio of their firing, which is why losing one type distorts color rather than removing it. Cones crowd the <b>fovea centralis</b>, each wired almost one to one, giving fine detail but only in good light.<br><br>
+<b>Rods</b> pack the periphery and funnel many receptors onto one pathway, summing faint light into a usable signal at the cost of detail. Their <b>rhodopsin</b> bleaches the moment light hits it and takes twenty to thirty minutes to rebuild — which is why a dark room looks black when you first walk in, and why a faint star is easier to see just off to one side.</div>
+<h4 class="topic">When the image lands in the wrong place</h4><div class="read">A normal eye focuses light on the retina itself. In <b>myopia</b> the eyeball is too long, so the image forms in front of the retina and distance blurs — a diverging concave lens pushes it back. In <b>hyperopia</b> the eyeball is too short, so the image forms behind the retina and near work blurs — a converging convex lens pulls it forward. <b>Astigmatism</b> is uneven corneal curvature, so nothing focuses sharply at any distance.<br><br>
+<b>Presbyopia</b> is different: the ageing lens stiffens and cannot round up for near vision, which is why reading glasses arrive in your forties. Acuity compares you with a normal eye: <b>20/200</b> means you read at twenty feet what a normal eye reads at two hundred, so a bigger bottom number is worse vision, not better.</div>
+<h4 class="topic">How the cochlea codes pitch and loudness</h4><div class="read">Pitch and volume are carried by two different features of the same wave. The <b>basilar membrane</b> is narrow and stiff at the base and wide and floppy at the apex, so high frequencies peak near the base and low frequencies near the apex. Whichever region vibrates most bends the stereocilia of its <b>hair cells</b> against the tectorial membrane, and the temporal lobe reads pitch from which fibers of <b>cranial nerve VIII</b> fired. Loudness is those cells bending further and firing faster.<br><br>
+That anatomy also sorts hearing loss. <b>Conductive</b> loss blocks the chain before the receptors — wax, middle ear fluid, a fixed ossicle — so clearing it restores hearing. <b>Sensorineural</b> loss is dead hair cells or nerve, from noise, ageing or ototoxic drugs, and because hair cells never regrow it is permanent.</div>
+<h4 class="topic">What the vestibular receptors can and cannot feel</h4><div class="read">Every vestibular receptor is a hair cell; what sits on top decides what it detects. In the three <b>semicircular canals</b> — one per plane of space — hair cells of the <b>crista ampullaris</b> project into a gel <b>cupula</b>, and only moving fluid bends it. When your head starts or stops rotating the endolymph lags behind and deflects the cupula, which makes these canals detectors of <b>angular acceleration</b> and nothing else.<br><br>
+Gravity and <b>linear acceleration</b> are the job of the <b>utricle</b> and <b>saccule</b>, whose <b>maculae</b> are capped by <b>otoliths</b> — crystals heavy enough to sag when you tilt or pull away in a car. Stop spinning and the endolymph keeps moving, so your canals still report turning while your eyes report stillness — which is why the room seems to spin.</div>
+<h3>Reference tables</h3>
+<h4>Eye structures</h4><table><tr><th>Structure</th><th>Function</th></tr><tr><td>Cornea</td><td>Most of the eye's light refraction</td></tr><tr><td>Iris / pupil</td><td>Controls light entering</td></tr><tr><td>Lens</td><td>Fine focus — rounds up for near, flattens for far</td></tr><tr><td>Retina</td><td>Contains photoreceptors; converts light to signal</td></tr><tr><td>Rods</td><td>Dim light, black and white, peripheral</td></tr><tr><td>Cones</td><td>Color and fine detail, concentrated at the fovea</td></tr><tr><td>Bipolar cells</td><td>Connect photoreceptors to ganglion cells</td></tr><tr><td>Ganglion cells</td><td>Axons form the optic nerve</td></tr><tr><td>Aqueous humor</td><td>Watery, replaced continuously, sets intraocular pressure</td></tr><tr><td>Vitreous humor</td><td>Gel, permanent, maintains eye shape</td></tr><tr><td>Lacrimal gland</td><td>Produces tears (lysozyme, lubrication)</td></tr></table>
+<h4>Ear and equilibrium</h4><table><tr><th>Structure</th><th>Function</th></tr><tr><td>Pinna</td><td>Collects sound</td></tr><tr><td>Tympanic membrane</td><td>Converts sound waves to vibration</td></tr><tr><td>Ossicles (malleus, incus, stapes)</td><td>Amplify vibration to the oval window</td></tr><tr><td>Cochlea</td><td>Converts fluid vibration to electrical signal via hair cells</td></tr><tr><td>Eustachian tube</td><td>Equalizes middle ear pressure</td></tr><tr><td>Utricle & saccule (otoliths)</td><td>Detect gravity and linear acceleration</td></tr><tr><td>Semicircular canals (ampulla)</td><td>Detect rotational acceleration</td></tr><tr><td>Cranial nerve VIII</td><td>Carries hearing and equilibrium to the brain</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"The lens flattens for near vision."</b> Opposite. It <i>rounds up</i> for near, flattens for far.</li><li><b>"20/200 is better than 20/20."</b> Far worse — the larger the second number, the poorer the acuity.</li><li><b>"The semicircular canals detect gravity."</b> They detect <i>rotation</i>. The utricle and saccule detect gravity and linear acceleration.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 7 — p.73 · Module 7 eye &amp; ear deck, slide 10 · Module 7 eye &amp; ear deck, slide 11 · Module 7 eye &amp; ear deck, slide 12 · Module 7 eye &amp; ear deck, slide 13 · Module 7 eye &amp; ear deck, slide 14 · Module 7 eye &amp; ear deck, slide 3 · Module 7 eye &amp; ear deck, slide 4 · Module 7 eye &amp; ear deck, slide 5 · Module 7 eye &amp; ear deck, slide 6</p>
+<h3>Practice questions <span class="small">(43)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> When focusing on a nearby object, the lens:</summary><ol class="opts" type="A"><li>Flattens as the ciliary muscle relaxes</li><li>Moves forward within the vitreous chamber</li><li>Becomes opaque and scatters incoming light</li><li class="key">Becomes rounder and more refractive</li><li>Stops changing shape and stays fully flat</li></ol><div class="ans show"><b>Answer: D.</b> Near vision requires more refraction, so the ciliary muscle contracts and the lens rounds up — accommodation.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q2.</b> When viewing a distant object, the lens:</summary><ol class="opts" type="A"><li>Rounds up</li><li>Thickens</li><li>Detaches</li><li>Darkens</li><li class="key">Flattens</li></ol><div class="ans show"><b>Answer: E.</b> Distant light rays are nearly parallel and need less bending, so the lens flattens.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q3.</b> Rods differ from cones in that rods:</summary><ol class="opts" type="A"><li class="key">Function in dim light and detect black and white</li><li>Detect color and fine detail at high light levels</li><li>Are concentrated at the fovea centralis for acuity</li><li>Require bright daylight to respond at all</li><li>Are absent from the peripheral retina</li></ol><div class="ans show"><b>Answer: A.</b> Rods are highly light-sensitive but give no color and poor acuity.<span class="ref">Module 7 eye &amp; ear deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q4.</b> Cones are concentrated at the ____ and are responsible for ____.</summary><ol class="opts" type="A"><li>peripheral retina; dim-light night vision</li><li class="key">fovea centralis; color and fine detail</li><li>optic disc; peripheral motion detection</li><li>lens; accommodation and near focusing</li><li>sclera; structural protection of the globe</li></ol><div class="ans show"><b>Answer: B.</b> The fovea is packed with cones, which is why we move our eyes to place images there.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q5.</b> Opsin functions in vision by:</summary><ol class="opts" type="A"><li>Bending incoming light rays through the cornea and lens onto the retinal surface</li><li>Producing aqueous humor within the ciliary epithelium</li><li class="key">Changing shape when struck by light, triggering a signaling cascade</li><li>Draining spent tears through the nasolacrimal duct into the nose</li><li>Pumping fluid out of the corneal stroma to keep it transparent</li></ol><div class="ans show"><b>Answer: C.</b> Photoisomerization of retinal alters opsin, initiating the transduction cascade.<span class="ref">Module 7 eye &amp; ear deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q6.</b> Trace the correct retinal signal pathway:</summary><ol class="opts" type="A"><li>Ganglion → bipolar → photoreceptor → optic nerve → visual cortex</li><li>Bipolar → photoreceptor → ganglion → optic chiasm → optic nerve</li><li>Amacrine → horizontal → bipolar → ganglion → optic nerve</li><li class="key">Photoreceptor → bipolar → ganglion → optic nerve</li><li>Optic nerve → ganglion → bipolar → rod cell</li></ol><div class="ans show"><b>Answer: D.</b> Light is transduced by rods and cones, relayed by bipolar cells, and carried out by ganglion cell axons.<span class="ref">Module 7 eye &amp; ear deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q7.</b> The axons of which cells form the optic nerve?</summary><ol class="opts" type="A"><li>Rod photoreceptors</li><li>Cone photoreceptors</li><li>Bipolar cells</li><li>Amacrine cells</li><li class="key">Ganglion cells</li></ol><div class="ans show"><b>Answer: E.</b> Ganglion cell axons converge at the optic disc and exit as the optic nerve.<span class="ref">Module 7 eye &amp; ear deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q8.</b> Aqueous humor differs from vitreous humor in that aqueous humor is:</summary><ol class="opts" type="A"><li class="key">Continuously produced and drained, maintaining intraocular pressure</li><li>Renewed only once every few years by slow diffusion</li><li>Located behind the lens, filling the large posterior cavity of the eyeball</li><li>Responsible for focusing light rays sharply onto the retina</li><li>Secreted by the pigmented epithelium that lines the retina</li></ol><div class="ans show"><b>Answer: A.</b> Blocked drainage of aqueous humor raises intraocular pressure — the mechanism of glaucoma.<span class="ref">Module 7 eye &amp; ear deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q9.</b> Vitreous humor is best described as:</summary><ol class="opts" type="A"><li>A watery fluid that circulates in the space in front of the lens</li><li class="key">A permanent gel that maintains the eye's shape</li><li>A thin tear film spread across the front of the cornea</li><li>A clear layer covering the front surface of the lens</li><li>A photoreceptor layer lining the back wall of the eye</li></ol><div class="ans show"><b>Answer: B.</b> It is formed before birth and never replaced.<span class="ref">Module 7 eye &amp; ear deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q10.</b> Tears are produced by the ____ and drain via the ____.</summary><ol class="opts" type="A"><li>ciliary body; optic canal of the orbit</li><li>conjunctiva; eustachian tube</li><li class="key">lacrimal glands; nasolacrimal duct</li><li>retina; optic nerve and optic chiasm</li><li>corneal epithelium; the pupil</li></ol><div class="ans show"><b>Answer: C.</b> Drainage into the nasal cavity is why crying produces a runny nose.<span class="ref">Module 7 eye &amp; ear deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q11.</b> Tears contribute to eye health by:</summary><ol class="opts" type="A"><li>Forming the clear vitreous gel that fills the posterior cavity behind the lens</li><li>Producing the melanin pigment that darkens the choroid and shades the eye's interior</li><li>Regulating pupil diameter by contracting the iris to control how much light enters the eye</li><li class="key">Lubricating, washing away debris and providing lysozyme for antibacterial defense</li><li>Generating the action potentials that travel along the optic nerve to the brain</li></ol><div class="ans show"><b>Answer: D.</b> Lysozyme in tears digests bacterial cell walls.<span class="ref">Module 7 eye &amp; ear deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q12.</b> A visual acuity of 20/200 means the patient:</summary><ol class="opts" type="A"><li>Has sharper than average vision at every distance</li><li>Can see at 200 feet what a normal eye must be at 20 feet to see</li><li>Has perfect uncorrected distance vision in both eyes</li><li>Has no light perception at all in the affected eye</li><li class="key">Must be at 20 feet to see what a normal eye sees at 200 feet</li></ol><div class="ans show"><b>Answer: E.</b> The larger the second number, the worse the acuity. 20/200 is the threshold for legal blindness in many jurisdictions.<span class="ref">Module 7 eye &amp; ear deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q13.</b> Which acuity indicates BETTER than average vision?</summary><ol class="opts" type="A"><li class="key">20/15</li><li>20/20</li><li>20/30</li><li>20/40</li><li>20/200</li></ol><div class="ans show"><b>Answer: A.</b> 20/15 means you see at 20 feet what a normal eye must be at 15 feet to see.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q14.</b> The structure that regulates how much light enters the eye is the:</summary><ol class="opts" type="A"><li>Ciliary body</li><li class="key">Iris/pupil</li><li>Lens capsule</li><li>Fovea centralis</li><li>Vitreous humor</li></ol><div class="ans show"><b>Answer: B.</b> The iris muscles adjust pupil diameter in response to light and autonomic tone.<span class="ref">Module 7 eye &amp; ear deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q15.</b> Order the pathway of sound: (1) ossicles (2) tympanic membrane (3) pinna (4) cochlea</summary><ol class="opts" type="A"><li>1,2,3,4</li><li>2,3,4,1</li><li class="key">3,2,1,4</li><li>3,1,2,4</li><li>4,3,2,1</li></ol><div class="ans show"><b>Answer: C.</b> The pinna collects, the eardrum vibrates, the ossicles amplify, and the cochlea transduces.<span class="ref">Module 7 eye &amp; ear deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q16.</b> The tympanic membrane functions to:</summary><ol class="opts" type="A"><li>Secrete the waxy cerumen that coats and protects the ear canal lining</li><li>Transduce sound energy into nerve impulses that reach the brain</li><li>Equalize middle ear pressure with the outside air</li><li class="key">Convert air pressure waves into mechanical vibration</li><li>Detect head rotation in each of the three separate planes</li></ol><div class="ans show"><b>Answer: D.</b> It is the interface between airborne sound and the mechanical ossicular chain.<span class="ref">Module 7 eye &amp; ear deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q17.</b> The three ossicles function primarily to:</summary><ol class="opts" type="A"><li>Produce the endolymph that fills the cochlear duct</li><li>Detect the pull of gravity on the head when it is tilted to one side</li><li>Drain accumulated fluid from the middle ear cavity</li><li>Generate nerve impulses along the auditory nerve</li><li class="key">Amplify vibrations from the eardrum to the oval window</li></ol><div class="ans show"><b>Answer: E.</b> Malleus, incus and stapes lever the signal up to overcome the impedance of cochlear fluid.<span class="ref">Module 7 eye &amp; ear deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q18.</b> The cochlea's essential role is to:</summary><ol class="opts" type="A"><li class="key">Convert fluid vibration into electrical nerve signals via hair cells</li><li>Amplify sound waves mechanically as they cross the air-filled middle ear cavity</li><li>Equalize pressure between the middle ear cavity and the back of the throat</li><li>Collect sound waves and funnel them down the external ear canal</li><li>Maintain balance by sensing head tilt and rotation of the body</li></ol><div class="ans show"><b>Answer: A.</b> This is where mechanical energy becomes neural signal.<span class="ref">Module 7 eye &amp; ear deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q19.</b> The eustachian tube functions to:</summary><ol class="opts" type="A"><li>Drain tears from the eye into the nasal cavity</li><li class="key">Equalize pressure between the middle ear and the atmosphere</li><li>Amplify sound waves mechanically on their way through to the cochlea</li><li>Produce the cerumen that protects the outer ear canal</li><li>Detect rotation of the head in any plane of movement</li></ol><div class="ans show"><b>Answer: B.</b> It opens on swallowing or yawning — why ears pop during altitude change.<span class="ref">Module 7 eye &amp; ear deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q20.</b> Which cranial nerve carries both hearing and equilibrium information?</summary><ol class="opts" type="A"><li>CN V (trigeminal nerve)</li><li>CN VII (facial nerve)</li><li class="key">CN VIII (vestibulocochlear)</li><li>CN IX (glossopharyngeal nerve)</li><li>CN X (vagus nerve)</li></ol><div class="ans show"><b>Answer: C.</b> CN VIII has a cochlear branch for hearing and a vestibular branch for balance.<span class="ref">Module 7 eye &amp; ear deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q21.</b> Damage to the ossicles would produce which type of hearing loss?</summary><ol class="opts" type="A"><li>Sensorineural</li><li>Central</li><li>Mixed cortical</li><li class="key">Conductive</li><li>No hearing loss</li></ol><div class="ans show"><b>Answer: D.</b> Conductive loss arises from failure to mechanically transmit sound to the cochlea.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q22.</b> Otoliths in the utricle and saccule detect:</summary><ol class="opts" type="A"><li>Rotational acceleration of the head</li><li>Sound frequency and loudness</li><li>Light intensity and color</li><li>Temperature of the endolymph</li><li class="key">Gravity and linear acceleration</li></ol><div class="ans show"><b>Answer: E.</b> Calcium carbonate crystals lag behind during linear movement, bending the hair cells beneath.<span class="ref">Module 7 eye &amp; ear deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q23.</b> The semicircular canals detect:</summary><ol class="opts" type="A"><li class="key">Rotational (angular) acceleration of the head</li><li>Linear acceleration and head tilt from gravity</li><li>The static pull of gravity on the otoliths</li><li>Sound pitch and loudness of incoming waves</li><li>Pressure changes in the middle ear cavity</li></ol><div class="ans show"><b>Answer: A.</b> Three canals in three planes detect rotation in any direction.<span class="ref">Module 7 eye &amp; ear deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q24.</b> Hair cells in the semicircular canals are stimulated when:</summary><ol class="opts" type="A"><li>Otolith crystals shift across the gelatinous membrane and press on the hair bundles</li><li class="key">Endolymph lags behind head rotation and bends the cupula in the ampulla</li><li>Sound waves traveling through the fluid of the cochlear duct strike them directly</li><li>Light energy strikes the visual pigment molecules stored inside them</li><li>Pressure equalizes across the eardrum during swallowing or yawning</li></ol><div class="ans show"><b>Answer: B.</b> Fluid inertia is the key — the endolymph lags, deflecting the cupula.<span class="ref">Module 7 eye &amp; ear deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q25.</b> The structure within the semicircular canal that houses the sensory hair cells is the:</summary><ol class="opts" type="A"><li>Cochlea</li><li>Utricle</li><li class="key">Ampulla</li><li>Oval window</li><li>Tympanic cavity</li></ol><div class="ans show"><b>Answer: C.</b> The ampulla is the dilated base of each canal containing the crista and cupula.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q26.</b> Which brain region integrates vestibular input with vision and proprioception to maintain balance?</summary><ol class="opts" type="A"><li>Frontal lobe</li><li>Occipital lobe</li><li>Medulla only</li><li class="key">Cerebellum</li><li>Thalamus only</li></ol><div class="ans show"><b>Answer: D.</b> The cerebellum combines these three streams to produce coordinated postural control.<span class="ref">Module 7 eye &amp; ear deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q27.</b> Vertigo following an inner ear infection most likely results from disruption of the:</summary><ol class="opts" type="A"><li>Organ of Corti in the cochlea</li><li>Optic nerve fibers in the retina</li><li>Tympanic membrane</li><li>Eustachian tube</li><li class="key">Vestibular apparatus</li></ol><div class="ans show"><b>Answer: E.</b> Damage to the vestibular system produces a false sense of motion.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q28.</b> Spinning rapidly then stopping produces a lingering sense of rotation because:</summary><ol class="opts" type="A"><li class="key">Endolymph continues to move briefly after the head stops</li><li>Otolith crystals are dislodged from the gelatinous surface of the macula</li><li>The cochlear hair cells are overstimulated by the spinning motion</li><li>The optic nerve keeps firing after the eyes stop</li><li>Middle ear pressure fails to equalize after the spinning stops</li></ol><div class="ans show"><b>Answer: A.</b> Fluid momentum keeps deflecting the cupula for several seconds after motion ceases.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q29.</b> The cornea contributes to vision mainly by:</summary><ol class="opts" type="A"><li>Detecting light and starting transduction</li><li class="key">Providing most of the eye's refraction</li><li>Producing the watery layer of tears</li><li>Controlling pupil size in bright light</li><li>Draining aqueous humor from the eye</li></ol><div class="ans show"><b>Answer: B.</b> The cornea performs the bulk of light bending; the lens fine-tunes focus.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q30.</b> Accommodation is achieved by:</summary><ol class="opts" type="A"><li>Moving the retina closer to the lens</li><li>Dilating the pupil with the iris muscles</li><li class="key">Changing lens shape via the ciliary muscle</li><li>Rotating the eye with the extraocular muscles</li><li>Thickening the cornea to bend light further</li></ol><div class="ans show"><b>Answer: C.</b> Ciliary contraction rounds the lens for near vision.<span class="ref">Module 7 eye &amp; ear deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q31.</b> Myopia (nearsightedness) occurs when images focus:</summary><ol class="opts" type="A"><li>Behind the surface of the retina</li><li>Exactly on the fovea centralis</li><li>On the optic disc</li><li class="key">In front of the retina</li><li>On the outer surface of the cornea</li></ol><div class="ans show"><b>Answer: D.</b> An overly long eye or overly strong refraction focuses light too early.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q32.</b> The blind spot corresponds to the:</summary><ol class="opts" type="A"><li>Fovea centralis, the tightly cone-packed pit that provides the sharpest vision</li><li>Macula lutea, the yellowish region of retina that surrounds the central fovea</li><li>Ciliary body, the ring of muscle that changes the shape of the lens</li><li>Iris, the pigmented muscular ring that sets the size of the pupil</li><li class="key">Optic disc, where the optic nerve exits and there are no photoreceptors</li></ol><div class="ans show"><b>Answer: E.</b> No rods or cones are present where axons leave the eye.<span class="ref">Module 7 eye &amp; ear deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q33.</b> Night vision depends primarily on:</summary><ol class="opts" type="A"><li class="key">Rods</li><li>Cones</li><li>The lens</li><li>The cornea</li><li>Aqueous humor</li></ol><div class="ans show"><b>Answer: A.</b> Rods are far more light-sensitive but give no color.<span class="ref">Module 7 eye &amp; ear deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q34.</b> Which vitamin deficiency most directly impairs night vision?</summary><ol class="opts" type="A"><li>Vitamin C</li><li class="key">Vitamin A</li><li>Vitamin D</li><li>Vitamin K</li><li>Vitamin B12</li></ol><div class="ans show"><b>Answer: B.</b> Retinal, derived from vitamin A, is essential to the visual pigment.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q35.</b> Glaucoma results from:</summary><ol class="opts" type="A"><li>Clouding of the lens that scatters and blocks incoming light</li><li>Detachment of the retina from the choroid</li><li class="key">Raised intraocular pressure damaging the optic nerve</li><li>Scarring of the cornea after repeated injury</li><li>Gradual loss of the vitreous gel from the eyeball</li></ol><div class="ans show"><b>Answer: C.</b> Impaired aqueous drainage raises pressure and damages nerve fibers.<span class="ref">Module 7 eye &amp; ear deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q36.</b> A cataract is best described as:</summary><ol class="opts" type="A"><li>Retinal tear</li><li>Optic nerve inflammation</li><li>Corneal ulcer</li><li class="key">Clouding of the lens</li><li>Excess tears</li></ol><div class="ans show"><b>Answer: D.</b> Lens opacity scatters light and blurs vision.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q37.</b> Sound is converted to a neural signal by:</summary><ol class="opts" type="A"><li>The tympanic membrane at the end of the ear canal</li><li>The three ossicles of the middle ear cavity</li><li>The pinna and the external ear canal</li><li>The eustachian tube draining to the throat</li><li class="key">Hair cells of the organ of Corti in the cochlea</li></ol><div class="ans show"><b>Answer: E.</b> Bending of stereocilia opens ion channels and generates receptor potentials.<span class="ref">Module 7 eye &amp; ear deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q38.</b> High-frequency sound is detected at the:</summary><ol class="opts" type="A"><li class="key">Base of the cochlea near the oval window</li><li>Apex of the cochlea, farthest from the oval window</li><li>Semicircular canals of the vestibular system</li><li>Utricle and saccule of the vestibule</li><li>Eardrum at the end of the ear canal</li></ol><div class="ans show"><b>Answer: A.</b> The stiff basal membrane responds to high frequencies; the apex to low.<span class="ref">Module 7 eye &amp; ear deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q39.</b> Conductive hearing loss would result from:</summary><ol class="opts" type="A"><li>Damage to the hair cells of the cochlea</li><li class="key">Middle ear or ossicular dysfunction</li><li>Damage to the auditory branch of CN VIII</li><li>A stroke in the auditory cortex</li><li>Disease of the vestibular apparatus</li></ol><div class="ans show"><b>Answer: B.</b> Anything blocking mechanical transmission produces conductive loss.<span class="ref">Module 7 eye &amp; ear deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q40.</b> The round window functions to:</summary><ol class="opts" type="A"><li>Collect sound waves from the outside air and funnel them inward</li><li>Detect rotation of the head as it turns from side to side</li><li class="key">Relieve pressure as fluid moves within the cochlea</li><li>Equalize middle ear pressure with the air in the throat</li><li>Produce the endolymph inside the cochlear duct</li></ol><div class="ans show"><b>Answer: C.</b> It bulges outward, allowing the incompressible cochlear fluid to move.<span class="ref">Module 7 eye &amp; ear deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q41.</b> Motion sickness arises largely from:</summary><ol class="opts" type="A"><li>Excess cerumen blocking the ear canal</li><li>Loss of hair cells from the spiral organ of the cochlear duct</li><li>Blockage of the eustachian tube on one side</li><li class="key">Conflict between vestibular and visual input</li><li>Cataract clouding of the lens in one eye</li></ol><div class="ans show"><b>Answer: D.</b> Mismatched sensory signals produce nausea and disorientation.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+<details class="q"><summary><b>Q42.</b> Which structure detects head tilt relative to gravity?</summary><ol class="opts" type="A"><li>The three semicircular canals and their cupulae</li><li>The cochlea and its organ of Corti</li><li>The tympanic membrane and the ossicles</li><li>The eustachian tube and its lining</li><li class="key">Utricle and saccule with their otoliths</li></ol><div class="ans show"><b>Answer: E.</b> Otolith organs respond to gravity and linear acceleration.<span class="ref">Module 7 eye &amp; ear deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q43.</b> Presbyopia results from:</summary><ol class="opts" type="A"><li class="key">Loss of lens elasticity with age, impairing near focus</li><li>Flattening of the corneal curvature, reducing its refractive power</li><li>Degeneration of the retina at the central macula</li><li>Increased production of aqueous humor by the ciliary body epithelium</li><li>Damage to optic nerve fibers at the optic disc</li></ol><div class="ans show"><b>Answer: A.</b> The ageing lens stiffens and cannot round up for near vision.<span class="ref">Lecture Outline, Module 7 — p.73</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

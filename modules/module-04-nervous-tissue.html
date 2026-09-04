@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 4 · Nervous Tissue — BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 4 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Nervous Tissue</h1>
+    <p class="sub">How one cell sends a message to another, and why it takes only milliseconds.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Name the parts of a neuron and say what each one does</li>
+      <li>Explain why the inside of a resting neuron is negative</li>
+      <li>List the steps of an action potential in order</li>
+      <li>Say why myelin makes a signal faster</li>
+      <li>Explain what crosses a synapse, and what happens on the other side</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>The cell that carries the message</h2>
+  <p class="lead">A <span class="keyword" title="A nerve cell — the cell that carries electrical messages">neuron</span> has three working parts. Each part has one job.</p>
+  <ul>
+    <li><b>Dendrites</b> are the branches. They <em>receive</em> messages from other cells.</li>
+    <li><b>The cell body</b> is the hub. It adds up what comes in and decides whether to pass it on.</li>
+    <li><b>The axon</b> is the long cable. It <em>carries</em> the message away to the next cell.</li>
+  </ul>
+  <p>Neurons do not work alone. <span class="keyword" title="Support cells of the nervous system">Glial cells</span> outnumber them and do everything else. They feed neurons, clean up around them, and wrap the axons in insulation.</p>
+  <p>Keep that insulation in mind. It matters more than it sounds.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>A neuron is shaped like a tree with one very long root. Messages land on the branches. The trunk decides if they add up to something worth sending. The root carries the answer a long way to someone else.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Why a resting neuron is negative inside</h2>
+  <p class="lead">A neuron doing nothing is not really doing nothing. It is holding a charge, ready.</p>
+  <p>The cell spends energy pumping <b>sodium out</b> and <b>potassium in</b>. Potassium then leaks back out, and takes positive charge with it.</p>
+  <p>The result is that the inside ends up <b>more negative than the outside</b>. It sits at about <b>&minus;70 millivolts</b>.</p>
+  <p>That difference is the <span class="keyword" title="The voltage across the membrane of a neuron that is not firing">resting membrane potential</span>. It is stored energy, and it is why the cell can fire the instant it needs to.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>It is a battery on a charger. Nothing is happening, but the charge is sitting there, ready to spend.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>The action potential, in order</h2>
+  <p class="lead">When a signal is strong enough, the neuron fires. Every time it fires, it does the same thing, the same size and the same shape.</p>
+  <ol class="steps">
+    <li><b>Something pushes the voltage up.</b> A message arrives, and the inside becomes a little less negative.</li>
+    <li><b>Threshold is reached</b> at about &minus;55 mV. This is the point of no return.</li>
+    <li><b>Sodium rushes in.</b> Gates fly open and sodium floods the cell. The inside swings <em>positive</em>. This is <b>depolarization</b>.</li>
+    <li><b>Potassium leaves.</b> Sodium gates shut, potassium gates open, and potassium exits. That drags the voltage back down. This is <b>repolarization</b>.</li>
+    <li><b>A brief overshoot</b> takes the cell a bit more negative than resting. Then the pumps restore &minus;70 mV, and it is ready to fire again.</li>
+  </ol>
+  <p><b>All-or-none</b> means exactly what it says. A stronger stimulus does not make a bigger action potential. It makes them fire <em>more often</em>.</p>
+  <p>That is how your nervous system codes "a little" versus "a lot." Not by size, but by how often.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Why myelin makes it faster</h2>
+  <p class="lead">Drag the slider and watch what changes.</p>
+  <div class="demo">
+    <div class="dh">Signal speed along an axon</div>
+    <div class="axon" id="axon">
+      <div class="axonline"></div>
+      <div class="pulse" id="pulse"></div>
+    </div>
+    <div class="ctrls">
+      <label for="myelin">Myelin coverage</label>
+      <input type="range" id="myelin" min="0" max="3" step="1" value="0">
+      <button class="btn" id="fire">Fire the neuron</button>
+      <span class="readout" id="readout">Bare axon &mdash; <span>0.5 m/s</span></span>
+    </div>
+  </div>
+  <p>A bare axon has to rebuild the signal at <em>every single point</em> along its length. That is slow.</p>
+  <p>Now wrap it in <span class="keyword" title="Fatty insulation wrapped around an axon by glial cells">myelin</span>. The signal can only be rebuilt at the small gaps between the wrappings, called the <span class="keyword" title="The gaps in the myelin sheath where the signal is rebuilt">nodes of Ranvier</span>.</p>
+  <p>So it <b>jumps from gap to gap</b> instead of crawling. That jumping is called <b>saltatory conduction</b>, from the Latin word for leap.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>Walking down a hallway and touching every tile, versus taking long strides and touching every tenth one. Same hallway, same destination, far less time.</p>
+  </div>
+  <p>This is also why damage to myelin matters. In multiple sclerosis the insulation is stripped away. The signal drops back to crawling, so messages arrive late or not at all.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Crossing the gap</h2>
+  <p class="lead">Neurons never quite touch. There is always a gap, called the <span class="keyword" title="The junction between two neurons, where a chemical carries the message across">synapse</span>.</p>
+  <p>An electrical signal cannot jump that gap. So the message changes form.</p>
+  <ol class="steps">
+    <li>The action potential arrives at the end of the axon.</li>
+    <li><b>Calcium enters</b>, and tiny sacs of chemical move to the membrane.</li>
+    <li><b>Neurotransmitter is released</b> into the gap and drifts across.</li>
+    <li>It <b>binds to receptors</b> on the next cell, and opens channels there.</li>
+    <li>That either nudges the next cell <em>toward</em> firing, or <em>away</em> from it.</li>
+  </ol>
+  <p>The next cell adds up everything landing on it. All the pushes toward firing, and all the pulls away.</p>
+  <p>If the total reaches threshold, it fires. If not, nothing happens. That adding up is called <b>summation</b>, and it is why a nervous system can make decisions instead of just passing noise along.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has a bench where you build the resting potential ion by ion and watch threshold behave &mdash; <a href="../labs.html">Nervous Tissue &amp; the reflex loop</a>. It goes well past what the exam asks. Open it once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "A resting neuron sits at about &minus;70 mV. What makes the inside negative?",
+    "a": ["Sodium is pumped in and stays there","Potassium leaks out and takes positive charge with it","Chloride is pumped out of the cell","The axon has no charge at rest"],
+    "c": 1,
+    "fb": [
+      "Sodium is pumped out, not in.",
+      "Right. The pump sets the gradients, and potassium leaking out leaves the inside more negative.",
+      "Chloride plays a smaller part. Potassium leak is the main reason.",
+      "A resting neuron is very much charged. That stored charge is the point."
+    ]
+  },
+  {
+    "q": "What happens first once threshold is reached?",
+    "a": ["Potassium leaves the cell","Sodium rushes into the cell","The pump shuts down","Neurotransmitter is released"],
+    "c": 1,
+    "fb": [
+      "Potassium leaves next, to bring the voltage back down.",
+      "Correct. Sodium gates fly open and the inside swings positive.",
+      "The pump keeps working the whole time.",
+      "Release happens later, at the end of the axon."
+    ]
+  },
+  {
+    "q": "A stimulus gets much stronger. What does the neuron do?",
+    "a": ["Fires a bigger action potential","Fires action potentials more often","Fires more slowly","Stops firing to protect itself"],
+    "c": 1,
+    "fb": [
+      "Action potentials are all-or-none. They do not come in bigger sizes.",
+      "Right. Strength is coded by frequency, not by size.",
+      "A stronger stimulus speeds firing up, not down.",
+      "It keeps firing while the stimulus lasts."
+    ]
+  },
+  {
+    "q": "Why does a myelinated axon carry a signal faster than a bare one?",
+    "a": ["Myelin adds extra sodium channels along the whole axon","The signal jumps between gaps instead of being rebuilt everywhere","Myelin makes the axon shorter","Myelin pushes the signal along like a pump"],
+    "c": 1,
+    "fb": [
+      "Myelin covers the membrane. The channels are concentrated at the gaps instead.",
+      "Correct. That jumping between nodes is saltatory conduction.",
+      "The axon is the same length either way.",
+      "Myelin is insulation. It does not push anything."
+    ]
+  },
+  {
+    "q": "What actually crosses the synapse from one neuron to the next?",
+    "a": ["The action potential itself","An electrical spark","A chemical neurotransmitter","Calcium from the next cell"],
+    "c": 2,
+    "fb": [
+      "The action potential stops at the end of the axon. It cannot cross a gap.",
+      "There is no spark. The message changes from electrical to chemical.",
+      "Right. Neurotransmitter drifts across and binds receptors on the next cell.",
+      "Calcium enters the sending cell to trigger release. It does not carry the message across."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var sl=document.getElementById("myelin"), fire=document.getElementById("fire"),
+    axon=document.getElementById("axon"), pulse=document.getElementById("pulse"),
+    out=document.getElementById("readout");
+var LEVEL=[
+  {n:"Bare axon",            seg:0,  v:"0.5 m/s",  ms:2600, col:"#8a2f36"},
+  {n:"Lightly myelinated",   seg:3,  v:"5 m/s",    ms:1300, col:"#c99a2e"},
+  {n:"Well myelinated",      seg:5,  v:"30 m/s",   ms:640,  col:"#3a7aa8"},
+  {n:"Heavily myelinated",   seg:8,  v:"100 m/s",  ms:300,  col:"#3f6b4e"}
+];
+var anim=null;
+function build(){
+  var L=LEVEL[+sl.value];
+  var old=axon.querySelectorAll(".myelin");
+  for(var i=0;i<old.length;i++) old[i].remove();
+  var w=axon.clientWidth-44;
+  if(L.seg>0){
+    var span=w/L.seg;
+    for(var s=0;s<L.seg;s++){
+      var d=document.createElement("div");
+      d.className="myelin";
+      d.style.left=(22+s*span+span*0.12)+"px";
+      d.style.width=(span*0.74)+"px";
+      axon.appendChild(d);
+    }
+  }
+  out.innerHTML=L.n+" &mdash; <span style='color:"+L.col+"'>"+L.v+"</span>";
+}
+function run(){
+  var L=LEVEL[+sl.value];
+  if(anim) cancelAnimationFrame(anim);
+  var w=axon.clientWidth-44, start=null;
+  pulse.style.opacity="1";
+  function step(ts){
+    if(start===null) start=ts;
+    var f=(ts-start)/L.ms;
+    if(f>=1){ pulse.style.opacity="0"; anim=null; return; }
+    var x = L.seg>0
+      ? Math.floor(f*L.seg)/L.seg + (1/L.seg)*0.15   // jump node to node
+      : f;                                            // crawl continuously
+    pulse.style.left=(22+x*w-15)+"px";
+    anim=requestAnimationFrame(step);
+  }
+  anim=requestAnimationFrame(step);
+}
+sl.addEventListener("input",function(){ build(); run(); });
+fire.addEventListener("click",run);
+window.addEventListener("resize",build);
+build();
+
+})();
+</script>
+</body>
+</html>

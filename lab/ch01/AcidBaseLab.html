@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acid&ndash;Base Lab &mdash; the Henderson&ndash;Hasselbalch ratio</title>
+<meta name="description" content="Move bicarbonate and PaCO2, watch arterial pH follow the ratio, then let the lungs or the kidneys compensate and see how far back the pH comes.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.ctl{margin-top:13px;}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.ctl .lab .v{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--teal-dk);}
+.ctl .hint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45;}
+.cases{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:11px;}
+.cases button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 9px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.25;}
+.cases button:hover{border-color:var(--teal);}
+.cases button small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;}
+canvas{width:100%;display:block;border-radius:12px;background:var(--card);border:1px solid var(--line);}
+.phbox{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 15px;}
+.phbox .num{font-family:var(--disp);font-size:44px;font-weight:700;color:var(--teal-dk);line-height:1;letter-spacing:-1px;}
+.phbox .side{font-size:12px;color:var(--muted);line-height:1.5;}
+.phbox .side b{color:var(--teal-dk);}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.stat > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;}
+.stat .k{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .n{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+.exp{border:1px solid var(--line);border-left:5px solid var(--teal);background:var(--card);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--soft);line-height:1.55;}
+.exp b{color:var(--teal-dk);font-weight:700;}
+.exp .h{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);display:block;margin-bottom:4px;}
+.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.tl > div{border:1px solid var(--line);border-radius:11px;padding:10px 10px;background:var(--card);}
+.tl .w{font-size:10px;letter-spacing:.6px;text-transform:uppercase;font-weight:800;color:var(--gold);}
+.tl .n{font-family:var(--disp);font-size:14.5px;font-weight:700;color:var(--teal-dk);margin-top:2px;}
+.tl .d{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:3px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch01.html">&larr; Module 1</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 1</div>
+  <h1>Acid&ndash;Base Lab</h1>
+  <div class="intro">Arterial pH is not set by bicarbonate and it is not set by carbon dioxide. It is set by the <b>ratio</b> of the two: pH = 6.1 + log([HCO<sub>3</sub><sup>&minus;</sup>] &divide; 0.03 &times; PaCO<sub>2</sub>). Move either limb and watch the pH follow, then hand the problem to the lungs or the kidneys and see how much of the disturbance compensation can actually undo.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>1 &middot; Set the two limbs</h2>
+      <div class="ctl">
+        <div class="lab"><label for="sHco">Serum HCO<sub>3</sub><sup>&minus;</sup> &mdash; the metabolic limb</label><span class="v" id="vHco">24 mEq/L</span></div>
+        <input type="range" id="sHco" min="4" max="48" step="1" value="24" aria-label="Serum bicarbonate in milliequivalents per liter">
+        <div class="hint">Normal 22 to 26 mEq/L. The kidneys adjust it over hours to days.</div>
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sCo2">PaCO<sub>2</sub> &mdash; the respiratory limb</label><span class="v" id="vCo2">40 mm Hg</span></div>
+        <input type="range" id="sCo2" min="10" max="100" step="1" value="40" aria-label="Arterial carbon dioxide partial pressure in millimeters of mercury">
+        <div class="hint">Normal 35 to 45 mm Hg. Ventilation adjusts it within minutes.</div>
+      </div>
+
+      <h2 style="margin-top:16px;">2 &middot; Or load a patient</h2>
+      <div class="cases" id="cases"></div>
+
+      <h2 style="margin-top:16px;">3 &middot; Let the body respond</h2>
+      <div class="row">
+        <button class="btn" type="button" id="bLung">Lungs compensate</button>
+        <button class="btn" type="button" id="bKid">Kidneys compensate</button>
+      </div>
+      <div class="row"><button class="btn solid" type="button" id="bReset">Back to normal (24 / 40)</button></div>
+
+      <div class="tl">
+        <div><div class="w">Seconds</div><div class="n">Chemical buffers</div><div class="d">Bicarbonate, phosphate, proteins and hemoglobin. They redistribute the load; they never remove it.</div></div>
+        <div><div class="w">Minutes</div><div class="n">The lungs</div><div class="d">Chemoreceptors drive ventilation, PaCO<sub>2</sub> falls, pH rises. About 15,000 mmol of CO<sub>2</sub> leaves this way daily.</div></div>
+        <div><div class="w">Hours to days</div><div class="n">The kidneys</div><div class="d">The only route that truly removes the 50 to 100 mEq of fixed acid made each day, and regenerates HCO<sub>3</sub><sup>&minus;</sup>.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Arterial pH</h2>
+      <div class="phbox">
+        <div class="num" id="nPh">7.40</div>
+        <div class="side"><span class="pill normal" id="pPh">NORMAL 7.35&ndash;7.45</span><br><b id="dx">Normal acid&ndash;base status</b></div>
+      </div>
+      <canvas id="cv" height="280" role="img" aria-label="pH scale with the current value marked, and a balance comparing bicarbonate with dissolved carbon dioxide"></canvas>
+      <div class="stat">
+        <div><div class="k">[H<sup>+</sup>]</div><div class="n" id="nH">40</div><div class="u">nmol/L &middot; normal 35&ndash;45</div></div>
+        <div><div class="k">Dissolved CO<sub>2</sub></div><div class="n" id="nDco">1.20</div><div class="u">mmol/L = 0.03 &times; PaCO<sub>2</sub></div></div>
+        <div><div class="k">Ratio</div><div class="n" id="nRat">20.0</div><div class="u">HCO<sub>3</sub><sup>&minus;</sup> : dissolved CO<sub>2</sub></div></div>
+      </div>
+      <div class="exp" id="exp" aria-live="polite"></div>
+    </div>
+    <div class="card">
+      <h2>Why so tiny a concentration matters</h2>
+      <div style="font-size:13.5px;color:var(--soft);line-height:1.6;">At pH 7.4 the hydrogen ion concentration is 40 <b style="color:var(--teal-dk)">nmol</b>/L &mdash; roughly three million times lower than the 140 mmol/L of sodium. The body is not fighting a large mass of acid; it is defending an extraordinarily dilute species. Hydrogen ions bind avidly to the negatively charged side chains of proteins, so a shift of 0.2 pH units changes the shape of thousands of enzymes, channel gates and binding pockets at once. Acidemia depresses myocardial contractility and blunts the vascular response to catecholamines; alkalemia drives ionized calcium onto albumin, which is why a hyperventilating patient gets perioral tingling and carpopedal spasm. Values below 6.8 or above 7.8 are not survivable for long.</div>
+    </div>
+  </div>
+</div>
+<footer>Human Physiology &middot; <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b></footer>
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var C={teal:css('--teal'),tealdk:css('--teal-dk'),blue:css('--blue'),coral:css('--coral'),gold:css('--gold'),green:css('--green'),purple:css('--purple'),line:css('--line'),muted:css('--muted'),soft:css('--soft'),card:css('--card')};
+  var E=function(i){return document.getElementById(i);};
+
+  var CASES=[
+    ['Healthy adult','HCO3 24, PaCO2 40',24,40],
+    ['Diabetic ketoacidosis','HCO3 8, PaCO2 20 — Kussmaul breathing',8,20],
+    ['Untreated metabolic acidosis','HCO3 12, PaCO2 40 — no compensation yet',12,40],
+    ['Chronic COPD','HCO3 32, PaCO2 60 — renal compensation in place',32,60],
+    ['Opioid overdose','HCO3 25, PaCO2 70 — acute hypoventilation',25,70],
+    ['Panic hyperventilation','HCO3 22, PaCO2 25',22,25],
+    ['Vomiting, pyloric obstruction','HCO3 36, PaCO2 48',36,48],
+    ['Aspirin overdose','HCO3 16, PaCO2 24 — mixed picture',16,24]
+  ];
+
+  var st={hco:24, co2:40};
+
+  function pH(){return 6.1 + Math.log(st.hco/(0.03*st.co2))/Math.LN10;}
+  function hplus(){return Math.pow(10,9-pH());}
+
+  function classify(){
+    var p=pH(), h=st.hco, c=st.co2;
+    var loH=h<22, hiH=h>26, loC=c<35, hiC=c>45;
+    if(p<7.35){
+      if(loH&&hiC) return ['Mixed respiratory and metabolic acidosis','high'];
+      if(loH) return ['Metabolic acidosis'+(loC?' with respiratory compensation':', not yet compensated'),'high'];
+      if(hiC) return ['Respiratory acidosis'+(hiH?' with renal compensation':', acute'),'high'];
+      return ['Acidemia','high'];
+    }
+    if(p>7.45){
+      if(hiH&&loC) return ['Mixed respiratory and metabolic alkalosis','low'];
+      if(hiH) return ['Metabolic alkalosis'+(hiC?' with respiratory compensation':', not yet compensated'),'low'];
+      if(loC) return ['Respiratory alkalosis'+(loH?' with renal compensation':', acute'),'low'];
+      return ['Alkalemia','low'];
+    }
+    if(!loH&&!hiH&&!loC&&!hiC) return ['Normal acid–base status','normal'];
+    return ['Normal pH with abnormal limbs — fully compensated chronic disorder, or a mixed disorder','normal'];
+  }
+
+  function explain(){
+    var p=pH(), d=classify(), t='<span class="h">'+d[0]+'</span>';
+    t+='pH = 6.1 + log('+st.hco+' ÷ (0.03 × '+st.co2+')) = 6.1 + log('+(st.hco/(0.03*st.co2)).toFixed(1)+') = <b>'+p.toFixed(2)+'</b>.<br><br>';
+    if(Math.abs(st.hco-24)<0.5&&Math.abs(st.co2-40)<0.5){
+      t+='This is the reference state. Bicarbonate 24 over dissolved CO<sub>2</sub> of 1.2 gives a ratio of exactly 20, and log 20 is 1.3, so pH = 6.1 + 1.3 = 7.4. Every acid–base problem you will ever read is a departure from this one line.';
+    } else {
+      var r=st.hco/(0.03*st.co2);
+      t+='The ratio is now <b>'+r.toFixed(1)+' : 1</b> instead of 20 : 1. ';
+      t+=(r>20)?'More base per unit of dissolved acid, so the pH has risen. ':'Less base per unit of dissolved acid, so the pH has fallen. ';
+      t+='Notice that neither number alone tells you the answer &mdash; a patient can carry a grossly abnormal bicarbonate at a near-normal pH provided PaCO<sub>2</sub> has moved in the same direction. That is exactly what compensation is.<br><br>';
+      if(p>=7.35&&p<=7.45&&(st.hco<22||st.hco>26)){
+        t+='Here the pH is back inside the normal band with both limbs abnormal. Full normalization is suspicious: compensation moves the pH most of the way but characteristically leaves it slightly off, so a perfectly normal pH with two abnormal values should raise the question of a mixed disorder.';
+      } else if(p<7.35){
+        t+='Acidemia. Hydrogen ion concentration is <b>'+hplus().toFixed(0)+' nmol/L</b> rather than 40. Remember that the pH scale is logarithmic, so a fall from 7.4 to 7.1 doubles the H<sup>+</sup> concentration.';
+      } else {
+        t+='Alkalemia. Hydrogen ion concentration has fallen to <b>'+hplus().toFixed(0)+' nmol/L</b>. Ionized calcium drops as more of it binds to albumin, which produces the tingling and spasm of an acute respiratory alkalosis.';
+      }
+    }
+    t+='<br><br>The bicarbonate system has a pK of 6.1, more than a unit away from 7.4, so on paper it is a poor buffer. It works superbly anyway because it is an <b>open system</b>: the lungs blow off the CO<sub>2</sub> limb and the kidneys regenerate the HCO<sub>3</sub><sup>&minus;</sup> limb, so neither component is ever used up.';
+    E('exp').innerHTML=t;
+  }
+
+  function render(){
+    var p=pH(), d=classify();
+    E('vHco').innerHTML=st.hco+' mEq/L';
+    E('vCo2').innerHTML=st.co2+' mm Hg';
+    E('sHco').value=st.hco; E('sCo2').value=st.co2;
+    E('nPh').textContent=p.toFixed(2);
+    E('nH').textContent=hplus().toFixed(0);
+    E('nDco').textContent=(0.03*st.co2).toFixed(2);
+    E('nRat').textContent=(st.hco/(0.03*st.co2)).toFixed(1);
+    var pill=E('pPh');
+    pill.className='pill '+d[1];
+    pill.textContent=(p<7.35)?'ACIDEMIA':((p>7.45)?'ALKALEMIA':'NORMAL 7.35–7.45');
+    E('dx').textContent=d[0];
+    explain();
+    E('cv').setAttribute('aria-label','pH '+p.toFixed(2)+', bicarbonate '+st.hco+' milliequivalents per liter, PaCO2 '+st.co2+' millimeters of mercury. '+d[0]);
+  }
+
+  // ---- canvas ----
+  var cvs=E('cv'), ctx=cvs.getContext('2d'), W=600, H=280;
+  function fit(){
+    var dp=window.devicePixelRatio||1;
+    W=cvs.clientWidth||600;
+    cvs.width=Math.round(W*dp); cvs.height=Math.round(H*dp);
+    cvs.style.height=H+'px'; ctx.setTransform(dp,0,0,dp,0,0);
+    draw();
+  }
+
+  function draw(){
+    var p=pH(), x0=34, x1=W-18, lo=6.7, hi=7.9;
+    ctx.clearRect(0,0,W,H);
+
+    // ---- pH ruler ----
+    var yr=64, hbar=26;
+    var g=ctx.createLinearGradient(x0,0,x1,0);
+    g.addColorStop(0,C.coral); g.addColorStop(.5,C.green); g.addColorStop(1,C.blue);
+    ctx.globalAlpha=.30; ctx.fillStyle=g; ctx.fillRect(x0,yr,x1-x0,hbar); ctx.globalAlpha=1;
+    var X=function(v){return x0+(v-lo)/(hi-lo)*(x1-x0);};
+    // normal band
+    ctx.fillStyle=C.green; ctx.globalAlpha=.55;
+    ctx.fillRect(X(7.35),yr,X(7.45)-X(7.35),hbar); ctx.globalAlpha=1;
+    ctx.strokeStyle=C.line; ctx.lineWidth=1; ctx.strokeRect(x0+.5,yr+.5,x1-x0-1,hbar-1);
+    ctx.font='600 10px Inter, system-ui, sans-serif'; ctx.fillStyle=C.muted; ctx.textAlign='center';
+    [6.8,7.0,7.2,7.4,7.6,7.8].forEach(function(v){
+      ctx.fillText(v.toFixed(1), X(v), yr+hbar+14);
+      ctx.strokeStyle=C.muted; ctx.globalAlpha=.5;
+      ctx.beginPath(); ctx.moveTo(X(v),yr+hbar); ctx.lineTo(X(v),yr+hbar+4); ctx.stroke(); ctx.globalAlpha=1;
+    });
+    // life limits
+    ctx.fillStyle=C.coral; ctx.font='800 10px Inter, system-ui, sans-serif';
+    ctx.textAlign='left'; ctx.fillText('6.8 — survival limit', X(6.8), yr-8);
+    ctx.textAlign='right'; ctx.fillText('survival limit — 7.8', X(7.8), yr-8);
+    ctx.fillStyle=C.tealdk; ctx.textAlign='center';
+    ctx.fillText('ARTERIAL pH', (x0+x1)/2, yr-24);
+    // needle
+    var px=Math.max(x0,Math.min(x1,X(p)));
+    ctx.fillStyle=C.tealdk;
+    ctx.beginPath(); ctx.moveTo(px,yr-3); ctx.lineTo(px-8,yr-15); ctx.lineTo(px+8,yr-15); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle=C.tealdk; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(px,yr); ctx.lineTo(px,yr+hbar); ctx.stroke();
+
+    // ---- ratio balance ----
+    var yb=142;
+    ctx.fillStyle=C.tealdk; ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('THE RATIO THAT SETS pH — each bar is drawn against its own normal', x0, yb - 8);
+
+    var bw=x1-x0-120, bh=24;
+    function bar(y,val,norm,col,label,txt){
+      ctx.fillStyle=C.line; ctx.fillRect(x0+110,y,bw,bh);
+      var f=Math.max(0.02,Math.min(2,val/norm));
+      ctx.fillStyle=col; ctx.fillRect(x0+110,y,bw*(f/2),bh);
+      ctx.strokeStyle=C.tealdk; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(x0+110+bw/2,y-4); ctx.lineTo(x0+110+bw/2,y+bh+4); ctx.stroke();
+      ctx.fillStyle=C.soft; ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+      ctx.fillText(label, x0+104, y+bh/2+4);
+      ctx.fillStyle=C.card; ctx.textAlign='left'; ctx.font='800 11px Inter, system-ui, sans-serif';
+      if(bw*(f/2)>62) ctx.fillText(txt, x0+116, y+bh/2+4);
+      else { ctx.fillStyle=C.soft; ctx.fillText(txt, x0+116+bw*(f/2)+6, y+bh/2+4); }
+    }
+    bar(yb+4, st.hco, 24, C.teal, 'HCO3−', st.hco+' mEq/L  (normal 24)');
+    bar(yb+42, 0.03*st.co2, 1.2, C.coral, 'dissolved CO2', (0.03*st.co2).toFixed(2)+' mmol/L  (normal 1.2)');
+    ctx.fillStyle=C.muted; ctx.font='600 10px Inter, system-ui, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('tick = normal', x0+110+bw/2, yb+42+bh+16);
+
+    // equation line
+    var r=st.hco/(0.03*st.co2);
+    ctx.fillStyle=C.tealdk; ctx.font='700 15px Fraunces, Georgia, serif'; ctx.textAlign='center';
+    ctx.fillText('pH = 6.1 + log( '+r.toFixed(1)+' ) = '+p.toFixed(2), W/2, H-16);
+    ctx.fillStyle=C.muted; ctx.font='600 10.5px Inter, system-ui, sans-serif';
+    ctx.fillText('when the two bars match, the ratio is 20 : 1 and the pH is 7.40', W/2, H-36);
+  }
+
+  function set(h,c){st.hco=h; st.co2=c; render(); draw();}
+
+  // ---- wiring ----
+  E('sHco').addEventListener('input',function(){st.hco=parseInt(this.value,10);render();draw();});
+  E('sCo2').addEventListener('input',function(){st.co2=parseInt(this.value,10);render();draw();});
+  E('bReset').addEventListener('click',function(){set(24,40);});
+
+  E('bLung').addEventListener('click',function(){
+    var c;
+    if(st.hco<22){ c=Math.round(1.5*st.hco+8); }          // Winter's formula
+    else if(st.hco>26){ c=Math.round(0.7*st.hco+20); }
+    else { c=40; }
+    set(st.hco, Math.max(10,Math.min(100,c)));
+    E('exp').insertAdjacentHTML('afterbegin','<div style="font-size:12.5px;color:var(--gold);font-weight:700;margin-bottom:8px;">Respiratory compensation applied over minutes — PaCO<sub>2</sub> moved in the same direction as the bicarbonate, and the pH came back most of the way but not all of it.</div>');
+  });
+
+  E('bKid').addEventListener('click',function(){
+    var h;
+    if(st.co2>45){ h=Math.round(24+0.35*(st.co2-40)); }   // chronic respiratory acidosis
+    else if(st.co2<35){ h=Math.round(24-0.50*(40-st.co2)); }
+    else { h=24; }
+    set(Math.max(4,Math.min(48,h)), st.co2);
+    E('exp').insertAdjacentHTML('afterbegin','<div style="font-size:12.5px;color:var(--gold);font-weight:700;margin-bottom:8px;">Renal compensation applied over hours to days — the kidney reclaimed or excreted bicarbonate to chase the PaCO<sub>2</sub>. This is the only limb that permanently removes fixed acid.</div>');
+  });
+
+  var box=E('cases');
+  CASES.forEach(function(cse){
+    var b=document.createElement('button'); b.type='button';
+    b.innerHTML=cse[0]+'<small>'+cse[1]+'</small>';
+    b.addEventListener('click',function(){set(cse[2],cse[3]);});
+    box.appendChild(b);
+  });
+
+  window.addEventListener('resize',fit);
+  render(); fit();
+})();
+</script>
+</body>
+</html>

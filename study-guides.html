@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Guides | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+.layout{grid-template-columns:1fr}main{max-width:900px;margin:0 auto}
+td.n{font-weight:700;white-space:nowrap}a{color:#1e40af}</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="index.html" style="color:#475569;font-size:9.5pt">&larr; Course hub</a>
+<div class="hero"><h1>BIO 262 — Study Guides</h1>
+<p><b>Joyce University of Nursing and Health Sciences</b> · Dr. Akash Garg</p>
+<p>One guide per module for weekly study, then one per exam for review. Every guide prints cleanly to PDF.</p></div>
+<div class="meta"><span><b>Module guides:</b> 14</span><span><b>Exam reviews:</b> 6</span>
+<span><b>Practice questions:</b> 693</span><span><b>Reference tables:</b> 58</span></div>
+<h3 style="border-left-color:#0f172a;color:#0f172a">Weekly module guides</h3>
+<table><tr><th>Module</th><th>Guide</th><th>Exam</th><th>Questions</th><th>Tables</th></tr><tr><td class="n">Module 1</td><td><a href="guides/module-01.html">Introduction to Physiology &amp; the Chemical Level</a></td><td>Exam 1</td><td>54</td><td>2</td></tr><tr><td class="n">Module 2</td><td><a href="guides/module-02.html">The Cellular Level of Organization</a></td><td>Exam 1</td><td>53</td><td>3</td></tr><tr><td class="n">Module 3</td><td><a href="guides/module-03.html">Tissues &amp; the Integumentary System</a></td><td>Exam 2</td><td>51</td><td>5</td></tr><tr><td class="n">Module 4</td><td><a href="guides/module-04.html">Bones &amp; Skeletal Physiology</a></td><td>Exam 2</td><td>44</td><td>3</td></tr><tr><td class="n">Module 5</td><td><a href="guides/module-05.html">Muscle Tissue &amp; Nervous Tissue</a></td><td>Exam 3</td><td>53</td><td>4</td></tr><tr><td class="n">Module 6</td><td><a href="guides/module-06.html">Brain, Action Potentials &amp; the Autonomic Nervous System</a></td><td>Exam 3</td><td>53</td><td>3</td></tr><tr><td class="n">Module 7</td><td><a href="guides/module-07.html">Special Senses — Vision, Hearing &amp; Equilibrium</a></td><td>Exam 4</td><td>43</td><td>2</td></tr><tr><td class="n">Module 8</td><td><a href="guides/module-08.html">The Endocrine System — Receptors &amp; Hormones</a></td><td>Exam 4</td><td>44</td><td>3</td></tr><tr><td class="n">Module 9</td><td><a href="guides/module-09.html">Blood &amp; Blood Vessels</a></td><td>Exam 4</td><td>48</td><td>4</td></tr><tr><td class="n">Module 10</td><td><a href="guides/module-10.html">The Heart</a></td><td>Exam 5</td><td>43</td><td>4</td></tr><tr><td class="n">Module 11</td><td><a href="guides/module-11.html">The Lymphatic &amp; Immune Systems</a></td><td>Exam 5</td><td>43</td><td>4</td></tr><tr><td class="n">Module 12</td><td><a href="guides/module-12.html">The Respiratory System</a></td><td>Exam 5</td><td>42</td><td>4</td></tr><tr><td class="n">Module 13</td><td><a href="guides/module-13.html">The Digestive System</a></td><td>Final only</td><td>52</td><td>4</td></tr><tr><td class="n">Module 14</td><td><a href="guides/module-14.html">The Urinary &amp; Reproductive Systems</a></td><td>Final only</td><td>70</td><td>7</td></tr></table>
+<h3 style="border-left-color:#0f172a;color:#0f172a">Exam reviews</h3>
+<table><tr><th>Exam</th><th>Guide</th><th>Covers</th><th>Questions</th></tr><tr><td class="n">Exam 1</td><td><a href="guides/exam-1.html">Open review</a></td><td>M1, M2</td><td>107</td></tr><tr><td class="n">Exam 2</td><td><a href="guides/exam-2.html">Open review</a></td><td>M3, M4</td><td>95</td></tr><tr><td class="n">Exam 3</td><td><a href="guides/exam-3.html">Open review</a></td><td>M5, M6</td><td>106</td></tr><tr><td class="n">Exam 4</td><td><a href="guides/exam-4.html">Open review</a></td><td>M7, M8, M9</td><td>135</td></tr><tr><td class="n">Exam 5</td><td><a href="guides/exam-5.html">Open review</a></td><td>M10, M11, M12</td><td>128</td></tr><tr><td class="n">Final Exam</td><td><a href="guides/final-exam.html">Open review</a></td><td>M1, M2, M3, M4, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14</td><td>693</td></tr></table>
+<div class="box pearl"><ul>
+<li>Study the <b>module guide</b> during its week — outcomes, reference tables, misconceptions, then self-test.</li>
+<li>Use the <b>exam review</b> in the days before the test, not as your first pass.</li>
+<li>Every guide has <b>Print / Save as PDF</b>; all dropdowns and answers expand automatically for print.</li>
+<li>There is also a <a href="study-guide.html">single combined guide</a> if you prefer one long document.</li>
+</ul></div>
+</main></div></body></html>

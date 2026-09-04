@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Automaticity and Conduction: Building an ECG From the Pacemaker Up</title>
+<meta name="description" content="Steepen or flatten the pacemaker drift with autonomic tone, block the sinoatrial node, the AV node or a bundle branch, and watch the surface ECG that results.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.dang.on{background:var(--coral);border-color:var(--coral);}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .v.sm{font-size:14px;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+svg text{font-family:var(--sans);}
+.tone{display:flex;justify-content:space-between;font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:-2px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch10.html">&larr; Module 10</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 10</div>
+  <h1>Automaticity, Conduction and the ECG</h1>
+  <div class="intro">Nodal cells have no stable resting potential: after repolarizing to about &minus;60 mV they drift straight back up on the funny current until they hit threshold at &minus;40 mV. Everything about heart rate is the <b>slope of that drift</b>. Change the autonomic tone, then break the pathway at the sinoatrial node, the AV node or a bundle branch, and read the ECG the damage produces.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The pacemaker potential</h2>
+      <div class="sl"><label for="sTone">Autonomic tone <span class="v" id="vTone">resting vagal tone</span></label>
+        <input type="range" id="sTone" min="-100" max="100" value="-30" step="1" aria-label="Autonomic tone, from maximum vagal on the left through denervated in the middle to maximum sympathetic on the right"></div>
+      <div class="tone"><span>max vagal</span><span>denervated</span><span>max sympathetic</span></div>
+      <canvas id="cvDrift" width="640" height="192" aria-label="Nodal membrane potential drifting from its maximum diastolic potential up to threshold and firing, repeated over three cycles"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Driving site</div><div class="v sm" id="oSite">SA node</div><div class="u" id="oSiteU">intrinsic 90&ndash;100/min</div></div>
+        <div class="lab"><div class="k">Drift slope</div><div class="v" id="oSlope">35</div><div class="u">mV per second</div></div>
+        <div class="lab"><div class="k">Heart rate</div><div class="v" id="oRate">70</div><div class="u">beats per minute</div></div>
+      </div>
+      <div class="verdict" id="vTone2"></div>
+      <div class="hint">The nodal upstroke is carried by <b>calcium</b>, not sodium, so it rises at 1&ndash;10 V/s against 200&ndash;500 V/s in a ventricular myocyte. That is why nodal tissue conducts at only 0.05 m/s.</div>
+    </div>
+    <div class="card">
+      <h2>Break the pathway</h2>
+      <div class="chips" id="lesions"></div>
+      <div class="lbl">And independently</div>
+      <div class="chips"><button type="button" class="chip dang" id="bBBB" aria-pressed="false">Bundle branch block</button></div>
+      <div class="sl"><label for="sAV">AV nodal delay <span class="v" id="vAV">100 ms</span></label>
+        <input type="range" id="sAV" min="40" max="320" value="100" step="5" aria-label="Conduction delay through the atrioventricular node in milliseconds"></div>
+      <div class="hint">The AV node is the only electrical connection through the fibrous skeleton. Its <b>100 ms delay</b> is functional, not incidental: it lets the atria finish emptying before the ventricles contract, and it filters very rapid atrial rates so the ventricles are protected when the atria fibrillate at 400&ndash;600 impulses per minute.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>The path, and where you broke it</h2>
+      <svg viewBox="0 0 400 306" role="img" aria-label="Schematic of the cardiac conduction system from sinoatrial node through the AV node, bundle of His, bundle branches and Purkinje fibers, with the currently driving site highlighted and any block marked" id="path">
+        <path d="M200 46 C200 70 200 84 200 104" stroke="var(--line)" stroke-width="14" fill="none" stroke-linecap="round"></path>
+        <path d="M200 46 C150 58 118 74 104 100" stroke="var(--line)" stroke-width="10" fill="none" stroke-linecap="round"></path>
+        <path d="M200 46 C250 58 282 74 296 100" stroke="var(--line)" stroke-width="10" fill="none" stroke-linecap="round"></path>
+        <line x1="60" y1="118" x2="340" y2="118" stroke="var(--gold)" stroke-width="3" stroke-dasharray="7 5"></line>
+        <text x="352" y="115" font-size="9.5" font-weight="800" fill="var(--gold)" text-anchor="end">fibrous skeleton — insulates atria from ventricles</text>
+
+        <line id="hisLine" x1="200" y1="146" x2="200" y2="188" stroke="var(--teal)" stroke-width="7" stroke-linecap="round"></line>
+        <line id="lbb" x1="200" y1="188" x2="118" y2="252" stroke="var(--teal)" stroke-width="6" stroke-linecap="round"></line>
+        <line id="rbb" x1="200" y1="188" x2="282" y2="252" stroke="var(--teal)" stroke-width="6" stroke-linecap="round"></line>
+        <path id="purkL" d="M118 252 C96 268 86 280 80 292 M118 252 C118 272 116 284 112 294 M118 252 C142 266 150 280 154 292" stroke="var(--teal)" stroke-width="2.6" fill="none" opacity=".75"></path>
+        <path id="purkR" d="M282 252 C304 268 314 280 320 292 M282 252 C282 272 284 284 288 294 M282 252 C258 266 250 280 246 292" stroke="var(--teal)" stroke-width="2.6" fill="none" opacity=".75"></path>
+
+        <circle id="nSA" cx="200" cy="40" r="15" fill="var(--teal)"></circle>
+        <circle id="nAV" cx="200" cy="128" r="14" fill="var(--teal)"></circle>
+        <text x="222" y="30" font-size="11.5" font-weight="800" fill="var(--teal-dk)">SA node</text>
+        <text x="222" y="45" font-size="10.5" fill="var(--muted)">0.05 m/s &middot; 90&ndash;100/min</text>
+        <text x="222" y="132" font-size="11.5" font-weight="800" fill="var(--teal-dk)">AV node</text>
+        <text x="222" y="147" font-size="10.5" fill="var(--muted)">0.05 m/s &middot; 40&ndash;60/min</text>
+        <text x="30" y="86" font-size="10.5" font-weight="700" fill="var(--muted)">atrial muscle 1.0 m/s</text>
+        <text x="150" y="176" font-size="10.5" font-weight="800" fill="var(--teal-dk)">His 1&ndash;2 m/s</text>
+        <text x="30" y="246" font-size="10.5" font-weight="700" fill="var(--muted)">left bundle</text>
+        <text x="300" y="246" font-size="10.5" font-weight="700" fill="var(--muted)">right bundle</text>
+        <text x="200" y="303" font-size="10.5" font-weight="800" fill="var(--teal-dk)" text-anchor="middle">Purkinje 2&ndash;4 m/s &middot; escape 20&ndash;40/min</text>
+
+        <g id="xSA" style="display:none"><line x1="186" y1="26" x2="214" y2="54" stroke="var(--coral)" stroke-width="4"></line><line x1="214" y1="26" x2="186" y2="54" stroke="var(--coral)" stroke-width="4"></line></g>
+        <g id="xAV" style="display:none"><line x1="186" y1="114" x2="214" y2="142" stroke="var(--coral)" stroke-width="4"></line><line x1="214" y1="114" x2="186" y2="142" stroke="var(--coral)" stroke-width="4"></line></g>
+        <g id="xBB" style="display:none"><line x1="145" y1="207" x2="173" y2="235" stroke="var(--coral)" stroke-width="4"></line><line x1="173" y1="207" x2="145" y2="235" stroke="var(--coral)" stroke-width="4"></line></g>
+        <circle id="ringDrive" cx="200" cy="40" r="23" fill="none" stroke="var(--gold)" stroke-width="3.5"></circle>
+      </svg>
+      <div class="hint" style="margin-top:2px">The gold ring marks whichever site is currently capturing the heart. The fastest drifter always wins, because it reaches threshold and depolarizes everything else before the slower sites finish &mdash; <b>overdrive suppression</b>. Slower pacemakers are only revealed when the faster one is removed or disconnected.</div>
+    </div>
+    <div class="card">
+      <h2>The ECG that results</h2>
+      <canvas id="cvEcg" width="660" height="232" aria-label="Four-second surface electrocardiogram strip generated from the pacemaker rate, AV delay and any conduction block you have selected"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--teal-dk)"></i>Lead II tracing, 4 seconds</span>
+        <span><i style="background:var(--blue)"></i>P wave marker</span>
+        <span><i style="background:var(--coral)"></i>QRS marker</span>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Atrial rate</div><div class="v" id="oAtr">70</div><div class="u">P waves per minute</div></div>
+        <div class="lab"><div class="k">Ventricular rate</div><div class="v" id="oVen">70</div><div class="u">QRS per minute</div></div>
+        <div class="lab"><div class="k">PR interval</div><div class="v sm" id="oPR">160 ms</div><div class="u">normal 120&ndash;200</div></div>
+        <div class="lab"><div class="k">QRS duration</div><div class="v" id="oQRS">80</div><div class="u">ms &middot; normal &lt;120</div></div>
+        <div class="lab"><div class="k">QT interval</div><div class="v" id="oQT">380</div><div class="u">ms &middot; corrected &lt;440</div></div>
+        <div class="lab"><div class="k">Cycle length</div><div class="v" id="oCL">857</div><div class="u">ms per beat</div></div>
+      </div>
+      <div class="verdict" id="vEcg"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#000').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), GOLD = C('gold'), MUTED = C('muted');
+  function id(s){ return document.getElementById(s); }
+  function f(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  var sTone = id('sTone'), sAV = id('sAV');
+  var lesion = 'none', bbb = false;
+
+  var LES = [
+    {k:'none', n:'Intact conduction'},
+    {k:'sa', n:'SA node fails'},
+    {k:'first', n:'First-degree AV block'},
+    {k:'wenck', n:'Second-degree AV block (Wenckebach)'},
+    {k:'complete', n:'Complete AV block'}
+  ];
+  var host = id('lesions');
+  LES.forEach(function(L, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (i === 0 ? ' on' : '') + (i > 0 ? ' dang' : '');
+    b.textContent = L.n; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(host.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed','true');
+      lesion = L.k;
+      if(L.k === 'first') sAV.value = 260; else if(L.k === 'none' || L.k === 'sa') sAV.value = 100;
+      draw();
+    });
+    host.appendChild(b);
+  });
+  id('bBBB').addEventListener('click', function(){
+    bbb = !bbb; this.classList.toggle('on', bbb); this.setAttribute('aria-pressed', bbb ? 'true' : 'false'); draw();
+  });
+
+  var SITES = {
+    sa: { name:'SA node', slope0:50, apd:200, vag:1, sym:1, intrinsic:'intrinsic 90–100/min' },
+    av: { name:'AV junction', slope0:20, apd:200, vag:0.7, sym:0.8, intrinsic:'intrinsic 40–60/min' },
+    pk: { name:'Purkinje', slope0:11.1, apd:300, vag:0.15, sym:0.5, intrinsic:'intrinsic 20–40/min' }
+  };
+
+  function pace(site, tone){
+    var S = SITES[site];
+    var T = tone < 0 ? tone * S.vag : tone * S.sym;
+    var g, mdp, apd;
+    if(T < 0){ g = 1 / (1 + 1.4286 * (-T) / 100); mdp = -60 - 10 * (-T) / 100; apd = S.apd; }
+    else { g = 1 + 1.5 * T / 100; mdp = -60; apd = S.apd - 0.3 * S.apd * T / 100; }
+    var slope = S.slope0 * g;
+    var drift = (-40 - mdp) / slope * 1000;
+    var cycle = drift + apd;
+    return { mdp:mdp, thr:-40, slope:slope, drift:drift, apd:apd, cycle:cycle, rate:60000 / cycle, name:S.name, intrinsic:S.intrinsic };
+  }
+
+  function state(){
+    var tone = +sTone.value, av = +sAV.value;
+    var driveKey = lesion === 'sa' ? 'av' : 'sa';
+    var drive = pace(driveKey, tone);
+    var esc = pace('pk', tone);
+    var atrialRate, ventRate, ventCycle, atrialCycle;
+    if(lesion === 'complete'){
+      atrialCycle = drive.cycle; atrialRate = drive.rate;
+      ventCycle = esc.cycle; ventRate = esc.rate;
+    } else if(lesion === 'wenck'){
+      atrialCycle = drive.cycle; atrialRate = drive.rate;
+      ventCycle = drive.cycle * 4 / 3; ventRate = drive.rate * 3 / 4;
+    } else if(lesion === 'sa'){
+      atrialCycle = drive.cycle; atrialRate = drive.rate;
+      ventCycle = drive.cycle; ventRate = drive.rate;
+    } else {
+      atrialCycle = drive.cycle; atrialRate = drive.rate;
+      ventCycle = drive.cycle; ventRate = drive.rate;
+    }
+    return { tone:tone, av:av, drive:drive, driveKey:driveKey, esc:esc,
+      atrialRate:atrialRate, ventRate:ventRate, atrialCycle:atrialCycle, ventCycle:ventCycle,
+      PR: 60 + av, QRS: bbb ? 145 : 80 };
+  }
+
+  function drawDrift(s){
+    var cv = id('cvDrift'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 640, h = 192, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 40, R = 8, T = 14, B = 22, pw = w - L - R, ph = h - T - B;
+    var p = s.drive;
+    var span = Math.min(4000, Math.max(1600, p.cycle * 2.6));
+    function X(t){ return L + t / span * pw; }
+    function Y(v){ return T + ph - (v + 85) / 110 * ph; }
+
+    ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    [[-40, 'threshold −40 mV', GOLD], [p.mdp, 'max diastolic ' + Math.round(p.mdp) + ' mV', BLUE]].forEach(function(g){
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = g[2]; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(L, Y(g[0])); ctx.lineTo(L + pw, Y(g[0])); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = g[2]; ctx.textAlign = 'left'; ctx.fillText(g[1], L + 4, Y(g[0]) - 4);
+    });
+    ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.textAlign = 'right';
+    [20, 0, -40, -70].forEach(function(v){ ctx.fillText(v, L - 5, Y(v) + 3); });
+
+    ctx.beginPath(); ctx.strokeStyle = TEALDK; ctx.lineWidth = 2.6;
+    var first = true;
+    for(var t = 0; t <= span; t += 2){
+      var ph2 = t % p.cycle, v;
+      if(ph2 < p.drift) v = p.mdp + (-40 - p.mdp) * (ph2 / p.drift);
+      else {
+        var u = (ph2 - p.drift) / p.apd;
+        v = u < 0.28 ? -40 + 50 * (u / 0.28) : 10 - (10 - p.mdp) * ((u - 0.28) / 0.72);
+      }
+      if(first){ ctx.moveTo(X(t), Y(v)); first = false; } else ctx.lineTo(X(t), Y(v));
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = GREEN; ctx.lineWidth = 2; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(X(0), Y(p.mdp)); ctx.lineTo(X(p.drift), Y(-40)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = GREEN; ctx.textAlign = 'left'; ctx.font = '800 10px Inter, system-ui, sans-serif';
+    ctx.fillText('drift ' + Math.round(p.slope) + ' mV/s', X(p.drift * 0.12), Y(p.mdp) - 6);
+
+    ctx.fillStyle = MUTED; ctx.textAlign = 'center'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    for(var g2 = 0; g2 <= span; g2 += 500){ ctx.fillText((g2 / 1000).toFixed(1) + 's', X(g2), h - 5); }
+  }
+
+  function beats(s){
+    var dur = 4000, P = [], Q = [];
+    if(lesion === 'complete'){
+      for(var t = 120; t < dur; t += s.atrialCycle) P.push(t);
+      for(var v = 300; v < dur; v += s.ventCycle) Q.push({ t:v });
+    } else if(lesion === 'wenck'){
+      var t2 = 120, n = 0;
+      while(t2 < dur){
+        P.push(t2);
+        var k = n % 4;
+        if(k < 3) Q.push({ t: t2 + s.PR + k * 60 });
+        t2 += s.atrialCycle; n++;
+      }
+    } else if(lesion === 'sa'){
+      for(var t3 = 220; t3 < dur; t3 += s.ventCycle) Q.push({ t:t3 });
+    } else {
+      for(var t4 = 120; t4 < dur; t4 += s.atrialCycle){ P.push(t4); Q.push({ t: t4 + s.PR }); }
+    }
+    return { P:P, Q:Q, dur:dur };
+  }
+
+  function drawEcg(s){
+    var cv = id('cvEcg'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 660, h = 232, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 12, R = 8, T = 12, B = 24, pw = w - L - R, ph = h - T - B;
+    var b = beats(s);
+    function X(t){ return L + t / b.dur * pw; }
+    function Y(mv){ return T + ph * 0.72 - mv * ph * 0.46; }
+
+    ctx.globalAlpha = 0.10; ctx.strokeStyle = CORAL; ctx.lineWidth = 1;
+    for(var g = 0; g <= b.dur; g += 200){ ctx.beginPath(); ctx.moveTo(X(g), T); ctx.lineTo(X(g), T + ph); ctx.stroke(); }
+    for(var yv = -0.4; yv <= 1.2; yv += 0.2){ ctx.beginPath(); ctx.moveTo(L, Y(yv)); ctx.lineTo(L + pw, Y(yv)); ctx.stroke(); }
+    ctx.globalAlpha = 0.24;
+    for(var g2 = 0; g2 <= b.dur; g2 += 1000){ ctx.beginPath(); ctx.moveTo(X(g2), T); ctx.lineTo(X(g2), T + ph); ctx.stroke(); }
+    ctx.globalAlpha = 1;
+
+    function bump(t, t0, wdt, amp){
+      if(t < t0 || t > t0 + wdt) return 0;
+      return amp * Math.pow(Math.sin(Math.PI * (t - t0) / wdt), 2);
+    }
+    function volt(t){
+      var y = 0, i;
+      for(i = 0; i < b.P.length; i++) y += bump(t, b.P[i], 90, 0.16);
+      for(i = 0; i < b.Q.length; i++){
+        var q = b.Q[i].t, wq = s.QRS;
+        y += bump(t, q, wq * 0.22, -0.09);
+        y += bump(t, q + wq * 0.18, wq * 0.42, bbb ? 0.82 : 1.15);
+        if(bbb) y += bump(t, q + wq * 0.5, wq * 0.36, 0.62);
+        y += bump(t, q + wq * 0.62, wq * 0.36, -0.20);
+        y += bump(t, q + wq + 100, 200, 0.32);
+      }
+      return y;
+    }
+
+    ctx.beginPath(); ctx.strokeStyle = TEALDK; ctx.lineWidth = 2;
+    for(var t = 0; t <= b.dur; t += 2){
+      var yy = Y(volt(t));
+      if(t === 0) ctx.moveTo(X(t), yy); else ctx.lineTo(X(t), yy);
+    }
+    ctx.stroke();
+
+    ctx.font = '800 9.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+    b.P.forEach(function(t){ ctx.fillStyle = BLUE; ctx.fillText('P', X(t + 45), Y(0.16) - 6); });
+    b.Q.forEach(function(q){ ctx.fillStyle = CORAL; ctx.fillText('QRS', X(q.t + s.QRS * 0.35), T + 10); });
+
+    ctx.fillStyle = MUTED; ctx.textAlign = 'center'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    for(var g3 = 0; g3 <= b.dur; g3 += 1000){ ctx.fillText((g3 / 1000) + ' s', X(g3), h - 6); }
+  }
+
+  function draw(){
+    var s = state();
+    var tone = s.tone;
+    id('vTone').textContent = tone < -60 ? 'strong vagal' : tone < -12 ? 'resting vagal tone' :
+      tone <= 12 ? 'denervated (full blockade)' : tone < 60 ? 'sympathetic' : 'maximal sympathetic';
+    id('vAV').textContent = s.av + ' ms';
+
+    id('oSite').textContent = s.driveKey === 'sa' ? 'SA node' : 'AV junction';
+    id('oSiteU').textContent = s.drive.intrinsic;
+    id('oSlope').textContent = Math.round(s.drive.slope);
+    id('oRate').textContent = Math.round(s.ventRate);
+
+    id('oAtr').textContent = lesion === 'sa' ? '—' : Math.round(s.atrialRate);
+    id('oVen').textContent = Math.round(s.ventRate);
+    id('oPR').textContent = lesion === 'complete' ? 'no fixed PR' : (lesion === 'wenck' ? (s.PR + ' → ' + (s.PR + 120)) : (lesion === 'sa' ? 'no P wave' : s.PR + ' ms'));
+    id('oQRS').textContent = s.QRS;
+    id('oQT').textContent = s.QRS + 300;
+    id('oCL').textContent = Math.round(60000 / s.ventRate);
+
+    id('xSA').style.display = lesion === 'sa' ? '' : 'none';
+    id('xAV').style.display = (lesion === 'complete' || lesion === 'wenck') ? '' : 'none';
+    id('xBB').style.display = bbb ? '' : 'none';
+    var ring = id('ringDrive');
+    if(lesion === 'complete'){ ring.setAttribute('cx', 200); ring.setAttribute('cy', 220); ring.setAttribute('r', 30); }
+    else if(lesion === 'sa'){ ring.setAttribute('cx', 200); ring.setAttribute('cy', 128); ring.setAttribute('r', 22); }
+    else { ring.setAttribute('cx', 200); ring.setAttribute('cy', 40); ring.setAttribute('r', 23); }
+    id('lbb').setAttribute('stroke', bbb ? MUTED : TEAL);
+    id('purkL').setAttribute('stroke', bbb ? MUTED : TEAL);
+
+    drawDrift(s); drawEcg(s);
+
+    var v = id('vTone2'), cls = 'verdict', head, sub;
+    if(tone <= 12 && tone >= -12){
+      cls += ' cool'; head = 'Denervated: ' + Math.round(s.drive.rate) + ' per minute';
+      sub = 'With every autonomic input blocked the SA node runs at its own intrinsic rate, about 100 per minute. A resting adult sits nearer 70 &mdash; the difference is continuous vagal tone, which is also why atropine speeds the heart toward 100.';
+    } else if(tone < -12){
+      cls += ''; head = 'Vagal restraint: ' + Math.round(s.drive.rate) + ' per minute';
+      sub = 'Acetylcholine at M<sub>2</sub> receptors opens potassium channels and reduces both I<sub>f</sub> and calcium current. The cell repolarizes further (maximum diastolic potential ' + Math.round(s.drive.mdp) + ' mV) and drifts more slowly (' + Math.round(s.drive.slope) + ' mV/s), so it takes ' + Math.round(s.drive.drift) + ' ms to reach threshold instead of 400.';
+    } else {
+      cls += ' warn'; head = 'Sympathetic drive: ' + Math.round(s.drive.rate) + ' per minute';
+      sub = 'Norepinephrine at &beta;<sub>1</sub> receptors raises cyclic AMP, which binds HCN channels directly and increases the funny current. The drift steepens to ' + Math.round(s.drive.slope) + ' mV/s, so threshold arrives after only ' + Math.round(s.drive.drift) + ' ms. Positive chronotropy is nothing more than a steeper slope.';
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+
+    var e = id('vEcg'), ecls = 'verdict', ehead, esub;
+    if(lesion === 'complete'){
+      ecls += ' bad'; ehead = 'Complete AV block: the atria and ventricles are strangers';
+      esub = 'P waves march on at ' + Math.round(s.atrialRate) + ' per minute and QRS complexes appear independently at ' + Math.round(s.ventRate) + ', driven by a subsidiary pacemaker in the His&ndash;Purkinje system whose intrinsic rate is 20 to 40. There is no fixed PR interval because nothing connects them. That rate is too slow to sustain output.';
+    } else if(lesion === 'wenck'){
+      ecls += ' warn'; ehead = 'Second-degree block: the PR stretches, then a beat is dropped';
+      esub = 'Each successive P conducts more slowly through a fatiguing AV node until one fails entirely, leaving a P wave with no QRS after it. Ventricular rate falls to ' + Math.round(s.ventRate) + ' while the atria continue at ' + Math.round(s.atrialRate) + '.';
+    } else if(lesion === 'sa'){
+      ecls += ' warn'; ehead = 'Junctional escape at ' + Math.round(s.ventRate) + ' per minute';
+      esub = 'With the SA node silent, the next fastest drifter takes over &mdash; the AV junction, intrinsic rate 40 to 60. Its own vagal restraint keeps it slower still at the tone you have set; slide the tone toward denervated and the escape rate climbs, which is exactly what atropine does. No organized P wave precedes each QRS.';
+    } else if(bbb && s.PR > 200){
+      ecls += ' bad'; ehead = 'Slow through the node and slow through the ventricle';
+      esub = 'PR ' + s.PR + ' ms (normal 120 to 200) and QRS ' + s.QRS + ' ms (normal under 120). Two separate lesions: the node is conducting slowly, and one ventricle is being depolarized through ordinary myocardium at 0.3 to 1 m/s instead of through Purkinje fibers at 2 to 4 m/s.';
+    } else if(bbb){
+      ecls += ' warn'; ehead = 'Wide QRS: ' + s.QRS + ' ms';
+      esub = 'With a bundle branch blocked, one ventricle can no longer be reached quickly through the Purkinje network. It must be depolarized cell to cell through ordinary myocardium at 0.3 to 1 m/s, so activation takes longer, the QRS widens beyond 120 ms and often notches. The PR interval is untouched, because the AV node is fine.';
+    } else if(s.PR > 200){
+      ecls += ' warn'; ehead = 'First-degree AV block: PR ' + s.PR + ' ms';
+      esub = 'The PR interval is dominated by AV nodal conduction time, so slowing the node lengthens it beyond 200 ms. Every P still conducts &mdash; nothing is dropped &mdash; and the QRS is normal at ' + s.QRS + ' ms because the ventricles are still activated through the Purkinje system.';
+    } else {
+      ecls += ' ok'; ehead = 'A normal complex';
+      esub = 'P wave under 120 ms, PR ' + s.PR + ' ms (of which ' + s.av + ' ms is the AV nodal delay), QRS ' + s.QRS + ' ms, QT ' + (s.QRS + 300) + ' ms. Remember what the tracing is: a timing record of electrical events. Mechanical systole begins tens of milliseconds after the QRS and outlasts it by hundreds &mdash; which is why you check a pulse, never a monitor, to decide whether a heart is pumping.';
+    }
+    e.className = ecls; e.innerHTML = ehead + '<small>' + esub + '</small>';
+  }
+
+  sTone.addEventListener('input', draw);
+  sAV.addEventListener('input', draw);
+  window.addEventListener('resize', draw);
+  draw();
+})();
+</script>
+</body>
+</html>

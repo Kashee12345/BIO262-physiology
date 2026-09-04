@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Two Pumps in Series: Resistance, Pressure and the Law of Laplace</title>
+<meta name="description" content="Change the resistance of each circuit and watch the pressure each ventricle must generate, then rebuild a ventricular wall and read its wall stress from T = P times r over 2h.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.bar{height:15px;border-radius:8px;background:var(--line);overflow:hidden;margin-top:7px;}
+.bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .2s;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:4px;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+svg text{font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch10.html">&larr; Module 10</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 10</div>
+  <h1>Two Pumps in Series</h1>
+  <div class="intro">Both ventricles move the same 5 L/min, because the circuit is closed and they sit one after the other. What differs is the <b>pressure</b> each must build, and that is set entirely by the resistance downstream: &Delta;P = Q &times; R. Change each circuit&rsquo;s resistance below and watch the required pressures move. Then rebuild a ventricular wall and read the stress each sarcomere carries from T = P &times; r / 2h.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The circuit: fix the flow, change the resistance</h2>
+      <div class="sl"><label for="sCO">Cardiac output &mdash; identical through both pumps <span class="v" id="vCO">5.0 L/min</span></label>
+        <input type="range" id="sCO" min="3" max="10" value="5" step="0.1" aria-label="Cardiac output in liters per minute, the same through both ventricles"></div>
+      <div class="sl"><label for="sS">Systemic vascular resistance <span class="v" id="vS">18.0</span></label>
+        <input type="range" id="sS" min="0.4" max="2.4" value="1" step="0.05" aria-label="Systemic vascular resistance as a multiple of normal"></div>
+      <div class="sl"><label for="sP">Pulmonary vascular resistance <span class="v" id="vP">1.8</span></label>
+        <input type="range" id="sP" min="0.4" max="8" value="1" step="0.05" aria-label="Pulmonary vascular resistance as a multiple of normal"></div>
+      <div class="eq" id="eqCirc"></div>
+      <div class="hint">Resistance units here are mmHg per L/min. Multiply by 80 for the dyn&middot;s&middot;cm<sup>&minus;5</sup> you will see on a hemodynamic report. Normal systemic is about <b>18</b> (1440 dyn&middot;s&middot;cm<sup>&minus;5</sup>); normal pulmonary is about <b>1.8</b> (144 dyn&middot;s&middot;cm<sup>&minus;5</sup>) &mdash; one tenth as much, which is the whole explanation for the pressure difference.</div>
+      <div class="chips" id="circChips" style="margin-top:11px"></div>
+    </div>
+    <div class="card">
+      <h2>Wall geometry: T = P &times; r / 2h</h2>
+      <div class="seg2" id="chamSeg">
+        <button type="button" id="bLV" class="on" aria-pressed="true">Left ventricle</button>
+        <button type="button" id="bRV" aria-pressed="false">Right ventricle</button>
+      </div>
+      <div class="sl"><label for="sPk">Peak intracavitary pressure P <span class="v" id="vPk">120 mmHg</span></label>
+        <input type="range" id="sPk" min="10" max="220" value="120" step="1" aria-label="Peak pressure inside the chamber in millimeters of mercury"></div>
+      <div class="sl"><label for="sR">Cavity radius r <span class="v" id="vR">25 mm</span></label>
+        <input type="range" id="sR" min="12" max="52" value="25" step="1" aria-label="Chamber cavity radius in millimeters"></div>
+      <div class="sl"><label for="sH">Wall thickness h <span class="v" id="vH">10 mm</span></label>
+        <input type="range" id="sH" min="2" max="24" value="10" step="0.5" aria-label="Ventricular wall thickness in millimeters"></div>
+      <div class="row" style="margin-top:12px">
+        <button type="button" class="btn" id="useP">Use the pressure the circuit just demanded</button>
+      </div>
+      <div class="lbl">Try a ventricle</div>
+      <div class="chips" id="wallChips"></div>
+      <div class="hint">Normal free wall thickness: left ventricle <b>8&ndash;12 mm</b>, right ventricle <b>3&ndash;5 mm</b>. Wall stress is what each individual sarcomere bears, and it is the main determinant of how much oxygen the myocardium consumes.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Pressures around the loop</h2>
+      <svg viewBox="0 0 620 344" role="img" aria-label="Schematic of the closed circulation showing right atrium, right ventricle, pulmonary circuit, left atrium, left ventricle and systemic circuit with live pressure values at each point" id="circ">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"></path>
+          </marker>
+        </defs>
+        <path d="M230 298 H103 V166" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+        <path d="M103 158 V190" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+        <path d="M162 222 H200 V40 H222" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+        <path d="M390 40 H420 V134 H450" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+        <path d="M517 158 V190" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+        <path d="M458 222 H420 V298 H398" fill="none" stroke="var(--muted)" stroke-width="2.4" marker-end="url(#ah)"></path>
+
+        <rect x="230" y="14" width="160" height="54" rx="12" fill="var(--blue)" opacity=".16"></rect>
+        <rect x="230" y="14" width="160" height="54" rx="12" fill="none" stroke="var(--blue)" stroke-width="1.6"></rect>
+        <text x="310" y="34" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--teal-dk)">Pulmonary circuit</text>
+        <text x="310" y="52" text-anchor="middle" font-size="12" fill="var(--soft)" id="tPulmBed">R = 1.8</text>
+
+        <rect x="230" y="272" width="160" height="54" rx="12" fill="var(--coral)" opacity=".16"></rect>
+        <rect x="230" y="272" width="160" height="54" rx="12" fill="none" stroke="var(--coral)" stroke-width="1.6"></rect>
+        <text x="310" y="292" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--teal-dk)">Systemic circuit</text>
+        <text x="310" y="310" text-anchor="middle" font-size="12" fill="var(--soft)" id="tSysBed">R = 18.0</text>
+
+        <rect x="44" y="110" width="118" height="48" rx="10" fill="var(--blue)" opacity=".13"></rect>
+        <rect x="44" y="110" width="118" height="48" rx="10" fill="none" stroke="var(--blue)" stroke-width="1.5"></rect>
+        <text x="103" y="130" text-anchor="middle" font-size="12" font-weight="800" fill="var(--teal-dk)">Right atrium</text>
+        <text x="103" y="148" text-anchor="middle" font-size="12.5" fill="var(--soft)" id="tRA">mean 3</text>
+
+        <rect x="44" y="196" width="118" height="52" rx="10" fill="var(--blue)" opacity=".22"></rect>
+        <rect x="44" y="196" width="118" height="52" rx="10" fill="none" stroke="var(--blue)" stroke-width="1.5"></rect>
+        <text x="103" y="216" text-anchor="middle" font-size="12" font-weight="800" fill="var(--teal-dk)">Right ventricle</text>
+        <text x="103" y="235" text-anchor="middle" font-size="13" font-weight="700" fill="var(--teal-dk)" id="tRV">25 / 0&ndash;5</text>
+
+        <rect x="458" y="110" width="118" height="48" rx="10" fill="var(--coral)" opacity=".13"></rect>
+        <rect x="458" y="110" width="118" height="48" rx="10" fill="none" stroke="var(--coral)" stroke-width="1.5"></rect>
+        <text x="517" y="130" text-anchor="middle" font-size="12" font-weight="800" fill="var(--teal-dk)">Left atrium</text>
+        <text x="517" y="148" text-anchor="middle" font-size="12.5" fill="var(--soft)" id="tLA">mean 6</text>
+
+        <rect x="458" y="196" width="118" height="52" rx="10" fill="var(--coral)" opacity=".22"></rect>
+        <rect x="458" y="196" width="118" height="52" rx="10" fill="none" stroke="var(--coral)" stroke-width="1.5"></rect>
+        <text x="517" y="216" text-anchor="middle" font-size="12" font-weight="800" fill="var(--teal-dk)">Left ventricle</text>
+        <text x="517" y="235" text-anchor="middle" font-size="13" font-weight="700" fill="var(--teal-dk)" id="tLV">120 / 0&ndash;10</text>
+
+        <text x="196" y="88" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--blue)" id="tPA">PA 25/10</text>
+        <text x="424" y="88" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--coral)" id="tAO">Aorta 120/80</text>
+        <text x="310" y="176" text-anchor="middle" font-size="12" font-weight="800" fill="var(--muted)" id="tFlow">Q = 5.0 L/min through both pumps</text>
+      </svg>
+      <div class="labs">
+        <div class="lab"><div class="k">Pulmonary &Delta;P</div><div class="v" id="oDPp">9</div><div class="u">mmHg &middot; Q &times; PVR</div></div>
+        <div class="lab"><div class="k">Systemic &Delta;P</div><div class="v" id="oDPs">90</div><div class="u">mmHg &middot; Q &times; SVR</div></div>
+        <div class="lab"><div class="k">SVR &divide; PVR</div><div class="v" id="oRat">10.0</div><div class="u">&times;</div></div>
+      </div>
+      <div class="verdict" id="vCirc"></div>
+    </div>
+    <div class="card">
+      <h2>Wall stress in the chamber you built</h2>
+      <svg viewBox="0 0 340 292" role="img" aria-label="Cross-section of a ventricular chamber drawn to scale, showing the cavity radius and the wall thickness you have set" id="ring">
+        <circle id="cOuter" cx="170" cy="142" r="52" fill="var(--teal)" opacity=".78"></circle>
+        <circle id="cInner" cx="170" cy="142" r="37" fill="var(--coral)" opacity=".30"></circle>
+        <circle id="cInner2" cx="170" cy="142" r="37" fill="none" stroke="#fff" stroke-width="1.2"></circle>
+        <line id="dimR" x1="170" y1="142" x2="207" y2="142" stroke="#fff" stroke-width="2"></line>
+        <line id="dimH" x1="207" y1="142" x2="222" y2="142" stroke="var(--gold)" stroke-width="3"></line>
+        <text id="txtR" x="188" y="134" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff">r</text>
+        <text id="txtH" x="215" y="130" text-anchor="middle" font-size="11.5" font-weight="800" fill="var(--gold)">h</text>
+        <text x="170" y="272" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--muted)" id="ringCap">drawn to scale, 1 mm = 1.5 px</text>
+      </svg>
+      <div class="labs">
+        <div class="lab"><div class="k">Wall stress T</div><div class="v" id="oT">150</div><div class="u">mmHg &middot; mm</div></div>
+        <div class="lab"><div class="k">Stress index</div><div class="v" id="oIdx">1.00</div><div class="u">&times; normal LV</div></div>
+        <div class="lab"><div class="k">Wall thickness</div><div class="v" id="oH">10.0</div><div class="u">mm &middot; normal 8&ndash;12</div></div>
+      </div>
+      <div class="bar"><i id="barT"></i></div>
+      <div class="verdict" id="vWall"></div>
+      <div class="eq" id="eqWall"></div>
+    </div>
+    <div class="card">
+      <h2>The misconception this retires</h2>
+      <div class="hint" style="margin-top:2px">Push the systemic resistance slider up and the pulmonary one down as far as they go. The left ventricle now generates several times the right ventricle&rsquo;s pressure &mdash; and the flow readout never moves. <b>The left ventricle is stronger because it works against more resistance, not because it moves more blood.</b> In a closed series circuit the two outputs must be equal; a sustained mismatch of even 1&ndash;2 mL per beat would flood one circuit within minutes.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var RAP = 3, LAP = 6, SVRn = 18, PVRn = 1.8;
+
+  var sCO = document.getElementById('sCO'), sS = document.getElementById('sS'), sP = document.getElementById('sP');
+  var sPk = document.getElementById('sPk'), sR = document.getElementById('sR'), sH = document.getElementById('sH');
+  var chamber = 'LV', circNote = '';
+
+  function f(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+  function id(s){ return document.getElementById(s); }
+
+  var CIRC = [
+    {n:'Resting adult', co:5, s:1, p:1, note:'Five liters a minute through both pumps. Systemic resistance is ten times pulmonary, so the left ventricle needs ten times the driving pressure for the same flow.'},
+    {n:'Exercise', co:9, s:0.6, p:0.8, note:'Flow nearly doubles while systemic resistance falls in the working muscle beds, so mean arterial pressure rises only modestly. The pulmonary bed recruits and distends, so its resistance falls too &mdash; which is why pulmonary pressures stay low even at 9 L/min.'},
+    {n:'Chronic hypertension', co:5, s:1.65, p:1, note:'Resistance is the problem, not flow. The same 5 L/min now demands a far higher driving pressure, and the left ventricle must generate it every beat. Section 1 of the module calls this chronic pressure overload.'},
+    {n:'Pulmonary hypertension', co:5, s:1, p:4.5, note:'Pulmonary resistance has risen severalfold. The right ventricle &mdash; a thin crescent built for low pressure &mdash; must now generate pressures it was never shaped for. Set the chamber below to Right ventricle and watch its wall stress.'},
+    {n:'Septic vasodilation', co:8, s:0.45, p:1, note:'Resistance collapses. Output rises, yet mean arterial pressure still falls, because MAP is the product of flow and resistance and resistance has fallen further than flow has risen.'}
+  ];
+  var WALL = [
+    {n:'Normal left ventricle', c:'LV', P:120, r:25, h:10},
+    {n:'Hypertension, not yet hypertrophied', c:'LV', P:180, r:25, h:10},
+    {n:'Hypertension, concentric hypertrophy', c:'LV', P:180, r:24, h:15},
+    {n:'Dilated cardiomyopathy', c:'LV', P:100, r:44, h:8},
+    {n:'Normal right ventricle', c:'RV', P:25, r:30, h:4},
+    {n:'Pulmonary hypertension, unadapted RV', c:'RV', P:70, r:32, h:4}
+  ];
+
+  function makeChips(host, arr, onPick){
+    arr.forEach(function(s){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = s.n;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', function(){
+        [].forEach.call(host.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+        b.classList.add('on'); b.setAttribute('aria-pressed','true');
+        onPick(s);
+      });
+      host.appendChild(b);
+    });
+  }
+  makeChips(id('circChips'), CIRC, function(s){ sCO.value = s.co; sS.value = s.s; sP.value = s.p; circNote = s.note; draw(); });
+  makeChips(id('wallChips'), WALL, function(s){ setChamber(s.c); sPk.value = s.P; sR.value = s.r; sH.value = s.h; draw(); });
+
+  function setChamber(c){
+    chamber = c;
+    id('bLV').classList.toggle('on', c === 'LV'); id('bLV').setAttribute('aria-pressed', c === 'LV');
+    id('bRV').classList.toggle('on', c === 'RV'); id('bRV').setAttribute('aria-pressed', c === 'RV');
+  }
+  id('bLV').addEventListener('click', function(){ setChamber('LV'); sPk.value = 120; sR.value = 25; sH.value = 10; draw(); });
+  id('bRV').addEventListener('click', function(){ setChamber('RV'); sPk.value = 25; sR.value = 30; sH.value = 4; draw(); });
+
+  id('useP').addEventListener('click', function(){
+    var st = circState();
+    sPk.value = Math.round(chamber === 'LV' ? st.lvPk : st.rvPk);
+    draw();
+  });
+
+  function circState(){
+    var CO = parseFloat(sCO.value), SVR = SVRn * parseFloat(sS.value), PVR = PVRn * parseFloat(sP.value);
+    var dPs = CO * SVR, dPp = CO * PVR;
+    var MAP = dPs + RAP, mPAP = dPp + LAP;
+    return { CO:CO, SVR:SVR, PVR:PVR, dPs:dPs, dPp:dPp, MAP:MAP, mPAP:mPAP,
+      lvPk: MAP * 120 / 93, aoD: MAP * 80 / 93, rvPk: mPAP * 25 / 15, paD: mPAP * 10 / 15 };
+  }
+
+  function drawCirc(){
+    var s = circState();
+    id('vCO').textContent = f(s.CO) + ' L/min';
+    id('vS').textContent = f(s.SVR) + ' mmHg per L/min';
+    id('vP').textContent = f(s.PVR) + ' mmHg per L/min';
+
+    id('tPulmBed').textContent = 'R = ' + f(s.PVR) + '  (' + Math.round(s.PVR * 80) + ' dyn·s·cm⁻⁵)';
+    id('tSysBed').textContent = 'R = ' + f(s.SVR) + '  (' + Math.round(s.SVR * 80) + ' dyn·s·cm⁻⁵)';
+    id('tRA').textContent = 'mean ' + RAP + ' mmHg';
+    id('tLA').textContent = 'mean ' + LAP + ' mmHg';
+    id('tRV').textContent = Math.round(s.rvPk) + ' / 0–5';
+    id('tLV').textContent = Math.round(s.lvPk) + ' / 0–10';
+    id('tPA').textContent = 'PA ' + Math.round(s.rvPk) + '/' + Math.round(s.paD) + ' (mean ' + Math.round(s.mPAP) + ')';
+    id('tAO').textContent = 'Aorta ' + Math.round(s.lvPk) + '/' + Math.round(s.aoD) + ' (MAP ' + Math.round(s.MAP) + ')';
+    id('tFlow').textContent = 'Q = ' + f(s.CO) + ' L/min through both pumps';
+
+    id('oDPp').textContent = f(s.dPp, 1);
+    id('oDPs').textContent = Math.round(s.dPs);
+    id('oRat').textContent = f(s.SVR / s.PVR);
+
+    id('eqCirc').innerHTML =
+      'Systemic: &Delta;P = Q &times; R = <b class="num">' + f(s.CO) + '</b> &times; <b class="num">' + f(s.SVR) + '</b> = <b class="num">' + Math.round(s.dPs) + ' mmHg</b>, so MAP = &Delta;P + right atrial ' + RAP + ' = <b class="num">' + Math.round(s.MAP) + ' mmHg</b>.<br>' +
+      'Pulmonary: &Delta;P = <b class="num">' + f(s.CO) + '</b> &times; <b class="num">' + f(s.PVR) + '</b> = <b class="num">' + f(s.dPp) + ' mmHg</b>, so mean pulmonary artery = &Delta;P + left atrial ' + LAP + ' = <b class="num">' + Math.round(s.mPAP) + ' mmHg</b>.';
+
+    var v = id('vCirc'), cls = 'verdict', head, sub;
+    if(circNote){
+      cls += ' cool'; head = 'Same flow, different pressure';
+      sub = circNote;
+    } else if(s.SVR / s.PVR > 8 && s.SVR / s.PVR < 13){
+      cls += ' ok'; head = 'The normal tenfold split';
+      sub = 'Systemic resistance is ' + f(s.SVR / s.PVR) + ' times pulmonary, so the left ventricle needs about ' + f(s.dPs / s.dPp) + ' times the driving pressure to push the identical ' + f(s.CO) + ' L/min. Read Q = &Delta;P / R backwards: fix Q, lower R, and the required &Delta;P falls in proportion.';
+    } else if(s.mPAP > 25){
+      cls += ' bad'; head = 'Pulmonary pressures are no longer low';
+      sub = 'Mean pulmonary artery pressure is ' + Math.round(s.mPAP) + ' mmHg. Above about 25 mmHg the right ventricle is doing work it was not built for; a crescent-shaped 3 to 5 mm wall moves volume efficiently but generates pressure badly.';
+    } else if(s.MAP > 120){
+      cls += ' bad'; head = 'A left ventricle under pressure load';
+      sub = 'Mean arterial pressure is ' + Math.round(s.MAP) + ' mmHg and peak left ventricular pressure is ' + Math.round(s.lvPk) + ' mmHg &mdash; every beat, for years. Set the chamber below to Left ventricle and press the button to feel what that does to wall stress.';
+    } else if(s.MAP < 65){
+      cls += ' warn'; head = 'Perfusion pressure is falling';
+      sub = 'MAP is ' + Math.round(s.MAP) + ' mmHg. Flow is ' + f(s.CO) + ' L/min, which is not the problem &mdash; resistance is. MAP = CO &times; SVR, and resistance has fallen further than output has risen.';
+    } else {
+      cls += ''; head = 'Both pumps, one flow';
+      sub = 'Pulmonary resistance is ' + f(s.PVR) + ' and systemic is ' + f(s.SVR) + ', a ratio of ' + f(s.SVR / s.PVR) + '. Both ventricles move ' + f(s.CO) + ' L/min regardless.';
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function drawWall(){
+    var P = parseFloat(sPk.value), r = parseFloat(sR.value), h = parseFloat(sH.value);
+    id('vPk').textContent = Math.round(P) + ' mmHg';
+    id('vR').textContent = Math.round(r) + ' mm';
+    id('vH').textContent = f(h) + ' mm';
+
+    var T = P * r / (2 * h), idx = T / 150;
+    id('oT').textContent = Math.round(T);
+    id('oIdx').textContent = f(idx, 2);
+    id('oH').textContent = f(h);
+    id('barT').style.width = Math.min(100, idx / 3 * 100) + '%';
+    id('barT').style.background = idx > 1.6 ? 'var(--coral)' : (idx > 1.15 ? 'var(--gold)' : 'var(--green)');
+
+    var sc = 1.5, cy = 142;
+    var Rin = r * sc, Rout = (r + h) * sc;
+    id('cOuter').setAttribute('r', Rout);
+    id('cInner').setAttribute('r', Rin);
+    id('cInner2').setAttribute('r', Rin);
+    id('dimR').setAttribute('x2', 170 + Rin);
+    id('dimH').setAttribute('x1', 170 + Rin);
+    id('dimH').setAttribute('x2', 170 + Rout);
+    id('txtR').setAttribute('x', 170 + Rin / 2);
+    id('txtR').textContent = 'r ' + Math.round(r) + ' mm';
+    id('txtH').setAttribute('x', 170 + Rin + (Rout - Rin) / 2);
+    id('txtH').setAttribute('y', Rout > 90 ? 126 : 120);
+    id('txtH').textContent = 'h ' + f(h);
+    id('ringCap').textContent = (chamber === 'LV' ? 'Left ventricle' : 'Right ventricle') + ' in cross-section, drawn to scale (1 mm = 1.5 px)';
+
+    id('eqWall').innerHTML =
+      'T = P &times; r / (2h) = <b class="num">' + Math.round(P) + '</b> &times; <b class="num">' + Math.round(r) + '</b> / (2 &times; <b class="num">' + f(h) + '</b>) = <b class="num">' + Math.round(T) + ' mmHg&middot;mm</b><br>' +
+      'A normal left ventricle at 120 mmHg with r = 25 mm and h = 10 mm sits at 150. This chamber is at <b class="num">' + f(idx, 2) + ' &times;</b> that, so each sarcomere bears ' + (idx >= 1 ? f((idx - 1) * 100, 0) + ' percent more' : f((1 - idx) * 100, 0) + ' percent less') + ' load, and myocardial oxygen consumption tracks it.';
+
+    var normalH = chamber === 'LV' ? [8, 12] : [3, 5];
+    var v = id('vWall'), cls = 'verdict', head, sub;
+    if(idx > 1.6){
+      cls += ' bad'; head = 'Wall stress is high';
+      sub = 'At ' + Math.round(T) + ' mmHg&middot;mm every fiber is overloaded and oxygen demand climbs with it. Two ways out: raise h (add sarcomeres in parallel &mdash; concentric hypertrophy) or lower r or P. Try dragging thickness up and watch the stress fall in exact proportion.';
+    } else if(r > 38){
+      cls += ' warn'; head = 'A dilated chamber is a disadvantaged chamber';
+      sub = 'Radius is ' + Math.round(r) + ' mm. Because r sits in the numerator, dilation alone raises wall stress even when the muscle itself is intact and the pressure is normal. That is the geometry tax on a dilated heart.';
+    } else if(h > normalH[1] + 2){
+      cls += ' cool'; head = 'Thick wall, normalized stress';
+      sub = 'Stress index ' + f(idx, 2) + ' &mdash; the hypertrophy has done its job on paper. The cost is diastolic: a thick, stiff wall fills poorly, so filling pressures climb even while systolic function looks preserved.';
+    } else if(h < normalH[0]){
+      cls += ' warn'; head = 'Wall is thinner than normal for this chamber';
+      sub = 'Normal free wall here is ' + normalH[0] + ' to ' + normalH[1] + ' mm; you have set ' + f(h) + '. Thin walls carry more stress per fiber at any given pressure.';
+    } else {
+      cls += ' ok'; head = 'Wall stress in the normal range';
+      sub = 'P = ' + Math.round(P) + ' mmHg, r = ' + Math.round(r) + ' mm and h = ' + f(h) + ' mm give ' + Math.round(T) + ' mmHg&middot;mm. This is why the left ventricle is 8 to 12 mm thick and the right only 3 to 5: the left generates roughly five times the pressure for the same flow.';
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function draw(){ drawCirc(); drawWall(); }
+
+  [sCO, sS, sP].forEach(function(el){
+    el.addEventListener('input', function(){
+      circNote = '';
+      [].forEach.call(id('circChips').children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      draw();
+    });
+  });
+  [sPk, sR, sH].forEach(function(el){ el.addEventListener('input', draw); });
+  draw();
+})();
+</script>
+</body>
+</html>

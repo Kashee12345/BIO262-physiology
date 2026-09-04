@@ -1,0 +1,20 @@
+# never let the instructor exam bank near this repo
+**/BIO262-INSTRUCTOR-ONLY-DO-NOT-PUBLISH/
+bank.js
+exam-prep.html
+instructor.html
+*.xlsx
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# superseded duplicate, kept locally only
+modules/_superseded/
+
+# local one-click publish helper, not part of the site
+publish.bat
+publish-now.bat

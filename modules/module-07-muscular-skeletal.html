@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 7 &middot; Muscular &amp; Skeletal Systems &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 7 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Muscular &amp; Skeletal Systems</h1>
+    <p class="sub">Bone is living tissue that answers to hormones. Muscle is a machine that runs on calcium.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Describe bone as living tissue, and name the two cells that rebuild it</li>
+      <li>Explain how the skeleton protects the calcium level in blood</li>
+      <li>Compare skeletal, cardiac, and smooth muscle</li>
+      <li>Walk through how a muscle shortens, and the roles of calcium and ATP</li>
+      <li>Explain how one muscle can make a weak twitch or a strong steady pull</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>Bone is not scaffolding</h2>
+  <p class="lead">It is rebuilt all the time, and it is the body's calcium bank.</p>
+  <p>Two cells run a permanent renovation. <span class="keyword" title="Bone-building cells">Osteoblasts</span> build bone. <span class="keyword" title="Bone-dissolving cells that release calcium into blood">Osteoclasts</span> break it down.</p>
+  <p>In a healthy adult the two roughly balance. You replace much of your skeleton over about ten years.</p>
+  <p>Tip the balance and the bone changes. Weight-bearing exercise favors the builders, so bone thickens. Bed rest favors the breakers, so bone thins. Aging and hormone loss do the same, and that is how osteoporosis develops.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>Bone is less like a steel beam and more like a road under constant repair. Its strength depends on which crew is ahead.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>The calcium loop, and why bone loses</h2>
+  <p class="lead">Blood calcium is protected more fiercely than the skeleton is.</p>
+  <ol class="steps">
+    <li><b>Blood calcium drops.</b> The parathyroid glands notice.</li>
+    <li><b>Parathyroid hormone is released.</b> This is the calcium-raising signal.</li>
+    <li><b>Three things act.</b> Osteoclasts pull calcium out of bone. The kidney keeps calcium out of urine. The gut absorbs more, with help from vitamin D.</li>
+    <li><b>Blood calcium returns to normal</b> &mdash; but bone was spent to do it.</li>
+  </ol>
+  <p>That priority is not an accident. Calcium is needed for every nerve signal, every heartbeat, and every muscle contraction.</p>
+  <p>The body will drain the skeleton for years rather than let blood calcium drift, because a wrong calcium level stops the heart in minutes.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>This is why long-term vitamin D deficiency and chronic kidney disease damage bone. Neither starts as a bone disease. Both break the calcium loop, and the skeleton pays.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>Three muscles, three different jobs</h2>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th></th><th>Skeletal</th><th>Cardiac</th><th>Smooth</th></tr>
+    <tr><td><b>Control</b></td><td>You choose</td><td>Automatic</td><td>Automatic</td></tr>
+    <tr><td><b>Look</b></td><td>Striped, many nuclei</td><td>Striped, branched</td><td>Not striped, spindle shaped</td></tr>
+    <tr><td><b>Fires on its own?</b></td><td>No, it needs a nerve</td><td>Yes, it has its own pacemaker</td><td>Some of it does</td></tr>
+    <tr><td><b>Where</b></td><td>Attached to bones</td><td>Heart wall only</td><td>Vessels, gut, airways, bladder, uterus</td></tr>
+  </table>
+  </div>
+  <p>Cardiac muscle is the one to notice. It makes its own rhythm, and its cells are joined electrically, so the whole chamber squeezes as one unit whether or not a nerve says so. That is why a transplanted heart still beats.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Sliding filaments &mdash; where force comes from</h2>
+  <p class="lead">Drag the slider and watch force change with overlap alone.</p>
+  <div class="demo">
+    <div class="dh">Length&ndash;tension: overlap is everything</div>
+    <div class="stage" style="padding:8px;">
+      <svg id="sarc" viewBox="0 0 520 150" style="width:100%;height:auto;display:block;">
+        <line id="zl" x1="60" y1="20" x2="60" y2="120" stroke="#5e1f24" stroke-width="5"></line>
+        <line id="zr" x1="460" y1="20" x2="460" y2="120" stroke="#5e1f24" stroke-width="5"></line>
+        <rect x="200" y="58" width="120" height="24" rx="6" fill="#8a2f36"></rect>
+        <text x="228" y="105" font-size="11" fill="#8a2f36" font-weight="700">MYOSIN (thick)</text>
+        <rect id="tl" x="60" y="64" width="140" height="12" rx="5" fill="#c99a2e"></rect>
+        <rect id="tr" x="320" y="64" width="140" height="12" rx="5" fill="#c99a2e"></rect>
+        <text x="62" y="38" font-size="11" fill="#8a6a1c" font-weight="700">ACTIN (thin)</text>
+        <text id="zt" x="30" y="138" font-size="11" fill="#5e1f24" font-weight="700">Z line</text>
+      </svg>
+    </div>
+    <div class="ctrls">
+      <label for="len">Sarcomere length</label>
+      <input type="range" id="len" min="0" max="100" step="1" value="45">
+      <span class="readout" id="mout"></span>
+    </div>
+    <p id="mnote" style="margin:12px 0 0;font-size:15px;color:#7a6f63;"></p>
+  </div>
+  <p>Muscle does not shorten by squeezing. Thick filaments grab thin filaments, pull them past, let go, and grab again.</p>
+  <p>Nothing changes length. The filaments only slide, and the ends of the unit are pulled closer together.</p>
+  <ol class="steps">
+    <li><b>A nerve signal arrives</b> and releases acetylcholine onto the muscle.</li>
+    <li><b>The muscle fiber depolarizes</b>, and the signal spreads deep inside it.</li>
+    <li><b>Calcium is released</b> from storage inside the cell. This is the trigger.</li>
+    <li><b>Calcium uncovers the binding sites</b> on the thin filament, so the heads can attach.</li>
+    <li><b>ATP powers the stroke.</b> A second ATP is needed to <em>let go</em> of each head.</li>
+    <li><b>Calcium is pumped back</b> into storage, the sites are covered again, and the muscle relaxes.</li>
+  </ol>
+  <div class="note"><p><b>Two ATP facts worth keeping.</b> Relaxing costs energy too, not just contracting. Without ATP the heads stay stuck, and that is exactly what rigor mortis is. And pumping calcium back into storage is itself active transport, so a tired muscle relaxes slowly as well as pulling weakly.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>From a twitch to a useful pull</h2>
+  <p class="lead">One signal produces almost nothing. Real movement is built by repeating.</p>
+  <p>Stimulate a fiber once and you get a <b>twitch</b>.</p>
+  <p>Stimulate it again before it fully relaxes, and the second contraction builds on the first. That is <b>summation</b>.</p>
+  <p>Stimulate fast enough and the twitches blend into one smooth, steady pull. That is <b>tetanus</b>, and everything you do with your hands is tetanus.</p>
+  <p>Strength is also set by <b>how many motor units</b> are switched on. Lifting a pen calls on a few. Lifting a chair calls on many.</p>
+  <p>Between speed and recruitment, one nervous system can drive the same muscle across a huge range of force.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>A twitch is one clap. Tetanus is applause, with claps so close together that you hear one steady sound.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on the nerve-to-muscle junction and on the length and force curve &mdash; <a href="../labs.html">Muscle &amp; Bone benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "Blood calcium falls. What happens next?",
+    "a": ["Parathyroid hormone rises, and osteoclasts release calcium from bone","Parathyroid hormone falls, and bone takes in more calcium","Osteoblasts release calcium into blood","The kidney puts more calcium into urine"],
+    "c": 0,
+    "fb": [
+      "Correct. Bone, kidney, and gut all act to raise blood calcium, and bone pays for it.",
+      "Falling calcium raises parathyroid hormone. It does not lower it.",
+      "Osteoblasts build bone. Osteoclasts are the ones that release calcium.",
+      "The kidney holds calcium back when blood levels are low."
+    ]
+  },
+  {
+    "q": "Which feature belongs only to cardiac muscle?",
+    "a": ["It is striped","You control it voluntarily","It makes its own rhythm and its cells contract as one unit","It contains actin and myosin"],
+    "c": 2,
+    "fb": [
+      "Skeletal muscle is striped too.",
+      "Cardiac muscle is not under voluntary control.",
+      "Right. Its own pacemaker and joined cells are why a transplanted heart beats.",
+      "All three muscle types use actin and myosin."
+    ]
+  },
+  {
+    "q": "What is the direct trigger that lets the filaments grab each other?",
+    "a": ["Acetylcholine landing on the muscle membrane","A rise in calcium inside the muscle fiber","ATP binding the myosin head","Sodium entering the fiber"],
+    "c": 1,
+    "fb": [
+      "Acetylcholine starts the sequence, but it acts at the membrane, not on the filaments.",
+      "Correct. Calcium uncovers the binding sites, and nothing can attach until it does.",
+      "ATP powers the stroke and the release, but it does not uncover the site.",
+      "Sodium carries the electrical signal. Calcium is what links it to contraction."
+    ]
+  },
+  {
+    "q": "Why does rigor mortis happen?",
+    "a": ["Calcium is pumped away permanently","There is no ATP left to release the heads from the thin filament","The muscle runs out of acetylcholine","The filaments shorten and cannot lengthen again"],
+    "c": 1,
+    "fb": [
+      "Calcium actually leaks in, but the stiffness comes from heads that are stuck.",
+      "Right. Letting go costs ATP, so with no ATP the grips stay locked.",
+      "Acetylcholine is not needed to hold an existing grip.",
+      "Filaments never change length. They only slide."
+    ]
+  },
+  {
+    "q": "How does the nervous system make one muscle produce a smooth, strong pull instead of a twitch?",
+    "a": ["It sends a bigger action potential","It stimulates fast enough that twitches blend, and switches on more motor units","It moves calcium from the blood into the muscle","It stretches the muscle first"],
+    "c": 1,
+    "fb": [
+      "Action potentials are all-or-none. They do not come in bigger sizes.",
+      "Correct. Speed plus recruitment covers a huge range of force.",
+      "The calcium that triggers contraction comes from inside the cell, not from blood.",
+      "Over-stretching reduces overlap and weakens the pull."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var sl=document.getElementById("len"), out=document.getElementById("mout"), note=document.getElementById("mnote");
+var zl=document.getElementById("zl"), zr=document.getElementById("zr"),
+    tl=document.getElementById("tl"), tr=document.getElementById("tr"), zt=document.getElementById("zt");
+var MYO_L=200, MYO_R=320, THIN=140;
+function draw(){
+  var v=+sl.value, half=90+v*1.7;            // half sarcomere length
+  var lx=260-half, rx=260+half;
+  zl.setAttribute("x1",lx); zl.setAttribute("x2",lx);
+  zr.setAttribute("x1",rx); zr.setAttribute("x2",rx);
+  zt.setAttribute("x", Math.max(4,lx-30));
+  tl.setAttribute("x",lx); tl.setAttribute("width",THIN);
+  tr.setAttribute("x",rx-THIN); tr.setAttribute("width",THIN);
+  var ol = Math.max(0, Math.min(60, (lx+THIN) - MYO_L));   // overlap on each side
+  var force, name, col, txt;
+  if(v<18){ force=Math.round(40+v*2); name="Too short"; col="#8a2f36";
+    txt="The sarcomere is over-shortened. Thin filaments from opposite ends collide and the thick filament is jammed against the Z lines, so force falls even though overlap is high."; }
+  else if(v<=62){ force=Math.round(72+(1-Math.abs(v-42)/26)*28); name="Optimal overlap"; col="#3f6b4e";
+    txt="Maximum force. Every myosin head has thin filament within reach, and nothing is in the way. This is the length a muscle naturally rests at &mdash; the body keeps it near its best working point."; }
+  else { force=Math.max(0,Math.round(100-(v-62)*2.6)); name="Over-stretched"; col="#8a2f36";
+    txt="The filaments have been pulled apart. Fewer heads can reach actin at all, so fewer cross-bridges form and force drops &mdash; stretch far enough and the muscle cannot generate any force, however hard it is stimulated."; }
+  out.innerHTML="<span style='color:"+col+"'>"+name+" &mdash; force "+force+"%</span>";
+  note.innerHTML=txt;
+}
+sl.addEventListener("input",draw); draw();
+
+})();
+</script>
+</body>
+</html>

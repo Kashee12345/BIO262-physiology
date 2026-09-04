@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Slow Waves, Spike Potentials and the Motor Patterns of the Gut</title>
+<meta name="description" content="Pick a gut region, add excitatory or inhibitory drive to the smooth-muscle baseline, and watch spike potentials appear on the slow wave and turn a fixed rhythm into force and flow.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:12px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.neg.on{background:var(--purple);border-color:var(--purple);}
+.labs{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.3px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.5px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;font-weight:800;color:var(--teal-dk);}
+.seg2{display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin:4px 0 2px;}
+.seg2 button{flex:1 1 44%;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:11px 6px;cursor:pointer;font-family:var(--sans);line-height:1.2;}
+.seg2 button small{display:block;font-weight:500;font-size:10px;color:var(--muted);margin-top:2px;}
+.seg2 button.on{background:var(--teal);color:#fff;} .seg2 button.on small{color:rgba(255,255,255,.9);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);}
+.btn.on{background:var(--coral);color:#fff;border-color:var(--coral);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch13.html">&larr; Module 13</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 13</div>
+  <h1>Slow Waves, Spikes and the Motor Patterns of the Gut</h1>
+  <div class="intro">Interstitial cells of Cajal oscillate the smooth-muscle membrane between roughly &minus;60 and &minus;40 mV, but a slow wave on its own moves nothing. Force appears only when a wave peak is pushed past threshold and spike potentials fire on top of it. Shift the baseline with excitatory and inhibitory input below, count the spikes, and see the same fixed rhythm produce anything from silence to a full propulsive sweep.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>1 &middot; Pick a region &mdash; its pacemaker frequency is fixed</h2>
+      <div class="seg2" id="segReg"></div>
+      <div class="hint">The interstitial cells of Cajal set the <b>basic electrical rhythm</b> of each region and nothing a nerve does can change that number. What nerves and hormones change is how far the baseline sits from threshold.</div>
+
+      <div class="lbl">Excitatory and inhibitory input (stack them)</div>
+      <div class="chips" id="chipsMod"></div>
+
+      <div class="sl"><label for="sDrive">Extra depolarization of the baseline <span class="v" id="vDrive">0.0 mV</span></label>
+        <input type="range" id="sDrive" min="-100" max="100" value="0" step="1" aria-label="Extra depolarization of the smooth muscle baseline, in millivolts"></div>
+
+      <div class="row">
+        <button class="btn" id="bIcc" aria-pressed="false">Ablate the interstitial cells of Cajal</button>
+        <button class="btn" id="bReset">Reset</button>
+      </div>
+      <div class="eq" id="eqDrive"></div>
+    </div>
+
+    <div class="card">
+      <h2>2 &middot; Pick the motor pattern and the downstream resistance</h2>
+      <div class="seg2" id="segPat"></div>
+      <div class="sl"><label for="sR">Downstream sphincter tone <span class="v" id="vR">R = 1.00</span></label>
+        <input type="range" id="sR" min="0" max="100" value="30" step="1" aria-label="Downstream sphincter tone, which sets resistance to flow"></div>
+      <div class="chips" id="chipsR"></div>
+      <div class="eq" id="eqQ"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The membrane potential, live</h2>
+      <canvas id="cvTrace" width="660" height="300" role="img" aria-label="Live trace of smooth muscle membrane potential showing slow waves oscillating between about minus sixty and minus forty millivolts, a dashed threshold line at minus forty millivolts, and spike potentials riding on any wave peak that crosses it"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Slow-wave rate</div><div class="v" id="oF">3.0</div><div class="u">per minute &middot; fixed</div></div>
+        <div class="lab"><div class="k">Peak potential</div><div class="v" id="oPk">&minus;40</div><div class="u">mV &middot; threshold &minus;40</div></div>
+        <div class="lab"><div class="k">Spikes per wave</div><div class="v" id="oSp">0</div><div class="u">Ca2+ entry</div></div>
+        <div class="lab"><div class="k">Contraction force</div><div class="v" id="oFo">0</div><div class="u">% of maximum</div></div>
+      </div>
+      <div class="verdict" id="vTrace"></div>
+    </div>
+
+    <div class="card">
+      <h2>What that does to the contents</h2>
+      <canvas id="cvTube" width="660" height="196" role="img" aria-label="Animated cross-section of a length of gut wall with particles of chyme inside, showing rings of circular muscle contracting according to the selected motor pattern and moving or mixing the contents"></canvas>
+      <div class="hint" id="patTxt"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){return CS.getPropertyValue('--'+n).trim();}
+var TEAL=C('teal'),TDK=C('teal-dk'),CORAL=C('coral'),GOLD=C('gold'),GREEN=C('green'),BLUE=C('blue'),PURPLE=C('purple'),LINE=C('line'),MUTED=C('muted'),SOFT=C('soft'),CARD=C('card');
+
+var REG={
+  stomach:{n:'Stomach',sub:'body to antrum',f:3,pat:'Mixing waves, retropulsion',tr:'Solids: half emptied in 2–3 h'},
+  duodenum:{n:'Duodenum',sub:'12 per minute',f:12,pat:'Segmentation',tr:'—'},
+  ileum:{n:'Ileum',sub:'8–9 per minute',f:8.5,pat:'Segmentation, then peristalsis',tr:'Small bowel total 3–5 h'},
+  colon:{n:'Colon',sub:'2–8, irregular',f:4,pat:'Haustration, mass movements',tr:'12–48 h'}
+};
+var MODS=[
+  {id:'ach',t:'Acetylcholine (vagal)',v:4,neg:false},
+  {id:'gas',t:'Gastrin',v:2.5,neg:false},
+  {id:'str',t:'Stretch / distension',v:3,neg:false},
+  {id:'nor',t:'Norepinephrine (sympathetic)',v:-5,neg:true},
+  {id:'vip',t:'VIP + nitric oxide',v:-6,neg:true}
+];
+var RCHIPS=[
+  {t:'Sphincter relaxes ahead of the wave (NO, VIP)',r:8},
+  {t:'Normal resting tone',r:30},
+  {t:'Achalasia: inhibitory neurons lost',r:90}
+];
+var PATS={
+  peristalsis:{n:'Peristalsis',sub:'propulsion'},
+  segmentation:{n:'Segmentation',sub:'mixing'},
+  mmc:{n:'Migrating motor complex',sub:'fasting housekeeper'}
+};
+var PATTXT={
+ peristalsis:'<b>Peristalsis is a reflex, not a squeeze.</b> Distension activates intrinsic primary afferents (partly through serotonin from enterochromaffin cells). An ascending pathway releases acetylcholine and substance P to contract the circular muscle <b>oral</b> to the bolus; a descending pathway releases nitric oxide and VIP to relax it <b>aboral</b>. Contraction behind, relaxation ahead — a pressure gradient, and the contents move. This is the law of the intestine and it belongs entirely to the enteric circuitry: a transplanted, completely denervated intestine still propels.',
+ segmentation:'<b>Segmentation mixes; it does not transport.</b> Closely spaced rings of circular muscle contract and relax alternately at the local slow-wave frequency — about 12 per minute in the duodenum, 8–9 in the ileum — chopping chyme and shuttling it back and forth with only a gentle net drift toward the cecum. Its job is to drive chyme into the unstirred water layer over the brush border, which is where the real absorption bottleneck sits. It dominates during and after a meal.',
+ mmc:'<b>The housekeeper wave.</b> Every 90–120 minutes of fasting, cyclic surges of <b>motilin</b> launch a band of strong contraction that sweeps from the stomach to the terminal ileum over about 90 minutes, clearing residue, indigestible particles and bacteria distally. Eating abolishes it at once. When it fails — some neuropathies, some post-surgical states — bacteria accumulate in the small bowel and cause bloating and malabsorption.'
+};
+
+var region='stomach', pattern='peristalsis', icc=true, extra=0;
+var modOn={};
+
+var elSegReg=document.getElementById('segReg'), elSegPat=document.getElementById('segPat');
+var elChips=document.getElementById('chipsMod'), elRChips=document.getElementById('chipsR');
+var sDrive=document.getElementById('sDrive'), vDrive=document.getElementById('vDrive');
+var sR=document.getElementById('sR'), vR=document.getElementById('vR');
+var bIcc=document.getElementById('bIcc'), bReset=document.getElementById('bReset');
+var eqDrive=document.getElementById('eqDrive'), eqQ=document.getElementById('eqQ');
+var patTxt=document.getElementById('patTxt'), vTrace=document.getElementById('vTrace');
+
+/* ---------- build controls ---------- */
+Object.keys(REG).forEach(function(k){
+  var b=document.createElement('button');
+  b.type='button'; b.innerHTML=REG[k].n+'<small>'+REG[k].sub+'</small>';
+  b.setAttribute('aria-pressed', k===region?'true':'false');
+  if(k===region) b.className='on';
+  b.addEventListener('click',function(){region=k;syncSeg();update();});
+  b.dataset.k=k; elSegReg.appendChild(b);
+});
+Object.keys(PATS).forEach(function(k){
+  var b=document.createElement('button');
+  b.type='button'; b.innerHTML=PATS[k].n+'<small>'+PATS[k].sub+'</small>';
+  b.setAttribute('aria-pressed', k===pattern?'true':'false');
+  if(k===pattern) b.className='on';
+  b.addEventListener('click',function(){pattern=k;syncSeg();update();});
+  b.dataset.k=k; elSegPat.appendChild(b);
+});
+MODS.forEach(function(m){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(m.neg?' neg':'');
+  b.textContent=m.t+' '+(m.v>0?'+':'')+m.v+' mV';
+  b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',function(){
+    modOn[m.id]=!modOn[m.id];
+    b.classList.toggle('on',!!modOn[m.id]);
+    b.setAttribute('aria-pressed',modOn[m.id]?'true':'false');
+    update();
+  });
+  elChips.appendChild(b);
+});
+RCHIPS.forEach(function(c){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'; b.textContent=c.t;
+  b.addEventListener('click',function(){ sR.value=c.r; update(); });
+  elRChips.appendChild(b);
+});
+function syncSeg(){
+  [].forEach.call(elSegReg.children,function(b){var on=b.dataset.k===region;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');});
+  [].forEach.call(elSegPat.children,function(b){var on=b.dataset.k===pattern;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false');});
+}
+sDrive.addEventListener('input',update);
+sR.addEventListener('input',update);
+bIcc.addEventListener('click',function(){
+  icc=!icc; bIcc.classList.toggle('on',!icc); bIcc.setAttribute('aria-pressed',icc?'false':'true');
+  bIcc.textContent = icc ? 'Ablate the interstitial cells of Cajal' : 'Restore the interstitial cells of Cajal';
+  update();
+});
+bReset.addEventListener('click',function(){
+  modOn={}; [].forEach.call(elChips.children,function(b){b.classList.remove('on');b.setAttribute('aria-pressed','false');});
+  sDrive.value=0; sR.value=30; if(!icc){bIcc.click();} update();
+});
+
+/* ---------- model ---------- */
+var S={};
+function waveW(u){ return Math.pow(0.5*(1-Math.cos(2*Math.PI*u)),0.55); }
+
+function compute(){
+  var mv=0; MODS.forEach(function(m){ if(modOn[m.id]) mv+=m.v; });
+  extra=parseFloat(sDrive.value)/10;
+  var drive=Math.max(-18,Math.min(18,mv+extra));
+  var f=REG[region].f;
+  var peak=-40+drive, base=-60+drive;
+
+  var frac=0, u1=0, u2=0;
+  if(icc && drive>0){
+    var wTh=1-drive/20;
+    if(wTh<=0){ frac=1; u1=0; u2=1; }
+    else{
+      var z=Math.pow(wTh,1/0.55);
+      var arg=1-2*z;
+      if(arg<-1) arg=-1; if(arg>1) arg=1;
+      u1=Math.acos(arg)/(2*Math.PI); u2=1-u1; frac=Math.max(0,u2-u1);
+    }
+  }
+  var spikes = icc ? Math.min(10,Math.round(frac*14)) : 0;
+  var tonic=false;
+  if(!icc && drive>=20){ tonic=true; }
+  if(!icc && base>-40){ tonic=true; }
+  var force = spikes>0 ? 100*Math.pow(spikes/10,0.8) : (tonic?55:0);
+
+  var Rt=parseFloat(sR.value)/10;               /* 0 .. 10 */
+  var R=0.35*Math.exp(0.401*Rt);                /* 3.0 -> 1.00 */
+  var dP=force*0.6;                             /* up to 60 mmHg */
+  var Q=dP/R;
+  var propulsive = (pattern==='peristalsis'||pattern==='mmc') && icc;
+
+  S={drive:drive,mv:mv,f:f,peak:peak,base:base,frac:frac,u1:u1,u2:u2,spikes:spikes,
+     force:force,R:R,dP:dP,Q:Q,tonic:tonic,propulsive:propulsive};
+}
+
+function update(){
+  compute();
+  vDrive.textContent=(extra>0?'+':'')+extra.toFixed(1)+' mV';
+  vR.textContent='R = '+S.R.toFixed(2);
+  document.getElementById('oF').textContent = icc ? S.f.toFixed(1) : '0';
+  document.getElementById('oPk').textContent = icc ? S.peak.toFixed(0) : S.base.toFixed(0);
+  document.getElementById('oSp').textContent = S.spikes;
+  document.getElementById('oFo').textContent = Math.round(S.force);
+
+  eqDrive.innerHTML='Baseline <b class="num">'+S.base.toFixed(1)+' mV</b> &rarr; slow-wave peak <b class="num">'+S.peak.toFixed(1)+' mV</b> against a threshold of <b>&minus;40 mV</b>. '+
+    'Modulator sum <span class="num">'+(S.mv>0?'+':'')+S.mv.toFixed(1)+'</span> mV, manual <span class="num">'+(extra>0?'+':'')+extra.toFixed(1)+'</span> mV.<br>'+
+    'Force = f(spikes per wave) because each spike opens voltage-gated Ca2+ channels, and Ca2+&ndash;calmodulin activates myosin light-chain kinase.';
+
+  eqQ.innerHTML='<b>Q = &Delta;P / R.</b> Contraction supplies &Delta;P = <span class="num">'+S.dP.toFixed(0)+' mmHg</span>; the downstream sphincter and luminal viscosity supply R = <span class="num">'+S.R.toFixed(2)+'</span> (normal 1.00). '+
+    'Flow index Q = <span class="num">'+S.Q.toFixed(0)+'</span> (normal working range about 30–50).' +
+    (S.R>4 ? '<br><b>Resistance is the problem, not the pump.</b> A strong contraction against a sphincter that will not relax is achalasia: &Delta;P is high, Q is near zero, and material stacks up above the obstruction.' : '');
+
+  var v=vTrace, cls='verdict';
+  if(!icc){
+    cls+=' bad';
+    v.innerHTML='No pacemaker, no rhythm.'+(S.tonic?'<small>Drive alone has depolarized the muscle past threshold, so it contracts — but tonically and without timing. Coupling through gap junctions spreads the depolarization; it does not generate it. Rhythm is a property of the interstitial cells of Cajal, and nerves cannot substitute for it.</small>':'<small>The trace is flat. Gap junctions still couple the cells into a functional syncytium, but a syncytium with no pacemaker has nothing to spread. Frequency has gone to zero and so has coordinated propulsion.</small>');
+  } else if(S.spikes===0){
+    cls+=' warn';
+    v.innerHTML='Rhythm without force.<small>Slow waves are running at '+S.f.toFixed(1)+' per minute and peaking at '+S.peak.toFixed(1)+' mV — still at or below the &minus;40 mV threshold, so no voltage-gated Ca2+ channels open. Slow waves are <b>permissive</b>: they set the maximum possible frequency and the timing window, not the force. Add excitatory input to push the peak above threshold.</small>';
+  } else if(S.spikes<=4){
+    cls+=' ';
+    v.innerHTML=S.spikes+' spikes per wave — weak contractions at '+S.f.toFixed(1)+' per minute.<small>Only the tip of each slow wave clears threshold, so calcium entry is brief. Notice the rate has not changed: adding acetylcholine or gastrin makes contractions <b>stronger</b>, never faster than the pacemaker allows.</small>';
+  } else {
+    cls+=' ok';
+    v.innerHTML=S.spikes+' spikes per wave — strong contractions at '+S.f.toFixed(1)+' per minute.<small>The plateau of every wave now sits well above threshold. Force has risen to '+Math.round(S.force)+' percent of maximum while the frequency is still pinned at the pacemaker rate. Frequency is fixed by the ICC; amplitude is modulated by nerves and hormones.</small>';
+  }
+  v.className=cls;
+
+  var extraTxt='';
+  if(pattern==='mmc') extraTxt=' <b>Regional note:</b> the complex starts in the stomach and dies out at the terminal ileum; transit for the whole small bowel is 3–5 hours.';
+  if(pattern==='segmentation') extraTxt=' <b>Regional note:</b> '+REG[region].n.toLowerCase()+' — '+REG[region].pat.toLowerCase()+'; typical transit '+REG[region].tr+'.';
+  if(pattern==='peristalsis') extraTxt=' <b>Not gravity.</b> An astronaut in free fall and a person hanging upside down both swallow normally, because the bolus is pushed by a traveling pressure wave with a relaxed, low-resistance segment in front of it.';
+  patTxt.innerHTML=PATTXT[pattern]+extraTxt;
+}
+
+/* ---------- trace canvas ---------- */
+var cvT=document.getElementById('cvTrace'), ctxT=cvT.getContext('2d');
+function drawTrace(now){
+  var W=cvT.width,H=cvT.height,padL=52,padR=14,padT=16,padB=30;
+  var x0=padL,x1=W-padR,y0=padT,y1=H-padB;
+  ctxT.clearRect(0,0,W,H);
+  ctxT.fillStyle=CARD; ctxT.fillRect(0,0,W,H);
+  function vy(v){ return y1-(v+80)/75*(y1-y0); }
+  ctxT.font='11px Inter, sans-serif'; ctxT.textBaseline='middle';
+  [-70,-60,-50,-40,-30,-20].forEach(function(v){
+    ctxT.strokeStyle=LINE; ctxT.lineWidth=1; ctxT.beginPath();
+    ctxT.moveTo(x0,vy(v)); ctxT.lineTo(x1,vy(v)); ctxT.stroke();
+    ctxT.fillStyle=MUTED; ctxT.textAlign='right'; ctxT.fillText(v+' mV',x0-7,vy(v));
+  });
+  /* threshold */
+  ctxT.strokeStyle=GOLD; ctxT.lineWidth=2; ctxT.setLineDash([6,5]);
+  ctxT.beginPath(); ctxT.moveTo(x0,vy(-40)); ctxT.lineTo(x1,vy(-40)); ctxT.stroke();
+  ctxT.setLineDash([]);
+  ctxT.fillStyle=GOLD; ctxT.textAlign='left'; ctxT.font='700 11px Inter, sans-serif';
+  ctxT.fillText('threshold −40 mV',x0+6,vy(-40)-11);
+
+  var cycles=4, f=S.f, ph=now*f/60;
+  ctxT.lineWidth=2.4; ctxT.strokeStyle=TEAL; ctxT.beginPath();
+  for(var px=0;px<=(x1-x0);px++){
+    var p=ph-cycles*(1-px/(x1-x0));
+    var u=p-Math.floor(p);
+    var V;
+    if(!icc){ V=S.base; }
+    else{
+      var w=waveW(u); V=-60+S.drive+20*w;
+      if(S.spikes>0 && u>S.u1 && u<S.u2){
+        var s=(u-S.u1)/(S.u2-S.u1);
+        var k=Math.floor(s*S.spikes), sf=s*S.spikes-k;
+        V+=17*Math.exp(-Math.pow((sf-0.28)/0.11,2));
+      }
+    }
+    if(V>-8) V=-8;
+    if(px===0) ctxT.moveTo(x0+px,vy(V)); else ctxT.lineTo(x0+px,vy(V));
+  }
+  ctxT.stroke();
+  /* shade above-threshold windows */
+  if(icc && S.spikes>0){
+    ctxT.fillStyle='rgba(0,0,0,0.045)';
+    for(var c=-cycles;c<=1;c++){
+      var pStart=Math.floor(ph)+c+S.u1, pEnd=Math.floor(ph)+c+S.u2;
+      var xa=x0+(1-(ph-pStart)/cycles)*(x1-x0), xb=x0+(1-(ph-pEnd)/cycles)*(x1-x0);
+      if(xb<x0||xa>x1) continue;
+      xa=Math.max(xa,x0); xb=Math.min(xb,x1);
+      ctxT.fillRect(xa,y0,xb-xa,y1-y0);
+    }
+  }
+  ctxT.fillStyle=MUTED; ctxT.textAlign='center'; ctxT.font='11px Inter, sans-serif';
+  ctxT.fillText(icc? (cycles+' slow waves — '+(cycles*60/f).toFixed(0)+' seconds of real time') : 'pacemaker ablated — no basic electrical rhythm', (x0+x1)/2, H-11);
+  /* force bar */
+  var bw=(x1-x0)*S.force/100;
+  ctxT.fillStyle=LINE; ctxT.fillRect(x0,y0-9,x1-x0,5);
+  ctxT.fillStyle=S.force>0?(S.spikes>0?GREEN:CORAL):LINE; ctxT.fillRect(x0,y0-9,bw,5);
+}
+
+/* ---------- tube canvas ---------- */
+var cvB=document.getElementById('cvTube'), ctxB=cvB.getContext('2d');
+var parts=[];
+(function(){ for(var i=0;i<80;i++) parts.push({x:Math.random()*660,y:(Math.random()-0.5)*62,r:2+Math.random()*3.2}); })();
+function conAt(x,t,xc){
+  var W=cvB.width;
+  if(pattern==='segmentation'){
+    var s=0, sf=S.f/60;
+    for(var i=0;i<7;i++){
+      var xi=(i+0.5)/7*W;
+      var a=0.5+0.5*Math.cos(2*Math.PI*t*sf+i*Math.PI);
+      s=Math.max(s,a*Math.exp(-Math.pow((x-xi)/34,2)));
+    }
+    return s;
+  }
+  if(pattern==='mmc') return Math.exp(-Math.pow((x-xc)/95,2));
+  return Math.exp(-Math.pow((x-xc)/48,2));
+}
+function drawTube(now,dt){
+  var W=cvB.width,H=cvB.height, ax=H*0.52, R0=46;
+  ctxB.clearRect(0,0,W,H); ctxB.fillStyle=CARD; ctxB.fillRect(0,0,W,H);
+  var spd=S.force/100;
+  var xc;
+  if(pattern==='mmc') xc=((now*0.07*Math.max(spd,0.0001))%1.4-0.2)*W;
+  else xc=((now*0.16*Math.max(spd,0.0001))%1.3-0.15)*W;
+  var amp=0.85*spd;
+  function rad(x){ return R0*(1-amp*conAt(x,now,xc)); }
+
+  ctxB.beginPath();
+  for(var x=0;x<=W;x+=4){ var r=rad(x); if(x===0) ctxB.moveTo(x,ax-r); else ctxB.lineTo(x,ax-r); }
+  for(var x2=W;x2>=0;x2-=4){ var r2=rad(x2); ctxB.lineTo(x2,ax+r2); }
+  ctxB.closePath();
+  ctxB.fillStyle='rgba(0,0,0,0.035)'; ctxB.fill();
+  ctxB.strokeStyle=TEAL; ctxB.lineWidth=3; ctxB.stroke();
+
+  /* muscle thickening where the ring contracts */
+  for(var x3=0;x3<=W;x3+=6){
+    var c=conAt(x3,now,xc); if(c<0.12) continue;
+    var r3=rad(x3);
+    ctxB.strokeStyle=CORAL; ctxB.globalAlpha=Math.min(1,c*spd*1.4); ctxB.lineWidth=5;
+    ctxB.beginPath(); ctxB.moveTo(x3,ax-r3-3); ctxB.lineTo(x3,ax-r3-9); ctxB.stroke();
+    ctxB.beginPath(); ctxB.moveTo(x3,ax+r3+3); ctxB.lineTo(x3,ax+r3+9); ctxB.stroke();
+    ctxB.globalAlpha=1;
+  }
+
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i];
+    if(spd>0){
+      if(pattern==='segmentation'){
+        p.x+=(46*Math.sin(2*Math.PI*now*(S.f/60)+p.x/38)+5)*spd*dt;
+      } else if(pattern==='mmc'){
+        p.x += (p.x>xc-30 ? 150 : 4)*spd*dt;
+      } else {
+        p.x += (p.x>xc-10 && p.x<xc+170 ? 108 : 5)*spd*dt;
+      }
+      p.y += (Math.random()-0.5)*10*spd*dt*6;
+    }
+    if(p.x>W+10){ p.x-=W+20; p.y=(Math.random()-0.5)*60; }
+    if(p.x<-10){ p.x+=W+20; }
+    var rr=rad(p.x)-p.r-2;
+    if(p.y>rr) p.y=rr; if(p.y<-rr) p.y=-rr;
+    ctxB.beginPath(); ctxB.arc(p.x,ax+p.y,p.r,0,6.2832);
+    ctxB.fillStyle= (i%5===0)?GOLD:BLUE; ctxB.globalAlpha=0.8; ctxB.fill(); ctxB.globalAlpha=1;
+  }
+  ctxB.fillStyle=MUTED; ctxB.font='700 11px Inter, sans-serif'; ctxB.textAlign='left';
+  ctxB.fillText('oral',8,14); ctxB.textAlign='right'; ctxB.fillText('aboral',W-8,14);
+  if(spd===0){ ctxB.textAlign='center'; ctxB.fillStyle=CORAL; ctxB.font='700 13px Inter, sans-serif';
+    ctxB.fillText('no spike potentials — nothing moves',W/2,H-10); }
+}
+
+var last=performance.now()/1000;
+function loop(){
+  var now=performance.now()/1000, dt=Math.min(0.05,now-last); last=now;
+  drawTrace(now); drawTube(now,dt);
+  requestAnimationFrame(loop);
+}
+update(); loop();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Brain, Action Potentials and the Autonomic Nervous System &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="A neuron does one thing supremely well: it holds an electrical gradient across its membrane and then spends it, deliberately and repeatedly, to carry information at speed. Everything in this module follows from that single fact. W">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 6 &middot; Brain, Action Potentials</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#resting-potential">1 &middot; The Charged Membrane: Ion Gradients and the Resting Potential</a>
+        <a href="#action-potential">2 &middot; The Action Potential and How Signals Travel</a>
+        <a href="#synapse">3 &middot; The Synapse: Chemical Transmission and Neural Integration</a>
+        <a href="#brain">4 &middot; The Brain as a Control System</a>
+        <a href="#ans">5 &middot; The Autonomic Nervous System: The Efferent Arm of Homeostasis</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 6</div>
+<h1>The Brain, Action Potentials and the Autonomic Nervous System</h1>
+
+<p class="lede">A neuron does one thing very well. It holds an electrical gradient across its membrane. Then it spends that gradient to carry information fast. It does that on purpose, over and over. Everything in this module follows from that one fact. We start with the battery. Why does the inside of a resting neuron sit near -70 mV? The sodium&ndash;potassium pump builds that voltage. A handful of leak channels help hold it there. Then we let the battery discharge. That is the action potential. It is the one truly self-feeding, positive feedback event in normal physiology. Myelin lets it leap from node to node instead of crawling. Next we cross the synapse. There an electrical signal turns into a chemical one, then back again. Summation turns thousands of small votes into one yes-or-no answer. Then we scale up to the brain as a control system. That covers the homunculus, the brainstem set points, and blood flow to the brain. We finish with the autonomic nervous system. That is the arm the brain actually uses. It holds the body&rsquo;s variables steady.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain how the <b>sodium&ndash;potassium ATPase</b> and picky <b>leak channels</b> build the <b>resting membrane potential</b>. Predict the voltage with the <b>Nernst</b> and <b>Goldman</b> rules.</li>
+<li>Put the phases of the <b>action potential</b> in order. Say what the <b>voltage-gated Na<sup>+</sup></b> and <b>K<sup>+</sup></b> channels do in each one. Say why the upstroke is <b>positive feedback</b>. Say why the whole event is still <b>all-or-none</b>.</li>
+<li>Tell the <b>absolute</b> and <b>relative refractory periods</b> apart. Link them to top firing rate and to one-way travel.</li>
+<li>Compare <b>continuous</b> and <b>saltatory conduction</b>. Predict what <b>demyelination</b> and fiber width do to speed.</li>
+<li>Walk through <b>chemical synaptic transmission</b>. Start at Ca<sup>2+</sup> entry and end at the postsynaptic potential. Use <b>temporal</b> and <b>spatial summation</b> at the <b>axon hillock</b>. Explain how a neuron adds up its input.</li>
+<li>Name the main parts of the <b>cerebrum</b>, <b>cerebellum</b>, <b>diencephalon</b> and <b>brainstem</b>. Match each one to the jobs it does.</li>
+<li>Work out <b>cerebral perfusion pressure</b> (CPP = MAP &minus; ICP). Explain <b>autoregulation</b> of brain blood flow. Use the <b>Monro&ndash;Kellie doctrine</b>.</li>
+<li>Compare the <b>sympathetic</b> and <b>parasympathetic</b> divisions. Use transmitter, receptor type, and what the target organ does. Include the job of the <b>adrenal medulla</b>.</li>
+<li>Draw the <b>baroreceptor reflex</b> as a full negative feedback loop. Name the regulated variable, the sensor, the integrator, the effectors, and the response.</li>
+</ul></div>
+
+<h2 id="resting-potential"><span class="num">Section 1</span>The Charged Membrane: Ion Gradients and the Resting Potential</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch06_s1.jpg" alt="Diagram of a neuron membrane showing sodium-potassium ATPase pumping three sodium ions out and two potassium ions in, alongside potassium leak channels, with intracellular negativity indicated" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Potassium leaking out sets most of the resting voltage. The Na<sup>+</sup>/K<sup>+</sup> ATPase builds the gradients that leak works on. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Why there is a voltage at all</h3>
+
+<p>Every cell in the body is negative on the inside compared with the outside. Excitable cells treat that voltage as stored energy, not a curiosity. Excitable cells are the ones that can fire an electrical signal. They are neurons, skeletal and cardiac muscle, smooth muscle, and some endocrine cells. A resting neuron measures about -70 mV across its plasma membrane. Picture one tiny electrode tip sitting inside the cell. Compare it with the fluid outside. You would read seventy thousandths of a volt of negativity inside. Skeletal muscle rests nearer -90 mV. Smooth muscle rests nearer -55 mV. The pacemaker cells of the sinoatrial node never truly rest at all. The number matters. It sets how far the cell sits from threshold. That is what makes a cell easy or hard to fire.</p>
+
+<p>The voltage exists because two things are true at the same time. First, ions sit unevenly on the two sides of the membrane. Active transport keeps them that way, and it costs real energy. Second, the membrane is <i>picky</i> about what it lets through. At rest it is roughly 25&ndash;100 times more leaky to K<sup>+</sup> than to Na<sup>+</sup>. K<sup>+</sup> leak channels (two-pore-domain channels) stay open while most Na<sup>+</sup> channels stay shut. Take away either condition and the voltage collapses. Poison the pump with the drug ouabain. The gradients then run down over minutes to hours. Open one large hole that lets anything through. The membrane depolarizes toward 0 mV almost at once. Depolarize means the inside becomes less negative.</p>
+
+<p>The pump is the <b>Na<sup>+</sup>/K<sup>+</sup> ATPase</b>. What it moves is worth memorizing. It pushes three Na<sup>+</sup> out and pulls two K<sup>+</sup> in. That costs one molecule of ATP. Three positive charges leave and only two come back. So the pump is <i>electrogenic</i>, meaning it makes voltage by itself. It supplies roughly -3 to -5 mV of the resting potential that way. Its bigger job is indirect. It builds and holds the gradients that the leak channels turn into voltage. This is expensive. The brain is about 2% of body mass. It uses near 20% of the oxygen you take up at rest. Most of a neuron&rsquo;s ATP goes to running this one pump.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Ion</th><th>Outside the cell (mM)</th><th>Inside the cell (mM)</th><th>Equilibrium potential at 37 &deg;C</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>K<sup>+</sup></td><td>4&ndash;5</td><td>140&ndash;150</td><td>about -90 mV</td><td>Rules at rest. Sets the baseline and drives repolarization</td></tr>
+<tr><td>Na<sup>+</sup></td><td>135&ndash;145</td><td>12&ndash;15</td><td>about +60 mV</td><td>Drives the upstroke of the action potential</td></tr>
+<tr><td>Cl<sup>-</sup></td><td>105&ndash;110</td><td>5&ndash;10</td><td>about -70 to -85 mV</td><td>Carries fast inhibition through GABA<sub>A</sub> and glycine receptors</td></tr>
+<tr><td>Ca<sup>2+</sup></td><td>1.2 (free ionized)</td><td>0.0001 (100 nM)</td><td>about +125 mV</td><td>Signaling ion. Triggers transmitter release</td></tr>
+</tbody>
+</table></div>
+
+<h3>Nernst and Goldman: putting numbers on the driving force</h3>
+
+<p>Take one ion. The <b>Nernst equation</b> gives the voltage where the electrical push cancels the concentration push. At that voltage the net movement is zero. At body temperature it boils down to E<sub>ion</sub> = (61 / z) &times; log([ion]<sub>outside</sub> / [ion]<sub>inside</sub>) millivolts. The z is the ion&rsquo;s valence, its charge. For potassium: E<sub>K</sub> = 61 &times; log(4.5 / 140). That comes out close to -90 mV. For sodium: E<sub>Na</sub> = 61 &times; log(145 / 14), about +60 mV. Those two numbers bracket the whole electrical life of a neuron. A neuron&rsquo;s voltage never lies outside -90 to +60 mV. Those are the only two poles the cell can be pulled toward.</p>
+
+<p>Real membranes let several ions through at once. So the real voltage is a weighted average. The <b>Goldman&ndash;Hodgkin&ndash;Katz</b> rule describes it. The membrane sits near the equilibrium potential of whichever ion crosses most easily right now. At rest, K<sup>+</sup> permeability wins, so the cell sits near E<sub>K</sub>. It does not sit exactly there. The small resting Na<sup>+</sup> leak drags it up from -90 mV to about -70 mV. At the peak of the action potential the situation flips. Na<sup>+</sup> permeability briefly beats K<sup>+</sup> permeability by roughly ten- to twentyfold. Na<sup>+</sup> permeability itself climbs several hundredfold above its own resting value. The voltage swings toward E<sub>Na</sub> but never arrives. That is why the peak lands at &#43;30 to &#43;40 mV and not at &#43;60 mV.</p>
+
+<p>Here is the practical result. <b>Changing extracellular K<sup>+</sup> changes the resting potential.</b> Changing extracellular Na<sup>+</sup> mostly changes how tall the action potential is. Raise serum K<sup>+</sup> from 4.0 to 7.0 mEq/L. E<sub>K</sub> becomes less negative. The cell depolarizes and sits closer to threshold. At first it fires too easily. But that steady depolarization then inactivates voltage-gated Na<sup>+</sup> channels. Now the cell will not fire at all. That two-step behavior explains hyperkalemia, which means high blood potassium. You see peaked T waves on the monitor first. Then you see a wide, sine-wave rhythm that can arrest the heart. This is why serum K<sup>+</sup> is normally held between 3.5 and 5.0 mEq/L. Every excitable cell in the body is tuned to that range.</p>
+
+<div class="pearl"><b>Common misconception.</b> Students often picture huge numbers of ions piled up against the membrane. That is not what happens. How many potassium ions must leave to make -70 mV? Fewer than one in a hundred thousand of them. The membrane is an excellent capacitor. Separating charge across a 5-nm bilayer is electrically enormous. Bulk concentrations inside and outside barely move during one action potential. A neuron can fire thousands of times first. Only then does the pump have real catching up to do.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A resting neuron is a charged capacitor. The voltage exists only when two things hold at once. Ions sit unevenly, and the Na+/K+ ATPase keeps them that way. And the membrane is 25&ndash;100 <a href="../lab/ch06/RestingPotentialBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch06/RestingPotentialBench.html" loading="lazy" title="The Charged Membrane &mdash; Building &minus;70 mV interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The resting membrane potential is mostly a potassium leak voltage. It sits on gradients that the Na<sup>+</sup>/K<sup>+</sup> ATPase keeps up. That costs ATP all the time. That is why serum potassium sets how excitable every cell in the body is.</p></div>
+
+<h2 id="action-potential"><span class="num">Section 2</span>The Action Potential and How Signals Travel</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch06_s2.jpg" alt="Graph of an action potential plotting membrane voltage against time, showing resting potential, threshold, depolarizing upstroke, repolarization, hyperpolarization, and the refractory periods" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The action potential drawn against time. The voltage-gated sodium and potassium conductances are laid over the voltage trace. <span class="cred">OpenStax, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Threshold, upstroke and the only positive feedback loop you want</h3>
+
+<p>Graded potentials are small voltage changes. Synaptic input or a sensory stimulus makes them. They shrink as they spread, and they die out. An action potential does not die out. It is rebuilt at every point along the membrane. The trigger is reaching <b>threshold</b>, roughly -55 mV in a typical neuron. At threshold, enough voltage-gated Na<sup>+</sup> channels are open. Inward Na<sup>+</sup> current then beats outward K<sup>+</sup> current.</p>
+
+<p>What happens next is real <b>positive feedback</b>. It is worth naming. This course otherwise insists that control in the body is negative feedback. Depolarization opens voltage-gated Na<sup>+</sup> channels. Na<sup>+</sup> entry depolarizes the membrane further. That opens still more Na<sup>+</sup> channels. The loop runs away in under a millisecond. It drives membrane voltage from -55 mV to a peak of roughly +30 to +40 mV. It gets close to E<sub>Na</sub> but never reaches it. Positive feedback is the exception in physiology. It is explosive. It stops itself instead of holding a value steady. The body allows it only where an all-or-nothing commitment is the point. There are four such spots. One is the action potential upstroke. One is the platelet plug and coagulation cascade. One is oxytocin release in labor. The last is the LH surge at ovulation.</p>
+
+<p>The voltage-gated Na<sup>+</sup> channel has two gates and three states. This is the single most useful piece of channel biophysics in the module. At rest the fast <b>activation gate</b> is closed. The slower <b>inactivation gate</b> is open. The channel is closed but available. At threshold the activation gate flips open within about 0.1 ms. Na<sup>+</sup> pours in. The channel is now open. Within roughly 0.5&ndash;1 ms the inactivation gate swings shut. The channel is inactivated. No amount of further depolarization will reopen it. Only repolarization resets the inactivation gate. Meanwhile the voltage-gated K<sup>+</sup> channels opened slowly and are still open. So K<sup>+</sup> flows out and carries the membrane back down past -70 mV. It dips into a brief <b>afterhyperpolarization</b> near -80 to -90 mV. Then the K<sup>+</sup> channels close and the resting leak restores the baseline. The whole event in a neuron takes 1&ndash;2 ms.</p>
+
+<h3>Refractory periods, all-or-none behavior, and how intensity is coded</h3>
+
+<p>While Na<sup>+</sup> channels are inactivated, the membrane cannot fire again at any stimulus strength. This is the <b>absolute refractory period</b>. It is roughly 1 ms in a neuron. It is up to 200&ndash;250 ms in ventricular myocardium. That is why heart muscle cannot be tetanized, meaning locked into one long contraction. Later, enough channels have reset but the membrane is still hyperpolarized. Now a larger-than-normal stimulus can trigger a second action potential. That window is the <b>relative refractory period</b>, and it lasts a few more milliseconds. Two things follow. First, travel is one-way. The membrane behind an advancing impulse is refractory, so the impulse cannot double back. Second, there is a ceiling on firing rate. It is typically 100&ndash;500 Hz, depending on the neuron.</p>
+
+<p>Every stimulus above threshold makes the same action potential. Same height, same length. So the action potential is <b>all-or-none</b>. It cannot report stimulus strength by size. The nervous system codes intensity in two other ways. One is <b>frequency</b>. Nociceptors are the pain fibers. A hot stove fires them at 80 Hz. Warm water fires them at 5 Hz. The other is <b>population recruitment</b>. More fibers join in as the stimulus grows, including fibers with higher thresholds. This is the same logic as motor unit recruitment in Module 5. Force and sensation are both rate-and-recruitment codes.</p>
+
+<div class="pearl"><b>Common misconception.</b> Nothing travels down the axon. Students often imagine a packet of sodium racing from the hillock to the terminal. In reality each ion moves only a few nanometers across the membrane. What travels is the <i>voltage change</i>, rebuilt at each new patch of membrane. Think of a line of falling dominoes. No domino moves more than its own length. Local current spreads from an active patch. It depolarizes the next patch to threshold. Then the process repeats.</div>
+
+<h3>Myelin, fiber diameter and conduction velocity</h3>
+
+<p>Conduction velocity depends on how far a local current can spread before it fades. Those are the cable properties of the axon. Two things control it. A larger diameter lowers the internal (axial) resistance, so current spreads farther. A wider pipe offers less resistance to flow, exactly as Q = &Delta;P / R predicts. Myelin does the rest. Oligodendrocytes make it in the central nervous system. Schwann cells make it in the peripheral nervous system. Myelin wraps the axon in 20&ndash;100 layers of fatty membrane. That raises membrane resistance and drops membrane capacitance. The internode is the stretch of axon between nodes. So far less current leaks out along it.</p>
+
+<p>In a myelinated axon the voltage-gated Na<sup>+</sup> channels are packed at the <b>nodes of Ranvier</b>. Nodes sit roughly 0.2&ndash;2 mm apart. Channel density there is near 1,000&ndash;2,000 per square micrometer. An unmyelinated membrane has only a few dozen. So the impulse is rebuilt only at nodes and jumps between them. That is <b>saltatory conduction</b>, from the Latin <i>saltare</i>, to leap. It is faster, and it is also far cheaper. Fewer ions cross, so the pump does less work per impulse.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Fiber class</th><th>Width</th><th>Myelin</th><th>Speed</th><th>What it carries</th></tr></thead>
+<tbody>
+<tr><td>A&alpha;</td><td>13&ndash;20 &micro;m</td><td>Heavy</td><td>80&ndash;120 m/s</td><td>Alpha motor output, position sense (proprioception)</td></tr>
+<tr><td>A&beta;</td><td>6&ndash;12 &micro;m</td><td>Heavy</td><td>35&ndash;75 m/s</td><td>Touch, pressure, vibration</td></tr>
+<tr><td>A&delta;</td><td>1&ndash;5 &micro;m</td><td>Thin</td><td>5&ndash;30 m/s</td><td>Fast, sharp, easy-to-place pain. Cold</td></tr>
+<tr><td>B</td><td>1&ndash;3 &micro;m</td><td>Thin</td><td>3&ndash;15 m/s</td><td>Preganglionic autonomic fibers</td></tr>
+<tr><td>C</td><td>0.2&ndash;1.5 &micro;m</td><td>None</td><td>0.5&ndash;2 m/s</td><td>Slow burning pain, warmth, postganglionic sympathetic fibers</td></tr>
+</tbody>
+</table></div>
+
+<p>This table explains the double feel of an injury. You feel the sharp pinprick along A&delta; fibers first. The slow ache arrives about a second later. The ache comes along C fibers from the same foot. The table also explains why demyelinating disease is so disabling. In <b>multiple sclerosis</b>, an immune attack strips central myelin. Current then leaks along the internode, so conduction slows or fails entirely. That produces optic neuritis, sensory loss and weakness. These classically get worse with heat. Rising temperature shortens the time voltage-gated Na<sup>+</sup> channels stay open. That eats into a safety factor for conduction that was already thin. In <b>Guillain&ndash;Barr&eacute; syndrome</b>, peripheral myelin is the target. Weakness climbs from the feet upward over days. The feared complication is weakness of the breathing muscles. Local anesthetics such as lidocaine work at the other end of the same physiology. They bind and block the voltage-gated Na<sup>+</sup> channel from the inside. They prefer channels that are opening often. So they silence small, rapidly firing pain fibers first. Large motor fibers are touched later.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A graded potential matches the size of its stimulus, and it dies out. An action potential does neither. Push a stimulus up through the &minus;55 mV threshold. Watch a matching response turn <a href="../lab/ch06/ActionPotentialLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch06/ActionPotentialLab.html" loading="lazy" title="The Action Potential &mdash; Threshold, Refractoriness and Speed interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The action potential is an all-or-none voltage event that rebuilds itself as it goes. A brief positive feedback loop in voltage-gated Na<sup>+</sup> channels drives it. Channel inactivation plus delayed K<sup>+</sup> outflow ends it. It travels fastest in large myelinated axons, where it leaps from node to node.</p></div>
+
+<h2 id="synapse"><span class="num">Section 3</span>The Synapse: Chemical Transmission and Neural Integration</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch06_s3.jpg" alt="Illustration of a chemical synapse showing calcium entry into the axon terminal, vesicle fusion, neurotransmitter release into the synaptic cleft, and receptor binding on the postsynaptic membrane" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The steps of chemical synaptic transmission. Calcium enters the terminal. Vesicles fuse and empty. The transmitter then binds receptors on the far side. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Electrical to chemical and back again</h3>
+
+<p>An action potential reaching an axon terminal cannot simply jump the gap. The <b>synaptic cleft</b> is that gap, and it is only 20&ndash;40 nm wide. That is tiny, but electrically it is enormous. So the signal gets converted. Depolarizing the terminal opens <b>voltage-gated Ca<sup>2+</sup> channels</b> of the N and P/Q type. Free Ca<sup>2+</sup> inside the cell is held near 100 nM. Outside the cell it is 1.2 mM. So the push driving Ca<sup>2+</sup> inward is enormous. That is roughly a 10,000-fold concentration gradient pointing inward. An inside-negative voltage pulls it in as well. Local Ca<sup>2+</sup> beneath the membrane rises into the tens of micromolar within microseconds.</p>
+
+<p>Calcium binds synaptotagmin, a protein on the vesicle surface. That makes the SNARE proteins zipper the vesicle membrane onto the plasma membrane. The vesicle then dumps its contents outside. Release is <b>quantal</b>, which means it comes in fixed packets. Each vesicle discharges on the order of 5,000&ndash;10,000 molecules of acetylcholine at the neuromuscular junction. The transmitter crosses the cleft in about 0.1 ms. Then it binds receptors on the far side. This conversion costs time. The <b>synaptic delay</b> is 0.5&ndash;1 ms. It is the slowest step in any reflex arc. So a reflex with several synapses is always slower. One with a single synapse is faster.</p>
+
+<p>Transmitter action has to be shut off. Otherwise the receiving cell would be driven forever. Three things do that job. One is enzyme breakdown in the cleft. Acetylcholinesterase splits acetylcholine within about a millisecond. Another is reuptake. Transporters pull the transmitter back into the terminal or into astrocytes. That is what happens with glutamate, norepinephrine, serotonin and dopamine. The third is simple diffusion away. Nearly every psychiatric drug and many autonomic drugs act on this step. Selective serotonin reuptake inhibitors block a transporter. Organophosphate insecticides and nerve agents block acetylcholinesterase for good. That produces cholinergic crisis: salivation, lacrimation, urination, defecation, bronchospasm and bradycardia.</p>
+
+<h3>EPSPs, IPSPs and summation at the hillock</h3>
+
+<p>The response on the receiving side depends on the receptor, not on the transmitter. <b>Ionotropic receptors</b> are ion channels that a chemical opens. Binding opens the pore directly. The response starts within a millisecond and lasts milliseconds. <b>Metabotropic receptors</b> are coupled to G proteins. Binding starts a second messenger cascade instead. The response starts in tens to hundreds of milliseconds. It can last seconds to minutes. One bound receptor can amplify into thousands of molecules downstream. Fast point-to-point signaling is ionotropic. Slower shifts in mood, alertness and autonomic tone are mostly metabotropic.</p>
+
+<p>An excitatory input opens channels that let Na<sup>+</sup> through, and often K<sup>+</sup> as well. That makes a depolarizing <b>excitatory postsynaptic potential</b> (EPSP) of perhaps 0.5&ndash;1 mV. An inhibitory input opens Cl<sup>-</sup> or K<sup>+</sup> channels instead. That makes a hyperpolarizing <b>inhibitory postsynaptic potential</b> (IPSP). An IPSP pushes the cell away from threshold. At the very least it pins the cell near rest. Excitation then cannot move it. Both kinds are graded. Both fade as they spread.</p>
+
+<p>A single EPSP of 1 mV cannot cover the 15 mV from -70 to -55 mV. So inputs have to add up. <b>Temporal summation</b> happens when one presynaptic neuron fires very fast. Successive EPSPs then overlap before they decay. <b>Spatial summation</b> happens when many different synapses fire at nearly the same moment. Their currents then meet and add. A single cortical neuron may carry 1,000&ndash;10,000 synapses. The math of excitation minus inhibition runs nonstop in the dendrites and cell body. The answer is read out at the <b>axon hillock</b>, more exactly the initial segment. The hillock has the highest density of voltage-gated Na<sup>+</sup> channels in the cell. So it has the lowest threshold. Whatever net voltage arrives there decides whether the neuron fires. That is <b>neural integration</b>. Thousands of graded, analog votes are summed and turned into one digital, all-or-none output.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Neurotransmitter</th><th>Main receptor types</th><th>What it usually does</th><th>Why it matters in the clinic</th></tr></thead>
+<tbody>
+<tr><td>Glutamate</td><td>AMPA and NMDA (ionotropic). mGluR</td><td>The main CNS excitation. NMDA underlies learning</td><td>Excitotoxicity after stroke. Ketamine blocks NMDA</td></tr>
+<tr><td>GABA</td><td>GABA<sub>A</sub> (Cl<sup>-</sup> channel), GABA<sub>B</sub></td><td>The main CNS inhibition</td><td>Benzodiazepines, barbiturates, alcohol, many antiseizure drugs</td></tr>
+<tr><td>Glycine</td><td>Ionotropic Cl<sup>-</sup> channel</td><td>Inhibition in the spinal cord and brainstem</td><td>Blocked by strychnine, which causes convulsive rigidity</td></tr>
+<tr><td>Acetylcholine</td><td>Nicotinic (ionotropic), muscarinic (metabotropic)</td><td>Neuromuscular junction, all autonomic ganglia, parasympathetic targets</td><td>Myasthenia gravis. Cholinesterase inhibitors in Alzheimer disease</td></tr>
+<tr><td>Norepinephrine</td><td>&alpha;1, &alpha;2, &beta;1, &beta;2, &beta;3 (all metabotropic)</td><td>Sympathetic postganglionic output. Alertness</td><td>Vasopressors, beta blockers, ADHD and depression therapy</td></tr>
+<tr><td>Dopamine</td><td>D1&ndash;D5 (metabotropic)</td><td>Starting movement, reward, holding prolactin down</td><td>Parkinson disease. Antipsychotics block D2</td></tr>
+<tr><td>Serotonin</td><td>5-HT1&ndash;5-HT7 (5-HT3 is ionotropic)</td><td>Mood, sleep, gut movement, vomiting (emesis)</td><td>SSRIs. Ondansetron blocks 5-HT3</td></tr>
+</tbody>
+</table></div>
+
+<div class="pearl"><b>Clinical anchor.</b> In <b>myasthenia gravis</b>, the immune system makes antibodies. They destroy nicotinic acetylcholine receptors at the motor end plate. Transmitter release is normal. But the end-plate potential shrinks below the level needed to fire the muscle fiber. It shrinks further with repetition, as vesicle stores run down. That is the mechanism behind the cardinal symptom. Weakness worsens through the day and with sustained effort. It improves with rest. Cholinesterase inhibitors such as pyridostigmine help. They leave each released acetylcholine molecule in the cleft longer. The surviving receptors then get used more efficiently.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A single EPSP is worth about 0.5&ndash;1 mV. The neuron must climb 15 mV, from &minus;70 to &minus;55, to fire. So no synapse ever decides anything alone. Drive excitatory and inhibitory inputs into <a href="../lab/ch06/SynapticIntegrationBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch06/SynapticIntegrationBench.html" loading="lazy" title="The Synapse &mdash; Summation at the Axon Hillock interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>A chemical synapse turns an all-or-none electrical signal into a graded chemical one. The receiving neuron turns it back again. It sums thousands of EPSPs and IPSPs at the axon hillock. One threshold decision there produces the output.</p></div>
+
+<h2 id="brain"><span class="num">Section 4</span>The Brain as a Control System</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch06_s4.jpg" alt="Midsagittal view of the human brain labeling cerebral cortex lobes, corpus callosum, thalamus, hypothalamus, cerebellum, midbrain, pons and medulla oblongata" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The brain cut down the middle. It shows the cerebrum, the diencephalon and the cerebellum. It also shows the three parts of the brainstem. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Cortex, cerebellum and basal nuclei: three ways of producing movement and thought</h3>
+
+<p>The cerebral cortex is a sheet of gray matter 2&ndash;4 mm thick. It is folded to fit roughly 2,500 square centimeters inside the skull. It is laid out like a map. The <b>precentral gyrus</b> of the frontal lobe holds the primary motor cortex. Upper motor neurons there send axons down the corticospinal tract. The <b>postcentral gyrus</b> of the parietal lobe holds the primary somatosensory cortex. Both are mapped as a <b>homunculus</b>, a little body drawn across the cortex. Cortex is handed out by how densely a part is supplied with nerves. The size of the body part does not matter. So the hand, lips and tongue take up far more area than their size suggests. Two-point discrimination is the smallest gap you can feel as two separate touches. There it is 2&ndash;4 mm. On the back it is 40&ndash;60 mm. Fine resolution costs cortex.</p>
+
+<p>The rest of the cortex splits along lines that predict deficits precisely. Broca&rsquo;s area sits in the inferior frontal gyrus. It builds the motor program for speaking. Damage there makes speech effortful, halting and non-fluent, while understanding stays intact. Wernicke&rsquo;s area sits in the superior temporal gyrus. It decodes language. Damage there makes speech fluent but meaningless, and understanding suffers. Occipital cortex handles vision. Temporal cortex handles hearing, and it encodes memory through the hippocampus. Prefrontal cortex handles working memory, judgment and impulse control. That region does not finish myelinating until the mid-twenties.</p>
+
+<p>Two systems under the cortex shape movement without starting it. The <b>basal nuclei</b> are the caudate, putamen and globus pallidus. Add the substantia nigra and the subthalamic nucleus. They run two parallel loops, direct and indirect. The direct loop encourages a movement the cortex has planned. The indirect loop suppresses it. Dopamine from the substantia nigra tips the balance toward encouraging movement. Lose about 60&ndash;80% of those dopamine neurons and the indirect pathway takes over. That gives the slow movement, resting tremor and rigidity of Parkinson disease. The <b>cerebellum</b> holds more than half of all the neurons in the brain. It works as an error-correcting comparator. It receives the intended motor command. It also receives the actual position feedback from the body. Then it issues corrections in real time. So cerebellar damage does not cause paralysis. It causes incoordination. That means intention tremor and dysmetria, which is missing the target. It also means a wide-based unsteady gait and trouble with rapid alternating movements. The deficits show up on the same side as the injury. Cerebellar output crosses twice.</p>
+
+<h3>Diencephalon and brainstem: where the set points live</h3>
+
+<p>The <b>thalamus</b> is the relay and the gate for nearly all incoming sensory traffic. Smell is the one exception. Nothing reaches the conscious cortex without passing through it. The thalamus also gates attention and level of arousal. It works with the reticular activating system. Beneath it sits the <b>hypothalamus</b>, the master homeostatic integrator. This is where the theme of the course becomes concrete. The hypothalamus holds the set point for core temperature. That is about 37 &deg;C, with a normal daily swing of 0.5&ndash;1 &deg;C. It holds the set point for plasma osmolality, 275&ndash;295 mOsm/kg. Osmoreceptors defend it by driving thirst and ADH release. It runs circadian timing through the suprachiasmatic nucleus. It handles hunger and fullness. And it runs the whole hypothalamic&ndash;pituitary axis explored in Module 8.</p>
+
+<p>Look at thermoregulation as a fully labeled negative feedback loop. The <b>regulated variable</b> is core body temperature. The <b>sensors</b> sit in two places. They are peripheral thermoreceptors in the skin. They are also heat-sensing neurons in the preoptic area of the hypothalamus. The <b>integrator</b> is the hypothalamus itself. It compares the measured temperature against the set point. The <b>effectors</b> are cutaneous arterioles, sweat glands, skeletal muscle and the thyroid axis. The <b>response</b> to a rise is widening of skin arterioles plus sweating. Skin blood flow can climb from about 250 mL/min to as much as 6&ndash;8 L/min. The response to a fall is vasoconstriction, piloerection or goosebumps, and shivering. Shivering can raise heat production three- to five-fold. Fever is not a broken loop. Pyrogens such as interleukin-1 raise the set point itself. That is why a febrile patient shivers and feels cold at 39 &deg;C. The body is actively defending its new, higher target.</p>
+
+<p>Below the hypothalamus, the brainstem carries the reflexes that everything else depends on. The <b>medulla oblongata</b> holds the cardiovascular center, which sets heart rate and vasomotor tone. It holds the respiratory rhythm generators, the ventral respiratory group and the pre-B&ouml;tzinger complex. It also holds the emetic, cough and swallow centers. The <b>pons</b> shapes the respiratory rhythm and relays signals from cortex to cerebellum. The <b>midbrain</b> handles visual and auditory startle reflexes and pupillary responses. Damage here is far more often lethal than damage elsewhere. Brainstem reflexes are what clinicians test to localize a lesion or judge consciousness. Those are the pupillary, corneal, gag and oculocephalic reflexes. They are checked alongside the Glasgow Coma Scale, which is scored from 3 to 15.</p>
+
+<h3>Perfusion, pressure and protection</h3>
+
+<p>Neurons store essentially no fuel. They cannot make ATP without oxygen for long. So the brain depends on nonstop flow more than any other organ. It receives about 750 mL/min. That is near 15% of cardiac output for 2% of body weight. It works out to roughly 50 mL per 100 g of tissue per minute. The brain uses about 3.5 mL of oxygen and 5.5 mg of glucose per 100 g per minute. Stop the flow and consciousness is lost within 10 seconds. Injury that cannot be undone begins within about 4&ndash;5 minutes.</p>
+
+<p>Flow follows the same rule as anywhere else in the circulation, Q = &Delta;P / R. But the driving pressure is written a special way. The brain lives in a rigid box. <b>Cerebral perfusion pressure</b> is CPP = MAP &minus; ICP. Normal intracranial pressure is 5&ndash;15 mmHg. CPP is generally kept above 60 mmHg. <b>Autoregulation</b> then holds flow nearly constant across a mean arterial pressure of roughly 60&ndash;160 mmHg. The arterioles narrow on their own when pressure rises and widen when it falls. Outside that window, flow simply follows pressure. The brain is then either underperfused or hyperperfused. Cerebral vessels also react strongly to arterial carbon dioxide. Each 1 mmHg rise in PaCO<sub>2</sub> raises cerebral blood flow by about 1&ndash;2 mL/100 g/min. That is why hyperventilation briefly lowers intracranial pressure, and why it is used sparingly.</p>
+
+<p>The <b>Monro&ndash;Kellie doctrine</b> says the cranial vault holds a fixed total volume. It contains brain (about 1,400 mL), blood (about 150 mL) and cerebrospinal fluid (about 150 mL). If one compartment expands, another must shrink or the pressure rises steeply. The choroid plexus makes CSF at roughly 500 mL per day. That is about 0.35 mL/min. It turns the whole volume over three to four times daily. It is absorbed at the arachnoid granulations. Obstruct that circulation and hydrocephalus follows. The <b>blood&ndash;brain barrier</b> is built from tight junctions between capillary endothelial cells. Astrocyte end-feet back it up. It admits oxygen, carbon dioxide, lipid-soluble molecules and glucose, which rides GLUT1 transporters. It excludes most proteins, ions in bulk, and the large majority of drugs. That is why Parkinson disease is treated with levodopa rather than dopamine. Only the precursor crosses.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> The Cushing reflex is the Monro&ndash;Kellie doctrine and the brainstem cardiovascular center acting together. Intracranial pressure climbs toward mean arterial pressure. CPP falls. The medulla answers by driving systemic pressure up to restore perfusion. Baroreceptors then sense that hypertension and reflexly slow the heart. The result is an ominous triad. It is hypertension with a widened pulse pressure, bradycardia, and irregular breathing. It is a late sign of impending herniation, not an early warning.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The brain is a controller. It has to be perfused inside a rigid box. The contents of that box are fixed. Brain is about 1,400 mL. Blood is 150 mL. CSF is 150 mL. Grow something inside it and wat <a href="../lab/ch06/CerebralPerfusionModel.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch06/CerebralPerfusionModel.html" loading="lazy" title="The Brain as a Control System &mdash; Perfusion and Set Points interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The brain works as a layered controller. Cortex intends. Cerebellum and basal nuclei refine. The hypothalamus holds set points. The brainstem runs survival reflexes. All of it depends on perfusion pressure, CPP = MAP &minus; ICP. Autoregulation defends that pressure inside a rigid skull.</p></div>
+
+<h2 id="ans"><span class="num">Section 5</span>The Autonomic Nervous System: The Efferent Arm of Homeostasis</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch06_s5.jpg" alt="Comparative diagram of sympathetic and parasympathetic divisions showing thoracolumbar and craniosacral outflow, ganglion locations, and target organs including eye, heart, lungs, gut and bladder" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The sympathetic thoracolumbar outflow next to the parasympathetic craniosacral outflow. Compare where the ganglia sit and which organs they reach. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Two neurons, two divisions, one continuously adjusted balance</h3>
+
+<p>Somatic motor control uses one myelinated neuron. It runs from the spinal cord to a skeletal muscle. It releases acetylcholine onto nicotinic receptors. It is always excitatory. Autonomic control differs on every count. It uses a <b>two-neuron chain</b>. A myelinated preganglionic neuron synapses in a peripheral ganglion. There it meets an unmyelinated postganglionic neuron, which reaches the target. It supplies smooth muscle, cardiac muscle and glands. And it can be either excitatory or inhibitory at the same organ. The outcome depends on which receptor subtype is present.</p>
+
+<p>The <b>sympathetic</b> division has thoracolumbar outflow. Its preganglionic cell bodies sit in the lateral horn from T1 to L2. Its ganglia are the paravertebral chain and the prevertebral ganglia. They sit close to the spinal cord. So preganglionic fibers are short and postganglionic fibers are long. Each preganglionic neuron may diverge onto 20 or more postganglionic cells across several segments. That anatomy exists to produce one diffuse, coordinated, whole-body response. The <b>parasympathetic</b> division has craniosacral outflow. It runs in cranial nerves III, VII, IX and X, plus sacral segments S2&ndash;S4. Its ganglia sit in or on the target organ. So preganglionic fibers are long and postganglionic fibers very short, and divergence is low. That anatomy exists to produce discrete, organ-specific effects. The vagus nerve alone carries about 75% of all parasympathetic fibers. It supplies the heart, the lungs and the gut down to the splenic flexure.</p>
+
+<p>Transmitters follow a clean rule with two exceptions. All preganglionic fibers release acetylcholine onto <b>nicotinic</b> receptors in the ganglion. That is true in both divisions. All parasympathetic postganglionic fibers release acetylcholine onto <b>muscarinic</b> receptors. Most sympathetic postganglionic fibers release <b>norepinephrine</b> onto adrenergic receptors. Now the two exceptions. Sympathetic fibers to the sweat glands that control temperature are cholinergic and muscarinic. And the <b>adrenal medulla</b> is a modified sympathetic ganglion. Its chromaffin cells take preganglionic input directly. They secrete about 80% epinephrine and 20% norepinephrine. It goes into the bloodstream, not onto a synapse. That turns a neural signal into a circulating hormonal one that lasts ten times longer.</p>
+
+<p>Most organs receive <b>dual innervation</b>, meaning both divisions reach them with opposing effects. Both divisions also keep a resting <b>tone</b> that can be dialed up or down. The sinoatrial node fires on its own at 100&ndash;110 beats per minute. Yet resting heart rate is about 70. The difference is continuous vagal restraint. Block it with atropine and heart rate rises toward the intrinsic rate. A few tissues get only one division. Sympathetic fibers alone reach most arterioles and the adrenal medulla. They also reach sweat glands, piloerector muscles and the spleen. Blood flow to them is set by dialing sympathetic tone up and down. There is no opposing input.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Receptor</th><th>Where it rules</th><th>Signaling</th><th>What happens</th></tr></thead>
+<tbody>
+<tr><td>&alpha;1</td><td>Vascular smooth muscle, pupillary dilator, bladder neck</td><td>G<sub>q</sub>, increased IP<sub>3</sub> and Ca<sup>2+</sup></td><td>Vessels narrow, the pupil widens (mydriasis), urine is held back</td></tr>
+<tr><td>&alpha;2</td><td>Presynaptic nerve terminals, pancreatic islets</td><td>G<sub>i</sub>, decreased cAMP</td><td>Slows further norepinephrine release. Lowers insulin secretion</td></tr>
+<tr><td>&beta;1</td><td>Heart (SA node, AV node, myocardium), juxtaglomerular cells</td><td>G<sub>s</sub>, increased cAMP</td><td>Faster rate, faster conduction, stronger squeeze. Renin release</td></tr>
+<tr><td>&beta;2</td><td>Bronchiolar and skeletal-muscle vascular smooth muscle, uterus, liver</td><td>G<sub>s</sub>, increased cAMP</td><td>Airways widen, vessels widen, glycogen breaks down, the uterus relaxes</td></tr>
+<tr><td>&beta;3</td><td>Adipose tissue, bladder detrusor</td><td>G<sub>s</sub>, increased cAMP</td><td>Fat breakdown. The bladder wall relaxes</td></tr>
+<tr><td>M2</td><td>Heart</td><td>G<sub>i</sub>, decreased cAMP, opens K<sup>+</sup> channels</td><td>Slows the SA node and AV conduction</td></tr>
+<tr><td>M3</td><td>Glands, gut and bronchiolar smooth muscle, bladder detrusor, ciliary muscle</td><td>G<sub>q</sub></td><td>Glands secrete, airways narrow, the gut speeds up, the bladder empties, the lens focuses up close</td></tr>
+<tr><td>Nicotinic (N<sub>N</sub>, N<sub>M</sub>)</td><td>All autonomic ganglia. Motor end plate</td><td>Ligand-gated cation channel</td><td>Fast depolarization of the postganglionic cell or the muscle cell</td></tr>
+</tbody>
+</table></div>
+
+<h3>The baroreceptor reflex, labeled loop by loop</h3>
+
+<p>The autonomic nervous system is the output arm of homeostasis. The <b>baroreceptor reflex</b> proves that most clearly. It deserves to be named part by part. The <b>regulated variable</b> is mean arterial pressure. It is normally about 93 mmHg. You estimate it as diastolic pressure plus one third of the pulse pressure. The <b>sensors</b> are stretch-sensitive baroreceptors. Some sit in the carotid sinus, with afferents in the glossopharyngeal nerve, CN IX. Others sit in the aortic arch, with afferents in the vagus, CN X. They fire faster as the vessel wall stretches more. They are most sensitive between about 60 and 180 mmHg. The <b>integrator</b> is the cardiovascular center of the medulla. It receives those afferents at the nucleus tractus solitarius. There are three <b>effectors</b>. One is sympathetic outflow to the heart and vasculature. One is parasympathetic vagal outflow to the SA and AV nodes. The last is the adrenal medulla. The <b>response</b> restores pressure toward the set point.</p>
+
+<p>Follow it through a real event. A patient stands up from lying down. Then 500&ndash;800 mL of blood pools in the legs. Venous return falls. So stroke volume falls. So arterial pressure falls. Baroreceptor stretch drops and afferent firing drops with it. The medulla reads that quieter traffic as hypotension, meaning low blood pressure. It answers by withdrawing vagal tone and increasing sympathetic outflow. Heart rate rises through &beta;1 receptors. Contractility rises through &beta;1 as well. Arterioles and veins constrict through &alpha;1. Mean arterial pressure equals cardiac output times systemic vascular resistance. Raising both terms restores pressure within a few heartbeats. Sometimes the loop is blunted. Beta blockers, diabetic autonomic neuropathy, dehydration and age all do that. Then the patient gets orthostatic hypotension. That is a fall of 20 mmHg systolic or 10 mmHg diastolic. It happens within three minutes of standing. This is the physiology behind a fall risk assessment.</p>
+
+<div class="pearl"><b>Common misconception.</b> The sympathetic and parasympathetic divisions are not a light switch with two positions. It is misleading to say the body is &ldquo;in&rdquo; one or the other. Both divisions fire continuously. Almost every autonomic adjustment is a change in the <i>ratio</i> of two ongoing tones. Think about the start of exercise. Heart rate climbs by 30&ndash;40 beats per minute at first. That comes mostly from vagal withdrawal, not from sympathetic activation. The brake is released before the accelerator is pressed.</div>
+
+<h3>Whole-body patterns and why the drugs make sense</h3>
+
+<p>Sympathetic mass activation produces one coherent pattern. It is preparing the body for muscular work. Pupils dilate. Airways widen. Heart rate and contractility rise. Blood is shunted from gut and skin toward skeletal muscle. Glycogenolysis and lipolysis release fuel. Sweating begins. Gut motility and urination are suspended. Parasympathetic dominance produces the mirror image. It is fundamentally about digestion and restoration. Pupils constrict and the lens accommodates for near vision. Heart rate slows. Airways narrow and secrete. Gut motility and glandular secretion rise. The bladder detrusor contracts while the internal sphincter relaxes.</p>
+
+<p>Once you know the receptor table, autonomic pharmacology stops being memorization. A selective &beta;1 blocker slows the heart without provoking bronchospasm. A non-selective beta blocker also hits &beta;2 in the airway. An inhaled &beta;2 agonist such as albuterol dilates bronchioles. Its predictable side effects are tremor and tachycardia. Those are simply &beta;2 in skeletal muscle plus spillover onto cardiac receptors. An antimuscarinic is taken for bladder overactivity. It also causes dry mouth, blurred near vision, constipation and confusion. M3 receptors are everywhere. Clonidine lowers blood pressure by stimulating central &alpha;2 receptors. That reduces sympathetic outflow at its source. In each case the drug does nothing new. It simply moves an existing tone.</p>
+
+<p>Not all autonomic reflexes are routed through the brain. The <b>enteric nervous system</b> holds 200&ndash;600 million neurons in the myenteric and submucosal plexuses. It can generate peristalsis and secretion on its own. Spinal autonomic reflexes control micturition, defecation and erection at sacral levels. Higher centers modulate these circuits rather than create them. Think of a complete spinal cord injury above the sacral segments. That patient keeps reflex bladder emptying. But voluntary control is lost. It also explains a danger. Say the lesion sits at or above T6. A noxious stimulus below it can then trigger unopposed sympathetic discharge. That is autonomic dysreflexia, and the dangerous part is the sudden hypertension.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Stand up and 500&ndash;800 mL of blood pools in your legs within seconds. Venous return falls. Stroke volume falls. Arterial pressure falls. You do not faint, because the medulla notices an <a href="../lab/ch06/BaroreflexLoop.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch06/BaroreflexLoop.html" loading="lazy" title="The Baroreceptor Reflex &mdash; Break the Loop and Watch interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The autonomic nervous system is the efferent arm of nearly every homeostatic loop. It is a two-neuron chain. Its effect at an organ depends on the receptor subtype, not on the transmitter. It works by shifting the balance of two ongoing tones. That is how it defends variables like arterial pressure.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>A neuron is a charged capacitor. The Na<sup>+</sup>/K<sup>+</sup> ATPase spends ATP to hold potassium in and sodium out. Potassium leak channels turn that gradient into about -70 mV of negativity inside the cell. The Nernst equation tells you exactly which voltage each ion is pulling toward. That is -90 mV for K<sup>+</sup> and +60 mV for Na<sup>+</sup>. Depolarize the membrane to about -55 mV and voltage-gated Na<sup>+</sup> channels open. They open in a brief, self-amplifying positive feedback loop. That drives the voltage to +30 mV. Then the channels inactivate. Delayed K<sup>+</sup> efflux resets everything. The whole event is over within 1&ndash;2 ms. Refractory periods keep travel one-way and cap the firing rate. Myelin and large diameter push conduction from 0.5 m/s to 120 m/s. At the terminal, Ca<sup>2+</sup> entry triggers quantal transmitter release. The receiving cell sums thousands of EPSPs and IPSPs at its axon hillock. It makes one all-or-none decision. Scale all of that up and it becomes a controller. Cortex intends. Cerebellum and basal nuclei refine. The hypothalamus holds set points. The brainstem runs survival reflexes. The autonomic nervous system carries it out. It adjusts the ratio of sympathetic to parasympathetic tone. That defends temperature, osmolality and arterial pressure minute by minute.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Resting membrane potential</td><td>The steady voltage across a resting excitable membrane, about -70 mV in a neuron. K<sup>+</sup> leaking out makes most of it, on gradients the pump keeps up.</td></tr>
+<tr><td>Nernst equation</td><td>E = (61/z) &times; log([out]/[in]) mV at 37 &deg;C. It is the voltage at which one ion is balanced and stops moving on net.</td></tr>
+<tr><td>Goldman equation</td><td>A weighted prediction of membrane voltage when several ions contribute. Each ion counts as much as the membrane lets it through.</td></tr>
+<tr><td>Threshold</td><td>The membrane voltage near -55 mV where inward Na<sup>+</sup> current beats outward K<sup>+</sup> current. Past it, an action potential is certain.</td></tr>
+<tr><td>All-or-none</td><td>Any stimulus above threshold makes an action potential of the same size. Intensity is coded by frequency and recruitment instead.</td></tr>
+<tr><td>Inactivation gate</td><td>The slower second gate of the voltage-gated Na<sup>+</sup> channel. When it shuts, the upstroke ends and the absolute refractory period begins.</td></tr>
+<tr><td>Absolute refractory period</td><td>The stretch of time when no stimulus can trigger another action potential. Na<sup>+</sup> channels are inactivated.</td></tr>
+<tr><td>Saltatory conduction</td><td>Travel that rebuilds the impulse only at nodes of Ranvier and leaps the myelinated internodes. It raises speed and lowers ion cost.</td></tr>
+<tr><td>Synaptic delay</td><td>The 0.5&ndash;1 ms a synapse needs. It turns an electrical signal into a chemical one and back. It is the slow step in any reflex arc.</td></tr>
+<tr><td>EPSP / IPSP</td><td>Graded postsynaptic voltage changes. An EPSP moves the cell toward threshold. An IPSP moves it away.</td></tr>
+<tr><td>Summation</td><td>Adding postsynaptic potentials together to reach threshold at the axon hillock. It happens over time (temporal) or across synapses (spatial).</td></tr>
+<tr><td>Ionotropic vs metabotropic</td><td>Receptors that are ion channels themselves act fast, in milliseconds. G protein&ndash;coupled receptors work through second messengers, so they are slower, amplified and longer lasting.</td></tr>
+<tr><td>Homunculus</td><td>The body mapped across motor and sensory cortex. Each part gets space by how densely it is supplied with nerves. Size does not matter.</td></tr>
+<tr><td>Cerebral perfusion pressure</td><td>CPP = MAP &minus; ICP. It is the true driving pressure for brain blood flow, normally kept above 60 mmHg.</td></tr>
+<tr><td>Autoregulation</td><td>Arterioles adjusting their own diameter. That holds cerebral blood flow near constant across a MAP of roughly 60&ndash;160 mmHg.</td></tr>
+<tr><td>Monro&ndash;Kellie doctrine</td><td>Brain, blood and CSF fill a fixed cranial volume. If one compartment grows, another must give way or intracranial pressure rises.</td></tr>
+<tr><td>Blood&ndash;brain barrier</td><td>A capillary barrier of tight junctions with astrocyte support. It admits gases, lipid-soluble molecules and transported glucose. It excludes most solutes and drugs.</td></tr>
+<tr><td>Dual innervation and tone</td><td>Most organs get opposing sympathetic and parasympathetic input, and both fire all the time. Control is a shift in ratio, not an on/off switch.</td></tr>
+<tr><td>Adrenal medulla</td><td>A modified sympathetic ganglion. Its chromaffin cells release about 80% epinephrine and 20% norepinephrine into blood. That makes sympathetic effects last longer.</td></tr>
+<tr><td>Baroreceptor reflex</td><td>A negative feedback loop. Carotid and aortic stretch receptors, the medulla, and autonomic effectors work together. They defend mean arterial pressure beat to beat.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">Block the Na<sup>+</sup>/K<sup>+</sup> ATPase. Why does the membrane potential fade over minutes instead of collapsing at once?</div><div class="ans">The pump makes only about -3 to -5 mV of voltage directly. The rest of the resting potential comes from ion gradients that are already in place. Those gradients work through K<sup>+</sup> leak channels. They persist for a while after the pump stops. They only run down slowly as ions leak. So the voltage fades as the gradients fade. It does not disappear the moment the pump is blocked.</div></div>
+
+<div class="qq"><div class="q">A patient&rsquo;s serum potassium rises from 4.0 to 7.5 mEq/L. What happens to the resting membrane potential? What happens to excitability?</div><div class="ans">Raising extracellular K<sup>+</sup> makes E<sub>K</sub> less negative. So the resting potential depolarizes toward threshold. At first that makes the cell more excitable. But the depolarization is sustained. It holds voltage-gated Na<sup>+</sup> channels in the inactivated state. So the cell becomes less and less able to fire. That is why severe hyperkalemia causes conduction block and cardiac arrest rather than simple hyperactivity.</div></div>
+
+<div class="qq"><div class="q">The action potential peaks near +30 mV. Why does it not reach E<sub>Na</sub> at +60 mV?</div><div class="ans">Because Na<sup>+</sup> permeability never gets the membrane to itself. Voltage-gated Na<sup>+</sup> channels start inactivating while voltage-gated K<sup>+</sup> channels are opening. So outward K<sup>+</sup> current fights inward Na<sup>+</sup> current. The membrane never settles at E<sub>Na</sub>. The peak is the highest point reached before the two currents cross over.</div></div>
+
+<div class="qq"><div class="q">Why is the action potential upstroke positive feedback? And why does physiology allow it here?</div><div class="ans">Depolarization opens Na<sup>+</sup> channels. Na<sup>+</sup> entry causes more depolarization. That opens more channels. The output amplifies the input. Physiology allows it because the event is meant to be explosive, complete and self-stopping. Na<sup>+</sup> channel inactivation ends the loop within about a millisecond, whatever the stimulus does. Positive feedback is safe only when a built-in stop exists.</div></div>
+
+<div class="qq"><div class="q">A stimulus twice as strong makes an action potential of the same size. So how does the nervous system report that the stimulus was stronger?</div><div class="ans">Two ways. One is frequency coding. The neuron fires more action potentials per second. The refractory period sets the ceiling. The other is population coding. More afferent fibers are recruited, including ones with higher thresholds. Intensity rides in the pattern and the number of identical signals. Signal size never changes.</div></div>
+
+<div class="qq"><div class="q">Why does demyelination slow or block conduction? And why do multiple sclerosis symptoms often get worse in a hot bath?</div><div class="ans">Myelin raises membrane resistance and lowers capacitance. So local current reaches the next node still strong enough to fire it. Strip the myelin and current leaks across the internode. It may arrive below threshold, so conduction slows or fails. Heat makes it worse. It shortens how long Na<sup>+</sup> channels stay open. That eats into a safety factor that was already thin. Borderline fibers then stop conducting. That is the basis of Uhthoff phenomenon.</div></div>
+
+<div class="qq"><div class="q">Extracellular calcium is very low. Why does synaptic transmission fail even though the axon still conducts normally?</div><div class="ans">Vesicle exocytosis needs Ca<sup>2+</sup> to enter through voltage-gated channels at the terminal. Ca<sup>2+</sup> binding to synaptotagmin is what triggers SNARE-mediated fusion. Lower the outside concentration and the driving force for entry falls. Less transmitter is released. The postsynaptic potential then shrinks below the level needed to fire. Conduction along the axon is unaffected.</div></div>
+
+<div class="qq"><div class="q">A single EPSP is about 1 mV, but the neuron needs 15 mV of depolarization. How does it ever fire?</div><div class="ans">By summation. Temporal summation stacks rapid, back-to-back EPSPs from one input before each decays. Spatial summation adds currents from many synapses firing at nearly the same moment. All EPSPs minus all IPSPs is read at the axon hillock. The hillock has the lowest threshold. It has the highest density of voltage-gated Na<sup>+</sup> channels.</div></div>
+
+<div class="qq"><div class="q">A patient has intention tremor, dysmetria and a wide-based gait, but full strength. Where is the lesion? Why is there no weakness?</div><div class="ans">The cerebellum. It does not initiate movement. It compares the intended command against feedback from the body. Then it issues corrections in real time. Lose that comparator and movement becomes inaccurate and clumsy. Corticospinal output is still intact, so strength is preserved. Cerebellar output crosses twice, so the deficits appear on the same side as the lesion.</div></div>
+
+<div class="qq"><div class="q">A patient has MAP 80 mmHg and ICP 25 mmHg. Work out the cerebral perfusion pressure and say what it means.</div><div class="ans">CPP = MAP &minus; ICP = 80 &minus; 25 = 55 mmHg. That is below the usual target of 60 mmHg. It is also near the lower limit of autoregulation. Below that limit, cerebral blood flow simply follows pressure. It will fall with any further drop in MAP or rise in ICP. That risks ischemia. Management aims to raise MAP, lower ICP, or both.</div></div>
+
+<div class="qq"><div class="q">Name each part of the baroreceptor reflex when a person stands up.</div><div class="ans">Regulated variable: mean arterial pressure. Sensors: stretch receptors in the carotid sinus (CN IX) and the aortic arch (CN X). Integrator: the medullary cardiovascular center. Effectors: cardiac sympathetic and vagal fibers, vascular sympathetic fibers, and the adrenal medulla. Response: stretch falls, so afferent firing falls. Vagal tone is withdrawn and sympathetic tone rises. Heart rate and contractility rise through &beta;1. Vascular resistance rises through &alpha;1. Pressure is restored.</div></div>
+
+<div class="qq"><div class="q">A non-selective beta blocker risks bronchospasm. A &beta;1-selective agent usually does not. Why?</div><div class="ans">Bronchiolar smooth muscle relaxes through &beta;2 receptors. Heart rate and contractility run through &beta;1. A non-selective blocker occupies both. That removes &beta;2-mediated bronchodilation and lets cholinergic bronchoconstriction show through. A &beta;1-selective agent slows the heart while leaving airway &beta;2 largely free. Selectivity is relative, though, and it fades at higher doses.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch05.html"><span class="k">Previous</span>&larr; Muscle Tissue and Nervous</a>
+        <a class="next" href="ch07.html"><span class="k">Next</span>Special Senses &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

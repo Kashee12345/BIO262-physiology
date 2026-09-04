@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hemostasis: An Amplifier With Brakes</title>
+<meta name="description" content="Cut a vessel, then take away platelets, von Willebrand factor, clotting factors or the endothelial brakes and watch the thrombin burst either seal the leak, fail to form, or run away into disseminated coagulation.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.brake.on{background:var(--green);border-color:var(--green);}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.pill{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:4px;}
+.pill.normal{background:#fff;color:var(--green);border:1px solid var(--green);}
+.pill.high{background:var(--coral);color:#fff;}
+.pill.low{background:var(--blue);color:#fff;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.row{display:flex;gap:9px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.06);}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+#stage{border-radius:12px;padding:11px 14px;margin-bottom:12px;color:#fff;font-weight:800;font-size:15px;background:var(--teal);transition:background .3s;}
+#stage small{display:block;font-weight:500;font-size:12.2px;opacity:.94;margin-top:2px;}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.6;}
+.eq b{color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch09.html">&larr; Module 9</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 9</div>
+  <h1>Hemostasis: An Amplifier With Brakes</h1>
+  <div class="intro">Intact endothelium is actively anti-thrombotic, so clotting begins as the <b>removal of an inhibition</b> plus the exposure of a trigger. What follows is genuine positive feedback &mdash; activated platelets release ADP and thromboxane A&#8322; that activate more platelets; thrombin activates factors V, VIII and XI and makes more thrombin. Cut the vessel below, then take away one component at a time and watch the burst fail, or take away the brakes and watch it refuse to stop.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Drugs and deficiencies</div>
+      <div class="chips" id="drugs"></div>
+      <div class="lbl">Endothelial and circulating brakes &mdash; click to switch off</div>
+      <div class="chips" id="brakes"></div>
+      <div class="sl"><label for="sPlt">Platelet count <span class="v" id="vPlt">300,000/&micro;L</span></label>
+        <input type="range" id="sPlt" min="0" max="500" value="300" step="5" aria-label="Platelet count in thousands per microliter"></div>
+      <div class="sl"><label for="sFib">Fibrinogen <span class="v" id="vFib">300 mg/dL</span></label>
+        <input type="range" id="sFib" min="0" max="500" value="300" step="10" aria-label="Plasma fibrinogen in milligrams per deciliter"></div>
+      <div class="sl"><label for="sVK">Vitamin-K factors II, VII, IX, X <span class="v" id="vVK">100%</span></label>
+        <input type="range" id="sVK" min="2" max="120" value="100" step="1" aria-label="Activity of vitamin K dependent clotting factors, percent of normal"></div>
+      <div class="sl"><label for="sVIII">Factor VIII &amp; the intrinsic arm <span class="v" id="vVIII">100%</span></label>
+        <input type="range" id="sVIII" min="1" max="120" value="100" step="1" aria-label="Factor eight and intrinsic pathway activity, percent of normal"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bCut">&#9986; Cut the vessel</button>
+        <button type="button" class="btn" id="bReset">Reset</button>
+      </div>
+      <div class="hint" id="dHint">Aspirin irreversibly acetylates cyclooxygenase, so an anucleate platelet cannot make new enzyme and loses thromboxane A&#8322; for its whole 8 to 10 day life. That is the mechanistic reason one low-dose tablet has a multi-day effect.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div id="stage">Vessel intact<small>Endothelium is presenting prostacyclin, nitric oxide, heparan sulfate and thrombomodulin. Nothing is happening, on purpose.</small></div>
+      <svg viewBox="0 0 520 150" role="img" aria-label="Cross-section of an injured vessel showing vascular spasm, a growing platelet plug and a fibrin mesh" id="vess"></svg>
+      <canvas id="cv" width="640" height="240" aria-label="Time course of platelet activation, thrombin generation and fibrin formation over ten minutes"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--blue)"></i>Activated platelets</span>
+        <span><i style="background:var(--coral)"></i>Thrombin</span>
+        <span><i style="background:var(--purple)"></i>Fibrin mesh</span>
+        <span><i style="background:var(--gold)"></i>Bleeding rate</span>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Time to plug</div><div class="v" id="oPlug">&mdash;</div><div class="u">seconds</div></div>
+        <div class="lab"><div class="k">Time to stable clot</div><div class="v" id="oClot">&mdash;</div><div class="u">seconds</div></div>
+        <div class="lab"><div class="k">Blood lost</div><div class="v" id="oLost">0</div><div class="u">relative units</div></div>
+        <div class="lab"><div class="k">Platelets</div><div class="v" id="oPlt">300</div><div class="u">&times;10&sup3;/&micro;L (150&ndash;450)</div><span class="pill normal" id="pPlt">normal</span></div>
+        <div class="lab"><div class="k">PT / INR</div><div class="v" id="oPT">12.0</div><div class="u">s &middot; INR <span id="oINR">1.0</span></div><span class="pill normal" id="pPT">normal</span></div>
+        <div class="lab"><div class="k">aPTT</div><div class="v" id="oPTT">30</div><div class="u">s (25&ndash;35)</div><span class="pill normal" id="pPTT">normal</span></div>
+        <div class="lab"><div class="k">Fibrinogen</div><div class="v" id="oFib">300</div><div class="u">mg/dL (200&ndash;400)</div><span class="pill normal" id="pFib">normal</span></div>
+        <div class="lab"><div class="k">D-dimer</div><div class="v" id="oDD">210</div><div class="u">ng/mL (&lt;500)</div><span class="pill normal" id="pDD">normal</span></div>
+        <div class="lab"><div class="k">Vessel radius</div><div class="v" id="oRad">100</div><div class="u">% &middot; flow <span id="oFlow">100</span>%</div></div>
+      </div>
+      <div class="verdict" id="verd">Press <b>Cut the vessel</b> to start.<small>Then change one thing at a time and cut again. The lab panel updates to the values that combination of drugs and deficiencies would actually produce.</small></div>
+      <div class="eq" id="calc"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#333').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), PURPLE = C('purple'), GOLD = C('gold'), LINE = C('line'), MUTED = C('muted');
+
+  var DT = 0.5, TMAX = 600;
+
+  var DRUGS = [
+    { id:'none', n:'No drug', h:'Baseline. Subendothelial collagen and tissue factor are exposed, endothelin and injured smooth muscle produce vascular spasm within seconds, and the amplifier runs.' },
+    { id:'asa', n:'Aspirin', h:'Cyclooxygenase is irreversibly acetylated, so thromboxane A&#8322; is gone for the platelet&rsquo;s 8 to 10 day life. The ADP arm still works, so the plug still forms &mdash; more slowly and less densely. Platelet count and both clotting times are untouched, which is why routine coagulation labs never detect aspirin.' },
+    { id:'clop', n:'ADP-receptor blocker', h:'The other half of the platelet positive-feedback loop. Blocking ADP recruitment leaves thromboxane intact, so again the plug is slower and looser but the cascade is untouched.' },
+    { id:'hep', n:'Heparin', h:'Heparin binds antithrombin III and accelerates its inactivation of thrombin and factor Xa roughly a thousand-fold. It acts on protein already in the blood, so the effect is immediate &mdash; and it shows up on the aPTT.' },
+    { id:'warf', n:'Warfarin', h:'Vitamin K epoxide reductase is blocked, so newly made factors II, VII, IX and X (and proteins C and S) cannot be carboxylated and cannot bind calcium. Already-circulating factors keep working until cleared &mdash; half-lives from about 6 hours (VII) to 60 hours (II) &mdash; which is the 2 to 3 day delay.' },
+    { id:'vwd', n:'von Willebrand disease', h:'The molecular bridge from platelet GPIb to subendothelial collagen is missing. Adhesion fails specifically under high shear, so bleeding is mucosal and cutaneous, in small high-flow vessels.' },
+    { id:'hemA', n:'Hemophilia A (factor VIII)', h:'The intrinsic amplifying arm is crippled. The platelet plug forms normally &mdash; primary hemostasis is fine &mdash; but it is never converted into a durable fibrin clot, so bleeding is delayed and deep, into joints and muscle. aPTT is markedly prolonged; PT is normal.' },
+    { id:'itp', n:'Severe thrombocytopenia', h:'Below about 20,000/&micro;L bleeding becomes spontaneous. Set the platelet slider yourself and watch the adhesion seed and the feedback gain both collapse.' },
+    { id:'lyse', n:'Thrombolytic (tPA)', h:'Plasminogen is already trapped inside the fibrin mesh; tissue plasminogen activator converts it to plasmin, which digests fibrin into fragments including D-dimer. Watch the mesh form and then dissolve.' }
+  ];
+
+  var BRAKES = [
+    { id:'pgi', n:'Prostacyclin + NO', h:'Released by the intact endothelium next door. They inhibit platelet aggregation and dilate the vessel, confining the plug to the injured patch.' },
+    { id:'at3', n:'Antithrombin III', h:'Neutralizes thrombin and factor Xa; accelerated about a thousand-fold by endothelial heparan sulfate.' },
+    { id:'pc', n:'Protein C + S', h:'Thrombin bound to thrombomodulin on healthy endothelium activates protein C, which with protein S degrades factors Va and VIIIa. Thrombin that drifts onto healthy endothelium becomes an anticoagulant.' },
+    { id:'fib', n:'Fibrinolysis', h:'Tissue plasminogen activator makes plasmin, which dismantles the mesh once the wall is repaired.' }
+  ];
+
+  var drug = 'none';
+  var brake = { pgi:true, at3:true, pc:true, fib:true };
+  var run = null, timer = null;
+
+  var sPlt = document.getElementById('sPlt'), sFib = document.getElementById('sFib'),
+      sVK = document.getElementById('sVK'), sVIII = document.getElementById('sVIII');
+  var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+
+  function fmt(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  function params(){
+    var plt = parseFloat(sPlt.value), fib = parseFloat(sFib.value),
+        vk = parseFloat(sVK.value) / 100, viii = parseFloat(sVIII.value) / 100;
+    var txa = 1, adp = 1, vwf = 1, at = 1, lyse = 1;
+    if(drug === 'asa') txa = 0.05;
+    if(drug === 'clop') adp = 0.08;
+    if(drug === 'hep'){ at = 2.2; }
+    if(drug === 'warf'){ vk = Math.min(vk, 0.22); }
+    if(drug === 'vwd') vwf = 0.09;
+    if(drug === 'hemA') viii = Math.min(viii, 0.02);
+    if(drug === 'itp') plt = Math.min(plt, 12);
+    if(drug === 'lyse') lyse = 6;
+    if(!brake.at3) at = at * 0.05;
+    if(!brake.pc) vk = Math.min(1.25, vk * 1.35);
+    if(!brake.fib) lyse = 0;
+    var pgi = brake.pgi ? 1 : 0;
+    return { plt:plt, fib:fib, vk:vk, viii:viii, txa:txa, adp:adp, vwf:vwf, at:at, lyse:lyse, pgi:pgi };
+  }
+
+  function simulate(){
+    var p = params();
+    var P = 0, T = 0, F = 0, lost = 0;
+    var out = [], plugT = null, clotT = null, dic = false;
+    var pltF = Math.min(1.6, p.plt / 300);
+    var extrinsic = p.vk, intrinsic = Math.sqrt(Math.max(0.005, p.viii * p.vk));
+    for(var t = 0; t <= TMAX; t += DT){
+      var spasm = 1 - 0.45 * (1 - Math.exp(-t / 2.5)) * Math.exp(-t / 420);
+      var flow = Math.pow(spasm, 4);
+      var seed = 0.020 * p.vwf * pltF * (1 - P);
+      var gain = 0.055 * pltF * (0.55 * p.txa + 0.45 * p.adp) * (1 + 0.6 * T);
+      var damp = brake.pgi ? (1 - 0.35 * (1 - P)) : 1;
+      var dP = (seed + gain * P * (1 - P) * damp) - 0.0006 * P;
+      var init = 0.0016 * extrinsic;
+      var amp = 0.055 * (0.30 * extrinsic + 0.70 * intrinsic) * (0.15 + 0.85 * P);
+      var clear = 0.030 * p.at;
+      var dT = init + amp * T * (1 - T) - clear * T;
+      var pl = (t > 240 ? (t - 240) / 360 : 0) * p.lyse;
+      var dF = 0.020 * T * Math.min(1.4, p.fib / 300) * (1 - F) * Math.max(0.05, p.vk) - 0.0045 * pl * F;
+      P = Math.max(0, Math.min(1, P + dP * DT));
+      T = Math.max(0, Math.min(1, T + dT * DT));
+      F = Math.max(0, Math.min(1, F + dF * DT));
+      var seal = Math.min(1, 0.62 * P + 0.45 * F * (0.25 + 0.75 * P));
+      var bleed = flow * (1 - seal);
+      lost += bleed * DT;
+      if(plugT === null && seal > 0.50) plugT = t;
+      if(clotT === null && F > 0.6 && seal > 0.85) clotT = t;
+      out.push({ t:t, P:P, T:T, F:F, b:bleed, r:spasm });
+    }
+    if(!brake.pgi && !brake.at3 && !brake.pc && T > 0.8) dic = true;
+    return { s:out, plugT:plugT, clotT:clotT, lost:lost, dic:dic, p:p, endP:P, endT:T, endF:F };
+  }
+
+  function labs(r){
+    var p = r.p;
+    var plt = p.plt, fib = p.fib;
+    var ext = Math.max(0.02, p.vk);
+    var intr = Math.max(0.02, Math.sqrt(p.viii * p.vk));
+    if(r.dic){
+      /* Consumption coagulopathy: platelets, fibrinogen and factors are all spent. */
+      plt = Math.max(8, plt * 0.22);
+      fib = Math.max(20, fib * 0.25);
+      ext = ext * 0.32; intr = intr * 0.32;
+    }
+    var pt = 12 * Math.pow(1 / ext, 0.55);
+    var inr = Math.pow(pt / 12, 1.2);
+    var ptt = 30 * Math.pow(1 / intr, 0.5);
+    if(drug === 'hep') ptt = ptt * 1.9;
+    var dd = 210 + 260 * r.endF * (brake.fib ? 1 : 0.15) + (drug === 'lyse' ? 2800 : 0) + (r.dic ? 5400 : 0);
+    return { plt:plt, fib:fib, pt:pt, inr:inr, ptt:ptt, dd:dd };
+  }
+
+  function pill(el, v, lo, hi){
+    el.className = 'pill ' + (v < lo ? 'low' : (v > hi ? 'high' : 'normal'));
+    el.textContent = v < lo ? 'low' : (v > hi ? 'high' : 'normal');
+  }
+
+  function drawVessel(f){
+    var v = document.getElementById('vess');
+    var r = f ? f.r : 1, P = f ? f.P : 0, F = f ? f.F : 0;
+    var cy = 75, half = 34 * r;
+    var h = '';
+    h += '<rect x="0" y="' + (cy - half - 13) + '" width="520" height="13" rx="3" fill="' + TEALDK + '" opacity="0.30"></rect>';
+    h += '<rect x="0" y="' + (cy + half) + '" width="520" height="13" rx="3" fill="' + TEALDK + '" opacity="0.30"></rect>';
+    h += '<rect x="0" y="' + (cy - half) + '" width="520" height="' + (half * 2) + '" fill="' + CORAL + '" opacity="0.16"></rect>';
+    for(var i = 0; i < 9; i++){
+      var x = 20 + i * 56, yy = cy - half + 8 + ((i * 13) % Math.max(6, half * 2 - 16));
+      h += '<circle cx="' + x + '" cy="' + yy + '" r="6" fill="' + CORAL + '" opacity="0.55"></circle>';
+    }
+    h += '<rect x="228" y="' + (cy - half - 15) + '" width="64" height="17" fill="#fff"></rect>';
+    h += '<path d="M228 ' + (cy - half) + ' L292 ' + (cy - half) + '" stroke="' + GOLD + '" stroke-width="3" stroke-dasharray="4 3"></path>';
+    var plugH = 6 + 26 * P, plugW = 26 + 46 * P;
+    h += '<ellipse cx="260" cy="' + (cy - half + plugH * 0.3) + '" rx="' + (plugW / 2) + '" ry="' + plugH + '" fill="' + BLUE + '" opacity="' + (0.25 + 0.6 * P) + '"></ellipse>';
+    if(F > 0.02){
+      h += '<g stroke="' + PURPLE + '" stroke-width="1.6" opacity="' + (0.25 + 0.7 * F) + '">';
+      for(var k = 0; k < 9; k++){
+        var x1 = 226 + k * 9, y1 = cy - half - 4, y2 = cy - half + plugH * 1.5;
+        h += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + (x1 + 10) + '" y2="' + y2 + '"></line>';
+        h += '<line x1="' + (x1 + 10) + '" y1="' + y1 + '" x2="' + x1 + '" y2="' + y2 + '"></line>';
+      }
+      h += '</g>';
+    }
+    h += '<text x="260" y="' + (cy + half + 26) + '" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10.5" font-weight="800" fill="' + MUTED + '">lumen radius ' + Math.round(r * 100) + '% of resting &middot; flow ' + Math.round(Math.pow(r, 4) * 100) + '% (r&#8308;)</text>';
+    h += '<text x="10" y="18" font-family="Inter,system-ui,sans-serif" font-size="10.5" font-weight="800" fill="' + TEALDK + '">tunica media &mdash; vascular spasm</text>';
+    v.innerHTML = h;
+  }
+
+  function plot(res, upto){
+    var w = cv.clientWidth || 640, hh = 240, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = hh * dpr; cv.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, hh);
+    var L = 34, R = 10, T = 10, B = 26, pw = w - L - R, ph = hh - T - B;
+    function X(t){ return L + t / TMAX * pw; }
+    function Y(v){ return T + ph - Math.max(0, Math.min(1, v)) * ph; }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.42)'; ctx.textAlign = 'right';
+    for(var i = 0; i <= 4; i++){
+      var y = T + ph - i / 4 * ph;
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+      ctx.fillText(String(i * 25) + '%', L - 5, y + 3);
+    }
+    ctx.textAlign = 'center';
+    for(var t2 = 0; t2 <= 600; t2 += 120){ ctx.fillText(Math.round(t2 / 60) + ' min', X(t2), hh - 8); }
+    if(!res) return;
+    var n = Math.min(res.s.length, upto);
+    function line(key, col, wd){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      for(var i = 0; i < n; i++){
+        var pt = res.s[i], y = Y(pt[key]);
+        if(i === 0) ctx.moveTo(X(pt.t), y); else ctx.lineTo(X(pt.t), y);
+      }
+      ctx.stroke();
+    }
+    line('b', GOLD, 1.8);
+    line('P', BLUE, 2.3);
+    line('F', PURPLE, 2.3);
+    line('T', CORAL, 3);
+  }
+
+  function stage(f, res){
+    var el = document.getElementById('stage'), t = f.t;
+    var txt, sub, col = TEAL;
+    if(t < 12){ txt = '1 &middot; Vascular spasm'; sub = 'Endothelin and injured smooth muscle narrow the vessel within seconds. Radius is ' + Math.round(f.r * 100) + ' percent of resting, and because resistance goes as 1/r&#8308;, flow is already down to ' + Math.round(Math.pow(f.r, 4) * 100) + ' percent.'; col = GOLD; }
+    else if(f.P < 0.55){ txt = '2 &middot; Platelet plug &mdash; positive feedback building'; sub = 'von Willebrand factor bridges GPIb to exposed collagen; adhesion activates the platelet, which degranulates ADP and makes thromboxane A&#8322;, recruiting more platelets. The product of the reaction is accelerating the reaction.'; col = BLUE; }
+    else if(f.F < 0.45){ txt = '3 &middot; Thrombin burst'; sub = 'Tissue factor with factor VII activates factor X; prothrombinase converts prothrombin to thrombin, and thrombin feeds back on factors V, VIII and XI. A small stimulus is producing a burst, not a trickle.'; col = CORAL; }
+    else if(t < 420 || !brake.fib){ txt = '4 &middot; Fibrin mesh and clot retraction'; sub = 'Thrombin cleaves fibrinogen to fibrin and activates factor XIII, which covalently cross-links the strands. Trapped red cells make the clot red; platelet actin and myosin then pull the wound edges together and squeeze out serum.'; col = PURPLE; }
+    else { txt = '5 &middot; Fibrinolysis'; sub = 'Endothelial tissue plasminogen activator converts the plasminogen already trapped in the mesh into plasmin, which digests fibrin into fragments including D-dimer.'; col = GREEN; }
+    el.style.background = col;
+    el.innerHTML = txt + '<small>' + sub + '</small>';
+  }
+
+  function report(res){
+    var lb = labs(res);
+    document.getElementById('oPlug').textContent = res.plugT === null ? 'never' : Math.round(res.plugT);
+    document.getElementById('oClot').textContent = res.clotT === null ? 'never' : Math.round(res.clotT);
+    document.getElementById('oLost').textContent = Math.round(res.lost);
+    document.getElementById('oPlt').textContent = Math.round(lb.plt);
+    document.getElementById('oPT').textContent = fmt(lb.pt);
+    document.getElementById('oINR').textContent = fmt(lb.inr, 1);
+    document.getElementById('oPTT').textContent = Math.round(lb.ptt);
+    document.getElementById('oFib').textContent = Math.round(lb.fib);
+    document.getElementById('oDD').textContent = Math.round(lb.dd);
+    pill(document.getElementById('pPlt'), lb.plt, 150, 450);
+    pill(document.getElementById('pPT'), lb.pt, 11, 13);
+    pill(document.getElementById('pPTT'), lb.ptt, 25, 35);
+    pill(document.getElementById('pFib'), lb.fib, 200, 400);
+    pill(document.getElementById('pDD'), lb.dd, 0, 500);
+
+    var v = document.getElementById('verd'), cls = 'verdict', head, sub;
+    var brakesOff = (!brake.pgi ? 1 : 0) + (!brake.at3 ? 1 : 0) + (!brake.pc ? 1 : 0) + (!brake.fib ? 1 : 0);
+    if(res.dic){
+      cls += ' bad'; head = 'The amplifier has escaped &mdash; disseminated intravascular coagulation';
+      sub = 'With the brakes off, thrombin is no longer confined to the injured patch. Microthrombi form everywhere, consuming platelets (down to ' + Math.round(lb.plt) + '), consuming fibrinogen (down to ' + Math.round(lb.fib) + ' mg/dL) and generating a D-dimer of ' + Math.round(lb.dd) + '. The patient now clots and bleeds at the same time. This is exactly why positive feedback is only safe where an explosive, self-terminating event is wanted.';
+    } else if(res.plugT === null){
+      cls += ' bad'; head = 'No seal formed';
+      sub = 'The leak was never closed in ten minutes. Look at which trace never rose: platelets (blue) failing means primary hemostasis &mdash; count, von Willebrand factor or thromboxane. Thrombin (red) failing means secondary hemostasis &mdash; the vitamin-K factors or the intrinsic arm.';
+    } else if(res.clotT === null){
+      cls += ' warn'; head = 'Plug formed, but it was never converted into a durable clot';
+      sub = 'Primary hemostasis worked &mdash; the plug sealed at ' + Math.round(res.plugT) + ' s &mdash; but fibrin never reached full strength. A platelet plug alone is fragile, which is why this pattern gives delayed, deep re-bleeding rather than immediate oozing. PT ' + fmt(lb.pt) + ' s, aPTT ' + Math.round(lb.ptt) + ' s tells you which arm.';
+    } else if(drug === 'lyse'){
+      cls += ' cool'; head = 'Formed, then deliberately dissolved';
+      sub = 'The plug sealed at ' + Math.round(res.plugT) + ' s and the mesh cross-linked at ' + Math.round(res.clotT) + ' s &mdash; then plasminogen, already trapped inside the fibrin, was converted to plasmin and the mesh came apart. Blood lost rose to ' + Math.round(res.lost) + ' relative units against ' + '15' + ' untreated, and D-dimer &mdash; the fragment plasmin leaves behind &mdash; is ' + Math.round(lb.dd) + ' ng/mL. Useful when the clot is in a coronary artery; dangerous when it is sealing a wound.';
+    } else if(res.plugT > 70){
+      cls += ' warn'; head = 'Primary hemostasis is slow';
+      sub = 'The seal took ' + Math.round(res.plugT) + ' s against about 40 s untreated, and the stable clot ' + Math.round(res.clotT) + ' s. The platelet trace is the one that lagged, so the defect is adhesion, count or thromboxane &mdash; the pattern that gives immediate mucosal and cutaneous oozing rather than deep bleeding. Blood lost ' + Math.round(res.lost) + ' relative units.';
+    } else if(res.clotT > 320){
+      cls += ' warn'; head = 'Plug on time, fibrin late';
+      sub = 'The platelet plug sealed at ' + Math.round(res.plugT) + ' s &mdash; primary hemostasis is intact &mdash; but the cross-linked mesh did not arrive until ' + Math.round(res.clotT) + ' s, against about 200 s normally. That is the secondary-hemostasis pattern: initial control, then delayed re-bleeding. PT ' + fmt(lb.pt) + ' s and aPTT ' + Math.round(lb.ptt) + ' s tell you which arm of the cascade is responsible.';
+    } else if(brakesOff > 0){
+      cls += ' warn'; head = 'Sealed &mdash; with ' + brakesOff + ' brake' + (brakesOff > 1 ? 's' : '') + ' switched off';
+      sub = 'The leak closed at ' + Math.round(res.plugT) + ' s. Removing brakes does not obviously help here because the clot was going to form anyway; the cost only appears when the reaction has room to spread. Switch all of prostacyclin/NO, antithrombin and protein C off together and cut again.';
+    } else {
+      cls += ' ok'; head = 'Sealed and stabilized';
+      sub = 'Spasm within seconds, plug at ' + Math.round(res.plugT) + ' s (about 40 s with nothing on board), cross-linked fibrin clot at ' + Math.round(res.clotT) + ' s, then fibrinolysis begins to dismantle it. ' +
+            (drug === 'asa' || drug === 'clop'
+              ? 'Note what did <b>not</b> change: platelet count, PT and aPTT are all normal. An antiplatelet drug halves the gain of the platelet feedback loop and is completely invisible to routine coagulation tests &mdash; you have to ask the patient what they take.'
+              : 'All five labs sit inside their reference ranges, because normal hemostasis is invisible to normal tests.');
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+
+    document.getElementById('calc').innerHTML =
+      '<b>PT ' + fmt(lb.pt) + ' s (11&ndash;13), INR ' + fmt(lb.inr, 1) + '</b> reads the extrinsic and common pathway &mdash; factor VII first. ' +
+      '<b>aPTT ' + Math.round(lb.ptt) + ' s (25&ndash;35)</b> reads the intrinsic and common pathway &mdash; VIII, IX, XI, XII. ' +
+      'A long PT with a normal aPTT points to VII or early warfarin; a long aPTT with a normal PT points to the intrinsic arm or heparin; both long points to the common pathway, severe liver disease or consumption.';
+  }
+
+  function start(){
+    if(timer){ cancelAnimationFrame(timer); timer = null; }
+    var res = simulate();
+    var i = 0;
+    (function tick(){
+      i = Math.min(res.s.length, i + 14);
+      var f = res.s[i - 1];
+      drawVessel(f); plot(res, i); stage(f, res);
+      document.getElementById('oRad').textContent = Math.round(f.r * 100);
+      document.getElementById('oFlow').textContent = Math.round(Math.pow(f.r, 4) * 100);
+      if(i < res.s.length) timer = requestAnimationFrame(tick);
+      else { timer = null; report(res); }
+    })();
+  }
+
+  var dEl = document.getElementById('drugs');
+  DRUGS.forEach(function(d, idx){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (idx === 0 ? ' on' : ''); b.textContent = d.n;
+    b.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      drug = d.id;
+      [].forEach.call(dEl.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      document.getElementById('dHint').innerHTML = d.h;
+      start();
+    });
+    dEl.appendChild(b);
+  });
+
+  var bEl = document.getElementById('brakes');
+  BRAKES.forEach(function(k){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip brake on'; b.textContent = k.n;
+    b.setAttribute('aria-pressed', 'true');
+    b.addEventListener('click', function(){
+      brake[k.id] = !brake[k.id];
+      b.classList.toggle('on', brake[k.id]);
+      b.setAttribute('aria-pressed', brake[k.id] ? 'true' : 'false');
+      b.textContent = brake[k.id] ? k.n : k.n + ' — OFF';
+      document.getElementById('dHint').innerHTML = k.h;
+      start();
+    });
+    bEl.appendChild(b);
+  });
+
+  function sync(){
+    document.getElementById('vPlt').textContent = (parseFloat(sPlt.value) * 1000).toLocaleString() + '/µL';
+    document.getElementById('vFib').textContent = sFib.value + ' mg/dL';
+    document.getElementById('vVK').textContent = sVK.value + '%';
+    document.getElementById('vVIII').textContent = sVIII.value + '%';
+  }
+  [sPlt, sFib, sVK, sVIII].forEach(function(el){ el.addEventListener('input', function(){ sync(); }); });
+  [sPlt, sFib, sVK, sVIII].forEach(function(el){ el.addEventListener('change', function(){ start(); }); });
+
+  document.getElementById('bCut').addEventListener('click', start);
+  document.getElementById('bReset').addEventListener('click', function(){
+    if(timer){ cancelAnimationFrame(timer); timer = null; }
+    drug = 'none'; brake = { pgi:true, at3:true, pc:true, fib:true };
+    sPlt.value = 300; sFib.value = 300; sVK.value = 100; sVIII.value = 100;
+    [].forEach.call(dEl.children, function(c, i){ c.classList.toggle('on', i === 0); c.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); });
+    [].forEach.call(bEl.children, function(c, i){ c.classList.add('on'); c.setAttribute('aria-pressed', 'true'); c.textContent = BRAKES[i].n; });
+    sync(); drawVessel(null); plot(null, 0);
+    document.getElementById('stage').style.background = TEAL;
+    document.getElementById('stage').innerHTML = 'Vessel intact<small>Endothelium is presenting prostacyclin, nitric oxide, heparan sulfate and thrombomodulin. Nothing is happening, on purpose.</small>';
+    document.getElementById('verd').className = 'verdict';
+    document.getElementById('verd').innerHTML = 'Press <b>Cut the vessel</b> to start.<small>Then change one thing at a time and cut again.</small>';
+  });
+  window.addEventListener('resize', function(){ plot(null, 0); });
+
+  sync(); drawVessel(null); plot(null, 0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 9 — Blood &amp; Blood Vessels | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 9 — Blood &amp; Blood Vessels</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit4">
+
+<h2>Module 9 &nbsp;•&nbsp; Blood &amp; Blood Vessels &nbsp;<span class="chip">Exam 4</span></h2>
+<div class="box obj"><ol><li>Identify the physiologic role of whole blood and its components.</li><li>Identify the functions of erythrocytes, leukocytes and platelets.</li><li>Describe the physiology behind vascular regulation.</li><li>Describe the physiology of hemostasis.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Hemostasis: <b>1 vascular spasm → 2 platelet plug → 3 coagulation</b>.</li><li>Intrinsic and extrinsic pathways converge at <b>Factor X</b>; thrombin then converts fibrinogen to fibrin.</li><li>Neutrophils = first responders. Eosinophils = parasites/allergy. Basophils = histamine.</li><li>Arterioles are the main resistance vessels and set blood pressure.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">What blood is for</h4><div class="read">Blood transports, regulates and protects. It carries oxygen, nutrients, hormones and waste; it regulates
+temperature by shifting where blood flows and helps hold pH steady; and it protects through immunity and
+clotting.<br><br>
+It is about 55% <b>plasma</b> and 45% cells. The main plasma protein is <b>albumin</b>, and its job is
+osmotic: it holds fluid inside the vessel. Lose albumin and fluid leaks into tissue — edema.</div>
+<h4 class="topic">The cells, and what each one is for</h4><div class="read"><b>Erythrocytes</b> carry oxygen on hemoglobin. They lose their nucleus to make room, which maximizes
+capacity but caps their lifespan at about 120 days.<br><br>
+<b>Leukocytes</b> defend, and each has a speciality. <b>Neutrophils</b> are the most numerous and arrive
+first at bacterial infection. <b>Eosinophils</b> handle parasites and allergy. <b>Basophils</b> release
+histamine and drive inflammation. <b>Lymphocytes</b> run adaptive immunity. <b>Monocytes</b> leave the blood
+and become tissue macrophages.<br><br>
+<b>Platelets</b> form the initial plug and provide the surface on which clotting happens.</div>
+<h4 class="topic">Vessels and pressure</h4><div class="read">Every vessel has three layers, but the middle one does the work: the <b>tunica media</b> is smooth muscle,
+and its contraction or relaxation sets vessel diameter. Narrow the vessel and resistance rises, so pressure
+rises. Widen it and pressure falls.<br><br>
+<b>Arterioles</b> matter most here — they have the most muscle relative to their size, so they are the main
+resistance vessels and the main determinant of blood pressure. Capillaries are one cell thick for exchange.
+Veins are low-pressure and need <b>valves</b> plus skeletal muscle compression to push blood back uphill.</div>
+<h4 class="topic">Stopping bleeding, in three steps</h4><div class="read"><b>One: vascular spasm.</b> The vessel constricts immediately and cuts flow.<br>
+<b>Two: platelet plug.</b> Von Willebrand factor bridges platelets onto exposed collagen and they aggregate
+into a temporary seal.<br>
+<b>Three: coagulation.</b> A cascade converts fibrinogen into fibrin, weaving a mesh that traps cells and
+turns the soft plug into a real clot.<br><br>
+The cascade has two entrances — the <b>intrinsic</b> pathway from damage inside the vessel and the
+<b>extrinsic</b> pathway from tissue injury outside — and they converge at <b>Factor X</b>. From there it is
+one road: Factor X → prothrombin becomes <b>thrombin</b> → thrombin converts fibrinogen to <b>fibrin</b>.
+Later, plasmin dissolves the clot once the vessel has healed.</div>
+<h4 class="topic">What plasma proteins actually do</h4><div class="read">Blood is roughly 55 percent plasma, and plasma is about 92 percent water — but the small protein fraction, about 7 percent, does most of the specialized work. <b>Albumin</b> is the most abundant, and it generates the <b>colloid osmotic pressure</b> that pulls fluid back into the capillary at its venous end; it also ferries fatty acids, calcium and many drugs.<br><br>
+<b>Globulins</b> come in three families: alpha and beta transport iron, lipids and hormones, while gamma globulins are your <b>antibodies</b>. <b>Fibrinogen</b> is the soluble precursor that thrombin converts into fibrin. All of these except the gamma globulins, which come from plasma cells, are made in the liver — which is why liver failure or severe malnutrition produces edema and easy bleeding at the same time.</div>
+<h4 class="topic">The life and death of a red cell</h4><div class="read">A red cell has no nucleus and no mitochondria — it gave both up for hemoglobin, and that trade leaves it unable to repair itself. So it survives roughly 120 days, then macrophages in the spleen and liver take it apart.<br><br>
+Nothing is wasted. Globin returns to the amino acid pool, iron is carried back on <b>transferrin</b> or stored as ferritin, and the leftover heme ring becomes biliverdin and then <b>bilirubin</b>, which the liver conjugates and excretes in bile. Unconjugated bilirubin is not water soluble and cannot leave in urine, so a failing liver or blocked duct backs it up and yellows skin and sclerae. Replacement is driven by <b>erythropoietin</b> from the kidney whenever oxygen falls — which is why chronic kidney disease causes an anemia that iron alone cannot fix.</div>
+<h4 class="topic">Two pathways into one cascade</h4><div class="read">Vascular spasm comes first and the platelet plug second — coagulation is the third step, and it is what turns a fragile plug into a clot that holds. It has two entry points. The <b>extrinsic pathway</b> starts outside the vessel, when damaged tissue exposes <b>tissue factor</b>, and it works in seconds. The <b>intrinsic pathway</b> starts inside the vessel with contact activation and takes minutes.<br><br>
+Both converge on <b>factor X</b>, the head of the <b>common pathway</b>: activated X builds prothrombinase, which converts prothrombin into <b>thrombin</b>, and thrombin turns soluble fibrinogen into fibrin threads that factor XIII cross-links into a mesh. Factors II, VII, IX and X depend on <b>vitamin K</b> — which is exactly the step warfarin blocks, and why those patients have an INR checked rather than a bleeding time.</div>
+<h4 class="topic">Why blood does not clot everywhere</h4><div class="read">Blood sits against the vessel wall constantly and does not clot, and that takes active work. Intact <b>endothelium</b> is smooth and releases <b>nitric oxide</b> and <b>prostacyclin</b>, which keep platelets from sticking. Circulating <b>antithrombin III</b> inactivates thrombin, <b>heparin</b> from basophils and mast cells accelerates that reaction, and <b>protein C</b> with protein S switches off the amplifying factors.<br><br>
+Once repair is underway, <b>plasminogen</b> trapped inside the clot is converted to <b>plasmin</b> by tissue plasminogen activator, and plasmin digests the fibrin mesh away — <b>fibrinolysis</b>. Clotting is therefore a balance, not a switch, which is why stasis, vessel injury and hypercoagulability — Virchow's triad — can tip a healthy person into a deep vein thrombosis after nothing more dramatic than a long flight.</div>
+<h4 class="topic">How blood pressure is regulated</h4><div class="read">Mean arterial pressure is cardiac output multiplied by <b>systemic vascular resistance</b>. Both can change within seconds, but resistance gives the finest control, and it lives in the <b>arterioles</b>, where slight narrowing raises pressure sharply. That word systemic matters: an artery is named for its direction of flow, not its oxygen, and the pulmonary arteries carry deoxygenated blood through a much lower-pressure circuit.<br><br>
+<b>Baroreceptors</b> in the carotid sinus and aortic arch report stretch to the medulla; when pressure falls they fire less, sympathetic outflow rises, vessels constrict and heart rate climbs. Tissues overrule that order locally — carbon dioxide, potassium and low oxygen dilate their own arterioles. Hormones work over hours instead: <b>RAAS</b>, <b>ADH</b> and <b>ANP</b> adjust volume, which is why an older patient whose baroreflex is blunted by antihypertensives faints on standing.</div>
+<h3>Reference tables</h3>
+<h4>Formed elements</h4><table><tr><th>Element</th><th>Function</th></tr><tr><td>Erythrocyte</td><td>Carries oxygen on hemoglobin</td></tr><tr><td>Leukocyte</td><td>Immune defense</td></tr><tr><td>Platelet</td><td>Hemostasis — forms the plug</td></tr></table>
+<h4>Every leukocyte</h4><table><tr><th>Cell</th><th>Type</th><th>Function</th></tr><tr><td>Neutrophil</td><td>Granulocyte</td><td>First responder; phagocytoses bacteria (most numerous)</td></tr><tr><td>Eosinophil</td><td>Granulocyte</td><td>Parasites and allergic reactions</td></tr><tr><td>Basophil</td><td>Granulocyte</td><td>Releases histamine and heparin</td></tr><tr><td>Lymphocyte</td><td>Agranulocyte</td><td>B cells → antibodies; T cells → cell-mediated immunity</td></tr><tr><td>Monocyte</td><td>Agranulocyte</td><td>Becomes a tissue macrophage</td></tr></table>
+<h4>Vessel layers</h4><table><tr><th>Layer</th><th>Composition</th><th>Function</th></tr><tr><td>Tunica intima</td><td>Endothelium</td><td>Smooth, non-thrombogenic lining</td></tr><tr><td>Tunica media</td><td>Smooth muscle</td><td>Vasoconstriction and vasodilation</td></tr><tr><td>Tunica externa</td><td>Connective tissue</td><td>Anchors and protects</td></tr></table>
+<h4>Hemostasis and coagulation</h4><table><tr><th>Step</th><th>What happens</th></tr><tr><td>1. Vascular spasm</td><td>Vessel constricts immediately, limiting blood loss</td></tr><tr><td>2. Platelet plug</td><td>von Willebrand factor bridges platelets to exposed collagen</td></tr><tr><td>3. Coagulation</td><td>Intrinsic + extrinsic pathways converge at Factor X</td></tr><tr><td>Common pathway</td><td>Factor X → prothrombin becomes thrombin</td></tr><tr><td>Fibrin mesh</td><td>Thrombin converts fibrinogen to fibrin, trapping cells</td></tr><tr><td>Fibrinolysis</td><td>Plasmin dissolves the clot once the vessel heals</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Vascular spasm is the second step of hemostasis."</b> It is <b>first</b>. Platelet plug is second, coagulation third.</li><li><b>"Arteries always carry oxygenated blood."</b> The pulmonary artery carries deoxygenated blood.</li><li><b>"Plasma proteins don't matter."</b> Albumin holds fluid in the vessel. Lose it and you get edema.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 9 — p.98 · Module 9 blood &amp; vessels deck, slide 10 · Module 9 blood &amp; vessels deck, slide 11 · Module 9 blood &amp; vessels deck, slide 13 · Module 9 blood &amp; vessels deck, slide 14 · Module 9 blood &amp; vessels deck, slide 2 · Module 9 blood &amp; vessels deck, slide 3 · Module 9 blood &amp; vessels deck, slide 4 · Module 9 blood &amp; vessels deck, slide 5 · Module 9 blood &amp; vessels deck, slide 6</p>
+<h3>Practice questions <span class="small">(48)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> The three broad functions of blood are:</summary><ol class="opts" type="A"><li class="key">Transport, regulation and protection</li><li>Digestion, absorption, excretion</li><li>Contraction, conduction, secretion</li><li>Filtration, reabsorption, secretion</li><li>Support, movement and mineral storage</li></ol><div class="ans show"><b>Answer: A.</b> Blood transports gases and nutrients, regulates temperature and pH, and protects via immunity and clotting.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q2.</b> Blood contributes to thermoregulation by:</summary><ol class="opts" type="A"><li>Generating heat directly by metabolizing glucose within the plasma itself</li><li class="key">Redistributing heat — dilating skin vessels to lose heat, constricting to conserve it</li><li>Evaporating plasma water through the capillary wall to cool the blood down</li><li>Storing excess heat inside the red cells until it is released in the lungs</li><li>Cooling only the brain, leaving the trunk and limb temperature unchanged</li></ol><div class="ans show"><b>Answer: B.</b> Shifting blood toward or away from the skin surface changes heat loss.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q3.</b> Which formed element transports oxygen?</summary><ol class="opts" type="A"><li>Leukocyte</li><li>Platelet</li><li class="key">Erythrocyte</li><li>Plasma protein</li><li>Megakaryocyte</li></ol><div class="ans show"><b>Answer: C.</b> Red blood cells carry hemoglobin, which binds oxygen.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q4.</b> Which formed element is essential to clotting?</summary><ol class="opts" type="A"><li>Erythrocyte</li><li>Lymphocyte</li><li>Neutrophil</li><li class="key">Platelet</li><li>Monocyte</li></ol><div class="ans show"><b>Answer: D.</b> Platelets form the initial plug and provide the surface for coagulation.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q5.</b> Which leukocyte is the most numerous and acts as the first responder to bacterial infection?</summary><ol class="opts" type="A"><li>Eosinophil</li><li>Basophil</li><li>Lymphocyte</li><li>Monocyte</li><li class="key">Neutrophil</li></ol><div class="ans show"><b>Answer: E.</b> Neutrophils arrive first and phagocytose bacteria.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q6.</b> Which leukocyte responds to parasitic infection and allergic reactions?</summary><ol class="opts" type="A"><li class="key">Eosinophil</li><li>Neutrophil</li><li>Basophil</li><li>Monocyte</li><li>Lymphocyte</li></ol><div class="ans show"><b>Answer: A.</b> Eosinophil counts rise in parasitic disease and allergy.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q7.</b> Which leukocyte releases histamine and heparin?</summary><ol class="opts" type="A"><li>Neutrophil</li><li class="key">Basophil</li><li>Eosinophil</li><li>Lymphocyte</li><li>Monocyte</li></ol><div class="ans show"><b>Answer: B.</b> Basophils drive the inflammatory and allergic response.<span class="ref">Module 9 blood &amp; vessels deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q8.</b> Which leukocyte enters tissue and becomes a macrophage?</summary><ol class="opts" type="A"><li>Neutrophil</li><li>Basophil</li><li class="key">Monocyte</li><li>Eosinophil</li><li>Platelet</li></ol><div class="ans show"><b>Answer: C.</b> Monocytes mature into tissue macrophages that phagocytose and present antigen.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q9.</b> Which cell specifically produces antibodies?</summary><ol class="opts" type="A"><li>Cytotoxic T lymphocyte (killer T cell)</li><li>Neutrophil (segmented granulocyte)</li><li>Tissue macrophage (matured monocyte)</li><li class="key">Plasma cell (activated B lymphocyte)</li><li>Natural killer cell of innate immunity</li></ol><div class="ans show"><b>Answer: D.</b> B cells activate and differentiate into plasma cells, the dedicated antibody factories.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q10.</b> The normal pH range of blood is critical because:</summary><ol class="opts" type="A"><li>Blood pH determines which A, B or Rh antigens are carried on the red cell surface</li><li>Plasma pH sets the number of platelets and white cells the marrow releases</li><li>Blood pH fixes the total volume of plasma that the circulation contains</li><li>Blood pH determines the circulating red cell count and the hematocrit</li><li class="key">Enzymes and proteins denature outside it, and hemoglobin's oxygen binding is disrupted</li></ol><div class="ans show"><b>Answer: E.</b> Protein conformation is pH-dependent, so even small deviations impair many processes.<span class="ref">Module 9 blood &amp; vessels deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q11.</b> A patient with a very low erythrocyte count would most likely experience:</summary><ol class="opts" type="A"><li class="key">Fatigue and shortness of breath from reduced oxygen carriage</li><li>Excessive clotting and deep vein thrombosis formation</li><li>Frequent bacterial infections from loss of phagocytic defense</li><li>Allergic reactions with itching, hives and wheezing</li><li>Hypertension caused by increased blood viscosity</li></ol><div class="ans show"><b>Answer: A.</b> Fewer red cells means less hemoglobin and reduced oxygen delivery — anemia.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q12.</b> A patient on chemotherapy develops a very low neutrophil count. The greatest risk is:</summary><ol class="opts" type="A"><li>Spontaneous bleeding and bruising</li><li class="key">Serious bacterial infection</li><li>Excessive clotting in the veins</li><li>Anemia from red cell destruction</li><li>Severe allergic reactions</li></ol><div class="ans show"><b>Answer: B.</b> Neutropenia removes the first line of antibacterial defense.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q13.</b> Which vessel layer contains smooth muscle and controls vasoconstriction and vasodilation?</summary><ol class="opts" type="A"><li>Tunica intima</li><li>Tunica externa</li><li class="key">Tunica media</li><li>Endothelium</li><li>Basement membrane</li></ol><div class="ans show"><b>Answer: C.</b> The tunica media's smooth muscle sets vessel diameter and therefore resistance.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q14.</b> The tunica intima consists of endothelium and functions to:</summary><ol class="opts" type="A"><li>Contract to narrow the vessel lumen</li><li>Anchor the vessel to the surrounding connective tissue</li><li>Store calcium for muscle contraction</li><li class="key">Provide a smooth, non-thrombogenic lining</li><li>Produce red blood cells for circulation</li></ol><div class="ans show"><b>Answer: D.</b> A smooth intact endothelium prevents inappropriate platelet adhesion.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q15.</b> Arteries differ from veins in that arteries:</summary><ol class="opts" type="A"><li>Carry blood toward the heart and rely on valves to prevent backflow</li><li>Are a single endothelial cell thick to allow diffusion</li><li>Always carry deoxygenated blood back to the right heart</li><li>Have lower pressure and thinner, more distensible walls</li><li class="key">Carry blood away from the heart and have thicker muscular walls</li></ol><div class="ans show"><b>Answer: E.</b> Arteries handle high pulsatile pressure, hence thick walls; veins are low pressure and need valves.<span class="ref">Module 9 blood &amp; vessels deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q16.</b> Veins contain valves in order to:</summary><ol class="opts" type="A"><li class="key">Prevent backflow so blood returns against gravity</li><li>Increase the pressure generated inside the vessel</li><li>Filter clots and debris out of the bloodstream</li><li>Regulate body temperature by changing vessel width</li><li>Allow oxygen and carbon dioxide to be exchanged</li></ol><div class="ans show"><b>Answer: A.</b> Skeletal muscle pumping plus valves drives venous return from the limbs.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q17.</b> Capillaries are ideally suited for exchange because they:</summary><ol class="opts" type="A"><li>Have thick walls of smooth muscle that resist a high pressure</li><li class="key">Are one endothelial cell thick with a very large total surface area</li><li>Contain one-way valves that slow the blood flow for exchange</li><li>Carry blood at the highest pressure found in any vessel type</li><li>Carry only freshly oxygenated blood arriving from the lungs</li></ol><div class="ans show"><b>Answer: B.</b> Minimal diffusion distance and huge surface area maximize exchange.<span class="ref">Module 9 blood &amp; vessels deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q18.</b> Which vessels are the primary regulators of peripheral resistance and blood pressure?</summary><ol class="opts" type="A"><li>Capillaries</li><li>Venules</li><li class="key">Arterioles</li><li>Large veins</li><li>The aorta</li></ol><div class="ans show"><b>Answer: C.</b> Arterioles have proportionally the most smooth muscle relative to lumen size.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q19.</b> Vasoconstriction affects blood pressure by:</summary><ol class="opts" type="A"><li>Lowering it by reducing total peripheral resistance</li><li>Leaving mean arterial pressure completely unchanged</li><li>Lowering cardiac output by slowing the heart rate</li><li class="key">Raising it through increased peripheral resistance</li><li>Increasing vessel diameter and therefore flow</li></ol><div class="ans show"><b>Answer: D.</b> Narrowing the vessel increases resistance to flow, raising arterial pressure.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q20.</b> Vasodilation of systemic arterioles will:</summary><ol class="opts" type="A"><li>Increase blood pressure</li><li>Increase heart rate only</li><li>Halt blood flow completely</li><li>Increase vascular resistance</li><li class="key">Decrease blood pressure</li></ol><div class="ans show"><b>Answer: E.</b> Widening the vessels lowers resistance and therefore pressure.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q21.</b> Autoregulation of blood flow refers to:</summary><ol class="opts" type="A"><li class="key">Local adjustment of blood flow to match a tissue's own metabolic needs</li><li>Central nervous system control of the diameter of every vessel</li><li>Hormonal control of vessel width by circulating epinephrine alone</li><li>The action of the one-way valves found inside the systemic veins</li><li>Formation of a clot to seal a break in the wall of the vessel</li></ol><div class="ans show"><b>Answer: A.</b> Active tissue releases metabolites that cause local vasodilation, increasing its own supply.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q22.</b> During exercise, blood flow to skeletal muscle increases largely because:</summary><ol class="opts" type="A"><li>The heart stops delivering blood to any of the other organs</li><li class="key">Local metabolites cause vasodilation in active muscle beds</li><li>The venous valves close and hold blood in the muscle</li><li>Capillary beds in the muscle close to raise pressure</li><li>Blood viscosity falls sharply during heavy exertion</li></ol><div class="ans show"><b>Answer: B.</b> Local metabolic control redirects flow toward tissue that needs it.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q23.</b> What is the FIRST step of hemostasis?</summary><ol class="opts" type="A"><li>Platelet plug formation</li><li>Coagulation</li><li class="key">Vascular spasm</li><li>Fibrinolysis</li><li>Clot retraction</li></ol><div class="ans show"><b>Answer: C.</b> Immediate smooth muscle constriction narrows the vessel and limits blood loss.<span class="ref">Module 9 blood &amp; vessels deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q24.</b> What is the SECOND step of hemostasis?</summary><ol class="opts" type="A"><li>Immediate vascular spasm</li><li>The coagulation cascade</li><li>Fibrinolysis by plasmin</li><li class="key">Platelet plug formation</li><li>Activation of thrombin</li></ol><div class="ans show"><b>Answer: D.</b> Platelets adhere to exposed collagen and aggregate into a temporary plug.<span class="ref">Module 9 blood &amp; vessels deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q25.</b> What is the THIRD step of hemostasis?</summary><ol class="opts" type="A"><li>Vascular spasm, narrowing the vessel</li><li>Platelet plug formation at the injury</li><li>Fibrinolysis, dissolving the clot</li><li>Vasodilation, widening the vessel</li><li class="key">Coagulation, producing a fibrin mesh</li></ol><div class="ans show"><b>Answer: E.</b> The cascade converts fibrinogen to fibrin, stabilizing the platelet plug into a true clot.<span class="ref">Module 9 blood &amp; vessels deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q26.</b> Von Willebrand factor is essential because it:</summary><ol class="opts" type="A"><li class="key">Bridges platelets to exposed collagen, enabling adhesion</li><li>Converts fibrinogen into the insoluble fibrin mesh</li><li>Dissolves the fibrin clot once healing is complete</li><li>Activates Factor X directly, with no other factors needed</li><li>Constricts the injured vessel to slow blood loss</li></ol><div class="ans show"><b>Answer: A.</b> vWF deficiency impairs step two of hemostasis, producing a bleeding tendency.<span class="ref">Module 9 blood &amp; vessels deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q27.</b> The intrinsic and extrinsic coagulation pathways converge at:</summary><ol class="opts" type="A"><li>Factor II</li><li class="key">Factor X</li><li>Factor VII</li><li>Fibrinogen</li><li>Calcium</li></ol><div class="ans show"><b>Answer: B.</b> Factor X marks the start of the common pathway.<span class="ref">Module 9 blood &amp; vessels deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which enzyme converts fibrinogen into fibrin?</summary><ol class="opts" type="A"><li>Plasmin</li><li>Factor VII</li><li class="key">Thrombin</li><li>Renin</li><li>Trypsin</li></ol><div class="ans show"><b>Answer: C.</b> Thrombin, produced from prothrombin, polymerizes fibrinogen into the fibrin mesh.<span class="ref">Module 9 blood &amp; vessels deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q29.</b> Place in correct order: prothrombin → ? → fibrinogen → ?</summary><ol class="opts" type="A"><li>plasmin; clot lysis</li><li>renin; angiotensin</li><li>Factor VII; Factor X</li><li class="key">thrombin; fibrin</li><li>collagen; platelet plug</li></ol><div class="ans show"><b>Answer: D.</b> Prothrombin becomes thrombin, which converts fibrinogen into fibrin.<span class="ref">Module 9 blood &amp; vessels deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q30.</b> The extrinsic pathway is triggered by:</summary><ol class="opts" type="A"><li>Contact with collagen exposed inside the damaged vessel</li><li>Aggregation of platelets into a temporary plug at the injury site</li><li>A fall in the concentration of calcium in the plasma</li><li>A sustained rise in systemic arterial blood pressure</li><li class="key">Tissue factor released from damaged tissue outside the vessel</li></ol><div class="ans show"><b>Answer: E.</b> External trauma exposes tissue factor, giving the extrinsic pathway its speed.<span class="ref">Module 9 blood &amp; vessels deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q31.</b> Fibrinolysis refers to:</summary><ol class="opts" type="A"><li class="key">Breakdown and removal of a clot once the vessel has healed</li><li>Formation of a stable fibrin clot at the injury site</li><li>Adhesion of platelets to exposed collagen fibers</li><li>Constriction of the vessel immediately after injury</li><li>Production of antibodies against foreign antigens on microbes</li></ol><div class="ans show"><b>Answer: A.</b> Plasmin digests fibrin so the clot does not persist and obstruct flow.<span class="ref">Module 9 blood &amp; vessels deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q32.</b> A patient on warfarin has an elevated bleeding risk because the drug interferes with:</summary><ol class="opts" type="A"><li>Adhesion of platelets to the wall of the injured vessel</li><li class="key">Synthesis of vitamin K-dependent clotting factors</li><li>Vascular spasm of the vessel smooth muscle layer</li><li>Production of red cells in the bone marrow</li><li>Fibrinolysis, the breakdown of fibrin by plasmin</li></ol><div class="ans show"><b>Answer: B.</b> Warfarin blocks vitamin K recycling, reducing functional clotting factors.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q33.</b> Why does severe liver disease often cause a bleeding tendency?</summary><ol class="opts" type="A"><li>The liver stores the body's reserve of platelets</li><li>The liver produces the circulating red blood cells</li><li class="key">Most clotting factors are synthesized in the liver</li><li>The liver stores the vitamin C needed for clotting</li><li>The liver constricts the vessels of the gut wall</li></ol><div class="ans show"><b>Answer: C.</b> Loss of hepatic synthetic function depletes the coagulation factors.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q34.</b> Approximately what percentage of blood volume is plasma?</summary><ol class="opts" type="A"><li>25%</li><li>45%</li><li>75%</li><li class="key">55%</li><li>90%</li></ol><div class="ans show"><b>Answer: D.</b> Plasma is roughly 55%; formed elements about 45%.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q35.</b> The most abundant plasma protein is:</summary><ol class="opts" type="A"><li>Fibrinogen</li><li>Globulin</li><li>Hemoglobin</li><li>Thrombin</li><li class="key">Albumin</li></ol><div class="ans show"><b>Answer: E.</b> Albumin maintains colloid osmotic pressure and transports substances.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q36.</b> Low plasma albumin would most likely cause:</summary><ol class="opts" type="A"><li class="key">Edema from reduced colloid osmotic pressure</li><li>Widespread clotting inside the small vessels</li><li>Anemia with a low circulating hemoglobin</li><li>Leukocytosis with a raised white cell count</li><li>Polycythemia with a raised red cell count</li></ol><div class="ans show"><b>Answer: A.</b> Fluid leaves the capillaries when the osmotic pull of albumin falls.<span class="ref">Module 9 blood &amp; vessels deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q37.</b> Erythropoietin is released in response to:</summary><ol class="opts" type="A"><li>A rise in the arterial oxygen content</li><li class="key">Tissue hypoxia detected by the kidney</li><li>A rise in the plasma calcium level</li><li>A fall in the blood glucose level</li><li>Acute bacterial infection with fever</li></ol><div class="ans show"><b>Answer: B.</b> Low oxygen stimulates renal EPO release to boost red cell production.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q38.</b> Mature erythrocytes lack a nucleus, which means they:</summary><ol class="opts" type="A"><li>Live indefinitely and never need replacing</li><li>Produce antibodies directed against foreign antigens</li><li class="key">Cannot divide or repair, surviving about 120 days</li><li>Can still divide by mitosis to replace losses</li><li>Store calcium for release into the plasma</li></ol><div class="ans show"><b>Answer: C.</b> Losing the nucleus maximizes hemoglobin space but limits lifespan.<span class="ref">Module 9 blood &amp; vessels deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q39.</b> Which blood type is the universal RED CELL donor?</summary><ol class="opts" type="A"><li>A positive</li><li>B negative</li><li>AB negative</li><li class="key">O negative</li><li>AB positive</li></ol><div class="ans show"><b>Answer: D.</b> O negative lacks A, B and Rh antigens, so it provokes no reaction.<span class="ref">Module 9 blood &amp; vessels deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q40.</b> Type AB individuals are universal recipients because they:</summary><ol class="opts" type="A"><li>Have both anti-A and anti-B antibodies</li><li>Lack both the A and the B surface antigens</li><li>Are Rh negative and lack the D antigen</li><li>Produce no plasma antibodies of any kind</li><li class="key">Have neither anti-A nor anti-B antibodies</li></ol><div class="ans show"><b>Answer: E.</b> With no anti-A or anti-B antibodies, donor red cells are not attacked.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q41.</b> Hemolytic disease of the newborn arises when:</summary><ol class="opts" type="A"><li class="key">Mother is Rh negative and sensitized against an Rh positive fetus</li><li>The mother is Rh positive and the fetus is Rh negative at birth</li><li>Both the mother and the fetus are Rh negative at delivery</li><li>Both the mother and the fetus have type O positive blood</li><li>The mother is type AB and the fetus is type O negative</li></ol><div class="ans show"><b>Answer: A.</b> Maternal anti-D antibodies cross the placenta and attack fetal red cells.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q42.</b> Blood pressure is highest in the:</summary><ol class="opts" type="A"><li>The systemic capillary beds</li><li class="key">Aorta and large arteries</li><li>The large systemic veins</li><li>The postcapillary venules</li><li>The right atrium of the heart</li></ol><div class="ans show"><b>Answer: B.</b> Pressure falls progressively along the circuit, lowest on the venous side.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q43.</b> Capillary exchange is driven outward by ____ and inward by ____.</summary><ol class="opts" type="A"><li>colloid osmotic pressure; hydrostatic pressure</li><li>gravity; simple diffusion down a gradient</li><li class="key">hydrostatic pressure; colloid osmotic pressure</li><li>active transport; osmosis across the wall</li><li>lymphatic drainage; capillary filtration</li></ol><div class="ans show"><b>Answer: C.</b> Hydrostatic pressure pushes fluid out; albumin's osmotic pull draws it back.<span class="ref">Module 9 blood &amp; vessels deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q44.</b> The skeletal muscle pump aids venous return by:</summary><ol class="opts" type="A"><li>Increasing the arterial pressure in the working limb</li><li>Dilating the leg veins so they pool more blood in the limb</li><li>Slowing the heart rate to allow a longer filling time</li><li class="key">Compressing veins so valves direct blood toward the heart</li><li>Thickening the blood so that it flows more forcefully</li></ol><div class="ans show"><b>Answer: D.</b> Muscle contraction squeezes veins; valves prevent backflow.<span class="ref">Module 9 blood &amp; vessels deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q45.</b> Which leukocyte count would you expect to rise in a parasitic infection?</summary><ol class="opts" type="A"><li>Neutrophils</li><li>Basophils</li><li>Monocytes</li><li>Platelets</li><li class="key">Eosinophils</li></ol><div class="ans show"><b>Answer: E.</b> Eosinophilia is characteristic of parasitic disease and allergy.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q46.</b> Thrombocytopenia most directly increases the risk of:</summary><ol class="opts" type="A"><li class="key">Bleeding</li><li>Clotting</li><li>Infection</li><li>Anemia</li><li>Hypertension</li></ol><div class="ans show"><b>Answer: A.</b> Too few platelets impairs the platelet plug and prolongs bleeding.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+<details class="q"><summary><b>Q47.</b> Aspirin reduces clot formation by:</summary><ol class="opts" type="A"><li>Blocking vitamin K recycling in the liver</li><li class="key">Inhibiting platelet aggregation</li><li>Dissolving fibrin strands directly</li><li>Increasing thrombin production</li><li>Blocking Factor X activation</li></ol><div class="ans show"><b>Answer: B.</b> Aspirin irreversibly inhibits platelet cyclooxygenase.<span class="ref">Module 9 blood &amp; vessels deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q48.</b> A thrombus that breaks free and travels is called a(n):</summary><ol class="opts" type="A"><li>Infarct</li><li>Hematoma</li><li class="key">Embolus</li><li>Petechia</li><li>Aneurysm</li></ol><div class="ans show"><b>Answer: C.</b> A mobile clot is an embolus and may lodge downstream.<span class="ref">Lecture Outline, Module 9 — p.98</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

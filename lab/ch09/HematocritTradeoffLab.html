@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Hematocrit Trade-off: Oxygen per Milliliter versus Milliliters per Minute</title>
+<meta name="description" content="Drag the hematocrit and watch oxygen content rise while viscosity, resistance and flow move against it, so that total oxygen delivery peaks near 45 percent.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:22px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.tuberow{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:center;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.6;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch09.html">&larr; Module 9</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 9</div>
+  <h1>The Hematocrit Trade-off</h1>
+  <div class="intro">Packing more red cells into every milliliter raises the oxygen each milliliter carries &mdash; but it also thickens the blood, and viscosity sits in the numerator of the resistance equation. Drag the hematocrit below and watch the two effects fight. <b>Total oxygen delivery is the product of content and flow</b>, and it peaks at a hematocrit very close to the one you actually have.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Pick a person, or drag the slider yourself</div>
+      <div class="chips" id="chips"></div>
+      <div class="sl"><label for="sH">Hematocrit &mdash; packed red cell fraction <span class="v" id="vH">45%</span></label>
+        <input type="range" id="sH" min="10" max="75" value="45" step="0.5" aria-label="Hematocrit, percent of blood volume occupied by red cells"></div>
+      <div class="hint" id="hHint"></div>
+
+      <div class="lbl">The plasma half of the tube</div>
+      <div class="sl"><label for="sP">Total plasma protein <span class="v" id="vP">7.0 g/dL</span></label>
+        <input type="range" id="sP" min="2" max="9" value="7" step="0.1" aria-label="Total plasma protein concentration in grams per deciliter"></div>
+      <div class="eq" id="oncEq"></div>
+    </div>
+    <div class="card">
+      <h2>Delivery = content &times; flow</h2>
+      <canvas id="cv" width="640" height="330" aria-label="Graph of total oxygen delivery against hematocrit, with the current hematocrit and the modelled optimum marked"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--teal)"></i>Oxygen delivery (mL/min)</span>
+        <span><i style="background:var(--coral)"></i>Oxygen content (mL/dL)</span>
+        <span><i style="background:var(--blue)"></i>Flow at fixed driving pressure</span>
+      </div>
+      <div class="hint">Model: driving pressure is held constant, so flow varies as 1&nbsp;/&nbsp;viscosity (R&nbsp;=&nbsp;8&eta;L&nbsp;/&nbsp;&pi;r<sup>4</sup>, and only &eta; is changing here). Viscosity relative to water is modelled as 1.3&nbsp;&times;&nbsp;e<sup>2.2&nbsp;&times;&nbsp;Hct</sup>, which gives about 3.5 at a hematocrit of 45 percent &mdash; the &ldquo;3 to 4 times as viscous as water&rdquo; figure from the module.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Spun tube</h2>
+      <div class="tuberow">
+        <svg viewBox="0 0 120 300" role="img" aria-label="Diagram of a centrifuged tube of blood showing the plasma layer, the buffy coat and the packed red cell layer" id="tube">
+          <defs>
+            <clipPath id="tubeclip"><path d="M28 16 h64 v240 a32 32 0 0 1 -64 0 z"></path></clipPath>
+          </defs>
+          <g clip-path="url(#tubeclip)">
+            <rect id="lPlasma" x="28" y="16" width="64" height="140" fill="var(--gold)" opacity="0.42"></rect>
+            <rect id="lBuffy" x="28" y="156" width="64" height="6" fill="var(--muted)" opacity="0.75"></rect>
+            <rect id="lCells" x="28" y="162" width="64" height="134" fill="var(--coral)"></rect>
+          </g>
+          <path d="M28 16 h64 v240 a32 32 0 0 1 -64 0 z" fill="none" stroke="var(--line)" stroke-width="3"></path>
+          <line id="markM" x1="20" y1="0" x2="100" y2="0" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="4 3"></line>
+        </svg>
+        <div>
+          <div id="tubeTxt" style="font-size:12.6px;line-height:1.6;color:var(--soft)"></div>
+          <div class="legend">
+            <span><i style="background:var(--gold);opacity:.6"></i>Plasma</span>
+            <span><i style="background:var(--muted)"></i>Buffy coat</span>
+            <span><i style="background:var(--coral)"></i>Red cells</span>
+          </div>
+        </div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Hemoglobin</div><div class="v" id="oHb">15.0</div><div class="u">g/dL &middot; Hct &divide; 3</div></div>
+        <div class="lab"><div class="k">O&#8322; content CaO&#8322;</div><div class="v" id="oCa">20.0</div><div class="u">mL O&#8322; / 100 mL</div></div>
+        <div class="lab"><div class="k">Relative viscosity</div><div class="v" id="oEta">3.5</div><div class="u">&times; water</div></div>
+        <div class="lab"><div class="k">Resistance</div><div class="v" id="oR">1.00</div><div class="u">&times; normal</div></div>
+        <div class="lab"><div class="k">Flow Q</div><div class="v" id="oQ">5.0</div><div class="u">L/min at &Delta;P 90</div></div>
+        <div class="lab"><div class="k">O&#8322; delivery</div><div class="v" id="oDo">1000</div><div class="u">mL/min</div></div>
+      </div>
+      <div class="verdict" id="verd"></div>
+      <div class="eq" id="calc"></div>
+    </div>
+    <div class="card">
+      <h2>Why the tube alone can fool you</h2>
+      <div class="hint" style="margin-top:2px">Hematocrit is a <b>ratio</b>, not an amount. Acute hemorrhage removes cells and plasma in the same proportion, so the packed column and the plasma column shrink together and the reading barely moves for the first hour or two. It falls only once interstitial fluid shifts in and dilutes what is left. Try the <b>Acute hemorrhage, 1 hour</b> chip: the tube looks normal while a liter is missing.</div>
+      <div class="hint">Resting oxygen consumption is about <b>250 mL/min</b>. Watch the delivery figure against that number &mdash; the four-fold margin at rest is what exercise, anemia and hypoxemia all spend.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#333').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'), GREEN = C('green');
+  var SAT = 0.98, PAO2 = 100, VO2 = 250;
+  function eta(h){ return 1.3 * Math.exp(2.2 * h / 100); }
+  var ETA45 = eta(45);
+  function hb(h){ return h / 3; }
+  function cao2(h){ return 1.34 * hb(h) * SAT + 0.003 * PAO2; }
+  function flow(h){ return 5 * ETA45 / eta(h); }
+  function del(h){ return cao2(h) * flow(h) * 10; }
+
+  var PEAK = 45, best = -1;
+  for(var t = 10; t <= 75; t += 0.05){ var d = del(t); if(d > best){ best = d; PEAK = t; } }
+
+  var SCEN = [
+    {n:'Healthy adult male', h:47, note:'Reference range 42 to 52 percent.'},
+    {n:'Healthy adult female', h:42, note:'Reference range 37 to 47 percent.'},
+    {n:'Iron-deficiency anemia', h:24, note:'Content per milliliter collapses; the blood is thin and flows easily, but there is far less to carry.'},
+    {n:'Acute hemorrhage, 1 hour', h:45, note:'Cells and plasma were lost in the same proportion, so the ratio has not moved yet. A normal hematocrit never rules out active bleeding.'},
+    {n:'Dehydration', h:53, note:'Plasma water is gone, cells are not. The ratio rises without a single new red cell being made.'},
+    {n:'Acclimatized at 3,000 m', h:55, note:'An appropriate erythropoietin response to genuine hypoxia. More content per milliliter, at the price of thicker blood.'},
+    {n:'Polycythemia vera', h:63, note:'A marrow mutation making red cells independent of erythropoietin. Viscosity and thrombotic risk climb steeply.'},
+    {n:'Severe polycythemia', h:70, note:'Resistance is now so high that delivery falls despite an enormous oxygen content. This is why treatment is often simply to remove blood.'}
+  ];
+
+  var sH = document.getElementById('sH'), vH = document.getElementById('vH');
+  var sP = document.getElementById('sP'), vP = document.getElementById('vP');
+  var chips = document.getElementById('chips');
+  var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+  var note = '';
+
+  SCEN.forEach(function(s, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = s.n;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function(){
+      sH.value = s.h; note = s.note;
+      [].forEach.call(chips.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed','true');
+      draw();
+    });
+    chips.appendChild(b);
+  });
+
+  function fmt(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  function drawCurve(h){
+    var w = cv.clientWidth || 640, hh = 330, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = hh * dpr; cv.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, hh);
+    var L = 46, R = 12, T = 14, B = 32, pw = w - L - R, ph = hh - T - B;
+    var x0 = 10, x1 = 75, ymax = 1150;
+    function X(v){ return L + (v - x0) / (x1 - x0) * pw; }
+    function Y(v){ return T + ph - (v / ymax) * ph; }
+
+    ctx.fillStyle = 'rgba(31,91,115,.07)';
+    ctx.fillRect(X(37), T, X(52) - X(37), ph);
+
+    ctx.strokeStyle = 'rgba(0,0,0,.10)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.42)';
+    for(var g = 0; g <= 1000; g += 250){
+      ctx.beginPath(); ctx.moveTo(L, Y(g)); ctx.lineTo(L + pw, Y(g)); ctx.stroke();
+      ctx.textAlign = 'right'; ctx.fillText(String(g), L - 6, Y(g) + 3);
+    }
+    ctx.textAlign = 'center';
+    for(var xv = 10; xv <= 75; xv += 10){ ctx.fillText(xv + '%', X(xv), hh - 10); }
+
+    function series(fn, col, wdt){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wdt;
+      for(var v = x0; v <= x1; v += 0.4){
+        var y = Y(fn(v));
+        if(v === x0) ctx.moveTo(X(v), y); else ctx.lineTo(X(v), y);
+      }
+      ctx.stroke();
+    }
+    series(function(v){ return cao2(v) * 25; }, CORAL, 1.8);
+    series(function(v){ return flow(v) * 100; }, BLUE, 1.8);
+    series(del, TEAL, 3);
+
+    ctx.setLineDash([5, 4]); ctx.strokeStyle = GREEN; ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(X(PEAK), T); ctx.lineTo(X(PEAK), T + ph); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = GREEN; ctx.font = '800 10.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('peak ' + fmt(PEAK) + '%', X(PEAK) + 5, T + 12);
+
+    ctx.strokeStyle = TEALDK; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(h), T); ctx.lineTo(X(h), T + ph); ctx.stroke();
+    ctx.beginPath(); ctx.arc(X(h), Y(del(h)), 5.5, 0, 6.2832);
+    ctx.fillStyle = TEALDK; ctx.fill();
+  }
+
+  function draw(){
+    var h = parseFloat(sH.value), P = parseFloat(sP.value);
+    vH.textContent = fmt(h) + '%';
+    vP.textContent = fmt(P) + ' g/dL';
+
+    var Hb = hb(h), Ca = cao2(h), E = eta(h), Q = flow(h), D = del(h);
+    document.getElementById('oHb').textContent = fmt(Hb);
+    document.getElementById('oCa').textContent = fmt(Ca);
+    document.getElementById('oEta').textContent = fmt(E);
+    document.getElementById('oR').textContent = fmt(E / ETA45, 2);
+    document.getElementById('oQ').textContent = fmt(Q);
+    document.getElementById('oDo').textContent = Math.round(D);
+
+    var plasmaPct = 100 - h - 1, buffy = 1;
+    var top = 16, bot = 288, span = bot - top;
+    var pH = span * plasmaPct / 100, bH = span * buffy / 100, cH = span * h / 100;
+    document.getElementById('lPlasma').setAttribute('y', top);
+    document.getElementById('lPlasma').setAttribute('height', Math.max(0, pH));
+    document.getElementById('lBuffy').setAttribute('y', top + pH);
+    document.getElementById('lBuffy').setAttribute('height', bH);
+    document.getElementById('lCells').setAttribute('y', top + pH + bH);
+    document.getElementById('lCells').setAttribute('height', Math.max(0, cH));
+    var mk = document.getElementById('markM');
+    mk.setAttribute('y1', top + pH + bH); mk.setAttribute('y2', top + pH + bH);
+
+    document.getElementById('tubeTxt').innerHTML =
+      '<b>Plasma ' + fmt(plasmaPct) + '%</b> &mdash; 92 percent water, plus electrolytes (Na<sup>+</sup> near 140 mEq/L, K<sup>+</sup> 3.5&ndash;5.0, HCO<sub>3</sub><sup>&minus;</sup> 22&ndash;26), nutrients, hormones and ' + fmt(P) + ' g/dL of protein.<br><br>' +
+      '<b>Buffy coat about 1%</b> &mdash; 4,500 to 11,000 leukocytes and 150,000 to 450,000 platelets per microliter.<br><br>' +
+      '<b>Packed cells ' + fmt(h) + '%</b> &mdash; almost entirely erythrocytes, 4.5 to 5.5 million per microliter, each lasting about 120 days.';
+
+    var onc = 2.1 * P + 0.16 * P * P + 0.009 * P * P * P;
+    document.getElementById('oncEq').innerHTML =
+      'Albumin is roughly 60 percent of that protein mass, so albumin here is about <b class="num">' + fmt(P * 0.6) + ' g/dL</b> (normal 3.5&ndash;5.0).<br>' +
+      'Colloid osmotic pressure &pi;<sub>c</sub> = 2.1C + 0.16C&sup2; + 0.009C&sup3; = <b class="num">' + fmt(onc) + ' mmHg</b>' +
+      (P >= 6.5 && P <= 7.5 ? ' &mdash; the familiar 25 mmHg inward pull that holds water inside the vessels.' :
+       (onc < 18 ? ' &mdash; well below the normal 25 mmHg. The standing inward pull is weakened, and capillary filtration will run unopposed.' : ' &mdash; compare with the normal 25 mmHg.'));
+
+    document.getElementById('calc').innerHTML =
+      'CaO<sub>2</sub> = (1.34 &times; <b class="num">' + fmt(Hb) + '</b> &times; 0.98) + (0.003 &times; 100) = <b class="num">' + fmt(1.34 * Hb * SAT) + '</b> bound + <b class="num">0.30</b> dissolved = <b class="num">' + fmt(Ca) + ' mL/dL</b><br>' +
+      'Delivery = CaO<sub>2</sub> &times; Q = ' + fmt(Ca) + ' mL/dL &times; ' + fmt(Q * 10) + ' dL/min = <b class="num">' + Math.round(D) + ' mL/min</b>, against a resting demand of ' + VO2 + ' mL/min (margin <b class="num">' + fmt(D / VO2) + '&times;</b>).';
+
+    var v = document.getElementById('verd'), cls = 'verdict', head, sub;
+    if(h < 30){
+      cls += ' bad'; head = 'Anemic: not enough carrier';
+      sub = 'Blood is thin, so it flows freely and cardiac output can rise &mdash; but each milliliter carries only ' + fmt(Ca) + ' mL of oxygen instead of 20. Delivery is ' + Math.round(D) + ' mL/min. Extra inspired oxygen cannot fix this, because the dissolved term is only 0.30 mL/dL to begin with.';
+    } else if(h > 58){
+      cls += ' bad'; head = 'Polycythemic: too much friction';
+      sub = 'Content per milliliter is a generous ' + fmt(Ca) + ' mL/dL, but viscosity is ' + fmt(E) + ' times water and resistance is ' + fmt(E / ETA45, 2) + ' times normal, so flow has fallen to ' + fmt(Q) + ' L/min. Net delivery is ' + Math.round(D) + ' mL/min &mdash; below the ' + Math.round(del(PEAK)) + ' mL/min available at the optimum. Thrombotic risk rises with the viscosity.';
+    } else if(Math.abs(h - PEAK) < 4){
+      cls += ' ok'; head = 'At the optimum';
+      sub = 'This model peaks at a hematocrit of ' + fmt(PEAK) + ' percent, delivering ' + Math.round(del(PEAK)) + ' mL of oxygen per minute. Content and flow are exactly balanced here &mdash; which is where evolution parked the human hematocrit.';
+    } else if(h > PEAK){
+      cls += ' warn'; head = 'Past the peak';
+      sub = 'Every further percentage point of hematocrit adds about 0.44 mL/dL of oxygen content, but by now it costs more in viscosity than it gains. Delivery is ' + Math.round(D) + ' mL/min versus ' + Math.round(del(PEAK)) + ' at the optimum.';
+    } else {
+      cls += ''; head = 'Below the peak';
+      sub = 'Adding red cells here still helps: content is gaining faster than viscosity is costing. Delivery is ' + Math.round(D) + ' mL/min versus ' + Math.round(del(PEAK)) + ' at a hematocrit of ' + fmt(PEAK) + ' percent.';
+    }
+    v.className = cls;
+    v.innerHTML = head + '<small>' + sub + '</small>';
+
+    document.getElementById('hHint').innerHTML = note ? '<b>' + note + '</b>' :
+      'Reference ranges: <b>42 to 52 percent</b> in adult males, <b>37 to 47 percent</b> in adult females. The shaded band on the graph marks 37 to 52 percent.';
+
+    drawCurve(h);
+  }
+
+  sH.addEventListener('input', function(){ note = ''; [].forEach.call(chips.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); }); draw(); });
+  sP.addEventListener('input', draw);
+  window.addEventListener('resize', function(){ drawCurve(parseFloat(sH.value)); });
+  draw();
+})();
+</script>
+</body>
+</html>

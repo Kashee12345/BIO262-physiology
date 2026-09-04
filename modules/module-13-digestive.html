@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 13 &middot; The Digestive System &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 13 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>The Digestive System</h1>
+    <p class="sub">A tube that breaks food into pieces small enough to cross a membrane. Nothing counts until it does.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>List the six jobs the digestive system does</li>
+      <li>Say which nutrient is broken down where, and by what</li>
+      <li>Explain why the small intestine does nearly all the absorbing</li>
+      <li>Explain what bile does, and why it is not an enzyme</li>
+      <li>Say why everything absorbed from the gut goes to the liver first</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>Six jobs, one tube</h2>
+  <p class="lead">Food inside the digestive tract is still, technically, outside the body.</p>
+  <p>The tract is a tube running through you, open at both ends. Nothing in it has entered your body until it crosses the lining and reaches the blood.</p>
+  <p>That one idea explains the whole design. Everything before absorption exists to make absorption possible.</p>
+  <ol class="steps">
+    <li><b>Ingestion.</b> Taking food in.</li>
+    <li><b>Propulsion.</b> Moving it along.</li>
+    <li><b>Mechanical digestion.</b> Chewing and churning. Breaking things up without changing the chemistry.</li>
+    <li><b>Chemical digestion.</b> Enzymes splitting large molecules into small ones.</li>
+    <li><b>Absorption.</b> Nutrients crossing into blood or lymph. This is the point of the whole thing.</li>
+    <li><b>Elimination.</b> Getting rid of what is left.</li>
+  </ol>
+  <div class="note"><p><b>Two kinds of movement, and they are not the same.</b> Peristalsis is a traveling wave that <em>moves</em> contents along. Segmentation is local squeezing that <em>mixes</em> contents with enzymes and pushes them against the wall, without moving them onward. The small intestine spends most of its time on segmentation, because absorption takes time.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>What happens where</h2>
+  <p class="lead">Click through the tract and follow a meal.</p>
+  <div class="demo">
+    <div class="dh">Follow a meal through the tract</div>
+    <div class="swatchrow" id="tabs"></div>
+    <div class="stage" style="padding:16px 18px;margin-top:14px;">
+      <div id="orgname" style="font-size:16px;font-weight:800;color:#5e1f24;margin-bottom:8px;"></div>
+      <div id="orgtext" style="font-size:15.5px;color:#4a423a;line-height:1.65;"></div>
+    </div>
+  </div>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>Nutrient</th><th>Breakdown starts</th><th>Finished by</th><th>Absorbed as</th></tr>
+    <tr><td><b>Carbohydrate</b></td><td>Mouth, by saliva</td><td>Pancreatic enzymes and gut wall enzymes</td><td>Simple sugars</td></tr>
+    <tr><td><b>Protein</b></td><td>Stomach, in acid</td><td>Pancreatic enzymes</td><td>Amino acids and short chains</td></tr>
+    <tr><td><b>Fat</b></td><td>Small intestine</td><td>Lipase, after bile breaks the fat up</td><td>Fatty acids, into lymph rather than blood</td></tr>
+  </table>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>Why the small intestine does the absorbing</h2>
+  <p class="lead">Surface area, and a lot of it.</p>
+  <p>Three levels of folding multiply the lining. There are folds in the wall, finger-like <b>villi</b> on those folds, and a brush of tiny <b>microvilli</b> on every cell of every villus.</p>
+  <p>The result is an absorbing surface far larger than the organ that holds it.</p>
+  <p>Inside each villus sits a network of capillaries and one lymph vessel. Sugars and amino acids go into the capillary and travel in blood. Digested fats are too big and too greasy for that route, so they are packaged and enter the lymph vessel instead. They reach the bloodstream only near the heart.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>Diseases that flatten the villi, such as celiac disease, do not block digestion. The enzymes still work fine. The patient becomes malnourished because the surface for absorbing the results is gone.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Bile, and the problem with fat</h2>
+  <p class="lead">Fat does not dissolve in water, and enzymes can only work at a surface.</p>
+  <p>One large fat droplet in watery gut contents gives lipase very little surface to attack.</p>
+  <p><b>Bile</b>, made by the liver and stored in the gallbladder, breaks that droplet into many tiny ones. That hugely increases the surface, without changing a single chemical bond.</p>
+  <p>So bile is an <b>emulsifier</b>, not an enzyme. It does not digest anything. It makes fat digestible by lipase, which does.</p>
+  <p>Remove the gallbladder and bile still reaches the intestine from the liver. It just arrives steadily instead of in a well-timed squirt, which is why big fatty meals get harder to handle.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>Washing a greasy pan. The soap does not eat the grease. It breaks it into droplets small enough for the water to carry off. Bile is doing that job.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Everything goes to the liver first</h2>
+  <p class="lead">Blood leaving the intestine does not rejoin the general circulation. It is routed through the liver.</p>
+  <p>That route carries nutrient-rich blood from the gut straight to the liver, which checks it before the rest of the body sees it. The liver stores extra sugar, converts amino acids, processes drugs and toxins, and makes plasma proteins and clotting factors.</p>
+  <p>This is why a pill can be largely broken down before it ever reaches its target, and why the same drug given by injection can be far stronger at the same dose.</p>
+  <p>It is also why liver failure causes so many different problems. Nutrients, drug clearance, clotting, and fluid balance all pass through one organ.</p>
+  <p>The <b>large intestine</b> finishes the job with far less drama. It absorbs water and some salts, houses bacteria that make a few vitamins, and forms and stores the leftovers. It is a water-recovery operation, which is why upsetting it causes either dehydration or constipation.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on enzymes and on absorption at the villus &mdash; <a href="../labs.html">Digestive benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "Why is food in the stomach not yet considered inside the body?",
+    "a": ["It has not been chewed enough","It has not crossed the lining into blood or lymph","The stomach is not really an organ","It is still mixed with saliva"],
+    "c": 1,
+    "fb": [
+      "Chewing is mechanical digestion, not entry.",
+      "Correct. The tract is a tube through the body, and absorption is the moment of entry.",
+      "The stomach is certainly an organ. Its contents are what stay outside.",
+      "Saliva has nothing to do with it."
+    ]
+  },
+  {
+    "q": "Which statement about bile is right?",
+    "a": ["It is an enzyme that digests fat","It breaks fat into small droplets so lipase has more surface","It neutralizes protein in the stomach","The gallbladder makes it"],
+    "c": 1,
+    "fb": [
+      "Bile breaks no chemical bonds, so it is not an enzyme.",
+      "Correct. It makes fat digestible without digesting it.",
+      "That is not what bile does.",
+      "The liver makes it. The gallbladder only stores it."
+    ]
+  },
+  {
+    "q": "Digested fats enter lymph vessels instead of capillaries. What follows from that?",
+    "a": ["They reach the blood only after traveling in lymph","They are eliminated instead of absorbed","They reach the liver before any other tissue","They are absorbed in the large intestine"],
+    "c": 0,
+    "fb": [
+      "Correct. Lymph carries them and empties into the big veins near the heart.",
+      "They are absorbed, just by a different route.",
+      "That is the blood route, used by sugars and amino acids.",
+      "Fat is absorbed in the small intestine."
+    ]
+  },
+  {
+    "q": "A patient with celiac disease has flattened villi and becomes malnourished. Why?",
+    "a": ["Digestive enzymes are no longer made","The absorbing surface is gone","Food no longer moves through the tract","The stomach cannot make acid"],
+    "c": 1,
+    "fb": [
+      "Enzyme production is usually normal.",
+      "Correct. Digestion works fine, but there is nowhere for the results to be absorbed.",
+      "Movement is not the main problem.",
+      "Acid is not the issue here."
+    ]
+  },
+  {
+    "q": "Why can a pill be much weaker than the same dose given by injection?",
+    "a": ["Stomach acid always destroys pills","Blood from the intestine passes through the liver first, which breaks the drug down","Drugs cannot be absorbed from the intestine","Digestive juices dilute the drug"],
+    "c": 1,
+    "fb": [
+      "Some drugs survive acid perfectly well. The liver is the bigger reason.",
+      "Correct. Gut blood goes to the liver first, and the liver processes the drug before the body sees it.",
+      "Pills are absorbed well. What happens next is the issue.",
+      "Dilution does not change the total amount absorbed."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var tabs=document.getElementById("tabs"), nm=document.getElementById("orgname"), tx=document.getElementById("orgtext");
+var ORG=[
+ {n:"Mouth",t:"Mechanical digestion by chewing, and the only place carbohydrate digestion begins &mdash; salivary amylase starts splitting starch. Saliva also lubricates the bolus so it can be swallowed. Nothing is absorbed here."},
+ {n:"Esophagus",t:"Pure transport. A peristaltic wave carries the bolus to the stomach; gravity is not required, which is why you can swallow lying down. No digestion, no absorption."},
+ {n:"Stomach",t:"Churns food into a thick liquid and begins <b>protein</b> digestion. Its cells secrete hydrochloric acid, which kills most organisms and switches on pepsin &mdash; an enzyme that only works in strong acid. The stomach protects itself with a thick mucus layer; when that layer fails, the stomach digests its own wall, which is an ulcer. Almost nothing is absorbed here, alcohol and a few drugs excepted."},
+ {n:"Liver &amp; gallbladder",t:"The liver makes <b>bile</b> continuously; the gallbladder stores it and squirts it into the small intestine when a fatty meal arrives. Bile emulsifies fat &mdash; it breaks big droplets into small ones so lipase has surface to work on. The liver also receives all nutrient-rich blood from the gut before the rest of the body does."},
+ {n:"Pancreas",t:"Delivers the heavy machinery: enzymes for all three nutrient classes &mdash; amylase for carbohydrate, proteases for protein, lipase for fat &mdash; plus bicarbonate that neutralizes the acid arriving from the stomach, because those enzymes cannot work in an acidic environment."},
+ {n:"Small intestine",t:"Where digestion is finished and where nearly all <b>absorption</b> happens. Circular folds, villi and microvilli multiply the surface enormously. Sugars and amino acids enter capillaries and travel in blood; digested fats enter the lacteal and travel in lymph. Segmentation mixes contents against the wall rather than rushing them along, because absorption needs contact time."},
+ {n:"Large intestine",t:"Absorbs <b>water</b> and some electrolytes, houses bacteria that manufacture a few vitamins, and forms and stores the residue. Move material through too fast and water is not recovered &mdash; that is diarrhea and its dehydration. Too slow, and too much water is taken back."}
+];
+var cur=0;
+function draw(){
+  tabs.innerHTML=ORG.map(function(o,i){
+    var on = i===cur;
+    return '<button class="pill" data-i="'+i+'" style="cursor:pointer;font-family:inherit;'+
+      (on?'background:#8a2f36;color:#fff;border-color:#8a2f36;':'')+'">'+o.n+'</button>';
+  }).join("");
+  nm.innerHTML=ORG[cur].n; tx.innerHTML=ORG[cur].t;
+}
+tabs.addEventListener("click",function(e){
+  var b=e.target.closest? e.target.closest(".pill"):null;
+  if(!b) return; cur=+b.dataset.i; draw();
+});
+draw();
+
+})();
+</script>
+</body>
+</html>

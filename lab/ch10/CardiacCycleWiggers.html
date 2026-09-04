@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Cardiac Cycle: Every Valve Event Is a Pressure Crossing</title>
+<meta name="description" content="Scrub a playhead through one beat and watch each valve open and shut exactly where the pressure curves cross, while the same beat draws itself as a pressure volume loop.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.valves{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px;}
+.valve{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#fff;}
+.valve .k{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.valve .s{font-size:14.5px;font-weight:800;margin-top:2px;color:var(--muted);}
+.valve.open{border-color:var(--green);} .valve.open .s{color:var(--green);}
+.valve.shut{border-color:var(--coral);} .valve.shut .s{color:var(--coral);}
+.valve .why{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch10.html">&larr; Module 10</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 10</div>
+  <h1>The Cardiac Cycle</h1>
+  <div class="intro">Cardiac valves have no muscle and no nerve supply. Each opens when the pressure upstream exceeds the pressure downstream and shuts when the gradient reverses &mdash; so the whole cycle can be derived rather than memorized. <b>Drag the playhead through one beat</b> and watch each valve flip at the exact moment two curves cross, while the same beat draws itself as a pressure&ndash;volume loop.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>Set the beat</h2>
+      <div class="sl"><label for="sHR">Heart rate <span class="v" id="vHR">75/min</span></label>
+        <input type="range" id="sHR" min="40" max="190" value="75" step="1" aria-label="Heart rate in beats per minute"></div>
+      <div class="sl"><label for="sEDV">End-diastolic volume <span class="v" id="vEDV">120 mL</span></label>
+        <input type="range" id="sEDV" min="60" max="180" value="120" step="1" aria-label="End-diastolic volume in milliliters"></div>
+      <div class="sl"><label for="sESV">End-systolic volume <span class="v" id="vESV">50 mL</span></label>
+        <input type="range" id="sESV" min="15" max="120" value="50" step="1" aria-label="End-systolic volume in milliliters"></div>
+      <div class="sl"><label for="sAoD">Aortic diastolic pressure <span class="v" id="vAoD">80 mmHg</span></label>
+        <input type="range" id="sAoD" min="40" max="130" value="80" step="1" aria-label="Aortic diastolic pressure in millimeters of mercury, the pressure the ventricle must exceed before the aortic valve will open"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Stroke volume</div><div class="v" id="oSV">70</div><div class="u">mL &middot; EDV &minus; ESV</div></div>
+        <div class="lab"><div class="k">Ejection fraction</div><div class="v" id="oEF">58</div><div class="u">% &middot; normal 55&ndash;70</div></div>
+        <div class="lab"><div class="k">Cardiac output</div><div class="v" id="oCO">5.25</div><div class="u">L/min &middot; HR &times; SV</div></div>
+      </div>
+      <div class="eq" id="eqCalc"></div>
+    </div>
+    <div class="card">
+      <h2>Move through the beat</h2>
+      <div class="sl"><label for="sT">Playhead <span class="v" id="vT">0 ms</span></label>
+        <input type="range" id="sT" min="0" max="1000" value="0" step="1" aria-label="Position of the playhead within one cardiac cycle"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bPlay">Play the beat</button>
+        <button type="button" class="btn" id="bS1">Jump to S1</button>
+        <button type="button" class="btn" id="bS2">Jump to S2</button>
+      </div>
+      <div class="valves">
+        <div class="valve shut" id="vMit"><div class="k">Mitral valve</div><div class="s">SHUT</div><div class="why"></div></div>
+        <div class="valve shut" id="vAor"><div class="k">Aortic valve</div><div class="s">SHUT</div><div class="why"></div></div>
+      </div>
+      <div class="verdict" id="vPhase"></div>
+    </div>
+    <div class="card">
+      <h2>The same beat as a pressure&ndash;volume loop</h2>
+      <canvas id="cvPV" width="440" height="330" aria-label="Pressure volume loop for the current beat, traced counter-clockwise, with the playhead marked and end-diastolic and end-systolic volumes labeled"></canvas>
+      <div class="hint">The loop runs counter-clockwise. Bottom edge moving right is filling; the right vertical edge is isovolumetric contraction; the top edge moving left is ejection; the left vertical edge is isovolumetric relaxation. <b>The width of the loop is stroke volume, and the area inside it is stroke work</b> &mdash; the external work the ventricle performs each beat.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>Pressures, volume, ECG and sounds</h2>
+      <canvas id="cvW" width="660" height="466" aria-label="Wiggers diagram for one cardiac cycle showing aortic, left ventricular and left atrial pressures, ventricular volume, the electrocardiogram and the first and second heart sounds, with the phase boundaries marked"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--coral)"></i>Aortic pressure</span>
+        <span><i style="background:var(--teal-dk)"></i>Left ventricular pressure</span>
+        <span><i style="background:var(--blue)"></i>Left atrial pressure</span>
+        <span><i style="background:var(--purple)"></i>Ventricular volume</span>
+        <span><i style="background:var(--green)"></i>ECG</span>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Cycle length</div><div class="v" id="oCyc">800</div><div class="u">ms</div></div>
+        <div class="lab"><div class="k">Systole</div><div class="v" id="oSys">0.30</div><div class="u">s &middot; S1 to S2</div></div>
+        <div class="lab"><div class="k">Diastole</div><div class="v" id="oDia">0.50</div><div class="u">s &middot; the longer pause</div></div>
+        <div class="lab"><div class="k">Peak LV pressure</div><div class="v" id="oPk">123</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Stroke work</div><div class="v" id="oSW">1.02</div><div class="u">joules per beat</div></div>
+        <div class="lab"><div class="k">Diastole per minute</div><div class="v" id="oDpm">38</div><div class="u">s &middot; coronary filling time</div></div>
+      </div>
+      <div class="verdict" id="vCyc"></div>
+    </div>
+    <div class="card">
+      <h2>Two things worth testing here</h2>
+      <div class="hint" style="margin-top:2px"><b>Ejection fraction is not stroke volume.</b> Set EDV to 60 mL and ESV to 24 mL. The ejection fraction reads 60 percent &mdash; reassuring &mdash; yet stroke volume is only 36 mL. Roughly half of all heart failure occurs with preserved ejection fraction: the ventricle is stiff, it fills poorly, EDV is low, and output falls even though the percentage ejected looks normal.</div>
+      <div class="hint"><b>Tachycardia steals diastole.</b> Drag the heart rate to 190 and watch the diastole-per-minute figure. Left ventricular coronary flow happens almost entirely in diastole, because systolic compression of the intramural vessels nearly abolishes it. Perfusion time therefore falls at exactly the moment oxygen demand is highest &mdash; and since the myocardium already extracts 70 to 80 percent of the oxygen delivered to it, it cannot compensate by extracting more.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#000').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), GOLD = C('gold'), PURPLE = C('purple'), MUTED = C('muted');
+  function id(s){ return document.getElementById(s); }
+  function f(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+  function clamp(x, a, b){ return x < a ? a : (x > b ? b : x); }
+
+  var sHR = id('sHR'), sEDV = id('sEDV'), sESV = id('sESV'), sAoD = id('sAoD'), sT = id('sT');
+  var timer = null, N = 480;
+
+  function model(){
+    var HR = +sHR.value, EDV = +sEDV.value, ESV = Math.min(+sESV.value, EDV - 5), AoD = +sAoD.value;
+    var SV = EDV - ESV, PP = Math.max(14, SV / 1.75);
+    var cycle = 60000 / HR;
+    var systole = clamp(300 * Math.sqrt(75 / HR), 0.22 * cycle, 0.55 * cycle);
+    var ivc = 50 * (systole / 300), ivr = 70 * (systole / 300);
+    var ej = systole - ivc, fill = cycle - systole - ivr;
+    var LVEDP = 4 + (EDV - 60) * 0.09;
+    var inc = AoD + PP * 0.5;
+    var Td = cycle - systole;
+
+    var LAV = 10;
+    function aoShape(u){ return Math.sin(Math.PI * Math.pow(u, 0.55)) * (1 - 0.5 * u) + 0.5 * u; }
+    function grad(u){ return (4 - 3.6 * Math.pow(u, 1.5)) * (1 - Math.exp(-u / 0.02)) - 10 * Math.pow(u, 60); }
+    function aoEject(u){ return AoD + PP * aoShape(u); }
+    function lvEject(u){ return aoEject(u) + grad(u); }
+    function decay(tau){
+      var base = AoD + (inc - AoD) * Math.exp(-3 * tau / Td);
+      if(tau < 30) base -= 5 * Math.sin(Math.PI * tau / 30);
+      else if(tau < 62) base += 4 * Math.sin(Math.PI * (tau - 30) / 32);
+      return base;
+    }
+    var Pclose = lvEject(1);
+
+    function fillFrac(q){
+      if(q < 0.35) return 0.70 * Math.pow(Math.sin(Math.PI / 2 * (q / 0.35)), 2);
+      if(q < 0.75) return 0.70 + 0.05 * ((q - 0.35) / 0.40);
+      return 0.75 + 0.25 * Math.pow(Math.sin(Math.PI / 2 * ((q - 0.75) / 0.25)), 2);
+    }
+    function ecgAt(tt){
+      var y = 0;
+      function bump(x, x0, wdt, amp){ return (x < x0 || x > x0 + wdt) ? 0 : amp * Math.pow(Math.sin(Math.PI * (x - x0) / wdt), 2); }
+      var pw = Math.min(90, fill * 0.30), pStart = systole + ivr + fill * 0.72 - pw - 40;
+      y += bump(tt, pStart, pw, 0.17);
+      y += bump(tt, 0, 18, -0.10);
+      y += bump(tt, 14, 34, 1.10);
+      y += bump(tt, 48, 30, -0.18);
+      y += bump(tt, systole * 0.55, systole * 0.62, 0.30);
+      return y;
+    }
+
+    var t = [], lv = [], ao = [], la = [], vol = [], ecg = [];
+    for(var i = 0; i <= N; i++){
+      var tt = cycle * i / N, Plv, Pao, Pla, V;
+      if(tt < ivc){
+        var u0 = tt / ivc;
+        V = EDV;
+        Plv = LVEDP + (AoD - LVEDP) * Math.pow(Math.sin(Math.PI / 2 * u0), 2);
+        Pao = AoD;
+      } else if(tt < systole){
+        var u = (tt - ivc) / ej;
+        Pao = aoEject(u);
+        Plv = lvEject(u);
+        V = EDV - SV * (1 - Math.pow(1 - u, 2.4));
+      } else if(tt < systole + ivr){
+        var w = (tt - systole) / ivr;
+        Plv = LAV + (Pclose - LAV) * Math.pow(Math.cos(Math.PI / 2 * w), 2);
+        V = ESV;
+        Pao = decay(tt - systole);
+      } else {
+        var q = (tt - systole - ivr) / fill, fr = fillFrac(q);
+        Pao = decay(tt - systole);
+        V = ESV + SV * fr;
+        Plv = 4 + (LAV - 4) * Math.exp(-q / 0.08) + (LVEDP - 4) * Math.pow(fr, 1.7);
+      }
+      if(tt < systole + ivr){
+        var laStart = Math.max(4, LVEDP - 2);
+        Pla = laStart + (LAV - laStart) * Math.pow(tt / (systole + ivr), 1.5);
+        Pla += 3 * Math.exp(-Math.pow((tt - 28) / 26, 2));
+      } else {
+        var q2 = (tt - systole - ivr) / fill;
+        Pla = Plv + 1.2 - 1.2 * Math.exp(-q2 / 0.1);
+        if(q2 > 0.72) Pla += 7 * Math.pow(Math.sin(Math.PI * (q2 - 0.72) / 0.28), 2);
+      }
+      t.push(tt); lv.push(Plv); ao.push(Pao); la.push(Pla); vol.push(V); ecg.push(ecgAt(tt));
+    }
+
+    var work = 0;
+    for(var k = 1; k <= N; k++) work += (lv[k] + lv[k - 1]) / 2 * (vol[k - 1] - vol[k]);
+    work = Math.abs(work);
+    var peak = 0, aoSys = 0;
+    for(var m = 0; m <= N; m++){ if(lv[m] > peak) peak = lv[m]; if(ao[m] > aoSys) aoSys = ao[m]; }
+
+    return { HR:HR, EDV:EDV, ESV:ESV, SV:SV, PP:PP, AoD:AoD, cycle:cycle, systole:systole,
+      ivc:ivc, ivr:ivr, ej:ej, fill:fill, LVEDP:LVEDP, inc:inc, Pclose:Pclose,
+      t:t, lv:lv, ao:ao, la:la, vol:vol, ecg:ecg, work:work, peak:peak, aoSys:aoSys,
+      EF: SV / EDV * 100, CO: HR * SV / 1000, diastole: cycle - systole };
+  }
+
+  function drawW(M, ph){
+    var cv = id('cvW'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 660, h = 466, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 44, R = 10, pw = w - L - R;
+    function X(tt){ return L + tt / M.cycle * pw; }
+    var pT = 30, pB = 236; function YP(p){ return pB - clamp(p, 0, 145) / 145 * (pB - pT); }
+    var vT = 252, vB = 332; function YV(v){ return vB - clamp(v, 0, 200) / 200 * (vB - vT); }
+    var eT = 348, eB = 410; function YE(e){ return eB - 14 - e * 34; }
+    var sTop = 422, sBot = 454;
+
+    ctx.font = '700 9.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(0,0,0,.45)';
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    [0, 40, 80, 120].forEach(function(p){
+      ctx.beginPath(); ctx.moveTo(L, YP(p)); ctx.lineTo(L + pw, YP(p)); ctx.stroke();
+      ctx.fillText(p, L - 5, YP(p) + 3);
+    });
+    [0, 100, 200].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(L, YV(v)); ctx.lineTo(L + pw, YV(v)); ctx.stroke();
+      ctx.fillText(v, L - 5, YV(v) + 3);
+    });
+
+    var bounds = [0, M.ivc, M.systole, M.systole + M.ivr, M.cycle];
+    var names = ['Isovolumetric|contraction', 'Ejection', 'Isovolumetric|relaxation', 'Filling'];
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(0,0,0,.22)';
+    bounds.forEach(function(b){ ctx.beginPath(); ctx.moveTo(X(b), pT); ctx.lineTo(X(b), sBot); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.textAlign = 'center'; ctx.font = '800 9px Inter, system-ui, sans-serif'; ctx.fillStyle = MUTED;
+    for(var i = 0; i < 4; i++){
+      if(X(bounds[i + 1]) - X(bounds[i]) < 44) continue;
+      var mid = (bounds[i] + bounds[i + 1]) / 2;
+      names[i].split('|').forEach(function(line, j){ ctx.fillText(line, X(mid), pT - 16 + j * 10); });
+    }
+
+    function series(arr, Yf, col, wd){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      for(var k = 0; k <= N; k++){
+        var y = Yf(arr[k]);
+        if(k === 0) ctx.moveTo(X(M.t[k]), y); else ctx.lineTo(X(M.t[k]), y);
+      }
+      ctx.stroke();
+    }
+    series(M.ao, YP, CORAL, 2.4);
+    series(M.lv, YP, TEALDK, 2.6);
+    series(M.la, YP, BLUE, 1.8);
+    series(M.vol, YV, PURPLE, 2.4);
+    series(M.ecg, YE, GREEN, 1.8);
+
+    ctx.textAlign = 'left'; ctx.font = '800 9.5px Inter, system-ui, sans-serif'; ctx.fillStyle = MUTED;
+    ctx.fillText('pressure (mmHg)', L + 4, pT + 10);
+    ctx.fillText('volume (mL)', L + 4, vT + 10);
+    ctx.fillText('ECG', L + 4, eT + 10);
+    ctx.fillText('heart sounds', L + 4, sTop + 10);
+
+    [[M.ivc * 0.12, 'S1'], [M.systole + 5, 'S2']].forEach(function(s){
+      var x = X(s[0]), mid = (sTop + sBot) / 2;
+      ctx.strokeStyle = GOLD; ctx.lineWidth = 2;
+      for(var n = 0; n < 9; n++){
+        var amp = (s[1] === 'S1' ? 11 : 8) * Math.exp(-n / 3.2);
+        ctx.beginPath(); ctx.moveTo(x + n * 2.1, mid - amp); ctx.lineTo(x + n * 2.1, mid + amp); ctx.stroke();
+      }
+      ctx.fillStyle = GOLD; ctx.textAlign = 'left'; ctx.font = '800 10px Inter, system-ui, sans-serif';
+      ctx.fillText(s[1], x + 23, mid + 4);
+    });
+
+    ctx.strokeStyle = TEAL; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(ph.tt), pT); ctx.lineTo(X(ph.tt), sBot); ctx.stroke();
+    ctx.fillStyle = TEAL;
+    ctx.beginPath(); ctx.arc(X(ph.tt), YP(ph.lv), 4.5, 0, 6.2832); ctx.fill();
+    ctx.beginPath(); ctx.arc(X(ph.tt), YV(ph.vol), 4, 0, 6.2832); ctx.fill();
+
+    ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(0,0,0,.45)'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    var step = M.cycle > 1100 ? 200 : 100;
+    for(var g = 0; g <= M.cycle; g += step) ctx.fillText(Math.round(g), X(g), h - 4);
+  }
+
+  function drawPV(M, ph){
+    var cv = id('cvPV'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 440, h = 330, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 44, R = 12, T = 14, B = 32, pw = w - L - R, phh = h - T - B;
+    function X(v){ return L + clamp(v, 0, 200) / 200 * pw; }
+    function Y(p){ return T + phh - clamp(p, 0, 160) / 160 * phh; }
+
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '700 9.5px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.45)';
+    [0, 40, 80, 120, 160].forEach(function(p){
+      ctx.beginPath(); ctx.moveTo(L, Y(p)); ctx.lineTo(L + pw, Y(p)); ctx.stroke();
+      ctx.textAlign = 'right'; ctx.fillText(p, L - 5, Y(p) + 3);
+    });
+    [0, 50, 100, 150, 200].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(X(v), T); ctx.lineTo(X(v), T + phh); ctx.stroke();
+      ctx.textAlign = 'center'; ctx.fillText(v, X(v), h - 18);
+    });
+    ctx.fillStyle = MUTED; ctx.font = '800 9.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('ventricular volume (mL)', L + pw / 2, h - 4);
+    ctx.save(); ctx.translate(12, T + phh / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center';
+    ctx.fillText('LV pressure (mmHg)', 0, 0); ctx.restore();
+
+    ctx.beginPath();
+    for(var k = 0; k <= N; k++){
+      var x = X(M.vol[k]), y = Y(M.lv[k]);
+      if(k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.globalAlpha = 0.10; ctx.fillStyle = TEAL; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.strokeStyle = TEALDK; ctx.lineWidth = 2.4; ctx.stroke();
+
+    ctx.setLineDash([4, 3]); ctx.strokeStyle = GOLD; ctx.lineWidth = 1.5;
+    [M.ESV, M.EDV].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(X(v), Y(0)); ctx.lineTo(X(v), Y(158)); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    ctx.fillStyle = GOLD; ctx.font = '800 9.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('ESV ' + Math.round(M.ESV), X(M.ESV), T + 10);
+    ctx.fillText('EDV ' + Math.round(M.EDV), X(M.EDV), T + 10);
+
+    ctx.strokeStyle = CORAL; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(X(M.ESV), Y(5)); ctx.lineTo(X(M.EDV), Y(5)); ctx.stroke();
+    ctx.fillStyle = CORAL; ctx.textAlign = 'center';
+    ctx.fillText('stroke volume ' + Math.round(M.SV) + ' mL', (X(M.ESV) + X(M.EDV)) / 2, Y(5) + 14);
+
+    ctx.fillStyle = TEAL;
+    ctx.beginPath(); ctx.arc(X(ph.vol), Y(ph.lv), 5.5, 0, 6.2832); ctx.fill();
+  }
+
+  function phaseAt(M){
+    var frac = +sT.value / 1000, i = Math.min(N, Math.round(frac * N)), tt = M.t[i];
+    var lv = M.lv[i], ao = M.ao[i], la = M.la[i], vol = M.vol[i];
+    var mitral = la > lv, aortic = lv > ao;
+    var name, blurb;
+    if(tt < M.ivc){
+      name = 'Isovolumetric contraction';
+      blurb = 'The mitral valve closed the instant ventricular pressure rose above atrial pressure &mdash; that closure is the first heart sound. The aortic valve cannot open until ventricular pressure exceeds aortic pressure of ' + Math.round(M.AoD) + ' mmHg. All four valves are shut and blood is incompressible, so volume cannot change: the contraction is converted entirely into a rise in pressure, from about ' + Math.round(M.LVEDP) + ' to ' + Math.round(M.AoD) + ' mmHg in roughly ' + Math.round(M.ivc) + ' ms.';
+    } else if(tt < M.systole){
+      name = 'Ejection';
+      blurb = 'Ventricular pressure has overtaken aortic pressure, the aortic valve is open, and blood is leaving: ' + Math.round(M.EDV - vol) + ' mL of the eventual ' + Math.round(M.SV) + ' mL so far. Watch the gradient shrink and then reverse at the very end of ejection &mdash; that reversal is what shuts the valve.';
+    } else if(tt < M.systole + M.ivr){
+      name = 'Isovolumetric relaxation';
+      blurb = 'Aortic pressure overtook the falling ventricular pressure and the aortic valve shut &mdash; the second heart sound. Elastic recoil of the aortic root leaves the dicrotic notch visible on the red trace, and it is that same recoil that holds aortic pressure at ' + Math.round(M.AoD) + ' mmHg through diastole instead of letting it collapse to zero, keeping the coronary arteries perfused. All valves are shut, so pressure plummets with no change in volume until it drops below left atrial pressure.';
+    } else {
+      var q = (tt - M.systole - M.ivr) / M.fill;
+      if(q < 0.35){ name = 'Rapid filling'; blurb = 'Ventricular pressure fell below atrial pressure and the mitral valve opened. Filling is fast now because the ventricle is recoiling and effectively sucking. About 70 percent of the filling volume arrives during this phase.'; }
+      else if(q < 0.72){ name = 'Diastasis'; blurb = 'The slow middle of filling: atrial and ventricular pressures are nearly equal, so flow is sluggish. Diastasis is the phase that disappears first when heart rate rises, which is why fast rates compromise filling before they compromise anything else.'; }
+      else { name = 'Atrial systole'; blurb = 'The P wave has fired and the atrium contracts, adding the final 20 to 30 percent of end-diastolic volume &mdash; the atrial kick. At rest it is dispensable, which is why many people tolerate atrial fibrillation; at high rates, when diastole is short, losing it can cost around 20 percent of stroke volume.'; }
+    }
+    return { i:i, tt:tt, lv:lv, ao:ao, la:la, vol:vol, mitral:mitral, aortic:aortic, name:name, blurb:blurb };
+  }
+
+  function draw(){
+    var M = model(), ph = phaseAt(M);
+    id('vHR').textContent = M.HR + '/min';
+    id('vEDV').textContent = M.EDV + ' mL';
+    id('vESV').textContent = Math.round(M.ESV) + ' mL';
+    id('vAoD').textContent = M.AoD + ' mmHg';
+    id('vT').textContent = Math.round(ph.tt) + ' of ' + Math.round(M.cycle) + ' ms';
+
+    id('oSV').textContent = Math.round(M.SV);
+    id('oEF').textContent = Math.round(M.EF);
+    id('oCO').textContent = f(M.CO, 2);
+    id('oCyc').textContent = Math.round(M.cycle);
+    id('oSys').textContent = f(M.systole / 1000, 2);
+    id('oDia').textContent = f(M.diastole / 1000, 2);
+    id('oPk').textContent = Math.round(M.peak);
+    id('oSW').textContent = f(M.work * 0.0001333, 2);
+    id('oDpm').textContent = Math.round(M.diastole / 1000 * M.HR);
+
+    id('eqCalc').innerHTML =
+      'SV = EDV &minus; ESV = <b class="num">' + M.EDV + '</b> &minus; <b class="num">' + Math.round(M.ESV) + '</b> = <b class="num">' + Math.round(M.SV) + ' mL</b><br>' +
+      'EF = SV / EDV = ' + Math.round(M.SV) + ' / ' + M.EDV + ' = <b class="num">' + Math.round(M.EF) + '%</b> &nbsp;(normal 55&ndash;70)<br>' +
+      'CO = HR &times; SV = ' + M.HR + ' &times; ' + Math.round(M.SV) + ' = <b class="num">' + Math.round(M.HR * M.SV) + ' mL/min</b>, about ' + f(M.CO, 1) + ' L/min. Aortic pressure this beat is <b class="num">' + Math.round(M.aoSys) + '/' + M.AoD + '</b> mmHg.';
+
+    var vm = id('vMit'), va = id('vAor');
+    vm.className = 'valve ' + (ph.mitral ? 'open' : 'shut');
+    vm.querySelector('.s').textContent = ph.mitral ? 'OPEN' : 'SHUT';
+    vm.querySelector('.why').textContent = 'LA ' + f(ph.la) + ' ' + (ph.mitral ? '>' : '<') + ' LV ' + f(ph.lv) + ' mmHg';
+    va.className = 'valve ' + (ph.aortic ? 'open' : 'shut');
+    va.querySelector('.s').textContent = ph.aortic ? 'OPEN' : 'SHUT';
+    va.querySelector('.why').textContent = 'LV ' + f(ph.lv) + ' ' + (ph.aortic ? '>' : '<') + ' aorta ' + f(ph.ao) + ' mmHg';
+
+    var v = id('vPhase');
+    v.className = 'verdict' + (ph.aortic ? ' warn' : (ph.mitral ? '' : ' cool'));
+    v.innerHTML = ph.name + ' &middot; ' + Math.round(ph.vol) + ' mL in the ventricle<small>' + ph.blurb + '</small>';
+
+    var c = id('vCyc'), ccls = 'verdict', chead, csub;
+    var dpm = M.diastole / 1000 * M.HR;
+    if(M.HR > 150){
+      ccls += ' bad'; chead = 'Diastole is disappearing';
+      csub = 'At ' + M.HR + ' per minute the cycle is only ' + Math.round(M.cycle) + ' ms and diastole is down to ' + Math.round(M.diastole) + ' ms &mdash; ' + Math.round(dpm) + ' seconds of diastole per minute against 37 at rest. Filling, not contraction, now limits output, and left ventricular coronary perfusion falls at the same time.';
+    } else if(M.EF < 40){
+      ccls += ' bad'; chead = 'Ejection fraction ' + Math.round(M.EF) + ' percent';
+      csub = 'Below the normal 55 to 70 percent, so this is systolic dysfunction &mdash; but look at cardiac output: ' + f(M.CO, 1) + ' L/min. A dilated ventricle and a raised rate can hold output up for a long time with a poor ejection fraction, which is exactly why the percentage alone never tells you whether output is adequate.';
+    } else if(M.SV < 45){
+      ccls += ' warn'; chead = 'A small stroke volume behind a respectable percentage';
+      csub = 'Ejection fraction is ' + Math.round(M.EF) + ' percent, which looks fine, yet stroke volume is only ' + Math.round(M.SV) + ' mL and output is ' + f(M.CO, 1) + ' L/min. The ventricle is not filling. That is heart failure with preserved ejection fraction in one picture.';
+    } else if(M.AoD > 105){
+      ccls += ' warn'; chead = 'A higher wall to climb before the valve opens';
+      csub = 'The aortic valve cannot open until ventricular pressure passes ' + M.AoD + ' mmHg, so isovolumetric contraction lasts longer, ejection begins later and ends at a larger end-systolic volume. That is afterload written into the timing of the beat.';
+    } else {
+      ccls += ' ok'; chead = 'One cycle in ' + f(M.cycle / 1000, 2) + ' s';
+      csub = 'Systole ' + f(M.systole / 1000, 2) + ' s and diastole ' + f(M.diastole / 1000, 2) + ' s &mdash; which is why diastole is the longer pause you hear between the second sound and the next first sound. Volume falls from ' + M.EDV + ' to ' + Math.round(M.ESV) + ' mL, ejecting ' + Math.round(M.SV) + ' mL, giving ' + f(M.CO, 1) + ' L/min. Indexed to body surface area, cardiac index is normally 2.5 to 4.0 L/min/m².';
+    }
+    c.className = ccls; c.innerHTML = chead + '<small>' + csub + '</small>';
+
+    drawW(M, ph); drawPV(M, ph);
+  }
+
+  id('bPlay').addEventListener('click', function(){
+    var b = this;
+    if(timer){ clearInterval(timer); timer = null; b.textContent = 'Play the beat'; return; }
+    b.textContent = 'Pause';
+    timer = setInterval(function(){ sT.value = (+sT.value + 12) % 1001; draw(); }, 40);
+  });
+  id('bS1').addEventListener('click', function(){ var M = model(); sT.value = Math.round(M.ivc * 0.12 / M.cycle * 1000); draw(); });
+  id('bS2').addEventListener('click', function(){ var M = model(); sT.value = Math.round((M.systole + 5) / M.cycle * 1000); draw(); });
+
+  [sHR, sEDV, sESV, sAoD, sT].forEach(function(el){ el.addEventListener('input', draw); });
+  window.addEventListener('resize', draw);
+  draw();
+})();
+</script>
+</body>
+</html>

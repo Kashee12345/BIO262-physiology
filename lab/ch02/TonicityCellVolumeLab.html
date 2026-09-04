@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tonicity &amp; Cell Volume &mdash; mix a solution, watch the cell answer</title>
+<meta name="description" content="Build any solution from sodium, urea, mannitol and dextrose, read its osmolarity and its tonicity separately, then watch a red cell swell, crenate or lyse and let it defend itself by negative feedback.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.sl label .tag{font-size:10px;font-weight:800;letter-spacing:.4px;padding:2px 7px;border-radius:20px;background:var(--line);color:var(--soft);}
+.sl label .tag.eff{background:var(--teal);color:#fff;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:18px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;}
+.hint b{color:var(--soft);}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.warn.on{background:var(--coral);border-color:var(--coral);}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog.brk[aria-pressed="true"] .dot{background:var(--coral);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.verdict{display:flex;align-items:center;gap:9px;margin-top:12px;}
+.verdict .big{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch02.html">&larr; Module 2</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 2 &middot; Section 3</div>
+  <h1>Tonicity &amp; Cell Volume</h1>
+  <div class="intro">There is no water pump anywhere in the human body. Water only ever follows <b>effective osmoles</b> &mdash; the particles a membrane cannot let through. Mix a solution below and read its <b>osmolarity</b> and its <b>tonicity</b> as two separate numbers, watch the red cell answer, then break the volume-regulating feedback loop one component at a time and see what the cell loses.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Grab a bag off the shelf</div>
+      <div class="chips" id="presets"></div>
+
+      <div class="lbl">or mix your own</div>
+      <div class="sl"><label for="sNaCl">NaCl <span class="tag eff">effective</span><span class="v" id="vNaCl">154 mM</span></label><input type="range" id="sNaCl" min="0" max="520" step="1" value="154" aria-label="Sodium chloride concentration in millimoles per liter"></div>
+      <div class="sl"><label for="sUrea">Urea <span class="tag">ineffective</span><span class="v" id="vUrea">0 mM</span></label><input type="range" id="sUrea" min="0" max="400" step="5" value="0" aria-label="Urea concentration in millimoles per liter"></div>
+      <div class="sl"><label for="sMan">Mannitol <span class="tag eff">effective</span><span class="v" id="vMan">0 mM</span></label><input type="range" id="sMan" min="0" max="300" step="5" value="0" aria-label="Mannitol concentration in millimoles per liter"></div>
+      <div class="sl"><label for="sDex">Dextrose <span class="tag eff" id="dexTag">effective</span><span class="v" id="vDex">0 mM</span></label><input type="range" id="sDex" min="0" max="300" step="2" value="0" aria-label="Dextrose concentration in millimoles per liter"></div>
+      <button class="tog" id="tMet" aria-pressed="false"><span class="dot"></span><span>Wait a few minutes &mdash; metabolize the dextrose<small>Cells burn it; only the water it was dissolved in remains</small></span></button>
+
+      <div class="lbl">The cell&rsquo;s own defense &mdash; a real negative feedback loop</div>
+      <button class="tog brk" id="bSens" aria-pressed="false"><span class="dot"></span><span>Break the SENSOR<small>Stretch-activated channels and volume-sensitive proteins</small></span></button>
+      <button class="tog brk" id="bInt" aria-pressed="false"><span class="dot"></span><span>Break the INTEGRATOR<small>Volume-sensitive kinases, the WNK/SPAK family</small></span></button>
+      <button class="tog brk" id="bEff" aria-pressed="false"><span class="dot"></span><span>Break the EFFECTORS<small>K&#8314; and Cl&#8315; channels, KCC, NKCC1, Na&#8314;/H&#8314; exchange</small></span></button>
+      <div class="row"><button class="btn solid" id="regulate">Let the cell regulate</button><button class="btn" id="reset">Reset to a naive cell</button></div>
+
+      <div class="lbl">Clinical scenario &mdash; chronic hyponatremia</div>
+      <div class="chips">
+        <button class="chip" id="scChronic" type="button">Na&#8314; 118 for three days</button>
+        <button class="chip warn" id="scFast" type="button">Correct fast: &#43;20 mEq/24 h</button>
+        <button class="chip" id="scSlow" type="button">Correct slowly: &#43;8 mEq/24 h</button>
+      </div>
+      <div class="hint">Osmotic pressure is enormous &mdash; van&rsquo;t Hoff gives roughly <b>19 mmHg per mOsm/L</b>, so 290 mOsm/L pushes hard against pure water. But what actually moves a cell is only the fraction the membrane <i>excludes</i>.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The cell answers</h2>
+      <svg id="cellSvg" viewBox="0 0 420 250" role="img" aria-label="Animated red blood cell that swells, stays normal, crenates or lyses depending on the tonicity of the surrounding solution"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Osmolarity (all particles)</div><div class="v" id="oOsm">308</div><div class="u">mOsm/L &middot; plasma 275&ndash;295</div></div>
+        <div class="stat"><div class="k">Tonicity (effective only)</div><div class="v" id="oTon">286</div><div class="u">mOsm/L that actually pull water</div></div>
+        <div class="stat"><div class="k">Cell volume</div><div class="v" id="oVol">1.01</div><div class="u">&times; starting volume</div></div>
+      </div>
+      <div class="verdict"><span class="pill" id="pillTon">ISOTONIC</span><span class="big" id="verdict">Volume holds</span></div>
+      <div class="hint" id="cellNote"></div>
+      <div id="info"><span class="n" id="iName">Reading the two numbers</span><span id="iText"></span></div>
+    </div>
+
+    <div class="card">
+      <h2>The loop that defends volume</h2>
+      <svg id="loopSvg" viewBox="0 0 420 190" role="img" aria-label="Diagram of the cell volume negative feedback loop: variable, sensor, integrator, effector and response, with broken components marked"></svg>
+      <div class="hint" id="loopNote"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+function num(x,d){ return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d); }
+
+var PHI_NACL=0.93;            /* osmotic coefficient: why 0.9% saline behaves isotonic at 308 mOsm/L */
+var LYSE=1.4;                 /* red cells hemolyze past about a 1.4-fold volume increase */
+var S={nacl:154,urea:0,man:0,dex:0,met:false};
+var CELL0=286;                /* intracellular EFFECTIVE osmoles: inside the normal 275-295 plasma range,
+                                 and exactly the value that makes 0.9% NaCl isotonic */
+var cellOsm=CELL0;
+var broken={sens:false,int:false,eff:false};
+var vShown=1, lysed=false, lyseAnim=0, msg=null;
+
+function osmolarity(){ return 2*S.nacl + S.urea + S.man + S.dex; }
+function tonicity(){ return PHI_NACL*2*S.nacl + S.man + (S.met?0:S.dex); }
+function vTarget(){ var t=tonicity(); return t<=1 ? 99 : cellOsm/t; }
+
+/* ---------------- presets ---------------- */
+var PRE=[
+ {n:'0.9&#37; NaCl',      s:{nacl:154,urea:0,man:0,dex:0,met:false}, t:'Normal saline, the isotonic reference. Nominal osmolarity is <b>308 mOsm/L</b> — higher than plasma — yet it is clinically isotonic and this cell does not move. Sodium and chloride do not behave as fully independent particles in solution (an osmotic coefficient near 0.93), so the tonicity the cell actually feels is about 286 mOsm/L. Osmolarity you calculate; tonicity is what the cell reports.'},
+ {n:'0.45&#37; NaCl',     s:{nacl:77,urea:0,man:0,dex:0,met:false}, t:'Half-normal saline, 154 mOsm/L. Roughly half the effective osmoles of plasma, so water floods in and the cell doubles — well past its lytic limit. Useful diluted into a maintenance fluid; dangerous as a bolus.'},
+ {n:'3&#37; NaCl',        s:{nacl:513,urea:0,man:0,dex:0,met:false}, t:'Hypertonic saline, about 1 026 mOsm/L. Water is dragged out of every cell it reaches — which is exactly why it is used to shrink a swollen brain, and exactly why it must be given carefully.'},
+ {n:'D5W',               s:{nacl:0,urea:0,man:0,dex:278,met:false}, t:'5&#37; dextrose in water, about <b>278 mOsm/L at the moment of infusion</b> — isotonic in the bag. Now press the metabolize toggle and watch what it really is.'},
+ {n:'300 mM urea',       s:{nacl:0,urea:300,man:0,dex:0,met:false}, t:'Isosmotic with plasma and functionally hypotonic. Urea permeates cell membranes freely, equilibrates across them and exerts no sustained pull, so this solution contains 300 mOsm/L of particles and <b>zero</b> effective osmoles. This single comparison is the whole distinction between osmolarity and tonicity.'},
+ {n:'300 mM mannitol',   s:{nacl:0,urea:0,man:300,dex:0,met:false}, t:'Run this straight after the urea preset. <b>Identical osmolarity, opposite result.</b> Mannitol is excluded from cells, so every one of its 300 particles is an effective osmole and it behaves exactly as its osmolarity predicts — mildly hypertonic, the cell shrinks a little. Urea at the very same 300 mOsm/L bursts the cell. Osmolarity cannot tell these two apart; tonicity can.'},
+ {n:'Pure water',        s:{nacl:0,urea:0,man:0,dex:0,met:false}, t:'No effective osmoles at all. Water rushes in until the membrane fails. This is why intravenous free water is never given undiluted.'}
+];
+var pw=$('#presets'); var curPre=0;
+PRE.forEach(function(p,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    S.nacl=p.s.nacl; S.urea=p.s.urea; S.man=p.s.man; S.dex=p.s.dex; S.met=p.s.met;
+    $('#tMet').setAttribute('aria-pressed','false');
+    curPre=i; msg=null; lysed=false;
+    syncSliders(); [].forEach.call(pw.children,function(c,j){c.classList.toggle('on',j===i);});
+    render();
+  });
+  pw.appendChild(b);
+});
+function syncSliders(){
+  $('#sNaCl').value=S.nacl; $('#sUrea').value=S.urea; $('#sMan').value=S.man; $('#sDex').value=S.dex;
+}
+[['sNaCl','nacl'],['sUrea','urea'],['sMan','man'],['sDex','dex']].forEach(function(pair){
+  $('#'+pair[0]).addEventListener('input',function(){
+    S[pair[1]]=+this.value; curPre=-1; msg=null; lysed=false;
+    [].forEach.call(pw.children,function(c){c.classList.remove('on');});
+    render();
+  });
+});
+$('#tMet').addEventListener('click',function(){
+  S.met=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',S.met?'true':'false');
+  msg = S.met && S.dex>0 ? 'met' : null; lysed=false; render();
+});
+
+/* ---------------- feedback loop ---------------- */
+[['bSens','sens'],['bInt','int'],['bEff','eff']].forEach(function(p){
+  $('#'+p[0]).addEventListener('click',function(){
+    broken[p[1]]=this.getAttribute('aria-pressed')!=='true';
+    this.setAttribute('aria-pressed',broken[p[1]]?'true':'false'); render();
+  });
+});
+$('#reset').addEventListener('click',function(){ cellOsm=CELL0; lysed=false; msg=null; render(); });
+$('#regulate').addEventListener('click',function(){
+  if(broken.sens||broken.int||broken.eff){ msg='broken'; render(); return; }
+  var t=tonicity();
+  if(t<=1){ msg='nowin'; render(); return; }
+  var goal=cellOsm + 0.85*(t-cellOsm);   /* 85% correction: real cells do not fully reach set point */
+  var from=cellOsm, t0=performance.now();
+  msg = (t>cellOsm)?'rvi':'rvd';
+  (function step(now){
+    var k=Math.min(1,(now-t0)/2200);
+    cellOsm=from+(goal-from)*k;
+    render();
+    if(k<1) requestAnimationFrame(step);
+  })(t0);
+});
+
+/* ---------------- clinical scenario ---------------- */
+$('#scChronic').addEventListener('click',function(){
+  S.nacl=118; S.urea=0; S.man=0; S.dex=0; S.met=false;
+  $('#tMet').setAttribute('aria-pressed','false');
+  cellOsm=PHI_NACL*2*118;   /* three days of osmolyte extrusion: the cell has already adapted */
+  curPre=-1; lysed=false; msg='chronic'; syncSliders();
+  [].forEach.call(pw.children,function(c){c.classList.remove('on');});
+  render();
+});
+$('#scFast').addEventListener('click',function(){
+  S.nacl=138; curPre=-1; lysed=false; msg='fast'; syncSliders();
+  [].forEach.call(pw.children,function(c){c.classList.remove('on');});
+  render();
+});
+$('#scSlow').addEventListener('click',function(){
+  S.nacl=126; curPre=-1; lysed=false; msg='slow'; syncSliders();
+  [].forEach.call(pw.children,function(c){c.classList.remove('on');});
+  render();
+});
+
+/* ---------------- cell drawing ---------------- */
+function drawCell(){
+  var v=vShown, R0=52, cx=210, cy=118;
+  var R=R0*Math.pow(Math.max(0.12,Math.min(2.2,v)),1/3);
+  var h='';
+  h+='<rect x="0" y="0" width="420" height="250" rx="14" fill="var(--blue)" opacity="0.05"></rect>';
+  /* solute dots in the bath: density reflects tonicity */
+  var t=tonicity(), dots=Math.round(Math.min(70,t/16)), seed=13;
+  for(var i=0;i<dots;i++){
+    seed=(seed*9301+49297)%233280; var rx=seed/233280;
+    seed=(seed*9301+49297)%233280; var ry=seed/233280;
+    var px=14+rx*392, py=14+ry*222;
+    if(Math.abs(px-cx)<R+14 && Math.abs(py-cy)<R+14) continue;
+    h+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="2.8" fill="var(--teal)" opacity="0.4"></circle>';
+  }
+  var ur=S.urea, udots=Math.round(Math.min(40,ur/14)), seed2=91;
+  for(var j=0;j<udots;j++){
+    seed2=(seed2*9301+49297)%233280; var ux=14+(seed2/233280)*392;
+    seed2=(seed2*9301+49297)%233280; var uy=14+(seed2/233280)*222;
+    h+='<circle cx="'+ux.toFixed(1)+'" cy="'+uy.toFixed(1)+'" r="2.8" fill="var(--muted)" opacity="0.35"></circle>';
+  }
+
+  if(lysed){
+    for(var k=0;k<16;k++){
+      var a=k/16*6.2832, d=R+18+lyseAnim*70;
+      var fx=cx+Math.cos(a)*d, fy=cy+Math.sin(a)*d;
+      h+='<circle cx="'+fx.toFixed(1)+'" cy="'+fy.toFixed(1)+'" r="'+(6*(1-lyseAnim*0.6)).toFixed(1)+'" fill="var(--coral)" opacity="'+(0.75*(1-lyseAnim)).toFixed(2)+'"></circle>';
+    }
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R*1.05).toFixed(1)+'" fill="none" stroke="var(--coral)" stroke-width="2" stroke-dasharray="6 6" opacity="0.6"></circle>';
+    h+='<text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-family="Fraunces,serif" font-size="19" font-weight="700" fill="var(--coral)">HEMOLYSIS</text>';
+  } else if(v<0.9){
+    /* crenated: spiky echinocyte */
+    var spikes=14, amp=Math.min(11,(0.9-v)*38), p='';
+    for(var s=0;s<spikes*2;s++){
+      var ang=s/(spikes*2)*6.2832, rr=R+((s%2===0)?amp:0);
+      p+=(s===0?'M':'L')+(cx+Math.cos(ang)*rr).toFixed(1)+' '+(cy+Math.sin(ang)*rr).toFixed(1)+' ';
+    }
+    p+='Z';
+    h+='<path d="'+p+'" fill="var(--coral)" opacity="0.85"></path>';
+    h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(R*0.42).toFixed(1)+'" ry="'+(R*0.38).toFixed(1)+'" fill="var(--coral)" opacity="0.45"></ellipse>';
+  } else {
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R.toFixed(1)+'" fill="var(--coral)" opacity="0.88"></circle>';
+    var dim=Math.max(0,(1.18-v)/0.4);
+    if(dim>0.02) h+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+(R*0.46*dim).toFixed(1)+'" ry="'+(R*0.42*dim).toFixed(1)+'" fill="var(--coral)" opacity="0.35"></ellipse>';
+    if(v>1.25) h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R+5).toFixed(1)+'" fill="none" stroke="var(--coral)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.7"></circle>';
+  }
+  /* water arrows */
+  var vt=vTarget(), diff=vt-1;
+  if(!lysed && Math.abs(vShown-vt)>0.005){
+    var inward=vt>vShown;
+    for(var q=0;q<6;q++){
+      var qa=q/6*6.2832+0.5;
+      var r1=inward?R+42:R+8, r2=inward?R+12:R+42;
+      h+='<line x1="'+(cx+Math.cos(qa)*r1).toFixed(1)+'" y1="'+(cy+Math.sin(qa)*r1).toFixed(1)+
+         '" x2="'+(cx+Math.cos(qa)*r2).toFixed(1)+'" y2="'+(cy+Math.sin(qa)*r2).toFixed(1)+
+         '" stroke="var(--blue)" stroke-width="3" opacity="0.55" stroke-linecap="round"></line>';
+    }
+    h+='<text x="'+cx+'" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="var(--blue)">WATER MOVING '+(inward?'IN':'OUT')+'</text>';
+  }
+  /* lysis limit ring */
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R0*Math.pow(LYSE,1/3)).toFixed(1)+'" fill="none" stroke="var(--gold)" stroke-width="1.2" stroke-dasharray="3 5" opacity="0.75"></circle>';
+  h+='<text x="404" y="18" text-anchor="end" font-family="Inter,sans-serif" font-size="9.4" font-weight="800" fill="var(--gold)">dashed ring = 1.4&times; lytic limit</text>';
+  h+='<text x="16" y="18" font-family="Inter,sans-serif" font-size="9.4" font-weight="800" fill="var(--teal)">&#9679; effective osmoles</text>';
+  h+='<text x="16" y="31" font-family="Inter,sans-serif" font-size="9.4" font-weight="800" fill="var(--muted)">&#9679; urea (crosses freely)</text>';
+  $('#cellSvg').innerHTML=h;
+}
+
+/* ---------------- loop diagram ---------------- */
+function drawLoop(){
+  var nodes=[
+    {x:36,  n:'VARIABLE', s:'cell volume', k:null},
+    {x:135, n:'SENSOR',   s:'stretch channels', k:'sens'},
+    {x:234, n:'INTEGRATOR',s:'WNK / SPAK kinases', k:'int'},
+    {x:333, n:'EFFECTORS', s:'K⁺, Cl⁻, KCC, NKCC1', k:'eff'}
+  ];
+  var h='', y=44;
+  nodes.forEach(function(nd,i){
+    var brk = nd.k && broken[nd.k];
+    var col = brk?'var(--coral)':(nd.k?'var(--teal)':'var(--teal-dk)');
+    h+='<rect x="'+(nd.x-32)+'" y="'+y+'" width="78" height="44" rx="10" fill="'+col+'" opacity="'+(brk?0.25:1)+'"></rect>';
+    h+='<text x="'+(nd.x+7)+'" y="'+(y+19)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="'+(brk?'var(--coral)':'#fff')+'">'+nd.n+'</text>';
+    h+='<text x="'+(nd.x+7)+'" y="'+(y+33)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.6" font-weight="600" fill="'+(brk?'var(--coral)':'rgba(255,255,255,.88)')+'">'+nd.s+'</text>';
+    if(brk){
+      h+='<line x1="'+(nd.x-30)+'" y1="'+(y+42)+'" x2="'+(nd.x+44)+'" y2="'+(y+2)+'" stroke="var(--coral)" stroke-width="3"></line>';
+    }
+    if(i<3){
+      var ax=nd.x+48, bx=nodes[i+1].x-34;
+      h+='<line x1="'+ax+'" y1="'+(y+22)+'" x2="'+(bx-6)+'" y2="'+(y+22)+'" stroke="var(--muted)" stroke-width="2"></line>';
+      h+='<polygon points="'+(bx-6)+','+(y+17)+' '+(bx-6)+','+(y+27)+' '+bx+','+(y+22)+'" fill="var(--muted)"></polygon>';
+    }
+  });
+  /* return arrow */
+  var okLoop=!(broken.sens||broken.int||broken.eff);
+  var rc = okLoop?'var(--green)':'var(--coral)';
+  h+='<path d="M 372 '+(y+50)+' L 372 148 L 40 148 L 40 '+(y+50)+'" fill="none" stroke="'+rc+'" stroke-width="2.4" stroke-dasharray="'+(okLoop?'0':'7 6')+'"></path>';
+  h+='<polygon points="35,'+(y+56)+' 45,'+(y+56)+' 40,'+(y+46)+'" fill="'+rc+'"></polygon>';
+  h+='<rect x="168" y="136" width="86" height="24" rx="12" fill="#fff" stroke="'+rc+'" stroke-width="1.5"></rect>';
+  h+='<text x="211" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="'+rc+'">'+(okLoop?'RESPONSE  −':'LOOP CUT')+'</text>';
+  h+='<text x="10" y="20" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="var(--muted)">'+(okLoop?'NEGATIVE FEEDBACK: THE CORRECTION OPPOSES THE DISTURBANCE':'NO CORRECTION — THE VARIABLE RUNS AWAY')+'</text>';
+  h+='<text x="10" y="180" font-family="Inter,sans-serif" font-size="9" font-weight="600" fill="var(--muted)">Swelling &rarr; regulatory volume DECREASE (extrude K⁺, Cl⁻, taurine, myo-inositol) &nbsp;·&nbsp; Shrinkage &rarr; regulatory volume INCREASE (NKCC1, Na⁺/H⁺)</text>';
+  $('#loopSvg').innerHTML=h;
+
+  var n='';
+  if(broken.sens) n='<b style="color:var(--coral)">Sensor broken.</b> The cell cannot detect that it has changed size, so nothing downstream is ever triggered. A control loop with no measurement is not a control loop.';
+  else if(broken.int) n='<b style="color:var(--coral)">Integrator broken.</b> The stretch signal arrives but nothing compares it with a set point or decides what to do. Sensing without integrating changes nothing.';
+  else if(broken.eff) n='<b style="color:var(--coral)">Effectors broken.</b> The cell knows exactly what is wrong and has decided what to do, and still cannot act. Volume drifts wherever osmosis takes it.';
+  else n='<b>Intact loop.</b> Variable, sensor, integrator, effector, response &mdash; and the response opposes the disturbance, which is the definition of negative feedback. Press <i>Let the cell regulate</i> and watch intracellular effective osmoles move so that water follows and volume returns toward set point. This is the same architecture you will meet in every remaining module.';
+  $('#loopNote').innerHTML=n;
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  $('#vNaCl').textContent=S.nacl+' mM'; $('#vUrea').textContent=S.urea+' mM';
+  $('#vMan').textContent=S.man+' mM';   $('#vDex').textContent=S.dex+' mM';
+  $('#dexTag').textContent=S.met?'metabolized':'effective';
+  $('#dexTag').className=S.met?'tag':'tag eff';
+
+  var osm=osmolarity(), ton=tonicity(), vt=vTarget();
+  $('#oOsm').textContent=Math.round(osm);
+  $('#oTon').textContent=Math.round(ton);
+
+  var rel=ton/cellOsm;
+  var cls = rel<0.965?'hypotonic':(rel>1.035?'hypertonic':'isotonic');
+  var pill=$('#pillTon');
+  pill.textContent=cls.toUpperCase();
+  pill.className='pill '+(cls==='hypotonic'?'low':(cls==='hypertonic'?'high':'normal'));
+
+  $('#cellNote').innerHTML='<b>Inside this cell:</b> '+Math.round(cellOsm)+' mOsm/L of impermeant osmoles &mdash; squarely inside the normal plasma range of 275&ndash;295, and the value that makes 0.9&#37; saline behave as isotonic. Water moves until this number and the tonicity outside are equal, and volume is simply the ratio of the two.';
+
+  var vdisp = vt>=LYSE?'>1.40':num(Math.min(vt,2.2),2);
+  $('#oVol').textContent=vdisp;
+  $('#verdict').textContent = vt>=LYSE?'Cell bursts' : (vt>1.05?'Cell swells' : (vt<0.9?'Cell crenates' : (vt<0.97?'Cell shrinks slightly':'Volume holds')));
+
+  /* explanation */
+  var t='';
+  if(msg==='met'){
+    t=' <b>There it is.</b> The dextrose is gone, metabolized within minutes, and what remains is free water distributed across every body compartment. Tonicity has fallen to '+Math.round(ton)+' mOsm/L while the bag was labeled isotonic. Infuse enough, fast enough, and a solution that was isotonic on the shelf delivers a genuine hypotonic insult.';
+  } else if(msg==='broken'){
+    t=' <b>Nothing happened, and that is the lesson.</b> You cut the loop, so the cell has no way to correct itself. Volume is now set entirely by osmosis, and the cell will sit wherever the bath puts it — or burst. Turn the broken component back on and try again.';
+  } else if(msg==='rvd'){
+    t=' <b>Regulatory volume decrease.</b> Swelling opened stretch-sensitive channels, volume-sensitive kinases read the signal, and K⁺, Cl⁻ and organic osmolytes such as taurine and myo-inositol were extruded. Intracellular effective osmolarity has fallen to '+Math.round(cellOsm)+' mOsm/L, water followed them out, and volume is heading back toward set point. Note the correction is not complete — real loops leave a residual error.';
+  } else if(msg==='rvi'){
+    t=' <b>Regulatory volume increase.</b> Shrinkage recruited NKCC1 and Na⁺/H⁺ exchange, importing solute so that intracellular effective osmolarity rose to '+Math.round(cellOsm)+' mOsm/L. Water followed it in and the cell refilled. Same loop, mirror-image effectors.';
+  } else if(msg==='chronic'){
+    t=' <b>Three days at Na⁺ 118.</b> The plasma is profoundly hypotonic, yet this cell is not swollen — it has already run the loop, extruding potassium and organic osmolytes over hours to days until its own effective osmolarity fell to about '+Math.round(cellOsm)+' mOsm/L. It survives by matching its surroundings. Now press one of the two correction buttons.';
+  } else if(msg==='fast'){
+    var vf=vTarget();
+    t=' <b>Corrected fast: sodium up 20 mEq in 24 hours.</b> The cell has been stripped of osmolytes and cannot replace them in a day. Raising plasma tonicity this quickly leaves it in a relatively hypertonic bath, and it shrinks to '+num(vf,2)+' of its volume. In the brain that is osmotic demyelination. The ceiling on the correction rate &mdash; roughly <b>8&ndash;10 mEq/L per 24 hours</b> &mdash; comes straight out of how slowly this feedback loop can run, not from any arbitrary rule.';
+  } else if(msg==='slow'){
+    var vs=vTarget();
+    t=' <b>Corrected slowly: sodium up 8 mEq in 24 hours.</b> Volume falls only to '+num(vs,2)+', a shrinkage the cell can absorb, and it has time to run a regulatory volume increase alongside the correction. Press <i>Let the cell regulate</i> and watch it re-import osmolytes to close the remaining gap. Same physiology, different rate, entirely different outcome.';
+  } else if(msg==='nowin'){
+    t=' There are no effective osmoles outside at all, so there is no equilibrium to regulate toward. Water keeps entering no matter what the cell extrudes. Volume regulation buys time against a gradient; it cannot beat pure water.';
+  } else if(vt>=LYSE){
+    t=' Effective osmoles outside ('+Math.round(ton)+' mOsm/L) are far below the cell&rsquo;s own ('+Math.round(cellOsm)+' mOsm/L), so water enters. Past about a <b>1.4-fold</b> volume increase the membrane fails and hemoglobin spills out. Osmolarity here is '+Math.round(osm)+' mOsm/L &mdash; check whether that number would have warned you.';
+  } else if(vt<0.9){
+    t=' The bath holds '+Math.round(ton)+' mOsm/L of effective osmoles against the cell&rsquo;s '+Math.round(cellOsm)+', so water leaves and the membrane buckles into the spiky crenated form. Nothing pumped the water out; it simply followed the particles it could not join.';
+  } else {
+    t=' Effective osmoles are balanced at about '+Math.round(ton)+' mOsm/L outside against '+Math.round(cellOsm)+' inside, so there is no sustained net water movement. Note that osmolarity ('+Math.round(osm)+' mOsm/L) and tonicity ('+Math.round(ton)+' mOsm/L) are different numbers — only the second one predicts what the cell will do.';
+    if(curPre>=0) t=' '+PRE[curPre].t+t;
+  }
+  if(curPre>=0 && !msg && vt>=LYSE) t=' '+PRE[curPre].t+t;
+  if(curPre>=0 && !msg && vt<0.9)  t=' '+PRE[curPre].t+t;
+  $('#iText').innerHTML=t;
+  $('#iName').textContent = vt>=LYSE?'What just happened':(msg?'What just happened':'Reading the two numbers');
+
+  drawLoop();
+}
+
+/* animation */
+function frame(){
+  var vt=vTarget();
+  if(vt>=LYSE){
+    vShown+= (LYSE-vShown)*0.10;
+    if(vShown>LYSE-0.02){ lysed=true; lyseAnim=Math.min(1,lyseAnim+0.012); }
+  } else {
+    lysed=false; lyseAnim=0;
+    vShown+=(vt-vShown)*0.10;
+  }
+  drawCell();
+  requestAnimationFrame(frame);
+}
+render(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Mechanostat and the RANKL Switch &mdash; how bone decides how much of itself to keep</title>
+<meta name="description" content="Load a skeleton and watch strain fall as bone is added, flip the RANKL/OPG switch with hormones and drugs, then dig and refill basic multicellular units to see the remodeling space appear.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);} .btn:disabled{opacity:.42;cursor:default;}
+.srow{display:grid;grid-template-columns:172px 1fr 80px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.srow .nm{color:var(--soft);font-weight:700;line-height:1.2;}
+.srow .nm small{display:block;font-weight:500;color:var(--muted);font-size:10px;}
+.srow .tr{height:13px;border-radius:7px;background:rgba(0,0,0,.055);overflow:hidden;}
+.srow .fl{height:100%;border-radius:7px;transition:width .3s;background:var(--blue);}
+.srow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch04.html">&larr; Module 4</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 4 &middot; Section 3</div>
+  <h1>The Mechanostat and the RANKL Switch</h1>
+  <div class="intro">Bone does not regulate its own mass &mdash; it regulates <b>strain</b>, and mass is merely how it hits the target. Load a skeleton and watch strain walk back into the window as bone is added. Then work the switch every hormone and drug ultimately uses, the <b>RANKL/OPG ratio</b>, and finally dig and refill basic multicellular units to see why a three-week hole takes four months to fill.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Mechanostat</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">RANKL / OPG</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Remodeling space</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Loading history to simulate</div>
+        <div class="chips" id="pre1"></div>
+        <div class="sl"><label for="load">Peak load per cycle <span class="v" id="loadV">100</span></label>
+          <input type="range" id="load" min="0" max="280" value="100" aria-label="Peak mechanical load per cycle, arbitrary units where 100 is ordinary daily activity"></div>
+        <div class="sl"><label for="cyc">Loading cycles per day <span class="v" id="cycV">5000</span></label>
+          <input type="range" id="cyc" min="0" max="200" value="172" aria-label="Loading cycles per day, logarithmic scale from zero to twenty thousand"></div>
+        <button class="tog" id="tDyn" type="button" aria-pressed="true"><span class="dot"></span><span>Loading is dynamic (strain is changing) <small>Switch this off to hold a static load &mdash; standing still, all day</small></span></button>
+        <button class="tog" id="tAge" type="button" aria-pressed="false"><span class="dot"></span><span>Add age-related loss after 40 <small>About 0.5&ndash;1 percent of bone mineral density per year in both sexes</small></span></button>
+        <div class="sl"><label for="mon">Months to run <span class="v" id="monV">24</span></label>
+          <input type="range" id="mon" min="3" max="60" value="24" aria-label="Number of months to simulate"></div>
+        <div class="hint"><b>The point of the loop.</b> Strain, not mass, is the controlled variable. Add bone and the same load produces less strain, so the anabolic signal switches itself off. Take load away and strain falls below the disuse threshold, so the system removes bone until strain rises again.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Send a signal to the osteoblast lineage</div>
+        <div class="chips" id="pre2"></div>
+        <div class="sl"><label for="rk">RANKL expression <span class="v" id="rkV">100%</span></label>
+          <input type="range" id="rk" min="0" max="300" value="100" aria-label="RANKL expression, percent of normal"></div>
+        <div class="sl"><label for="og">Osteoprotegerin (OPG) <span class="v" id="ogV">100%</span></label>
+          <input type="range" id="og" min="0" max="300" value="100" aria-label="Osteoprotegerin expression, percent of normal"></div>
+        <div class="sl"><label for="fm">Direct drive on osteoblasts <span class="v" id="fmV">100%</span></label>
+          <input type="range" id="fm" min="0" max="250" value="100" aria-label="Direct drive on osteoblast formation, percent of normal"></div>
+        <button class="tog" id="tCouple" type="button" aria-pressed="true"><span class="dot"></span><span>Resorption&ndash;formation coupling is on <small>Osteoclasts release matrix-bound TGF-&beta; and IGF-1 that recruit osteoblasts</small></span></button>
+        <div class="hint">Osteoclasts <b>cannot be commanded directly</b> by most hormones &mdash; they lack the receptors. The bone-forming lineage tells the bone-destroying lineage what to do, and it does so by setting the ratio of a ligand to its own decoy.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Basic multicellular units</div>
+        <div class="hint" style="margin-top:0">Roughly <b>10 percent</b> of the adult skeleton is replaced every year by BMUs, with 1&ndash;2 million active at any moment and a new one starting somewhere about every 10 seconds. Each digs for <b>2&ndash;3 weeks</b>, pauses <b>1&ndash;2 weeks</b>, then refills over <b>3&ndash;4 months</b>.</div>
+        <div class="sl"><label for="af">Activation frequency <span class="v" id="afV">100%</span></label>
+          <input type="range" id="af" min="10" max="400" value="100" aria-label="BMU activation frequency, percent of normal"></div>
+        <div class="sl"><label for="imb">Deficit left by each completed cycle <span class="v" id="imbV">0%</span></label>
+          <input type="range" id="imb" min="0" max="15" value="0" aria-label="Percentage of each remodeling cavity that is never refilled"></div>
+        <div class="sl"><label for="tx">Antiresorptive started at month <span class="v" id="txV">off</span></label>
+          <input type="range" id="tx" min="0" max="36" value="0" aria-label="Month at which an antiresorptive drug is started; zero means no treatment"></div>
+        <div class="sl"><label for="txp">How much it suppresses activation <span class="v" id="txpV">80%</span></label>
+          <input type="range" id="txp" min="0" max="95" value="80" aria-label="Percentage suppression of BMU activation by the drug"></div>
+        <div class="lbl">Clinical situations</div>
+        <div class="chips" id="pre3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Strain finds its own window</h2>
+      <canvas id="cv1" width="1040" height="620" aria-label="Top plot: local bone strain in microstrain against months with the disuse, adapted and overload zones shaded. Bottom plot: bone mass as a percentage against months."></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>The final common switch</h2>
+      <canvas id="cv2" width="1040" height="520" aria-label="Animated diagram of osteoblasts and osteocytes releasing RANKL and OPG, with decoy capture and RANK binding on osteoclast precursors below"></canvas>
+      <div class="stats" id="s2"></div>
+      <div id="bars2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>Holes dug, holes filled</h2>
+      <canvas id="cv3" width="1040" height="600" aria-label="Top plot: measured bone density against months. Bottom plot: number of open, unfilled remodeling cavities against months, with the start of drug treatment marked."></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(p){p[0].classList.toggle('on',p[1]===n);p[0].setAttribute('aria-selected',p[1]===n?'true':'false');});
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =====================================================
+   BENCH 1 - the mechanostat
+   ===================================================== */
+var load=$('load'),cyc=$('cyc'),mon=$('mon');
+var dynamic=true, ageLoss=false;
+function cycles(){ var t=+cyc.value/200; return Math.round(Math.pow(10,t*4.3)-1); }  /* 0 to ~20000 */
+var PRE1=[
+ {n:'Ordinary walking',l:100,c:172,d:1},
+ {n:'Bed rest / spaceflight',l:2,c:61,d:1},
+ {n:'Standing still all day',l:105,c:22,d:0},
+ {n:'Distance running',l:132,c:182,d:1},
+ {n:'Jumping / heavy lifting',l:238,c:83,d:1},
+ {n:'Tennis, dominant arm',l:250,c:79,d:1},
+ {n:'Swimming or cycling',l:38,c:176,d:1}
+];
+var pb1=$('pre1');
+PRE1.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P.n;
+  b.onclick=function(){load.value=P.l;cyc.value=P.c;dynamic=!!P.d;$('tDyn').setAttribute('aria-pressed',dynamic?'true':'false');render1();};
+  pb1.appendChild(b);
+});
+$('tDyn').onclick=function(){dynamic=!dynamic;this.setAttribute('aria-pressed',dynamic?'true':'false');render1();};
+$('tAge').onclick=function(){ageLoss=!ageLoss;this.setAttribute('aria-pressed',ageLoss?'true':'false');render1();};
+[load,cyc,mon].forEach(function(s){s.addEventListener('input',render1);});
+
+function render1(){
+  var L=+load.value, CY=cycles(), MO=+mon.value;
+  $('loadV').textContent=L; $('cycV').textContent=CY.toLocaleString(); $('monV').textContent=MO;
+  var cf=1-Math.exp(-CY/14);              /* about 40 cycles saturates the response */
+  var mass=100, dt=0.05, series=[], strainNow=0, i;
+  for(var t=0;t<=MO+0.0001;t+=dt){
+    var strain=12*L/(mass/100);
+    var eff=dynamic?strain:0;
+    var d=0;
+    if(eff<200) d=-1.50*(1-eff/200);
+    else if(eff>2500) d=0.75*Math.min(1,(eff-2500)/1500)*cf;
+    if(ageLoss) d-=0.06;
+    mass=Math.max(35,Math.min(160,mass+d*dt));
+    series.push([t,strain,mass]);
+    strainNow=strain;
+  }
+  var finalMass=mass, finalStrain=12*L/(mass/100), effFinal=dynamic?finalStrain:0;
+  var scl=100*(1-0.78*Math.min(1,effFinal/2500)*cf);
+  var rlr=1+2.4*(1-Math.min(1,effFinal/2500)*cf);
+  var zone = !dynamic ? 'no signal' : (finalStrain<200?'disuse':(finalStrain<=2500?'adapted window':(finalStrain<7000?'overload':'yield range')));
+
+  $('s1').innerHTML=
+    tile('Peak strain now',Math.round(finalStrain),'microstrain &middot; vigorous activity 1,000&ndash;1,500')+
+    tile('Zone',zone,'disuse &lt;200 &middot; window 200&ndash;2,500 &middot; overload &gt;2,500')+
+    tile('Bone mass after '+MO+' mo',finalMass.toFixed(1),'% of starting mass')+
+    tile('Signal saturation',(cf*100).toFixed(0),'% &middot; about 40 cycles saturates it')+
+    tile('Sclerostin',Math.round(scl),'% of normal &middot; falls with loading')+
+    tile('RANKL/OPG ratio',rlr.toFixed(2),'&times; normal');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(!dynamic){
+    cls='verdict bad';
+    txt='A static load produces no signal at all<small>The osteocyte does not sense strain directly &mdash; it senses the <b>fluid shear</b> that flows past its processes when strain is <i>changing</i>. Hold the load still and the lacuno-canalicular fluid stops moving, so the cell reads exactly what it reads in bed rest.</small>';
+    inf='<span class="n">The amplifier is fluid, not membrane stretch</span>Vigorous activity deforms cortical bone by only about <b>1,000&ndash;1,500 microstrain</b>, where 1,000 &micro;&epsilon; is a 0.1 percent length change &mdash; far too small for a cell to feel by membrane stretch. Loading squeezes the lacuno-canalicular network and drives interstitial fluid past the osteocyte process; the shear on the cell membrane and its pericellular tether, on the order of <b>0.8&ndash;3 Pa</b>, is what is actually sensed. That is why the loading that builds bone must be dynamic, high in rate, and unusual in its distribution.';
+  } else if(finalStrain<200){
+    cls='verdict bad';
+    txt='Disuse &mdash; the skeleton is being dismantled<small>Below roughly 200 microstrain resorption is favored. Bed rest and spaceflight cost about <b>1&ndash;1.5 percent per month</b> at the hip and spine: a month of unloading costs roughly what a whole year of ordinary age-related loss does.</small>';
+    inf='<span class="n">What the unloaded osteocyte does</span>It <i>increases</i> sclerostin, which inhibits Wnt/&beta;-catenin signaling in osteoblast precursors, and it increases RANKL. Formation falls and resorption rises at the same time. The anti-sclerostin antibody romosozumab is anabolic for exactly the mirror-image reason.';
+  } else if(finalStrain>7000){
+    cls='verdict bad';
+    txt='Above the yield range &mdash; this is damage, not adaptation<small>Yield begins near 7,000 &micro;&epsilon; and fracture near 25,000 &micro;&epsilon;. Bone adapts to habitual strain over <i>weeks</i>, while training loads can be increased in <i>days</i>. That rate mismatch is what a stress fracture is.</small>';
+    inf='<span class="n">A rate mismatch, not weakness</span>Cyclic loading produces microcracks roughly 30&ndash;100 &micro;m long that sever osteocyte processes; the dying osteocytes are the targeting signal and a BMU comes to remove the cracked bone. Raise mileage faster than BMUs can repair and cracks accumulate faster than they are cleared.';
+  } else if(finalStrain>2500){
+    cls='verdict info';
+    txt='Overload &mdash; bone is being added, and the signal is fading as it works<small>Watch the upper trace: as mass rises the same load produces less strain, so the anabolic drive shrinks toward zero. The loop closes on <b>strain</b>, which is the controlled variable, not on mass.</small>';
+    inf='<span class="n">Local, not systemic</span>Tennis players have 10&ndash;20 percent more cortical bone in the dominant humerus and essentially none of that advantage in the other arm &mdash; same bloodstream, same hormones. Systemic factors set the gain; mechanics decides the map. A walking program will not protect the wrist.';
+  } else {
+    cls='verdict';
+    txt='Inside the adapted window &mdash; formation matches resorption<small>Between roughly 200 and 2,500 microstrain the mechanostat is satisfied and bone mass is stable. The system has a <i>set range</i>, not a set point.</small>';
+    inf='<span class="n">Name the loop</span>Variable: local tissue <b>strain</b>. Sensor: the <b>osteocyte</b>, 90&ndash;95 percent of all bone cells, connected by canaliculi into a syncytium. Integrator: osteocyte gene expression, chiefly <b>sclerostin</b> and <b>RANKL</b>. Effectors: osteoblasts and osteoclasts. Response: a change in local bone mass that returns strain toward the window.';
+  }
+  v.className=cls; v.innerHTML=txt; $('i1').innerHTML=inf;
+  draw1(series,MO);
+}
+function draw1(series,MO){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=92,R=W-26,T1=30,B1=330,T2=386,B2=H-54;
+  function X(t){return L+(t/MO)*(R-L);}
+  function Y1(s){return B1-(Math.min(s,4200)/4200)*(B1-T1);}
+  function Y2(m){return B2-((m-40)/120)*(B2-T2);}
+  var i;
+  /* zone bands */
+  var bands=[[0,200,CORAL,'DISUSE  <200'],[200,2500,GREEN,'ADAPTED WINDOW  200-2,500'],[2500,4200,GOLD,'OVERLOAD  >2,500']];
+  bands.forEach(function(b){
+    g.fillStyle=b[2]; g.globalAlpha=0.11; g.fillRect(L,Y1(b[1]),R-L,Y1(b[0])-Y1(b[1])); g.globalAlpha=1;
+    g.fillStyle=b[2]; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(b[3], L+8, Y1(b[1])+17);
+  });
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 14px Inter, system-ui, sans-serif';
+  for(i=0;i<=4000;i+=1000){ g.beginPath(); g.moveTo(L,Y1(i)); g.lineTo(R,Y1(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i.toLocaleString(),L-9,Y1(i)+5); }
+  for(i=40;i<=160;i+=20){ g.beginPath(); g.moveTo(L,Y2(i)); g.lineTo(R,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i+'%',L-9,Y2(i)+5); }
+  var stepM=MO<=12?2:(MO<=30?4:8);
+  for(i=0;i<=MO;i+=stepM){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),T1); g.lineTo(X(i),B1); g.moveTo(X(i),T2); g.lineTo(X(i),B2); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(i,X(i),B2+22); }
+  g.fillStyle=MUT; g.textAlign='center'; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('MONTHS',(L+R)/2,B2+44);
+  g.textAlign='left'; g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('Peak local strain  (microstrain)',L,T1-9);
+  g.fillText('Bone mass  (% of start)',L,T2-9);
+  /* traces */
+  g.strokeStyle=PURP; g.lineWidth=4; g.beginPath();
+  series.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y1(p[1])); else g.lineTo(X(p[0]),Y1(p[1])); }); g.stroke();
+  g.strokeStyle=TEAL; g.lineWidth=4; g.beginPath();
+  series.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y2(p[2])); else g.lineTo(X(p[0]),Y2(p[2])); }); g.stroke();
+  /* 100% reference */
+  g.strokeStyle=LINE; g.lineWidth=2; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(L,Y2(100)); g.lineTo(R,Y2(100)); g.stroke(); g.setLineDash([]);
+  var last=series[series.length-1];
+  g.fillStyle=TEAL; g.beginPath(); g.arc(X(last[0]),Y2(last[2]),7,0,6.284); g.fill();
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText(last[2].toFixed(1)+'%', X(last[0])-12, Y2(last[2])-10);
+}
+
+/* =====================================================
+   BENCH 2 - the RANKL / OPG switch
+   ===================================================== */
+var rk=$('rk'),og=$('og'),fm=$('fm');
+var coupling=true;
+var PRE2=[
+ {n:'Baseline',r:100,o:100,f:100,note:'Formation and resorption are balanced. RANKL/OPG is the ratio the whole system reports to.'},
+ {n:'PTH, continuous',r:235,o:70,f:92,note:'Primary hyperparathyroidism. Sustained exposure keeps the RANKL/OPG ratio high, so osteoclast differentiation and survival dominate. Cortical bone is lost preferentially.'},
+ {n:'PTH, daily pulse',r:128,o:112,f:205,note:'Teriparatide. The same molecule, the opposite result: a brief pulse favors osteoblast survival, Wnt signaling and IGF-1 before RANKL-driven recruitment can be established. Dose timing, not dose size, flips the sign.'},
+ {n:'Calcitriol',r:152,o:96,f:106,note:'Raises the ratio while also raising intestinal calcium absorption. Whether the net effect on bone is loss or mineralization depends on the calcium supply arriving from the gut.'},
+ {n:'Estrogen present',r:70,o:152,f:104,note:'Bone sparing. The ratio falls and osteoclast apoptosis increases &mdash; estrogen is a brake on osteoclast recruitment and survival.'},
+ {n:'Menopause',r:172,o:74,f:100,note:'Estrogen withdrawal removes the brake. Rapid trabecular loss follows &mdash; an extra 2&ndash;3 percent per year at trabecular sites for 5&ndash;10 years.'},
+ {n:'Glucocorticoid excess',r:180,o:70,f:44,note:'The worst of both: the ratio rises and osteoblasts undergo apoptosis. This is the commonest cause of drug-induced osteoporosis.'},
+ {n:'Mechanical loading',r:70,o:142,f:152,note:'Sclerostin falls, Wnt signaling rises, the ratio falls. Local, dynamic and strain-rate dependent &mdash; and only where the load actually was.'},
+ {n:'Inflammation (IL-1, IL-6, TNF)',r:242,o:80,f:82,note:'Focal and systemic loss. This is the erosion at the margin of a rheumatoid joint and the lytic lesion of myeloma.'},
+ {n:'Denosumab (anti-RANKL)',r:8,o:100,f:100,note:'A pharmacologic OPG. Potent antiresorptive &mdash; and because resorption and formation are coupled, formation follows resorption down. Stopping it abruptly produces rebound loss.'}
+];
+var pb2=$('pre2'); var note2=PRE2[0].note;
+PRE2.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P.n;
+  b.onclick=function(){rk.value=P.r;og.value=P.o;fm.value=P.f;note2=P.note;
+    [].forEach.call(pb2.children,function(c){c.classList.remove('on');}); b.classList.add('on'); render2();};
+  pb2.appendChild(b);
+});
+pb2.children[0].classList.add('on');
+$('tCouple').onclick=function(){coupling=!coupling;this.setAttribute('aria-pressed',coupling?'true':'false');render2();};
+[rk,og,fm].forEach(function(s){s.addEventListener('input',function(){note2='';render2();});});
+
+var parts=[],lastP=0;
+function switchModel(){
+  var R=+rk.value,O=+og.value,F=+fm.value;
+  var free=R/(1+O/100);                 /* decoy soaks up ligand */
+  var freeRel=free/50;                  /* 1.0 at baseline */
+  var ratio=(O>0)?(R/O):(R>0?9.99:1);
+  var resorb=Math.pow(Math.max(0,freeRel),0.85)*100;
+  var form=F*(coupling?(0.35+0.65*Math.min(2,resorb/100)):1);
+  var net=(form-resorb)*0.055;          /* percent bone mass per year */
+  return {R:R,O:O,F:F,free:free,freeRel:freeRel,ratio:ratio,resorb:resorb,form:form,net:net,
+          decoyed:Math.min(0.97,(O/100)/(1+O/100))};
+}
+function render2(){
+  $('rkV').textContent=rk.value+'%'; $('ogV').textContent=og.value+'%'; $('fmV').textContent=fm.value+'%';
+  var M=switchModel();
+  $('s2').innerHTML=
+    tile('RANKL / OPG ratio',M.ratio.toFixed(2),'&times; &middot; baseline 1.00')+
+    tile('Free RANKL reaching RANK',(M.freeRel*100).toFixed(0),'% of baseline')+
+    tile('Osteoclast recruitment',Math.round(M.resorb),'% of baseline')+
+    tile('Osteoblast formation',Math.round(M.form),'% of baseline'+(coupling?' (coupled)':' (uncoupled)'))+
+    tile('Net bone balance',(M.net>=0?'+':'')+M.net.toFixed(1),'% of bone mass per year')+
+    tile('RANKL intercepted by OPG',(M.decoyed*100).toFixed(0),'% of what is released');
+
+  $('bars2').innerHTML=
+    '<div class="lbl" style="margin-top:14px">The two arms</div>'+
+    bar('Resorption',M.resorb,CORAL)+bar('Formation',M.form,BLUE);
+
+  var v=$('v2'),cls='verdict',txt='';
+  if(M.net<-2.5){ cls='verdict bad'; txt='Strongly negative balance<small>Resorption is outrunning formation by enough to strip measurable bone within a year. Trabecular sites &mdash; vertebrae, femoral neck, distal radius &mdash; announce it first, because they hold 80 percent of the internal surface on 20 percent of the mass.</small>'; }
+  else if(M.net<-0.6){ cls='verdict warn'; txt='Net loss<small>Each remodeling cycle is removing slightly more than it replaces. That small, repeated asymmetry is what osteoporosis actually is.</small>'; }
+  else if(M.net>1.6){ cls='verdict'; txt='Net gain<small>Formation is ahead of resorption. Note what happens to the formation bar if you switch coupling off and on &mdash; the two arms are not independent.</small>'; }
+  else { cls='verdict info'; txt='Roughly balanced<small>Formation and resorption are within a whisker of each other. In a healthy adult about 10 percent of the skeleton is replaced each year with essentially no net change in mass.</small>'; }
+  v.className=cls; v.innerHTML=txt;
+
+  var inf='<span class="n">Three proteins, one decision</span>Osteoblasts and osteocytes express <b>RANKL</b>; osteoclast precursors express <b>RANK</b>; the same osteoblast lineage secretes <b>osteoprotegerin</b>, a soluble decoy receptor that mops RANKL up before it reaches RANK. Resorption rate is therefore set by the <b>ratio</b>, not by RANKL alone.';
+  if(note2) inf+='<div class="dd" style="margin-top:9px"><b>This signal:</b> '+note2+'</div>';
+  if(!coupling) inf+='<div class="dd" style="margin-top:9px"><b>Coupling is off</b> &mdash; a convenient fiction. In a real skeleton osteoclasts release matrix-bound TGF-&beta; and IGF-1 that recruit osteoblasts, so any drug that abolishes resorption eventually slows formation too. There is no such thing as a purely antiresorptive intervention with no effect on bone formation.</div>';
+  $('i2').innerHTML=inf;
+}
+function bar(n,val,col){
+  var p=Math.max(2,Math.min(100,val/260*100));
+  return '<div class="srow"><div class="nm">'+n+'<small>% of baseline</small></div><div class="tr"><div class="fl" style="width:'+p+'%;background:'+col+'"></div></div><div class="tv">'+Math.round(val)+'%</div></div>';
+}
+function spawn(){
+  var M=switchModel();
+  if(Math.random()<Math.min(0.9,M.R/220)) parts.push({t:'r',x:180+Math.random()*680,y:130,v:1.35+Math.random()*0.6,dec:Math.random()<M.decoyed,f:0});
+  if(Math.random()<Math.min(0.9,M.O/220)) parts.push({t:'o',x:180+Math.random()*680,y:130,v:1.0+Math.random()*0.5,f:0});
+  if(parts.length>170) parts.splice(0,parts.length-170);
+}
+function tick2(){
+  if($('r2').classList.contains('hide')){ requestAnimationFrame(tick2); return; }
+  spawn();
+  var i;
+  for(i=parts.length-1;i>=0;i--){
+    var p=parts[i]; p.y+=p.v*1.5; p.f+=1;
+    if(p.t==='r'&&p.dec&&p.y>250){ parts.splice(i,1); continue; }
+    if(p.y>400) parts.splice(i,1);
+  }
+  draw2();
+  requestAnimationFrame(tick2);
+}
+function draw2(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var M=switchModel();
+  /* osteoblast lineage band */
+  g.fillStyle=BLUE; g.globalAlpha=0.14; g.fillRect(60,44,W-120,78); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=2; g.strokeRect(60,44,W-120,78);
+  g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('OSTEOBLAST + OSTEOCYTE LINEAGE  —  releases both the ligand and its decoy', W/2, 78);
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+  g.fillText('RANKL '+M.R+'%     OPG '+M.O+'%     ratio '+M.ratio.toFixed(2)+'×', W/2, 102);
+
+  /* particles */
+  parts.forEach(function(p){
+    if(p.t==='r'){
+      g.fillStyle=p.dec?MUT:CORAL; g.globalAlpha=p.dec?0.5:0.95;
+      g.beginPath(); g.arc(p.x,p.y,5.5,0,6.284); g.fill();
+      if(p.dec&&p.y>210){ g.strokeStyle=MUT; g.lineWidth=2; g.beginPath();
+        g.moveTo(p.x-7,p.y-7); g.lineTo(p.x+7,p.y+7); g.moveTo(p.x+7,p.y-7); g.lineTo(p.x-7,p.y+7); g.stroke(); }
+    } else {
+      g.fillStyle=GREEN; g.globalAlpha=0.75;
+      g.beginPath(); g.arc(p.x,p.y,4.5,0,6.284); g.fill();
+    }
+    g.globalAlpha=1;
+  });
+  /* legend */
+  g.textAlign='left'; g.font='700 13px Inter, system-ui, sans-serif';
+  g.fillStyle=CORAL; g.beginPath(); g.arc(76,158,6,0,6.284); g.fill();
+  g.fillStyle=MUT; g.fillText('RANKL',88,163);
+  g.fillStyle=GREEN; g.beginPath(); g.arc(168,158,5,0,6.284); g.fill();
+  g.fillStyle=MUT; g.fillText('OPG decoy — intercepts RANKL in transit',180,163);
+
+  /* precursor / osteoclast band */
+  var oy=420;
+  g.fillStyle=LINE; g.fillRect(0,oy+52,W,H-oy-52);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('BONE SURFACE',20,H-16);
+  var size=Math.max(0.16,Math.min(1.7,M.resorb/100));
+  g.fillStyle=CORAL; g.globalAlpha=0.20;
+  g.beginPath(); g.ellipse(W/2,oy+52,120*size+40,44*size+16,0,Math.PI,0); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=CORAL; g.lineWidth=3; g.stroke();
+  g.fillStyle=CORAL; g.globalAlpha=0.6;
+  var nN=Math.max(2,Math.round(4+14*Math.min(1.2,size)));
+  for(var k=0;k<nN;k++){
+    var ax=W/2+((k/(nN-1))-0.5)*(200*size+50);
+    g.beginPath(); g.ellipse(ax,oy+30-8*Math.sin(k),11,8,0,0,6.284); g.fill();
+  }
+  g.globalAlpha=1;
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('OSTEOCLAST PRECURSORS express RANK — recruitment '+Math.round(M.resorb)+'% of baseline', W/2, oy-6);
+  g.fillStyle=MUT; g.font='600 13px Inter, system-ui, sans-serif';
+  g.fillText('with permissive M-CSF, RANKL binding drives fusion, differentiation, activation and survival', W/2, oy+16);
+}
+
+/* =====================================================
+   BENCH 3 - the remodeling space
+   ===================================================== */
+var af=$('af'),imb=$('imb'),tx=$('tx'),txp=$('txp');
+var PRE3=[
+ {n:'Healthy adult',a:100,i:0,t:0,p:80},
+ {n:'Early menopause',a:250,i:6,t:0,p:80},
+ {n:'Hyperthyroidism',a:320,i:5,t:0,p:80},
+ {n:'Primary hyperparathyroidism',a:270,i:7,t:0,p:80},
+ {n:'Start an antiresorptive at 12 months',a:250,i:6,t:12,p:80},
+ {n:'Profound suppression for years',a:100,i:0,t:6,p:95}
+];
+var pb3=$('pre3');
+PRE3.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P.n;
+  b.onclick=function(){af.value=P.a;imb.value=P.i;tx.value=P.t;txp.value=P.p;render3();};
+  pb3.appendChild(b);
+});
+[af,imb,tx,txp].forEach(function(s){s.addEventListener('input',render3);});
+
+function render3(){
+  var A=+af.value/100, IM=+imb.value/100, TX=+tx.value, TP=+txp.value/100;
+  $('afV').textContent=af.value+'%'; $('imbV').textContent=imb.value+'%';
+  $('txV').textContent=TX>0?('month '+TX):'off'; $('txpV').textContent=txp.value+'%';
+  var dt=0.05, MO=36, N=Math.round(MO/dt)+1;
+  var DIG=0.6, REV=0.35, FILL=3.5;           /* months: 2-3 wk, 1-2 wk, 3-4 mo */
+  var PRE=Math.round(6/dt);                  /* pre-roll so the sim starts in steady state */
+  var act=new Array(N+PRE), open=new Array(N), bmd=new Array(N);
+  var i,j,cum=0,cumSeries=new Array(N);
+  for(i=0;i<N+PRE;i++){
+    var t0=(i-PRE)*dt;
+    if(t0<0) act[i]=1;                                  /* the years before this simulation began */
+    else act[i]=A*((TX>0&&t0>=TX)?(1-TP):1);
+  }
+  var k=1.67, ref=null;
+  for(i=0;i<N;i++){
+    var t=i*dt, o=0, p=i+PRE;
+    for(j=p;j>=0;j--){
+      var agev=(p-j)*dt;
+      if(agev>DIG+REV+FILL) break;
+      var frac;
+      if(agev<DIG) frac=agev/DIG;
+      else if(agev<DIG+REV) frac=1;
+      else frac=1-(agev-DIG-REV)/FILL;
+      o+=act[j]*frac*dt;
+    }
+    open[i]=o;
+    if(ref===null) ref=o;
+    cum+=act[p]*dt; cumSeries[i]=cum;
+    bmd[i]=100-k*(o-ref)-IM*cum*1.9;
+  }
+  /* secondary mineralization: suppressed turnover lets old bone keep hardening */
+  for(i=0;i<N;i++){
+    var supp=(TX>0&&i*dt>=TX)?Math.min(1.9,(i*dt-TX)*0.09*TP*4):0;
+    bmd[i]+=supp;
+  }
+  var b0=bmd[0], b12=bmd[Math.min(N-1,Math.round(12/dt))], bEnd=bmd[N-1];
+  var openNow=open[N-1];
+
+  $('s3').innerHTML=
+    tile('Open unfilled cavities',(openNow/ref*100).toFixed(0),'% of the normal steady state')+
+    tile('Density at 12 months',b12.toFixed(1),'% &middot; started at '+b0.toFixed(1))+
+    tile('Change in year 1',((b12-b0>=0)?'+':'')+(b12-b0).toFixed(1),'percentage points')+
+    tile('Density at 36 months',bEnd.toFixed(1),'%')+
+    tile('Cycle asymmetry','3 wk : 4 mo','dig time versus refill time')+
+    tile('Cycles completed',cumSeries[N-1].toFixed(1),'relative units over 36 months');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(TX>0&&TP>0.5&&A>1.6){
+    cls='verdict';
+    txt='Density rose sharply &mdash; and almost none of it is new bone<small>Suppressing the <i>initiation</i> of new BMUs lets the holes already dug finish filling without fresh ones being excavated. The gain is the <b>remodeling space</b> closing, plus continued secondary mineralization of older bone.</small>';
+  } else if(A>2){
+    cls='verdict bad';
+    txt='High turnover has opened a large transient deficit<small>Anything that raises the number of BMUs started per unit time raises the number of half-finished holes present at any moment. Hyperthyroidism, hyperparathyroidism and early menopause all do this &mdash; and part of the density loss is reversible for exactly that reason.</small>';
+  } else if(TX>0&&TP>0.9){
+    cls='verdict warn';
+    txt='Turnover is nearly switched off<small>Density climbs, but suppressing remodeling too completely for too long means microcracks are no longer removed. That is the mechanism behind atypical femoral fractures with very long-term antiresorptive use.</small>';
+  } else if(IM>0.03){
+    cls='verdict warn';
+    txt='Each completed cycle leaves a small permanent deficit<small>Turnover looks unremarkable, but the cavity is never quite refilled. Multiply a few percent by 10 percent of the skeleton per year for decades and you have osteoporosis &mdash; a remodeling <i>imbalance</i>, not a calcium deficiency.</small>';
+  } else {
+    cls='verdict info';
+    txt='Steady state &mdash; and it is not an empty skeleton<small>Even at rest about 2.4 units of cavity are open at any moment, because digging is fast and refilling is slow. The healthy adult skeleton is permanently a few percent &ldquo;under construction&rdquo;.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  $('i3').innerHTML='<span class="n">Three weeks to dig, four months to refill</span><b>Activation</b>: osteocytes signal that a patch needs attention and lining cells retract. <b>Resorption</b>: osteoclasts excavate a cavity 50&ndash;100 &micro;m deep over about 2&ndash;3 weeks &mdash; a trench on trabecular surfaces, a tunnelling cutting cone through cortical bone. <b>Reversal</b>: a 1&ndash;2 week pause while mononuclear cells clean the surface and lay a cement line. <b>Formation</b>: osteoblasts refill over 3&ndash;4 months, then mineralization. <b>Quiescence</b>: lining cells re-cover the surface. That asymmetry is the single most important number in bone pharmacology, and it is why turnover markers &mdash; P1NP and bone-specific alkaline phosphatase for formation, CTX and NTX for resorption &mdash; change within weeks, long before densitometry can detect anything.';
+
+  draw3(bmd,open,dt,MO,TX);
+}
+function draw3(bmd,open,dt,MO,TX){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=88,R=W-26,T1=30,B1=316,T2=372,B2=H-54;
+  function X(t){return L+(t/MO)*(R-L);}
+  function Y1(b){var c=Math.max(84.2,Math.min(107.8,b));return B1-((c-84)/24)*(B1-T1);}   /* 84 to 108 percent */
+  function Y2(o){return B2-(Math.min(o,10)/10)*(B2-T2);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 14px Inter, system-ui, sans-serif';
+  for(i=84;i<=108;i+=4){ g.beginPath(); g.moveTo(L,Y1(i)); g.lineTo(R,Y1(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i+'%',L-9,Y1(i)+5); }
+  for(i=0;i<=10;i+=2){ g.beginPath(); g.moveTo(L,Y2(i)); g.lineTo(R,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-9,Y2(i)+5); }
+  for(i=0;i<=MO;i+=6){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),T1); g.lineTo(X(i),B1); g.moveTo(X(i),T2); g.lineTo(X(i),B2); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(i,X(i),B2+22); }
+  g.fillStyle=MUT; g.textAlign='center'; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('MONTHS',(L+R)/2,B2+44);
+  g.textAlign='left'; g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('Measured bone density  (% of baseline)',L,T1-9);
+  g.fillText('Open, unfilled cavities  (the remodeling space)',L,T2-9);
+  if(TX>0){
+    g.strokeStyle=GOLD; g.lineWidth=2.5; g.setLineDash([7,5]);
+    g.beginPath(); g.moveTo(X(TX),T1); g.lineTo(X(TX),B1); g.moveTo(X(TX),T2); g.lineTo(X(TX),B2); g.stroke(); g.setLineDash([]);
+    g.fillStyle=GOLD; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('drug started', X(TX)+8, T1+18);
+  }
+  g.strokeStyle=TEAL; g.lineWidth=4; g.beginPath();
+  for(i=0;i<bmd.length;i++){ var x=X(i*dt),y=Y1(bmd[i]); if(i===0)g.moveTo(x,y); else g.lineTo(x,y); } g.stroke();
+  g.strokeStyle=CORAL; g.lineWidth=4; g.beginPath();
+  for(i=0;i<open.length;i++){ var x2=X(i*dt),y2=Y2(open[i]); if(i===0)g.moveTo(x2,y2); else g.lineTo(x2,y2); } g.stroke();
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+requestAnimationFrame(tick2);
+})();
+</script>
+</body>
+</html>

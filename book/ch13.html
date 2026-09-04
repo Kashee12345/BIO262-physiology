@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Digestive System &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="The digestive tract is a nine-meter chemical reactor with a conveyor belt built into its walls, and almost everything it does can be read as a transport problem. Food must be moved at a controlled rate, hydrolyzed into molecules s">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 13 &middot; Digestive System</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#motility">1 &middot; The Tube, Its Muscle, and Its Own Nervous System</a>
+        <a href="#stomach">2 &middot; Mouth to Stomach: Swallowing, Acid and Metered Emptying</a>
+        <a href="#pancreas-liver">3 &middot; Neutralize and Emulsify: Pancreas, Bile and the Liver</a>
+        <a href="#absorption">4 &middot; The Absorptive Surface: How Nutrients Actually Cross</a>
+        <a href="#colon">5 &middot; The Colon, Water Balance and Defecation</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 13</div>
+<h1>The Digestive System</h1>
+
+<p class="lede">The digestive tract is a nine-meter chemical reactor. It has a conveyor belt built into its own walls. Almost everything it does is a transport problem. Food has to move at a controlled rate. It has to be hydrolyzed, or split apart by water, into pieces small enough to cross a membrane. Then it has to be pulled across a sheet of cells called the epithelium. The cells build electrical and chemical gradients, and the food rides them. Movement follows the same flow rule as blood: Q = &Delta;P / R. The pressure difference comes from smooth muscle squeezing. The resistance comes from sphincters and from thick gut contents. Secretion runs on ion pumps that build very steep gradients. The parietal cell of the stomach concentrates hydrogen ions roughly three million-fold. Absorption runs mostly on sodium gradients. The Na+/K+-ATPase on the far side of the cell keeps those gradients up. Water never moves on its own. It follows solute by osmosis. Over all of this sits a web of negative feedback. pH sensors, fat sensors and stretch sensors match how fast food arrives to how fast it can be handled.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4>
+<ul>
+<li>Say how <b>slow waves</b> from the <b>interstitial cells of Cajal</b> set the top speed of contraction in each part of the gut. Say how spike potentials turn that rhythm into force.</li>
+<li>Tell <b>peristalsis</b>, <b>segmentation</b> and the <b>migrating motor complex</b> apart. Compare how each works, when it runs and what it is for. Link the movement of a bolus to Q = &Delta;P / R.</li>
+<li>Draw the <b>parietal cell</b> H+/K+-ATPase. Name the three acid triggers: <b>acetylcholine</b>, <b>gastrin</b> and <b>histamine</b>. Describe the <b>somatostatin</b> pH feedback loop that shuts acid off.</li>
+<li>Describe <b>receptive relaxation</b>. Describe the duodenal brake on <b>gastric emptying</b>. Give the normal rate of calorie delivery.</li>
+<li>Explain how <b>secretin</b> and <b>cholecystokinin</b> match pancreatic <b>bicarbonate</b> and enzymes to what is in the duodenum. Name the sensor, integrator and effector.</li>
+<li>Explain how a <b>micelle</b> forms. Explain the <b>enterohepatic circulation</b> of bile acids. Say why fat absorption fails after the terminal <b>ileal</b> segment is removed.</li>
+<li>Predict what happens to a carbohydrate, protein and fat meal at the <b>brush border</b>. Name <b>SGLT1</b>, <b>GLUT2</b>, <b>PepT1</b> and the <b>chylomicron</b> route.</li>
+<li>Account for the roughly nine liters of fluid the gut handles each day. Explain <b>diarrhea</b> as absorption failing to beat secretion.</li>
+<li>Trace the <b>defecation reflex</b> from rectal stretch to voluntary control of the outer sphincter. Point out where positive feedback truly operates.</li>
+</ul>
+</div>
+
+<h2 id="motility"><span class="num">Section 1</span>The Tube, Its Muscle, and Its Own Nervous System</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch13_s1.jpg" alt="Cross-section of the gastrointestinal tract wall showing mucosa, submucosa with submucosal plexus, circular and longitudinal smooth muscle with the myenteric plexus between them, and serosa" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The four layers of the gut wall. The myenteric plexus sits between the circular and longitudinal muscle coats, so it can control both. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Four layers, two muscle jackets, one job</h3>
+
+<p>From the esophagus to the anus, the wall of the tube repeats the same four-layer plan. The layers are the <b>mucosa</b>, the <b>submucosa</b>, the <b>muscularis externa</b> and the <b>serosa</b>. The mucosa has three parts of its own: epithelium, lamina propria and muscularis mucosae. Learn this plan as an engineering fix, not as anatomy. The epithelium is one cell thick. Every molecule that is absorbed has to cross it, and distance matters. In Fick&rsquo;s relationship, flux falls as the barrier gets thicker. Double the thickness and you halve the flux. The lamina propria sits right underneath. It is packed with capillaries and lymphatics that carry absorbed material away. That keeps the concentration gradient across the epithelium steep.</p>
+
+<p>The muscularis externa has two smooth-muscle coats. They lie at right angles to each other. The inner <b>circular</b> layer narrows the lumen when it contracts. The outer <b>longitudinal</b> layer shortens the segment. Neither one alone can move anything useful. Contract the circular layer behind a bolus. Then contract the longitudinal layer ahead of it. Done in order, that makes a traveling pressure wave, with a widened receiving segment already waiting in front. This is propulsion by pressure gradient, not by squeezing alone. Flow through any segment follows the same rule used for blood: Q = &Delta;P / R. The contraction supplies &Delta;P. The resistance comes from how thick the gut contents are and, above all, from the tone of the sphincter downstream.</p>
+
+<p>Gut smooth muscle acts as a <b>functional syncytium</b>. That means the cells are joined electrically by gap junctions. Depolarization spreads from cell to cell without a nerve ending on each one. So one motor neuron can influence thousands of muscle cells. Coupling by itself does not create rhythm. Add the built-in pacemaker cells and the built-in nerve networks described below, and the gut keeps contracting rhythmically even when the outside nerves are cut. A transplanted intestine has no connection to the brain at all. It still moves food along.</p>
+
+<h3>Slow waves: the pacemaker that never quite fires</h3>
+
+<p>The rhythm of the gut is set by the <b>interstitial cells of Cajal</b> (ICC). These are pacemaker cells that lie between the muscle layers. They make steady, repeating swings in voltage called <b>slow waves</b>, or the basic electrical rhythm. The resting membrane potential swings between roughly &minus;60 and &minus;40 mV. Slow waves are not action potentials. On their own they cause little or no contraction. They are permissive. They set the <i>maximum possible frequency</i> of contraction. They also set the <i>timing window</i> in which a contraction may happen.</p>
+
+<p>Force appears only when a slow-wave peak is pushed past threshold, about &minus;40 mV. At that point voltage-gated Ca2+ channels open. True spike potentials then ride on top of the wave. Calcium entry drives contraction through calmodulin and myosin light-chain kinase. That is the smooth-muscle mechanism from Module 5. More spikes per slow wave means a stronger contraction. Excitatory input depolarizes the baseline, so more waves reach threshold. That input is acetylcholine from enteric motor neurons, plus stretch and gastrin. Inhibitory input hyperpolarizes the baseline, so fewer waves reach threshold. That input is norepinephrine, <b>VIP</b> and nitric oxide. The ICC fix the frequency. Nerves and hormones set the strength.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Region</th><th>Slow wave frequency</th><th>Dominant pattern</th><th>Typical transit</th></tr></thead>
+<tbody>
+<tr><td>Stomach (body to antrum)</td><td>about 3 per minute</td><td>Mixing waves, push-back (retropulsion)</td><td>Solids: half gone in 2&ndash;3 h</td></tr>
+<tr><td>Duodenum</td><td>about 12 per minute</td><td>Segmentation</td><td>&mdash;</td></tr>
+<tr><td>Ileum</td><td>8&ndash;9 per minute</td><td>Segmentation, then peristalsis</td><td>Small bowel total 3&ndash;5 h</td></tr>
+<tr><td>Colon</td><td>2&ndash;8 per minute (irregular)</td><td>Pouch squeezing, mass movements</td><td>12&ndash;48 h</td></tr>
+</tbody>
+</table></div>
+
+<h3>Peristalsis, segmentation and the housekeeper wave</h3>
+
+<p><b>Peristalsis</b> is a reflex. It is not a pattern forced on the gut from outside. Stretching the wall switches on intrinsic primary afferent neurons. Serotonin from enterochromaffin cells in the mucosa helps do this. Those afferents drive an ascending pathway. It releases acetylcholine and substance P. That contracts the circular muscle <i>oral</i> to the bolus, meaning on the mouth side. They also drive a descending pathway. It releases nitric oxide and VIP. That relaxes the circular muscle <i>aboral</i> to the bolus, meaning on the far side. Contraction behind and relaxation ahead makes a pressure gradient. The contents move. This one-way behavior is the <b>law of the intestine</b>. It belongs entirely to the enteric circuitry.</p>
+
+<p><b>Segmentation</b> has a different purpose. Rings of circular muscle sit close together and contract and relax by turns. They chop the chyme and shuttle it back and forth with no net forward movement. The job is mixing. It brings chyme up against enzymes and against the unstirred layer over the brush border. That unstirred layer is where the real absorption bottleneck sits. Segmentation takes over during and after a meal. It runs at the local slow-wave frequency. That is why the duodenum mixes at about 12 cycles per minute and the ileum mixes more slowly. The result is a gentle drift toward the cecum.</p>
+
+<p>Between meals a third pattern appears. Every 90 to 120 minutes of fasting, a band of strong contraction sweeps from the stomach to the end of the ileum. The sweep itself takes about 90 minutes. This is the <b>migrating motor complex</b>. Cyclic surges of the hormone <b>motilin</b> set it off. It pushes leftover residue, indigestible bits and bacteria downstream. It is the &ldquo;intestinal housekeeper.&rdquo; Eating shuts it off at once. When it fails, as in some nerve diseases and after certain surgeries, bacteria build up in the small bowel. That causes bloating and poor absorption.</p>
+
+<div class="pearl"><b>Misconception check.</b> Swallowing and gut transit are not driven by gravity. An astronaut in free fall swallows normally. So does a person hanging upside down. The bolus is pushed by a traveling pressure wave, with a relaxed low-resistance segment waiting in front of it. Gravity helps the esophagus a little. It does not do the work.</div>
+
+<h3>Who is in charge: enteric brain, vagus, hormones</h3>
+
+<p>The <b>enteric nervous system</b> holds something like 200&ndash;600 million neurons. That is on par with the spinal cord. They sit in two networks called plexuses. The <b>myenteric (Auerbach) plexus</b> lies between the muscle layers and controls motility. The <b>submucosal (Meissner) plexus</b> lies in the submucosa and controls secretion and local blood flow. The system holds sensory neurons, interneurons and motor neurons. So it can run complete reflex arcs with no help from the central nervous system. In Hirschsprung disease, enteric ganglia never form in one stretch of colon. That stretch cannot relax, and stool cannot pass. It is a clean demonstration that the inhibitory enteric neurons, not the brain, allow forward flow.</p>
+
+<p>The autonomic nervous system adjusts the gut rather than commands it. <b>Parasympathetic</b> fibers are mostly excitatory. They raise secretion and motility. The vagus reaches as far as the first two-thirds of the transverse colon. Pelvic nerves cover the rest, down to the anus. Most vagal fibers are afferent. They carry news up rather than orders down. Short <b>vagovagal reflexes</b> such as receptive relaxation depend on that loop. <b>Sympathetic</b> outflow is inhibitory. It slows motility, tightens sphincters and cuts blood flow to the gut. That is why digestion halts under stress or in shock.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Hormone</th><th>Cell and site</th><th>Trigger</th><th>Main action</th></tr></thead>
+<tbody>
+<tr><td>Gastrin</td><td>G cells, gastric antrum</td><td>Peptides, stretch, vagal GRP</td><td>Acid secretion, mucosal growth</td></tr>
+<tr><td>Cholecystokinin (CCK)</td><td>I cells, duodenum and jejunum</td><td>Fatty acids, amino acids</td><td>Pancreatic enzymes, gallbladder squeeze, slower emptying, feeling full</td></tr>
+<tr><td>Secretin</td><td>S cells, duodenum</td><td>Gut pH below about 4.5</td><td>Pancreatic and biliary bicarbonate. Blocks acid</td></tr>
+<tr><td>GIP</td><td>K cells, duodenum and jejunum</td><td>Glucose, fat</td><td>Incretin: boosts insulin release</td></tr>
+<tr><td>GLP-1 and PYY</td><td>L cells, ileum and colon</td><td>Nutrients reaching the far end of the bowel</td><td>Incretin, slower emptying, feeling full (the &ldquo;ileal brake&rdquo;)</td></tr>
+<tr><td>Motilin</td><td>M cells, small intestine</td><td>Fasting, cyclic</td><td>Starts the migrating motor complex</td></tr>
+<tr><td>Ghrelin</td><td>Stomach fundus</td><td>Empty stomach</td><td>Hunger signal to the hypothalamus</td></tr>
+</tbody>
+</table></div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Interstitial cells of Cajal swing the smooth-muscle membrane between roughly &minus;60 and &minus;40 mV. A slow wave on its own moves nothing. Force appears only when a wave peak is pushed past threshold. <a href="../lab/ch13/SlowWavesAndMotility.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch13/SlowWavesAndMotility.html" loading="lazy" title="Slow Waves, Spike Potentials and the Motor Patterns of the Gut interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Interstitial cells of Cajal set the rhythm. Spike potentials set the force. The enteric nervous system runs complete reflexes on its own. The brain only fine-tunes a machine that already governs itself.</p></div>
+
+<h2 id="stomach"><span class="num">Section 2</span>Mouth to Stomach: Swallowing, Acid and Metered Emptying</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch13_s2.jpg" alt="Diagram of the stomach with a magnified gastric gland showing mucous neck cells, parietal cells secreting hydrochloric acid and intrinsic factor, and chief cells secreting pepsinogen" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The gastric gland. Parietal cells build a three million-fold hydrogen ion gradient. Surface cells hold a neutral mucus layer above them. <span class="cred">OpenStax, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Chewing, saliva and the swallow</h3>
+
+<p>Mechanical digestion starts with chewing. Its purpose in the body is surface area. Enzymes work at a surface. Smaller pieces mean a faster reaction. The salivary glands put out roughly 1 to 1.5 liters a day. That fluid sits at pH 6.5 to 7.5. Stimulated saliva is watery. The acinar cells secrete faster than the ducts can pull sodium back out. So stimulated saliva is more plentiful and less hypotonic than resting saliva. Saliva carries <b>salivary amylase</b>, which starts breaking starch down. It carries <b>lingual lipase</b> as well. It also carries bicarbonate to buffer acid, mucins for lubrication, lysozyme and IgA. Note the autonomic exception here. Both sympathetic and parasympathetic stimulation raise salivary secretion. The parasympathetic makes a lot of watery saliva. The sympathetic makes a small amount of thick saliva.</p>
+
+<p>Swallowing starts with a voluntary oral phase. Two reflex phases follow, run by the swallowing center in the medulla. The pharyngeal phase takes about one second. The soft palate rises and closes the nasopharynx. The larynx lifts and the epiglottis steers the bolus away from the airway. The vocal folds shut. Breathing stops for a moment, which is called deglutition apnea. The upper esophageal sphincter then relaxes. In the esophageal phase a primary peristaltic wave travels at 3 to 5 cm per second. So a bolus reaches the stomach in about 8 to 10 seconds. If food is left behind, the stretch it causes triggers a secondary wave from the enteric circuitry alone.</p>
+
+<p>The <b>lower esophageal sphincter</b> is a ring of smooth muscle that stays contracted. Its resting pressure is about 15 to 30 mmHg. The crural diaphragm helps hold it shut. It relaxes just ahead of the arriving wave. Vagal inhibitory neurons do that using nitric oxide and VIP. Two failure modes show the physiology neatly. In <b>achalasia</b>, those inhibitory neurons die off. The sphincter cannot relax, resistance stays high, and food stacks up in the esophagus. In <b>gastro-esophageal reflux disease</b>, resting tone is too low or the sphincter relaxes too often. Gastric acid then crosses a pressure gradient into an epithelium that has no mucus-bicarbonate protection.</p>
+
+<h3>The parietal cell: manufacturing 150 mM hydrochloric acid</h3>
+
+<p>Gastric juice reaches pH 1.5 to 3.5 after a meal. At maximal secretion it can approach pH 0.8. Plasma pH is 7.4. So the parietal cell is holding a hydrogen ion concentration roughly three million times higher on the luminal side than on the blood side. No passive process can do that. It takes primary active transport. The <b>H+/K+-ATPase</b>, the proton pump, sits in the apical membrane of small sacs called tubulovesicles. When the cell is stimulated, those sacs fuse with the canaliculus. The pump then sends out one H+ for each K+ it brings in, at a cost of one ATP.</p>
+
+<p>The hydrogen ion comes from carbonic anhydrase: CO2 + H2O &rarr; H2CO3 &rarr; H+ + HCO3-. The bicarbonate made this way leaves across the basolateral membrane in trade for chloride. That chloride then exits the apical side through a channel and joins H+ as HCl. Two things follow directly. First, blood leaving the stomach during active secretion is briefly alkaline. This is the <b>alkaline tide</b>. You can sometimes see it as a mild rise in urine pH after a meal. Second, long vomiting of stomach contents strips H+ and Cl- from the body. That leaves a hypochloremic metabolic alkalosis, the mirror image of the secretion.</p>
+
+<p>Three secretagogues converge on the parietal cell. A secretagogue is anything that makes a cell secrete. They <b>potentiate</b> each other rather than merely add up. <b>Acetylcholine</b> from vagal fibers acts on M3 receptors. <b>Gastrin</b> from antral G cells acts on CCK-B receptors. Both raise Ca2+ inside the cell. <b>Histamine</b> from enterochromaffin-like (ECL) cells acts on H2 receptors and raises cAMP. Gastrin and acetylcholine also push ECL cells to release histamine. So histamine is the final common amplifier. That is why an H2 blocker blunts acid from all three inputs. A proton pump inhibitor acts on the pump itself, so it blunts acid more completely still. Chief cells meanwhile secrete <b>pepsinogen</b>. Acid cleaves that to <b>pepsin</b>, which is active between pH 1.8 and 3.5. Pepsin is inactive above about pH 5. It is denatured for good once the pH reaches neutral.</p>
+
+<p>Only one gastric secretion is truly indispensable. That is <b>intrinsic factor</b>, which also comes from the parietal cell. Without it, vitamin B12 cannot be absorbed in the terminal ileum. A person can live without acid or pepsin. A person without intrinsic factor develops pernicious anemia and nerve injury. That happens once the liver stores of B12 run out, which takes two to five years.</p>
+
+<div class="pearl"><b>Why does the stomach not digest itself?</b> Not because the lining is tough. Surface mucous cells secrete a gel of mucus roughly 200 micrometers thick. That is about twice the thickness of a sheet of paper. They pump bicarbonate into that gel. So a full pH gradient sits across one thin layer: pH 1&ndash;2 in the lumen, close to pH 7 at the cell surface. Mucosal blood flow keeps the barrier going, and prostaglandins keep that blood flow up. NSAIDs block prostaglandin production and undercut the barrier. <i>Helicobacter pylori</i> settles under the mucus and inflames it. Those two, not spicy food or a stressful job, cause the great majority of peptic ulcers.</div>
+
+<h3>Phases of secretion and the pH brake</h3>
+
+<p>Acid secretion is organized in three overlapping phases. The <b>cephalic phase</b> accounts for about 30 percent of the response. It is pure anticipation. The sight, smell, taste and thought of food act through the vagus. The <b>gastric phase</b> supplies 50 to 60 percent. Stretch sets it off through vagovagal and local enteric reflexes. Peptides and amino acids in the lumen set it off too, by acting on G cells. The <b>intestinal phase</b> adds only 5 to 10 percent of the stimulation. It is mostly inhibitory once chyme arrives.</p>
+
+<p>The off-switch is a textbook negative feedback loop, and it is worth naming out loud. The <b>regulated variable</b> is antral luminal pH. The <b>sensor</b> is the D cell of the gastric antrum, which faces the lumen. The <b>integrator</b> is local paracrine signaling. When pH falls below about 3, the D cell releases <b>somatostatin</b>. Somatostatin blocks the G cell, the ECL cell and the parietal cell directly. The <b>effector</b> is the parietal cell. The <b>response</b> is less acid, which lets pH rise. Now put the gastrin source out of that sensor&rsquo;s reach. A gastrin-secreting tumor in the pancreas or duodenal wall does exactly that, in Zollinger-Ellison syndrome. Antral somatostatin can no longer hold it back. Gastrin release stops depending on luminal pH. So acid output runs away and ulcers form in unusual places, including the jejunum.</p>
+
+<h3>Storage, mixing and metered emptying</h3>
+
+<p>An empty stomach holds about 50 mL. It can take 1 to 1.5 liters with only a small rise in pressure inside. <b>Receptive relaxation</b> is the reason. It is a vagovagal reflex. Afferents from the pharynx and esophagus trigger nitric oxide and VIP release onto the fundic smooth muscle. Compliance rises, so &Delta;P stays low. This matters mechanically. Wall tension depends on pressure and radius, which is the Laplace relationship. A stomach that could not relax would build a pressure that beat the lower esophageal sphincter. It would reflux with every meal.</p>
+
+<p>Mixing happens down at the far end. Antral peristaltic waves at 3 per minute drive chyme toward a nearly closed pylorus. Most of it is squirted backward at high speed. That is <b>retropulsion</b>, and it grinds solids. Only particles smaller than about 1 to 2 mm get through. Liquids empty far faster than solids. An isotonic liquid meal is half emptied in about 20 minutes. A mixed solid meal takes 2 to 3 hours.</p>
+
+<p>The stomach does not set the emptying rate. The duodenum does, by reporting back on what it can handle. Acid triggers secretin. Fat and protein digestion products trigger CCK. Hypertonic contents and stretch trigger enterogastric nerve reflexes. All of these slow gastric emptying and raise pyloric resistance. So calorie delivery to the duodenum is held remarkably constant at roughly 2 to 4 kcal per minute, whatever is eaten. Bypass that control and the protection is gone. Gastric surgery that removes or bypasses the pylorus does exactly that. A very concentrated load then hits the jejunum all at once. It pulls fluid into the lumen by osmosis. The result is the cramping, diarrhea, fast heart rate and later hypoglycemia of <b>dumping syndrome</b>.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The parietal cell holds a hydrogen ion concentration roughly three million times higher in the lumen than in blood. One negative feedback loop decides when it stops. Antral pH is the variable. <a href="../lab/ch13/AcidLoopAndGastricEmptying.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch13/AcidLoopAndGastricEmptying.html" loading="lazy" title="The Parietal Cell, the Somatostatin Brake and Metered Emptying interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The stomach is a buffer, a blender and a sterilizing acid bath. But the rate at which it releases its contents is set by duodenal feedback. That holds nutrient delivery near 2&ndash;4 kcal per minute.</p></div>
+
+<h2 id="pancreas-liver"><span class="num">Section 3</span>Neutralize and Emulsify: Pancreas, Bile and the Liver</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch13_s3.jpg" alt="Diagram of the liver, gallbladder, cystic and common bile ducts, and pancreas with the pancreatic duct joining at the hepatopancreatic ampulla and sphincter of Oddi" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The bile ducts and the pancreatic duct meet at the hepatopancreatic ampulla. One sphincter there controls the delivery of both bile and pancreatic juice. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Pancreatic bicarbonate: the rescue of the duodenum</h3>
+
+<p>Chyme leaving the stomach has a pH near 2. Pancreatic and intestinal enzymes work best near pH 7 to 8. The duodenal mucosa has almost no acid defenses. So the duct cells of the pancreas secrete an alkaline fluid. They make 1 to 1.5 liters per day. Its bicarbonate concentration climbs with flow rate, up to about 140 mEq/L, giving a juice of pH 8. Here is how the cell does it. Carbonic anhydrase supplies HCO3- inside the duct cell. An apical Cl-/HCO3- exchanger moves it into the lumen. The chloride that exchanger needs is recycled through <b>CFTR</b>. When CFTR is defective, as in cystic fibrosis, bicarbonate and water output fall. Secretions thicken and ducts obstruct. Exocrine pancreatic insufficiency with steatorrhea follows. A channel defect ends up as a digestive disease.</p>
+
+<p>The control is again negative feedback, and the variable is easy to name. Variable: duodenal luminal pH. Sensor: the S cell, which releases <b>secretin</b> when pH falls below about 4.5. Effector: pancreatic and biliary duct cells. Response: bicarbonate flows until the lumen is buffered back toward pH 6 to 7. At that point secretin release stops. A parallel loop uses <b>CCK</b>. The sensor detects fatty acids and amino acids. The effector is the pancreatic acinar cell, which releases enzymes. Those enzymes digest the stimulus, so the signal fades. Secretin brings the water and the buffer. CCK brings the enzymes.</p>
+
+<h3>Zymogens, and why the pancreas does not digest itself</h3>
+
+<p>Pancreatic acinar cells secrete amylase and lipase in active form. Every protease is different. It leaves as an inactive <b>zymogen</b>. The zymogens are trypsinogen, chymotrypsinogen, proelastase and procarboxypeptidase. Activation is placed outside the gland on purpose. The brush border of the duodenum carries <b>enteropeptidase</b>, also called enterokinase. It cleaves trypsinogen to <b>trypsin</b>. Trypsin then activates all the remaining zymogens. It even activates more trypsinogen. That last step feeds itself. It is a genuine use of positive feedback, walled off tightly. Its purpose is speed once the threshold is crossed.</p>
+
+<p>The safeguards are layered. The enzyme is made in zymogen form. It is stored in membrane-bound granules. Calcium inside the cell is kept low. A pancreatic secretory trypsin inhibitor is packed alongside it. <b>Acute pancreatitis</b> is what happens when those safeguards fail and trypsin activates inside the gland. Most often a gallstone blocks the ampulla, or alcohol changes acinar signaling. The organ then digests itself. The released lipase turns peritoneal fat into soap, which is why serum calcium can fall.</p>
+
+<h3>Bile is a detergent, not an enzyme</h3>
+
+<p>Dietary fat is a physical problem before it is a chemical one. Triglyceride does not dissolve in water. Pancreatic lipase does. Reaction rate depends on the area of the oil-water interface. Bile solves that. <b>Bile acids</b> are made from cholesterol. The rate-limiting enzyme is cholesterol 7-alpha-hydroxylase. They are then joined to glycine or taurine. That lowers their pKa. So they stay ionized and water-soluble at duodenal pH. Each molecule is <b>amphipathic</b>. It is a rigid steroid with a water-fearing face and a water-loving face. So it coats lipid droplets. Mechanical segmentation then shears them into an emulsion. The drops end up under one micrometer across. Surface area rises by orders of magnitude. Lipase works at that surface. <b>Colipase</b> anchors it so bile salts cannot push it off.</p>
+
+<p>Above a critical micellar concentration, bile salts also gather into <b>micelles</b> 4 to 8 nm across. Fatty acids, monoglycerides, cholesterol and fat-soluble vitamins ride in the water-fearing core. This is the delivery step. The real barrier to fat absorption is not the enterocyte membrane. It is the <b>unstirred water layer</b> right next to it. Micelles ferry lipid across that layer at up to 100 times the rate of free diffusion. They release their cargo to be absorbed. The bile salt itself stays in the lumen and goes back for another load.</p>
+
+<p>The liver makes 600 to 1000 mL of bile daily. Between meals the sphincter of Oddi is closed. Bile fills the gallbladder instead. The gallbladder concentrates it 5- to 20-fold by absorbing NaCl and water. CCK comes from the duodenal I cells. It contracts the gallbladder and relaxes the sphincter. That delivers a bolus of concentrated bile exactly when fat arrives. Downstream, the <b>enterohepatic circulation</b> recovers about 95 percent of bile acids. Active transport in the terminal ileum does that. The portal vein carries them back for re-secretion. So a pool of only 2.5 to 4 g recycles 6 to 8 times a day. It does the work of some 20 to 30 g. Remove or inflame the terminal ileum, as in Crohn disease, and the pool cannot be recovered. Bile acids spill into the colon. They cause a secretory diarrhea. The shrunken pool cannot dissolve fat. So steatorrhea and fat-soluble vitamin deficiency follow.</p>
+
+<div class="pearl"><b>Misconception check.</b> Bile contains no digestive enzymes. It does not break a single chemical bond in fat. It is a physical agent, an emulsifier and a carrier. It is also the exit route for cholesterol and bilirubin. When cholesterol is more than the bile salts and phospholipids can hold in solution, it crystallizes. That is how the majority of gallstones form.</div>
+
+<h3>The liver as chemical clearing house</h3>
+
+<p>The liver receives about 1.4 L of blood per minute. That is roughly 25 percent of cardiac output. About 75 percent of it arrives by the <b>portal vein</b>, carrying everything absorbed from the gut. So every water-soluble nutrient and every swallowed drug passes through hepatocytes before it reaches the rest of the circulation. This is the <b>first-pass effect</b>. It is why some drugs have to be given by a route other than the mouth. It is also why portal blood glucose is buffered before it reaches the heart.</p>
+
+<p>Hepatocytes make 10 to 15 g of <b>albumin</b> per day. Plasma albumin runs 3.5&ndash;5 g/dL. Albumin supplies most of the plasma colloid osmotic pressure. That pressure is about 25 mmHg. Hepatocytes also make almost all the clotting factors. Factor VII has a half-life of only 4 to 6 hours. So prothrombin time and INR rise early in liver failure. That makes them useful tests of how well the liver is building things. The liver also turns ammonia into urea. That ammonia comes from gut bacteria and from the breakdown of amino acids. When that job fails, ammonia crosses the blood-brain barrier. The result is hepatic encephalopathy.</p>
+
+<p><b>Bilirubin</b> handling is a useful three-step map. Aging red cells release hem. That becomes about 250 to 300 mg of unconjugated bilirubin daily. It dissolves in fat, so it travels bound to albumin. The hepatocyte joins it to glucuronic acid using UGT1A1. That makes it water soluble. The cell then sends it into bile. Gut bacteria turn it into urobilinogen and then stercobilin. Stercobilin is the pigment that colors stool. Total serum bilirubin is normally 0.3 to 1.2 mg/dL. Jaundice becomes visible above roughly 2 to 3 mg/dL. Ask which fraction is raised, because that locates the problem. Unconjugated means too much production or failed conjugation. Conjugated means flow is obstructed. Pale stool with dark urine points to obstruction. The pigment cannot reach the gut.</p>
+
+<p>Finally, the liver sits in the path of portal flow, so fibrosis raises portal resistance. Since Q = &Delta;P / R, a rise in R at constant flow raises portal pressure. When the gradient goes above about 10 to 12 mmHg, collateral veins widen into varices. Starling forces at the splanchnic capillaries shift as well, and that favors filtration. Add a low plasma albumin, which means a low colloid osmotic pressure, and fluid collects as ascites. It is a pure application of the Starling equation from Module 9.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Chyme leaves the stomach at about pH 2. Pancreatic enzymes work best near pH 7 to 8. Two feedback loops fix that mismatch. Secretin brings the water and the buffer. CCK brings the enzymes and the bile. <a href="../lab/ch13/SecretinCCKandBile.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch13/SecretinCCKandBile.html" loading="lazy" title="Secretin, CCK and the Enterohepatic Circulation interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Secretin buys the duodenum a working pH. CCK brings enzymes and bile at the moment fat arrives. The liver takes three-quarters of its blood from the gut, so it screens everything absorbed before it reaches the rest of the body.</p></div>
+
+<h2 id="absorption"><span class="num">Section 4</span>The Absorptive Surface: How Nutrients Actually Cross</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch13_s4.jpg" alt="Intestinal villus in cross-section showing columnar enterocytes with microvilli, a central lacteal, a capillary network, goblet cells and crypts of Lieberkuhn" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A villus with its central lacteal and its net of capillaries. There are two exit routes: one for water-soluble nutrients and one for fat. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Surface area is the entire strategy</h3>
+
+<p>Flux across an epithelium is proportional to area. The small intestine amplifies its area three times over. Circular folds, the plicae circulares, multiply it about threefold. <b>Villi</b> multiply it about tenfold. The <b>microvilli</b> of the brush border multiply it about twentyfold. Together that is close to 600-fold. Classic estimates put the resulting absorptive surface near 200 square meters. Newer measurements give smaller numbers. The design principle does not change. A tube 3 cm wide behaves like a sheet the size of a room.</p>
+
+<p>Each villus is 0.5 to 1 mm tall. Its core holds a network of capillaries and one blind-ended lymphatic vessel, the <b>lacteal</b>. Water-soluble products leave by the capillaries into the portal vein. Fat leaves by the lacteal. Enterocytes are born in the crypts of Lieberk&uuml;hn. They climb the villus and are shed from the tip after 3 to 5 days. That is one of the fastest turnovers in the body. The speed also makes the epithelium vulnerable. Chemotherapy and radiation target dividing cells, so they strip the villi and cause diarrhea.</p>
+
+<p>The brush border is not only surface. It is catalytic as well. Enzymes anchored in the membrane finish hydrolysis. They do it in the last few nanometers before transport. They include lactase, sucrase-isomaltase, maltase-glucoamylase and a set of peptidases. So the final product is made right at the transporter. In <b>celiac disease</b>, an immune response to gluten flattens the villi. Area collapses. The brush border enzymes are lost with it. Malabsorption follows even though the pancreas is normal.</p>
+
+<div class="pearl"><b>Misconception check.</b> The stomach absorbs almost nothing. It takes in a little water, some alcohol and aspirin. Over 90 percent of nutrient absorption happens in the small intestine. Most of that happens within the first 100 cm of jejunum. This is why a person can live a normal life after most of the stomach is removed. The same is not true after most of the small bowel is removed.</div>
+
+<h3>Carbohydrate and protein: hydrolyze, then ride the sodium gradient</h3>
+
+<p>Only monosaccharides can be absorbed. Those are single sugars. Salivary and pancreatic amylase cut starch into maltose, maltotriose and alpha-limit dextrins. Brush border enzymes finish the job. They make glucose, galactose and fructose. Glucose and galactose then cross the apical membrane on <b>SGLT1</b>. That is a secondary active co-transporter. It moves two Na+ down their electrochemical gradient. For each of those trips it moves one sugar <i>up</i> its concentration gradient. The energy comes indirectly from the basolateral Na+/K+-ATPase. That pump keeps sodium inside the cell near 10&ndash;15 mM against 140 mM outside. Fructose does not use sodium. It enters passively on <b>GLUT5</b>. All three leave the cell on the basolateral side using <b>GLUT2</b>. Then they enter the portal blood.</p>
+
+<p>That mechanism has one of the great clinical payoffs in medicine. SGLT1 needs glucose <i>and</i> sodium together. Water then follows the absorbed solute by osmosis. So an <b>oral rehydration solution</b> holding both keeps working even when a toxin has switched on massive intestinal secretion. Sodium alone would not do it. Water alone would not do it. Where lactase is deficient, the same logic runs the other way. Undigested lactose stays in the lumen and holds water there. Colonic bacteria ferment it to gas and short-chain acids. The result is bloating and osmotic diarrhea.</p>
+
+<p>Protein digestion begins with pepsin in the stomach. Pancreatic enzymes take over next. They are trypsin, chymotrypsin, elastase and the carboxypeptidases. The products are free amino acids and small peptides. Amino acids cross on a family of sodium-coupled carriers. Those carriers overlap in what they accept. Di- and tripeptides use a different trick. <b>PepT1</b> is a proton-coupled transporter. It runs on an acidic microclimate at the brush border. An Na+/H+ exchanger holds that microclimate in place. Peptides are absorbed faster than the same amino acids taken free. That is why peptide-based, semi-elemental formulas are often preferred over free-amino-acid elemental formulas. Clinicians choose them when absorption is the limiting problem. Peptidases in the cytoplasm then release free amino acids for export.</p>
+
+<h3>Fat: the difficult one, and the route that skips the liver</h3>
+
+<p>An adult absorbs about 95 percent of a 100 g daily fat load. Lipase with colipase cleaves triglyceride at positions 1 and 3. That leaves two free fatty acids and a 2-monoglyceride. Micelles carry those across the unstirred layer. Absorption itself is largely passive diffusion across the apical membrane. Transport proteins help with the long-chain species. The bile salts stay behind until the ileum.</p>
+
+<p>Inside the enterocyte the products are re-esterified at once. The smooth endoplasmic reticulum turns them back into triglyceride. That keeps free levels inside the cell near zero. The inward gradient stays alive. The triglyceride is then packaged into a <b>chylomicron</b>. It goes in with cholesterol, phospholipid and apolipoprotein B-48. A chylomicron is 75 to 1200 nm across. That is far too large for a capillary fenestration. It passes easily between the loose, overlapping cells of the lacteal wall. Chylomicrons travel up the lymphatic system to the thoracic duct. They enter the blood at the left subclavian vein. So dietary fat reaches the systemic circulation <i>before</i> the liver sees it. It escapes first-pass metabolism entirely. Medium-chain triglycerides are the exception. They dissolve in water well enough to enter the portal blood directly. That is why they are used clinically when lymphatic transport or bile is impaired.</p>
+
+<p>The fat-soluble vitamins A, D, E and K ride the same micellar route. So anything that blocks fat absorption produces all of their deficiencies together. Bile duct obstruction does it. So does pancreatic insufficiency. So does ileal disease. Unabsorbed fat reaching the colon causes <b>steatorrhea</b>. Those stools are bulky, pale, greasy and foul. They float.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Nutrient</th><th>Absorbed as</th><th>Apical mechanism</th><th>Main site</th><th>Exit route</th></tr></thead>
+<tbody>
+<tr><td>Starch, sucrose, lactose</td><td>Glucose, galactose</td><td>SGLT1 (carries 2 Na+ along)</td><td>Duodenum, jejunum</td><td>GLUT2 to portal vein</td></tr>
+<tr><td>Fructose</td><td>Fructose</td><td>GLUT5 (facilitated)</td><td>Jejunum</td><td>GLUT2 to portal vein</td></tr>
+<tr><td>Protein</td><td>Amino acids, di/tripeptides</td><td>Na+-coupled carriers, plus PepT1 (H+-coupled)</td><td>Duodenum, jejunum</td><td>Portal vein</td></tr>
+<tr><td>Triglyceride</td><td>Fatty acids, 2-monoglyceride</td><td>Delivered in micelles, mostly diffusion</td><td>Jejunum</td><td>Chylomicron to lacteal</td></tr>
+<tr><td>Vitamin B12</td><td>B12 bound to intrinsic factor</td><td>Taken in whole by the cubilin receptor</td><td>Terminal ileum</td><td>Portal vein (transcobalamin)</td></tr>
+<tr><td>Bile acids</td><td>Conjugated bile acids</td><td>Na+-dependent transporter (ASBT)</td><td>Terminal ileum</td><td>Portal vein, back to liver</td></tr>
+<tr><td>Iron</td><td>Fe2+ or hem</td><td>DMT1, plus a hem carrier</td><td>Duodenum</td><td>Ferroportin, controlled by hepcidin</td></tr>
+<tr><td>Calcium</td><td>Ca2+</td><td>TRPV6 with calbindin (calcitriol-driven), or between cells</td><td>Duodenum, and the whole bowel</td><td>Basolateral Ca2+-ATPase</td></tr>
+</tbody>
+</table></div>
+
+<h3>Vitamins, minerals and the rule that water never leads</h3>
+
+<p><b>Vitamin B12</b> takes the most roundabout path of any nutrient. Each step is a place where it can fail. Salivary haptocorrin binds it in the stomach and protects it from acid. Pancreatic proteases strip haptocorrin off in the duodenum. Only then does intrinsic factor bind it. The cubilin receptor in the terminal ileum then takes up the complex. Loss of parietal cells can break the chain, as in atrophic gastritis or after gastrectomy. So can pancreatic insufficiency. So can ileal disease.</p>
+
+<p><b>Iron</b> absorption is the body&rsquo;s main regulatory point for iron. There is no meaningful way to excrete it. Ferric iron is reduced to ferrous at the duodenal brush border. Vitamin C helps with that. It is then imported on <b>DMT1</b>. Hem iron enters separately and more efficiently. Export into blood happens through <b>ferroportin</b>. The liver hormone <b>hepcidin</b> degrades ferroportin. It does that when iron stores are high or inflammation is present. That is a negative feedback loop. It also explains the anemia of chronic disease. <b>Calcium</b> crosses through the cell on TRPV6. Calbindin inside acts as a shuttle. Calcitriol turns that pathway up (Module 4 and Module 8). Calcium also slips between cells when luminal calcium is high.</p>
+
+<p>Water is the simplest case and the one most often misunderstood. There are no water pumps. Water moves by osmosis through aquaporins and between cells. It always follows an osmotic gradient that solute transport has created, and that solute is mainly sodium. This single rule explains oral rehydration. It explains osmotic diarrhea from unabsorbed lactose or an unabsorbed laxative. It explains secretory diarrhea when chloride channels open. Move the solute and the water follows. Fail to move the solute and the water stays.</p>
+
+<div class="pearl"><b>Clinical anchor.</b> Dietary fat takes the chylomicron route. So it skips first-pass processing in the liver, unlike glucose or amino acids. That is also why a lymphatic injury such as a thoracic duct leak lets milky chylous fluid collect after a fatty meal. And it is why triglyceride levels are measured fasting. Chylomicrons peak 3 to 6 hours after eating.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Nearly every uptake step in the small intestine is paid for by one pump. The basolateral Na+/K+-ATPase holds sodium inside the cell near 12 mM against 140 mM outside. Set what is in the lumen and watch. <a href="../lab/ch13/BrushBorderTransport.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch13/BrushBorderTransport.html" loading="lazy" title="The Brush Border: Sodium Gradients, Surface Area and Oral Rehydration interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The small intestine wins by area and by gradients. Brush-border enzymes finish hydrolysis right at the membrane. The basolateral Na+/K+-ATPase pays for nearly every uptake step. And water only ever follows the solute.</p></div>
+
+<h2 id="colon"><span class="num">Section 5</span>The Colon, Water Balance and Defecation</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch13_s5.jpg" alt="Diagram of the large intestine showing cecum, ascending, transverse, descending and sigmoid colon, haustra, taeniae coli, rectum and anal canal with internal and external sphincters" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The colon&rsquo;s haustra and taeniae coli make its pouched shape. That shape slows transit and buys time to recover water and salts. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Nine liters a day: the accounting that keeps you alive</h3>
+
+<p>The gut handles far more fluid than a person drinks. Roughly 2 liters are swallowed. About 7 liters are secreted, as saliva, gastric juice, bile, pancreatic juice and intestinal secretions. That gives some 9 liters presented to the small intestine each day. The jejunum and ileum absorb about 7.5 to 8 liters. So 1 to 2 liters reach the colon, and the colon recovers all but 100 to 200 mL. Stool water is therefore around 0.1 liter out of 9. That is an efficiency above 98 percent.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Source or site</th><th>Volume per day</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>Ingested fluid</td><td>about 2.0 L</td><td>Changes with how much you drink</td></tr>
+<tr><td>Saliva</td><td>1.0&ndash;1.5 L</td><td>pH 6.5&ndash;7.5</td></tr>
+<tr><td>Gastric juice</td><td>about 2.0 L</td><td>pH 1.5&ndash;3.5</td></tr>
+<tr><td>Bile</td><td>0.6&ndash;1.0 L</td><td>Concentrated in the gallbladder</td></tr>
+<tr><td>Pancreatic juice</td><td>1.0&ndash;1.5 L</td><td>HCO3- up to 140 mEq/L</td></tr>
+<tr><td>Intestinal secretion</td><td>about 1.5 L</td><td>Cl- secreted by crypt cells through CFTR</td></tr>
+<tr><td><b>Small intestine absorbs</b></td><td><b>7.5&ndash;8.0 L</b></td><td>Solute leads, water follows</td></tr>
+<tr><td><b>Colon receives / absorbs</b></td><td><b>1.5 L / 1.3&ndash;1.4 L</b></td><td>Spare capacity 4&ndash;5 L per day</td></tr>
+<tr><td><b>Lost in stool</b></td><td><b>0.1&ndash;0.2 L</b></td><td>About 2 percent of the load</td></tr>
+</tbody>
+</table></div>
+
+<p>The colon absorbs sodium through apical <b>ENaC</b> channels. Aldosterone turns that pathway up strongly. Potassium is secreted in exchange, and water follows by osmosis. The colon works against a steep gradient, so it can pull luminal sodium down to about 25 mEq/L. The small intestine cannot go nearly that low. The colon&rsquo;s spare capacity is roughly 4 to 5 liters per day. That spare capacity is the safety margin protecting against diarrhea.</p>
+
+<p><b>Diarrhea</b> is best defined by physiology. Net secretion beats net absorption, or transit is too fast for absorption to happen. In <b>osmotic</b> diarrhea a solute that cannot be absorbed holds water in the lumen. That kind stops when the person fasts. In <b>secretory</b> diarrhea the crypt cells actively pump chloride out through CFTR, and water follows. Cholera toxin does this by locking the stimulatory G protein in its active state. Cyclic AMP then stays high, and losses can top 20 liters a day. The person dies of hypovolemia and acidosis, not of the organism itself. Replace the fluid and the sodium and the person survives, because SGLT1 keeps working throughout.</p>
+
+<div class="pearl"><b>Misconception check.</b> Fiber does not work by &ldquo;scrubbing&rdquo; the bowel. Insoluble fiber holds water and adds bulk. That bulk stretches the wall and gives peristalsis a bigger stimulus. Soluble fiber is fermented to short-chain fatty acids. Both need enough water taken with them. Adding fiber to a dehydrated person can make constipation worse, because the colon will still pull water out of a bulkier stool.</div>
+
+<h3>Colonic motility and the resident microbial organ</h3>
+
+<p>Colonic movements are slow by design, because the job is extraction, not transport. The longitudinal muscle is gathered into three bands called the <b>taeniae coli</b>. Their tone puckers the wall into pouches called <b>haustra</b>. Haustral contractions knead the contents in place with little forward progress. Two to three times a day, usually after a meal, a <b>mass movement</b> sweeps contents from the transverse colon to the sigmoid. That takes a few minutes. The <b>gastrocolic reflex</b> is why the urge to defecate so often follows breakfast. In that reflex, stretching the stomach raises colonic motility through vagal and hormonal signaling. Total colonic transit is 12 to 48 hours. The longer the contents linger, the more water is removed and the harder the stool.</p>
+
+<p>The colon houses something like 10 to 100 trillion micro-organisms. That is around 10 to the 11th per gram of contents. They ferment fiber and unabsorbed carbohydrate. The products are short-chain fatty acids: acetate, propionate and <b>butyrate</b>. Butyrate is the preferred fuel of the colonocyte itself. Feed colonic epithelium only through a vein and it wastes away. Fermentation does more than that. It salvages roughly 5 to 10 percent of daily energy intake. It produces vitamin K and several B vitamins. It occupies niches that pathogens would otherwise take. It also generates several liters of gas a day. About 600 mL of that is expelled. The rest is absorbed into blood. Wipe out the community with broad-spectrum antibiotics and the niche opens. <i>Clostridioides difficile</i> then expands and produces toxins. Those toxins cause colitis. That is why fecal microbiota transplantation works when antibiotics do not. It restores the community.</p>
+
+<h3>Defecation: where voluntary control meets smooth muscle</h3>
+
+<p>The rectum is normally empty. When a mass movement pushes stool into it, stretch receptors in the wall fire. Two things then happen at once. Enteric reflexes relax the <b>internal anal sphincter</b>, which is smooth muscle and involuntary. That is the rectoanal inhibitory reflex. Meanwhile the same afferent signal travels up the sacral cord and reaches consciousness as the urge to defecate. The <b>external anal sphincter</b> is skeletal muscle. The pudendal nerve from S2 to S4 supplies it, and it is under voluntary control. It is normally held contracted. This is the point where the cortex can veto the reflex. Hold it closed on purpose and the rectum accommodates. The urge then fades until the next mass movement.</p>
+
+<p>If defecation is permitted, the parasympathetic defecation reflex takes over. It runs through the pelvic splanchnic nerves. It drives stronger rectal and sigmoid contraction. Both sphincters relax. Voluntary effort adds a Valsalva maneuver. That is a closed glottis plus abdominal muscle contraction. It can raise intra-abdominal pressure well above 100 mmHg. That supplies most of the driving &Delta;P. The intrinsic and parasympathetic reflexes reinforce each other. So once the process begins it accelerates. That is a limited positive feedback loop, and it stops itself. It ends when the rectum empties and the stretch stimulus disappears. Note the physiological cost of straining. Raised intrathoracic pressure cuts venous return. So cardiac output and blood pressure fall during the strain. When the strain is released, the vagus slows the heart. That bradycardia can be dangerous in cardiac patients.</p>
+
+<p>Clinically, the anatomy of the reflex explains the deficits. Take a spinal cord injury above the sacral segments. It abolishes voluntary control of the external sphincter. The sacral reflex stays intact. So defecation still occurs reflexively and can be triggered on a schedule. Now take damage to the sacral cord or the pudendal nerve. That abolishes the reflex itself and leaves a flaccid sphincter. Chronic constipation is usually a transit problem, not a secretion problem. Slower transit means more time for water recovery. The stool gets harder. Harder stool slows transit further.</p>
+
+<h3>The loop that closes on the whole system: appetite</h3>
+
+<p>Digestion is only useful if intake matches what the body spends. The gut is the sensor for that loop too. <b>Ghrelin</b> from the empty stomach rises before meals. It stimulates hunger neurons in the hypothalamic arcuate nucleus. After eating, <b>CCK</b>, <b>GLP-1</b> and <b>PYY</b> arrive from the intestine. Vagal afferents report gastric stretch at the same time. Together they produce short-term satiety. They also slow gastric emptying, so further intake is limited. Over the long term, <b>leptin</b> comes from adipose tissue. It reports the size of energy stores to those same hypothalamic neurons.</p>
+
+<p>Read it as a control system. The regulated variable is body energy stores plus the immediate nutrient load. The sensors are the stomach, the intestinal L cells and the adipocytes. The integrator is the arcuate nucleus. The effectors are feeding behavior and the rate of gastric emptying. This is why drugs that mimic GLP-1 both slow emptying and reduce intake. They amplify a negative feedback signal that already exists rather than inventing a new one.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Two liters are drunk and about seven are secreted. So nine liters arrive at the small intestine every day, and only about 150 mL leaves in stool. The colon&rsquo;s spare capacity is only four to five liters. <a href="../lab/ch13/ColonWaterAndDefecation.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch13/ColonWaterAndDefecation.html" loading="lazy" title="Nine Liters a Day: Colonic Water Balance and the Defecation Reflex interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The gut recovers all but about 150 mL of a nine-liter daily fluid load. The small intestine takes 7.5 to 8 L. The colon takes nearly all of the 1 to 2 L that is left. Sodium transport does the work and water follows. Defecation is the one place where a skeletal-muscle sphincter lets the cortex overrule a visceral reflex.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2>
+<p>The digestive system is a controlled-flow reactor. Interstitial cells of Cajal set a regional rhythm. It runs 3 per minute in the stomach and 12 in the duodenum. Spike potentials ride on those slow waves and set the force. The enteric nervous system runs peristalsis and segmentation. Both are complete local reflexes. The vagus and sympathetic outflow only adjust them. The stomach stores by relaxing, so pressure stays low. It acidifies through a parietal-cell H+/K+-ATPase. That pump builds a three million-fold gradient. The stomach then releases its contents at only 2 to 4 kcal per minute. The duodenum sets that rate. It reports back through secretin, CCK and enterogastric reflexes. Secretin buys the duodenum a working pH with pancreatic bicarbonate. CCK delivers zymogens and a bolus of concentrated bile. The amphipathic bile acids in that bile emulsify fat. They also ferry it across the unstirred layer in micelles. Absorption then runs almost entirely on the sodium gradient. The basolateral Na+/K+-ATPase holds that gradient up. SGLT1 carries glucose. Sodium-coupled carriers carry amino acids. Fat leaves separately as chylomicrons in the lacteal. Water never leads. It follows solute. Nine liters are presented each day. The small intestine reclaims 7.5 to 8 L. The colon takes nearly all of the rest. About 150 mL is left in stool. The colon ferments what remains. Then it hands the residue to a reflex the cortex can veto.</p>
+</div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Slow wave</td><td>A steady swing in smooth-muscle membrane voltage that stays below threshold, made by interstitial cells of Cajal. It sets the top contraction frequency, not the force.</td></tr>
+<tr><td>Interstitial cells of Cajal</td><td>Pacemaker cells between the muscle layers. They set the basic electrical rhythm of each part of the gut.</td></tr>
+<tr><td>Peristalsis</td><td>The propulsive reflex. Circular muscle contracts behind the bolus and relaxes ahead of it. That pressure gradient moves the contents.</td></tr>
+<tr><td>Segmentation</td><td>Rings of muscle contracting by turns. They mix chyme against the mucosa with little net forward movement.</td></tr>
+<tr><td>Migrating motor complex</td><td>A sweep of strong contractions every 90&ndash;120 minutes during fasting, driven by motilin. It clears out residue and bacteria.</td></tr>
+<tr><td>Receptive relaxation</td><td>A vagovagal reflex using NO and VIP. It makes the stomach more stretchy, so volume can rise to 1&ndash;1.5 L with little rise in pressure.</td></tr>
+<tr><td>H+/K+-ATPase</td><td>The parietal cell proton pump. It trades H+ for K+ using ATP and drives luminal pH near 1&ndash;2. Proton pump inhibitors target it.</td></tr>
+<tr><td>Alkaline tide</td><td>A brief rise in blood and urine pH while the stomach is actively making acid. Bicarbonate exported on the blood side causes it.</td></tr>
+<tr><td>Intrinsic factor</td><td>A parietal cell glycoprotein needed to take up vitamin B12 in the terminal ileum. It is the only truly essential gastric secretion.</td></tr>
+<tr><td>Somatostatin</td><td>A paracrine blocker from antral D cells, released when luminal pH falls below about 3. It is the negative feedback brake on acid secretion.</td></tr>
+<tr><td>Secretin</td><td>A duodenal S-cell hormone released when pH falls below about 4.5. It drives pancreatic and biliary bicarbonate output.</td></tr>
+<tr><td>Cholecystokinin (CCK)</td><td>An I-cell hormone released by fat and protein. It triggers pancreatic enzymes, gallbladder contraction, slower emptying and satiety.</td></tr>
+<tr><td>Zymogen</td><td>An inactive enzyme precursor, such as trypsinogen. It is switched on only after it leaves the gland, which keeps the pancreas from digesting itself.</td></tr>
+<tr><td>Micelle</td><td>A bile-salt cluster 4&ndash;8 nm across. It carries fatty acids, monoglycerides and fat-soluble vitamins across the unstirred water layer.</td></tr>
+<tr><td>Enterohepatic circulation</td><td>Recovery of about 95 percent of bile acids in the terminal ileum and their return to the liver. A 2.5&ndash;4 g pool recycles 6&ndash;8 times daily.</td></tr>
+<tr><td>Chylomicron</td><td>A large apoB-48 lipoprotein built in the enterocyte. It enters the lacteal, so it bypasses first-pass metabolism in the liver.</td></tr>
+<tr><td>SGLT1</td><td>An apical secondary active co-transporter. It moves two Na+ with each glucose or galactose. It is the basis of oral rehydration therapy.</td></tr>
+<tr><td>Brush border enzymes</td><td>Hydrolases bound to the membrane, such as lactase, sucrase-isomaltase and peptidases. They finish digestion right where absorption happens.</td></tr>
+<tr><td>Short-chain fatty acids</td><td>Acetate, propionate and butyrate, made by fermentation in the colon. Butyrate is the colonocyte&rsquo;s preferred fuel.</td></tr>
+<tr><td>Rectoanal inhibitory reflex</td><td>An enteric reflex that relaxes the smooth-muscle internal anal sphincter when the rectum is stretched. The skeletal external sphincter stays under voluntary control.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">Slow waves happen about 3 times per minute in the stomach. Yet gastric contractions can be weak or strong. How does one rhythm give different forces?</div><div class="ans">Interstitial cells of Cajal make the slow waves. Those waves swing the membrane potential between roughly &minus;60 and &minus;40 mV, and on their own they stay below threshold. Contraction needs the wave peak to cross threshold. Then voltage-gated Ca2+ channels open and spike potentials fire. The number of spikes per wave sets how much calcium enters, and calcium sets the force. Acetylcholine, stretch and gastrin depolarize the baseline, so more waves reach threshold. Norepinephrine, VIP and nitric oxide hyperpolarize it, so fewer do. The pacemaker fixes the frequency. Nerves and hormones set the amplitude.</div></div>
+
+<div class="qq"><div class="q">A patient takes a proton pump inhibitor. Predict what happens to gastrin levels. Explain the loop involved.</div><div class="ans">Serum gastrin rises. Here is the normal loop. The variable is antral luminal pH. The sensor is the D cell. The signal is somatostatin, released when pH falls below about 3. The effector is the parietal cell, which then makes less acid. Blocking the H+/K+-ATPase raises luminal pH. So the D cell stops releasing somatostatin. The brake on the G cells lifts, and gastrin secretion goes up. The feedback loop itself is intact. The effector limb has been chemically disabled.</div></div>
+
+<div class="qq"><div class="q">Gastric emptying delivers roughly the same number of calories per minute either way. Why is that true whether the meal is mostly carbohydrate or mostly fat?</div><div class="ans">Because the duodenum controls the emptying rate, not the stomach. Acid triggers secretin. Fat and protein digestion products trigger CCK. Hypertonic contents and stretch trigger enterogastric nerve reflexes. All of these weaken antral contraction and raise pyloric resistance. Flow follows Q = &Delta;P / R. Lower the &Delta;P and raise the R, and delivery slows. A fatty meal is a stronger stimulus for CCK, so it empties more slowly. Calorie delivery is held near 2 to 4 kcal per minute.</div></div>
+
+<div class="qq"><div class="q">Long vomiting of stomach contents causes a metabolic alkalosis with low chloride. Explain it from the parietal cell mechanism.</div><div class="ans">The parietal cell makes H+ and HCO3- from CO2 and water. Carbonic anhydrase does that step. H+ and Cl- are secreted into the lumen. HCO3- is exported into the blood in trade for chloride. Normally the acid is neutralized downstream. So the bicarbonate is balanced out. Vomiting strips the H+ and the Cl- from the body first. The bicarbonate added to blood is then unopposed. The result is a hypochloremic metabolic alkalosis. Volume depletion makes it worse. It drives the kidney to hold on to bicarbonate.</div></div>
+
+<div class="qq"><div class="q">Explain why bile is essential for fat digestion even though it holds no enzymes.</div><div class="ans">Lipase dissolves in water. Triglyceride does not. So hydrolysis can only happen at the oil-water interface. Its rate depends on the area of that interface. Amphipathic bile acids coat lipid droplets. Segmentation then shears them into a fine emulsion. That multiplies the surface area open to lipase. Bile acids do a second job above the critical micellar concentration. They form micelles. Those micelles carry fatty acids and monoglycerides across the unstirred water layer next to the brush border. That layer is the real rate-limiting barrier. So bile solves a physical problem, not a chemical one.</div></div>
+
+<div class="qq"><div class="q">A patient has had the terminal ileum removed. Predict the consequences. Give the mechanism for each one.</div><div class="ans">Three problems are predictable. First, vitamin B12 deficiency. The intrinsic factor-B12 complex is taken up only there. Symptoms appear years later, once liver stores are used up. Second, bile acid diarrhea. Unabsorbed bile acids reach the colon and drive chloride and water secretion. Third, fat malabsorption. That brings steatorrhea and deficiency of vitamins A, D, E and K. The enterohepatic pool is no longer recycled 6 to 8 times a day. The liver cannot make bile acids fast enough to keep pace. So micelle formation fails.</div></div>
+
+<div class="qq"><div class="q">Why does an oral rehydration solution need both glucose and sodium? And why does it still work in cholera?</div><div class="ans">SGLT1 sits in the apical membrane of the enterocyte. It co-transports two sodium ions with each glucose molecule. The basolateral Na+/K+-ATPase keeps that sodium gradient up. Neither substrate alone switches the carrier on. Once sodium and glucose are absorbed, water follows by osmosis. Cholera toxin raises cyclic AMP and drives chloride secretion through CFTR in the crypts. But it does not damage the villus enterocyte or SGLT1. So the absorptive pathway is still open and can offset the secretory loss.</div></div>
+
+<div class="qq"><div class="q">Compare the exit route of absorbed glucose with that of absorbed long-chain fat. Give one clinical consequence of the difference.</div><div class="ans">Glucose leaves the enterocyte on the basolateral side using GLUT2. It enters the capillary. Then it travels in the portal vein to the liver, so it gets first-pass processing. Long-chain fat is re-esterified into triglyceride. That is packaged into chylomicrons. Chylomicrons are too large for capillary fenestrations. They enter the lacteal instead. They reach the blood at the thoracic duct and the left subclavian vein. So dietary fat bypasses the liver at first. Clinically, that is why a thoracic duct injury produces milky chylous fluid after a fatty meal. It is also why triglycerides are measured fasting.</div></div>
+
+<div class="qq"><div class="q">A person with lactase deficiency drinks milk and gets bloating and watery diarrhea. Trace the physiology.</div><div class="ans">Lactose is a disaccharide, so it cannot be absorbed as it is. Brush border lactase has to split it into glucose and galactose first. Without the enzyme it stays in the lumen. It is osmotically active, so it holds water in the small bowel and raises the volume there. It then reaches the colon. Bacteria ferment it to short-chain fatty acids, hydrogen, carbon dioxide and methane. That produces gas, distension and cramping. If the water dragged into the lumen and passed to the colon is more than the colon can absorb, diarrhea follows. The driving solute comes from the diet, so it stops with fasting.</div></div>
+
+<div class="qq"><div class="q">Roughly nine liters of fluid enter the gut each day, but only about 150 mL is lost in stool. Where does the rest go? Why is this precarious?</div><div class="ans">About 2 liters are ingested. About 7 liters are secreted. That secretion is saliva, gastric juice, bile, pancreatic juice and intestinal secretion. The jejunum and ileum absorb 7.5 to 8 liters. The colon absorbs most of the 1 to 2 liters it receives. It is precarious because the colon has little reserve. Its spare absorptive capacity is only about 4 to 5 liters per day. A modest rise in small-intestinal secretion overwhelms it. So does a modest fall in absorption. That narrow margin is why secretory diarrhea can cause life-threatening hypovolemia within hours.</div></div>
+
+<div class="qq"><div class="q">Name the sensor, integrator, effector and response in the secretin loop. Say what would happen if the pancreatic duct were blocked.</div><div class="ans">Variable: duodenal luminal pH. Sensor: the duodenal S cell, which releases secretin when pH falls below about 4.5. Integrator: the endocrine signal itself, traveling in blood. Effector: pancreatic and biliary duct cells, which secrete bicarbonate through an apical Cl-/HCO3- exchanger supported by CFTR. Response: luminal pH rises toward 6 to 7, and secretin release stops. Block the duct and the effector limb fails. The duodenum stays acidic. Pancreatic enzymes work below their best pH. Acid injures the duodenal mucosa, which causes ulceration and poor digestion.</div></div>
+
+<div class="qq"><div class="q">A patient has a spinal cord injury at T6. They can still defecate reflexively. But they cannot delay it on purpose. Explain that using the two sphincters.</div><div class="ans">The internal anal sphincter is smooth muscle. It relaxes on its own when the rectum is stretched. The enteric rectoanal inhibitory reflex does that. The sacral parasympathetic defecation reflex reinforces it. Both circuits lie below T6, so both are intact. The external anal sphincter is skeletal muscle. The pudendal nerve from S2 to S4 supplies it. But the command comes from the cortex, down the corticospinal pathways. An injury at T6 interrupts those descending fibers. So the cortex can no longer hold the external sphincter closed. It can no longer perceive the urge normally either. The local reflex arc keeps operating.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch12.html"><span class="k">Previous</span>&larr; Respiratory System</a>
+        <a class="next" href="ch14.html"><span class="k">Next</span>Urinary and Reproductive Systems &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

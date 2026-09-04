@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 10 &middot; The Heart &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 10 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>The Heart</h1>
+    <p class="sub">Two pumps in one organ, wired to fire itself. Everything it does comes down to pressure.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Trace a drop of blood through both circuits, in order</li>
+      <li>Explain what opens and closes a heart valve</li>
+      <li>Follow the wiring, and say why the pause at the AV node matters</li>
+      <li>Match the parts of an ECG to what is happening electrically</li>
+      <li>Calculate cardiac output, and predict what raises or lowers it</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>Two circuits, one organ</h2>
+  <p class="lead">The right heart sends blood to the lungs. The left heart sends it everywhere else.</p>
+  <p><b>Body &rarr; right atrium &rarr; right ventricle &rarr; lungs &rarr; left atrium &rarr; left ventricle &rarr; body.</b></p>
+  <p>Blood low in oxygen is on the right. Blood full of oxygen is on the left. Both sides pump the same amount every beat.</p>
+  <p>They do not do the same amount of work. The right ventricle pushes blood a short way into a low-pressure circuit. The left pushes it around the whole body.</p>
+  <p>That is why the left wall is several times thicker. Same volume, far more pressure.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>Which side fails tells you where fluid backs up. Left-sided failure backs up into the lungs, so the patient is short of breath. Right-sided failure backs up into the body, so the legs swell and the neck veins stand out.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Valves are not muscles</h2>
+  <p class="lead">No valve ever decides to open. Pressure opens it and pressure slams it shut.</p>
+  <p>Every valve is a one-way flap. It swings whichever way the pressure difference pushes it. Higher pressure behind it, and it opens. Higher pressure in front, and it shuts.</p>
+  <p>The <b>heart sounds</b> are those closures. The first sound is the upper valves shutting as the ventricles start to squeeze. The second is the outlet valves shutting as the ventricles relax.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>A swinging door in a drafty hallway. Nobody operates it. Whichever side has more pressure decides which way it sits.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>One beat, step by step</h2>
+  <div class="demo">
+    <div class="dh">Walk through the cardiac cycle</div>
+    <div class="stage" style="padding:10px;">
+      <svg viewBox="0 0 460 200" style="width:100%;height:auto;display:block;">
+        <rect id="atr" x="120" y="14" width="150" height="52" rx="12" fill="#e9dcc4" stroke="#c2a978" stroke-width="2"></rect>
+        <text x="160" y="45" font-size="13" font-weight="700" fill="#5e1f24">ATRIUM</text>
+        <rect id="ven" x="120" y="96" width="150" height="88" rx="14" fill="#e9dcc4" stroke="#c2a978" stroke-width="2"></rect>
+        <text x="150" y="146" font-size="13" font-weight="700" fill="#5e1f24">VENTRICLE</text>
+        <line id="av" x1="130" y1="80" x2="260" y2="80" stroke="#3a7aa8" stroke-width="7" stroke-linecap="round"></line>
+        <text x="284" y="85" font-size="11.5" font-weight="700" fill="#3a7aa8" id="avt">AV valve</text>
+        <line id="sl" x1="286" y1="104" x2="286" y2="150" stroke="#8a2f36" stroke-width="7" stroke-linecap="round"></line>
+        <text x="256" y="176" font-size="11.5" font-weight="700" fill="#8a2f36" id="slt">Semilunar</text>
+        <path d="M286 127 L 420 127" stroke="#c2a978" stroke-width="2" fill="none"></path>
+        <text x="356" y="118" font-size="11" font-weight="700" fill="#8a6a1c">to body</text>
+        <text x="14" y="45" font-size="11" font-weight="700" fill="#7a6f63">from veins</text>
+        <path d="M40 52 L 118 52" stroke="#c2a978" stroke-width="2" fill="none"></path>
+      </svg>
+    </div>
+    <div class="ctrls">
+      <button class="btn" id="prev">&larr; Back</button>
+      <button class="btn" id="next">Next step &rarr;</button>
+      <span class="readout" id="cout"></span>
+    </div>
+    <p id="cnote" style="margin:12px 0 0;font-size:15px;color:#7a6f63;"></p>
+  </div>
+  <p>Two things are worth taking from that sequence.</p>
+  <p>First, most filling is <b>passive</b>. Blood pours through the open valve before the atrium contracts at all, and the atrial squeeze only tops it up.</p>
+  <p>Second, the ventricle spends a moment squeezing with <b>every valve shut</b>. It builds pressure without pushing any blood out, because it has to beat the pressure in the artery before the door will open.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>The heart's own wiring</h2>
+  <ol class="steps">
+    <li><b>The SA node fires on its own</b>, about 60 to 100 times a minute. It is the pacemaker because it is the fastest.</li>
+    <li><b>The atria depolarize</b> and contract.</li>
+    <li><b>The AV node holds the signal briefly.</b> That pause lets the atria finish emptying before the ventricles start.</li>
+    <li><b>Fast fibers carry the signal</b> through the ventricles.</li>
+    <li><b>The ventricles contract</b> from the bottom up, which pushes blood toward the outlet valves.</li>
+  </ol>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>ECG part</th><th>What is happening</th></tr>
+    <tr><td><b>P wave</b></td><td>The atria are about to contract</td></tr>
+    <tr><td><b>QRS complex</b></td><td>The ventricles are about to contract</td></tr>
+    <tr><td><b>T wave</b></td><td>The ventricles are resetting</td></tr>
+  </table>
+  </div>
+  <p>An ECG records <em>electrical</em> activity only. It tells you the signal was sent. It does not prove the muscle answered.</p>
+  <p>That difference is why a patient can have an organized rhythm on the monitor and no pulse at all.</p>
+  <div class="note"><p><b>The nerves do not create the beat. They edit it.</b> Sympathetic input speeds the pacemaker and increases force. The vagus nerve slows it. Take away all nerve input and the heart keeps beating at its own rate, which is exactly what happens after a transplant.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Cardiac output &mdash; the number everything serves</h2>
+  <p class="lead"><b>Cardiac output = heart rate &times; stroke volume.</b> About 70 beats a minute times about 70 mL is roughly 5 liters a minute.</p>
+  <p>Stroke volume depends on three things:</p>
+  <ul>
+    <li><b>Preload</b> is how full the ventricle is before it squeezes. More filling stretches the muscle, and it contracts harder. This is the same length-and-force idea from Module 7, applied to the heart.</li>
+    <li><b>Contractility</b> is how hard the muscle squeezes for a given stretch. Sympathetic drive and some drugs raise it.</li>
+    <li><b>Afterload</b> is the pressure the ventricle has to beat to open the outlet valve. Higher afterload means less blood leaves.</li>
+  </ul>
+  <p>Watch how these work together when a patient bleeds. Volume falls, so preload falls, so stroke volume falls.</p>
+  <p>The body makes up for it by speeding the heart and narrowing the vessels. That is why a fast heart and cool, pale skin show up before the blood pressure ever drops.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on the wiring and on pressure and volume in one beat &mdash; <a href="../labs.html">Cardiac benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "Why is the left ventricle wall thicker than the right?",
+    "a": ["It pumps more blood each beat","It has to make much higher pressure to supply the whole body","It has more valves","It receives blood from two atria"],
+    "c": 1,
+    "fb": [
+      "Both ventricles push out the same volume each beat.",
+      "Correct. Same volume, much greater pressure, so much more muscle.",
+      "Each ventricle has one inlet valve and one outlet valve.",
+      "Each ventricle receives from one atrium."
+    ]
+  },
+  {
+    "q": "What makes a heart valve close?",
+    "a": ["Muscle inside the valve contracts","Higher pressure on the far side pushes it shut","A nerve signal closes it","It closes when blood cools"],
+    "c": 1,
+    "fb": [
+      "Valves have no muscle of their own.",
+      "Right. Every valve is passive. Pressure alone decides which way it sits.",
+      "Valves are not wired to open or close.",
+      "Temperature has nothing to do with it."
+    ]
+  },
+  {
+    "q": "Why does the AV node pause before passing the signal on?",
+    "a": ["To let the atria finish emptying before the ventricles squeeze","To slow the overall heart rate","To let the heart's own arteries fill","To let the SA node recover"],
+    "c": 0,
+    "fb": [
+      "Correct. Without the pause, the chambers would squeeze together and filling would be lost.",
+      "Rate is set by the SA node, not by the pause.",
+      "The heart's own vessels fill while the ventricles relax, which is a separate matter.",
+      "The SA node resets on its own."
+    ]
+  },
+  {
+    "q": "A monitor shows an organized rhythm but the patient has no pulse. What does that tell you?",
+    "a": ["The monitor is broken","The electrical signal is there, but the muscle is not pumping effectively","The heart has stopped conducting","The blood pressure is fine"],
+    "c": 1,
+    "fb": [
+      "The tracing can be completely accurate.",
+      "Correct. An ECG shows the signal being sent, not the muscle answering.",
+      "Conduction is clearly happening, since that is what makes the tracing.",
+      "No pulse means no effective output."
+    ]
+  },
+  {
+    "q": "A patient is bleeding. Which change shows up first?",
+    "a": ["Blood pressure drops sharply","Heart rate rises and vessels narrow to compensate","Stroke volume rises","Cardiac output rises above normal"],
+    "c": 1,
+    "fb": [
+      "Pressure is defended and often falls late, which is what makes early blood loss easy to miss.",
+      "Correct. A fast heart and cool, pale skin come before any pressure change.",
+      "Stroke volume falls, because there is less filling.",
+      "Output falls. The compensation is an attempt to limit that fall."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var av=document.getElementById("av"), sl=document.getElementById("sl"),
+    ven=document.getElementById("ven"), atr=document.getElementById("atr"),
+    out=document.getElementById("cout"), note=document.getElementById("cnote"),
+    avt=document.getElementById("avt"), slt=document.getElementById("slt");
+var STEP=[
+ {n:"1. Ventricular filling",avOpen:true,slOpen:false,v:"#dff0e4",a:"#e9dcc4",
+  t:"Ventricles are relaxed and their pressure is low, so the AV valve hangs open and blood pours in from the atrium on its own. Around 70&ndash;80% of filling happens here, before the atrium has done anything at all."},
+ {n:"2. Atrial contraction",avOpen:true,slOpen:false,v:"#dff0e4",a:"#f7e9e9",
+  t:"The atrium squeezes and tops the ventricle up &mdash; the atrial kick. On an ECG this follows the P wave. Lose it, as in atrial fibrillation, and the ventricle still fills, just less completely."},
+ {n:"3. Isovolumetric contraction",avOpen:false,slOpen:false,v:"#f7e9e9",a:"#e9dcc4",
+  t:"The ventricle starts to contract with every valve shut. Pressure climbs fast but no blood leaves, because aortic pressure has not yet been beaten. Shutting the AV valve here is the first heart sound."},
+ {n:"4. Ejection",avOpen:false,slOpen:true,v:"#f7e9e9",a:"#e9dcc4",
+  t:"Ventricular pressure exceeds the pressure beyond the semilunar valve, the valve is pushed open, and blood is ejected. This is systole, and the volume that leaves is the stroke volume."},
+ {n:"5. Isovolumetric relaxation",avOpen:false,slOpen:false,v:"#e8f0f5",a:"#e9dcc4",
+  t:"The ventricle relaxes and its pressure drops below the artery, so blood tries to fall back and slams the semilunar valve shut &mdash; the second heart sound. Nothing enters or leaves until the AV valve reopens and the cycle restarts."}
+];
+var i=0;
+function draw(){
+  var s=STEP[i];
+  av.setAttribute("stroke-width", s.avOpen?"3":"7");
+  av.setAttribute("stroke", s.avOpen?"#9fc4d8":"#3a7aa8");
+  avt.textContent = s.avOpen ? "AV valve OPEN" : "AV valve SHUT";
+  sl.setAttribute("stroke-width", s.slOpen?"3":"7");
+  sl.setAttribute("stroke", s.slOpen?"#d9a5aa":"#8a2f36");
+  slt.textContent = s.slOpen ? "Semilunar OPEN" : "Semilunar SHUT";
+  ven.setAttribute("fill", s.v); atr.setAttribute("fill", s.a);
+  out.innerHTML="<span>"+s.n+"</span>";
+  note.innerHTML=s.t;
+}
+document.getElementById("next").addEventListener("click",function(){ i=(i+1)%STEP.length; draw(); });
+document.getElementById("prev").addEventListener("click",function(){ i=(i+STEP.length-1)%STEP.length; draw(); });
+draw();
+
+})();
+</script>
+</body>
+</html>

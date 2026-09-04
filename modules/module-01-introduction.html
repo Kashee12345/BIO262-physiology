@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 1 &middot; Introduction to Physiology &amp; the Chemical Level — BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+
+  .h5pwrap{position:relative;width:100%;background:#fbf7ef;border:1px solid var(--line);
+           border-radius:10px;overflow:hidden;min-height:420px;}
+  .h5pwrap iframe{display:block;width:100%;height:637px;border:0;}
+  @media(max-width:700px){ .h5pwrap iframe{height:560px;} }
+  @media print{ .h5pwrap{display:none;} }
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 1 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Introduction to Physiology &amp; the Chemical Level</h1>
+    <p class="sub">What physiology studies &mdash; and the one idea the whole course is built on.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Say what physiology studies, and how it is different from anatomy</li>
+      <li>Explain homeostasis, and why the body defends a set point</li>
+      <li>Name the three parts of a feedback loop and say what each one does</li>
+      <li>Say why water, pH, and the four macromolecules matter to a nurse</li>
+      <li>Put the levels of organization in order, from atom to organism</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>Anatomy asks what. Physiology asks why.</h2>
+  <p class="lead">Anatomy is the parts list. Physiology is the instruction manual.</p>
+  <p>Anatomy tells you the heart has four chambers. It tells you there is a wall between the two sides.</p>
+  <p>Physiology tells you <em>why</em> that wall has to be there. It also tells you what happens to a patient when the wall has a hole in it.</p>
+  <p>All semester, when you meet a new structure, ask one question: <b>what is this shaped to do?</b></p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>Anatomy is knowing a building has sprinklers. Physiology is knowing what turns them on, and what gets soaked when they fail.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Homeostasis &mdash; the idea everything hangs on</h2>
+  <p class="lead">Your body holds dozens of values steady, every second, and you never notice.</p>
+  <p>Body temperature stays near 37&deg;C. Blood pH stays near 7.4. Blood sugar, calcium, sodium, and oxygen all stay inside narrow ranges.</p>
+  <p>That steady inside state is <span class='keyword' title='Keeping the inside of the body steady even when things outside change'>homeostasis</span>. Keeping it steady is most of what your organ systems do all day.</p>
+  <p>The value the body aims for is called the <b>set point</b>. When you drift away from it, something switches on to pull you back.</p>
+  <p><b>Almost every disease you will study is a loop like this that stopped working.</b> That is why this idea comes first.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>How a feedback loop works</h2>
+  <p class="lead">Every loop has the same three parts. Learn them once and you will spot them all semester.</p>
+  <ol class="steps">
+    <li><b>Receptor.</b> It notices the change. Something senses that you are too warm.</li>
+    <li><b>Control center.</b> Usually the brain. It compares what is happening to the set point, then decides.</li>
+    <li><b>Effector.</b> It does the fixing. Sweat glands, blood vessels, a muscle, or a gland.</li>
+  </ol>
+  <p>The response works <em>against</em> the change. So we call it <b>negative feedback</b>.</p>
+  <p>Too warm turns on cooling. Too cool turns on warming. Here, negative means opposing. It does not mean bad.</p>
+
+  <div class="demo">
+    <div class="dh">Build a homeostatic loop &mdash; then break it</div>
+    <div class="axon" id="stage" style="height:130px;background:#fbf7ef;">
+      <div id="track" style="position:absolute;left:24px;right:24px;top:58px;height:12px;background:#e9dcc4;border-radius:6px;"></div>
+      <div id="setline" style="position:absolute;top:36px;width:2px;height:56px;background:#8a2f36;"></div>
+      <div id="setlabel" style="position:absolute;top:14px;font-size:11px;font-weight:700;color:#8a2f36;letter-spacing:.5px;">SET POINT 37.0&deg;C</div>
+      <div id="ball" style="position:absolute;top:50px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle,#ffd76a 0%,#e8a41f 70%);"></div>
+      <div id="statelabel" style="position:absolute;bottom:10px;left:24px;font-size:12.5px;font-weight:700;color:#7a6f63;"></div>
+    </div>
+    <div class="ctrls">
+      <label for="temp">Push body temperature</label>
+      <input type="range" id="temp" min="34" max="41" step="0.1" value="37">
+      <button class="btn" id="toggle">Break the loop</button>
+      <span class="readout" id="tempout">37.0&deg;C &mdash; <span>balanced</span></span>
+    </div>
+  </div>
+
+  <p>Drag the temperature away from the set point. Watch the loop pull it back.</p>
+  <p>Now press <b>Break the loop</b> and drag again. Nothing corrects it.</p>
+  <p>That is a fever that will not come down. It is a blood sugar that will not fall. It is a blood pressure that will not settle.</p>
+  <div class="note"><p><b>Positive feedback</b> is the opposite, and it is rarer. The response <em>builds on</em> the change instead of fighting it. The body uses it when it wants something finished fast. Blood clotting and labor contractions are the two classic examples. It always takes an outside event to stop it.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>The chemistry you actually need</h2>
+  <p class="lead">You are not becoming a chemist. You need four things that explain a lot of physiology.</p>
+  <ul>
+    <li><b>Water.</b> About 60% of you. It dissolves things, carries them, and warms and cools slowly. That slowness is why you can hold 37&deg;C.</li>
+    <li><b>pH.</b> Blood sits between 7.35 and 7.45. That window is tight. Outside it, proteins change shape and stop working. This is why acid&ndash;base problems are an emergency in nursing.</li>
+    <li><b>Ions.</b> Sodium, potassium, calcium. These are charged particles. Their movement makes every nerve signal and every heartbeat.</li>
+    <li><b>The four macromolecules.</b> Carbohydrates are quick fuel. Lipids are stored fuel and membranes. Proteins are structure and almost all the machinery. Nucleic acids are the instructions.</li>
+  </ul>
+  <p><b>Proteins</b> deserve extra attention. Enzymes are proteins. Receptors are proteins. Ion channels are proteins.</p>
+  <p>A protein only works in the right shape. That is why a high fever or a pH swing is dangerous. Change the shape and you break the job it does.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Levels of organization</h2>
+  <p class="lead">The course is a climb. Each level only makes sense once you know the one below it.</p>
+  <p><b>Atoms &rarr; molecules &rarr; cells &rarr; tissues &rarr; organs &rarr; organ systems &rarr; organism.</b></p>
+  <p>That is also the shape of the semester. We start with chemistry and cells because everything after them is built from them.</p>
+  <p>When the heart comes up in Module 10, you will need the ion movement from Module 4 to understand why it beats at all. It really does stack.</p>
+
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>The interactive workbook</h2>
+  <p class="lead">Work through this once you have read the page above. It covers the same Module 1 material, and it asks you to do things rather than just read.</p>
+
+  <div class="demo">
+    <div class="dh">Module 1 &mdash; interactive book</div>
+    <div class="h5pwrap">
+      <iframe src="https://akashgarg.h5p.com/content/1292999252951159368/embed"
+              aria-label="BIO 262 Module 1 - Interactive Book"
+              title="BIO 262 Module 1 &mdash; Interactive Book"
+              frameborder="0" allowfullscreen="allowfullscreen"
+              allow="autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>
+    </div>
+    <p style="margin:12px 0 0;font-size:14.5px;color:#7a6f63;">
+      Needs an internet connection. If it does not load, open it directly:
+      <a href="https://akashgarg.h5p.com/content/1292999252951159368" target="_blank" rel="noopener"
+         style="color:#8a2f36;font-weight:700;">Module 1 interactive book &#8599;</a>
+    </p>
+  </div>
+  <script src="https://akashgarg.h5p.com/js/h5p-resizer.js" charset="UTF-8"></script>
+
+  <div class="hr"></div>
+
+  <h2><span class="num">7</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has a bench where you break a feedback loop and watch the system fail in slow motion &mdash; <a href='../labs.html'>Feedback Loop Lab</a>. It goes past what the exam asks. Open it once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "A patient gets too warm and starts to sweat. In the feedback loop, what is the sweat gland?",
+    "a": ["The receptor","The control center","The effector","The set point"],
+    "c": 2,
+    "fb": [
+      "The receptor <em>notices</em> the change. The sweat gland is doing something about it instead.",
+      "The control center decides. The sweat gland carries out that decision.",
+      "Right. The receptor notices, the control center decides, and the effector acts. Sweating is the action.",
+      "The set point is the target value, about 37&deg;C. It is not a body part."
+    ]
+  },
+  {
+    "q": "Why is negative feedback called &lsquo;negative&rsquo;?",
+    "a": ["Because the result is harmful","Because the response works against the change","Because it only works when a value drops","Because it shuts the organ system down"],
+    "c": 1,
+    "fb": [
+      "Nothing about it is harmful. Negative feedback is what keeps you alive.",
+      "Yes. Too warm turns on cooling, and too cool turns on warming. Negative means opposing.",
+      "It works both ways. That is the whole point of having a set point.",
+      "It corrects the value. It does not shut anything down."
+    ]
+  },
+  {
+    "q": "Blood clotting speeds itself up until the bleeding stops. What kind of feedback is that?",
+    "a": ["Negative feedback","Positive feedback","A set point","Denaturation"],
+    "c": 1,
+    "fb": [
+      "Negative feedback would slow the clotting down as it went. This does the opposite.",
+      "Correct. The response builds on the change, and an outside event, the sealed vessel, ends it.",
+      "A set point is a target value, not a type of response.",
+      "Denaturation is a protein losing its shape."
+    ]
+  },
+  {
+    "q": "A patient's blood pH drops to 7.1. Why is that dangerous?",
+    "a": ["Water can no longer dissolve anything","Proteins change shape and stop working","The body runs out of carbohydrates","Cells can no longer divide"],
+    "c": 1,
+    "fb": [
+      "Water keeps dissolving things across a wide pH range. The problem is somewhere else.",
+      "Yes. Enzymes, receptors, and channels are all proteins. Shape is what makes them work.",
+      "Fuel supply is a separate problem from pH.",
+      "Cell division suffers later. The immediate danger is to protein function."
+    ]
+  },
+  {
+    "q": "Which list puts the levels of organization in the right order?",
+    "a": ["Cell, atom, tissue, organ","Atom, molecule, cell, tissue, organ","Molecule, atom, organ, tissue","Tissue, cell, molecule, atom"],
+    "c": 1,
+    "fb": [
+      "Atoms are smaller than cells, so they come first.",
+      "Right. Smallest to largest, and each level is built from the one before it.",
+      "Atoms build molecules, not the other way around.",
+      "That is the right order backwards. This list runs largest to smallest."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var slider=document.getElementById("temp"), ball=document.getElementById("ball"),
+      out=document.getElementById("tempout"), btn=document.getElementById("toggle"),
+      stage=document.getElementById("stage"), label=document.getElementById("statelabel"),
+      setline=document.getElementById("setline"), setlabel=document.getElementById("setlabel");
+  var SET=37, loopOn=true, timer=null;
+
+  function xFor(t){
+    var w=stage.clientWidth-48, frac=(t-34)/7;
+    return 24 + Math.max(0,Math.min(1,frac))*w - 14;
+  }
+  function place(){
+    var t=parseFloat(slider.value);
+    ball.style.left=xFor(t)+"px";
+    setline.style.left=(xFor(SET)+14)+"px";
+    setlabel.style.left=(xFor(SET)-46)+"px";
+    var d=Math.abs(t-SET), state, colour;
+    if(d<0.3){ state="balanced"; colour="#3f6b4e"; }
+    else if(t>SET){ state = loopOn ? "too warm &mdash; sweating, vessels dilating" : "too warm &mdash; nothing is correcting it"; colour="#8a2f36"; }
+    else { state = loopOn ? "too cool &mdash; shivering, vessels constricting" : "too cool &mdash; nothing is correcting it"; colour="#3a7aa8"; }
+    out.innerHTML = t.toFixed(1)+"&deg;C &mdash; <span style='color:"+colour+"'>"+state+"</span>";
+    label.innerHTML = loopOn ? "Negative feedback: ON" : "Negative feedback: BROKEN";
+    label.style.color = loopOn ? "#3f6b4e" : "#8a2f36";
+  }
+  function correct(){
+    if(!loopOn) return;
+    var t=parseFloat(slider.value);
+    if(Math.abs(t-SET)<0.05){ slider.value=SET; place(); return; }
+    slider.value=(t + (SET-t)*0.12).toFixed(2);
+    place();
+  }
+  slider.addEventListener("input",place);
+  btn.addEventListener("click",function(){
+    loopOn=!loopOn;
+    btn.textContent = loopOn ? "Break the loop" : "Restore the loop";
+    place();
+  });
+  window.addEventListener("resize",place);
+  timer=setInterval(correct,90);
+  place();
+
+})();
+</script>
+</body>
+</html>

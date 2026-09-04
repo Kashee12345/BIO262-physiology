@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Endocrine System &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="The nervous system you met in Modules 5 and 6 sends private messages down insulated wires and gets an answer in milliseconds. The endocrine system does the opposite: it broadcasts chemical messages into the bloodstream, reaches ev">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 8 &middot; Endocrine System</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#signaling">1 &middot; Chemical Signaling: How a Hormone Changes a Cell</a>
+        <a href="#hypothal-pit">2 &middot; The Hypothalamic&ndash;Pituitary Axis: A Three-Tier Control Loop</a>
+        <a href="#thyroid-calcium">3 &middot; Metabolic Rate and the Calcium Set Point: Thyroid and Parathyroid</a>
+        <a href="#adrenal">4 &middot; The Adrenal Gland: Salt, Sugar and Speed</a>
+        <a href="#pancreas-fuel">5 &middot; Pancreatic Islets and the Defense of Blood Glucose</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 8</div>
+<h1>The Endocrine System</h1>
+<p class="lede">The nervous system sends private messages down insulated wires. You met it in Modules 5 and 6. It gets an answer in milliseconds. The endocrine system works the other way. It pours chemical messages into the blood. Those messages reach every cell in the body. Then the <b>receptor</b> decides who is listening. A receptor is the docking site a cell must have to hear the message. The endocrine system trades speed for reach and staying power. An action potential lasts about 1 millisecond. A pulse of thyroid hormone lasts about a week. This module is not a list of glands. Almost every hormone sits inside a <b>negative feedback loop</b>. That loop has one job. It defends a value the body wants to hold steady. Plasma calcium sits at roughly 9.5 mg/dL. Glucose sits near 90 mg/dL. Osmolality sits near 285 mOsm/kg. Sodium, blood pressure and core temperature are guarded the same way. In this module you learn how a molecule crosses a membrane, or fails to. You learn how a few hundred receptor molecules turn into millions of enzyme reactions. And you learn how a three-tier axis senses its own output and shuts itself off.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Tell <b>endocrine</b>, <b>paracrine</b>, <b>autocrine</b> and neural signaling apart. Compare them by speed, by distance traveled and by how long the effect lasts.</li>
+<li>Look at a hormone&rsquo;s chemical class. Say whether its receptor sits on the plasma membrane or inside the cell. Say how fast its effect shows up.</li>
+<li>Trace a <b>second messenger</b> cascade. Use cAMP, IP3/DAG and the receptor tyrosine kinase pathways. Explain signal <b>amplification</b>.</li>
+<li>Draw the <b>hypothalamic&ndash;pituitary&ndash;target</b> axis. Name the variable, sensor, integrator, effector and response. Do that for at least four control loops.</li>
+<li>Explain how thyroid hormone is made. Start at the <b>iodide trap</b> and end at T3. Then link T3 to basal metabolic rate.</li>
+<li>Describe how the <b>calcium-sensing receptor</b>, <b>PTH</b> and <b>calcitriol</b> work together. Show how they hold ionized calcium within about 0.5 mg/dL.</li>
+<li>Explain what the adrenal cortex and the adrenal medulla put out. Include <b>RAAS</b>. Include cortisol&rsquo;s diurnal rhythm, its daily rise and fall. Include its <b>permissive</b> effect on catecholamines.</li>
+<li>Explain how the beta cell senses glucose. Say what <b>insulin</b> and <b>glucagon</b> do. Name the counterregulatory hierarchy. It guards against hypoglycemia, which is low blood glucose.</li>
+<li>Tell primary, secondary and tertiary endocrine failure apart. Use a pair of lab values to do it.</li>
+</ul></div>
+
+<h2 id="signaling"><span class="num">Section 1</span>Chemical Signaling: How a Hormone Changes a Cell</h2>
+<figure class="bref"><div class="fr"><img src="img/ch08_s1.jpg" alt="Fat-soluble hormones act on receptors inside the cell and change which genes are read, while water-soluble hormones act on surface receptors and second messengers." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Fat-soluble hormones slip into the cell. They bind receptors inside and change which genes are read. Water-soluble hormones stay outside. They bind surface receptors and work through second messengers. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Broadcast signaling: reach, delay and duration</h3>
+<p>A hormone is a chemical messenger. A gland secretes it into the interstitial fluid, the fluid between cells. The blood then carries it. Only cells that carry the matching receptor detect it. What makes a hormone a hormone is the delivery route, not the molecule. Compare it with a neuron. A neuron releases perhaps 10,000 molecules of acetylcholine into a synaptic cleft 20 to 40 nanometers wide. Its target is the one cell on the other side. An endocrine cell does something different. It releases its product into a capillary. That product spreads into roughly 5 liters of plasma. So the level in blood is tiny. Thyroid hormone circulates near 10 to the minus 9 molar. Many peptides circulate near 10 to the minus 12 molar. Aim cannot give a hormone its specificity. Specificity comes only from which cells make the receptor.</p>
+<p>That difference sets the timing. Nerve signals have a delay of about 1 millisecond. They stop when the firing stops. Hormone signals are slower. A peptide that uses a membrane receptor, such as insulin or epinephrine, takes seconds. A steroid or thyroid hormone must change gene reading first, so it takes hours. The signal lasts until the body clears the hormone away. We measure clearing with the <b>half-life</b>. That is the time it takes to remove half of what is there. Epinephrine runs about 1 to 3 minutes. Insulin runs about 5 to 6 minutes. Cortisol runs about 60 to 90 minutes. Thyroxine (T4) runs about 7 days. A short half-life buys tight control. A long half-life buys steadiness. Neither is better. Each one matches the value being defended. Blood pressure needs fixing second by second, so it uses catecholamines. Basal metabolic rate should not swing after one meal, so it uses T4.</p>
+<p>Two more words finish the vocabulary. In <b>paracrine</b> signaling the messenger spreads only to neighboring cells. Histamine from mast cells works that way. So does somatostatin from islet delta cells acting on nearby beta cells. In <b>autocrine</b> signaling the cell answers its own secretion. Both use the same receptors and the same cascades. They just skip the bloodstream. That is why their effects stay local and brief.</p>
+
+<h3>Two chemical classes, two receptor addresses</h3>
+<p>One question predicts almost everything about a hormone. Is it fat-soluble? <b>Lipophilic</b> means fat-loving. The lipophilic hormones are the steroids and the thyroid hormones. The steroids are cortisol, aldosterone, testosterone, estradiol and calcitriol. They cross the cell membrane easily. Then they bind receptors in the cytosol or the nucleus. The hormone and its receptor stick together and land on DNA at a hormone response element. There they turn gene reading up or down. That work needs new messenger RNA and new protein. So the effect starts in 30 minutes to hours. It also lasts longer than the hormone does. Being fat-loving has a cost. These hormones do not dissolve well in plasma. So 90 to 99 percent rides bound to carrier proteins. Those carriers are thyroxine-binding globulin, corticosteroid-binding globulin and albumin. Only the <b>free</b> part is active. Only the free part is sensed by the feedback loop. That is why a clinician orders a free T4 and not a total T4. Pregnancy and estrogen therapy change the amount of binding protein, so the total number can mislead.</p>
+<p><b>Hydrophilic</b> means water-loving. These hormones cannot cross the membrane. They include the peptides and proteins. Insulin, glucagon, growth hormone, ADH, PTH and all the pituitary tropic hormones are peptides. The catecholamines belong here too. Each one binds a receptor on the cell surface. From there it must hand the message to a <b>second messenger</b> inside the cell. These hormones dissolve well in plasma. Most travel unbound, and the body clears them fast. Their effects begin in seconds to minutes. They open a channel, add a phosphate to an enzyme, or slide a transporter into the membrane. Every one of those steps undoes itself the moment the signal stops.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Class</th><th>Examples</th><th>Where the receptor sits</th><th>How it travels in plasma</th><th>How fast / how long</th></tr></thead><tbody>
+<tr><td>Peptide / protein</td><td>Insulin, glucagon, PTH, ADH, GH, TSH, ACTH</td><td>Cell membrane</td><td>Mostly free</td><td>Seconds to minutes / minutes</td></tr>
+<tr><td>Catecholamine (amine)</td><td>Epinephrine, norepinephrine</td><td>Cell membrane (adrenoceptors)</td><td>Mostly free</td><td>Seconds / 1 to 3 min</td></tr>
+<tr><td>Steroid</td><td>Cortisol, aldosterone, estradiol, calcitriol</td><td>Inside the cell (cytosol or nucleus)</td><td>90 to 99 percent bound</td><td>Hours / hours to days</td></tr>
+<tr><td>Thyroid (amine, fat-soluble)</td><td>T4, T3</td><td>Inside the cell (nucleus)</td><td>Over 99 percent bound</td><td>Hours to days / days to weeks</td></tr>
+</tbody></table></div>
+
+<h3>Second messengers and amplification</h3>
+<p>The most common surface mechanism is the G-protein-coupled receptor. The hormone binds and the receptor changes shape. The G protein beside it swaps GDP for GTP. Its alpha subunit then switches on adenylyl cyclase. That enzyme turns ATP into <b>cyclic AMP</b>. Cyclic AMP switches on protein kinase A. That kinase adds phosphate to dozens of enzymes. Now look at the numbers. One hormone molecule may switch on several G proteins. Each cyclase makes hundreds of cAMP molecules. Each kinase acts on many targets. Say the cascade runs three steps and each step multiplies by 100. One binding event is then amplified roughly a millionfold. That is how a plasma level of 10 to the minus 12 molar changes metabolism in the whole body.</p>
+<p>Two other cascades matter. The first is the phospholipase C pathway. ADH at V1 receptors uses it. So do angiotensin II, oxytocin and the alpha-1 adrenoceptors. The receptor makes two products, IP3 and DAG. IP3 releases stored calcium from the smooth endoplasmic reticulum. DAG switches on protein kinase C. Calcium then acts as the third messenger by binding calmodulin. The second is the receptor tyrosine kinase pathway. Insulin, IGF-1 and the growth factors use it. Here the receptor is an enzyme itself. Binding makes the receptor add phosphate to itself, then to a chain of docking proteins. The chain ends by moving GLUT4 transporters to the membrane. Growth hormone, prolactin and the cytokines use a cousin of this, the JAK/STAT system. In it the STAT protein travels to the nucleus and acts as a transcription factor itself.</p>
+<p>The receptor is the bottleneck. So the cell controls how sensitive it is. A long stretch of high hormone causes <b>downregulation</b>. The cell pulls receptors inside, so the same level of hormone does less. That is a core feature of type 2 diabetes. It also explains tolerance to beta-agonist drugs. A long stretch of low hormone causes <b>upregulation</b>. So a tissue can grow extra sensitive. That happens when it loses its nerve supply, or stays suppressed a long time. It then overshoots when the signal comes back. Hormones also act on each other. A <b>permissive</b> effect means one hormone must be present for another to work at full strength. Cortisol is permissive for the vessel narrowing that epinephrine causes. Thyroid hormone is permissive for growth hormone. A <b>synergistic</b> effect means two together do more than the sum of each one alone. Glucagon plus epinephrine plus cortisol on liver glucose output is the example. An <b>antagonistic</b> effect means they oppose each other, as insulin opposes glucagon.</p>
+<div class="pearl"><b>Misconception to retire.</b> Students often say a hormone &ldquo;targets&rdquo; an organ. That makes it sound like a letter with an address on it. It is not. Thyroid hormone bathes every cell in the body at the same level. Your heart rate rises and your fingernail does nothing. The reason is simple. Heart muscle cells are packed with nuclear T3 receptors. The nail plate is dead keratin. Specificity lives in the receptor. It never lives in the delivery.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> One question predicts almost everything about a hormone. Is it fat-soluble? That one property decides where the receptor sits. It also decides whether the answer arrives in seconds or in hours. Try it here. <a href="../lab/ch08/SignalAmplificationBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch08/SignalAmplificationBench.html" loading="lazy" title="Solubility, Receptor Address and Amplification interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>A hormone&rsquo;s solubility predicts four things. It predicts where the receptor sits and how the hormone travels. It predicts how fast it acts and how long it lasts. Specificity is a separate matter. It comes only from which cells make the receptor. It never comes from where the blood goes.</p></div>
+
+<h2 id="hypothal-pit"><span class="num">Section 2</span>The Hypothalamic&ndash;Pituitary Axis: A Three-Tier Control Loop</h2>
+<figure class="bref"><div class="fr"><img src="img/ch08_s2.jpg" alt="Diagram of the hypothalamus and pituitary showing the hypophyseal portal veins running to the anterior lobe and nerve axons running down into the posterior lobe" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Releasing hormones ride the hypophyseal portal veins and control the anterior pituitary. The posterior lobe is nerve tissue. It stores hormones the hypothalamus made. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Two pituitaries with two completely different plumbing systems</h3>
+<p>The pituitary weighs about half a gram. It hangs from the hypothalamus on a stalk called the infundibulum. It looks like one organ. It is really two organs fused together. The <b>posterior pituitary</b>, also called the neurohypophysis, is nerve tissue. It is built from axon endings. Those axons belong to neurons whose cell bodies sit in the supraoptic and paraventricular nuclei of the hypothalamus. The posterior pituitary makes nothing at all. Antidiuretic hormone (ADH, also called vasopressin) and oxytocin are made in the hypothalamus. They travel down the axons. They wait in the endings until an action potential arrives. Calcium then enters and pushes them out. That is a neuroendocrine reflex. A nerve impulse goes in and a hormone comes out.</p>
+<p>The <b>anterior pituitary</b>, also called the adenohypophysis, is gland tissue. No nerve runs to it directly. The hypothalamus reaches it by chemical instead. Hypothalamic neurons release their releasing and inhibiting hormones into a small capillary bed in the median eminence. Those capillaries drain into the <b>hypophyseal portal veins</b>. Those veins run down the stalk. Then they open into a second capillary bed among the anterior pituitary cells. A portal system is just two capillary beds in a row. Its purpose is to keep the message strong. A single nanogram of corticotropin-releasing hormone arrives undiluted by the rest of the circulation. Now cut the stalk. Every anterior hormone drops except prolactin, which rises. The reason is that the main hypothalamic signal for prolactin is dopamine, and dopamine holds prolactin down.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Anterior hormone</th><th>Hypothalamic control</th><th>Main effect</th><th>Principal effect</th></tr></thead><tbody>
+<tr><td>TSH</td><td>TRH (+)</td><td>Thyroid follicular cells</td><td>Makes and releases T4 and T3</td></tr>
+<tr><td>ACTH</td><td>CRH (+)</td><td>Adrenal zona fasciculata</td><td>Makes cortisol</td></tr>
+<tr><td>FSH and LH</td><td>GnRH (+, in pulses)</td><td>Gonads</td><td>Makes eggs and sperm. Makes sex steroids</td></tr>
+<tr><td>Growth hormone</td><td>GHRH (+), somatostatin (&minus;)</td><td>Liver, bone, muscle, adipose</td><td>IGF-1 release, growth in height, fat breakdown</td></tr>
+<tr><td>Prolactin</td><td>Dopamine (&minus;) is dominant</td><td>Breast (mammary gland)</td><td>Makes milk</td></tr>
+</tbody></table></div>
+
+<h3>The three-tier negative feedback loop, drawn properly</h3>
+<p>Every axis in this module is built the same way. Name the parts out loud, because the whole course rests on them. Take the thyroid axis. The <b>regulated variable</b> is the level of free T4 and T3. The <b>sensor</b> and <b>integrator</b> are the hypothalamic and pituitary cells. They carry T3 receptors, so they read the blood level themselves. The <b>effector</b> is the thyroid follicular cell, and TSH drives it. The <b>response</b> is a change in how much hormone comes out. When free T4 rises, TRH and TSH fall. When free T4 falls, TSH rises. The loop is negative because the answer pushes against the change. So free T4 stays inside a narrow band. It does not sit on one fixed number. The set point is defended by small swings, not by a thermostat that never moves.</p>
+<p>Feedback comes in three lengths. Long-loop means the target hormone holds down both the hypothalamus and the pituitary. Short-loop means the pituitary hormone holds down the hypothalamus. Ultra-short means a hormone holds down its own cell. The loop has three tiers, so a pair of laboratory values tells you which tier broke. Say the target hormone is low and the tropic hormone is high. Then the gland itself has failed. That is <b>primary</b> disease. A low free T4 with a TSH of 40 mU/L is primary hypothyroidism. Say both values are low. Then the pituitary or the hypothalamus has failed. That is <b>secondary</b> or <b>tertiary</b> disease. Say the target hormone is high and the tropic hormone is pushed down. Then the gland is running on its own. Read the pair, never the single value. That one rule carries further than anything else in endocrine physiology.</p>
+<p>The rhythm matters as much as the amount. GnRH must arrive in pulses about every 60 to 90 minutes. That keeps the gonadotropes answering. A steady, nonstop GnRH signal does the opposite. It downregulates the receptor and shuts the axis off. Long-acting GnRH agonist drugs are used for exactly that purpose. Growth hormone comes out in 6 to 12 bursts a day. The largest burst comes soon after slow-wave sleep begins. Growth hormone works mostly by making the liver produce IGF-1. IGF-1 then feeds back on the pituitary. So one random GH value tells you almost nothing. IGF-1 has a long half-life and a steady level, so it reports the average.</p>
+
+<h3>Posterior pituitary: osmolality, volume and a genuine positive feedback loop</h3>
+<p>ADH is the body&rsquo;s water valve. The regulated variable is plasma osmolality, which is how crowded with particles the plasma is. It normally runs 275 to 295 mOsm/kg. The sensors are osmoreceptor neurons in the hypothalamus. They shrink when osmolality rises. A change of only 1 to 2 percent, about 3 to 6 mOsm/kg, already moves ADH secretion. The effector is the principal cell of the collecting duct. ADH binds V2 receptors there and works through cAMP. That slides aquaporin-2 water channels into the apical membrane. Water then follows the osmotic gradient of the medulla back into the blood. So urine osmolality can swing from about 50 to 1200 mOsm/kg. Volume is a second trigger. It is less sensitive than osmolality but far more powerful. A fall in blood volume or pressure of 8 to 10 percent is picked up by baroreceptors. That drives ADH even when osmolality is low. In a hemorrhage, defending volume beats defending concentration.</p>
+<p>Oxytocin gives us one of the few true <b>positive feedback</b> loops in the body. During labor, stretch of the cervix signals the hypothalamus. Oxytocin comes out. The uterus contracts. That contraction stretches the cervix even more. Each turn of the loop makes the stimulus bigger instead of smaller. The loop is explosive on purpose. Only delivery ends it, because delivery removes the stretch. The suckling reflex ejects milk the same way. Positive feedback is the exception in the body because it is unstable. It shows up only where an event must be driven fast to a finish. Labor is one. Clotting is another. So is the upstroke of the action potential you studied in Module 5.</p>
+<div class="pearl"><b>Clinical anchor.</b> Too little ADH gives diabetes insipidus. The patient passes 3 to 20 liters a day of watery urine. Its osmolality sits under about 300 mOsm/kg. Serum sodium climbs. Too much ADH gives SIADH. Now the urine is concentrated, water is held back, and serum sodium falls. It is often under 130 mEq/L. Both are water problems, not salt problems. ADH moves water. The sodium number changes because the water around it moved.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Every axis in this module is built the same way. Hypothalamus, then pituitary, then gland. The target hormone feeds back on both tiers above it. Break one tier here and watch the loop hunt for its set point. <a href="../lab/ch08/PituitaryAxisSimulator.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch08/PituitaryAxisSimulator.html" loading="lazy" title="The Three-Tier Axis: Break a Tier, Read the Pair interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The hypothalamus commands the anterior pituitary by chemical. It sends the order through a portal system. It commands the posterior pituitary by electricity. It sends that order down axons. In every axis, the target hormone feeds back on the tiers above it. So read a tropic value and a target value together. That pair tells you which tier failed.</p></div>
+
+<h2 id="thyroid-calcium"><span class="num">Section 3</span>Metabolic Rate and the Calcium Set Point: Thyroid and Parathyroid</h2>
+<figure class="bref"><div class="fr"><img src="img/ch08_s3.jpg" alt="Cross-section of thyroid follicles filled with colloid and ringed by cube-shaped follicular cells, with parafollicular cells between the follicles and the parathyroid glands on the back surface" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Thyroid follicles store hormone outside their cells, in a jelly called colloid. No other endocrine gland does that. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Making thyroid hormone: the iodide trap and the colloid store</h3>
+<p>The thyroid is the only gland that stores its hormone outside its cells. It keeps it in the colloid inside each follicle. The store lasts 2 to 3 months. Making the hormone takes four steps. First comes the <b>iodide trap</b>. The sodium&ndash;iodide symporter sits on the basolateral membrane. It pumps iodide into the follicular cell against a 20- to 40-fold gradient. The Na+/K+-ATPase pays for that pumping indirectly. Second, the cell sends <b>thyroglobulin</b> out into the colloid. Thyroglobulin is a big protein loaded with tyrosine. Third, thyroid peroxidase works at the apical surface. It oxidizes iodide and sticks it onto those tyrosines. That makes monoiodotyrosine and diiodotyrosine. Then it joins two of them together. DIT plus DIT makes T4. MIT plus DIT makes T3. Fourth, TSH tells the cell to swallow droplets of colloid. Lysosomal proteases cut the hormone free. T4 and T3 then move into the blood.</p>
+<p>About 90 percent of what the gland releases is T4. But T4 is mostly a prohormone, a starter form. <b>Deiodinase</b> enzymes in the liver, kidney and muscle take one iodine off. That makes T3. T3 grips the nuclear receptor roughly ten times as tightly. Take the iodine off the other ring instead and you get reverse T3. Reverse T3 does nothing. It is a controlled off-switch. It rises in starvation and in serious illness, and it lowers how much fuel the body burns. Over 99.9 percent of the T4 in blood is stuck to protein. That gives T4 a 7-day half-life. It also keeps the free level from swinging hour to hour.</p>
+<p>So what does T3 actually do? It turns up the reading of the Na+/K+-ATPase gene and of the mitochondrial enzyme genes. It does this in nearly every tissue. Resting oxygen use goes up. Heat production goes up. T3 is the main setter of the <b>basal metabolic rate</b>. T3 also raises the number of beta-1 adrenergic receptors in the heart. That is why thyrotoxicosis brings a fast heart rate, a wide pulse pressure and tremor. Those signs look sympathetic even though catecholamine levels are normal. T3 is needed for normal myelin and normal branching of neurons before and after birth. That is why untreated congenital hypothyroidism causes permanent harm to thinking. It is also why every newborn is screened. The typical adult reference values are worth learning. TSH runs 0.4 to 4.0 mU/L. Free T4 runs 0.8 to 1.8 ng/dL. Total T3 runs 80 to 180 ng/dL.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Variable</th><th>Hypothyroid (too little T3 action)</th><th>Hyperthyroid (too much T3 action)</th></tr></thead><tbody>
+<tr><td>Basal metabolic rate</td><td>Down. Weight goes up on the same intake</td><td>Up. Weight drops even with a good appetite</td></tr>
+<tr><td>Heat balance</td><td>Feels cold, dry skin</td><td>Feels hot, sweating</td></tr>
+<tr><td>Heart</td><td>Slow heart rate, low output</td><td>Fast heart rate, palpitations, atrial fibrillation</td></tr>
+<tr><td>Nervous system</td><td>Slow thinking, reflexes relax slowly</td><td>Anxiety, fine tremor, quick reflexes</td></tr>
+<tr><td>Gut</td><td>Constipation</td><td>Frequent stools</td></tr>
+<tr><td>TSH in primary disease</td><td>High (often over 10 mU/L)</td><td>Pushed down (under 0.1 mU/L)</td></tr>
+</tbody></table></div>
+
+<h3>The calcium loop: the tightest set point in the body</h3>
+<p>Total plasma calcium is held between about 8.5 and 10.5 mg/dL. Only one part of it matters. That part is free ionized calcium, roughly 4.5 to 5.3 mg/dL, or 1.1 to 1.3 mmol/L. The body defends it within a few tenths of a milligram per deciliter. The reason for that tight control is electrical. Calcium outside the cell steadies the voltage-gated sodium channels. So low calcium lowers the threshold for firing. Nerves then fire on their own. That gives tetany, carpopedal spasm and laryngospasm. High calcium raises the threshold instead. That gives sleepiness, weakness and constipation. Calcium is also the trigger for muscle contraction, for exocytosis and for clotting. It cannot be allowed to drift.</p>
+<p>This loop is neat because the sensor is also the effector. Chief cells sit in the four parathyroid glands. Each one carries a <b>calcium-sensing receptor</b> on its surface. When ionized calcium falls, less calcium sits on that receptor. The cell then releases <b>parathyroid hormone</b> within seconds. That is a direct, one-step negative feedback loop. No pituitary is involved at all. Normal PTH runs about 10 to 65 pg/mL. PTH raises calcium by three routes. The first is <b>bone</b>. PTH binds osteoblasts. Those cells display RANK ligand, which switches on osteoclasts. The osteoclasts free calcium and phosphate from hydroxyapatite. Nonstop PTH eats bone away. PTH given in short doses, as with teriparatide, builds bone instead. The second route is the <b>kidney</b>. There PTH pulls more calcium back in the distal tubule. It also lets more phosphate go in the proximal tubule. Dumping phosphate matters. Otherwise phosphate would grab the calcium you just released. The third route is also in the kidney. PTH switches on 1-alpha-hydroxylase. That enzyme turns 25-hydroxyvitamin D into <b>calcitriol</b>.</p>
+<p>Calcitriol is the slow arm of the loop. It is a steroid, so it walks straight into intestinal lining cells. There it binds a nuclear receptor and turns on calcium-carrying transport proteins. That raises how much dietary calcium you absorb. The share climbs from roughly 10 to 15 percent up to 30 to 40 percent. Calcitriol needs hours to days to work. So the two hormones split the job. PTH handles minute-to-minute correction from bone and kidney. Calcitriol handles the daily balance from the gut. Calcitonin comes from the parafollicular C cells of the thyroid. It opposes PTH by shutting down osteoclasts. In adult humans it does very little. Patients with no thyroid keep a normal calcium. So do patients with calcitonin-secreting tumors.</p>
+<div class="pearl"><b>Why albumin changes the number without changing the physiology.</b> Roughly 40 percent of plasma calcium rides on albumin. Take a patient whose albumin is 2.0 g/dL instead of 4.0 g/dL. Their total calcium will read about 1.6 mg/dL lower. The ionized calcium is still normal. That is the part the calcium-sensing receptor reads. So the patient has no symptoms. Correct for albumin first, or measure ionized calcium. Do not treat a number on its own.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> One neck holds two very different control plans. The thyroid stores months of hormone outside its cells. It lets that store out slowly, under pituitary command. It sets the pace of every mitochondrion in the body. The parathyroid answers in seconds instead. Compare them here. <a href="../lab/ch08/ThyroidCalciumBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch08/ThyroidCalciumBench.html" loading="lazy" title="Two Set Points: Metabolic Rate and Ionized Calcium interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Thyroid hormone sets the pace of metabolism. It works through a slow axis that the pituitary controls and that carrier proteins buffer. Parathyroid hormone defends ionized calcium instead. It works through a fast, single-step loop. In that loop the parathyroid cell is both the sensor and the effector.</p></div>
+
+<h2 id="adrenal"><span class="num">Section 4</span>The Adrenal Gland: Salt, Sugar and Speed</h2>
+<figure class="bref"><div class="fr"><img src="img/ch08_s4.jpg" alt="The adrenal cortex makes steroids in three zones that look different under the microscope, while the medulla is changed sympathetic tissue." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The adrenal cortex makes steroids in three zones that look different under the microscope. The medulla is changed sympathetic tissue. <span class="cred">Antinks&#269;io sandara.png Author: EdgarasLe, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>One organ, two embryological origins</h3>
+<p>The adrenal cortex grows from mesoderm. It makes steroids out of cholesterol. The medulla grows from neural crest. It makes catecholamines. The two are packed together for a reason. Venous blood leaving the cortex is loaded with cortisol. That blood drains through the medulla. Cortisol there switches on the enzyme that turns norepinephrine into epinephrine. So the stress axis feeds itself, side by side. The cortex has three zones. Read them from outside in as salt, sugar, sex.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Zone</th><th>What it makes</th><th>Main trigger</th><th>Main action</th></tr></thead><tbody>
+<tr><td>Zona glomerulosa</td><td>Aldosterone</td><td>Angiotensin II, high plasma K+</td><td>Kidney takes back Na+ and lets go of K+ and H+</td></tr>
+<tr><td>Zona fasciculata</td><td>Cortisol</td><td>ACTH (on a daily rhythm)</td><td>Makes new glucose, breaks down fat and protein, damps inflammation</td></tr>
+<tr><td>Zona reticularis</td><td>DHEA, androstenedione</td><td>ACTH</td><td>Weak androgens. Adrenarche and female libido</td></tr>
+<tr><td>Medulla</td><td>Epinephrine (about 80 percent), norepinephrine</td><td>Preganglionic sympathetic fibers</td><td>Fight-or-flight. Heart rate, force of beat, glycogen breakdown</td></tr>
+</tbody></table></div>
+
+<h3>Aldosterone and the renin&ndash;angiotensin&ndash;aldosterone system</h3>
+<p>Aldosterone defends the volume of fluid outside the cells. It does that by defending sodium. Guarding that volume guards blood pressure. The loop starts in the kidney. Juxtaglomerular cells release <b>renin</b> for three reasons. Renal perfusion pressure falls. Or sympathetic beta-1 stimulation rises. Or the macula densa senses too little sodium chloride going past. Renin then cuts angiotensinogen, a protein the liver sends into the blood. That cut makes angiotensin I. Angiotensin-converting enzyme finishes the job. It sits mostly in the lining of the lung capillaries. It turns angiotensin I into <b>angiotensin II</b>. Angiotensin II raises pressure three ways. It narrows arterioles directly. It drives thirst and ADH. And it tells the zona glomerulosa to release aldosterone.</p>
+<p>Aldosterone acts on the principal cell of the collecting duct. It is a steroid, so it goes into the nucleus. There it builds more epithelial sodium channels for the apical membrane. It also builds more Na+/K+-ATPase pumps for the basolateral side. Sodium is then taken back into the blood. Water follows it by osmosis. Potassium and hydrogen ion go the other way, into the tubular fluid. All of this takes about 1 to 2 hours to start, because gene reading comes first. Notice what does not happen. Plasma sodium concentration usually does not climb much. Aldosterone keeps sodium and water together. So it grows the volume rather than the concentration. Notice the second trigger too. A rise in plasma potassium of only 0.1 to 0.2 mEq/L pushes aldosterone out directly, with no renin needed. That makes aldosterone the main defense of potassium balance as well.</p>
+<p>Use the flow rule again. Q = &Delta;P / R works like Ohm&rsquo;s law. Turn it around and it reads &Delta;P = Q &times; R. Angiotensin II raises R by narrowing arterioles. Aldosterone raises Q by adding volume to the vessels. That raises the venous return the heart can pump out. So RAAS lifts pressure through both terms on the right of that equation. That is why blocking the system anywhere works so well against high blood pressure. ACE inhibitors, angiotensin receptor blockers and aldosterone antagonists all do it. It is also why those drugs tend to raise serum potassium.</p>
+
+<h3>Cortisol, the HPA axis and the stress response</h3>
+<p>Cortisol follows a strong diurnal rhythm, which means it rises and falls over a day. Pulses of CRH from the hypothalamus drive it. The peak comes around 6 to 8 a.m., at roughly 10 to 20 &micro;g/dL. The low point comes near midnight, under about 5 &micro;g/dL. Total output is about 15 to 20 mg a day. It climbs several-fold with surgery, sepsis, trauma or hypoglycemia. The feedback loop is the usual three-tier design. Cortisol holds down both CRH and ACTH. That explains a common danger. Steroid drugs given as treatment suppress the axis. The adrenal cortex then shrinks over weeks. Stopping the drug suddenly can set off an adrenal crisis. The suppressed gland cannot answer the demand.</p>
+<p>Cortisol frees up fuel. It is a catabolic hormone, meaning it breaks stores down. Its purpose is to keep glucose in the plasma for the brain. It switches on the liver enzymes that build new glucose. It breaks down protein in skeletal muscle to supply the amino acids for that. It breaks down fat, while moving stored fat toward the center of the body. And it opposes insulin in the outer tissues. Cortisol is also strongly <b>permissive</b>. Without it, catecholamines cannot hold vessel tone. That is why an adrenal crisis brings low blood pressure. Fluids and pressors barely help. It answers hydrocortisone. At drug-level doses cortisol suppresses phospholipase A2 and cytokine gene reading. It steadies lysosomes. It damps the immune and inflammatory response. That is useful in treatment. The same actions cause the classic long-term picture. That picture is hyperglycemia, thin skin, wasted muscle, osteoporosis and poor healing.</p>
+<p>The medulla finishes the stress response on a different clock. Chromaffin cells are really postganglionic sympathetic neurons that lost their axons. Preganglionic fibers drop acetylcholine onto them. They then secrete straight into the blood. The signal is hormonal, not synaptic. So it reaches tissues that have no sympathetic nerve supply. It also outlasts the nerve traffic by a few minutes. Epinephrine works at three receptor types. At beta-1 receptors on the heart it raises rate and contractility. At beta-2 on bronchioles and skeletal muscle arterioles it widens them. At alpha-1 on skin and splanchnic arterioles it narrows them. On the metabolic side it breaks down glycogen and fat. Cortisol takes hours. Epinephrine takes seconds. Together they cover a threat from start to finish.</p>
+<div class="pearl"><b>Read the pair, again.</b> Low cortisol with a high ACTH means the adrenal cortex has failed. That is primary failure, or Addison disease. The zona glomerulosa fails too, so aldosterone drops. Expect hyponatremia, hyperkalemia and darkened skin. The darkening comes from the precursor peptide that ACTH is cut from. Low cortisol with a low ACTH means something else. The pituitary has failed, or steroids were withdrawn. Angiotensin II and potassium drive aldosterone, not ACTH. So aldosterone is largely spared and potassium is usually normal.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> One gland, two beginnings, three jobs. The cortex defends volume with aldosterone and fuel with cortisol, both over hours. The medulla delivers a catecholamine surge in seconds. Cortisol is what makes that surge work. See it here. <a href="../lab/ch08/AdrenalPressureLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch08/AdrenalPressureLab.html" loading="lazy" title="Salt, Sugar and Speed: RAAS, Cortisol and the Permissive Effect interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The adrenal cortex defends volume with aldosterone. It defends fuel supply with cortisol. Both work over hours. The medulla adds a catecholamine surge that lands in seconds. Cortisol is what makes that surge work, through its permissive effect.</p></div>
+
+<h2 id="pancreas-fuel"><span class="num">Section 5</span>Pancreatic Islets and the Defense of Blood Glucose</h2>
+<figure class="bref"><div class="fr"><img src="img/ch08_s5.jpg" alt="Stained slice of a pancreatic islet of Langerhans showing insulin-making beta cells in the center and glucagon-making alpha cells around the edge, set in the surrounding exocrine acinar tissue" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Islets of Langerhans are only 1 to 2 percent of the pancreas by weight. They still get a much larger share of its blood flow. <span class="cred">Greco, L.; Rubbino, F.; Morelli, A.; Gaiani, F.; Grizzi, F, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>How a beta cell measures glucose</h3>
+<p>Fasting plasma glucose stays between about 70 and 99 mg/dL. Even after a large meal it rarely passes 140 mg/dL. That is a remarkably tight band. Think about what it is up against. One meal may deliver 100 grams of carbohydrate. The whole plasma pool holds only about 4 grams of glucose. The sensor is the beta cell itself. Memorize how it works, because it links straight back to the membrane physiology of Module 5. Glucose enters the beta cell through GLUT2. GLUT2 is a high-capacity transporter, so inside and outside stay level with each other. Glucose inside therefore tracks glucose in plasma. Next comes glucokinase. Its Michaelis constant is high, near 10 mmol/L. So it adds phosphate at a rate that matches the glucose level. That enzyme is the true glucose sensor. Burning the glucose raises the ATP/ADP ratio. ATP then closes the ATP-sensitive potassium channel. Potassium can no longer leak out, so the cell <b>depolarizes</b>. Voltage-gated calcium channels open. Calcium comes in and pushes the insulin granules out.</p>
+<p>Release comes in two phases. The first phase is sharp. It uses granules already parked at the membrane, and it runs within 2 to 5 minutes. The second phase is steady. It uses granules brought up afterward. Losing the first phase is the earliest beta-cell defect you can measure in type 2 diabetes. Two amplifiers are worth knowing. Glucose taken by mouth causes far more insulin than the same amount given into a vein. The gut is the reason. It releases <b>incretins</b>, which are GLP-1 and GIP. They boost the insulin that glucose calls for. A whole modern drug class is built on that. The second amplifier is the vagus nerve. Parasympathetic traffic primes insulin release during the cephalic phase, before any nutrient has been absorbed.</p>
+
+<h3>Insulin, glucagon and the counterregulatory hierarchy</h3>
+<p>Insulin is the only hormone that lowers blood glucose. Its signature move is sliding <b>GLUT4</b> transporters into the membranes of skeletal muscle and adipose cells. Those two tissues take in almost no glucose without insulin. Liver, brain, kidney and red cells use transporters that do not need insulin. That is why the brain keeps eating glucose even when insulin is absent. Insulin does far more than move glucose. It is the master anabolic signal, the build-it-up signal. It switches on glycogen synthase and switches off glycogen phosphorylase. It switches on lipoprotein lipase and fat storage, and switches off hormone-sensitive lipase. It pulls amino acids into cells and drives protein building. It also pushes potassium into cells using the Na+/K+-ATPase. That last action is why insulin plus glucose is a standard emergency treatment for hyperkalemia.</p>
+<p>Glucagon comes from the alpha cell. It is the mirror image of insulin. Its target is almost entirely the liver. It works through cAMP. Within minutes it breaks stored glycogen down. Then it builds new glucose from lactate, glycerol and amino acids. If the fast goes on, it makes ketones. Neither hormone decides the outcome alone. The insulin-to-glucagon ratio decides whether the liver stores fuel or exports it. Now let glucose keep falling. The defenses switch on in order. Insulin secretion stops at about 80 mg/dL. Glucagon and epinephrine come out at about 65 to 70 mg/dL. Cortisol and growth hormone follow. Below about 50 mg/dL the brain itself runs short, and confusion and seizure appear. Why so many backups? The brain stores no fuel of its own. It dies from hypoglycemia faster than from almost any other metabolic insult. There is one hormone to lower glucose and at least four to raise it.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>What to look at</th><th>Fed state (high insulin/glucagon ratio)</th><th>Fasted state (low ratio)</th></tr></thead><tbody>
+<tr><td>Liver glycogen</td><td>Being built</td><td>Broken down, then new glucose is built</td></tr>
+<tr><td>Muscle and fat glucose uptake</td><td>High, via GLUT4</td><td>Very low. Muscle burns fatty acids</td></tr>
+<tr><td>Adipose (fat) tissue</td><td>Stores triglyceride</td><td>Breaks fat down, releases free fatty acids</td></tr>
+<tr><td>Ketone production</td><td>Held down</td><td>Rises after 12 to 24 hours. Fuels the brain by day 3</td></tr>
+<tr><td>Hormones in charge</td><td>Insulin, incretins</td><td>Glucagon, epinephrine, cortisol, GH</td></tr>
+</tbody></table></div>
+
+<h3>When the loop fails, and the other endocrine tissues</h3>
+<p>In type 1 diabetes the immune system destroys the beta cells. Insulin is absent. Glucose cannot get into muscle and fat. Fat breakdown runs with nothing to oppose it. The liver turns that flood of fatty acids into ketoacids. The result is diabetic ketoacidosis. Glucose often runs 300 to 600 mg/dL. Arterial pH drops under 7.30. An anion gap opens. The patient breathes deep and fast, which is Kussmaul breathing, as the lungs compensate. Glucose passes the kidney reabsorption threshold near 180 mg/dL, so it drags water out into the urine. Type 2 diabetes starts a different way. The problem is <b>insulin resistance</b>, at the receptor and past it. The beta cell answers with extra insulin for years, then fails. A little insulin is still around. So fat breakdown stays partly held back and ketoacidosis is uncommon. When type 2 does break down, it makes a hyperosmolar state instead. Glucose passes 600 mg/dL and the patient is badly dehydrated. Long-run control is reported by glycated hemoglobin, or HbA1c. It reflects the last 8 to 12 weeks, because a red cell lives about 120 days.</p>
+<p>Hormones do not come only from named glands. Adipose tissue secretes leptin. Leptin reports how much fat you carry to the hypothalamus, and it lowers appetite over the long run. Adipose tissue also secretes adiponectin, which improves insulin sensitivity. The kidney secretes erythropoietin when its tissue runs short of oxygen. The kidney also performs the final step that activates vitamin D. The heart secretes atrial natriuretic peptide when the atria are stretched more than usual. That peptide dumps sodium and water, so it works directly against RAAS. The stomach secretes ghrelin. Ghrelin rises before meals and makes you hungry. The pineal gland secretes melatonin at night. Light sets its schedule through the suprachiasmatic nucleus. The thymus secretes thymosins, which mature T cells. You meet those again in Module 11.</p>
+<div class="pearl"><b>Misconception to retire.</b> &ldquo;Insulin gives cells energy.&rdquo; It does not. Insulin only moves a transporter into a membrane. The gradient does the rest of the work. After a meal, plasma glucose sits at about 8 mmol/L. That is higher than the glucose inside the cell. So glucose slides in through GLUT4 on its own, at no ATP cost. Insulin is a permission slip, not a pump.</div>
+<div class="pearl"><b>Name the loop.</b> Variable: plasma glucose, with a target of roughly 90 mg/dL. Sensor: the pancreatic beta cell, and the alpha cell too. Integrator: that same islet cell, weighing its ATP production against its threshold. Effector: liver, skeletal muscle and adipose tissue. Response: take glucose up and store it when glucose rises. Send glucose out of the liver when glucose falls. Write those five lines for any hormone in this module. If you can do that, you understand endocrine physiology.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A meal can deliver 100 grams of carbohydrate. The plasma pool holds only about 4 grams of glucose. Yet fasting glucose stays between about 70 and 99 mg/dL. It rarely passes 140 even after eating. Watch the beta cell do it. <a href="../lab/ch08/GlucoseDefenceLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch08/GlucoseDefenceLab.html" loading="lazy" title="The Beta Cell and the Defense of Blood Glucose interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The beta cell turns a glucose level into a membrane depolarization. That change then becomes insulin release. Next the insulin-to-glucagon ratio takes over. That ratio decides one thing. Does the body store fuel, or send it out? Neither hormone decides that alone.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Endocrine control is broadcast control. A messenger goes into the blood. It reaches every cell. It acts only where the matching receptor exists. Solubility decides the rest. Lipophilic steroids and thyroid hormone travel bound to carrier proteins. They enter the nucleus and change gene reading. Their effects run over hours to days. Hydrophilic peptides and catecholamines travel free. They bind surface receptors. They work through second messengers such as cyclic AMP, IP3 with calcium, or receptor tyrosine kinases. Those cascades amplify one binding event a millionfold in seconds. Above the glands sits the hypothalamus. It commands the anterior pituitary by chemical, through the hypophyseal portal veins. It commands the posterior pituitary by electricity, through axons. Every axis below it closes with negative feedback. So read a tropic value and a target value together. The pair points to the gland, the pituitary or the hypothalamus. Thyroid hormone sets the basal metabolic rate. PTH and calcitriol defend ionized calcium. They hold it within a few tenths of a milligram per deciliter. Excitable membranes demand that much care. Aldosterone defends volume and potassium. Cortisol defends fuel and makes catecholamines effective. Insulin and glucagon defend a glucose set point, with one hormone down and four hormones up. Positive feedback appears in only a handful of places. Labor and milk ejection are two of them. It is useful precisely because it is unstable, and something outside the loop always ends it.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Term</th><th>What it means</th></tr></thead><tbody>
+<tr><td>Hormone</td><td>A chemical messenger released into the blood. It acts on any cell that carries its receptor.</td></tr>
+<tr><td>Paracrine / autocrine</td><td>Local signaling to neighboring cells, or back to the cell that made it. It never enters the circulation.</td></tr>
+<tr><td>Second messenger</td><td>A molecule inside the cell that passes on and amplifies a surface receptor signal. cAMP, IP3, DAG and Ca2+ are the main ones.</td></tr>
+<tr><td>Amplification</td><td>Each step of a cascade multiplies the signal. A picomolar amount of hormone ends up making a large cellular response.</td></tr>
+<tr><td>Downregulation</td><td>Loss of receptors after a long stretch of high hormone. The target cell becomes less sensitive.</td></tr>
+<tr><td>Permissive effect</td><td>One hormone must be present for another to work at full strength. Cortisol does this for catecholamines.</td></tr>
+<tr><td>Tropic hormone</td><td>A pituitary hormone whose target is another endocrine gland. TSH, ACTH, FSH and LH are tropic.</td></tr>
+<tr><td>Hypophyseal portal system</td><td>Two capillary beds in a row. They carry hypothalamic releasing hormones straight to the anterior pituitary.</td></tr>
+<tr><td>Negative feedback</td><td>A loop whose answer pushes against the change. It holds a variable near its set point.</td></tr>
+<tr><td>Positive feedback</td><td>A loop that makes its own stimulus bigger. It is normal only where an event must run to a finish, as in labor and milk ejection.</td></tr>
+<tr><td>Iodide trap</td><td>The sodium&ndash;iodide symporter pumping iodide into the cell against a 20- to 40-fold gradient.</td></tr>
+<tr><td>Thyroglobulin</td><td>The colloid protein that thyroid hormone is built on and stored on, outside the cell.</td></tr>
+<tr><td>Deiodinase</td><td>An enzyme outside the thyroid that turns T4 into active T3, or into inactive reverse T3.</td></tr>
+<tr><td>Calcium-sensing receptor</td><td>A receptor on the parathyroid cell surface. It reads ionized calcium and sets PTH release within seconds.</td></tr>
+<tr><td>Calcitriol</td><td>Active vitamin D. It raises gut calcium absorption from about 10 to 15 percent up to 30 to 40 percent.</td></tr>
+<tr><td>RAAS</td><td>The renin&ndash;angiotensin&ndash;aldosterone system. It defends blood pressure by raising both resistance and volume.</td></tr>
+<tr><td>Chromaffin cell</td><td>A cell of the adrenal medulla. It is really a postganglionic sympathetic neuron that secretes into the blood.</td></tr>
+<tr><td>Incretin</td><td>A gut hormone, GLP-1 or GIP. It boosts glucose-driven insulin release after food is taken by mouth.</td></tr>
+<tr><td>GLUT4</td><td>The glucose transporter that answers insulin. It works in skeletal muscle and adipose tissue.</td></tr>
+<tr><td>Counterregulatory hormone</td><td>Any hormone that raises plasma glucose. Glucagon, epinephrine, cortisol and growth hormone are the four.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">A hormone makes a measurable change within 30 seconds. What does that tell you about its chemistry and its receptor?</div><div class="ans">It is almost certainly hydrophilic. That means a peptide or a catecholamine. It acts at a receptor on the plasma membrane. From there it works through a second messenger or a channel. An effect that fast cannot wait for transcription and translation. Those take 30 minutes or more. So a steroid or thyroid receptor inside the cell is ruled out.</div></div>
+<div class="qq"><div class="q">A pregnant patient has a high total T4. Her free T4 is normal and her TSH is normal. Is she hyperthyroid?</div><div class="ans">No. Estrogen raises thyroxine-binding globulin. So more hormone rides in the bound pool and the total climbs. Only free hormone is active. Only free hormone is sensed by the feedback loop. A normal TSH tells you the pituitary is seeing a normal free level.</div></div>
+<div class="qq"><div class="q">Free T4 is low and TSH is 45 mU/L. Where is the problem, and why?</div><div class="ans">The problem is in the thyroid gland itself. That is primary hypothyroidism. The pituitary is working correctly. It senses the low T4 and drives TSH up. Say the pituitary were the problem instead. Then TSH would be low next to that low T4. Or it would read normal when it should not.</div></div>
+<div class="qq"><div class="q">Cut the pituitary stalk. Every hormone from the anterior lobe falls except prolactin. Prolactin goes up. Why?</div><div class="ans">The anterior pituitary has no direct nerve supply. It depends on releasing hormones delivered by the hypophyseal portal veins. Cutting the stalk stops that delivery. Prolactin is the exception. Its main control from the hypothalamus is dopamine. Dopamine holds prolactin down. Remove a brake and the level rises.</div></div>
+<div class="qq"><div class="q">Name the variable, sensor, integrator, effector and response for the ADH loop.</div><div class="ans">Variable: plasma osmolality, 275 to 295 mOsm/kg. Sensor: osmoreceptor neurons in the hypothalamus. Integrator: the hypothalamus. It compares that signal with the set point. Effector: the principal cells of the collecting duct. They insert aquaporin-2. Response: water is taken back in. Osmolality then falls back toward the set point.</div></div>
+<div class="qq"><div class="q">Why is oxytocin in labor called positive feedback? And why is a loop like that rare?</div><div class="ans">Cervical stretch causes oxytocin release. Oxytocin causes a contraction. The contraction stretches the cervix even more. Each turn makes the stimulus bigger instead of opposing it. Loops like that are unstable by nature. So the body uses them in very few places. The event must be driven fast to a finish. Then something outside must end it. Here that ending is delivery.</div></div>
+<div class="qq"><div class="q">After thyroid surgery a patient gets tingling around the mouth and carpopedal spasm. Explain why.</div><div class="ans">The parathyroid glands were injured during the surgery. PTH fell, so ionized calcium dropped. Calcium outside the cell normally steadies the voltage-gated sodium channels. When it falls, the firing threshold drops. Nerves then fire on their own. That produces the paresthesia and the tetany.</div></div>
+<div class="qq"><div class="q">Why does PTH make the kidney dump phosphate at the same time as it frees calcium from bone?</div><div class="ans">Bone resorption releases calcium and phosphate together. If the phosphate stayed, it would bind that calcium. The rise in ionized calcium would be blunted. Dumping phosphate in the proximal tubule keeps the released calcium free and biologically active.</div></div>
+<div class="qq"><div class="q">Blocking the renin&ndash;angiotensin system lowers blood pressure. It also tends to raise serum potassium. Explain both.</div><div class="ans">Start from &Delta;P = Q &times; R. Angiotensin II raises R by narrowing arterioles. Aldosterone raises Q by holding sodium and water, which raises venous return and cardiac output. Block the system and you remove both. Aldosterone also drives potassium secretion in the collecting duct. Less aldosterone means less potassium lost, so serum potassium rises.</div></div>
+<div class="qq"><div class="q">A patient on long-term prednisone stops it suddenly. Blood pressure falls and fluids do not fix it. Why?</div><div class="ans">The steroid held CRH and ACTH down for a long time. The zona fasciculata shrank. Now it cannot make cortisol on demand. Cortisol is permissive for the vessel narrowing that catecholamines produce. Without it, vascular tone collapses. Pressors work poorly until hydrocortisone is given.</div></div>
+<div class="qq"><div class="q">Plasma glucose rises. Trace the steps from there to insulin exocytosis in the beta cell.</div><div class="ans">Glucose enters through GLUT2. Glucokinase adds phosphate to it at a rate that matches the concentration. Burning it raises the ATP/ADP ratio. ATP closes the ATP-sensitive potassium channel. Potassium can no longer leak out, so the membrane depolarizes. Voltage-gated calcium channels open. Calcium enters and pushes the insulin granules out.</div></div>
+<div class="qq"><div class="q">Type 1 diabetes usually breaks down as ketoacidosis. Type 2 usually breaks down as a hyperosmolar state. Why the difference?</div><div class="ans">In type 1 insulin is absent. Hormone-sensitive lipase runs with nothing to oppose it. Free fatty acids flood the liver and are turned into ketoacids. Arterial pH falls below 7.30. In type 2 some insulin remains. It still restrains lipolysis, so ketones stay low. Instead the very high glucose drags water out into the urine. That gives extreme dehydration and a high osmolality.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch07.html"><span class="k">Previous</span>&larr; Special Senses</a>
+        <a class="next" href="ch09.html"><span class="k">Next</span>Blood and Blood Vessels &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

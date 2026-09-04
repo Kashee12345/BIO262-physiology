@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fever: A Negative-Feedback Loop With a Moved Set Point</title>
+<meta name="description" content="Drive pyrogen into a hypothalamic control loop, block the cascade at chosen steps, and watch core temperature chase a set point that has been deliberately raised.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chk{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+.chk label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chk input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:8px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.05);}
+canvas{display:block;width:100%;height:auto;}
+svg text{font-family:var(--sans);}
+.eff{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
+.eff span{font-size:11px;font-weight:800;border-radius:20px;padding:5px 11px;border:1px solid var(--line);color:var(--muted);background:#fff;}
+.eff span.hot{background:var(--coral);border-color:var(--coral);color:#fff;}
+.eff span.cold{background:var(--blue);border-color:var(--blue);color:#fff;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch11.html">&larr; Module 11</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 11</div>
+  <h1>Fever: A Loop Defending a Moved Set Point</h1>
+  <div class="intro">Core temperature normally sits near <b>37 &deg;C</b>. In fever nothing about the control loop is broken &mdash; prostaglandin E<sub>2</sub> simply raises the target, and the same negative feedback then defends the new one. Drive pyrogen into the loop below, block the cascade wherever you like, and watch the chill phase, the plateau and the crisis fall out of the arithmetic. Then switch the environment to heat stroke and see why the same antipyretic does nothing.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The stimulus and where you block it</h2>
+      <div class="sl"><label for="sL">Pyrogen load &mdash; circulating LPS from the infection <span class="v" id="vL">0</span></label>
+        <input type="range" id="sL" min="0" max="100" step="1" value="0" aria-label="Exogenous pyrogen load, arbitrary units from zero to one hundred"></div>
+      <div class="sl"><label for="sCox">COX inhibitor (NSAID / paracetamol) <span class="v" id="vCox">0 %</span></label>
+        <input type="range" id="sCox" min="0" max="100" step="5" value="0" aria-label="Percentage inhibition of prostaglandin synthesis by a cyclo-oxygenase inhibitor"></div>
+      <div class="chk"><label><input type="checkbox" id="cBio"> Block IL-1 and IL-6 (biologic)</label></div>
+      <div class="hint">The chain is <b>LPS &rarr; macrophage &rarr; IL-1, IL-6, TNF-&alpha; &rarr; vascular organ of the lamina terminalis &rarr; PGE<sub>2</sub> &rarr; raised set point</b>. A COX inhibitor cuts the last enzymatic step; a cytokine blocker cuts an earlier one. Both lower the set point, and neither cools a body whose set point was never raised.</div>
+    </div>
+    <div class="card">
+      <h2>The patient and the room</h2>
+      <div class="sl"><label for="sAmb">Ambient temperature <span class="v" id="vAmb">24 &deg;C</span></label>
+        <input type="range" id="sAmb" min="10" max="45" step="1" value="24" aria-label="Ambient air temperature in degrees Celsius"></div>
+      <div class="sl"><label for="sBlk">Blankets and clothing <span class="v" id="vBlk">0 %</span></label>
+        <input type="range" id="sBlk" min="0" max="100" step="5" value="0" aria-label="Insulation from blankets and clothing, as a percentage"></div>
+      <div class="sl"><label for="sEx">Exertional heat production <span class="v" id="vEx">0 &times; extra</span></label>
+        <input type="range" id="sEx" min="0" max="5" step="0.25" value="0" aria-label="Extra metabolic heat production from exercise, as multiples of basal metabolic rate"></div>
+      <div class="sl"><label for="sEv">Evaporative capacity (dry air = 100&nbsp;%) <span class="v" id="vEv">100 %</span></label>
+        <input type="range" id="sEv" min="0" max="100" step="5" value="100" aria-label="Evaporative heat loss capacity, reduced by humidity"></div>
+    </div>
+    <div class="card">
+      <h2>Scenarios</h2>
+      <div class="chips" id="chips"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bRun">Run the clock</button>
+        <button type="button" class="btn" id="bJump">Skip 4 hours</button>
+        <button type="button" class="btn" id="bReset">Reset to 37.0</button>
+      </div>
+      <div class="hint">Change a slider <b>while the clock is running</b> &mdash; give the antipyretic at the height of the fever and watch defervescence begin within the hour, or pull the blankets off during the chill phase and watch the loop shiver harder to compensate.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The loop, drawn live</h2>
+      <svg id="loop" viewBox="0 0 520 292" role="img" aria-label="Control loop diagram showing core temperature as the regulated variable, thermoreceptors as sensors, the hypothalamus as integrator holding a set point, and cutaneous arterioles, sweat glands, skeletal muscle and brown fat as effectors, with the pyrogen cascade feeding into the set point">
+        <g id="chain">
+          <rect x="14" y="12" width="86" height="34" rx="9" fill="#fff" stroke-width="1.6" id="b0"></rect>
+          <text x="57" y="27" font-size="10.5" font-weight="800" text-anchor="middle" id="t0a">LPS</text>
+          <text x="57" y="39" font-size="9.5" text-anchor="middle" id="t0b">exogenous</text>
+          <rect x="120" y="12" width="106" height="34" rx="9" fill="#fff" stroke-width="1.6" id="b1"></rect>
+          <text x="173" y="27" font-size="10.5" font-weight="800" text-anchor="middle" id="t1a">IL-1 · IL-6 · TNF-α</text>
+          <text x="173" y="39" font-size="9.5" text-anchor="middle" id="t1b">endogenous pyrogens</text>
+          <rect x="246" y="12" width="96" height="34" rx="9" fill="#fff" stroke-width="1.6" id="b2"></rect>
+          <text x="294" y="27" font-size="10.5" font-weight="800" text-anchor="middle" id="t2a">PGE₂ at OVLT</text>
+          <text x="294" y="39" font-size="9.5" text-anchor="middle" id="t2b">COX product</text>
+          <path d="M100 29 L118 29" stroke-width="2" fill="none" marker-end="url(#fa)" id="a01"></path>
+          <path d="M226 29 L244 29" stroke-width="2" fill="none" marker-end="url(#fa)" id="a12"></path>
+          <path d="M294 46 L294 84" stroke-width="2" fill="none" marker-end="url(#fa)" id="a2i"></path>
+          <text x="352" y="26" font-size="10" font-weight="800" id="blkTxt"></text>
+        </g>
+        <defs>
+          <marker id="fa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="context-stroke"></path>
+          </marker>
+        </defs>
+        <rect x="22" y="86" width="126" height="58" rx="12" fill="#fff" stroke-width="2" id="bS"></rect>
+        <text x="85" y="108" font-size="10.5" font-weight="800" text-anchor="middle" id="tS1">SENSORS</text>
+        <text x="85" y="122" font-size="10" text-anchor="middle" id="tS2">preoptic area +</text>
+        <text x="85" y="134" font-size="10" text-anchor="middle" id="tS3">skin thermoreceptors</text>
+        <rect x="196" y="86" width="126" height="58" rx="12" fill="#fff" stroke-width="2" id="bI"></rect>
+        <text x="259" y="106" font-size="10.5" font-weight="800" text-anchor="middle" id="tI1">INTEGRATOR</text>
+        <text x="259" y="120" font-size="10" text-anchor="middle" id="tI2">hypothalamus</text>
+        <text x="259" y="136" font-size="12.5" font-weight="800" text-anchor="middle" id="tSP">set point 37.0 °C</text>
+        <rect x="370" y="86" width="126" height="58" rx="12" fill="#fff" stroke-width="2" id="bE"></rect>
+        <text x="433" y="106" font-size="10.5" font-weight="800" text-anchor="middle" id="tE1">EFFECTORS</text>
+        <text x="433" y="120" font-size="10" text-anchor="middle" id="tE2">arterioles · sweat</text>
+        <text x="433" y="134" font-size="10" text-anchor="middle" id="tE3">muscle · brown fat</text>
+        <path d="M150 115 L192 115" stroke-width="2.4" fill="none" marker-end="url(#fa)" id="aSI"></path>
+        <path d="M324 115 L366 115" stroke-width="2.4" fill="none" marker-end="url(#fa)" id="aIE"></path>
+        <rect x="150" y="196" width="220" height="60" rx="14" fill="#fff" stroke-width="2.6" id="bV"></rect>
+        <text x="260" y="218" font-size="10.5" font-weight="800" text-anchor="middle" id="tV1">REGULATED VARIABLE</text>
+        <text x="260" y="243" font-size="21" font-weight="800" text-anchor="middle" id="tV2">37.0 °C</text>
+        <path d="M433 146 L433 226 L374 226" stroke-width="2.4" fill="none" marker-end="url(#fa)" id="aEV"></path>
+        <path d="M146 226 L85 226 L85 148" stroke-width="2.4" fill="none" marker-end="url(#fa)" id="aVS"></path>
+        <text x="260" y="277" font-size="10.5" font-weight="800" text-anchor="middle" id="tFb">negative feedback — the response opposes the error</text>
+      </svg>
+      <div class="eff" id="eff"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Core temperature</div><div class="v" id="oT">37.0</div><div class="u">&deg;C</div></div>
+        <div class="lab"><div class="k">Set point</div><div class="v" id="oSP">37.0</div><div class="u">&deg;C</div></div>
+        <div class="lab"><div class="k">Error (SP &minus; T)</div><div class="v" id="oEr">0.0</div><div class="u">&deg;C</div></div>
+        <div class="lab"><div class="k">Heat production</div><div class="v" id="oHP">1.0</div><div class="u">&times; basal</div></div>
+        <div class="lab"><div class="k">Skin blood flow</div><div class="v" id="oSB">1.0</div><div class="u">&times; basal</div></div>
+        <div class="lab"><div class="k">Clock</div><div class="v" id="oClk">0:00</div><div class="u">h : min</div></div>
+      </div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <h2>Twenty-four hours of core temperature</h2>
+      <canvas id="ch" width="1040" height="420" role="img" aria-label="Chart of core temperature and hypothalamic set point over twenty-four hours"></canvas>
+      <div class="hint">Above roughly <b>40&ndash;41 &deg;C</b> the cost of protein denaturation and seizures outweighs the benefit of fever, which is otherwise useful: it accelerates leukocyte and enzyme activity, sequesters the plasma iron and zinc bacteria need, and impairs replication of some pathogens.</div>
+      <div class="sr" id="live" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var cs=getComputedStyle(document.documentElement);
+function CV(n){return cs.getPropertyValue('--'+n).trim();}
+var TMAX=1440, CAP=51, K0=1/13;
+
+var P={L:0,cox:0,bio:false,amb:24,blk:0,ex:0,ev:100};
+var T=37.0, Cyto=0, PGE=0, clk=0, running=false, hist=[[0,37,37]];
+
+function model(){
+  var drv=Cyto*(P.bio?0.15:1)*(1-P.cox/100);
+  var sp=Math.min(41.5, 37+0.035*PGE);
+  var err=sp-T;
+  var d=Math.max(-1,Math.min(1,err*2));
+  var hp=1+3*Math.max(d,0)+P.ex;
+  var insul=1-0.6*(P.blk/100);
+  var cond=K0*(1+2.0*Math.max(-d,0)-0.7*Math.max(d,0))*insul;
+  var hl=cond*(T-P.amb)+1.6*Math.max(-d,0)*(P.ev/100);
+  return {drv:drv,sp:sp,err:err,d:d,hp:hp,cond:cond,hl:hl};
+}
+function step(dt){
+  var m=model();
+  Cyto+=(P.L-Cyto)/30*dt;
+  PGE+=(m.drv-PGE)/20*dt;
+  T+=(m.hp-m.hl)/CAP*dt;
+  if(T<33)T=33; if(T>43.5)T=43.5;
+  clk+=dt;
+}
+function record(){ hist.push([clk,T,Math.min(41.5,37+0.035*PGE)]); if(hist.length>1600)hist.shift(); }
+
+var PRE=[
+ {n:'Healthy baseline',s:{L:0,cox:0,bio:false,amb:24,blk:0,ex:0,ev:100}},
+ {n:'Gram-negative infection',s:{L:60,cox:0,bio:false,amb:24,blk:0,ex:0,ev:100}},
+ {n:'Overwhelming sepsis',s:{L:100,cox:0,bio:false,amb:24,blk:0,ex:0,ev:100}},
+ {n:'Fever, patient under blankets',s:{L:60,cox:0,bio:false,amb:24,blk:85,ex:0,ev:100}},
+ {n:'Fever + antipyretic',s:{L:60,cox:90,bio:false,amb:24,blk:0,ex:0,ev:100}},
+ {n:'Fever + IL-1/IL-6 blockade',s:{L:60,cox:0,bio:true,amb:24,blk:0,ex:0,ev:100}},
+ {n:'Exertional heat stroke',s:{L:0,cox:0,bio:false,amb:42,blk:0,ex:3,ev:30}},
+ {n:'Antipyretic in heat stroke',s:{L:0,cox:100,bio:false,amb:42,blk:0,ex:3,ev:30}}
+];
+var chips=document.getElementById('chips');
+PRE.forEach(function(p,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    for(var k in p.s){P[k]=p.s[k];}
+    reset(); sync();
+    [].forEach.call(chips.children,function(c){c.classList.remove('on');});
+    b.classList.add('on'); draw();
+  });
+  chips.appendChild(b);
+});
+function reset(){ T=37.0; Cyto=0; PGE=0; clk=0; hist=[[0,37,37]]; }
+function sync(){
+  document.getElementById('sL').value=P.L;
+  document.getElementById('sCox').value=P.cox;
+  document.getElementById('cBio').checked=P.bio;
+  document.getElementById('sAmb').value=P.amb;
+  document.getElementById('sBlk').value=P.blk;
+  document.getElementById('sEx').value=P.ex;
+  document.getElementById('sEv').value=P.ev;
+}
+function clearChip(){[].forEach.call(chips.children,function(c){c.classList.remove('on');});}
+function bind(id,fn){document.getElementById(id).addEventListener('input',function(){fn(parseFloat(this.value));clearChip();draw();});}
+bind('sL',function(v){P.L=v;}); bind('sCox',function(v){P.cox=v;});
+bind('sAmb',function(v){P.amb=v;}); bind('sBlk',function(v){P.blk=v;});
+bind('sEx',function(v){P.ex=v;}); bind('sEv',function(v){P.ev=v;});
+document.getElementById('cBio').addEventListener('change',function(){P.bio=this.checked;clearChip();draw();});
+
+document.getElementById('bRun').addEventListener('click',function(){
+  running=!running; this.textContent=running?'Pause clock':'Run the clock';
+  if(running) loop();
+});
+document.getElementById('bJump').addEventListener('click',function(){
+  for(var i=0;i<240;i++){ step(1); if(i%2===0) record(); }
+  draw();
+});
+document.getElementById('bReset').addEventListener('click',function(){ reset(); draw(); });
+function loop(){
+  if(!running)return;
+  for(var i=0;i<3;i++){ step(1); }
+  record();
+  if(clk>=TMAX){ running=false; document.getElementById('bRun').textContent='Run the clock'; }
+  draw();
+  if(running) requestAnimationFrame(loop);
+}
+
+var cv=document.getElementById('ch'), cx=cv.getContext('2d');
+function drawChart(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=72,R=W-24,Tp=18,B=H-38, lo=35,hi=42.5;
+  function yy(t){return B-((t-lo)/(hi-lo))*(B-Tp);}
+  cx.fillStyle=CV('coral'); cx.globalAlpha=0.12;
+  cx.fillRect(L,Tp,R-L,yy(40.5)-Tp); cx.globalAlpha=1;
+  cx.strokeStyle=CV('line'); cx.lineWidth=1.5; cx.font='600 15px Inter, sans-serif';
+  for(var t=35;t<=42;t+=1){
+    var y=yy(t); cx.beginPath();cx.moveTo(L,y);cx.lineTo(R,y);cx.stroke();
+    cx.fillStyle=CV('muted');cx.textAlign='right';cx.fillText(t+'°',L-8,y+5);
+  }
+  for(var h=0;h<=24;h+=4){
+    var x=L+(h/24)*(R-L);
+    cx.fillStyle=CV('muted');cx.textAlign='center';cx.fillText(h+'h',x,B+24);
+  }
+  function line(idx,col,wd,dash){
+    cx.setLineDash(dash||[]); cx.beginPath();
+    for(var i=0;i<hist.length;i++){
+      var x=L+(hist[i][0]/TMAX)*(R-L), y=yy(hist[i][idx]);
+      if(i===0)cx.moveTo(x,y);else cx.lineTo(x,y);
+    }
+    cx.strokeStyle=col;cx.lineWidth=wd;cx.lineJoin='round';cx.stroke();cx.setLineDash([]);
+  }
+  line(2,CV('gold'),3,[9,6]);
+  line(1,CV('teal'),3.6);
+  cx.textAlign='left';cx.font='800 15px Inter, sans-serif';
+  cx.fillStyle=CV('gold'); cx.fillText('hypothalamic set point',L+8,Tp+18);
+  cx.fillStyle=CV('teal'); cx.fillText('core temperature',L+8,Tp+38);
+  cx.fillStyle=CV('coral'); cx.textAlign='right'; cx.fillText('danger zone above ~40.5 °C',R-8,yy(40.5)-8);
+}
+
+function drawLoop(m){
+  var teal=CV('teal'), line=CV('line'), soft=CV('soft'), coral=CV('coral'), blue=CV('blue'), muted=CV('muted'), gold=CV('gold');
+  ['bS','bI','bE','bV','b0','b1','b2'].forEach(function(id){document.getElementById(id).setAttribute('stroke',line);});
+  ['tS1','tI1','tE1','tV1','t0a','t1a','t2a'].forEach(function(id){document.getElementById(id).setAttribute('fill',soft);});
+  ['tS2','tS3','tI2','tE2','tE3','t0b','t1b','t2b'].forEach(function(id){document.getElementById(id).setAttribute('fill',muted);});
+  ['a01','a12','a2i','aSI','aIE','aEV','aVS'].forEach(function(id){document.getElementById(id).setAttribute('stroke',line);});
+  document.getElementById('tFb').setAttribute('fill',muted);
+
+  var act0=P.L>2, act1=act0&&Cyto>2, act2=PGE>1.5;
+  if(act0){document.getElementById('b0').setAttribute('stroke',coral);document.getElementById('t0a').setAttribute('fill',coral);document.getElementById('a01').setAttribute('stroke',P.bio?line:coral);}
+  if(act1&&!P.bio){document.getElementById('b1').setAttribute('stroke',coral);document.getElementById('t1a').setAttribute('fill',coral);}
+  document.getElementById('a12').setAttribute('stroke',(act1&&!P.bio&&P.cox<95)?coral:line);
+  if(act2){document.getElementById('b2').setAttribute('stroke',coral);document.getElementById('t2a').setAttribute('fill',coral);document.getElementById('a2i').setAttribute('stroke',coral);}
+  var bt=document.getElementById('blkTxt'); bt.setAttribute('fill',blue);
+  bt.textContent = P.bio&&P.cox>0 ? '✕ cytokine + COX blocked' : (P.bio?'✕ cytokine step blocked':(P.cox>0?'✕ COX step blocked '+P.cox+'%':''));
+
+  document.getElementById('bI').setAttribute('stroke',teal);
+  document.getElementById('tSP').setAttribute('fill', m.sp>37.3?coral:teal);
+  document.getElementById('tSP').textContent='set point '+m.sp.toFixed(1)+' °C';
+  document.getElementById('tV2').setAttribute('fill', T>38.0?coral:(T<36.5?blue:teal));
+  document.getElementById('tV2').textContent=T.toFixed(1)+' °C';
+  document.getElementById('bV').setAttribute('stroke', T>38.0?coral:(T<36.5?blue:teal));
+  if(Math.abs(m.d)>0.15){
+    var c=m.d>0?coral:blue;
+    document.getElementById('bE').setAttribute('stroke',c);
+    document.getElementById('aIE').setAttribute('stroke',c);
+    document.getElementById('aEV').setAttribute('stroke',c);
+    document.getElementById('aSI').setAttribute('stroke',gold);
+    document.getElementById('aVS').setAttribute('stroke',gold);
+    document.getElementById('bS').setAttribute('stroke',gold);
+  }
+  var E=[['cutaneous vasoconstriction',m.d>0.15,'cold'],
+         ['piloerection (goose bumps)',m.d>0.15,'cold'],
+         ['shivering thermogenesis',m.d>0.35,'cold'],
+         ['brown fat thermogenesis',m.d>0.5,'cold'],
+         ['cutaneous vasodilation',m.d<-0.15,'hot'],
+         ['sweating',m.d<-0.35,'hot']];
+  var box=document.getElementById('eff'); box.innerHTML='';
+  E.forEach(function(e){
+    var s=document.createElement('span');
+    s.textContent=e[0]; if(e[1]) s.className=(e[2]==='cold'?'cold':'hot');
+    box.appendChild(s);
+  });
+}
+
+function verdict(m){
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  var fever=m.sp>37.35;
+  if(!fever && T>38.5){
+    cls+='bad'; h='HYPERTHERMIA &mdash; the set point never moved<small>The hypothalamus is still defending '+m.sp.toFixed(1)+' &deg;C and is running every heat-loss effector it has, but heat production plus environmental load exceeds what can be dissipated. This is heat stroke, not fever. <b>An antipyretic cannot help</b> &mdash; there is no raised PGE<sub>2</sub> to block. Cooling, fluids and removing the load are the treatment.</small>';
+  } else if(fever && m.err>0.3){
+    cls+='cool'; h='CHILL PHASE &mdash; the loop is generating heat<small>Set point '+m.sp.toFixed(1)+' &deg;C, core '+T.toFixed(1)+' &deg;C, so the error is +'+m.err.toFixed(1)+' &deg;C. The patient <b>feels cold and shivers</b> even though they are already febrile, because temperature is <i>below</i> the new target. Heat production is running at '+m.hp.toFixed(1)+'× basal and skin blood flow is cut to '+(m.cond/K0).toFixed(2)+'× basal.</small>';
+  } else if(fever && m.err<-0.3){
+    cls+='warn'; h='CRISIS / DEFERVESCENCE &mdash; the set point has dropped below core temperature<small>PGE<sub>2</sub> is falling, so the target is now '+m.sp.toFixed(1)+' &deg;C while the body is still at '+T.toFixed(1)+' &deg;C. The same negative feedback now dumps heat: skin blood flow '+(m.cond/K0).toFixed(2)+'× basal and profuse sweating. The patient feels hot and drenched &mdash; the classic breaking of a fever.</small>';
+  } else if(fever){
+    cls+= (T>40.5?'bad':'ok');
+    h='PLATEAU &mdash; the loop is defending '+m.sp.toFixed(1)+' &deg;C<small>Core '+T.toFixed(1)+' &deg;C now matches the raised target, so effectors are quiet and the patient feels neither hot nor cold. Nothing is broken; the controller simply has a new reference value.'+(T>40.5?' <b>Above about 40.5 &deg;C the benefit is lost</b> to protein denaturation and seizure risk.':'')+'</small>';
+  } else if(T<36.5){
+    cls+='cool'; h='BELOW NORMAL &mdash; heat loss exceeds production<small>Core '+T.toFixed(1)+' &deg;C against a normal set point. The loop is calling for vasoconstriction and shivering; if the environmental load is large enough it will not keep up.</small>';
+  } else {
+    cls+='ok'; h='EUTHERMIC &mdash; production matched to loss<small>Core '+T.toFixed(1)+' &deg;C against a set point of '+m.sp.toFixed(1)+' &deg;C. Heat production '+m.hp.toFixed(1)+'× basal is exactly balanced by heat loss. Normal range is about 36.5 to 37.5 &deg;C with a circadian swing of roughly 0.5 &deg;C, lowest near 4 a.m.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+}
+
+function draw(){
+  var m=model();
+  document.getElementById('vL').textContent=P.L;
+  document.getElementById('vCox').textContent=P.cox+' %';
+  document.getElementById('vAmb').textContent=P.amb+' °C';
+  document.getElementById('vBlk').textContent=P.blk+' %';
+  document.getElementById('vEx').textContent=P.ex.toFixed(2)+' × extra';
+  document.getElementById('vEv').textContent=P.ev+' %';
+  document.getElementById('oT').textContent=T.toFixed(1);
+  document.getElementById('oSP').textContent=m.sp.toFixed(1);
+  document.getElementById('oEr').textContent=(m.err>=0?'+':'')+m.err.toFixed(1);
+  document.getElementById('oHP').textContent=m.hp.toFixed(1);
+  document.getElementById('oSB').textContent=(m.cond/K0).toFixed(2);
+  var hh=Math.floor(clk/60), mm=Math.floor(clk%60);
+  document.getElementById('oClk').textContent=hh+':'+(mm<10?'0':'')+mm;
+  drawLoop(m); drawChart(); verdict(m);
+  document.getElementById('live').textContent='Clock '+hh+' hours '+mm+' minutes. Core temperature '+T.toFixed(1)+' degrees, set point '+m.sp.toFixed(1)+' degrees.';
+}
+sync(); draw();
+})();
+</script>
+</body>
+</html>

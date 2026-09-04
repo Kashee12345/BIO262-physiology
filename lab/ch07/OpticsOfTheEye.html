@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Sixty-Diopter Eye &mdash; Refraction, Accommodation and Intraocular Pressure</title>
+<meta name="description" content="Change axial length, corneal power and accommodative effort and watch where light actually lands on the retina, then drive aqueous outflow resistance and read intraocular pressure straight off Q equals delta P over R.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:12px;}
+.loop div{border:1px solid var(--line);border-radius:9px;padding:7px 8px;background:#fff;}
+.loop .k{font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold);font-weight:800;}
+.loop .b{font-size:11.5px;font-weight:700;color:var(--teal-dk);line-height:1.3;margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch07.html">&larr; Module 7</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 7</div>
+  <h1>The Sixty-Diopter Eye</h1>
+  <div class="intro">The relaxed eye totals about <b>60 diopters</b>, and roughly two-thirds of that comes from the cornea, not the lens. Move the axial length by a single millimeter below and watch the focal point walk off the retina; flood the eye with water and watch the cornea lose almost all its power. Then age the lens, and finally clog the trabecular meshwork and read intraocular pressure straight off <b>Q = &Delta;P / R</b>.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Refraction</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Accommodation</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Aqueous &amp; IOP</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Start from a clinical picture</div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl">Build the eye</div>
+        <div class="sl"><label for="axl">Axial length <span class="v" id="axlV">24.0 mm</span></label>
+          <input type="range" id="axl" min="200" max="290" value="240" step="1" aria-label="Axial length of the globe in tenths of a millimeter"></div>
+        <div class="sl"><label for="cor">Corneal power <span class="v" id="corV">43.0 D</span></label>
+          <input type="range" id="cor" min="360" max="500" value="430" step="1" aria-label="Corneal refractive power in tenths of a diopter"></div>
+        <div class="sl"><label for="len">Lens power at rest <span class="v" id="lenV">17.0 D</span></label>
+          <input type="range" id="len" min="120" max="230" value="170" step="1" aria-label="Resting lens refractive power in tenths of a diopter"></div>
+        <div class="sl"><label for="pup">Pupil diameter <span class="v" id="pupV">4.0 mm</span></label>
+          <input type="range" id="pup" min="15" max="80" value="40" step="1" aria-label="Pupil diameter in tenths of a millimeter"></div>
+        <button class="tog" id="tWater" type="button" aria-pressed="false"><span class="dot"></span><span>Open your eyes underwater <small>Replaces the air in front of the cornea with water. Watch what happens to the corneal contribution.</small></span></button>
+        <button class="tog" id="tFix" type="button" aria-pressed="false"><span class="dot"></span><span>Put the correcting lens on <small>Adds exactly the power needed to move the image plane back onto the retina.</small></span></button>
+        <div class="hint"><b>The one-millimeter experiment.</b> Leave every other control alone and move axial length from 24.0 to 25.0 mm. The error jumps by about 2.6 D &mdash; a single millimeter of eyeball is worth a real spectacle prescription. Nothing is wrong with the retina in any of these states; the image simply arrives at the wrong plane.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Who is looking?</div>
+        <div class="sl"><label for="age">Age <span class="v" id="ageV">20 years</span></label>
+          <input type="range" id="age" min="6" max="75" value="20" step="1" aria-label="Age in years"></div>
+        <div class="chips" id="pre2"></div>
+
+        <div class="lbl">Where is the target?</div>
+        <div class="sl"><label for="dist">Target distance <span class="v" id="distV">33 cm</span></label>
+          <input type="range" id="dist" min="7" max="600" value="33" step="1" aria-label="Distance of the visual target in centimeters"></div>
+        <div class="sl"><label for="eff">Accommodative effort <span class="v" id="effV">auto</span></label>
+          <input type="range" id="eff" min="0" max="100" value="100" step="1" aria-label="Fraction of available accommodative effort being used, as a percentage"></div>
+        <button class="tog" id="tAdd" type="button" aria-pressed="false"><span class="dot"></span><span>Wear a reading add <small>A plus lens that supplies the diopters the lens can no longer produce for itself.</small></span></button>
+        <div class="hint"><b>The paradox to watch.</b> The ciliary muscle <i>contracts</i> to make the lens more powerful. It is a ring, so contraction narrows its diameter like a purse-string, the zonular fibers go slack, and the elastic capsule lets the lens round up. Slide the effort control and watch the zonules loosen as the muscle tightens.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">A clinical starting point</div>
+        <div class="chips" id="pre3"></div>
+
+        <div class="lbl">The hydraulics</div>
+        <div class="sl"><label for="prod">Aqueous production by the ciliary epithelium <span class="v" id="prodV">2.5 &micro;L/min</span></label>
+          <input type="range" id="prod" min="5" max="45" value="25" step="1" aria-label="Aqueous humor production rate in tenths of a microliter per minute"></div>
+        <div class="sl"><label for="res">Trabecular outflow resistance <span class="v" id="resV">1.0 &times; normal</span></label>
+          <input type="range" id="res" min="30" max="1200" value="100" step="1" aria-label="Trabecular outflow resistance as a multiple of normal, in hundredths"></div>
+        <div class="sl"><label for="uve">Uveoscleral outflow <span class="v" id="uveV">0.40 &micro;L/min</span></label>
+          <input type="range" id="uve" min="0" max="150" value="40" step="1" aria-label="Uveoscleral outflow in hundredths of a microliter per minute"></div>
+        <div class="sl"><label for="pev">Episcleral venous pressure <span class="v" id="pevV">9.0 mmHg</span></label>
+          <input type="range" id="pev" min="60" max="180" value="90" step="1" aria-label="Episcleral venous pressure in tenths of a millimeter of mercury"></div>
+        <div class="hint"><b>Why pressure rises.</b> Production is almost pressure-independent &mdash; the ciliary epithelium secretes actively using Na<sup>+</sup>/K<sup>+</sup>-ATPase and carbonic anhydrase, and it does not slow down just because the eye is tense. So when resistance climbs, the only variable left free to move is pressure.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Where the image actually lands</h2>
+      <canvas id="cv1" width="1040" height="400" aria-label="Optical diagram of the eye showing parallel rays refracted at the cornea and lens and converging at a focal point relative to the retina"></canvas>
+      <canvas id="cv1b" width="1040" height="180" aria-label="Bar chart showing how much refractive power the cornea and lens each contribute to the total"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>Ciliary muscle, zonules and lens</h2>
+      <canvas id="cv2" width="1040" height="330" aria-label="Cross-section of the ciliary body, zonular fibers and lens, showing the lens rounding as the ciliary muscle contracts"></canvas>
+      <canvas id="cv2b" width="1040" height="250" aria-label="Curve of accommodative amplitude against age with the current age marked"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="loop" id="lp2"></div>
+      <div class="infobox" id="i2"></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>Inflow, resistance and pressure</h2>
+      <canvas id="cv3" width="1040" height="360" aria-label="Diagram of aqueous humor flowing from the ciliary body through the pupil to the trabecular meshwork and Schlemm canal, with the resistance shown as a narrowing"></canvas>
+      <canvas id="cv3b" width="1040" height="200" aria-label="Gauge of intraocular pressure with the normal range of ten to twenty-one millimeters of mercury marked"></canvas>
+      <div class="stats" id="st3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(P){
+    P[0].classList.toggle('on',n===P[1]);
+    P[0].setAttribute('aria-selected',n===P[1]?'true':'false');
+  });
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =========================================================
+   BENCH 1 -- refraction
+   n(vitreous) = 1.336 ; principal plane sits 1.733 mm behind the corneal vertex,
+   so a 24.0 mm globe is exactly emmetropic at 60.0 D.
+   ========================================================= */
+var NV=1336, PP=1.733;
+var water=false, fix=false;
+$('tWater').onclick=function(){ water=!water; this.setAttribute('aria-pressed',water?'true':'false'); render1(); };
+$('tFix').onclick=function(){ fix=!fix; this.setAttribute('aria-pressed',fix?'true':'false'); render1(); };
+['axl','cor','len','pup'].forEach(function(id){ $(id).addEventListener('input',render1); });
+(function(){
+  var pre=$('pre1');
+  [['Emmetropia',240,430,170],['Axial myopia, 26 mm globe',260,430,170],['Axial hyperopia, 22 mm globe',220,430,170],
+   ['Steep cornea, 48 D',240,480,170],['Flat cornea, 38 D',240,380,170]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('axl').value=P[1]; $('cor').value=P[2]; $('len').value=P[3]; water=false; $('tWater').setAttribute('aria-pressed','false'); render1(); };
+    pre.appendChild(b);
+  });
+})();
+
+function eye(){
+  var ax=(+$('axl').value)/10, cor0=(+$('cor').value)/10, len=(+$('len').value)/10, pup=(+$('pup').value)/10;
+  /* air-to-cornea index step 0.376; water-to-cornea step 0.043 -> 11.4% of the power survives */
+  var cor=water?cor0*0.1144:cor0;
+  var P=cor+len, retina=ax-PP, need=NV/retina;
+  var corr=fix?(need-P):0;
+  var Ptot=P+corr;
+  var v=NV/Ptot;                                  /* image distance behind the principal plane, mm */
+  var err=Ptot-need;                              /* + = too powerful = myopic */
+  var blur=pup*Math.abs(v-retina)/v;              /* blur circle diameter on the retina, mm */
+  return {ax:ax,cor0:cor0,cor:cor,len:len,pup:pup,P:P,Ptot:Ptot,retina:retina,need:need,v:v,err:err,blur:blur,corr:corr};
+}
+
+function render1(){
+  var E=eye();
+  $('axlV').textContent=E.ax.toFixed(1)+' mm';
+  $('corV').textContent=E.cor0.toFixed(1)+' D';
+  $('lenV').textContent=E.len.toFixed(1)+' D';
+  $('pupV').textContent=E.pup.toFixed(1)+' mm';
+  var kind = Math.abs(E.err)<0.5 ? 'emmetropic' : (E.err>0?'myopic':'hyperopic');
+  var far = E.err>0.05 ? (100/E.err) : null;
+
+  $('st1').innerHTML=
+    tile('Total refractive power',E.Ptot.toFixed(1),'D &middot; relaxed eye is about 60 D')+
+    tile('Cornea contributes',E.cor.toFixed(1)+' D',Math.round(100*E.cor/Math.max(E.P,0.1))+'% of the total'+(water?' &middot; underwater':''))+
+    tile('Power this globe needs',E.need.toFixed(1),'D to focus on a '+E.retina.toFixed(1)+' mm retina')+
+    tile('Refractive error',(E.err>0?'+':'')+E.err.toFixed(2),'D &middot; '+kind)+
+    tile('Image lands',(E.v-E.retina>0?'+':'')+(E.v-E.retina).toFixed(2),'mm '+(E.v>E.retina?'behind':'in front of')+' the retina')+
+    tile('Blur circle on retina',E.blur.toFixed(2),'mm &middot; at a '+E.pup.toFixed(1)+' mm pupil');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(water){
+    cls='verdict bad';
+    txt='Underwater &mdash; the cornea has lost almost all of its power<small>Corneal power fell from '+E.cor0.toFixed(1)+' D to '+E.cor.toFixed(1)+' D, so the eye now totals '+E.P.toFixed(1)+' D against the '+E.need.toFixed(1)+' D it needs. You are '+Math.abs(E.err).toFixed(0)+' D hyperopic.</small>';
+    inf='<span class="n">It was never really the cornea. It was the interface.</span>Refraction depends on the <b>index step</b> across a surface. Air has a refractive index of 1.00 and the cornea about 1.376, an enormous jump. Water sits at about 1.33 &mdash; nearly the same as cornea &mdash; so the step collapses to about a ninth of its former size and so does the power.<div class="dd">Put on a diving mask and you restore an air interface in front of the cornea. Nothing about the eye changed; the optics came back because the boundary came back. The same reasoning explains why the lens (index about 1.40) sitting between aqueous and vitreous (both about 1.336) contributes only about 15&ndash;20 D despite being the structure we call adjustable.</div>';
+  } else if(kind==='emmetropic'){
+    cls='verdict';
+    txt='Emmetropic &mdash; parallel light lands on the retina<small>'+E.Ptot.toFixed(1)+' D of power against a '+E.retina.toFixed(1)+' mm image distance. Residual error '+(E.err>0?'+':'')+E.err.toFixed(2)+' D, blur circle '+E.blur.toFixed(2)+' mm.</small>';
+    inf='<span class="n">A tolerance of tenths of a millimeter</span>The match between the eye&rsquo;s power and its length is astonishingly tight. Look at the arithmetic: a 1 mm change in axial length shifts the required power by about <b>2.6&ndash;2.8 D</b>, which is a substantial spectacle prescription. Emmetropization during childhood growth is an active, visually guided process, not luck.<div class="dd">Move the corneal slider instead and watch how cheap corneal power is to change. That is exactly why refractive surgery reshapes the cornea rather than the lens.</div>';
+  } else if(kind==='myopic'){
+    cls='verdict warn';
+    txt='Myopia of '+E.err.toFixed(2)+' D &mdash; light focuses '+(E.retina-E.v).toFixed(2)+' mm in front of the retina<small>Far point at '+(far?far.toFixed(0)+' cm':'&mdash;')+': anything beyond that is blurred, anything closer can be focused without help. Correction requires a '+(-E.err).toFixed(2)+' D minus lens.</small>';
+    inf='<span class="n">Too much eye for the power, or too much power for the eye</span>Either the globe is too long (the common form, and the one that is rising fast worldwide) or the cornea is too steep. In both cases the retina sits <i>behind</i> the image plane. A diverging minus lens spreads the rays slightly before they enter, pushing the focus back onto the retina.<div class="dd">The photoreceptors are perfectly healthy. This is not a retinal disease &mdash; it is a geometry mismatch, which is why a lens fixes it instantly and completely.</div>';
+  } else {
+    cls='verdict cool';
+    txt='Hyperopia of '+Math.abs(E.err).toFixed(2)+' D &mdash; light would focus '+(E.v-E.retina).toFixed(2)+' mm behind the retina<small>Correction requires a +'+Math.abs(E.err).toFixed(2)+' D plus lens. A young hyperope can also hide this by accommodating, which is why it is often missed until the accommodative reserve runs out.</small>';
+    inf='<span class="n">The error that hides behind accommodation</span>Because accommodation only ever <i>adds</i> power, a young eye can neutralize its own hyperopia by holding the ciliary muscle partly contracted all day. That works, at a cost: eyestrain and headache with sustained near work, and a sudden apparent onset of blur in the forties when amplitude falls below what the concealment required.<div class="dd">Myopia has no equivalent trick. There is no mechanism for subtracting power, which is why myopes notice their error early.</div>';
+  }
+  if(fix && !water){
+    cls='verdict'; txt='Corrected with a '+(E.corr>0?'+':'')+E.corr.toFixed(2)+' D lens &mdash; image back on the retina<small>The lens supplies exactly the '+Math.abs(E.corr).toFixed(2)+' D the eye was missing. Nothing inside the eye has changed.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Optical diagram: total power '+E.Ptot.toFixed(1)+' diopters, axial length '+E.ax.toFixed(1)+' millimeters, image lands '+(E.v-E.retina).toFixed(2)+' millimeters '+(E.v>E.retina?'behind':'in front of')+' the retina.');
+  drawEye(E); drawPower(E);
+}
+
+function drawEye(E){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cy=H/2+6;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var SC=20, x0=250;                          /* pixels per mm, corneal vertex */
+  var xr=x0+E.retina*SC+PP*SC;                /* retina x */
+  var xp=x0+PP*SC;                            /* principal plane */
+  var xf=xp+E.v*SC;                           /* focal point */
+  var rEye=(E.ax/2)*SC;
+
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('PARALLEL LIGHT FROM A DISTANT OBJECT',24,30);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('drawn to scale — one millimeter of eye is '+SC+' pixels wide',24,50);
+
+  /* globe */
+  g.save();
+  g.beginPath(); g.ellipse(x0+E.ax*SC/2,cy,E.ax*SC/2,rEye*0.94,0,0,6.3);
+  g.fillStyle='#fff'; g.fill(); g.strokeStyle=LINE; g.lineWidth=2.5; g.stroke();
+  g.restore();
+
+  /* retina */
+  g.strokeStyle=CORAL; g.lineWidth=6; g.lineCap='round';
+  g.beginPath(); g.arc(x0+E.ax*SC/2,cy,E.ax*SC/2-3,-1.05,1.05); g.stroke();
+  g.fillStyle=CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('retina',xr+12,cy-rEye*0.66);
+
+  /* cornea */
+  g.strokeStyle=water?MUT:TEAL; g.lineWidth=7;
+  g.beginPath(); g.arc(x0+58,cy,64,Math.PI-0.95,Math.PI+0.95); g.stroke();
+  g.fillStyle=water?MUT:TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('cornea '+E.cor.toFixed(0)+' D',x0+6,cy-78);
+
+  /* lens */
+  g.fillStyle=BLUE; g.globalAlpha=0.30;
+  g.beginPath(); g.ellipse(xp+18,cy,13,44,0,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=2.5; g.beginPath(); g.ellipse(xp+18,cy,13,44,0,0,6.3); g.stroke();
+  g.fillStyle=BLUE; g.fillText('lens '+E.len.toFixed(0)+' D',xp+18,cy+70);
+
+  /* water shading in front */
+  if(water){
+    g.fillStyle=BLUE; g.globalAlpha=0.12; g.fillRect(0,0,x0,H); g.globalAlpha=1;
+    g.fillStyle=BLUE; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('water, n ≈ 1.33',20,H-18);
+  }
+
+  /* rays */
+  var hs=[E.pup*SC/2*1.0, E.pup*SC/2*0.45];
+  hs.forEach(function(h){
+    [1,-1].forEach(function(s){
+      var y=cy+s*h*3.2;
+      g.strokeStyle=GOLD; g.lineWidth=2.6;
+      g.beginPath(); g.moveTo(6,y); g.lineTo(xp,y); g.stroke();
+      /* refracted segment aiming at the focal point */
+      var tx=xf, ty=cy;
+      var m=(ty-y)/Math.max(tx-xp,1);
+      var xend=Math.min(xr,W-8);
+      if(xf<xp){ xend=xr; m=-(y-cy)/200; }
+      g.beginPath(); g.moveTo(xp,y); g.lineTo(xend,y+m*(xend-xp)); g.stroke();
+      if(xf<xend){
+        g.strokeStyle=GOLD; g.globalAlpha=0.45;
+        g.beginPath(); g.moveTo(xf,cy); g.lineTo(xend,cy+(cy-y)*((xend-xf)/Math.max(xf-xp,1))); g.stroke(); g.globalAlpha=1;
+      }
+    });
+  });
+
+  /* focal point marker */
+  if(xf>0 && xf<W-6){
+    g.strokeStyle=TEAL; g.lineWidth=2; g.setLineDash([5,4]);
+    g.beginPath(); g.moveTo(xf,cy-rEye); g.lineTo(xf,cy+rEye); g.stroke(); g.setLineDash([]);
+    g.fillStyle=TEAL; g.beginPath(); g.arc(xf,cy,7,0,6.3); g.fill();
+    g.fillStyle=TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('focal point',xf,cy+rEye+22);
+  } else {
+    g.fillStyle=TEAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('focal point is far off the diagram →',W-16,cy-rEye-6);
+  }
+
+  /* blur circle drawn on the retina */
+  var bpx=Math.min(E.blur*SC,rEye*1.5);
+  g.strokeStyle=Math.abs(E.err)<0.5?GREEN:CORAL; g.lineWidth=4;
+  g.beginPath(); g.moveTo(xr-4,cy-bpx/2); g.lineTo(xr-4,cy+bpx/2); g.stroke();
+  g.fillStyle=Math.abs(E.err)<0.5?GREEN:CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(Math.abs(E.err)<0.5?'sharp point':'blur circle '+E.blur.toFixed(2)+' mm',xr+12,cy+6);
+
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('axial length '+E.ax.toFixed(1)+' mm — the retina sits '+E.retina.toFixed(1)+' mm behind the principal plane',W/2,H-14);
+}
+
+function drawPower(E){
+  var cv=$('cv1b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=30,R=W-30,y=76,hh=40,maxD=70;
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('WHERE THE SIXTY DIOPTERS COME FROM',L,30);
+  function seg(x0,w,col,lab){
+    g.fillStyle=col; g.fillRect(x0,y,w,hh);
+    if(w>64){ g.fillStyle='#fff'; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillText(lab,x0+w/2,y+25); }
+  }
+  var px=function(d){ return (d/maxD)*(R-L); };
+  seg(L,px(E.cor),water?MUT:TEAL,'cornea '+E.cor.toFixed(0)+' D');
+  seg(L+px(E.cor),px(E.len),BLUE,'lens '+E.len.toFixed(0)+' D');
+  g.strokeStyle=LINE; g.lineWidth=1.5; g.strokeRect(L,y,R-L,hh);
+  /* the 60 D mark */
+  g.strokeStyle=GOLD; g.lineWidth=3; g.setLineDash([5,4]);
+  g.beginPath(); g.moveTo(L+px(60),y-12); g.lineTo(L+px(60),y+hh+12); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('60 D — the relaxed normal eye',L+px(60),y+hh+30);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('the cornea supplies about two-thirds of the eye’s focusing power, and none of it is adjustable',L,H-14);
+}
+
+/* =========================================================
+   BENCH 2 -- accommodation and presbyopia
+   ========================================================= */
+var readAdd=false;
+$('tAdd').onclick=function(){ readAdd=!readAdd; this.setAttribute('aria-pressed',readAdd?'true':'false'); render2(); };
+['age','dist','eff'].forEach(function(id){ $(id).addEventListener('input',render2); });
+(function(){
+  var pre=$('pre2');
+  [['Age 10',10],['Age 30',30],['Age 45',45],['Age 60',60]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('age').value=P[1]; render2(); };
+    pre.appendChild(b);
+  });
+})();
+
+/* amplitude anchored to the module: 14 D at 10, 7 D at 30, 2 D at 45, under 1 D by 60 */
+function amp(a){
+  if(a<=10) return 14;
+  if(a<=30) return 14-(a-10)*0.35;
+  if(a<=45) return 7-(a-30)*(5/15);
+  if(a<=60) return 2-(a-45)*(1.3/15);
+  return 0.5;
+}
+
+function render2(){
+  var a=+$('age').value, d=+$('dist').value, ef=(+$('eff').value)/100;
+  var A=amp(a), need=100/d, used=Math.min(A*ef,need);
+  var add=readAdd?Math.max(0,Math.ceil((need-A)*4)/4):0;
+  var supplied=used+add, deficit=need-supplied;
+  var nearPt=100/Math.max(A+add,0.01);
+  $('ageV').textContent=a+' years';
+  $('distV').textContent=d+' cm';
+  $('effV').textContent=Math.round(ef*100)+'%';
+
+  $('st2').innerHTML=
+    tile('Accommodative amplitude',A.toFixed(1),'D available at age '+a)+
+    tile('Near point',nearPt<600?nearPt.toFixed(0)+' cm':'&gt;6 m','closest clear focus &middot; 100 &divide; amplitude')+
+    tile('Target demands',need.toFixed(2),'D &middot; 100 &divide; '+d+' cm')+
+    tile('Lens is supplying',used.toFixed(2),'D of its '+A.toFixed(1)+' D reserve')+
+    tile(readAdd?'Reading add':'No reading add',readAdd?'+'+add.toFixed(2)+' D':'&mdash;',readAdd?'plus lens in front of the eye':'lens working alone')+
+    tile('Shortfall',deficit>0.05?deficit.toFixed(2):'0','D &middot; '+(deficit>0.05?'blurred':'in focus'));
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(deficit>0.05){
+    cls='verdict bad';
+    txt='Blurred &mdash; the target is inside the near point<small>It needs '+need.toFixed(2)+' D and only '+supplied.toFixed(2)+' D is available, a shortfall of '+deficit.toFixed(2)+' D. The closest this eye can focus is '+nearPt.toFixed(0)+' cm.</small>';
+  } else if(a>=45 && readAdd){
+    cls='verdict';
+    txt='In focus, with '+add.toFixed(2)+' D of help from the reading add<small>The lens itself contributed only '+used.toFixed(2)+' D. The plus lens is doing the rest of the work the crystalline lens used to do for free.</small>';
+  } else {
+    cls='verdict';
+    txt='In focus &mdash; the lens supplied '+used.toFixed(2)+' D of its '+A.toFixed(1)+' D reserve<small>Reserve remaining '+(A-used).toFixed(2)+' D. Sustained near work uses that reserve continuously, which is where eyestrain comes from.</small>';
+  }
+  if(a>=45 && !readAdd && deficit>0.05) cls='verdict bad';
+  v.className=cls; v.innerHTML=txt;
+
+  $('lp2').innerHTML=
+    '<div><div class="k">Variable</div><div class="b">Retinal blur</div></div>'+
+    '<div><div class="k">Sensor</div><div class="b">Retina and blur-detecting cortical circuitry</div></div>'+
+    '<div><div class="k">Integrator</div><div class="b">Visual association cortex &rarr; Edinger&ndash;Westphal nucleus</div></div>'+
+    '<div><div class="k">Effector</div><div class="b">Ciliary muscle, parasympathetic on CN III</div></div>'+
+    '<div><div class="k">Response</div><div class="b">Lens rounds, power rises, blur falls</div></div>';
+
+  if(a>=45){
+    inf='<span class="n">Presbyopia is a material-science problem</span>The lens keeps laying down new fiber cells throughout life without ever shedding old ones, so the protein matrix at its core stiffens steadily. A stiff lens cannot round up even when the zonules are fully slack &mdash; the ciliary muscle is working normally, but the capsule can no longer reshape what it is pulling on.<div class="dd">That is why the amplitude curve is so predictable: about <b>14 D at age 10, 7 D at 30, 2 D at 45 and under 1 D by 60</b>. Reading glasses arrive on schedule in the mid-forties no matter how good distance vision has always been, and no amount of effort substitutes for the missing diopters.</div>';
+  } else {
+    inf='<span class="n">Contraction that releases tension</span>The ciliary muscle is a ring of smooth muscle carrying parasympathetic fibers from cranial nerve III. When it contracts, the ring&rsquo;s diameter <i>decreases</i> like a purse-string, and the zonular fibers that hold the lens under radial tension go slack. Released, the elastic capsule pulls the lens into a rounder shape, the anterior surface steepens, and power rises.<div class="dd"><b>The near triad.</b> Accommodation never travels alone: lens rounding, pupillary constriction (which increases depth of field by shrinking the blur circle) and convergence of both eyes fire together. Watch the pupil in the diagram shrink as effort rises.</div>';
+  }
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Ciliary muscle and lens: at '+Math.round(ef*100)+' percent effort the lens is supplying '+used.toFixed(2)+' diopters, and the target at '+d+' centimeters is '+(deficit>0.05?'blurred':'in focus')+'.');
+  drawLens(used,A,need); drawAmp(a,A);
+}
+
+function drawLens(used,A,need){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cy=H/2+10;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var f=clamp(used/14,0,1);                        /* fraction of maximum rounding */
+  var cx=W/2;
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(f>0.05?'CILIARY MUSCLE CONTRACTING — ZONULES SLACK — LENS ROUNDED':'CILIARY MUSCLE RELAXED — ZONULES TAUT — LENS FLAT',24,30);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('the muscle contracts inward, so the fibers it pulls on lose tension',24,50);
+
+  var ringOut=150, ringIn=ringOut-34*f;            /* ciliary body moves inward with contraction */
+  /* ciliary body, top and bottom */
+  [1,-1].forEach(function(s){
+    g.fillStyle=CORAL; g.globalAlpha=0.25+0.45*f;
+    g.beginPath();
+    g.moveTo(cx-150,cy+s*(ringIn+52)); g.lineTo(cx+150,cy+s*(ringIn+52));
+    g.lineTo(cx+110,cy+s*ringIn); g.lineTo(cx-110,cy+s*ringIn); g.closePath(); g.fill(); g.globalAlpha=1;
+    g.strokeStyle=CORAL; g.lineWidth=2; g.stroke();
+  });
+  g.fillStyle=CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('ciliary muscle',cx,cy-ringIn-58);
+  g.fillText('ciliary muscle',cx,cy+ringIn+74);
+
+  /* lens */
+  var lw=64-16*f, lh=42+30*f;
+  g.fillStyle=BLUE; g.globalAlpha=0.28;
+  g.beginPath(); g.ellipse(cx,cy,lw,lh,0,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=3; g.beginPath(); g.ellipse(cx,cy,lw,lh,0,0,6.3); g.stroke();
+  g.fillStyle=BLUE; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('+'+used.toFixed(2)+' D added',cx,cy+4);
+
+  /* zonules: taut straight lines when relaxed, slack curves when contracted */
+  g.strokeStyle=GOLD; g.lineWidth=2.6;
+  [1,-1].forEach(function(s){
+    var k;
+    for(k=-2;k<=2;k++){
+      var x1=cx+k*26, y1=cy+s*lh*Math.sqrt(Math.max(0,1-Math.pow(k*26/lw,2)));
+      var x2=cx+k*30, y2=cy+s*ringIn;
+      g.beginPath(); g.moveTo(x1,y1);
+      if(f<0.06){ g.lineTo(x2,y2); }
+      else { g.quadraticCurveTo((x1+x2)/2+22*f*(k>=0?1:-1),(y1+y2)/2,x2,y2); }
+      g.stroke();
+    }
+  });
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(f<0.06?'zonular fibers: TAUT':'zonular fibers: SLACK',24,cy-ringIn-6);
+
+  /* pupil, near triad */
+  var pd=(6.0-2.6*f);
+  g.fillStyle=TDK; g.beginPath(); g.arc(120,cy+90,pd*9,0,6.3); g.fill();
+  g.strokeStyle=MUT; g.lineWidth=2.5; g.beginPath(); g.arc(120,cy+90,34,0,6.3); g.stroke();
+  g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('pupil '+pd.toFixed(1)+' mm',120,cy+140);
+  g.fillStyle=PURP; g.font='800 11.5px Inter, system-ui, sans-serif';
+  g.fillText('near triad',120,cy+22);
+
+  /* convergence sketch */
+  var ex=W-160;
+  g.strokeStyle=PURP; g.lineWidth=2.6;
+  [-1,1].forEach(function(s){
+    g.beginPath(); g.arc(ex+s*44,cy+70,26,0,6.3); g.stroke();
+    g.beginPath(); g.moveTo(ex+s*44,cy+70); g.lineTo(ex+s*(44-30*f),cy-30); g.stroke();
+  });
+  g.fillStyle=PURP; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(f>0.05?'eyes converged':'eyes parallel',ex,cy+124);
+
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('target demands '+need.toFixed(2)+' D — the reserve at this age is '+A.toFixed(1)+' D',W/2,H-12);
+}
+
+function drawAmp(a,A){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=64,R=W-24,T=28,B=H-44;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(x){ return L+((x-5)/70)*(R-L); }
+  function Y(y){ return B-(y/15)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,5,10,15].forEach(function(d){
+    g.beginPath(); g.moveTo(L,Y(d)); g.lineTo(R,Y(d)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(d+' D',L-8,Y(d)+4);
+  });
+  [10,20,30,40,50,60,70].forEach(function(x){
+    g.beginPath(); g.moveTo(X(x),B); g.lineTo(X(x),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(x,X(x),B+20);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  /* the 2 D presbyopia line */
+  g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(L,Y(2)); g.lineTo(R,Y(2)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('below about 2 D, near work becomes impossible without help',L+10,Y(2)-8);
+
+  g.strokeStyle=TEAL; g.lineWidth=3.4; g.beginPath();
+  var x;
+  for(x=5;x<=75;x+=0.5){ var px=X(x),py=Y(amp(x)); if(x===5) g.moveTo(px,py); else g.lineTo(px,py); }
+  g.stroke();
+  g.fillStyle=TEAL; g.beginPath(); g.arc(X(a),Y(A),8,0,6.3); g.fill();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('age '+a+' — '+A.toFixed(1)+' D',X(a),Y(A)-16);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('accommodative amplitude against age',W/2,H-12);
+}
+
+/* =========================================================
+   BENCH 3 -- aqueous humor and intraocular pressure
+   Goldmann: IOP = (F - Fu)/C + Pev, with normal facility C = 0.30 uL/min/mmHg
+   ========================================================= */
+var CNORM=0.30, ACVOL=250;
+['prod','res','uve','pev'].forEach(function(id){ $(id).addEventListener('input',render3); });
+(function(){
+  var pre=$('pre3');
+  [['Healthy eye',25,100,40,90],['Open-angle glaucoma',25,300,40,90],['Acute angle closure',25,900,5,90],
+   ['On a carbonic anhydrase inhibitor',13,300,40,90],['On a prostaglandin analog',25,300,120,90]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('prod').value=P[1]; $('res').value=P[2]; $('uve').value=P[3]; $('pev').value=P[4]; render3(); };
+    pre.appendChild(b);
+  });
+})();
+
+function iop(){
+  var F=(+$('prod').value)/10, Rm=(+$('res').value)/100, Fu=(+$('uve').value)/100, Pev=(+$('pev').value)/10;
+  var Ctrab=CNORM/Rm;
+  var Ftrab=Math.max(F-Fu,0);
+  var P=Ftrab/Ctrab+Pev;
+  return {F:F,Rm:Rm,Fu:Fu,Pev:Pev,C:Ctrab,Ftrab:Ftrab,P:P,turn:ACVOL/Math.max(F,0.01),pct:100*F/ACVOL};
+}
+function render3(){
+  var S=iop();
+  $('prodV').textContent=S.F.toFixed(1)+' µL/min';
+  $('resV').textContent=S.Rm.toFixed(2)+' × normal';
+  $('uveV').textContent=S.Fu.toFixed(2)+' µL/min';
+  $('pevV').textContent=S.Pev.toFixed(1)+' mmHg';
+
+  $('st3').innerHTML=
+    tile('Intraocular pressure',S.P.toFixed(1),'mmHg &middot; normal 10&ndash;21')+
+    tile('Pressure driving trabecular flow',(S.P-S.Pev).toFixed(1),'mmHg &middot; &Delta;P above episcleral veins')+
+    tile('Outflow facility',S.C.toFixed(3),'&micro;L/min per mmHg &middot; normal 0.30')+
+    tile('Trabecular outflow',S.Ftrab.toFixed(2),'&micro;L/min &middot; 80&ndash;90% of drainage')+
+    tile('Turnover of the 250 &micro;L',S.turn.toFixed(0),'min for a complete exchange &middot; '+S.pct.toFixed(1)+'%/min')+
+    tile('Uveoscleral outflow',S.Fu.toFixed(2),'&micro;L/min &middot; the pressure-independent route');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(S.P>40){
+    cls='verdict bad';
+    txt='Acute pressure crisis &mdash; '+S.P.toFixed(0)+' mmHg<small>Outflow resistance is '+S.Rm.toFixed(1)+' times normal. A red, rock-hard, painful eye with a fixed mid-dilated pupil, corneal edema and haloes around lights. Hours matter, not weeks.</small>';
+    inf='<span class="n">Angle closure is the plumbing version</span>The iris root itself blocks the drainage angle, so resistance rises by an order of magnitude in minutes rather than years and pressure can pass 50 mmHg within hours. Perfusion pressure at the optic nerve head is arterial pressure minus intraocular pressure, so at these levels the nerve is being starved as well as squeezed.<div class="dd">Nothing about production changed. The ciliary epithelium is still secreting about 2.5 &micro;L/min because active secretion using Na<sup>+</sup>/K<sup>+</sup>-ATPase and carbonic anhydrase does not care how tense the eye is. That is precisely what makes the situation unstable.</div>';
+  } else if(S.P>21){
+    cls='verdict warn';
+    txt='Elevated &mdash; '+S.P.toFixed(1)+' mmHg, above the normal 10&ndash;21 range<small>Resistance is '+S.Rm.toFixed(2)+' times normal, so facility has fallen from 0.30 to '+S.C.toFixed(3)+' &micro;L/min per mmHg. Rearranged, the eye needs '+(S.P-S.Pev).toFixed(1)+' mmHg of gradient to push '+S.Ftrab.toFixed(2)+' &micro;L/min through it.</small>';
+    inf='<span class="n">Q = &Delta;P / R, applied to an eye</span>Aqueous is produced almost independently of pressure, so flow is essentially fixed. Rearrange the equation to &Delta;P = Q &times; R and the conclusion is unavoidable: <b>double the resistance and you double the pressure gradient</b>. The eye has no way to compensate by making less.<div class="dd">This is open-angle glaucoma. The trabecular meshwork clogs gradually, pressure creeps up, and axoplasmic transport in the 1.2 million ganglion cell axons fails where they are compressed at the lamina cribrosa. Pressure matters not because pressure hurts &mdash; open-angle glaucoma is painless &mdash; but because it strangles axons at that one crossing point.</div>';
+  } else if(S.P<10){
+    cls='verdict cool';
+    txt='Hypotony &mdash; '+S.P.toFixed(1)+' mmHg, below the normal range<small>Either production has fallen or outflow is far too easy. A globe needs a certain turgor to hold its shape, and a soft eye develops choroidal folds and blurred vision.</small>';
+    inf='<span class="n">Pressure has a job</span>The anterior segment is a pressurized hydraulic system, and the pressure is what keeps the cornea in its precise curvature and the retina apposed to the pigment epithelium. Drop it far enough and the optics degrade from the front backwards.<div class="dd">Note what the equation predicts about the floor: even with infinite outflow facility, intraocular pressure cannot fall below <b>episcleral venous pressure</b>, currently '+S.Pev.toFixed(1)+' mmHg, because that is the pressure aqueous is draining into.</div>';
+  } else {
+    cls='verdict';
+    txt='Normal &mdash; '+S.P.toFixed(1)+' mmHg<small>'+S.F.toFixed(1)+' &micro;L/min of production, '+S.Ftrab.toFixed(2)+' &micro;L/min through the trabecular meshwork against a facility of '+S.C.toFixed(3)+', plus an episcleral venous pressure of '+S.Pev.toFixed(1)+' mmHg.</small>';
+    inf='<span class="n">Follow one microliter through</span>The ciliary epithelium secretes it into the <b>posterior chamber</b>. It flows forward through the pupil into the <b>anterior chamber</b>, then out at the angle through the <b>trabecular meshwork</b> into <b>Schlemm canal</b> and on into episcleral veins &mdash; about 80&ndash;90% of the total. The remainder leaves by the uveoscleral route through the ciliary muscle, and that route is largely pressure-independent.<div class="dd">The whole 250 &micro;L of anterior plus posterior chamber turns over about every '+S.turn.toFixed(0)+' minutes at this production rate &mdash; roughly 1% per minute. Aqueous is not a static filling; it is a circulation that nourishes the avascular cornea and lens.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML=inf;
+  $('cv3').setAttribute('aria-label','Aqueous circulation with outflow resistance at '+S.Rm.toFixed(2)+' times normal, giving an intraocular pressure of '+S.P.toFixed(1)+' millimeters of mercury.');
+  drawFlow(S); drawGauge(S);
+}
+
+function drawFlow(S){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('AQUEOUS HUMOR: CILIARY EPITHELIUM → PUPIL → TRABECULAR MESHWORK → SCHLEMM CANAL',24,30);
+  var cy=H/2+22, cx=430, rr=118;
+  /* anterior segment sketch */
+  g.strokeStyle=LINE; g.lineWidth=3;
+  g.beginPath(); g.arc(cx,cy,rr,-2.05,2.05); g.stroke();
+  g.strokeStyle=TEAL; g.lineWidth=6;
+  g.beginPath(); g.arc(cx-40,cy,132,-1.15,1.15); g.stroke();
+  g.fillStyle=TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('cornea',cx+96,cy-116);
+  /* iris */
+  [1,-1].forEach(function(s){
+    g.strokeStyle=CORAL; g.lineWidth=9; g.lineCap='round';
+    g.beginPath(); g.moveTo(cx-108,cy+s*88); g.lineTo(cx-6,cy+s*26); g.stroke();
+  });
+  g.fillStyle=CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('iris',cx-96,cy-96);
+  /* lens */
+  g.fillStyle=BLUE; g.globalAlpha=0.22; g.beginPath(); g.ellipse(cx-124,cy,34,74,0,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=BLUE; g.lineWidth=2.5; g.beginPath(); g.ellipse(cx-124,cy,34,74,0,0,6.3); g.stroke();
+  g.fillStyle=BLUE; g.textAlign='center'; g.fillText('lens',cx-124,cy+96);
+  /* ciliary body, the source */
+  [1,-1].forEach(function(s){
+    g.fillStyle=GREEN; g.globalAlpha=0.35;
+    g.beginPath(); g.ellipse(cx-108,cy+s*112,30,20,0,0,6.3); g.fill(); g.globalAlpha=1;
+  });
+  g.fillStyle=GREEN; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('ciliary epithelium — '+S.F.toFixed(1)+' µL/min in',cx-108,cy+152);
+
+  /* flow arrows through the pupil into the anterior chamber */
+  g.strokeStyle=GREEN; g.lineWidth=Math.max(2,Math.min(12,S.F*3.2)); g.lineCap='round';
+  [1,-1].forEach(function(s){
+    g.beginPath(); g.moveTo(cx-100,cy+s*96); g.quadraticCurveTo(cx-40,cy+s*40,cx+10,cy+s*8); g.stroke();
+    g.beginPath(); g.moveTo(cx+10,cy+s*8); g.quadraticCurveTo(cx+70,cy+s*40,cx+50,cy+s*98); g.stroke();
+  });
+
+  /* the drainage angle, drawn as a constriction that narrows with resistance */
+  var gap=Math.max(3,26/S.Rm);
+  [1,-1].forEach(function(s){
+    var ax=cx+44, ay=cy+s*104;
+    g.fillStyle=S.Rm>2?CORAL:TEAL; g.globalAlpha=0.30;
+    g.fillRect(ax,ay-14,120,28); g.globalAlpha=1;
+    g.strokeStyle=S.Rm>2?CORAL:TEAL; g.lineWidth=3;
+    g.beginPath(); g.moveTo(ax,ay-14); g.lineTo(ax+120,ay-gap/2); g.stroke();
+    g.beginPath(); g.moveTo(ax,ay+14); g.lineTo(ax+120,ay+gap/2); g.stroke();
+  });
+  g.fillStyle=S.Rm>2?CORAL:TEAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('trabecular meshwork — resistance '+S.Rm.toFixed(2)+' × normal',cx+50,cy-134);
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+  g.fillText('into Schlemm canal → episcleral veins at '+S.Pev.toFixed(1)+' mmHg',cx+50,cy+152);
+
+  /* uveoscleral route */
+  g.strokeStyle=PURP; g.lineWidth=Math.max(2,Math.min(10,S.Fu*7));
+  g.beginPath(); g.moveTo(cx-108,cy+124); g.lineTo(cx-108,cy+180); g.lineTo(cx+240,cy+180); g.stroke();
+  g.fillStyle=PURP; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('uveoscleral route — '+S.Fu.toFixed(2)+' µL/min',cx+250,cy+184);
+
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('ΔP = Q × R',W-28,cy-30);
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+  g.fillText(S.Ftrab.toFixed(2)+' µL/min × '+(1/S.C).toFixed(2)+' mmHg per µL/min = '+(S.P-S.Pev).toFixed(1)+' mmHg',W-28,cy-8);
+  g.fillText('+ episcleral venous pressure '+S.Pev.toFixed(1)+' mmHg',W-28,cy+14);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('IOP = '+S.P.toFixed(1)+' mmHg',W-28,cy+42);
+}
+
+function drawGauge(S){
+  var cv=$('cv3b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=40,R=W-40,y=98,hh=34,MAXP=70;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(p){ return L+(clamp(p,0,MAXP)/MAXP)*(R-L); }
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('INTRAOCULAR PRESSURE',L,32);
+  g.fillStyle=LINE; g.fillRect(L,y,R-L,hh);
+  g.fillStyle=GREEN; g.globalAlpha=0.35; g.fillRect(X(10),y,X(21)-X(10),hh); g.globalAlpha=1;
+  g.fillStyle=GREEN; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('normal 10–21 mmHg',(X(10)+X(21))/2,y-10);
+  var col=S.P>40?CORAL:(S.P>21?GOLD:(S.P<10?BLUE:TEAL));
+  g.fillStyle=col; g.fillRect(L,y,X(S.P)-L,hh);
+  g.strokeStyle=LINE; g.lineWidth=1.5; g.strokeRect(L,y,R-L,hh);
+  g.fillStyle=col;
+  g.beginPath(); g.moveTo(X(S.P),y-6); g.lineTo(X(S.P)-9,y-20); g.lineTo(X(S.P)+9,y-20); g.closePath(); g.fill();
+  g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(S.P.toFixed(1)+' mmHg',X(S.P),y+hh+22);
+  [0,10,20,30,40,50,60,70].forEach(function(p){
+    g.strokeStyle=MUT; g.lineWidth=1;
+    g.beginPath(); g.moveTo(X(p),y+hh); g.lineTo(X(p),y+hh+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillText(p,X(p),y+hh+38);
+  });
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('production is nearly pressure-independent, so resistance sets pressure almost single-handedly',W/2,H-12);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

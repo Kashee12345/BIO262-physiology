@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e12">
+<title>Bestiary · BIO 262 Human Physiology — Joyce University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Cinzel+Decorative:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--gold:#f0c840;--ink:#e8e2d4;--dim:#9a9384;--bg:#0a0e12;--panel:#141a22;--line:#2a3440;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:VT323,monospace;font-size:20px;}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 16px 70px;position:relative;z-index:2;}
+  header{text-align:center;padding:44px 18px 10px;}
+  header .crest{font-size:32px;}
+  .kick{font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:.3em;color:var(--gold);margin:14px 0 10px;}
+  h1{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:clamp(30px,7vw,56px);margin:0;
+     background:linear-gradient(180deg,#fff6dc,var(--gold) 55%,#a8781a);
+     -webkit-background-clip:text;background-clip:text;color:transparent;}
+  header p{color:var(--dim);max-width:560px;margin:12px auto 0;font-size:21px;}
+  .back{display:inline-block;margin-top:14px;color:var(--dim);font-size:19px;text-decoration:none;border-bottom:1px dotted var(--dim);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;margin-top:28px;}
+  .card{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:14px;text-align:center;
+        cursor:pointer;transition:transform .16s,border-color .16s;position:relative;overflow:hidden;}
+  .card:hover{transform:translateY(-4px);}
+  .card .mod{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.15em;color:#080c10;
+             border-radius:20px;padding:4px 9px;display:inline-block;margin-bottom:8px;}
+  .card .art{display:flex;justify-content:center;margin-bottom:8px;}
+  .card .nm{font-family:'Cinzel Decorative',serif;font-weight:700;font-size:20px;line-height:1.15;}
+  .card .ep{font-size:17px;color:var(--dim);margin-top:3px;}
+  .card .hint{font-family:'Press Start 2P',monospace;font-size:6.5px;color:#5e594e;margin-top:9px;letter-spacing:.12em;}
+  footer{text-align:center;margin-top:36px;font-size:18px;color:#5e594e;}
+  footer a{color:#7d7768;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="crest">📖</div>
+    <div class="kick">JOYCE UNIVERSITY · BIO 262</div>
+    <h1>Bestiary</h1>
+    <p>Twenty adversaries — one per module for weekly study, plus six exam overlords for review. Each embodies the physiology it guards — and each has a weakness drawn from the same material.</p>
+    <a class="back" href="index.html">← Back to the course hub</a>
+  </header>
+  <div class="grid" id="grid"></div>
+  <footer>
+    Tap any adversary for its full dossier.<br>
+    <b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences · Dr. Akash Garg
+  </footer>
+</div>
+<script src="data/bossall.js"></script>
+<script>
+(function(){
+  var B = (window.BIO262_BOSSES||[]).concat(window.BIO262_EXAM_BOSSES||[]), FX = window.BIO262FX;
+  var g = document.getElementById("grid"), h = "";
+  for(var i=0;i<B.length;i++){
+    var b = B[i];
+    h += '<div class="card" data-i="'+i+'" style="border-color:'+b.pal[2]+'55">'
+       + '<div class="mod" style="background:'+b.pal[3]+'">'+(b.m?('MODULE '+b.m):(b.x===6?'FINAL EXAM':'EXAM '+b.x))+'</div>'
+       + '<div class="art">'+FX.portrait(b,7)+'</div>'
+       + '<div class="nm" style="color:'+b.pal[3]+'">'+b.name+'</div>'
+       + '<div class="ep">'+b.epithet+'</div>'
+       + '<div class="hint">VIEW DOSSIER</div></div>';
+  }
+  g.innerHTML = h;
+  g.addEventListener("click", function(ev){
+    var c = ev.target.closest ? ev.target.closest(".card") : null;
+    if(!c) return;
+    try{ localStorage.removeItem("bio262_skip_reveal"); }catch(e){}
+    FX.reveal(B[parseInt(c.dataset.i,10)]);
+  });
+})();
+</script>
+</body>
+</html>

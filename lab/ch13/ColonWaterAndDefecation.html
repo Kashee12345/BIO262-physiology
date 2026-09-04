@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nine Liters a Day: Colonic Water Balance and the Defecation Reflex</title>
+<meta name="description" content="Push the daily fluid ledger past the colon's four-to-five liter reserve, test whether fasting stops the diarrhea, then hold or release the two anal sphincters under different lesions.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;text-align:left;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.3px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.5px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;font-weight:800;color:var(--teal-dk);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);}
+.tog{display:flex;gap:9px;margin-top:11px;flex-wrap:wrap;}
+.tog button{flex:1 1 46%;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 8px;border-radius:10px;cursor:pointer;font-family:var(--sans);line-height:1.25;}
+.tog button.on{background:var(--coral);border-color:var(--coral);color:#fff;}
+.tog button.hold.on{background:var(--teal);border-color:var(--teal);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch13.html">&larr; Module 13</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 13</div>
+  <h1>Nine Liters a Day &mdash; and the One Reflex the Cortex Can Veto</h1>
+  <div class="intro">Two liters are drunk and about seven are secreted, so nine liters arrive at the small intestine every day and only about 150 mL leaves in stool. The colon&rsquo;s spare capacity is only four to five liters, and that narrow margin is the whole story of diarrhea. Push the ledger below, use fasting as a diagnostic test, then take control of the two anal sphincters and see which one the cortex can actually command.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>1 &middot; The daily fluid ledger</h2>
+      <div class="sl"><label for="sIn">Fluid drunk <span class="v" id="vIn">2.0 L/day</span></label>
+        <input type="range" id="sIn" min="0" max="50" value="20" step="1" aria-label="Fluid drunk per day in liters"></div>
+      <div class="sl"><label for="sSec">Extra crypt secretion (toxin, CFTR driven) <span class="v" id="vSec">0 L/day</span></label>
+        <input type="range" id="sSec" min="0" max="20" value="0" step="1" aria-label="Extra crypt chloride and water secretion, liters per day"></div>
+      <div class="sl"><label for="sOsm">Unabsorbable solute in the lumen <span class="v" id="vOsm">0 mmol/day</span></label>
+        <input type="range" id="sOsm" min="0" max="600" value="0" step="10" aria-label="Unabsorbable osmotically active solute in the lumen, millimoles per day"></div>
+      <div class="sl"><label for="sSI">Small-intestinal absorption <span class="v" id="vSI">100%</span></label>
+        <input type="range" id="sSI" min="0" max="100" value="100" step="1" aria-label="Small intestinal absorptive function, percent of normal"></div>
+      <div class="sl"><label for="sTr">Colonic transit time <span class="v" id="vTr">24 h</span></label>
+        <input type="range" id="sTr" min="6" max="60" value="24" step="1" aria-label="Colonic transit time in hours"></div>
+      <div class="sl"><label for="sAld">Aldosterone drive on colonic ENaC <span class="v" id="vAld">100%</span></label>
+        <input type="range" id="sAld" min="0" max="160" value="100" step="1" aria-label="Aldosterone drive on colonic epithelial sodium channels, percent"></div>
+      <div class="tog">
+        <button type="button" id="bFast" aria-pressed="false">Fast the patient (diagnostic test)</button>
+      </div>
+      <div class="chips" id="chipsScen" style="margin-top:11px"></div>
+    </div>
+
+    <div class="card">
+      <h2>2 &middot; Defecation: two sphincters, one of them yours</h2>
+      <div class="sl"><label for="sVol">Rectal volume <span class="v" id="vVol">0 mL</span></label>
+        <input type="range" id="sVol" min="0" max="400" value="0" step="5" aria-label="Volume of stool in the rectum, milliliters"></div>
+      <div class="sl"><label for="sVal">Valsalva effort <span class="v" id="vVal">0 mmHg</span></label>
+        <input type="range" id="sVal" min="0" max="120" value="0" step="1" aria-label="Extra intra-abdominal pressure generated by a Valsalva maneuver, millimeters of mercury"></div>
+      <div class="tog">
+        <button type="button" class="hold" id="bHold" aria-pressed="false">Squeeze the external sphincter</button>
+        <button type="button" id="bMass" aria-pressed="false">Trigger a mass movement</button>
+      </div>
+      <div class="lbl">Lesion</div>
+      <div class="chips" id="chipsLes"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Where the nine liters go</h2>
+      <canvas id="cvLed" width="660" height="250" role="img" aria-label="Bar chart of the daily fluid ledger showing the volume presented to the small intestine, how much the small intestine absorbs, how much reaches the colon, the colon's absorptive reserve, and the volume lost in stool"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Presented</div><div class="v" id="oPres">9.0</div><div class="u">L/day</div></div>
+        <div class="lab"><div class="k">Small bowel takes</div><div class="v" id="oSI">7.8</div><div class="u">L/day &middot; normal 7.5–8</div></div>
+        <div class="lab"><div class="k">Colon receives</div><div class="v" id="oCin">1.2</div><div class="u">L/day</div></div>
+        <div class="lab"><div class="k">Colon reserve left</div><div class="v" id="oRes">3.4</div><div class="u">L/day of spare capacity</div></div>
+        <div class="lab"><div class="k">Stool water</div><div class="v" id="oStool">100</div><div class="u">mL/day &middot; normal 100–200</div></div>
+        <div class="lab"><div class="k">Luminal Na+ achieved</div><div class="v" id="oNa">25</div><div class="u">mEq/L &middot; ENaC</div></div>
+      </div>
+      <div class="verdict" id="vLed"></div>
+      <div class="hint" id="hLed"></div>
+    </div>
+
+    <div class="card">
+      <h2>The rectum, the two sphincters and the veto</h2>
+      <canvas id="cvDef" width="660" height="270" role="img" aria-label="Diagram of the rectum with the smooth muscle internal anal sphincter and the skeletal muscle external anal sphincter, showing their tone and the rectal pressure driving against them"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Rectal pressure</div><div class="v" id="oPr">5</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Internal sphincter</div><div class="v" id="oIAS">55</div><div class="u">mmHg &middot; smooth muscle</div></div>
+        <div class="lab"><div class="k">External sphincter</div><div class="v" id="oEAS">20</div><div class="u">mmHg &middot; skeletal, S2–S4</div></div>
+        <div class="lab"><div class="k">Anal canal total</div><div class="v" id="oAnal">75</div><div class="u">mmHg &middot; resting 60–90</div></div>
+      </div>
+      <div class="verdict" id="vDef"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){return CS.getPropertyValue('--'+n).trim();}
+var TEAL=C('teal'),TDK=C('teal-dk'),CORAL=C('coral'),GOLD=C('gold'),GREEN=C('green'),BLUE=C('blue'),PURPLE=C('purple'),LINE=C('line'),MUTED=C('muted'),SOFT=C('soft'),CARD=C('card');
+
+var E={};
+['sIn','sSec','sOsm','sSI','sTr','sAld','sVol','sVal','vIn','vSec','vOsm','vSI','vTr','vAld','vVol','vVal']
+ .forEach(function(i){E[i]=document.getElementById(i);});
+var bFast=document.getElementById('bFast'), bHold=document.getElementById('bHold'), bMass=document.getElementById('bMass');
+var fasting=false, holding=false, massMove=false, lesion='none';
+
+var SCEN=[
+ {n:'Healthy day',                 s:{sIn:20,sSec:0,sOsm:0,sSI:100,sTr:24,sAld:100}},
+ {n:'Cholera toxin',               s:{sIn:20,sSec:14,sOsm:0,sSI:100,sTr:10,sAld:100}},
+ {n:'Lactase deficiency, 1 L milk',s:{sIn:20,sSec:0,sOsm:280,sSI:100,sTr:14,sAld:100}},
+ {n:'Osmotic laxative',            s:{sIn:20,sSec:0,sOsm:450,sSI:100,sTr:12,sAld:100}},
+ {n:'Celiac disease',             s:{sIn:20,sSec:0,sOsm:120,sSI:45,sTr:20,sAld:100}},
+ {n:'Slow-transit constipation',   s:{sIn:12,sSec:0,sOsm:0,sSI:100,sTr:56,sAld:130}}
+];
+var chipsScen=document.getElementById('chipsScen');
+SCEN.forEach(function(sc){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=sc.n;
+  b.addEventListener('click',function(){
+    Object.keys(sc.s).forEach(function(k){ E[k].value=sc.s[k]; });
+    [].forEach.call(chipsScen.children,function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+    b.classList.add('on'); b.setAttribute('aria-pressed','true'); read();
+  });
+  chipsScen.appendChild(b);
+});
+
+var LES=[
+ {id:'none', n:'Intact'},
+ {id:'sci',  n:'Spinal cord injury above the sacral segments'},
+ {id:'sac',  n:'Sacral cord or pudendal nerve injury'},
+ {id:'hir',  n:'Aganglionic segment (Hirschsprung)'}
+];
+var chipsLes=document.getElementById('chipsLes');
+LES.forEach(function(l){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(l.id==='none'?' on':'');
+  b.textContent=l.n; b.setAttribute('aria-pressed',l.id==='none'?'true':'false');
+  b.addEventListener('click',function(){
+    lesion=l.id;
+    [].forEach.call(chipsLes.children,function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+    b.classList.add('on'); b.setAttribute('aria-pressed','true'); read();
+  });
+  chipsLes.appendChild(b);
+});
+
+['sIn','sSec','sOsm','sSI','sTr','sAld','sVol','sVal'].forEach(function(i){ E[i].addEventListener('input',read); });
+bFast.addEventListener('click',function(){ fasting=!fasting; bFast.classList.toggle('on',fasting);
+  bFast.setAttribute('aria-pressed',fasting?'true':'false');
+  bFast.textContent=fasting?'Resume eating and drinking':'Fast the patient (diagnostic test)'; read(); });
+bHold.addEventListener('click',function(){ holding=!holding; bHold.classList.toggle('on',holding);
+  bHold.setAttribute('aria-pressed',holding?'true':'false'); read(); });
+bMass.addEventListener('click',function(){
+  massMove=!massMove; bMass.classList.toggle('on',massMove);
+  bMass.setAttribute('aria-pressed',massMove?'true':'false');
+  if(massMove && +E.sVol.value<180) E.sVol.value=240;
+  if(!massMove) E.sVol.value=0;
+  read();
+});
+
+var L={}, D={};
+function read(){
+  var intake=(+E.sIn.value)/10, sec=+E.sSec.value, osm=+E.sOsm.value;
+  var siF=+E.sSI.value/100, tr=+E.sTr.value, ald=+E.sAld.value/100;
+  E.vIn.textContent=intake.toFixed(1)+' L/day'; E.vSec.textContent=sec+' L/day';
+  E.vOsm.textContent=osm+' mmol/day'; E.vSI.textContent=E.sSI.value+'%';
+  E.vTr.textContent=tr+' h'; E.vAld.textContent=E.sAld.value+'%';
+
+  var intakeEff = fasting?0:intake;
+  var osmEff = fasting?0:osm;
+  var obligated = osmEff/290*0.7;                       /* L held in the lumen, less what fermentation salvages */
+  var presented = intakeEff+7.0+sec;
+  var siAbs = Math.min(7.8*siF, Math.max(0,presented-obligated-0.1));
+  var colonIn = presented-siAbs;
+  var colonCap = 4.5*Math.sqrt(tr/24)*ald;
+  var colonAbs = Math.max(0,Math.min(colonCap,colonIn-obligated-0.1));
+  var stool = Math.max(0.1,colonIn-colonAbs);
+  var reserve = Math.max(0,colonCap-colonAbs);
+  var lumNa = Math.round(25+115*Math.max(0,1-ald));
+  L={intake:intakeEff,sec:sec,osm:osmEff,obligated:obligated,presented:presented,siAbs:siAbs,
+     colonIn:colonIn,colonCap:colonCap,colonAbs:colonAbs,stool:stool,reserve:reserve,tr:tr,lumNa:lumNa,siF:siF};
+
+  /* ---- defecation ---- */
+  var V=+E.sVol.value, val=+E.sVal.value;
+  E.vVol.textContent=V+' mL'; E.vVal.textContent=val+' mmHg';
+  var rair = V>20 && lesion!=='hir';                    /* rectoanal inhibitory reflex, enteric */
+  var ias = rair ? 10 : 55;
+  if(lesion==='hir') ias=60;
+  var easRest = (lesion==='sac') ? 5 : (lesion==='sci' ? 25 : 20);
+  var easSqueeze = (lesion==='none' && holding) ? 105 : 0;
+  var eas = easRest+easSqueeze;
+  var reflexBoost = (V>150 && lesion!=='sac') ? 14 : 0; /* sacral parasympathetic defecation reflex */
+  var pRect = 5+0.055*V+Math.pow(V/400,3)*20+val+reflexBoost;
+  var anal = ias+eas;
+  var open = pRect>anal;
+  D={V:V,val:val,rair:rair,ias:ias,eas:eas,easSqueeze:easSqueeze,anal:anal,pRect:pRect,open:open,
+     sensation: V>=300?'urgent':V>=200?'strong urge':V>=100?'first sensation':'rectum empty'};
+  render();
+}
+
+/* ---------------- ledger canvas ---------------- */
+var cvL=document.getElementById('cvLed'), lc=cvL.getContext('2d');
+function bar(x,y,w,h,col,label,val){
+  lc.fillStyle=col; lc.fillRect(x,y,w,h);
+  lc.fillStyle='#fff'; lc.font='700 11.5px Inter, sans-serif'; lc.textAlign='left'; lc.textBaseline='middle';
+  if(w>132) lc.fillText(label+'  '+val,x+9,y+h/2);
+  else { lc.fillStyle=SOFT; lc.fillText(label+'  '+val,x+w+8,y+h/2); }
+}
+function drawLed(){
+  var W=cvL.width,H=cvL.height,padL=14,padR=14;
+  lc.clearRect(0,0,W,H); lc.fillStyle=CARD; lc.fillRect(0,0,W,H);
+  var maxL=Math.max(10,L.presented*1.05);
+  var sc=(W-padL-padR)/maxL;
+  var y=18, bh=30, gap=16;
+  lc.fillStyle=MUTED; lc.font='700 10.5px Inter, sans-serif'; lc.textAlign='left'; lc.textBaseline='middle';
+
+  bar(padL,y,L.intake*sc,bh,BLUE,'drunk',L.intake.toFixed(1)+' L');
+  bar(padL+L.intake*sc,y,7.0*sc,bh,PURPLE,'secreted','7.0 L');
+  if(L.sec>0) bar(padL+(L.intake+7)*sc,y,L.sec*sc,bh,CORAL,'toxin secretion',L.sec.toFixed(1)+' L');
+  lc.fillStyle=SOFT; lc.font='700 11px Inter, sans-serif';
+  lc.fillText('PRESENTED  '+L.presented.toFixed(1)+' L/day',padL,y+bh+11);
+
+  y+=bh+gap+14;
+  bar(padL,y,L.siAbs*sc,bh,TEAL,'small intestine absorbs',L.siAbs.toFixed(1)+' L');
+  bar(padL+L.siAbs*sc,y,L.colonIn*sc,bh,GOLD,'to the colon',L.colonIn.toFixed(1)+' L');
+
+  y+=bh+gap+14;
+  bar(padL,y,L.colonAbs*sc,bh,TEAL,'colon absorbs',L.colonAbs.toFixed(1)+' L');
+  bar(padL+L.colonAbs*sc,y,Math.max(L.stool*sc,3),bh,CORAL,'stool',(L.stool*1000).toFixed(0)+' mL');
+
+  /* colon reserve marker */
+  y+=bh+gap+8;
+  var capW=Math.min(L.colonCap,maxL)*sc;
+  lc.fillStyle=LINE; lc.fillRect(padL,y,capW,14);
+  lc.fillStyle=GREEN; lc.fillRect(padL,y,Math.min(Math.min(L.colonCap,L.colonAbs)*sc,capW),14);
+  lc.fillStyle=SOFT; lc.font='700 10.8px Inter, sans-serif';
+  lc.fillText('colonic capacity used  '+L.colonAbs.toFixed(1)+' of '+L.colonCap.toFixed(1)+' L/day',padL+4,y+7);
+  lc.fillStyle=MUTED; lc.font='10.5px Inter, sans-serif';
+  lc.fillText('transit '+L.tr+' h — longer contact time, more water recovered',padL,y+34);
+}
+
+/* ---------------- defecation canvas ---------------- */
+var cvD=document.getElementById('cvDef'), dc=cvD.getContext('2d');
+function drawDef(){
+  var W=cvD.width,H=cvD.height;
+  dc.clearRect(0,0,W,H); dc.fillStyle=CARD; dc.fillRect(0,0,W,H);
+  var cxp=210, cyp=110, rx=34+D.V*0.13, ry=30+D.V*0.10;
+
+  /* sigmoid colon feeding in */
+  dc.strokeStyle=LINE; dc.lineWidth=16; dc.lineCap='round';
+  dc.beginPath(); dc.moveTo(50,40); dc.quadraticCurveTo(150,30,cxp-10,cyp-ry); dc.stroke();
+  dc.fillStyle=MUTED; dc.font='700 11px Inter, sans-serif'; dc.textAlign='left'; dc.textBaseline='middle';
+  dc.fillText('sigmoid colon',48,26);
+
+  /* rectum */
+  dc.beginPath(); dc.ellipse(cxp,cyp,rx,ry,0,0,6.2832);
+  dc.fillStyle='rgba(0,0,0,0.05)'; dc.fill();
+  dc.strokeStyle=TEAL; dc.lineWidth=3; dc.stroke();
+  dc.fillStyle=GOLD;
+  for(var i=0;i<Math.round(D.V/22);i++){
+    var a=i*2.3, r=Math.min(rx,ry)*0.62*Math.sqrt((i+1)/Math.max(1,D.V/22));
+    dc.beginPath(); dc.arc(cxp+Math.cos(a)*r,cyp+Math.sin(a)*r,5.5,0,6.2832); dc.fill();
+  }
+  dc.fillStyle=TDK; dc.font='700 12px Inter, sans-serif'; dc.textAlign='center';
+  dc.fillText('RECTUM  '+D.V+' mL',cxp,cyp+ry+18);
+  dc.fillStyle=MUTED; dc.font='11px Inter, sans-serif';
+  dc.fillText(D.sensation,cxp,cyp+ry+34);
+
+  /* anal canal with the two sphincters */
+  var ay=cyp+ry+56, ax=cxp;
+  function ring(y,tone,maxTone,col,label,sub){
+    var open=1-Math.min(1,tone/maxTone);
+    var gapw=6+open*26;
+    dc.strokeStyle=col; dc.lineWidth=13; dc.lineCap='round';
+    dc.beginPath(); dc.moveTo(ax-52,y); dc.lineTo(ax-gapw/2,y); dc.stroke();
+    dc.beginPath(); dc.moveTo(ax+gapw/2,y); dc.lineTo(ax+52,y); dc.stroke();
+    dc.fillStyle=col; dc.font='700 11px Inter, sans-serif'; dc.textAlign='left'; dc.textBaseline='middle';
+    dc.fillText(label,ax+64,y-6); dc.fillStyle=MUTED; dc.font='10.5px Inter, sans-serif';
+    dc.fillText(sub,ax+64,y+8);
+  }
+  ring(ay,D.ias,55,D.ias>30?CORAL:GREEN,'INTERNAL sphincter · '+D.ias+' mmHg',
+       D.rair?'relaxed by the rectoanal inhibitory reflex':'smooth muscle, involuntary — still closed');
+  ring(ay+42,D.eas,60,D.eas>40?CORAL:(D.eas<12?GOLD:GREEN),'EXTERNAL sphincter · '+D.eas+' mmHg',
+       D.easSqueeze>0?'skeletal muscle, pudendal S2–S4 — you are holding it':'skeletal muscle, pudendal S2–S4');
+
+  /* pressure bars */
+  var bx0=W-190, bw=160, top=26;
+  dc.fillStyle=MUTED; dc.font='700 10.5px Inter, sans-serif'; dc.textAlign='left'; dc.textBaseline='middle';
+  dc.fillText('pressure, mmHg',bx0,top-10);
+  function pbar(y,v,max,col,lab){
+    dc.fillStyle=LINE; dc.fillRect(bx0,y,bw,20);
+    dc.fillStyle=col; dc.fillRect(bx0,y,bw*Math.min(1,v/max),20);
+    dc.fillStyle=TDK; dc.font='700 11px Inter, sans-serif';
+    dc.fillText(lab+' '+Math.round(v),bx0+6,y+10);
+  }
+  pbar(top,D.pRect,200,D.open?CORAL:BLUE,'rectum');
+  pbar(top+30,D.anal,200,D.open?GOLD:GREEN,'anal canal');
+  dc.fillStyle=D.open?CORAL:GREEN; dc.font='700 12.5px Inter, sans-serif';
+  dc.fillText(D.open?'stool passes':'continence held',bx0,top+72);
+  dc.fillStyle=MUTED; dc.font='10.5px Inter, sans-serif';
+  dc.fillText('Valsalva adds '+D.val+' mmHg',bx0,top+92);
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  document.getElementById('oPres').textContent=L.presented.toFixed(1);
+  document.getElementById('oSI').textContent=L.siAbs.toFixed(1);
+  document.getElementById('oCin').textContent=L.colonIn.toFixed(1);
+  document.getElementById('oRes').textContent=L.reserve.toFixed(1);
+  document.getElementById('oStool').textContent=Math.round(L.stool*1000);
+  document.getElementById('oNa').textContent=L.lumNa;
+  document.getElementById('oPr').textContent=Math.round(D.pRect);
+  document.getElementById('oIAS').textContent=D.ias;
+  document.getElementById('oEAS').textContent=D.eas;
+  document.getElementById('oAnal').textContent=D.anal;
+
+  var v=document.getElementById('vLed'), cls='verdict', m='';
+  if(L.stool>0.4 && L.sec>=4){
+    cls+=' bad';
+    m='Secretory diarrhea: '+(L.stool*1000).toFixed(0)+' mL a day, and fasting will not stop it.'+
+      '<small>Crypt cells are actively pumping chloride into the lumen through CFTR and water is following. Cholera toxin does this by locking the stimulatory G protein in its active state, so cyclic AMP stays permanently raised; losses can exceed 20 liters a day. The person dies of hypovolemia and acidosis, not of the organism — and survives if fluid and sodium are replaced, because SGLT1 keeps working throughout.</small>';
+  } else if(L.stool>0.4 && L.obligated>0.2 && !fasting){
+    cls+=' warn';
+    m='Osmotic diarrhea: '+(L.stool*1000).toFixed(0)+' mL a day. Press <b>Fast the patient</b> and watch it stop.'+
+      '<small>A non-absorbable solute is holding about '+L.obligated.toFixed(1)+' L of water in the lumen. Because the driving solute comes from the diet, removing the diet removes the diarrhea — which is exactly how the fasting test distinguishes osmotic from secretory causes at the bedside.</small>';
+  } else if(fasting && L.stool<=0.35 && L.sec<4){
+    cls+=' ok';
+    m='Fasting stopped it: stool is back to '+(L.stool*1000).toFixed(0)+' mL a day.'+
+      '<small>That result names the mechanism. An osmotic diarrhea depends on a solute you swallowed; take the solute away and the water is absorbed normally. A secretory diarrhea would have carried on regardless, because the driving force is being generated by the epithelium itself.</small>';
+  } else if(L.stool>0.4){
+    cls+=' bad';
+    m='Diarrhea: '+(L.stool*1000).toFixed(0)+' mL a day — absorption is no longer exceeding secretion.'+
+      '<small>Defined physiologically, diarrhea is net secretion exceeding net absorption, or transit too fast for absorption to happen at all. Here the colon is being handed '+L.colonIn.toFixed(1)+' L against a capacity of '+L.colonCap.toFixed(1)+' L, so '+(L.stool*1000).toFixed(0)+' mL escapes.</small>';
+  } else if(L.tr>44 && L.stool<0.14){
+    cls+=' cool';
+    m='Constipation is a transit problem, not a secretion problem.'+
+      '<small>At '+L.tr+' hours of colonic transit the contents linger, more water is removed, the stool hardens and hard stool moves more slowly still — a self-reinforcing loop. Note the pitfall: adding fiber without water can make it worse, because insoluble fiber works by holding water to stretch the wall and increase the stimulus for peristalsis, and the colon will simply extract water from a bulkier stool.</small>';
+  } else {
+    cls+=' ok';
+    m='Balance held: '+(L.stool*1000).toFixed(0)+' mL of stool water from '+L.presented.toFixed(1)+' L presented.'+
+      '<small>That is an efficiency above 98 percent. The jejunum and ileum take 7.5 to 8 L, the colon recovers nearly all of the 1 to 2 L it receives, and '+L.reserve.toFixed(1)+' L a day of colonic reserve is still unused. The whole margin of safety is those few liters.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+
+  document.getElementById('hLed').innerHTML=
+    'The colon absorbs sodium through apical <b>ENaC</b> channels, strongly upregulated by aldosterone, and secretes potassium in exchange; water follows osmotically. Working against a steep gradient it can pull luminal sodium down to about <b>25 mEq/L</b>, far lower than the small intestine manages &mdash; currently '+L.lumNa+' mEq/L. '+
+    'The resident 10 to 100 trillion micro-organisms ferment fiber and unabsorbed carbohydrate into acetate, propionate and <b>butyrate</b>, the colonocyte&rsquo;s preferred fuel; fermentation salvages 5 to 10 percent of daily energy intake, makes vitamin K and several B vitamins, and generates several liters of gas of which about 600 mL is expelled.';
+
+  var d=document.getElementById('vDef'), dcls='verdict', dm='';
+  if(lesion==='hir'){
+    dcls+=' bad';
+    dm='No rectoanal inhibitory reflex: the internal sphincter will not let go.'+
+      '<small>Where enteric ganglia fail to develop, the inhibitory enteric neurons that use nitric oxide and VIP are missing, so the smooth-muscle internal sphincter stays contracted no matter how distended the rectum becomes. Anal canal pressure is '+D.anal+' mmHg against a rectal pressure of '+Math.round(D.pRect)+'. Stool cannot pass, and the bowel above dilates. It is a clean demonstration that forward flow depends on <b>relaxation</b> being commanded, not just contraction.</small>';
+  } else if(lesion==='sci'){
+    dcls+=(D.open?' warn':' cool');
+    dm='Reflex defecation preserved, voluntary delay lost.'+
+      '<small>The internal sphincter is smooth muscle and relaxes automatically on rectal distension through the enteric rectoanal inhibitory reflex, reinforced by the sacral parasympathetic defecation reflex — circuits that lie below the injury and are intact. The external sphincter is skeletal muscle innervated from S2 to S4 by the pudendal nerve but <i>commanded</i> through descending corticospinal fibers, and those are interrupted. So the cortex can no longer hold it closed. Because the reflex arc survives, defecation can be triggered on a schedule.</small>';
+  } else if(lesion==='sac'){
+    dcls+=' bad';
+    dm='Flaccid sphincter, reflex abolished.'+
+      '<small>Damage to the sacral cord or the pudendal nerve removes both the sacral defecation reflex and the tone of the external sphincter, which falls to '+D.eas+' mmHg. Anal canal pressure is only '+D.anal+' mmHg, so the rectum leaks as it fills and cannot be emptied efficiently when it should be. Contrast this with an injury above the sacral segments, where the reflex machinery survives.</small>';
+  } else if(D.V<=20){
+    dcls+=' cool';
+    dm='The rectum is normally empty.'+
+      '<small>Nothing has entered it, so there is no stretch, no rectoanal inhibitory reflex and no urge. Move the volume slider or trigger a <b>mass movement</b> — two or three times a day, usually after a meal, a wave sweeps contents from the transverse colon to the sigmoid over a few minutes. The <b>gastrocolic reflex</b>, gastric distension driving colonic motility, is why the urge so often follows breakfast.</small>';
+  } else if(D.easSqueeze>0 && !D.open){
+    dcls+=' ok';
+    dm='The cortex has vetoed the reflex: anal canal '+D.anal+' mmHg against '+Math.round(D.pRect)+' in the rectum.'+
+      '<small>The internal sphincter has already relaxed involuntarily — you have no say in that. What you are holding is the <b>external</b> sphincter, skeletal muscle supplied by the pudendal nerve from S2 to S4, and this is the one point in the entire digestive tract where the cortex can overrule a visceral reflex. Keep holding and the rectum accommodates: the wall relaxes, the stretch stimulus falls and the urge fades until the next mass movement.</small>';
+  } else if(D.open){
+    dcls+=(D.val>60?' warn':' ok');
+    dm='Defecation proceeds: rectal pressure '+Math.round(D.pRect)+' mmHg has overcome '+D.anal+' mmHg in the anal canal.'+
+      (D.val>60
+        ? '<small>Note the physiological cost of straining. A Valsalva maneuver — closed glottis against contracting abdominal muscles — supplies most of the driving pressure, but raised intrathoracic pressure reduces venous return, so cardiac output and blood pressure fall during the strain, and the vagally mediated bradycardia when the strain is released can be dangerous in cardiac patients.</small>'
+        : '<small>Once permitted, the parasympathetic reflex through the pelvic splanchnic nerves intensifies rectal and sigmoid contraction while both sphincters relax. The intrinsic and parasympathetic reflexes reinforce each other, so the process accelerates — a limited, self-terminating <b>positive</b> feedback loop that ends when the rectum empties and the stretch stimulus disappears.</small>');
+  } else {
+    dcls+=' warn';
+    dm='Urge felt, continence still held &mdash; but only just.'+
+      '<small>Rectal pressure is '+Math.round(D.pRect)+' mmHg against '+D.anal+' mmHg of anal canal pressure. The internal sphincter has relaxed reflexly at '+D.ias+' mmHg; resting tone in the canal is normally 60 to 90 mmHg and about seventy percent of it comes from that smooth muscle. Squeeze the external sphincter to add up to another 100 mmHg.</small>';
+  }
+  d.className=dcls; d.innerHTML=dm;
+
+  drawLed(); drawDef();
+}
+read();
+})();
+</script>
+</body>
+</html>

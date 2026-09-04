@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skin as a Control Organ &mdash; the thermoregulatory loop</title>
+<meta name="description" content="Drive core temperature with ambient heat, humidity and exercise, break the sweating or vasodilation effector, and watch the hypothalamic negative feedback loop hold 37 degrees or fail.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.notebox{border:1px solid var(--line);border-left:5px solid var(--gold);background:#fff;border-radius:10px;padding:11px 13px;margin-top:10px;font-size:12px;color:var(--soft);line-height:1.5;}
+.notebox b{color:var(--gold);}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.94;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.cold{background:var(--blue);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+svg.dia{border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:12px;}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:11px;}
+.lp{border:1px solid var(--line);border-radius:9px;padding:7px 6px;background:#fff;text-align:center;}
+.lp .k{font-size:8.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.lp .t{font-size:11px;font-weight:700;color:var(--teal-dk);line-height:1.25;margin-top:3px;}
+.lp.hot{border-color:var(--coral);background:rgba(209,73,91,.09);} .lp.hot .t{color:var(--coral);}
+.lp.cool{border-color:var(--blue);background:rgba(47,111,159,.09);} .lp.cool .t{color:var(--blue);}
+.lp.off{opacity:.35;}
+.brow{display:grid;grid-template-columns:104px 1fr 76px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.brow .nm{color:var(--soft);font-weight:700;line-height:1.15;}
+.brow .tr{height:14px;border-radius:7px;background:rgba(0,0,0,.05);overflow:hidden;}
+.brow .fl{height:100%;border-radius:7px;transition:width .25s;}
+.brow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.mini{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.hide{display:none;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-top:8px;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:12px;padding:9px 4px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch03.html">&larr; Module 3</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 3 &middot; Section 5</div>
+  <h1>Skin as a Control Organ</h1>
+  <div class="intro">Core temperature is held near <b>37 &deg;C</b> by a negative feedback loop whose two main effectors are both in the skin: <b>cutaneous blood flow</b>, variable more than a hundredfold, and <b>hypotonic eccrine sweat</b>. Drive the loop with heat, humidity and exercise, then disable an effector and watch it fail. The sweat duct and the repair timeline are on the other two benches.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" role="tab" aria-selected="true" class="on">Thermoregulation</button>
+        <button id="m2" role="tab" aria-selected="false">Sweat duct</button>
+        <button id="m3" role="tab" aria-selected="false">Sensation &amp; repair</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Scenarios</div>
+        <div class="chips" id="scen"></div>
+
+        <div class="sl">
+          <label for="tamb">Ambient temperature <span class="v" id="tambV">24 &deg;C</span></label>
+          <input type="range" id="tamb" min="0" max="48" value="24" aria-label="Ambient air temperature in degrees Celsius">
+        </div>
+        <div class="sl">
+          <label for="rh">Relative humidity <span class="v" id="rhV">45%</span></label>
+          <input type="range" id="rh" min="5" max="100" value="45" aria-label="Relative humidity, percent">
+        </div>
+        <div class="sl">
+          <label for="met">Metabolic heat production <span class="v" id="metV">100 W (rest)</span></label>
+          <input type="range" id="met" min="80" max="900" value="100" aria-label="Metabolic heat production in watts">
+        </div>
+        <div class="sl">
+          <label for="acc">Heat acclimatization <span class="v" id="accV">None</span></label>
+          <input type="range" id="acc" min="0" max="100" value="0" aria-label="Degree of heat acclimatization, 0 to 100 percent">
+        </div>
+        <div class="sl">
+          <label for="burn">Burned body surface <span class="v" id="burnV">0%</span></label>
+          <input type="range" id="burn" min="0" max="60" value="0" aria-label="Percentage of total body surface area burned">
+        </div>
+
+        <div class="lbl">Break an effector</div>
+        <button class="tog" id="tSweat" aria-pressed="true" type="button"><span class="dot"></span><span>Eccrine sweating enabled <small>Sympathetic <i>cholinergic</i> fibers on muscarinic receptors &mdash; switch off to model an anticholinergic drug</small></span></button>
+        <button class="tog" id="tVaso" aria-pressed="true" type="button"><span class="dot"></span><span>Active cutaneous vasodilation enabled <small>Sympathetic cholinergic vasodilation supplies 80&ndash;90% of the rise in skin blood flow</small></span></button>
+        <button class="tog" id="tShiv" aria-pressed="true" type="button"><span class="dot"></span><span>Shivering enabled <small>Can raise metabolic heat production three- to fivefold</small></span></button>
+        <button class="tog" id="tPyr" aria-pressed="false" type="button"><span class="dot"></span><span>Pyrogen present &mdash; set point 39 &deg;C <small>IL-1 and TNF drive prostaglandin E&#8322; in the preoptic area</small></span></button>
+
+        <div class="row"><button class="btn solid" id="reset" type="button">Reset to 37.0 &deg;C</button></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">The coil secretes; the duct edits</div>
+        <div class="sl">
+          <label for="srate">Sweat rate <span class="v" id="srateV">0.8 L/h</span></label>
+          <input type="range" id="srate" min="10" max="300" value="80" aria-label="Sweat rate in liters per hour">
+        </div>
+        <div class="sl">
+          <label for="acc2">Acclimatization (aldosterone) <span class="v" id="acc2V">None</span></label>
+          <input type="range" id="acc2" min="0" max="100" value="0" aria-label="Degree of heat acclimatization, 0 to 100 percent">
+        </div>
+        <button class="tog" id="tCFTR" aria-pressed="true" type="button"><span class="dot"></span><span>CFTR functional <small>Switch off for cystic fibrosis &mdash; chloride cannot be reclaimed from the duct</small></span></button>
+        <div class="mini">The clear cells of the coil secrete an essentially isotonic, plasma-like precursor near 140 mmol/L sodium, driven by NKCC1 with chloride following and water dragged osmotically. The duct then reabsorbs sodium through ENaC and chloride through CFTR &mdash; but the duct is relatively water-impermeable, so <b>salt leaves and water stays</b>.</div>
+        <div class="lbl">Heat removed</div>
+        <div id="sweatBars"></div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">The dermis as a sensory sheet</div>
+        <div class="sl">
+          <label for="freq">Mechanical stimulus frequency <span class="v" id="freqV">30 Hz</span></label>
+          <input type="range" id="freq" min="0" max="400" value="30" aria-label="Mechanical stimulus frequency in hertz">
+        </div>
+        <div id="recBars"></div>
+        <div class="lbl">Two-point discrimination</div>
+        <div class="seg2" role="group" aria-label="Skin site">
+          <button id="siteF" class="on" type="button">Fingertip</button>
+          <button id="siteP" type="button">Palm</button>
+          <button id="siteB" type="button">Back</button>
+        </div>
+        <div class="sl">
+          <label for="sep">Separation of the two points <span class="v" id="sepV">10 mm</span></label>
+          <input type="range" id="sep" min="1" max="70" value="10" aria-label="Separation between two touch points in millimeters">
+        </div>
+        <div id="tpOut" class="mini"></div>
+        <div class="lbl">Thermal channels &mdash; no temperature change required</div>
+        <div class="row">
+          <button class="btn" id="caps" type="button">Apply capsaicin</button>
+          <button class="btn" id="ment" type="button">Apply menthol</button>
+        </div>
+        <div id="trpOut" class="mini"></div>
+
+        <div class="lbl">Wound repair</div>
+        <div class="sl">
+          <label for="wt">Time since injury <span class="v" id="wtV">7 days</span></label>
+          <input type="range" id="wt" min="0" max="1000" value="688" aria-label="Time since injury, logarithmic from about 20 seconds to 2 years">
+        </div>
+        <div class="lbl">Things that slow healing</div>
+        <div class="chips" id="wmods"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <svg id="svg" class="dia" viewBox="0 0 520 380" role="img" aria-label="Diagram showing core and skin temperature, cutaneous blood flow, sweat production and the four routes of heat loss"></svg>
+      <canvas id="cv" width="1040" height="260" aria-label="Plot of core temperature against simulated time with the set point and danger thresholds marked"></canvas>
+      <div class="stats" id="stats"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <div id="loopWrap">
+        <div class="lbl" style="margin-top:0">The thermoregulatory loop, component by component</div>
+        <div class="loop" id="loop"></div>
+      </div>
+      <div id="routes"></div>
+      <div class="infobox" id="info"></div>
+      <div class="notebox" id="note"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+var C={teal:css('--teal')||'#1f5b73',tealdk:css('--teal-dk')||'#0f3040',coral:css('--coral')||'#d1495b',
+  line:css('--line')||'#ebe3d5',muted:css('--muted')||'#8d8270',blue:css('--blue')||'#2f6f9f',
+  green:css('--green')||'#2f9e5b',gold:css('--gold')||'#b8862f',soft:css('--soft')||'#5f5340',
+  purple:css('--purple')||'#7a5a8a'};
+function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+function psat(T){ return 0.6108*Math.exp(17.27*T/(T+237.3)); }   /* kPa */
+
+/* ================= state ================= */
+var BSA=1.8, MASS=70, CAP=3.5*1000*MASS;      /* J per degree: 3.5 kJ/kg/degC */
+var HDRY=8.7, HEVAP=90;                        /* W/m2/K and W/m2/kPa */
+var WPERLH=675;                                /* 1 L/h of evaporated sweat removes about 675 W (0.58 kcal/mL) */
+var S={tamb:24,rh:45,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false};
+var Tc=37.0, tMin=0, trace=[], sweatTotal=0, mode=1, phase=0;
+
+function step(dtSec){
+  var Tset=S.pyr?39.0:37.0;
+  var e=Tc-Tset;
+  /* effectors */
+  var skbfMax=S.vaso?7000:1200;
+  var skbf;
+  if(e>0) skbf=300+(skbfMax-300)*clamp(e/1.2,0,1);
+  else skbf=300-250*clamp(-e/0.8,0,1);
+  var w=skbf/(skbf+128.6);
+  var Tsk=S.tamb+(Tc-S.tamb)*w;
+  /* sweating: the central error drives it; hot skin lowers the threshold (feed-forward warning) */
+  var sweatMax=1.2+1.4*(S.acc/100);
+  var swThresh=Tset-0.1-0.08*clamp(Tsk-33,0,6)-0.10*(S.acc/100);
+  var drive=clamp((Tc-swThresh)/0.9,0,1);
+  var sweatL=S.sweat?drive*sweatMax:0;
+  /* shivering */
+  var shivW=(S.shiv&&e<-0.3)?(S.met*3.0*clamp((-e-0.3)/0.7,0,1)):0;
+  var Mtot=S.met+shivW;
+  /* dry loss */
+  var dry=HDRY*BSA*(Tsk-S.tamb);
+  /* evaporation */
+  var Pk=psat(Tsk), Pa=(S.rh/100)*psat(S.tamb);
+  var Emax=Math.max(0,HEVAP*BSA*(Pk-Pa));
+  var Eprod=sweatL*WPERLH;
+  var Eact=Math.min(Eprod,Emax);
+  var dripL=Math.max(0,(Eprod-Eact)/WPERLH);
+  var Eins=22;                                    /* respiratory plus intact-skin insensible loss */
+  var Eburn=135*BSA*(S.burn/100);                 /* uncontrolled evaporation from destroyed barrier */
+  var net=Mtot-dry-Eact-Eins-Eburn;
+  Tc=clamp(Tc+net*dtSec/CAP,28,45);
+  sweatTotal+=sweatL*dtSec/3600;
+  var co=5+0.011*(Mtot-100)+0.0011*(skbf-300);
+  return {Tset:Tset,e:e,skbf:skbf,Tsk:Tsk,sweatL:sweatL,dripL:dripL,shivW:shivW,Mtot:Mtot,
+          dry:dry,Emax:Emax,Eact:Eact,Eprod:Eprod,Eins:Eins,Eburn:Eburn,net:net,co:co,
+          rad:dry*0.79,cond:dry*0.04,conv:dry*0.17,sweatMax:sweatMax};
+}
+var M=step(0);
+
+/* ================= scenarios ================= */
+var SCEN=[
+  {n:'Comfortable room',s:{tamb:24,rh:45,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Hot, dry desert &mdash; 40 &deg;C, 15%',s:{tamb:40,rh:15,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Hot, humid &mdash; 35 &deg;C, 90%',s:{tamb:35,rh:90,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Exercise in the heat',s:{tamb:33,rh:60,met:650,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Acclimatized athlete, same heat',s:{tamb:33,rh:60,met:650,acc:100,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Anticholinergic drug in the heat',s:{tamb:36,rh:40,met:150,acc:0,burn:0,sweat:false,vaso:true,shiv:true,pyr:false}},
+  {n:'Cold exposure &mdash; 5 &deg;C',s:{tamb:5,rh:50,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:false}},
+  {n:'Fever &mdash; pyrogen raises the set point',s:{tamb:22,rh:45,met:100,acc:0,burn:0,sweat:true,vaso:true,shiv:true,pyr:true}},
+  {n:'40% burn in a warm room',s:{tamb:26,rh:45,met:130,acc:0,burn:40,sweat:true,vaso:true,shiv:true,pyr:false}}
+];
+(function(){
+  var h='';
+  for(var i=0;i<SCEN.length;i++) h+='<button class="chip'+(i===0?' on':'')+'" type="button" data-i="'+i+'">'+SCEN[i].n+'</button>';
+  $('scen').innerHTML=h;
+  $('scen').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    var i=+b.dataset.i, s=SCEN[i].s;
+    for(var k in s){ if(Object.prototype.hasOwnProperty.call(s,k)) S[k]=s[k]; }
+    var cs=$('scen').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i);
+    Tc=37.0; tMin=0; trace=[]; sweatTotal=0; sync();
+  });
+})();
+function clearScen(){var cs=$('scen').children;for(var j=0;j<cs.length;j++)cs[j].classList.remove('on');}
+
+function sync(){
+  $('tamb').value=S.tamb; $('rh').value=S.rh; $('met').value=S.met; $('acc').value=S.acc; $('burn').value=S.burn;
+  $('tambV').textContent=S.tamb+' °C';
+  $('rhV').textContent=S.rh+'%';
+  $('metV').textContent=S.met+' W'+(S.met<130?' (rest)':(S.met<350?' (light work)':' (hard exercise)'));
+  $('accV').textContent=S.acc<10?'None':(S.acc<60?'Partial':'Full (10–14 days of heat)');
+  $('burnV').textContent=S.burn+'%';
+  $('tSweat').setAttribute('aria-pressed',S.sweat?'true':'false');
+  $('tVaso').setAttribute('aria-pressed',S.vaso?'true':'false');
+  $('tShiv').setAttribute('aria-pressed',S.shiv?'true':'false');
+  $('tPyr').setAttribute('aria-pressed',S.pyr?'true':'false');
+  render();
+}
+$('tamb').addEventListener('input',function(){S.tamb=+this.value;clearScen();sync();});
+$('rh').addEventListener('input',function(){S.rh=+this.value;clearScen();sync();});
+$('met').addEventListener('input',function(){S.met=+this.value;clearScen();sync();});
+$('acc').addEventListener('input',function(){S.acc=+this.value;clearScen();sync();});
+$('burn').addEventListener('input',function(){S.burn=+this.value;clearScen();sync();});
+$('tSweat').addEventListener('click',function(){S.sweat=!S.sweat;clearScen();sync();});
+$('tVaso').addEventListener('click',function(){S.vaso=!S.vaso;clearScen();sync();});
+$('tShiv').addEventListener('click',function(){S.shiv=!S.shiv;clearScen();sync();});
+$('tPyr').addEventListener('click',function(){S.pyr=!S.pyr;clearScen();sync();});
+$('reset').addEventListener('click',function(){Tc=37.0;tMin=0;trace=[];sweatTotal=0;sync();});
+
+/* ================= mode ================= */
+function setMode(n){
+  mode=n;
+  [1,2,3].forEach(function(k){
+    $('m'+k).classList.toggle('on',k===n); $('m'+k).setAttribute('aria-selected',k===n?'true':'false');
+    $('p'+k).classList.toggle('hide',k!==n);
+  });
+  $('cv').classList.toggle('hide',n!==1);
+  $('loopWrap').classList.toggle('hide',n!==1);
+  render();
+}
+$('m1').addEventListener('click',function(){setMode(1);});
+$('m2').addEventListener('click',function(){setMode(2);});
+$('m3').addEventListener('click',function(){setMode(3);});
+
+/* ================= sweat duct ================= */
+var W2={rate:0.8,acc:0,cftr:true};
+function syncW2(){
+  $('srateV').textContent=W2.rate.toFixed(2)+' L/h';
+  $('acc2V').textContent=W2.acc<10?'None':(W2.acc<60?'Partial':'Full (10–14 days)');
+  $('tCFTR').setAttribute('aria-pressed',W2.cftr?'true':'false');
+  render();
+}
+$('srate').addEventListener('input',function(){W2.rate=+this.value/100;syncW2();});
+$('acc2').addEventListener('input',function(){W2.acc=+this.value;syncW2();});
+$('tCFTR').addEventListener('click',function(){W2.cftr=!W2.cftr;syncW2();});
+function duct(){
+  var f=clamp((W2.rate-0.2)/2.3,0,1);
+  var na,cl;
+  if(W2.cftr){ na=(18+42*f)*(1-0.5*W2.acc/100); cl=na*0.95; }
+  else { na=70+40*f; cl=62+48*f; }
+  var naLoss=W2.rate*na;                       /* mmol/h */
+  var kcal=W2.rate*580;
+  return {f:f,na:na,cl:cl,naLoss:naLoss,kcal:kcal};
+}
+
+/* ================= sensation & repair ================= */
+var W3={freq:30,site:'F',sep:10,trp:null,t:688,mods:{}};
+var WMODS=[
+  {k:'perf',n:'Poor perfusion',m:0.62},{k:'dm',n:'Diabetes',m:0.7},{k:'smoke',n:'Smoking',m:0.72},
+  {k:'steroid',n:'Glucocorticoids',m:0.6},{k:'vitc',n:'Vitamin C deficiency',m:0.5},{k:'inf',n:'Infection',m:0.55}
+];
+(function(){
+  var h='';
+  for(var i=0;i<WMODS.length;i++) h+='<button class="chip" type="button" data-k="'+WMODS[i].k+'">'+WMODS[i].n+'</button>';
+  $('wmods').innerHTML=h;
+  $('wmods').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    var k=b.dataset.k; W3.mods[k]=!W3.mods[k]; b.classList.toggle('on',!!W3.mods[k]); render();
+  });
+})();
+$('freq').addEventListener('input',function(){W3.freq=+this.value;$('freqV').textContent=W3.freq+' Hz';render();});
+$('sep').addEventListener('input',function(){W3.sep=+this.value;$('sepV').textContent=W3.sep+' mm';render();});
+$('siteF').addEventListener('click',function(){setSite('F');});
+$('siteP').addEventListener('click',function(){setSite('P');});
+$('siteB').addEventListener('click',function(){setSite('B');});
+function setSite(s){ W3.site=s; $('siteF').classList.toggle('on',s==='F'); $('siteP').classList.toggle('on',s==='P'); $('siteB').classList.toggle('on',s==='B'); render(); }
+$('caps').addEventListener('click',function(){ W3.trp=W3.trp==='caps'?null:'caps'; render(); });
+$('ment').addEventListener('click',function(){ W3.trp=W3.trp==='ment'?null:'ment'; render(); });
+$('wt').addEventListener('input',function(){W3.t=+this.value;render();});
+
+var WLO=-3.6, WHI=Math.log(730)/Math.LN10;
+function woundDays(){ return Math.pow(10, WLO+(W3.t/1000)*(WHI-WLO) ); }
+function modFactor(){ var f=1; for(var i=0;i<WMODS.length;i++){ if(W3.mods[WMODS[i].k]) f*=WMODS[i].m; } return f; }
+function strengthOf(d){
+  var pts=[[0.0003,0],[3,1],[7,5],[21,20],[90,60],[365,75],[730,78]];
+  if(d<=pts[0][0]) return 0;
+  for(var i=1;i<pts.length;i++){
+    if(d<=pts[i][0]){
+      var l0=Math.log(pts[i-1][0]), l1=Math.log(pts[i][0]), l=Math.log(d);
+      return pts[i-1][1]+(pts[i][1]-pts[i-1][1])*(l-l0)/(l1-l0);
+    }
+  }
+  return 78;
+}
+function phaseOf(d){
+  if(d<0.04) return ['Hemostasis','Vasoconstriction, platelet plug, and a clotting cascade that is one of the body&rsquo;s few true positive feedback loops &mdash; thrombin activates factors V, VIII and XI, generating more thrombin. Positive feedback is chosen here precisely because the goal is rapid, all-or-none and self-terminating; it is safe only because the substrate runs out and because antithrombin and protein C stand ready to brake it.'];
+  if(d<3) return ['Inflammation','Neutrophils arrive first; macrophages take over by 48&ndash;72 hours, orchestrating debridement and releasing growth factors. Runs from hours to about day 3.'];
+  if(d<21) return ['Proliferation','Days 3&ndash;21: fibroblasts lay down type III collagen, angiogenesis builds granulation tissue, myofibroblasts contract the wound edges, and keratinocytes migrate in from the margins and from follicular stem cells to re-epithelialise.'];
+  return ['Remodeling','From 3 weeks out to 1&ndash;2 years: type III collagen is replaced by stronger type I and fibers realign along the lines of stress. Strength keeps climbing long after the wound looks finished.'];
+}
+
+/* ================= drawing ================= */
+function bar(nm,pct,col,txt){
+  return '<div class="brow"><div class="nm">'+nm+'</div><div class="tr"><div class="fl" style="width:'+clamp(pct,0,100)+'%;background:'+col+'"></div></div><div class="tv">'+txt+'</div></div>';
+}
+
+function drawThermo(){
+  var s=[], m=M;
+  s.push('<rect x="0" y="0" width="520" height="380" fill="#fff"/>');
+  /* environment band */
+  var hot=clamp((S.tamb-18)/24,0,1);
+  s.push('<rect x="0" y="0" width="520" height="42" fill="rgba('+(hot>0.5?'209,73,91':'47,111,159')+','+(0.08+0.22*Math.abs(hot-0.5)*2)+')"/>');
+  s.push('<text x="12" y="26" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.soft+'">AIR '+S.tamb+' °C &middot; '+S.rh+'% RH &middot; vapor pressure gap '+Math.max(0,(psat(m.Tsk)-(S.rh/100)*psat(S.tamb))).toFixed(2)+' kPa</text>');
+
+  /* body */
+  var bx=150, by=64, bw=210, bh=250;
+  s.push('<rect x="'+bx+'" y="'+by+'" width="'+bw+'" height="'+bh+'" rx="30" fill="rgba(31,91,115,.07)" stroke="'+C.teal+'" stroke-width="2"/>');
+  /* core */
+  var coreCol = Tc>38.5?C.coral:(Tc<36?C.blue:C.green);
+  s.push('<ellipse cx="'+(bx+bw/2)+'" cy="'+(by+bh/2)+'" rx="66" ry="76" fill="'+coreCol+'" opacity=".18"/>');
+  s.push('<text x="'+(bx+bw/2)+'" y="'+(by+bh/2-6)+'" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="30" font-weight="700" fill="'+C.tealdk+'">'+Tc.toFixed(2)+'</text>');
+  s.push('<text x="'+(bx+bw/2)+'" y="'+(by+bh/2+14)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.muted+'">°C CORE</text>');
+  s.push('<text x="'+(bx+bw/2)+'" y="'+(by+bh/2+36)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="'+(S.pyr?C.coral:C.muted)+'">set point '+m.Tset.toFixed(1)+' °C</text>');
+  /* skin shell with vessels */
+  var vf=clamp((m.skbf-50)/6950,0,1);
+  s.push('<rect x="'+(bx+6)+'" y="'+(by+6)+'" width="'+(bw-12)+'" height="'+(bh-12)+'" rx="26" fill="none" stroke="'+(vf>0.35?C.coral:C.blue)+'" stroke-width="'+(2+9*vf)+'" opacity=".7"/>');
+  s.push('<text x="'+(bx+bw/2)+'" y="'+(by+bh-14)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+(vf>0.35?C.coral:C.blue)+'">skin '+m.Tsk.toFixed(1)+' °C &middot; '+(m.skbf<1000?Math.round(m.skbf)+' mL/min':(m.skbf/1000).toFixed(1)+' L/min')+'</text>');
+  /* radiation arrows */
+  var i;
+  var radMag=clamp(Math.abs(m.rad)/140,0,1), outward=m.rad>0;
+  for(i=0;i<5;i++){
+    var ry=by+30+i*48, len=14+40*radMag;
+    var x1=outward?bx-6:bx-6-len, x2=outward?bx-6-len:bx-6;
+    s.push('<line x1="'+x1+'" y1="'+ry+'" x2="'+x2+'" y2="'+ry+'" stroke="'+(outward?C.coral:C.gold)+'" stroke-width="'+(1.6+2.4*radMag)+'" stroke-linecap="round" opacity=".85"/>');
+    s.push('<path d="M'+(x2+(outward?7:-7))+','+(ry-4)+' L'+x2+','+ry+' L'+(x2+(outward?7:-7))+','+(ry+4)+'" fill="none" stroke="'+(outward?C.coral:C.gold)+'" stroke-width="'+(1.6+2*radMag)+'" stroke-linecap="round" stroke-linejoin="round"/>');
+  }
+  s.push('<text x="10" y="'+(by+16)+'" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+(outward?C.coral:C.gold)+'">'+(outward?'RADIATION + CONVECTION OUT':'HEAT COMING IN')+'</text>');
+  s.push('<text x="10" y="'+(by+bh+2)+'" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.tealdk+'">'+Math.abs(m.dry).toFixed(0)+' W</text>');
+  /* sweat droplets */
+  var sf=clamp(m.sweatL/2.6,0,1);
+  for(i=0;i<10;i++){
+    var p=((phase*2.4+i*17)%70)/70;
+    var dx=bx+bw+10+ (i%3)*16, dy=by+18+p*(bh-30);
+    var evap=(m.Eact/Math.max(1,m.Eprod));
+    if(sf<0.03) continue;
+    s.push('<ellipse cx="'+dx+'" cy="'+dy+'" rx="'+(3+3*sf)+'" ry="'+(4+4*sf)+'" fill="'+((i/10)<evap?C.blue:C.purple)+'" opacity="'+(0.75-0.4*p)+'"/>');
+  }
+  s.push('<text x="'+(bx+bw+10)+'" y="'+(by+bh+2)+'" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.blue+'">'+m.sweatL.toFixed(2)+' L/h</text>');
+  s.push('<text x="'+(bx+bw+10)+'" y="'+(by+bh+18)+'" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+C.muted+'">produced</text>');
+  s.push('<text x="'+(bx+bw+10)+'" y="'+(by+8)+'" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+C.blue+'">EVAPORATION</text>');
+  s.push('<text x="'+(bx+bw+10)+'" y="'+(by+24)+'" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="'+C.tealdk+'">'+m.Eact.toFixed(0)+' W of '+m.Eprod.toFixed(0)+' W possible</text>');
+  if(m.dripL>0.02) s.push('<text x="'+(bx+bw+10)+'" y="'+(by+40)+'" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+C.coral+'">'+m.dripL.toFixed(2)+' L/h drips off &mdash; cools nothing</text>');
+  if(m.shivW>1) s.push('<text x="'+(bx+bw/2)+'" y="'+(by-8)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="'+C.blue+'">SHIVERING &mdash; +'+m.shivW.toFixed(0)+' W</text>');
+  if(S.burn>0) s.push('<text x="'+(bx+bw/2)+'" y="'+(by+bh+40)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.coral+'">Burn: '+m.Eburn.toFixed(0)+' W of uncontrolled evaporation &middot; '+(200*BSA*(S.burn/100)*24/1000).toFixed(1)+' L/day of water lost</text>');
+  /* balance bar */
+  s.push('<text x="12" y="356" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.muted+'">HEAT BALANCE</text>');
+  var bal=clamp(m.net/300,-1,1);
+  s.push('<rect x="12" y="362" width="496" height="12" rx="6" fill="rgba(0,0,0,.05)"/>');
+  s.push('<rect x="'+(260+(bal<0?bal*246:0))+'" y="362" width="'+Math.abs(bal*246)+'" height="12" rx="6" fill="'+(bal>0?C.coral:C.blue)+'"/>');
+  s.push('<line x1="260" y1="358" x2="260" y2="378" stroke="'+C.muted+'" stroke-width="2"/>');
+  s.push('<text x="508" y="356" text-anchor="end" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+(Math.abs(m.net)<8?C.green:(m.net>0?C.coral:C.blue))+'">'+(m.net>0?'+':'')+m.net.toFixed(0)+' W</text>');
+  $('svg').innerHTML=s.join('');
+}
+
+var cv=$('cv'), cx=cv.getContext('2d');
+function drawTrace(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=70,R=W-16,T=18,B=H-34;
+  var span=Math.max(30,tMin+5);
+  function X(t){return L+(t/span)*(R-L);}
+  function Y(v){return B-(v-33)/(43-33)*(B-T);}
+  cx.fillStyle='rgba(209,73,91,.12)'; cx.fillRect(L,T,R-L,Y(40)-T);
+  cx.fillStyle='rgba(47,111,159,.12)'; cx.fillRect(L,Y(35),R-L,B-Y(35));
+  cx.strokeStyle=C.line; cx.lineWidth=1.5;
+  cx.beginPath(); cx.moveTo(L,T); cx.lineTo(L,B); cx.lineTo(R,B); cx.stroke();
+  var ticks=[35,37,39,41,43];
+  cx.font='600 17px Inter,system-ui,sans-serif'; cx.textAlign='right';
+  for(var i=0;i<ticks.length;i++){
+    var y=Y(ticks[i]);
+    cx.strokeStyle='rgba(0,0,0,.06)'; cx.beginPath(); cx.moveTo(L,y); cx.lineTo(R,y); cx.stroke();
+    cx.fillStyle=C.muted; cx.fillText(ticks[i]+'°',L-8,y+6);
+  }
+  cx.setLineDash([8,6]); cx.strokeStyle=C.gold; cx.lineWidth=2.4;
+  cx.beginPath(); cx.moveTo(L,Y(M.Tset)); cx.lineTo(R,Y(M.Tset)); cx.stroke(); cx.setLineDash([]);
+  cx.fillStyle=C.gold; cx.textAlign='left'; cx.font='700 16px Inter,system-ui,sans-serif';
+  cx.fillText('set point '+M.Tset.toFixed(1)+'°',L+8,Y(M.Tset)-8);
+  cx.fillStyle=C.coral; cx.fillText('heat stroke territory: above 40°',L+8,Y(40)+18);
+  if(trace.length>1){
+    cx.strokeStyle=C.tealdk; cx.lineWidth=3.4; cx.beginPath();
+    for(var t2=0;t2<trace.length;t2++){
+      var px=X(trace[t2][0]), py=Y(trace[t2][1]);
+      if(t2===0) cx.moveTo(px,py); else cx.lineTo(px,py);
+    }
+    cx.stroke();
+  }
+  cx.fillStyle=C.tealdk; cx.font='800 18px Inter,system-ui,sans-serif'; cx.textAlign='left';
+  cx.fillText('Core temperature vs simulated minutes',L+8,T+2);
+  cx.textAlign='right'; cx.fillStyle=C.muted; cx.font='600 17px Inter,system-ui,sans-serif';
+  cx.fillText((tMin<120?tMin.toFixed(0)+' min':(tMin/60).toFixed(1)+' h'),R,T+2);
+}
+
+function drawDuct(){
+  var d=duct(), s=[];
+  s.push('<rect x="0" y="0" width="520" height="380" fill="#fff"/>');
+  /* coil */
+  s.push('<circle cx="98" cy="272" r="62" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="2.5"/>');
+  s.push('<text x="98" y="268" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.tealdk+'">SECRETORY COIL</text>');
+  s.push('<text x="98" y="288" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="17" font-weight="700" fill="'+C.coral+'">140 mmol/L Na⁺</text>');
+  s.push('<text x="98" y="306" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+C.muted+'">isotonic, NKCC1-driven</text>');
+  /* duct */
+  var dx0=160, dx1=470, dy=90;
+  s.push('<path d="M'+dx0+',260 C 250,250 250,'+(dy+60)+' '+dx1+','+dy+'" stroke="'+C.teal+'" stroke-width="26" fill="none" stroke-linecap="round" opacity=".22"/>');
+  s.push('<path d="M'+dx0+',260 C 250,250 250,'+(dy+60)+' '+dx1+','+dy+'" stroke="'+C.teal+'" stroke-width="3" fill="none" stroke-linecap="round"/>');
+  s.push('<text x="300" y="196" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+C.tealdk+'">DUCT &mdash; relatively water-impermeable</text>');
+  /* reabsorption arrows */
+  var i;
+  for(i=0;i<6;i++){
+    var t=i/5;
+    var px=dx0+(dx1-dx0)*t, py=260+(dy-260)*(t*t*0.55+t*0.45);
+    var mag=W2.cftr?(1-0.5*d.f):0.15;
+    s.push('<line x1="'+px+'" y1="'+(py-16)+'" x2="'+px+'" y2="'+(py-16-24*mag)+'" stroke="'+C.coral+'" stroke-width="'+(1.6+2.6*mag)+'" stroke-linecap="round"/>');
+    s.push('<text x="'+(px+5)+'" y="'+(py-20-24*mag)+'" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="'+C.coral+'">Na⁺</text>');
+    s.push('<line x1="'+(px+14)+'" y1="'+(py+16)+'" x2="'+(px+14)+'" y2="'+(py+16+24*(W2.cftr?mag:0.05))+'" stroke="'+C.green+'" stroke-width="'+(1.6+2.6*(W2.cftr?mag:0.05))+'" stroke-linecap="round"/>');
+    s.push('<text x="'+(px+19)+'" y="'+(py+24+24*(W2.cftr?mag:0.05))+'" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="'+(W2.cftr?C.green:C.muted)+'">Cl⁻</text>');
+  }
+  s.push('<text x="'+(dx0+8)+'" y="300" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+C.coral+'">ENaC reclaims Na⁺</text>');
+  s.push('<text x="'+(dx0+8)+'" y="316" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+(W2.cftr?C.green:C.coral)+'">'+(W2.cftr?'CFTR reclaims Cl⁻':'CFTR non-functional &mdash; Cl⁻ stays in the duct')+'</text>');
+  /* surface output */
+  s.push('<circle cx="'+dx1+'" cy="'+dy+'" r="34" fill="'+(d.cl>=60?'rgba(209,73,91,.20)':'rgba(47,159,91,.18)')+'" stroke="'+(d.cl>=60?C.coral:C.green)+'" stroke-width="2.5"/>');
+  s.push('<text x="'+dx1+'" y="'+(dy-4)+'" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="19" font-weight="700" fill="'+C.tealdk+'">'+d.na.toFixed(0)+'</text>');
+  s.push('<text x="'+dx1+'" y="'+(dy+13)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="'+C.muted+'">mmol/L Na⁺</text>');
+  s.push('<text x="'+dx1+'" y="'+(dy-48)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.soft+'">AT THE SURFACE</text>');
+  s.push('<text x="'+dx1+'" y="'+(dy+52)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+(d.cl>=60?C.coral:C.green)+'">sweat Cl⁻ '+d.cl.toFixed(0)+' mmol/L</text>');
+  s.push('<line x1="14" y1="42" x2="506" y2="42" stroke="'+C.line+'" stroke-width="2"/>');
+  s.push('<text x="14" y="30" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.muted+'">SKIN SURFACE &mdash; sweat chloride of 60 mmol/L or more is diagnostic of cystic fibrosis</text>');
+  $('svg').innerHTML=s.join('');
+}
+
+function drawRepair(){
+  var d=woundDays(), s=[], mf=modFactor();
+  s.push('<rect x="0" y="0" width="520" height="380" fill="#fff"/>');
+  var L=58,R=498,T=52,B=250;
+  function X(dd){ var l0=Math.log(0.0003), l1=Math.log(730); return L+(Math.log(Math.max(0.0003,dd))-l0)/(l1-l0)*(R-L); }
+  function Y(p){ return B-(p/100)*(B-T); }
+  /* phase bands */
+  var ph=[[0.0003,0.04,'Hemostasis',C.coral],[0.04,3,'Inflammation',C.gold],[3,21,'Proliferation',C.green],[21,730,'Remodeling',C.purple]];
+  for(var i=0;i<ph.length;i++){
+    var x0=X(ph[i][0]), x1=X(ph[i][1]);
+    s.push('<rect x="'+x0+'" y="'+(B+8)+'" width="'+(x1-x0)+'" height="20" rx="5" fill="'+ph[i][3]+'" opacity="'+((d>=ph[i][0]&&d<ph[i][1])?0.85:0.28)+'"/>');
+    if(x1-x0>62) s.push('<text x="'+((x0+x1)/2)+'" y="'+(B+22)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="#fff">'+ph[i][2]+'</text>');
+  }
+  /* axes */
+  s.push('<line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+B+'" stroke="'+C.line+'" stroke-width="1.5"/>');
+  s.push('<line x1="'+L+'" y1="'+B+'" x2="'+R+'" y2="'+B+'" stroke="'+C.line+'" stroke-width="1.5"/>');
+  var gl=[20,40,60,80,100];
+  for(i=0;i<gl.length;i++){
+    s.push('<line x1="'+L+'" y1="'+Y(gl[i])+'" x2="'+R+'" y2="'+Y(gl[i])+'" stroke="rgba(0,0,0,.05)" stroke-width="1"/>');
+    s.push('<text x="'+(L-6)+'" y="'+(Y(gl[i])+4)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="'+C.muted+'">'+gl[i]+'%</text>');
+  }
+  var xm=[[0.0007,'1 min'],[0.042,'1 h'],[1,'1 d'],[7,'1 wk'],[21,'3 wk'],[90,'3 mo'],[365,'1 y'],[730,'2 y']];
+  for(i=0;i<xm.length;i++) s.push('<text x="'+X(xm[i][0])+'" y="'+(B+44)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="'+C.muted+'">'+xm[i][1]+'</text>');
+  /* curves */
+  var path='',pathM='';
+  for(i=0;i<=120;i++){
+    var dd=Math.exp(Math.log(0.0003)+(i/120)*(Math.log(730)-Math.log(0.0003)));
+    var px=X(dd);
+    path+=(i?' L':'M')+px+','+Y(strengthOf(dd));
+    pathM+=(i?' L':'M')+px+','+Y(strengthOf(dd)*mf);
+  }
+  s.push('<path d="'+path+'" fill="none" stroke="'+C.teal+'" stroke-width="3.2" stroke-linecap="round"/>');
+  if(mf<0.999) s.push('<path d="'+pathM+'" fill="none" stroke="'+C.coral+'" stroke-width="3" stroke-dasharray="7,5" stroke-linecap="round"/>');
+  /* marker */
+  var st=strengthOf(d)*mf;
+  s.push('<line x1="'+X(d)+'" y1="'+T+'" x2="'+X(d)+'" y2="'+(B+30)+'" stroke="'+C.gold+'" stroke-width="2.4"/>');
+  s.push('<circle cx="'+X(d)+'" cy="'+Y(st)+'" r="7" fill="'+C.gold+'"/>');
+  s.push('<text x="'+L+'" y="'+(T-12)+'" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.soft+'">TENSILE STRENGTH AS A PERCENTAGE OF INTACT SKIN</text>');
+  s.push('<line x1="'+L+'" y1="'+Y(78)+'" x2="'+R+'" y2="'+Y(78)+'" stroke="'+C.muted+'" stroke-width="1.5" stroke-dasharray="5,5"/>');
+  s.push('<text x="'+R+'" y="'+(Y(78)-6)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="'+C.muted+'">plateau 70&ndash;80% &mdash; never fully recovered</text>');
+  /* receptor tuning */
+  var ry=306;
+  s.push('<text x="14" y="'+(ry-14)+'" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.soft+'">MECHANORECEPTOR TUNING AT '+W3.freq+' Hz</text>');
+  var recs=[['Merkel &mdash; form, texture',0,8,C.teal],['Meissner &mdash; flutter',10,50,C.green],['Ruffini &mdash; stretch',0,15,C.purple],['Pacinian &mdash; vibration',200,300,C.coral]];
+  for(i=0;i<recs.length;i++){
+    var lo=recs[i][1], hi=recs[i][2], mid=(lo+hi)/2, wdt=Math.max(12,(hi-lo)/1.4+14);
+    var resp=Math.exp(-Math.pow((W3.freq-mid)/wdt,2));
+    var bx2=14+i*126;
+    s.push('<rect x="'+bx2+'" y="'+ry+'" width="112" height="16" rx="8" fill="rgba(0,0,0,.05)"/>');
+    s.push('<rect x="'+bx2+'" y="'+ry+'" width="'+(112*resp)+'" height="16" rx="8" fill="'+recs[i][3]+'"/>');
+    s.push('<text x="'+bx2+'" y="'+(ry+32)+'" font-family="Inter,sans-serif" font-size="9.6" font-weight="700" fill="'+C.soft+'">'+recs[i][0]+'</text>');
+    s.push('<text x="'+bx2+'" y="'+(ry+44)+'" font-family="Inter,sans-serif" font-size="9.6" font-weight="800" fill="'+recs[i][3]+'">'+Math.round(resp*100)+'%</text>');
+  }
+  $('svg').innerHTML=s.join('');
+}
+
+/* ================= main loop ================= */
+setInterval(function(){
+  phase++;
+  if(mode===1){
+    M=step(3);
+    tMin+=0.05;
+    trace.push([tMin,Tc]);
+    if(trace.length>4000) trace.shift();
+  }
+  render();
+},60);
+
+/* ================= render ================= */
+function render(){
+  if(mode===1){ drawThermo(); drawTrace(); renderThermo(); }
+  else if(mode===2){ drawDuct(); renderDuct(); }
+  else { drawRepair(); renderRepair(); }
+}
+
+function renderThermo(){
+  var m=M, dehyd=sweatTotal/MASS*100;
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Skin blood flow</div><div class="v">'+(m.skbf<1000?Math.round(m.skbf):(m.skbf/1000).toFixed(1))+'</div><div class="u">'+(m.skbf<1000?'mL/min':'L/min')+' (rest 250&ndash;500)</div></div>'+
+    '<div class="stat"><div class="k">Cardiac output</div><div class="v">'+m.co.toFixed(1)+'</div><div class="u">L/min &middot; skin takes '+Math.round(m.skbf/1000/m.co*100)+'%</div></div>'+
+    '<div class="stat"><div class="k">Sweat lost</div><div class="v">'+sweatTotal.toFixed(2)+'</div><div class="u">L &middot; '+dehyd.toFixed(1)+'% of body mass</div></div>';
+
+  var lp=[
+    {k:'Variable',t:'Core temperature '+Tc.toFixed(2)+' °C',hot:Tc>m.Tset+0.2,cool:Tc<m.Tset-0.2},
+    {k:'Sensors',t:'Preoptic warm/cold neurons (0.1 °C sensitivity) + skin TRPM8 &amp; TRPV1',hot:m.e>0.2,cool:m.e<-0.2},
+    {k:'Integrator',t:'Preoptic area &mdash; error '+(m.e>0?'+':'')+m.e.toFixed(2)+' °C vs set point '+m.Tset.toFixed(1)+' °C',hot:m.e>0.2,cool:m.e<-0.2},
+    {k:'Effectors',t:(S.vaso?'cutaneous arterioles':'vasodilation BLOCKED')+', '+(S.sweat?'eccrine glands':'sweating BLOCKED')+', '+(S.shiv?'muscle':'shivering BLOCKED'),hot:m.e>0.2&&(S.sweat||S.vaso),cool:m.e<-0.2&&S.shiv,off:!S.sweat&&!S.vaso},
+    {k:'Response',t:(m.net>8?'still gaining heat':(m.net<-8?'still losing heat':'error abolished &mdash; temperature held')),hot:m.net>8,cool:m.net<-8}
+  ];
+  var h='';
+  for(var i=0;i<lp.length;i++) h+='<div class="lp'+(lp[i].off?' off':(lp[i].hot?' hot':(lp[i].cool?' cool':'')))+'"><div class="k">'+lp[i].k+'</div><div class="t">'+lp[i].t+'</div></div>';
+  $('loop').innerHTML=h;
+
+  var tot=Math.abs(m.rad)+Math.abs(m.cond)+Math.abs(m.conv)+m.Eact+m.Eins+m.Eburn;
+  function pc(x){ return tot>0?Math.round(x/tot*100):0; }
+  $('routes').innerHTML='<div class="lbl">Where the heat is actually going now</div>'+
+    bar('Radiation',pc(Math.abs(m.rad)),m.rad>0?C.coral:C.gold,(m.rad>=0?'':'&minus;')+Math.abs(m.rad).toFixed(0)+' W')+
+    bar('Conduction',pc(Math.abs(m.cond)),m.cond>0?C.coral:C.gold,(m.cond>=0?'':'&minus;')+Math.abs(m.cond).toFixed(0)+' W')+
+    bar('Convection',pc(Math.abs(m.conv)),m.conv>0?C.coral:C.gold,(m.conv>=0?'':'&minus;')+Math.abs(m.conv).toFixed(0)+' W')+
+    bar('Evaporation',pc(m.Eact+m.Eins+m.Eburn),C.blue,(m.Eact+m.Eins+m.Eburn).toFixed(0)+' W')+
+    '<div class="mini">At rest in a comfortable room the normal shares are roughly 60% radiation, about 3% conduction, 12&ndash;15% convection and 20&ndash;25% evaporation. Radiation, conduction and convection all lose their driving gradient once ambient temperature reaches skin temperature at about 33&ndash;35 &deg;C &mdash; after that, evaporation is the only avenue left.</div>';
+
+  var v=$('verd'), cls='verdict', txt='';
+  if(Tc>=40 && (!S.sweat||m.dripL>0.3||m.Emax<80)){
+    cls='verdict bad';
+    txt='Heat stroke &mdash; the loop has genuinely failed<small>Core temperature '+Tc.toFixed(2)+' °C with '+(!S.sweat?'no sweating at all':'evaporation capped at '+m.Emax.toFixed(0)+' W')+'. This is the emergency: core above 40 °C, mental status change, and skin that is often hot and dry. Contrast it with fever, where the loop is working perfectly toward a raised target.</small>';
+  } else if(Tc>=38.6 && !S.pyr){
+    cls='verdict bad';
+    txt='Hyperthermia &mdash; core '+Tc.toFixed(2)+' °C and climbing<small>Heat production plus environmental gain exceeds everything the skin can shed. Skin blood flow is '+(m.skbf/1000).toFixed(1)+' L/min &mdash; '+Math.round(m.skbf/1000/m.co*100)+'% of a cardiac output of '+m.co.toFixed(1)+' L/min &mdash; and evaporation is delivering '+m.Eact.toFixed(0)+' W against '+m.Eprod.toFixed(0)+' W of sweat produced.</small>';
+  } else if(dehyd>4){
+    cls='verdict warn';
+    txt='Heat exhaustion territory &mdash; '+sweatTotal.toFixed(1)+' L lost, '+dehyd.toFixed(1)+'% of body mass<small>Sweating is continuing and thermoregulation is still working, but volume and salt losses have outstripped replacement. In heat exhaustion it is cardiac output that fails first, not the loop.</small>';
+  } else if(S.pyr && Tc<m.Tset-0.15){
+    cls='verdict cold';
+    txt='Fever &mdash; shivering while the thermometer reads '+Tc.toFixed(1)+' °C<small>This is not a failure of thermoregulation. Pyrogens such as interleukin-1 and tumor necrosis factor drive prostaglandin E&#8322; production in the preoptic area, which resets the target to '+m.Tset.toFixed(1)+' °C. The loop now reads '+Tc.toFixed(1)+' °C as <i>too cold</i> and deploys cold-defense effectors: cutaneous vasoconstriction and shivering. Antipyretics lower the set point and the same loop reverses into vasodilation and sweating.</small>';
+  } else if(Tc<35){
+    cls='verdict cold';
+    txt='Hypothermia &mdash; core '+Tc.toFixed(2)+' °C<small>'+(S.burn>0?'Note that this is happening in a '+S.tamb+' °C room. Destroy the epidermis over a wide area and evaporative cooling becomes uncontrolled: '+m.Eburn.toFixed(0)+' W leaves through the burn whatever the hypothalamus wants. Hypothermia in a warm room is a barrier-failure problem, not an environmental one.':'Cold defense runs the loop in reverse: cutaneous vasoconstriction first, then shivering, which can raise metabolic heat production three- to fivefold.')+'</small>';
+  } else if(Math.abs(m.net)<10 && Math.abs(m.e)<0.35){
+    cls='verdict';
+    txt='Held &mdash; core '+Tc.toFixed(2)+' °C against a set point of '+m.Tset.toFixed(1)+' °C<small>Heat production '+m.Mtot.toFixed(0)+' W is matched by loss, and the error is '+(m.e>0?'+':'')+m.e.toFixed(2)+' °C. That is the defining signature of negative feedback: the response abolishes the error rather than amplifying it.</small>';
+  } else {
+    cls='verdict warn';
+    txt='Correcting &mdash; net '+(m.net>0?'+':'')+m.net.toFixed(0)+' W<small>Skin blood flow '+(m.skbf<1000?Math.round(m.skbf)+' mL/min':(m.skbf/1000).toFixed(1)+' L/min')+', sweat '+m.sweatL.toFixed(2)+' L/h of which '+(m.Eact/WPERLH).toFixed(2)+' L/h actually evaporates. Watch the trace bend back toward the set point.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  $('info').innerHTML='<span class="n">The cheap effector is blood flow</span>Skin receives about <b>250&ndash;500 mL/min</b> at thermoneutrality, roughly 5&ndash;10% of a resting cardiac output of 5 L/min. That can fall below 50 mL/min in the cold and rise to 6&ndash;8 L/min in maximal heat stress &mdash; a more than hundredfold range &mdash; while cardiac output itself climbs toward 12&ndash;13 L/min, so at the extreme the skin takes more than half of it. In glabrous skin (palms, soles, lips, ears) <b>arteriovenous anastomoses</b> shunt blood straight from arteriole to venule under sympathetic noradrenergic control, so simply releasing that tone opens a radiator. In non-glabrous skin, active vasodilation is driven by sympathetic <i>cholinergic</i> fibers and accounts for 80&ndash;90% of the rise &mdash; the rare place where more sympathetic firing means vasodilation.';
+  $('note').innerHTML='<b>Why humidity is the villain.</b> Evaporating 1 mL of sweat removes about 0.58 kcal (2.43 kJ), so 1 L of <i>evaporated</i> sweat removes roughly 580 kcal. Note the word evaporated: sweat that drips off the chin cools nothing, because the phase change never occurred at the skin. Evaporation is driven by the water vapor pressure difference between skin and air, which is why 35 &deg;C at 90% humidity is far more dangerous than 40 &deg;C in dry desert air &mdash; at high humidity the gradient is nearly abolished and the only remaining route of heat loss closes.';
+}
+
+function renderDuct(){
+  var d=duct();
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Final sweat Na⁺</div><div class="v">'+d.na.toFixed(0)+'</div><div class="u">mmol/L (usual 10&ndash;60)</div></div>'+
+    '<div class="stat"><div class="k">Sweat Cl⁻</div><div class="v">'+d.cl.toFixed(0)+'</div><div class="u">mmol/L (&ge;60 diagnostic)</div></div>'+
+    '<div class="stat"><div class="k">Heat removed if evaporated</div><div class="v">'+Math.round(d.kcal)+'</div><div class="u">kcal per hour</div></div>';
+  $('sweatBars').innerHTML=
+    bar('Na⁺ reclaimed',W2.cftr?(100-(d.na/140)*100):((140-d.na)/140*100),C.coral,Math.round(W2.cftr?(100-(d.na/140)*100):((140-d.na)/140*100))+'%')+
+    bar('Salt lost',clamp(d.naLoss/200*100,0,100),C.gold,d.naLoss.toFixed(0)+' mmol/h')+
+    bar('Heat removed',clamp(d.kcal/1800*100,0,100),C.blue,Math.round(d.kcal*4.184/3.6)+' W');
+  var v=$('verd'), cls='verdict', txt='';
+  if(!W2.cftr){
+    cls='verdict bad';
+    txt='Cystic fibrosis &mdash; sweat chloride '+d.cl.toFixed(0)+' mmol/L<small>CFTR is non-functional, so chloride cannot be reclaimed from the duct; sodium reabsorption through ENaC is then limited by electroneutrality and it too stays behind. A sweat chloride of 60 mmol/L or more is diagnostic, and the test is nothing more exotic than a direct readout of duct transport physiology.</small>';
+  } else if(W2.rate>1.8){
+    cls='verdict warn';
+    txt='High flow &mdash; less time in the duct, so saltier sweat<small>At '+W2.rate.toFixed(2)+' L/h the fluid races past the reabsorptive epithelium and final sodium rises to '+d.na.toFixed(0)+' mmol/L. Losing '+d.naLoss.toFixed(0)+' mmol of sodium per hour is why replacing sweat with plain water alone eventually causes trouble.</small>';
+  } else if(W2.acc>60){
+    cls='verdict';
+    txt='Acclimatized &mdash; aldosterone has made the duct thrifty<small>Ten to fourteen days of heat exposure can halve sweat sodium, here down to '+d.na.toFixed(0)+' mmol/L. The acclimatized person sweats <i>more</i> and sooner, but loses <i>less</i> salt doing it.</small>';
+  } else {
+    cls='verdict';
+    txt='Hypotonic at the surface &mdash; '+d.na.toFixed(0)+' mmol/L from a 140 mmol/L precursor<small>Secretion and modification are separate steps with separate controls: the coil makes an isotonic, plasma-like fluid and the duct then edits it. You will meet the same two-stage design again in saliva, bile and urine.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('info').innerHTML='<span class="n">Two to four million eccrine glands</span>They are densest on palms, soles and forehead, and each is a coiled secretory tubule plus a straight duct innervated by sympathetic <i>cholinergic</i> fibers acting on muscarinic receptors. That anatomical exception is exactly why anticholinergic drugs cause dry, hot skin and impair heat tolerance &mdash; switch off sweating on the thermoregulation bench and watch what happens to core temperature.';
+  $('note').innerHTML='<b>Do the arithmetic.</b> Evaporating 1 mL of sweat removes about 0.58 kcal, so 1 L removes roughly 580 kcal. An unacclimatized adult sustains about 1.0&ndash;1.5 L/h; an acclimatized athlete can briefly reach 2&ndash;3 L/h. At '+W2.rate.toFixed(2)+' L/h that is '+Math.round(d.kcal)+' kcal per hour of cooling &mdash; but only for the fraction that actually evaporates.';
+  $('routes').innerHTML='';
+}
+
+function fmtWound(d){
+  if(d<1/1440) return (d*86400).toFixed(0)+' s';
+  if(d<1/24)   return (d*1440).toFixed(0)+' min';
+  if(d<1)      return (d*24).toFixed(1)+' h';
+  if(d<60)     return d.toFixed(d<10?1:0)+' days';
+  if(d<365)    return (d/30.4).toFixed(1)+' months';
+  return (d/365).toFixed(1)+' years';
+}
+function renderRepair(){
+  var d=woundDays(), mf=modFactor(), st=strengthOf(d)*mf, p=phaseOf(d);
+  $('wtV').textContent = fmtWound(d);
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Phase</div><div class="v" style="font-size:14px">'+p[0]+'</div><div class="u">'+fmtWound(d)+' after injury</div></div>'+
+    '<div class="stat"><div class="k">Tensile strength</div><div class="v">'+st.toFixed(0)+'</div><div class="u">% of intact skin</div></div>'+
+    '<div class="stat"><div class="k">Healing modifiers</div><div class="v">'+Math.round(mf*100)+'</div><div class="u">% of normal capacity</div></div>';
+  var v=$('verd'), cls='verdict', txt='';
+  if(d>=18 && d<=40 && st<30){
+    cls='verdict warn';
+    txt='Closed on the surface, weak underneath &mdash; '+st.toFixed(0)+'% of normal strength<small>Re-epithelialisation and wound strength are different processes on different timelines. At 3 weeks tensile strength is only about 20% of intact skin; it reaches roughly 60% at 3 months and plateaus near 70&ndash;80%, never fully restored. That gap is why a wound can dehisce after sutures come out, and why heavy lifting is restricted for weeks.</small>';
+  } else if(mf<0.75){
+    cls='verdict bad';
+    txt='Healing impaired &mdash; running at '+Math.round(mf*100)+'% capacity<small>Fibroblasts and collagen cross-linking require oxygen, so poor perfusion, diabetes and smoking all bite. Glucocorticoids suppress fibroblast collagen synthesis directly. Vitamin C is the cofactor for prolyl hydroxylase, so without it collagen cannot be hydroxylated &mdash; which is why scurvy reopens <i>old</i> scars: existing collagen turns over and cannot be replaced.</small>';
+  } else if(d<0.04){
+    cls='verdict warn';
+    txt='Hemostasis &mdash; positive feedback, used deliberately<small>Thrombin activates factors V, VIII and XI, generating more thrombin. Positive feedback is chosen here because the goal is a rapid, all-or-none, self-terminating event &mdash; and it is safe only because the substrate runs out and because antithrombin and protein C stand ready to brake it. Compare this with the negative feedback loops on the other benches.</small>';
+  } else {
+    cls='verdict';
+    txt=p[0]+' &mdash; '+st.toFixed(0)+'% of intact tensile strength<small>'+p[1]+'</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  /* two-point discrimination */
+  var thr = W3.site==='F'?2.5:(W3.site==='P'?11:45);
+  var nm = W3.site==='F'?'fingertip (2&ndash;3 mm)':(W3.site==='P'?'palm':'back (40&ndash;50 mm)');
+  $('tpOut').innerHTML='At '+W3.sep+' mm on the '+nm+', the two points are felt as <b>'+(W3.sep>=thr?'TWO separate points':'ONE point')+'</b>. Spatial acuity follows receptor density and cortical representation, not skin thickness &mdash; which is why the fingertip resolves 2&ndash;3 mm and the back needs 40&ndash;50 mm.';
+  $('trpOut').innerHTML = W3.trp==='caps'
+    ? 'Capsaicin opens <b>TRPV1</b>, the same channel that opens above about 43 &deg;C. The brain receives a heat signal, so the mouth feels hot &mdash; with no temperature change at all.'
+    : (W3.trp==='ment'
+      ? 'Menthol opens <b>TRPM8</b>, the same channel that responds to cooling below about 26 &deg;C. The brain receives a cold signal, so mint feels cold &mdash; again with no temperature change.'
+      : 'Free nerve endings serve pain and temperature. Press a button above to open a channel chemically instead of thermally.');
+  $('recBars').innerHTML='<div class="mini">Encoding depends on receptor structure. Meissner corpuscles in the dermal papillae are rapidly adapting and tuned to flutter at 10&ndash;50 Hz. Pacinian corpuscles in the deep dermis have an onion-layer capsule that filters out steady pressure and leaves them exquisitely sensitive to vibration at 200&ndash;300 Hz. Merkel discs are slowly adapting and encode form and texture; Ruffini endings are slowly adapting and encode skin stretch and finger position. The response bars are drawn on the diagram.</div>';
+
+  $('info').innerHTML='<span class="n">Four overlapping phases, and one counterintuitive number</span>Hemostasis begins within seconds. Inflammation runs from hours to about day 3. Proliferation spans roughly days 3&ndash;21. Remodeling lasts from 3 weeks out to 1&ndash;2 years. But <b>tensile strength lags visibly closed skin badly</b>: about 5% at 1 week, 20% at 3 weeks, 60% at 3 months, and a plateau near 70&ndash;80% that is never fully recovered. Drag the time slider and read the gap between how a wound looks and what it can bear.';
+  $('note').innerHTML='<b>Burns make the argument of this whole module in a single lesion.</b> Destroy the epidermis over a wide area and all three barrier functions fail at once: water evaporates unchecked (losses can exceed 200 mL/m&sup2; per hour against a normal 4&ndash;8 g/m&sup2; per hour), so intravascular volume falls; capillary permeability rises so &sigma; collapses and protein-rich fluid pours into the interstitium, compounding the hypovolemia; evaporative cooling becomes uncontrolled and the patient becomes hypothermic in a warm room; and the microbial barrier is gone. Resuscitation formulas such as Parkland &mdash; 4 mL of lactated Ringer&rsquo;s per kilogram per percent of body surface burned in the first 24 hours, half of it in the first 8 &mdash; are simply arithmetic performed on Starling forces and evaporative loss. Try the 40% burn scenario on the thermoregulation bench.';
+  $('routes').innerHTML='';
+}
+
+sync(); syncW2(); setSite('F'); setMode(1);
+})();
+</script>
+</body>
+</html>

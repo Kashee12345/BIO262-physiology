@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>BIO 262 · Human Physiology — Joyce University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px 90px;}
+  button{font:inherit;}
+
+  .notice{background:linear-gradient(180deg,#fbf3e2,#f7ecd8);border-bottom:1px solid #ecdcb8;}
+  .notice .ni{max-width:820px;margin:0 auto;padding:15px 20px;display:flex;gap:13px;align-items:flex-start;}
+  .notice .nx{font-size:23px;line-height:1;flex:0 0 auto;}
+  .notice .nt{color:#6d5518;}
+  .notice .nt strong{display:block;font-family:var(--disp);font-weight:700;font-size:16px;color:#57420f;margin-bottom:3px;}
+  .notice .nt span{font-size:13.5px;line-height:1.5;}
+
+  header.hero{text-align:center;padding:44px 20px 24px;}
+  header.hero .crest{font-size:32px;line-height:1;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;margin:12px 0 8px;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(27px,5.4vw,40px);margin:0 0 10px;color:var(--maroon-dk);}
+  header.hero p.sub{margin:0 auto;max-width:560px;font-size:15px;color:var(--muted);}
+  header.hero .by{margin-top:14px;font-size:13px;color:var(--faint);font-weight:600;}
+  .divline{height:1px;background:var(--line);margin:6px 0 24px;}
+
+  .sl{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--faint);margin:32px 4px 12px;}
+
+  .tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  @media(max-width:620px){.tools{grid-template-columns:1fr;}}
+  .tool{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:17px 16px;box-shadow:var(--shadow);transition:border-color .15s,transform .15s;}
+  .tool:hover{border-color:var(--maroon);transform:translateY(-1px);}
+  .tool .ic{font-size:27px;flex:0 0 auto;line-height:1;}
+  .tool .tx b{display:block;font-size:15.5px;font-weight:700;color:var(--maroon-dk);}
+  .tool .tx span{display:block;font-size:13px;color:var(--muted);margin-top:2px;}
+  .tool.soon{opacity:.55;pointer-events:none;}
+  .tool.soon .tx b::after{content:" · coming soon";font-weight:600;font-size:11px;color:var(--faint);letter-spacing:.5px;}
+
+  .mods{display:flex;flex-direction:column;gap:8px;}
+  .mod{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;}
+  .mod > .head{display:flex;align-items:center;gap:13px;padding:14px 15px;cursor:pointer;width:100%;background:none;border:none;text-align:left;}
+  .mod > .head:hover{background:var(--maroon-lt);}
+  .mod .ic{font-size:21px;flex:0 0 auto;}
+  .mod .tx{flex:1;min-width:0;}
+  .mod .tx b{display:block;font-size:14.5px;font-weight:700;color:var(--maroon-dk);}
+  .mod .tx span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;}
+  .mod .tag{flex:0 0 auto;font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+            background:var(--gold-lt);color:#8a6a12;border-radius:20px;padding:4px 9px;}
+  .mod .chev{flex:0 0 auto;color:var(--faint);font-size:13px;transition:transform .2s;}
+  .mod.open .chev{transform:rotate(90deg);}
+  .mod .body{display:none;padding:2px 16px 16px 49px;border-top:1px solid var(--line);}
+  .mod.open .body{display:block;}
+  .mod .body ul{margin:12px 0 0;padding-left:18px;}
+  .mod .body li{font-size:13.5px;color:var(--muted);margin-bottom:6px;line-height:1.5;}
+  .mod .body .go{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--maroon);}
+  .mod .body .go:hover{text-decoration:underline;}
+
+  table.sched{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+              border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.sched th{background:var(--maroon);color:#fff;font-size:11px;letter-spacing:.9px;text-transform:uppercase;
+                 padding:11px 12px;text-align:left;font-weight:700;}
+  table.sched td{padding:11px 12px;border-top:1px solid var(--line);font-size:13.5px;vertical-align:top;}
+  table.sched tr:hover td{background:var(--maroon-lt);}
+  table.sched td.n{font-weight:800;color:var(--maroon-dk);white-space:nowrap;}
+
+  .wb{margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg);}
+  .wbhead{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--gold-lt);
+          border-bottom:1px solid var(--line);}
+  .wbhead .ic{font-size:17px;}
+  .wbhead b{font-size:13.5px;color:var(--maroon-dk);}
+  .wbhead a{margin-left:auto;font-size:12px;font-weight:700;color:var(--maroon);text-decoration:none;
+            white-space:nowrap;border:1px solid var(--line);border-radius:7px;padding:5px 10px;background:var(--card);}
+  .wbhead a:hover{background:var(--maroon);color:#fff;}
+  .wb iframe{display:block;width:100%;height:637px;border:0;background:#fbf7ef;}
+  @media(max-width:700px){ .wb iframe{height:560px;} .wbhead a{display:none;} }
+  .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  footer{text-align:center;padding:38px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<div class="notice">
+  <div class="ni">
+    <div class="nx">📌</div>
+    <div class="nt">
+      <strong>Module numbering on this site</strong>
+      <span>Module numbers here match <b>what the exams actually test</b>. Your Lecture Outline packet numbers Modules&nbsp;4–7 differently — if the two disagree, study by <b>topic</b>, not by module number. Modules 1–3 and 8–14 are the same in both.</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="crest">⚕️</div>
+    <div class="kicker">Joyce University of Nursing and Health Sciences</div>
+    <h1>BIO 262 · Human Physiology</h1>
+    <p class="sub">Everything for the course in one place — 693 original practice questions with slide references, module guides, and interactive physiology.</p>
+    <div class="by">Course resources by Dr. Vidya Garg</div>
+  </header>
+  <div class="divline"></div>
+
+  <div class="sl">Study tools</div>
+  <div class="tools">
+    <a class="tool" href="practice.html">
+      <span class="ic">🎯</span>
+      <span class="tx"><b>Practice Questions</b><span>693 questions · rationales cite the lecture slide</span></span>
+    </a>
+    <a class="tool" href="book/index.html">
+      <span class="ic">📘</span>
+      <span class="tx"><b>The Interactive Book</b><span>14 modules &middot; 70 built-in simulations &middot; whole book as PDF</span></span>
+    </a>
+    <a class="tool" href="labs.html">
+      <span class="ic">🔬</span>
+      <span class="tx"><b>The Lab Library</b><span>70 interactive benches &middot; all 14 modules, direct access</span></span>
+    </a>
+    <a class="tool" href="modules/index.html">
+      <span class="ic">📖</span>
+      <span class="tx"><b>Study Guides</b><span>14 module lessons · interactive · Download PDF on every page</span></span>
+    </a>
+    <a class="tool" href="study-guides.html">
+      <span class="ic">📝</span>
+      <span class="tx"><b>Exam Review Guides</b><span>14 module reviews + 6 exam reviews · print to PDF</span></span>
+    </a>
+    <a class="tool" href="flashcards.html">
+      <span class="ic">🃏</span>
+      <span class="tx"><b>Flashcards</b><span>554 cards · complete sets, all 14 modules</span></span>
+    </a>
+    <a class="tool" href="practice.html">
+      <span class="ic">🏁</span>
+      <span class="tx"><b>Final-Only Modules</b><span>Modules 13 &amp; 14 — final-only material</span></span>
+    </a>
+  </div>
+
+  <div class="sl">Learn by playing</div>
+  <div class="tools">
+    <a class="tool" href="physioquest.html">
+      <span class="ic">⚔️</span>
+      <span class="tx"><b>PhysioQuest</b><span>11 zones, 14 module bosses, pixel-art world map</span></span>
+    </a>
+    <a class="tool" href="bestiary.html">
+      <span class="ic">📖</span>
+      <span class="tx"><b>Bestiary</b><span>14 module bosses — dossiers, movesets, weaknesses</span></span>
+    </a>
+    <a class="tool" href="chase.html">
+      <span class="ic">🏃</span>
+      <span class="tx"><b>The Chase</b><span>Quiz-show chase, one round per exam</span></span>
+    </a>
+  </div>
+
+  <div class="sl">Heaviest on the final</div>
+  <div class="tools">
+    <a class="tool" href="module13.html">
+      <span class="ic">🍽️</span>
+      <span class="tx"><b>Module 13 · Digestive</b><span>16 final questions · walk the alimentary canal</span></span>
+    </a>
+    <a class="tool" href="module14.html">
+      <span class="ic">🫘</span>
+      <span class="tx"><b>Module 14 · Urinary &amp; Reproductive</b><span>16 final questions · nephron + cycle explorer</span></span>
+    </a>
+  </div>
+
+  <div class="sl">Exam schedule</div>
+  <div class="scroller">
+    <table class="sched">
+      <thead><tr><th>Exam</th><th>Covers</th><th>Questions</th></tr></thead>
+      <tbody id="schedBody"></tbody>
+    </table>
+  </div>
+
+  <div class="sl">The 14 modules</div>
+  <div class="mods" id="modList"></div>
+
+  <footer>
+    <b>BIO 262 · Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by Dr. Vidya Garg
+  </footer>
+</div>
+
+<script src="data/modules.js"></script>
+<script>
+(function(){
+  "use strict";
+  var MODULES = window.BIO262_MODULES || [];
+  var EXAMS   = window.BIO262_EXAMS   || [];
+  var MLOS    = window.BIO262_MLOS    || {};
+  var COUNTS  = window.BIO262_COUNTS  || {byModule:{}, byExam:{}};
+  function nMod(n){ return COUNTS.byModule[String(n)] || 0; }
+  function nExam(k){ return COUNTS.byExam[k] || 0; }
+
+  function esc(s){
+    return String(s == null ? "" : s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+  }
+  function examName(k){
+    for(var i=0;i<EXAMS.length;i++){ if(EXAMS[i].key===k) return EXAMS[i].name; }
+    return k;
+  }
+
+  // ---- exam schedule ----
+  var rows = "";
+  for(var e=0;e<EXAMS.length;e++){
+    var ex = EXAMS[e];
+    var n = nExam(ex.key);
+    var names = ex.modules.map(function(m){
+      for(var i=0;i<MODULES.length;i++){ if(MODULES[i].n===m) return "M"+m+" "+MODULES[i].title; }
+      return "M"+m;
+    });
+    var covers = ex.key === "FE"
+      ? "All 14 modules — cumulative, with Modules 13 &amp; 14 weighted heaviest (16 questions each)"
+      : names.join(" &nbsp;·&nbsp; ");
+    rows += "<tr><td class='n'>"+esc(ex.name)+"</td><td>"+covers+"</td><td class='n'>"+n+"</td></tr>";
+  }
+  document.getElementById("schedBody").innerHTML = rows;
+
+  // ---- module cards ----
+  var html = "";
+  for(var m=0;m<MODULES.length;m++){
+    var mod = MODULES[m];
+    var qCount = nMod(mod.n);
+    var outcomes = MLOS[String(mod.n)] || [];
+    var li = "";
+    for(var o=0;o<outcomes.length;o++){
+      li += "<li>"+esc(outcomes[o].t)+"</li>";
+    }
+    if(!li) li = "<li>Outcomes listed in the course packet.</li>";
+
+    // ---- introductory lesson pages (added as they are written) ----
+    var LESSONS = {
+      1:  "modules/module-01-introduction.html",
+      2:  "modules/module-02-cellular.html",
+      3:  "modules/module-03-tissues.html",
+      4:  "modules/module-07-muscular-skeletal.html",
+      5:  "modules/module-04-nervous-tissue.html",
+      6:  "modules/module-05-brain-ans.html",
+      7:  "modules/module-06-sensations.html",
+      8:  "modules/module-08-endocrine.html",
+      9:  "modules/module-09-blood-vessels.html",
+      10: "modules/module-10-heart.html",
+      11: "modules/module-11-lymphatic-immune.html",
+      12: "modules/module-12-respiratory.html",
+      13: "modules/module-13-digestive.html",
+      14: "modules/module-14-urinary-reproductive.html"
+    };
+    var lesson = LESSONS[mod.n]
+      ? '<a class="go" href="'+LESSONS[mod.n]+'"><b>Read the lesson &rarr;</b></a> &nbsp;·&nbsp; '
+      : '';
+
+    // H5P interactive workbooks — add a module number and its content id as they are built
+    var WORKBOOKS = {
+      1: "https://akashgarg.h5p.com/content/1292999252951159368"
+    };
+    var workbook = WORKBOOKS[mod.n]
+      ? '<div class="wb">'
+        + '<div class="wbhead"><span class="ic">&#128218;</span>'
+        +   '<b>Interactive workbook &mdash; Module '+mod.n+'</b>'
+        +   '<a href="'+WORKBOOKS[mod.n]+'" target="_blank" rel="noopener">Open full &#8599;</a></div>'
+        + '<iframe src="'+WORKBOOKS[mod.n]+'/embed" loading="lazy"'
+        +   ' title="BIO 262 Module '+mod.n+' interactive workbook"'
+        +   ' aria-label="BIO 262 Module '+mod.n+' interactive workbook"'
+        +   ' frameborder="0" allowfullscreen="allowfullscreen"'
+        +   ' allow="autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>'
+        + '</div>'
+      : '';
+
+    var deep = (mod.n === 13 || mod.n === 14)
+      ? ' &nbsp;·&nbsp; <a class="go" href="module'+mod.n+'.html">Full lesson →</a>'
+      : '';
+
+    html += '<div class="mod" data-n="'+mod.n+'">'
+      +   '<button class="head">'
+      +     '<span class="ic">'+mod.icon+'</span>'
+      +     '<span class="tx"><b>Module '+mod.n+' · '+esc(mod.title)+'</b>'
+      +       '<span>'+qCount+' exam questions · '+outcomes.length+' learning outcome'+(outcomes.length===1?"":"s")+'</span></span>'
+      +     '<span class="tag">'+esc(examName(mod.exam))+'</span>'
+      +     '<span class="chev">▶</span>'
+      +   '</button>'
+      +   '<div class="body"><ul>'+li+'</ul>'
+      +     lesson
+      +     '<a class="go" href="practice.html">Practice questions →</a>'
+      +     ' &nbsp;·&nbsp; <a class="go" href="flashcards.html">Flashcards →</a>'+deep
+      +     workbook
+      +   '</div>'
+      + '</div>';
+  }
+  document.getElementById("modList").innerHTML = html;
+
+  document.getElementById("modList").addEventListener("click", function(ev){
+    var h = ev.target.closest ? ev.target.closest(".head") : null;
+    if(!h) return;
+    h.parentNode.classList.toggle("open");
+  });
+})();
+</script>
+<script src="https://akashgarg.h5p.com/js/h5p-resizer.js" charset="UTF-8"></script>
+</body>
+</html>

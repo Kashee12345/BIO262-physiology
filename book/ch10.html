@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Heart &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="The heart is not a mystery organ; it is a pair of pressure pumps arranged in series, driven by a muscle that builds its own rhythm and refuses to fuse its twitches. In the last module you learned that flow obeys Q = &Delta;P / R &">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 10 &middot; Heart</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#pump-and-pressures">1 &middot; Two Pumps in Series: Where the Pressure Comes From</a>
+        <a href="#myocyte-contraction">2 &middot; Cardiac Muscle: Coupling Excitation to Force</a>
+        <a href="#automaticity-conduction">3 &middot; Automaticity, Conduction and the ECG</a>
+        <a href="#cardiac-cycle">4 &middot; The Cardiac Cycle: Pressures, Volumes and Sounds</a>
+        <a href="#cardiac-output">5 &middot; Cardiac Output and the Loops That Control It</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 10</div>
+<h1>The Heart</h1>
+<p class="lede">The heart is not a mystery organ. It is a pair of pressure pumps set one after the other. The muscle that drives them builds its own rhythm. It also refuses to let its twitches blur together. In the last module you learned that flow follows Q = &Delta;P / R. Blood moves because a pressure difference pushes it against a resistance. This module is about where that pressure difference comes from. You will follow one beat all the way through. It starts with the pacemaker current that drifts a nodal cell to threshold. Then comes the calcium that links the electrical signal to contraction. Then come the pressure changes that snap valves open and shut. At the end, about 70 milliliters of blood leaves the left ventricle each cycle. Then you will see how the body adjusts that output beat by beat. Stretch does part of it, through the Frank&ndash;Starling mechanism. Nerve traffic does part of it. A baroreceptor loop does the rest. It guards mean arterial pressure the way a thermostat guards room temperature. Anatomy shows up here only where it explains behavior.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Say why both ventricles must pump the same average output. They do it against a fivefold difference in <b>afterload</b>. Use the <b>Law of Laplace</b> (T = P &times; r / 2h) to explain why the left ventricle needs a thicker wall.</li>
+<li>Name the five phases of the <b>ventricular action potential</b>. Say which ion current drives each one. State the <b>absolute refractory period</b> that results.</li>
+<li>Explain <b>calcium-induced calcium release</b>. Predict how a change in calcium inside the cell changes <b>contractility</b>.</li>
+<li>Explain <b>automaticity</b> using the funny current (I<sub>f</sub>) and the T-type and L-type calcium currents. Rank the built-in rates of the SA node, the AV node, and the Purkinje fibers.</li>
+<li>Match each ECG mark to one electrical event. Those marks are the <b>P wave</b>, the <b>QRS complex</b>, the <b>T wave</b>, and the <b>PR interval</b>. State how long each interval normally lasts.</li>
+<li>Put the phases of the <b>cardiac cycle</b> in order. Name the valve events and heart sounds that start and end each phase. Read a <b>pressure&ndash;volume loop</b>.</li>
+<li>Work out <b>stroke volume</b>, <b>ejection fraction</b>, and <b>cardiac output</b> from EDV and ESV. Use normal adult values.</li>
+<li>Tell <b>preload</b>, <b>afterload</b>, and <b>contractility</b> apart. Predict what each one does to stroke volume.</li>
+<li>Draw the <b>baroreceptor reflex</b>. Name the regulated variable, the sensor, the integrator, the effectors, and the response. Say why it is negative feedback.</li>
+</ul></div>
+
+<h2 id="pump-and-pressures"><span class="num">Section 1</span>Two Pumps in Series: Where the Pressure Comes From</h2>
+<figure class="bref"><div class="fr"><img src="img/ch10_s1.jpg" alt="Diagram of the human heart in frontal section showing the four chambers, the atrioventricular and semilunar valves, and the direction of blood flow through the right and left sides" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Four chambers and four valves make two pumps, one after the other. The arrows show the one-way path from the veins of the body back out to the arteries of the body. <span class="cred">RWhitwam, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>One circuit, one output: why the right and left hearts must match</h3>
+<p>The circulation is one closed loop. Two pumps sit inside it. Blood coming back from the body enters the right atrium. The right ventricle pumps it through the lungs. It returns to the left atrium. The left ventricle pumps it back out to the body. The loop is closed and the two pumps sit one after the other. So whatever the right ventricle pushes out each minute must pass through the left ventricle each minute. Both ventricles have the same average output. That is about 5 L/min at rest in a 70 kg adult. Small mismatches of a few milliliters happen all the time. A deep breath in loads the right heart a little more than the left. Those mismatches cannot last. A steady mismatch of even 1&ndash;2 mL per beat would flood one circuit within minutes. That is exactly what happens in heart failure. The failing side backs blood up behind it.</p>
+<p>The two ventricles do <em>not</em> share the pressure they must build. The systemic circuit is a high-resistance bed. The left ventricle must push its inside pressure above aortic diastolic pressure before its outflow valve will open. That pressure is roughly 80 mmHg. During ejection it peaks near 120 mmHg. The pulmonary circuit is different. Its resistance is low and it stretches easily. The right ventricle only has to beat a pulmonary artery diastolic pressure of about 8&ndash;10 mmHg. It peaks near 25 mmHg. Pulmonary vascular resistance is roughly one-tenth of systemic vascular resistance. So the same flow needs about one-tenth of the driving pressure. That is Q = &Delta;P / R read backwards. Hold Q steady, lower R, and the &Delta;P you need falls by the same amount.</p>
+<p>Learn the normal resting pressures as anchors. Almost every measurement in cardiology is a comparison against them. Right atrium: mean 0&ndash;5 mmHg. Right ventricle: 25/0&ndash;5 mmHg. Pulmonary artery: 25/10 mmHg, mean about 15 mmHg. Left atrium: mean 6&ndash;12 mmHg. Left ventricle: 120/0&ndash;10 mmHg. Aorta: 120/80 mmHg. Notice one thing. Diastolic pressure falls nearly to zero in both ventricles. A relaxed ventricle is a very floppy bag. That low pressure is what lets it fill from an atrium sitting barely 8 mmHg above it.</p>
+
+<h3>Valves are passive: pressure decides, not the heart</h3>
+<p>The four heart valves have no muscle and no nerve supply. Each one is a set of flaps. A valve opens when pressure upstream is higher than pressure downstream. It closes when the gradient reverses. Nothing inside a valve keeps time. The pressures on either side decide everything it does. Muscle contraction makes those pressures. So does the elastic snap-back of the great arteries. This is why you can work the cardiac cycle out from first principles. You do not have to memorize it as a list. Know the two pressures and you know the valve position.</p>
+<p>The atrioventricular (AV) valves are the tricuspid on the right and the mitral on the left. They are large and floppy. Chordae tendineae hold them from turning inside out. Those cords anchor to papillary muscles. The papillary muscles contract along with the rest of the ventricle. They tighten the cords <em>before</em> pressure peaks. They do not pull the valve shut. They stop it from being blown backwards into the atrium. A cord can rupture, or a papillary muscle can infarct. Then the leaflet flops back and blood leaks into the atrium during systole. That wastes stroke volume. It also drops a sudden pressure load onto the pulmonary veins.</p>
+<p>The semilunar valves are the pulmonic and the aortic. Each is three small cusps with no cords to support it. They close when arterial pressure rises above the falling ventricular pressure at the end of ejection. The aortic root recoils elastically. So closure is brisk. It makes a brief backward blip in pressure, the <em>dicrotic notch</em>. You can see it on any arterial pressure tracing. That same elastic recoil holds aortic pressure at 80 mmHg through diastole. Without it the pressure would collapse to zero. And that held pressure is what keeps the coronary arteries fed.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> Students often say the left ventricle &ldquo;pumps more blood&rdquo; than the right. They point to its size and strength. It does not. The two pumps sit one after the other in a closed loop, so their outputs must be equal. The left ventricle is stronger because it works against roughly ten times the resistance. It does not move more volume. It makes more <em>pressure</em>, not more <em>flow</em>.</div>
+
+<h3>Wall thickness, wall stress and the Law of Laplace</h3>
+<p>The left ventricular free wall is 8&ndash;12 mm thick. The right ventricular wall is 3&ndash;5 mm. The reason is mechanical. The Law of Laplace covers a thick-walled sphere. It says wall stress T = P &times; r / (2h). P is the pressure inside the chamber. r is the chamber radius. h is the wall thickness. Wall stress is the load each single sarcomere has to carry. It is also the main thing that sets how much oxygen the heart muscle burns. The left ventricle must make 120 mmHg rather than 25 mmHg. To do that without a fivefold rise in stress on every fiber, it raises h. It also takes on a nearly round cross-section. A round shape keeps r as small as possible for a given volume. The right ventricle is a crescent wrapped around the left. That shape moves volume well at low pressure. It makes high pressure poorly.</p>
+<p>Laplace also explains two spirals that matter at the bedside. The first is chronic pressure overload. Long-standing hypertension or aortic stenosis raises P. The ventricle adds sarcomeres side by side, so h rises. That is <em>concentric hypertrophy</em>. Wall stress goes back to normal. But the thick, stiff wall fills poorly, so diastolic pressures climb. The second is chronic volume overload, or the state after a large infarct. Here r rises. If h does not keep pace, wall stress rises. Oxygen demand rises with it. The stretched ventricle grows less and less efficient. This is why a dilated heart is at a mechanical disadvantage even when its muscle is intact. The geometry alone taxes it.</p>
+<p>The same relationship makes sense of the fibrous skeleton. That is the ring of dense connective tissue around all four valve openings. It anchors the valves. It gives the heart muscle something to pull against. And it does one more job that matters in Section 3. It electrically insulates the atria from the ventricles. So the only conducting path between them is the AV node.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Both ventricles move the same 5 L/min. The circuit is closed and they sit one after the other. What differs is the pressure each must build. Resistance downstream sets that. <a href="../lab/ch10/TwoPumpsAndLaplace.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch10/TwoPumpsAndLaplace.html" loading="lazy" title="Two Pumps in Series: Resistance, Pressure and the Law of Laplace interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The two pumps sit one after the other, so their outputs must be equal. Every structural difference between the right and left heart comes from the pressure each must make. None of it comes from the volume each must move.</p></div>
+
+<h2 id="myocyte-contraction"><span class="num">Section 2</span>Cardiac Muscle: Coupling Excitation to Force</h2>
+<figure class="bref"><div class="fr"><img src="img/ch10_s2.jpg" alt="Micrograph and schematic of cardiac muscle showing branching striated fibers joined end to end by intercalated discs containing desmosomes and gap junctions" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Branching heart muscle cells joined end to end by intercalated discs. The gap junctions in those discs make the heart muscle act as one connected sheet, a functional syncytium. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>A functional syncytium wired by intercalated discs</h3>
+<p>A cardiac myocyte is a heart muscle cell. It is short, about 100 &micro;m long and 20 &micro;m wide. It branches. It usually has one nucleus. It is striped by the same actin and myosin setup you met in Module 5. The decisive difference from skeletal muscle sits at the ends of the cell. Neighboring myocytes join at <b>intercalated discs</b>. These discs carry two kinds of junction. Desmosomes and fascia adherens glue the cells together mechanically, so force passes end to end without tearing. <b>Gap junctions</b> are pores built from connexin proteins. They offer almost no resistance. They let ions, and so current, flow straight from one cytoplasm into the next.</p>
+<p>The result is that heart muscle behaves as a <em>functional syncytium</em>. That means it acts like one big connected cell. An action potential started anywhere in the atria spreads to every atrial cell. One started anywhere in the ventricles spreads to every ventricular cell. The heart has no motor unit recruitment. You cannot contract half a ventricle. Every beat is an all-or-none event for the whole chamber. That is exactly what a pump needs. It is also exactly why the heart cannot grade its force the way a biceps does. Grading force in the heart has to happen inside each cell instead. How strongly each cell contracts is the subject of the rest of this section.</p>
+<p>The non-conducting fibrous skeleton separates the atria from the ventricles. So they behave as two syncytia, not one. Atrial current cannot leak into the ventricles. It must pass through the AV node. That single electrical bottleneck is what makes ordered contraction possible. The atria squeeze first, then the ventricles. It also protects the ventricles when the atria fibrillate at 400&ndash;600 impulses per minute.</p>
+
+<h3>The ventricular action potential: five phases and one long plateau</h3>
+<p>A working ventricular myocyte rests at about &minus;90 mV. That is close to the potassium equilibrium potential. Inward rectifier potassium channels (I<sub>K1</sub>) hold it there. Depolarizing current arrives through gap junctions and drives the membrane to about &minus;70 mV. The action potential then runs through five phases.</p>
+<p><b>Phase 0</b> is the upstroke. Voltage-gated fast sodium channels open. Sodium rushes in. The membrane shoots to about +20 mV in 1&ndash;2 ms. This is positive feedback that feeds itself. Depolarization opens sodium channels, and that causes more depolarization. It is one of the few genuine positive feedback loops in physiology. The body tolerates it because it shuts itself off within milliseconds, when those channels inactivate. <b>Phase 1</b> is a brief notch. Sodium channels inactivate and a transient outward potassium current (I<sub>to</sub>) flows. <b>Phase 2</b> is the plateau. This is the feature that defines cardiac muscle. L-type calcium channels opened back in phase 0, but they are slow to get going. They carry a sustained inward calcium current. It almost exactly balances the outward potassium current. That holds the membrane near 0 mV for 150&ndash;250 ms. <b>Phase 3</b> is repolarization. Calcium channels inactivate and delayed rectifier potassium currents (I<sub>Kr</sub>, I<sub>Ks</sub>) take over. <b>Phase 4</b> is the stable resting potential. I<sub>K1</sub>, the sodium&ndash;potassium ATPase, and the sodium&ndash;calcium exchanger restore it and hold it there.</p>
+<p>The whole thing lasts 200&ndash;300 ms. That is roughly a hundred times longer than a skeletal muscle action potential. It is about as long as the mechanical twitch it triggers. Some drugs and electrolyte problems block I<sub>Kr</sub>. That stretches phase 3 and lengthens the QT interval on the ECG. A long QT invites a dangerous rhythm called torsades de pointes, a polymorphic ventricular tachycardia. Hypokalemia, a low blood potassium level, does the same thing. This is one of the most common reasons a medication is pulled from a formulary.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Phase</th><th>Main current</th><th>Direction</th><th>What the membrane does</th><th>About how long</th></tr></thead>
+<tbody>
+<tr><td>0 Upstroke</td><td>Fast Na<sup>+</sup> (I<sub>Na</sub>)</td><td>Inward</td><td>&minus;90 to +20 mV</td><td>1&ndash;2 ms</td></tr>
+<tr><td>1 Notch</td><td>Transient outward K<sup>+</sup> (I<sub>to</sub>)</td><td>Outward</td><td>Small dip toward 0 mV</td><td>5&ndash;10 ms</td></tr>
+<tr><td>2 Plateau</td><td>L-type Ca<sup>2+</sup> vs delayed K<sup>+</sup></td><td>Balanced</td><td>Held near 0 mV</td><td>150&ndash;250 ms</td></tr>
+<tr><td>3 Repolarization</td><td>I<sub>Kr</sub> and I<sub>Ks</sub></td><td>Outward</td><td>Return to &minus;90 mV</td><td>50&ndash;100 ms</td></tr>
+<tr><td>4 Rest</td><td>I<sub>K1</sub>, Na<sup>+</sup>/K<sup>+</sup> ATPase, NCX</td><td>Holds it steady</td><td>Steady &minus;90 mV</td><td>Until the next beat</td></tr>
+</tbody>
+</table></div>
+
+<h3>Calcium-induced calcium release sets the strength of the beat</h3>
+<p>In the heart, excitation&ndash;contraction coupling works through a chemical link. Skeletal muscle uses a mechanical one. The action potential runs down the T-tubules. In cardiac muscle those tubes are wide and sit at the Z-line. L-type calcium channels sit in the T-tubule membrane. They are also called dihydropyridine receptors. They open and let a modest amount of outside calcium in. That is the <em>trigger</em> calcium. It binds ryanodine receptors (RyR2) on the nearby sarcoplasmic reticulum. Those receptors open and release a much larger calcium store into the cytosol. This amplifying step is <b>calcium-induced calcium release</b>.</p>
+<p>Calcium in the cytosol rises from roughly 10<sup>&minus;7</sup> M at rest to about 10<sup>&minus;5</sup> M at peak. Calcium binds troponin C. Tropomyosin shifts. Cross-bridges cycle. The sarcomere shortens. Relaxing means clearing that calcium out. SERCA2a pumps about 70&ndash;80&percnt; of it back into the sarcoplasmic reticulum, and phospholamban regulates that pump. The sodium&ndash;calcium exchanger throws most of the rest out. It trades three sodium in for one calcium out. A small share leaves through a calcium ATPase in the plasma membrane.</p>
+<p>Here is why this scheme matters. <em>Cardiac force is graded by how much calcium reaches the myofilaments.</em> The trigger calcium comes from outside the cell. So cardiac contraction depends completely on outside calcium and on working L-type channels. Skeletal muscle does not. This is why calcium channel blockers such as verapamil and diltiazem weaken contractility. It also explains digoxin. Digoxin blocks the sodium&ndash;potassium ATPase, so sodium inside the cell rises. That shrinks the gradient driving the sodium&ndash;calcium exchanger. Less calcium leaves the cell. More is stored in the SR. Each beat is stronger. Sympathetic stimulation reaches the same target from another angle. &beta;<sub>1</sub> receptors raise cyclic AMP. Protein kinase A then phosphorylates L-type channels, giving more trigger calcium. It also phosphorylates phospholamban, which speeds SERCA uptake. So the beat is stronger and relaxation is faster.</p>
+
+<h3>Refractoriness: the protection built into the plateau</h3>
+<p>Fast sodium channels stay inactivated from phase 0 through early phase 3. During that stretch no stimulus, however strong, can start another action potential. This <b>absolute refractory period</b> lasts about 200&ndash;250 ms. A relative refractory period of another 50 ms follows it. In that window a strong stimulus can produce a weak, slowly conducted response. The mechanical twitch lasts roughly 300 ms. The refractory period covers nearly all of it. So cardiac muscle cannot be excited again before it has relaxed. Summation and tetanus are therefore impossible.</p>
+<p>That is not an inconvenience. It is the design requirement. A tetanized ventricle never fills. A heart that never fills produces no output. Ventricular fibrillation reaches that same dead end by a different route. It is not true tetanus. It is chaotic, unsynchronized activation. The mechanical result is identical. The ventricle quivers and ejects nothing. The long plateau is the built-in guarantee that contraction and relaxation take turns. It also sets the upper limit on heart rate. Above about 200 beats per minute diastole gets so short that filling, not contraction, limits output.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> &ldquo;A faster heart rate means a stronger contraction, because the twitches add up.&rdquo; They cannot add up. The refractory period forbids summation. Faster rates <em>do</em> raise force a little, but by a separate mechanism. It is called the Bowditch or treppe effect. At high rates there is less time between beats for the sodium&ndash;calcium exchanger to clear calcium. So SR stores build up. That is calcium loading, not mechanical summation.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A working ventricular myocyte rests at &minus;90 mV. Once triggered it stays depolarized for 200&ndash;300 ms, because inward calcium balances outward potassium through a long plateau. Reshape that plateau below. <a href="../lab/ch10/VentricularActionPotentialLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch10/VentricularActionPotentialLab.html" loading="lazy" title="The Ventricular Action Potential: Plateau, Calcium and Why Tetanus Is Impossible interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Cardiac force is graded by how much calcium reaches troponin. It is not graded by recruitment or by summation. Gap junctions make every beat all-or-none. And the 200&ndash;250 ms refractory period makes tetanus impossible.</p></div>
+
+<h2 id="automaticity-conduction"><span class="num">Section 3</span>Automaticity, Conduction and the ECG</h2>
+<figure class="bref"><div class="fr"><img src="img/ch10_s3.jpg" alt="Schematic of the cardiac conduction system showing the sinoatrial node, atrioventricular node, bundle of His, right and left bundle branches and Purkinje fibers, with a normal ECG tracing labeled P, QRS and T" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The conduction pathway runs from the sinoatrial node to the Purkinje network. It is lined up here with the deflections of a normal surface ECG. <span class="cred">Blausen Medical Communications, Inc, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Pacemaker cells drift to threshold on their own</h3>
+<p>Nodal cells have no stable resting potential. They repolarize to a maximum diastolic potential of about &minus;60 mV. Then the membrane starts drifting straight back up. That drift is the <b>pacemaker potential</b>, also called phase 4 depolarization. Three currents drive it. First is the &ldquo;funny&rdquo; current I<sub>f</sub>. Sodium carries most of it, through HCN channels. Oddly, those channels open when the cell is hyper&shy;polarized. Second is the steady decay of the outward potassium current that caused repolarization. Third is T-type calcium channels opening late in the drift. The membrane reaches threshold at about &minus;40 mV. L-type calcium channels then open and produce the upstroke.</p>
+<p>Two things follow directly. Nodal upstrokes are carried by <em>calcium</em>, not sodium, so they are slow. They rise at about 1&ndash;10 V/s. A ventricular myocyte rises at 200&ndash;500 V/s. That is why nodal conduction velocity is low. The second point is about the slope of the drift. Pacemaking depends on it. Anything that steepens the slope speeds the heart. So does anything that raises the maximum diastolic potential or lowers the threshold. Sympathetic norepinephrine acts on &beta;<sub>1</sub> receptors and raises cyclic AMP. Cyclic AMP binds HCN channels directly and increases I<sub>f</sub>. The slope steepens and the rate rises. That is positive chronotropy, a speeding of the rate. Vagal acetylcholine acts on M<sub>2</sub> receptors. It opens potassium channels and reduces I<sub>f</sub> and calcium current. The cell sits lower, the drift flattens, and the rate falls. That is negative chronotropy.</p>
+<p>Several sites can pace. Their intrinsic rates form a hierarchy. The SA node runs at 90&ndash;100 per minute. The AV node runs at 40&ndash;60. The bundle of His and the Purkinje network run at 20&ndash;40. The fastest site captures the heart. It reaches threshold first and depolarizes everything else before the slower sites finish drifting. That is called overdrive suppression. So the SA node normally sets the rate. Look closely at the numbers. The intrinsic SA rate is 90&ndash;100. Yet a resting adult heart rate is 60&ndash;100, with an average near 70. The difference is continuous <em>vagal tone</em>. Block all autonomic input and the heart beats at about 100.</p>
+
+<h3>The conducting pathway and the deliberate AV delay</h3>
+<p>The SA node sits in the upper right atrium. Depolarization spreads from there cell to cell through atrial myocardium at roughly 1 m/s. It reaches all of both atria within about 90 ms. It converges on the <b>AV node</b> in the wall between the atria. That node is the only electrical connection through the fibrous skeleton. Conduction slows dramatically there, to about 0.05 m/s. Nodal cells have few gap junctions and slow calcium-dependent upstrokes. The <b>AV nodal delay</b> that results is roughly 100 ms. The delay is functional, not accidental. It gives the atria time to finish emptying before the ventricles contract. It also acts as a frequency filter, which protects the ventricles from very rapid atrial rates.</p>
+<p>Beyond the node the signal enters the bundle of His. That divides into right and left bundle branches along the wall between the ventricles. The signal then spreads through the <b>Purkinje fibers</b>. These are wide cells packed with gap junctions. They conduct at 2&ndash;4 m/s. Total ventricular activation takes under 100 ms. The sequence matters. The septum depolarizes first, left to right. Then the apex. Then the free walls, from endocardium to epicardium and from apex to base. That apex-to-base sequence squeezes blood upward toward the outflow valves. Think of wringing a tube of toothpaste from the closed end.</p>
+<p>Damage anywhere along the path produces a failure you can recognize. A block at the AV node lengthens the PR interval. That is first degree block. A worse block drops beats. That is second degree. Complete block leaves the ventricles beating on their own escape rhythm at 20&ndash;40 per minute. That is too slow to sustain output. Bundle branch block widens the QRS beyond 120 ms. One ventricle now has to be depolarized slowly through ordinary myocardium instead of quickly through Purkinje fibers.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Structure</th><th>Conduction speed</th><th>Built-in rate (per min)</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td>SA node</td><td>0.05 m/s</td><td>90&ndash;100</td><td>Normal pacemaker. Sets the rate</td></tr>
+<tr><td>Atrial myocardium</td><td>1.0 m/s</td><td>&mdash;</td><td>Spreads depolarization to both atria</td></tr>
+<tr><td>AV node</td><td>0.05 m/s</td><td>40&ndash;60</td><td>Delay of about 100 ms. Filters out fast rates</td></tr>
+<tr><td>Bundle of His / branches</td><td>1&ndash;2 m/s</td><td>20&ndash;40</td><td>Carries the signal through the septum</td></tr>
+<tr><td>Purkinje fibers</td><td>2&ndash;4 m/s</td><td>20&ndash;40</td><td>Fast, almost all-at-once ventricular activation</td></tr>
+<tr><td>Ventricular myocardium</td><td>0.3&ndash;1 m/s</td><td>&mdash;</td><td>Spreads from the inner wall to the outer wall</td></tr>
+</tbody>
+</table></div>
+
+<h3>Reading the electrical story: the surface ECG</h3>
+<p>An electrocardiogram records voltage picked up by electrodes on the skin. That voltage is the sum of the electrical waves sweeping through the myocardium as it depolarizes and repolarizes. It is a record of <em>electrical</em> events only. The <b>P wave</b> is atrial depolarization. It lasts under 120 ms and stands less than 2.5 mm tall. The <b>QRS complex</b> is ventricular depolarization, normally under 120 ms. It is tall because ventricular mass is large. The <b>T wave</b> is ventricular repolarization. It points up in most leads. Repolarization runs from epicardium to endocardium, the opposite direction from depolarization. The two sign reversals cancel, so the wave stays upright.</p>
+<p>The intervals carry the timing information. The <b>PR interval</b> runs from the start of P to the start of QRS. It is 120&ndash;200 ms. AV nodal delay makes up most of it. The <b>QT interval</b> spans depolarization plus repolarization. It changes with rate. Corrected for rate, it is normally under about 440 ms. The flat <b>ST segment</b> lines up with the plateau. During it the whole ventricle is depolarized, so no voltage difference exists across the heart. That is why a raised or lowered ST segment is a warning. It means one region sits at a different membrane potential than its neighbors. That is the electrical signature of ischemia or infarction.</p>
+<p>Atrial repolarization has no visible wave. Its voltage is low. It also happens during the QRS, which buries it. Now look at the timing at a normal rate of 75 beats per minute. One complete cardiac cycle takes 0.8 s. The electrical events run from the start of P to the end of T. That is a PR interval of about 0.16 s plus a QT interval of about 0.38 s. Together they occupy roughly 0.55 s. The rest is electrical silence in late diastole.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> The ECG does not show contraction. The QRS marks the arrival of the depolarizing wave. Mechanical systole begins a few tens of milliseconds later. It also outlasts the QRS by hundreds of milliseconds. A patient can show perfectly normal ECG complexes and have no cardiac output at all. That is pulseless electrical activity. It is why you always check a pulse, never a monitor, to decide whether a heart is pumping.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Nodal cells have no stable resting potential. After repolarizing to about &minus;60 mV they drift straight back up on the funny current, until they hit threshold at &minus;40 mV. Everything about heart rate starts there. <a href="../lab/ch10/PacemakerAndConduction.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch10/PacemakerAndConduction.html" loading="lazy" title="Automaticity and Conduction: Building an ECG From the Pacemaker Up interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Automaticity comes from the funny current and the calcium currents that drift nodal cells up to threshold. The fastest site wins. The ECG is a timing record of that electrical wave. It never records the contraction the wave triggers.</p></div>
+
+<h2 id="cardiac-cycle"><span class="num">Section 4</span>The Cardiac Cycle: Pressures, Volumes and Sounds</h2>
+<figure class="bref"><div class="fr"><img src="img/ch10_s4.jpg" alt="Wiggers diagram plotting aortic, left ventricular and left atrial pressures with ventricular volume, ECG and phonocardiogram across one complete cardiac cycle" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The Wiggers diagram lines up pressure, volume, ECG, and heart sounds. That lets you read every valve event straight off a pressure crossing. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>One cycle in 0.8 seconds</h3>
+<p>At 75 beats per minute each cycle lasts 0.8 s. Systole takes about 0.3 s and diastole about 0.5 s. Follow the left ventricle through the phases. Remember that every valve event is simply a pressure crossing.</p>
+<p><b>Ventricular filling</b> begins when left ventricular pressure falls below left atrial pressure. The mitral valve then opens. Filling is rapid at first, because the ventricle is recoiling and actively sucking. It then slows through a quiet stretch called diastasis. Roughly 70&ndash;80&percnt; of filling is passive. <b>Atrial systole</b> follows the P wave. It adds the final 20&ndash;30&percnt;. That last push is the &ldquo;atrial kick&rdquo;. It brings end-diastolic volume (EDV) to about 120&ndash;130 mL. At rest you can do without the kick. That is why many people tolerate atrial fibrillation. At high heart rates diastole is short. Losing the kick can then cost 20&percnt; of stroke volume.</p>
+<p><b>Isovolumetric contraction</b> begins at the QRS. Ventricular pressure rises above atrial pressure, so the mitral valve shuts. That makes the first heart sound. Pressure has not yet exceeded aortic pressure, so the aortic valve is still closed. All four valves are shut and the volume cannot change. The ventricle simply builds pressure. It goes from about 10 to 80 mmHg in roughly 50 ms. <b>Ejection</b> starts the moment ventricular pressure exceeds aortic pressure and the aortic valve opens. Pressure peaks near 120 mmHg. About 70 mL leaves the ventricle. <b>Isovolumetric relaxation</b> follows aortic valve closure, which makes the second heart sound. All valves are shut again. Pressure plummets from about 80 mmHg to under 10 mmHg with no change in volume. Then the mitral valve reopens and the cycle repeats. End-systolic volume (ESV) is about 50&ndash;60 mL.</p>
+<p>Everything else follows from those two volumes. Stroke volume SV = EDV &minus; ESV = 120 &minus; 50 = 70 mL. Ejection fraction EF = SV / EDV = 70 / 120 &asymp; 0.58, or 58&percnt;. That sits comfortably inside the normal range of 55&ndash;70&percnt;. Cardiac output CO = HR &times; SV = 75 &times; 70 mL = 5250 mL/min, which is about 5 L/min. Indexed to body surface area, cardiac index is normally 2.5&ndash;4.0 L/min/m<sup>2</sup>.</p>
+
+<h3>Heart sounds mark valve closure, not valve slamming</h3>
+<p>The first heart sound, S1 (&ldquo;lub&rdquo;), lines up with mitral and tricuspid closure at the start of systole. It is longer and lower pitched. The second, S2 (&ldquo;dub&rdquo;), lines up with aortic and pulmonic closure at the end of systole. It is shorter and higher pitched. The gap from S1 to S2 is systole. The gap from S2 to the next S1 is diastole. That is why diastole is easy to pick out by ear. It is the longer pause.</p>
+<p>The sound is not the leaflets clapping together. It is the whole system vibrating: blood, valve, chamber, and vessel. The vibration happens as flow is braked suddenly. This point matters because it explains murmurs. Any turbulence makes an audible vibration. Blood forced through a narrowed opening does it. So does blood leaking backwards through a valve that does not seal. So a systolic murmur points to one of two problems. Either a valve that should be closed is leaking, as in mitral regurgitation. Or a valve that should be open is narrowed, as in aortic stenosis. The timing tells you which.</p>
+<p>S2 normally splits when you breathe in. Breathing in lowers intrathoracic pressure. More blood returns to the right heart. Right ventricular ejection takes longer, so pulmonic closure is delayed. At the same time blood pools in the expanded pulmonary vessels. That slightly reduces filling on the left. Physiological splitting is something you can hear. It proves the two ventricles are loaded separately, even though their average outputs are identical. S3 is a low-pitched sound in early diastole. It reflects rapid filling into a dilated ventricle. S4 comes just before S1. It reflects atrial contraction against a stiff ventricle.</p>
+
+<h3>The pressure&ndash;volume loop</h3>
+<p>Put left ventricular pressure on the vertical axis. Put volume on the horizontal axis. One cardiac cycle then traces a counter-clockwise loop with four sides. The bottom edge, moving right, is filling. The right vertical edge is isovolumetric contraction. The top edge, moving left, is ejection. The left vertical edge is isovolumetric relaxation. The width of the loop is stroke volume. The area inside it is stroke work, the external work the ventricle performs each beat.</p>
+<p>The loop is the fastest way to see how preload, afterload, and contractility differ. Raise <b>preload</b> with more venous return. The right-hand corner moves outward. The loop widens, stroke volume rises, and ESV barely changes. Raise <b>afterload</b> with a higher aortic pressure. The top of the loop lifts and the aortic valve closes earlier. ESV rises and stroke volume falls for that beat. Raise <b>contractility</b> and the end-systolic pressure&ndash;volume relationship gets steeper. The ventricle empties to a smaller ESV. Stroke volume rises with no change in filling. Three different interventions give three visually distinct changes. That is why the loop is worth learning as a picture rather than as a paragraph.</p>
+
+<div class="pearl"><b>Misconception to retire.</b> Ejection fraction is not stroke volume. And a normal EF does not guarantee a normal cardiac output. Take a ventricle with an EDV of 60 mL and an ESV of 24 mL. Its EF is 60&percnt;. Its stroke volume is only 36 mL. Roughly half of all heart failure occurs with a preserved ejection fraction. The ventricle is stiff. It fills poorly. EDV is low. Output falls even though the percentage ejected looks reassuring.</div>
+
+<h3>The coronary circulation is perfused in diastole</h3>
+<p>The heart consumes about 8&ndash;10 mL of oxygen per 100 g of tissue per minute. It extracts 70&ndash;80&percnt; of the oxygen delivered to it, even at rest. Coronary sinus blood is only about 30&percnt; saturated. That is the lowest venous saturation in the body. Because extraction is already near maximal, the heart cannot meet higher demand by extracting more. It must increase flow instead. Resting coronary flow is roughly 250 mL/min, about 5&percnt; of cardiac output. With exercise it can rise four- to fivefold. Local adenosine and nitric oxide do most of that work.</p>
+<p>The timing constraint is the twist. During systole the contracting myocardium compresses the vessels running through it. Left coronary flow nearly stops. The subendocardium, the inner layer of the wall, is squeezed hardest. So the left ventricle is perfused mainly during <em>diastole</em>. The driving pressure is aortic diastolic pressure, about 80 mmHg, minus left ventricular diastolic pressure. Two consequences follow straight from that. Tachycardia shortens diastole disproportionately. So it cuts coronary perfusion time exactly when demand is highest. That is the mechanism behind demand ischemia. Second, anything that raises left ventricular diastolic pressure narrows the gradient. So does anything that lowers aortic diastolic pressure. That is why hypotension is so dangerous in a patient with coronary disease.</p>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Cardiac valves have no muscle and no nerve supply. Each opens when the pressure upstream exceeds the pressure downstream. Each shuts when the gradient reverses. So the whole cycle can be worked out from the pressures. <a href="../lab/ch10/CardiacCycleWiggers.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch10/CardiacCycleWiggers.html" loading="lazy" title="The Cardiac Cycle: Every Valve Event Is a Pressure Crossing interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Every valve event in the cycle is a pressure crossing. The two isovolumetric phases exist because pressure must change before any valve can open. And stroke volume is simply a difference. It is the volume at the start of ejection minus the volume left at the end.</p></div>
+
+<h2 id="cardiac-output"><span class="num">Section 5</span>Cardiac Output and the Loops That Control It</h2>
+<figure class="bref"><div class="fr"><img src="img/ch10_s5.jpg" alt="Frank-Starling curves plotting stroke volume against end-diastolic volume, with separate curves for increased and decreased contractility" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Frank&ndash;Starling curves show that stroke volume rises as end-diastolic volume rises. Changing contractility shifts the whole curve. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Cardiac output has exactly two terms</h3>
+<p>CO = HR &times; SV. Every influence on cardiac output, whether from the body or from a drug, must act through one of those two terms. That makes this the most useful equation in the module. At rest, 75 beats per minute &times; 70 mL gives about 5 L/min. In a trained athlete at maximal exercise, 190 &times; 160 mL gives more than 30 L/min. That is a sixfold increase. It comes from roughly a 2.5-fold rise in rate and a 2.3-fold rise in stroke volume.</p>
+<p>You can measure cardiac output with the Fick principle. It is just conservation of mass applied to oxygen: CO = VO<sub>2</sub> / (CaO<sub>2</sub> &minus; CvO<sub>2</sub>). Say a resting adult consumes 250 mL O<sub>2</sub> per minute. Arterial blood carries 200 mL O<sub>2</sub> per liter. Mixed venous blood carries 150 mL per liter. Then CO = 250 / 50 = 5 L/min. Notice what this tells you clinically. A widened arteriovenous oxygen difference means tissues are extracting more, because flow is inadequate. A low cardiac output state announces itself in the venous saturation.</p>
+<p>Autonomic tone on the SA node controls heart rate almost entirely, as Section 3 described. Stroke volume has three independent determinants. They are preload, afterload, and contractility. Everything else in this section is about those three.</p>
+
+<h3>Preload and the Frank&ndash;Starling relationship</h3>
+<p><b>Preload</b> is how far the ventricular myocardium is stretched at the end of diastole. In practice it is end-diastolic volume. Venous return sets it. Several things drive venous return. Blood volume and venous tone are two of them. The skeletal muscle pump and the respiratory pump are two more. The last is the time available for filling. The <b>Frank&ndash;Starling law</b> says something simple. Within physiological limits, the greater the end-diastolic stretch, the greater the force of the next contraction. So the greater the stroke volume too.</p>
+<p>The molecular basis has two parts. Stretch improves the overlap between thick and thin filaments. It moves sarcomeres toward the optimal length of about 2.2 &micro;m. The second part matters more. Stretch increases the calcium sensitivity of troponin C. At the same cytosolic calcium concentration, a stretched sarcomere generates more force. Cardiac muscle normally works on the ascending limb of its length&ndash;tension curve. So more filling reliably means more force. Skeletal muscle is different. It sits near its optimum and can be overstretched onto a descending limb.</p>
+<p>The functional payoff is automatic matching. Say venous return to the right ventricle rises during inspiration. The right ventricle stretches and ejects more. That extra volume reaches the left atrium a few beats later. It stretches the left ventricle, and the left ventricle ejects more. No nerve, no hormone, and no signal from the brain is required. This intrinsic mechanism keeps the two pumps balanced beat to beat. It is also why a transplanted, denervated heart still increases its output during exercise.</p>
+
+<div class="pearl"><b>Distinguish a shift</b> <em>along</em> a curve from a shift <em>of</em> the curve. Increasing preload moves the heart rightward and upward along its existing Frank&ndash;Starling curve. Increasing contractility lifts the whole curve upward. Sympathetic stimulation, dobutamine, and digoxin all do that. A lifted curve gives more stroke volume at any given preload. Failing myocardium sits on a flattened, depressed curve. That is why a failing heart responds so poorly to extra fluid. It is also why it responds so well when you reduce the load it faces.</div>
+
+<h3>Afterload and contractility</h3>
+<p><b>Afterload</b> is the load the ventricle must overcome in order to eject. It is essentially the wall stress present during ejection. At the bedside it is approximated by systolic arterial pressure. Systemic vascular resistance is a closer approximation. Raising afterload means the ventricle spends longer in isovolumetric contraction. The aortic valve opens later. The ventricle ejects against greater opposition. It finishes with a larger end-systolic volume. Stroke volume falls for that beat. A healthy ventricle compensates within a beat or two. The retained volume increases the next beat&rsquo;s preload, and Frank&ndash;Starling restores output. A failing ventricle cannot do that. This is why afterload reduction with vasodilators is such an effective heart failure therapy.</p>
+<p><b>Contractility</b>, also called inotropy, is the intrinsic vigor of contraction at any given preload and afterload. It is not stroke volume. It is the position of the curve that generates stroke volume. Positive inotropes act by raising the calcium available to troponin. Sympathetic stimulation and circulating epinephrine do it through &beta;<sub>1</sub> receptors and cyclic AMP. Digoxin does it through sodium&ndash;calcium exchange. Calcium salts do it directly. Negative inotropes lower that calcium. They include acetylcholine, which acts weakly and mostly on the atria. They also include &beta;-blockers and calcium channel blockers. So do acidosis, hypoxia, and hyperkalemia. Hyperkalemia is a high blood potassium level. Sympathetic stimulation phosphorylates phospholamban as well as the L-type channel. So it speeds relaxation too. That is a necessary trick. A heart beating at 180 per minute has almost no diastole to spare.</p>
+<p>The three determinants can be separated experimentally. They never occur alone in a living person. Take exercise. It raises heart rate, through sympathetic drive plus vagal withdrawal. It raises preload, through the muscle pump and venoconstriction. It raises contractility, through &beta;<sub>1</sub> stimulation. And it lowers afterload in the working muscle beds, through local metabolic vasodilation. All four changes push in the same direction. That is how output can rise sixfold.</p>
+
+<h3>The baroreceptor reflex: negative feedback defending arterial pressure</h3>
+<p>The regulated variable is <b>mean arterial pressure</b>, normally 70&ndash;100 mmHg. You can estimate it as MAP = diastolic + one third of pulse pressure. You can also get it from MAP = CO &times; SVR. The <b>sensors</b> are baroreceptors. They are stretch-sensitive nerve endings in the carotid sinus and the aortic arch. The carotid sinus reports through the glossopharyngeal nerve, CN IX. The aortic arch reports through the vagus, CN X. They fire at a rate proportional to arterial wall stretch. The <b>integrator</b> is the cardiovascular center in the medulla oblongata. The <b>effectors</b> are the SA node and AV node, the ventricular myocardium, and vascular smooth muscle. Sympathetic and parasympathetic fibers reach them.</p>
+<p>Trace a fall in pressure. Standing up quickly does it. That move pools 500&ndash;800 mL of blood in the legs. Arterial stretch falls. Baroreceptor firing falls. The medulla reads that reduced traffic as low pressure. It withdraws vagal tone and increases sympathetic outflow. Heart rate rises. Contractility rises. Veins constrict, which raises preload. Arterioles constrict, which raises systemic vascular resistance. MAP = CO &times; SVR, and CO = HR &times; SV. So every one of those responses pushes MAP back up. The <b>response opposes the disturbance</b>. That is the definition of negative feedback. The whole loop operates within one or two heartbeats. Sometimes it is sluggish, as in autonomic neuropathy or after prolonged bed rest. Then the person becomes light-headed on standing. That is orthostatic hypotension.</p>
+<p>The reflex runs in both directions. A rise in pressure stretches the baroreceptors more. They fire faster. The medulla increases vagal output and withdraws sympathetic tone. Heart rate, contractility, and vascular tone all fall. This is why carotid sinus massage can slow a supraventricular tachycardia. It is also why a tight collar can make a susceptible person faint. Longer-term pressure control is handled hormonally. Renin&ndash;angiotensin&ndash;aldosterone handles part of it. So does antidiuretic hormone. So does atrial natriuretic peptide, released by stretched atria to promote sodium and water loss. But the baroreceptor reflex is the fast loop. Baroreceptors reset within a day or two. That is precisely why they cannot correct chronic hypertension.</p>
+
+<div class="pearl"><b>Positive feedback in the heart is rare and always self-limiting.</b> Phase 0 of the action potential is genuine positive feedback. Sodium channel inactivation ends it in milliseconds. The dangerous version is the failing-heart spiral. Low output activates the sympathetic and renin&ndash;angiotensin systems. Those raise afterload and retain fluid. That reduces output further. This loop is positive feedback with no built-in stop. It is exactly why heart failure treatment consists largely of blocking it, with &beta;-blockers, ACE inhibitors, and diuretics.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Cardiac output has exactly two terms, CO = HR &times; SV. Stroke volume has exactly three determinants: preload, afterload, and contractility. Set them below and the model recalculates the whole beat. <a href="../lab/ch10/CardiacOutputBaroreflex.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch10/CardiacOutputBaroreflex.html" loading="lazy" title="Cardiac Output and the Baroreflex: Break the Loop and Watch Pressure Run Away interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Cardiac output is heart rate times stroke volume. Stroke volume is set by preload, afterload, and contractility. The baroreceptor reflex is the fast negative feedback loop. It works all four of those to hold mean arterial pressure steady.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>The heart is two pumps set one after the other. Both eject the same 5 L/min. The left one generates roughly five times the pressure. Q = &Delta;P / R explains that difference on its own. A thicker wall pays for it structurally, following T = P &times; r / 2h. The muscle is a syncytium coupled by gap junctions, so every beat is all-or-none. Force is graded by calcium instead, delivered through calcium-induced calcium release. A 200&ndash;250 ms refractory period built into the plateau prevents tetanus. Rhythm arises from nodal cells that drift to threshold on the funny current. The fastest site captures the heart. That is the SA node at 90&ndash;100 per minute, restrained to about 70 by vagal tone. A deliberate 100 ms AV delay lets the atria empty before the ventricles contract. The ECG times all of this and nothing mechanical. Each 0.8 s cycle is a chain of pressure crossings that open and close passive valves. Volume moves from 120 mL down to 50 mL, so 70 mL is ejected. Output is then defended four ways. Preload defends it through Frank&ndash;Starling. Afterload and contractility do their part. And the baroreceptor reflex, a negative feedback loop in the medulla, holds mean arterial pressure near 90 mmHg.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Afterload</td><td>The load the ventricle must overcome in order to eject. Estimate it from systolic arterial pressure or from systemic vascular resistance. Raising it raises end-systolic volume.</td></tr>
+<tr><td>Automaticity</td><td>The ability of nodal and Purkinje cells to depolarize to threshold on their own, with no outside stimulus.</td></tr>
+<tr><td>AV nodal delay</td><td>The roughly 100 ms slowing of conduction through the atrioventricular node. It lets the atria empty before the ventricles contract. It produces the PR interval.</td></tr>
+<tr><td>Calcium-induced calcium release</td><td>Trigger calcium enters through L-type channels and opens ryanodine receptors on the sarcoplasmic reticulum. That amplifies the calcium signal in the cytosol about tenfold.</td></tr>
+<tr><td>Cardiac output (CO)</td><td>The volume one ventricle ejects per minute. CO = HR &times; SV, about 5 L/min at rest.</td></tr>
+<tr><td>Contractility (inotropy)</td><td>The intrinsic force of contraction at a fixed preload and afterload. The calcium available to troponin C sets it.</td></tr>
+<tr><td>Ejection fraction (EF)</td><td>SV divided by EDV, normally 55&ndash;70&percnt;. It is a percentage, not a volume.</td></tr>
+<tr><td>End-diastolic volume (EDV)</td><td>The volume in the ventricle just before it contracts, about 120&ndash;130 mL. It is the practical measure of preload.</td></tr>
+<tr><td>Frank&ndash;Starling law</td><td>More stretch at the end of diastole gives more contractile force. It works largely by making troponin C more sensitive to calcium.</td></tr>
+<tr><td>Funny current (I<sub>f</sub>)</td><td>A sodium-carried current through HCN channels. It turns on when the cell is hyperpolarized, and it drives the pacemaker potential.</td></tr>
+<tr><td>Gap junction</td><td>A connexin pore in the intercalated disc. It lets current pass straight between myocytes, so the myocardium acts as one connected sheet.</td></tr>
+<tr><td>Isovolumetric contraction</td><td>The phase after the mitral valve shuts and before the aortic valve opens. All valves are shut, pressure rises steeply, and volume does not change.</td></tr>
+<tr><td>Law of Laplace</td><td>Wall stress T = P &times; r / 2h. It explains why high-pressure or dilated chambers need thicker walls.</td></tr>
+<tr><td>Mean arterial pressure (MAP)</td><td>The average pressure driving blood through the body, about 70&ndash;100 mmHg. MAP = CO &times; SVR, or diastolic plus one third of pulse pressure.</td></tr>
+<tr><td>Plateau (phase 2)</td><td>The 150&ndash;250 ms part of the ventricular action potential where inward calcium balances outward potassium. It creates the long refractory period.</td></tr>
+<tr><td>Preload</td><td>The stretch on the heart muscle at the end of diastole. Venous return and filling time set it.</td></tr>
+<tr><td>Refractory period</td><td>The time during which a myocyte cannot be excited again, about 200&ndash;250 ms for the absolute period. It prevents summation and tetanus.</td></tr>
+<tr><td>Stroke volume (SV)</td><td>EDV minus ESV, about 70 mL per beat at rest.</td></tr>
+<tr><td>Baroreceptor reflex</td><td>The fast negative feedback loop in the medulla. It uses stretch receptors in the carotid sinus and aortic arch to adjust rate, contractility, and vascular tone, so MAP stays steady.</td></tr>
+<tr><td>Dicrotic notch</td><td>A brief blip on the aortic pressure tracing. Elastic recoil at aortic valve closure produces it. It marks the end of ejection.</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">The right ventricle peaks at only 25 mmHg. The left peaks at 120 mmHg. How can their outputs be identical?</div><div class="ans">The two pumps sit one after the other in a closed loop, so flow must be equal. Flow depends on both pressure and resistance: Q = &Delta;P / R. Pulmonary vascular resistance is about one tenth of systemic. So the right ventricle reaches the same 5 L/min with roughly one tenth of the driving pressure. The left ventricle produces more pressure, not more flow.</div></div>
+<div class="qq"><div class="q">A patient has an EDV of 140 mL and an ESV of 84 mL. The heart rate is 90. Work out SV, EF, and CO. Then say what the EF tells you.</div><div class="ans">SV = 140 &minus; 84 = 56 mL. EF = 56 / 140 = 40&percnt;. CO = 90 &times; 56 = 5040 mL/min, about 5 L/min. An EF of 40&percnt; is reduced. Normal is 55&ndash;70&percnt;. So this shows systolic dysfunction. Yet cardiac output is still normal. The dilated ventricle and the raised heart rate make up for the weak squeeze. This is precisely why EF alone never tells you whether output is adequate.</div></div>
+<div class="qq"><div class="q">Skeletal muscle can be tetanized. Cardiac muscle cannot. Why not, and why does that difference matter?</div><div class="ans">The ventricular action potential has a 150&ndash;250 ms plateau. Fast sodium channels stay inactivated through it. That gives an absolute refractory period of 200&ndash;250 ms. It covers nearly the whole mechanical twitch. A second stimulus arriving during the twitch cannot generate a second action potential. So twitches cannot summate. It matters because a tetanized ventricle would never relax. It would never fill. So it would eject nothing.</div></div>
+<div class="qq"><div class="q">Take away extracellular calcium and cardiac contraction stops within minutes. Skeletal muscle keeps contracting for a time. Explain the difference.</div><div class="ans">Cardiac excitation&ndash;contraction coupling runs on calcium-induced calcium release. Extracellular calcium enters through L-type channels. That entry is the obligatory trigger for ryanodine receptors to open. With no outside calcium there is no trigger. So there is no SR release either. Skeletal muscle works differently. Its dihydropyridine receptor is mechanically coupled to its ryanodine receptor. So it releases SR calcium with no calcium entry at all.</div></div>
+<div class="qq"><div class="q">The intrinsic rate of the SA node is 90&ndash;100 per minute. A resting adult heart rate averages about 70. Explain the discrepancy. Then predict the effect of atropine.</div><div class="ans">Continuous vagal tone holds the node below its intrinsic rate. Acetylcholine at M<sub>2</sub> receptors opens potassium channels. It also reduces I<sub>f</sub> and calcium current. That flattens the pacemaker drift. Atropine is a muscarinic antagonist. It removes that restraint. So the rate rises toward the intrinsic 90&ndash;100 per minute.</div></div>
+<div class="qq"><div class="q">A patient in complete heart block has a ventricular rate of 32 per minute. Where is the pacemaker now? Why is the rate so slow?</div><div class="ans">Conduction from the atria to the ventricles has failed. So a subsidiary pacemaker in the His&ndash;Purkinje system drives the ventricles. Its intrinsic rate is 20&ndash;40 per minute. Normally the faster SA node captures the heart. It overdrive-suppresses those slower sites. Once the connection is lost, the slow latent pacemaker is revealed.</div></div>
+<div class="qq"><div class="q">Why does the PR interval get longer in first-degree AV block? And why does the QRS get wider in bundle branch block?</div><div class="ans">AV nodal conduction time dominates the PR interval. Slow that node and the interval stretches beyond 200 ms. The QRS reflects ventricular activation time. It is normally under 120 ms. Purkinje fibers conduct fast, at 2&ndash;4 m/s. They activate both ventricles almost at the same time. Block a bundle branch and one ventricle loses that fast path. It must be depolarized slowly through ordinary myocardium at 0.3&ndash;1 m/s. Activation takes longer, so the QRS widens.</div></div>
+<div class="qq"><div class="q">During isovolumetric contraction the ventricle is contracting hard, yet no blood leaves. Explain why. State which valves are open.</div><div class="ans">None are open. The mitral valve closed as soon as ventricular pressure exceeded atrial pressure. The aortic valve cannot open until ventricular pressure exceeds aortic pressure of about 80 mmHg. All four valves are shut and blood is incompressible. So volume cannot change. All of the contraction is converted into a rise in pressure. It goes from roughly 10 to 80 mmHg in about 50 ms.</div></div>
+<div class="qq"><div class="q">A patient develops atrial fibrillation. What happens to stroke volume at rest? What happens during exercise? Explain the difference.</div><div class="ans">Organized atrial contraction is lost, so the atrial kick is gone. At rest, passive filling supplies 70&ndash;80&percnt; of EDV and diastole is long. So the loss is small and often goes unnoticed. During exercise diastole shortens markedly. Passive filling has less time to complete. The kick would have supplied a proportionally larger share. Losing it can cost around 20&percnt; of stroke volume. The patient gets breathless on exertion.</div></div>
+<div class="qq"><div class="q">A heart rate of 190 reduces coronary perfusion of the left ventricle. Total time spent in systole per minute stays in proportion. So why does perfusion fall?</div><div class="ans">Left ventricular coronary flow occurs almost entirely in diastole. Systolic compression of the vessels inside the wall nearly abolishes it. As rate rises, diastole shortens disproportionately more than systole does. So total diastolic perfusion time per minute falls. It falls at exactly the moment myocardial oxygen demand is highest. The heart already extracts 70&ndash;80&percnt; of the oxygen delivered. So it cannot compensate by extracting more. Ischemia results.</div></div>
+<div class="qq"><div class="q">A patient is given an intravenous fluid bolus. Use the Frank&ndash;Starling relationship to explain why stroke volume rises. Then say why the same bolus may not help a patient in decompensated heart failure.</div><div class="ans">The bolus increases venous return, so EDV rises. Greater end-diastolic stretch improves filament overlap. It also increases troponin C calcium sensitivity. So contractile force and stroke volume rise. The heart moves rightward and upward along its existing curve. A failing ventricle sits on a flattened, depressed curve. Extra volume buys it little additional stroke volume. It sharply raises diastolic pressure instead. That backs up into the pulmonary veins and causes edema.</div></div>
+<div class="qq"><div class="q">A person stands up quickly. Name the variable, the sensor, the integrator, the effectors, and the response. Say why this is negative feedback.</div><div class="ans">Variable: mean arterial pressure. Sensor: baroreceptors in the carotid sinus (CN IX) and the aortic arch (CN X). Integrator: the cardiovascular center of the medulla. Effectors: the SA node and AV node, the ventricular myocardium, and vascular smooth muscle in arterioles and veins. Response: venous pooling drops MAP, so baroreceptor firing falls. Vagal tone is withdrawn and sympathetic outflow rises. Heart rate, contractility, venous tone, and systemic vascular resistance all increase. MAP is restored. It is negative feedback because the response opposes and corrects the original disturbance.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch09.html"><span class="k">Previous</span>&larr; Blood and Blood Vessels</a>
+        <a class="next" href="ch11.html"><span class="k">Next</span>Lymphatic and Immune Systems &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

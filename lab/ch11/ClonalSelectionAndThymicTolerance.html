@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Clonal Selection and Thymic Tolerance</title>
+<meta name="description" content="Move the two thymic selection thresholds and watch tolerance being built, then release an antigen into a pre-existing repertoire and watch one clone expand a thousandfold.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:13px;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);line-height:1.2;}
+.seg2 button small{display:block;font-weight:500;font-size:10px;color:var(--muted);margin-top:2px;}
+.seg2 button.on{background:var(--teal);color:#fff;} .seg2 button.on small{color:rgba(255,255,255,.88);}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chk{display:flex;gap:14px;flex-wrap:wrap;margin-top:13px;}
+.chk label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chk input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;text-align:left;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tag{display:inline-block;font-size:11px;font-weight:800;border-radius:20px;padding:5px 11px;margin:4px 5px 0 0;background:var(--coral);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:8px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.05);}
+canvas{display:block;width:100%;height:auto;}
+.hide{display:none;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch11.html">&larr; Module 11</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 11</div>
+  <h1>Clonal Selection and Thymic Tolerance</h1>
+  <div class="intro">Your lymphocytes are already specific for antigens you have never met, including molecules that do not exist in nature, because random recombination of V, D and J segments builds roughly <b>10<sup>11</sup></b> receptor specificities <i>before</i> antigen arrives. Tolerance therefore has to be built rather than inherited. Move the two thymic thresholds and watch that curation happen, then release an antigen into the surviving repertoire and watch one clone &mdash; and only one &mdash; expand.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="seg2" id="seg">
+        <button type="button" id="mA" class="on" aria-pressed="true">Thymus<small>build tolerance</small></button>
+        <button type="button" id="mB" aria-pressed="false">Periphery<small>select a clone</small></button>
+      </div>
+
+      <div id="panA">
+        <h2>Two tests, in order, on every thymocyte</h2>
+        <div class="sl"><label for="sL">Positive selection threshold &mdash; must bind self-MHC at least this well <span class="v" id="vL">32</span></label>
+          <input type="range" id="sL" min="8" max="50" step="1" value="32" aria-label="Positive selection avidity threshold in the thymic cortex"></div>
+        <div class="sl"><label for="sU">Negative selection threshold &mdash; deleted above this avidity <span class="v" id="vU">37</span></label>
+          <input type="range" id="sU" min="12" max="60" step="1" value="37" aria-label="Negative selection avidity threshold in the thymic medulla"></div>
+        <div class="chk">
+          <label><input type="checkbox" id="cAire" checked> AIRE working in the medulla</label>
+          <label><input type="checkbox" id="cFox" checked> FoxP3 / regulatory lineage working</label>
+        </div>
+        <div class="hint"><b>Positive selection</b> (cortex) asks only whether the receptor can engage self-MHC at all &mdash; a receptor that cannot is useless, because every antigen it will ever see is displayed on self-MHC, so those cells die by neglect. <b>Negative selection</b> (medulla) asks the opposite: does it bind self peptide too strongly? <b>AIRE</b> makes medullary epithelium express thousands of tissue-restricted proteins &mdash; insulin, thyroglobulin, myelin &mdash; so a thymocyte tours the whole body without leaving the thymus. Normally only about <b>2 percent</b> pass both tests.</div>
+        <div class="chips" id="preA"></div>
+      </div>
+
+      <div id="panB" class="hide">
+        <h2>Antigen selects; it does not instruct</h2>
+        <div class="chips" id="agChips"></div>
+        <div class="sl" style="margin-top:14px"><label for="sN">Naive precursor cells already specific for this epitope <span class="v" id="vN">100</span></label>
+          <input type="range" id="sN" min="10" max="1000" step="10" value="100" aria-label="Number of naive precursor lymphocytes already specific for the chosen epitope"></div>
+        <div class="sl"><label for="sD">Day of the response <span class="v" id="vD">day 0</span></label>
+          <input type="range" id="sD" min="0" max="14" step="0.1" value="0" aria-label="Day of the primary immune response, zero to fourteen"></div>
+        <div class="row">
+          <button type="button" class="btn solid" id="bPlay">Run the 14 days</button>
+          <button type="button" class="btn" id="bNew">New random repertoire</button>
+        </div>
+        <div class="hint">A single selected clone expands roughly <b>1,000-fold in about a week</b> &mdash; a doubling every 17 hours or so. Nothing about the receptor changes; the antigen simply acts as a selective pressure on a population that already existed. That is why a <i>first</i> infection has a several-day symptomatic window before adaptive control arrives.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2 id="vizTitle">The avidity distribution and where you cut it</h2>
+      <canvas id="viz" width="1040" height="500" role="img" aria-label="Visualization of the thymocyte avidity distribution divided by the two selection thresholds"></canvas>
+      <div class="labs" id="labs"></div>
+      <div id="tags"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <h2 id="viz2Title">Fates of 100 thymocytes</h2>
+      <canvas id="viz2" width="1040" height="230" role="img" aria-label="Stacked bar of thymocyte fates, or logarithmic plot of clone size over fourteen days"></canvas>
+      <div class="hint" id="hint2"></div>
+      <div class="sr" id="live" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var cs=getComputedStyle(document.documentElement);
+function CV(n){return cs.getPropertyValue('--'+n).trim();}
+
+var mode='A';
+var A={L:32,U:37,aire:true,fox:true};
+var MFLOOR=25, DANGER=43, LAM=12;
+function F(a){ return 1-Math.exp(-a/LAM); }
+
+function calcA(){
+  var L=A.L, U=Math.max(A.U,A.L+1);
+  var neglect=F(L);
+  var exported=Math.max(0,F(U)-F(L));
+  var tregBand=Math.max(0,F(U+6)-F(U));
+  var deleted=Math.max(0,1-F(U+6));
+  var useless=Math.max(0,F(Math.min(U,MFLOOR))-F(L));
+  var autoTh=Math.max(0,F(U)-F(Math.max(L,DANGER)));
+  var esc=A.aire?0:0.315*(tregBand+deleted);
+  var tregs=A.fox?tregBand:0;
+  var del=deleted+(A.fox?0:tregBand)-esc;
+  return {L:L,U:U,neglect:neglect*100,exported:(exported+esc)*100,tregs:tregs*100,deleted:Math.max(0,del)*100,
+          useless:useless*100,auto:(autoTh+esc)*100,esc:esc*100,tregBand:tregBand*100};
+}
+
+/* ---------- mode B state ---------- */
+var AG=[
+ {n:'Influenza hemagglutinin',h:28},
+ {n:'Tetanus toxoid',h:118},
+ {n:'Pneumococcal capsule sugar',h:206},
+ {n:'A synthetic molecule that has never existed in nature',h:298}
+];
+var agIdx=0, B={N:100,day:0}, playing=false, cells=[];
+function newRepertoire(){
+  cells=[];
+  for(var i=0;i<320;i++) cells.push({h:Math.random()*360});
+}
+newRepertoire();
+function matched(){
+  var t=AG[agIdx].h, out=[];
+  for(var i=0;i<cells.length;i++){
+    var d=Math.abs(cells[i].h-t); if(d>180)d=360-d;
+    if(d<3.6) out.push(i);
+  }
+  return out;
+}
+function cloneSize(day){
+  if(day<=0) return B.N;
+  var d=Math.min(day,7);
+  var peak=B.N*Math.pow(2,d/0.7035);
+  if(day<=7) return peak;
+  return peak*Math.exp(-(day-7)/1.6)+B.N;
+}
+function memSize(day){
+  if(day<=7) return 0;
+  var peak=B.N*Math.pow(2,7/0.7035);
+  return peak*0.075*(1-Math.exp(-(day-7)/1.5));
+}
+
+/* ---------- ui wiring ---------- */
+function setMode(m){
+  mode=m;
+  document.getElementById('mA').classList.toggle('on',m==='A');
+  document.getElementById('mB').classList.toggle('on',m==='B');
+  document.getElementById('mA').setAttribute('aria-pressed',m==='A');
+  document.getElementById('mB').setAttribute('aria-pressed',m==='B');
+  document.getElementById('panA').classList.toggle('hide',m!=='A');
+  document.getElementById('panB').classList.toggle('hide',m!=='B');
+  document.getElementById('vizTitle').textContent = m==='A' ? 'The avidity distribution and where you cut it' : 'A repertoire built before the antigen arrived';
+  document.getElementById('viz2Title').textContent = m==='A' ? 'Fates of 100 thymocytes' : 'Clone size across fourteen days';
+  draw();
+}
+document.getElementById('mA').addEventListener('click',function(){setMode('A');});
+document.getElementById('mB').addEventListener('click',function(){setMode('B');});
+
+document.getElementById('sL').addEventListener('input',function(){A.L=+this.value;draw();});
+document.getElementById('sU').addEventListener('input',function(){A.U=+this.value;draw();});
+document.getElementById('cAire').addEventListener('change',function(){A.aire=this.checked;draw();});
+document.getElementById('cFox').addEventListener('change',function(){A.fox=this.checked;draw();});
+
+var PREA=[
+ {n:'Healthy thymus',s:{L:32,U:37,aire:true,fox:true}},
+ {n:'AIRE defective (APS-1)',s:{L:32,U:37,aire:false,fox:true}},
+ {n:'FoxP3 defective (IPEX)',s:{L:32,U:37,aire:true,fox:false}},
+ {n:'Negative selection too lenient',s:{L:32,U:52,aire:true,fox:true}},
+ {n:'Window shut &mdash; almost nothing exported',s:{L:38,U:40,aire:true,fox:true}},
+ {n:'Positive threshold too low',s:{L:14,U:37,aire:true,fox:true}}
+];
+var preA=document.getElementById('preA');
+PREA.forEach(function(p,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    for(var k in p.s){A[k]=p.s[k];}
+    document.getElementById('sL').value=A.L; document.getElementById('sU').value=A.U;
+    document.getElementById('cAire').checked=A.aire; document.getElementById('cFox').checked=A.fox;
+    [].forEach.call(preA.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    draw();
+  });
+  preA.appendChild(b);
+});
+
+var agBox=document.getElementById('agChips');
+AG.forEach(function(a,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.textContent=a.n;
+  b.addEventListener('click',function(){
+    agIdx=i; B.day=0; document.getElementById('sD').value=0;
+    [].forEach.call(agBox.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    draw();
+  });
+  agBox.appendChild(b);
+});
+document.getElementById('sN').addEventListener('input',function(){B.N=+this.value;draw();});
+document.getElementById('sD').addEventListener('input',function(){B.day=+this.value;draw();});
+document.getElementById('bNew').addEventListener('click',function(){newRepertoire();draw();});
+document.getElementById('bPlay').addEventListener('click',function(){
+  playing=!playing; this.textContent=playing?'Pause':'Run the 14 days';
+  if(playing){ if(B.day>=14){B.day=0;} tick(); }
+});
+function tick(){
+  if(!playing)return;
+  B.day=Math.min(14,B.day+0.06);
+  document.getElementById('sD').value=B.day;
+  if(B.day>=14){playing=false;document.getElementById('bPlay').textContent='Run the 14 days';}
+  draw();
+  if(playing) requestAnimationFrame(tick);
+}
+
+/* ---------- drawing ---------- */
+var cv=document.getElementById('viz'), cx=cv.getContext('2d');
+var c2=document.getElementById('viz2'), x2=c2.getContext('2d');
+
+function drawHist(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=68,R=W-24,Tp=30,Bm=H-52, AMAX=60;
+  var a=calcA();
+  function X(v){return L+(v/AMAX)*(R-L);}
+  var peak=(1/LAM);
+  function Y(dens){return Bm-(dens/peak)*(Bm-Tp);}
+  var zones=[[0,a.L,CV('muted'),'die by neglect'],
+             [a.L,a.U,CV('green'),'exported'],
+             [a.U,Math.min(AMAX,a.U+6),A.fox?CV('purple'):CV('coral'),A.fox?'regulatory lineage':'deleted'],
+             [Math.min(AMAX,a.U+6),AMAX,CV('coral'),'deleted']];
+  zones.forEach(function(z){
+    if(z[1]<=z[0])return;
+    cx.beginPath(); cx.moveTo(X(z[0]),Bm);
+    for(var v=z[0];v<=z[1];v+=0.4){ cx.lineTo(X(v),Y((1/LAM)*Math.exp(-v/LAM))); }
+    cx.lineTo(X(z[1]),Bm); cx.closePath();
+    cx.fillStyle=z[2]; cx.globalAlpha=0.72; cx.fill(); cx.globalAlpha=1;
+  });
+  cx.beginPath();
+  for(var v=0;v<=AMAX;v+=0.4){ var y=Y((1/LAM)*Math.exp(-v/LAM)); if(v===0)cx.moveTo(X(v),y);else cx.lineTo(X(v),y); }
+  cx.strokeStyle=CV('teal-dk'); cx.lineWidth=2.6; cx.stroke();
+  cx.strokeStyle=CV('line'); cx.lineWidth=1.6;
+  cx.beginPath(); cx.moveTo(L,Bm); cx.lineTo(R,Bm); cx.stroke();
+  [A.L,Math.max(A.U,A.L+1)].forEach(function(v,i){
+    cx.setLineDash([8,6]); cx.beginPath(); cx.moveTo(X(v),Tp-10); cx.lineTo(X(v),Bm); cx.strokeStyle=CV('teal-dk'); cx.lineWidth=3; cx.stroke(); cx.setLineDash([]);
+    cx.fillStyle=CV('teal-dk'); cx.font='800 16px Inter, sans-serif'; cx.textAlign='center';
+    cx.fillText(i===0?'positive':'negative',X(v),Tp-16);
+  });
+  cx.setLineDash([3,5]); cx.beginPath(); cx.moveTo(X(DANGER),Tp+8); cx.lineTo(X(DANGER),Bm); cx.strokeStyle=CV('coral'); cx.lineWidth=2; cx.stroke(); cx.setLineDash([]);
+  cx.fillStyle=CV('coral'); cx.font='800 14px Inter, sans-serif'; cx.textAlign='left';
+  cx.fillText('avidity that damages tissue', X(DANGER)+8, Tp+22);
+  cx.setLineDash([3,5]); cx.beginPath(); cx.moveTo(X(MFLOOR),Tp+8); cx.lineTo(X(MFLOOR),Bm); cx.strokeStyle=CV('blue'); cx.lineWidth=2; cx.stroke(); cx.setLineDash([]);
+  cx.fillStyle=CV('blue'); cx.textAlign='right'; cx.fillText('below here it cannot engage self-MHC', X(MFLOOR)-8, Tp+22);
+  cx.fillStyle=CV('muted'); cx.font='600 15px Inter, sans-serif'; cx.textAlign='center';
+  cx.fillText('avidity of the T-cell receptor for self-peptide on self-MHC  →', (L+R)/2, Bm+34);
+}
+
+function drawFates(){
+  var W=c2.width,H=c2.height; x2.clearRect(0,0,W,H);
+  var a=calcA(), L=24,R=W-24,y=54,h=52;
+  var segs=[[a.neglect,CV('muted'),'die by neglect'],
+            [a.exported,CV('green'),'exported'],
+            [a.tregs,CV('purple'),'regulatory T'],
+            [a.deleted,CV('coral'),'deleted']];
+  var x=L, tot=segs.reduce(function(s,q){return s+q[0];},0)||100;
+  segs.forEach(function(s){
+    var w=(s[0]/tot)*(R-L); if(w<=0)return;
+    x2.fillStyle=s[1]; x2.fillRect(x,y,w,h);
+    if(w>72){ x2.fillStyle='#fff'; x2.font='800 16px Inter, sans-serif'; x2.textAlign='center';
+      x2.fillText(s[0].toFixed(1)+'%',x+w/2,y+32); }
+    x=x+w;
+  });
+  x2.font='800 15px Inter, sans-serif'; x2.textAlign='left'; var lx=L;
+  segs.forEach(function(s){
+    x2.fillStyle=s[1]; x2.fillRect(lx,y+h+22,14,14);
+    x2.fillStyle=CV('soft'); x2.fillText(s[2]+'  '+s[0].toFixed(1)+'%',lx+20,y+h+34);
+    lx+=x2.measureText(s[2]+'  '+s[0].toFixed(1)+'%').width+52;
+  });
+  x2.fillStyle=CV('muted'); x2.font='600 15px Inter, sans-serif';
+  x2.fillText('Out of every 100 thymocytes that enter from the bone marrow', L, 30);
+}
+
+function drawRepertoire(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var m=matched(), mset={}; m.forEach(function(i){mset[i]=1;});
+  var cols=20, rows=16, padL=40, padT=30, cw=(W-2*padL)/cols, chh=(H-padT-70)/rows;
+  var grow=B.day>0 ? Math.log(cloneSize(B.day)/B.N)/Math.log(10) : 0;
+  for(var i=0;i<cells.length;i++){
+    var r=Math.floor(i/cols), c=i%cols;
+    var x=padL+c*cw+cw/2, y=padT+r*chh+chh/2;
+    var hit=mset[i];
+    var rad=Math.min(cw,chh)*0.30;
+    if(hit) rad=rad*(1+0.55*Math.min(grow,3.2));
+    cx.beginPath(); cx.arc(x,y,rad,0,6.2832);
+    cx.fillStyle='hsl('+cells[i].h.toFixed(0)+',48%,'+(hit?'46%':'78%')+')';
+    cx.globalAlpha=hit?1:0.55; cx.fill(); cx.globalAlpha=1;
+    if(hit){ cx.lineWidth=3; cx.strokeStyle=CV('gold'); cx.stroke(); }
+  }
+  cx.fillStyle=CV('muted'); cx.font='600 15px Inter, sans-serif'; cx.textAlign='left';
+  cx.fillText('320 lymphocytes, each committed to ONE randomly generated receptor', padL, 20);
+  cx.fillStyle=CV('teal-dk'); cx.font='800 17px Inter, sans-serif';
+  cx.fillText(m.length+' of 320 already fit '+AG[agIdx].n.toLowerCase()+' — before it ever arrived', padL, H-34);
+  cx.fillStyle=CV('gold'); cx.font='800 15px Inter, sans-serif';
+  cx.fillText('gold ring = selected clone; its size on screen tracks its expansion', padL, H-12);
+}
+
+function drawCloneChart(){
+  var W=c2.width,H=c2.height; x2.clearRect(0,0,W,H);
+  var L=76,R=W-24,Tp=18,Bm=H-40, lo=1, hi=7;
+  function Y(n){ var l=Math.log(Math.max(n,1))/Math.LN10; return Bm-((l-0)/hi)*(Bm-Tp); }
+  function X(d){ return L+(d/14)*(R-L); }
+  x2.strokeStyle=CV('line'); x2.lineWidth=1.4; x2.font='600 14px Inter, sans-serif';
+  for(var e=0;e<=6;e++){
+    var y=Bm-(e/hi)*(Bm-Tp);
+    x2.beginPath();x2.moveTo(L,y);x2.lineTo(R,y);x2.stroke();
+    x2.fillStyle=CV('muted');x2.textAlign='right';x2.fillText('10'+['⁰','¹','²','³','⁴','⁵','⁶'][e],L-8,y+5);
+  }
+  for(var d=0;d<=14;d+=2){ x2.fillStyle=CV('muted');x2.textAlign='center';x2.fillText('d'+d,X(d),Bm+22); }
+  x2.beginPath();
+  for(var t=0;t<=14;t+=0.1){ var xx=X(t),yy=Y(cloneSize(t)); if(t===0)x2.moveTo(xx,yy);else x2.lineTo(xx,yy); }
+  x2.strokeStyle=CV('teal'); x2.lineWidth=3.4; x2.stroke();
+  x2.beginPath();
+  for(var t2=7;t2<=14;t2+=0.1){ var x3=X(t2),y3=Y(memSize(t2)+1); if(t2===7)x2.moveTo(x3,y3);else x2.lineTo(x3,y3); }
+  x2.strokeStyle=CV('purple'); x2.lineWidth=3; x2.stroke();
+  x2.beginPath(); x2.arc(X(B.day),Y(cloneSize(B.day)),6,0,6.2832); x2.fillStyle=CV('gold'); x2.fill();
+  x2.font='800 14px Inter, sans-serif'; x2.textAlign='left';
+  x2.fillStyle=CV('teal'); x2.fillText('effector clone',L+8,Tp+16);
+  x2.fillStyle=CV('purple'); x2.fillText('memory cells (5–10% survive contraction)',L+8,Tp+34);
+}
+
+function labs(html){document.getElementById('labs').innerHTML=html;}
+function lab(k,v,u){return '<div class="lab"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+function drawA(){
+  var a=calcA();
+  drawHist(); drawFates();
+  labs(lab('Exported','<span>'+a.exported.toFixed(1)+'</span>','% of thymocytes')+
+       lab('Died by neglect',a.neglect.toFixed(1),'%')+
+       lab('Deleted',a.deleted.toFixed(1),'%')+
+       lab('Regulatory lineage',a.tregs.toFixed(1),'%')+
+       lab('Exported but blind',a.useless.toFixed(1),'% cannot see self-MHC')+
+       lab('Exported self-reactive',a.auto.toFixed(1),'% dangerous'));
+  var tags=document.getElementById('tags'); tags.innerHTML='';
+  if(!A.aire){
+    ['insulin → type 1 diabetes','thyroglobulin → autoimmune thyroiditis','myelin → demyelinating disease'].forEach(function(t){
+      var s=document.createElement('span'); s.className='tag'; s.textContent='escaped: '+t; tags.appendChild(s);
+    });
+  }
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  if(a.exported<0.8){
+    cls+='bad'; h='IMMUNODEFICIENCY &mdash; only '+a.exported.toFixed(2)+'% leaves the thymus<small>The window between the two thresholds is almost shut, so nearly every thymocyte either dies by neglect or is deleted. The repertoire that reaches the periphery is too small and too narrow to cover the antigenic universe. Tolerance is perfect and useless.</small>';
+  } else if(!A.fox){
+    cls+='bad'; h='NO REGULATORY LINEAGE &mdash; IPEX<small>Strong self-binders that would normally be diverted into the CD4/CD25/FoxP3 regulatory lineage are simply deleted, and with them goes the peripheral brake that suppresses whatever escapes. Thymic selection alone is not enough: peripheral tolerance needs an active suppressor, not just an absent responder.</small>';
+  } else if(!A.aire){
+    cls+='bad'; h='AIRE DEFECTIVE &mdash; '+a.esc.toFixed(1)+'% of thymocytes escape untested<small>Without AIRE the medulla no longer expresses tissue-restricted proteins, so a thymocyte specific for insulin, thyroglobulin or myelin never meets its target during the medullary tour and is never deleted. Multi-organ autoimmunity follows &mdash; the polyendocrinopathy pattern &mdash; because the failure is in the <i>testing</i> step, not in the receptor.</small>';
+  } else if(a.auto>0.5){
+    cls+='bad'; h='SELF-REACTIVE CELLS EXPORTED &mdash; '+a.auto.toFixed(1)+'%<small>Negative selection is now so lenient that receptors above the tissue-damaging avidity survive the medulla. Peripheral tolerance &mdash; anergy without co-stimulation, regulatory T-cell suppression, deletion &mdash; is the only remaining layer, and it was designed as a backup, not a primary filter.</small>';
+  } else if(a.useless>1){
+    cls+='warn'; h='BLIND CELLS EXPORTED &mdash; '+a.useless.toFixed(1)+'%<small>The positive threshold is set below the avidity needed to engage self-MHC at all. These cells survive, occupy space and are counted in the lymphocyte total, but every antigen they will ever meet is displayed on self-MHC, so they can never be activated by anything. Death by neglect exists precisely to remove them.</small>';
+  } else {
+    cls+='ok'; h='TOLERANCE BUILT &mdash; '+a.exported.toFixed(1)+'% exported<small>Bind self-MHC weakly; bind self peptide not at all. The window is narrow by design and about 2 percent of thymocytes pass both tests. Note what this costs: '+a.neglect.toFixed(0)+'% die by neglect and '+a.deleted.toFixed(1)+'% are deleted, so tolerance is built by mass apoptosis, not inherited.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+  document.getElementById('hint2').innerHTML='B cells run an analogous program in bone marrow, where strongly self-reactive cells are deleted or get one more chance to rearrange a new light chain &mdash; <b>receptor editing</b>. Neither system is perfect, which is why peripheral tolerance exists as a backup.';
+  document.getElementById('live').textContent='Exported '+a.exported.toFixed(1)+' percent, died by neglect '+a.neglect.toFixed(1)+' percent, deleted '+a.deleted.toFixed(1)+' percent.';
+}
+
+function drawB(){
+  drawRepertoire(); drawCloneChart();
+  var m=matched().length, cl=cloneSize(B.day), mem=memSize(B.day);
+  var tProt=0.7035*Math.log(1e5/B.N)/Math.LN2;
+  labs(lab('Day',B.day.toFixed(1),'of the response')+
+       lab('Clone size',cl>=1000?(cl/1000).toFixed(1)+'k':cl.toFixed(0),'cells')+
+       lab('Expansion',(cl/B.N).toFixed(0)+'×','from '+B.N+' precursors')+
+       lab('Memory cells',mem>=1000?(mem/1000).toFixed(1)+'k':mem.toFixed(0),'long-lived')+
+       lab('Clones NOT selected',(320-m)+' of 320','left untouched')+
+       lab('Days to control',tProt.toFixed(1),'to reach 10⁵ cells'));
+  document.getElementById('tags').innerHTML='';
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  if(B.day<0.05){
+    cls+='cool'; h='BEFORE THE ANTIGEN &mdash; the fit already exists<small>'+m+' of these 320 cells can bind '+AG[agIdx].n.toLowerCase()+'. Their receptors were generated by random V(D)J recombination during development, with nucleotides added and deleted at the joins &mdash; roughly 10<sup>11</sup> specificities from a few hundred gene segments. The antigen has not arrived and is not needed for the fit to exist.</small>';
+  } else if(B.day<7){
+    cls+='warn'; h='EXPANDING &mdash; '+(cl/B.N).toFixed(0)+'× on day '+B.day.toFixed(1)+'<small>Only the fitting clone divides; the other '+(320-m)+' specificities are untouched, which is what &ldquo;selection&rdquo; means. Doubling takes about 17 hours, so a thousandfold expansion takes about a week. With '+B.N+' precursors this response reaches a controlling size of 10<sup>5</sup> cells on about <b>day '+tProt.toFixed(1)+'</b>.</small>';
+  } else {
+    cls+='ok'; h='CONTRACTION AND MEMORY &mdash; day '+B.day.toFixed(1)+'<small>Antigen is cleared, so signal 1 disappears and most of the expanded clone dies by activation-induced cell death. Roughly 5 to 10 percent persist as memory &mdash; currently '+(mem>=1000?(mem/1000).toFixed(1)+'k':mem.toFixed(0))+' cells. They are not chemically different; there are simply far more of them than the original '+B.N+' precursors, and they need less co-stimulation.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+  document.getElementById('hint2').innerHTML='Drag the precursor slider and watch the whole curve shift sideways. <b>Nothing about the response gets faster per cell</b> &mdash; a rarer specificity simply needs more doublings to reach the same clone size, which is the entire reason a first encounter costs days.';
+  document.getElementById('live').textContent='Day '+B.day.toFixed(1)+'. Clone size '+cl.toFixed(0)+' cells, expansion '+(cl/B.N).toFixed(0)+' fold.';
+}
+
+function draw(){
+  document.getElementById('vL').textContent=A.L;
+  document.getElementById('vU').textContent=Math.max(A.U,A.L+1);
+  document.getElementById('vN').textContent=B.N;
+  document.getElementById('vD').textContent='day '+B.day.toFixed(1);
+  if(mode==='A') drawA(); else drawB();
+}
+draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enzyme and ATP Lab &mdash; saturation, shape, and the cost of a gradient</title>
+<meta name="description" content="Drag substrate, temperature and pH and watch an enzyme saturate, denature, and spend ATP holding the sodium gradient.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.ctl{margin-top:13px;}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.ctl .lab .v{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--teal-dk);}
+.ctl .hint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45;}
+.enz{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;}
+.enz button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 9px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.25;}
+.enz button:hover{border-color:var(--teal);}
+.enz button.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.enz button small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;}
+.enz button.on small{color:rgba(255,255,255,.9);}
+canvas{width:100%;display:block;border-radius:12px;background:var(--card);border:1px solid var(--line);}
+.minis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+@media (max-width:520px){.minis{grid-template-columns:1fr;}}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.stat > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;}
+.stat .k{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .n{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+.exp{border:1px solid var(--line);border-left:5px solid var(--teal);background:var(--card);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--soft);line-height:1.55;}
+.exp b{color:var(--teal-dk);font-weight:700;}
+.exp .h{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);display:block;margin-bottom:4px;}
+.pumpbox{border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-top:12px;background:var(--card);}
+.pumpbox .t{font-family:var(--disp);font-weight:700;font-size:14.5px;color:var(--teal-dk);}
+.pumpbox .d{font-size:12.5px;color:var(--soft);line-height:1.5;margin-top:4px;}
+.pumpbox .d b{color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch01.html">&larr; Module 1</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 1</div>
+  <h1>Enzyme and ATP Lab</h1>
+  <div class="intro">A protein works only in the shape it folds into, and that shape is held by weak bonds that heat and pH extremes can undo. Choose a protein, then drag substrate to find where it <b>saturates</b>, drag temperature past 41 &deg;C to <b>denature</b> it, and move pH away from its home compartment. The last two settings show what saturation costs a patient and what a gradient costs a cell.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>1 &middot; Choose the protein</h2>
+      <div class="enz" id="enz"></div>
+      <div class="ctl">
+        <div class="lab"><label for="sS" id="lS">Substrate concentration</label><span class="v" id="vS">1.0 &times; K<sub>m</sub></span></div>
+        <input type="range" id="sS" min="0" max="10" step="0.1" value="1" aria-label="Substrate concentration">
+        <div class="hint" id="hS">Rate rises with substrate until every active site is occupied. After that the enzyme is saturated and adding more substrate changes nothing.</div>
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sT">Temperature</label><span class="v" id="vT">37.0 &deg;C</span></div>
+        <input type="range" id="sT" min="20" max="46" step="0.2" value="37" aria-label="Temperature in degrees Celsius">
+        <div class="hint">Human enzymes are optimized near 37 &deg;C and begin to lose activity above about 41 to 42 &deg;C. That is the molecular reason a core temperature above 40 &deg;C is an emergency.</div>
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sP">pH</label><span class="v" id="vP">7.4</span></div>
+        <input type="range" id="sP" min="1" max="10" step="0.1" value="7.4" aria-label="pH of the surrounding fluid">
+        <div class="hint" id="hP">Each protein is folded correctly only in its own compartment. Pepsin needs pH 2; trypsin needs pH 8; move either into the other's home and it stops working.</div>
+      </div>
+      <div class="row">
+        <button class="btn" type="button" id="bFever">Fever to 40 &deg;C</button>
+        <button class="btn" type="button" id="bHeat">Heat stroke, 42.5 &deg;C</button>
+      </div>
+      <div class="row"><button class="btn solid" type="button" id="bReset">Back to 37 &deg;C, pH 7.4</button></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2 id="mainTitle">2 &middot; Saturation curve</h2>
+      <canvas id="cvMain" height="250" role="img" aria-label="Reaction rate plotted against substrate concentration"></canvas>
+      <div class="minis">
+        <canvas id="cvT" height="140" role="img" aria-label="Enzyme activity plotted against temperature"></canvas>
+        <canvas id="cvP" height="140" role="img" aria-label="Enzyme activity plotted against pH"></canvas>
+      </div>
+      <div class="stat">
+        <div><div class="k" id="k1">Reaction rate</div><div class="n" id="n1">50%</div><div class="u" id="u1">of V<sub>max</sub></div></div>
+        <div><div class="k">Shape intact?</div><div class="n" id="n2">Yes</div><div class="u" id="u2">folded and working</div></div>
+        <div><div class="k" id="k3">Saturation</div><div class="n" id="n3">50%</div><div class="u" id="u3">of active sites busy</div></div>
+      </div>
+      <div class="exp" id="exp" aria-live="polite"></div>
+      <div class="pumpbox" id="pump" style="display:none;">
+        <div class="t">The ATP ledger</div>
+        <div class="d" id="pumpd"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>Human Physiology &middot; <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b></footer>
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var C={teal:css('--teal'),tealdk:css('--teal-dk'),blue:css('--blue'),coral:css('--coral'),gold:css('--gold'),green:css('--green'),purple:css('--purple'),line:css('--line'),muted:css('--muted'),soft:css('--soft'),card:css('--card')};
+  var E=function(i){return document.getElementById(i);};
+
+  var ENZ={
+    generic:{n:'A typical body enzyme', s:'cytosol, pH 7.4', pHo:7.4, pHw:1.3, To:37,
+      sLab:'Substrate concentration', sUnit:' × K<sub>m</sub>', sMin:0, sMax:10, sStep:0.1, sDef:1, Km:1, dec:1,
+      xLab:'substrate, in multiples of Km', yLab:'rate, % of Vmax',
+      about:'Rate rises steeply while active sites are free, then flattens. At a substrate concentration equal to K<sub>m</sub> exactly half the sites are occupied, which is what K<sub>m</sub> means.'},
+    pepsin:{n:'Pepsin', s:'gastric lumen, pH 2', pHo:2.0, pHw:0.9, To:37,
+      sLab:'Dietary protein', sUnit:' × K<sub>m</sub>', sMin:0, sMax:10, sStep:0.1, sDef:2, Km:1, dec:1,
+      xLab:'substrate, in multiples of Km', yLab:'rate, % of Vmax',
+      about:'Pepsin folds correctly only in acid. The moment chyme is neutralized in the duodenum it unfolds and stops &mdash; a shutdown by geography, not by an inhibitor.'},
+    trypsin:{n:'Pancreatic trypsin', s:'duodenum, pH 8', pHo:8.0, pHw:0.9, To:37,
+      sLab:'Peptide substrate', sUnit:' × K<sub>m</sub>', sMin:0, sMax:10, sStep:0.1, sDef:2, Km:1, dec:1,
+      xLab:'substrate, in multiples of Km', yLab:'rate, % of Vmax',
+      about:'Trypsin is the mirror image of pepsin: it needs the alkaline duodenum that pancreatic bicarbonate creates, and it is useless at gastric pH.'},
+    pump:{n:'Na<sup>+</sup>/K<sup>+</sup> ATPase', s:'plasma membrane, pH 7.2', pHo:7.2, pHw:1.2, To:37,
+      sLab:'Intracellular Na<sup>+</sup>', sUnit:' mEq/L', sMin:0, sMax:40, sStep:1, sDef:12, Km:12, dec:0,
+      xLab:'intracellular sodium, mEq/L', yLab:'pump rate, % of maximum',
+      about:'The pump is an enzyme whose substrate is the sodium that leaked in. Let intracellular sodium rise and the pump speeds up, buying the gradient back &mdash; and charging ATP for it.'},
+    sglt:{n:'Renal glucose transporter', s:'proximal tubule', pHo:7.4, pHw:1.4, To:37,
+      sLab:'Plasma glucose', sUnit:' mg/dL', sMin:40, sMax:600, sStep:5, sDef:90, Km:0, dec:0,
+      xLab:'plasma glucose, mg/dL', yLab:'mg of glucose per minute',
+      about:'Transport maximum in the flesh. Below threshold every filtered molecule is reabsorbed; above it the carriers are saturated and the surplus appears in the urine.'}
+  };
+
+  var GFR=1.25;      // dL/min  (125 mL/min)
+  var TM=375;        // mg/min transport maximum for glucose
+
+  var st={k:'generic', S:1, T:37, P:7.4};
+  function e(){return ENZ[st.k];}
+
+  function fT(T,To){
+    var q10=Math.pow(2,(T-To)/10);
+    var den=1/(1+Math.exp((T-41.5)/0.7));
+    return q10*den;
+  }
+  function fTrel(T,To){return fT(T,To)/fT(To,To);}
+  function fP(p,po,w){return Math.exp(-((p-po)*(p-po))/(2*w*w));}
+  function quality(){return fTrel(st.T,e().To)*fP(st.P,e().pHo,e().pHw);}
+
+  function occ(S){var E0=e(); return E0.Km>0 ? S/(E0.Km+S) : 0;}
+  function rate(S){return 100*quality()*occ(S);}
+
+  function renal(P){
+    var F=GFR*P;
+    var tm=TM*quality();
+    var R=(tm<=0)?0:(F*tm)/Math.pow(Math.pow(F,5)+Math.pow(tm,5),1/5);
+    return {F:F,R:R,X:Math.max(0,F-R),tm:tm};
+  }
+
+  // ---------- canvases ----------
+  function mk(id,h){
+    var c=E(id), g=c.getContext('2d'), o={c:c,g:g,w:600,h:h};
+    o.fit=function(){
+      var d=window.devicePixelRatio||1;
+      o.w=c.clientWidth||600;
+      c.width=Math.round(o.w*d); c.height=Math.round(h*d);
+      c.style.height=h+'px'; g.setTransform(d,0,0,d,0,0);
+    };
+    return o;
+  }
+  var M=mk('cvMain',250), T1=mk('cvT',140), P1=mk('cvP',140);
+
+  function axes(o,pad,xt,yt,xlab,ylab){
+    var g=o.g;
+    g.clearRect(0,0,o.w,o.h);
+    g.strokeStyle=C.line; g.lineWidth=1;
+    g.beginPath(); g.moveTo(pad.l,pad.t); g.lineTo(pad.l,o.h-pad.b); g.lineTo(o.w-pad.r,o.h-pad.b); g.stroke();
+    g.fillStyle=C.muted; g.font='600 9.5px Inter, system-ui, sans-serif';
+    g.textAlign='center'; g.fillText(xlab, (pad.l+o.w-pad.r)/2, o.h-3);
+    g.save(); g.translate(9,(pad.t+o.h-pad.b)/2); g.rotate(-Math.PI/2);
+    g.textAlign='center'; g.fillText(ylab,0,0); g.restore();
+  }
+
+  function drawMain(){
+    var o=M, g=o.g, E0=e();
+    var pad={l:46,r:14,t:16,b:26};
+    var x0=pad.l, x1=o.w-pad.r, y0=o.h-pad.b, y1=pad.t;
+    axes(o,pad,0,0,E0.xLab,E0.yLab);
+    var X=function(v){return x0+(v-E0.sMin)/(E0.sMax-E0.sMin)*(x1-x0);};
+
+    if(st.k==='sglt'){
+      var ymax=800;
+      var Y=function(v){return y0-(v/ymax)*(y0-y1);};
+      // threshold band 180 to 200 mg/dL
+      g.fillStyle=C.gold; g.globalAlpha=.16; g.fillRect(X(180),y1,X(200)-X(180),y0-y1); g.globalAlpha=1;
+      g.fillStyle=C.gold; g.font='800 9.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+      g.fillText('renal threshold 180–200', X(200)+4, y1+11);
+      // Tm line
+      var cur=renal(st.S);
+      g.strokeStyle=C.purple; g.setLineDash([5,4]); g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(x0,Y(cur.tm)); g.lineTo(x1,Y(cur.tm)); g.stroke(); g.setLineDash([]);
+      g.fillStyle=C.purple; g.textAlign='right'; g.fillText('Tm '+cur.tm.toFixed(0)+' mg/min', x1-2, Y(cur.tm)-4);
+      // curves
+      function curve(fn,col,wid){
+        g.strokeStyle=col; g.lineWidth=wid; g.beginPath();
+        for(var p=E0.sMin;p<=E0.sMax;p+=4){
+          var r=renal(p), v=fn(r), px=X(p), py=Math.max(y1,Y(v));
+          if(p===E0.sMin) g.moveTo(px,py); else g.lineTo(px,py);
+        }
+        g.stroke();
+      }
+      curve(function(r){return r.F;},C.muted,1.8);
+      curve(function(r){return r.R;},C.teal,2.6);
+      curve(function(r){return r.X;},C.coral,2.6);
+      // legend
+      g.font='800 10px Inter, system-ui, sans-serif'; g.textAlign='left';
+      g.fillStyle=C.muted; g.fillText('filtered', x0+6, y1+12);
+      g.fillStyle=C.teal;  g.fillText('reabsorbed', x0+6, y1+25);
+      g.fillStyle=C.coral; g.fillText('excreted in urine', x0+6, y1+38);
+      // marker
+      g.strokeStyle=C.tealdk; g.setLineDash([3,3]); g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(X(st.S),y1); g.lineTo(X(st.S),y0); g.stroke(); g.setLineDash([]);
+      [[cur.F,C.muted],[cur.R,C.teal],[cur.X,C.coral]].forEach(function(pr){
+        g.fillStyle=pr[1]; g.beginPath(); g.arc(X(st.S),Math.max(y1,Y(pr[0])),4.5,0,6.2832); g.fill();
+      });
+      // y ticks
+      g.fillStyle=C.muted; g.font='600 9.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+      [0,200,400,600,800].forEach(function(v){g.fillText(String(v),x0-4,Y(v)+3);});
+      g.textAlign='center';
+      [100,200,300,400,500,600].forEach(function(v){g.fillText(String(v),X(v),y0+13);});
+    } else {
+      var Y2=function(v){return y0-(v/120)*(y0-y1);};
+      // ceiling for current conditions
+      var ceil=100*quality();
+      g.strokeStyle=C.purple; g.setLineDash([5,4]); g.lineWidth=1.5;
+      g.beginPath(); g.moveTo(x0,Y2(ceil)); g.lineTo(x1,Y2(ceil)); g.stroke(); g.setLineDash([]);
+      g.fillStyle=C.purple; g.font='800 9.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+      g.fillText('V max here = '+ceil.toFixed(0)+'%', x1-2, Y2(ceil)-5);
+      // ideal Vmax 100
+      g.strokeStyle=C.line; g.lineWidth=1;
+      g.beginPath(); g.moveTo(x0,Y2(100)); g.lineTo(x1,Y2(100)); g.stroke();
+      g.fillStyle=C.muted; g.textAlign='left'; g.fillText('100% — ideal conditions', x0+4, Y2(100)-5);
+      // curve
+      g.strokeStyle=C.teal; g.lineWidth=2.8; g.beginPath();
+      for(var s=E0.sMin;s<=E0.sMax;s+=E0.sMax/220){
+        var px=X(s), py=Y2(rate(s));
+        if(s===E0.sMin) g.moveTo(px,py); else g.lineTo(px,py);
+      }
+      g.stroke();
+      // fill under
+      g.globalAlpha=.10; g.fillStyle=C.teal; g.lineTo(X(E0.sMax),y0); g.lineTo(x0,y0); g.closePath(); g.fill(); g.globalAlpha=1;
+      // Km marker
+      if(E0.Km>0&&E0.Km<=E0.sMax){
+        g.strokeStyle=C.gold; g.setLineDash([3,3]); g.lineWidth=1.5;
+        g.beginPath(); g.moveTo(X(E0.Km),y0); g.lineTo(X(E0.Km),Y2(rate(E0.Km))); g.stroke(); g.setLineDash([]);
+        g.fillStyle=C.gold; g.font='800 9.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+        g.fillText('Km — half the sites full', X(E0.Km), y0+13);
+      }
+      // current point
+      g.fillStyle=C.tealdk;
+      g.beginPath(); g.arc(X(st.S),Y2(rate(st.S)),5.5,0,6.2832); g.fill();
+      g.strokeStyle=C.tealdk; g.setLineDash([3,3]); g.lineWidth=1.2;
+      g.beginPath(); g.moveTo(x0,Y2(rate(st.S))); g.lineTo(X(st.S),Y2(rate(st.S))); g.stroke(); g.setLineDash([]);
+      g.fillStyle=C.muted; g.font='600 9.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+      [0,25,50,75,100].forEach(function(v){g.fillText(v+'%',x0-4,Y2(v)+3);});
+    }
+  }
+
+  function drawT(){
+    var o=T1, g=o.g, E0=e(), pad={l:34,r:10,t:14,b:24};
+    var x0=pad.l,x1=o.w-pad.r,y0=o.h-pad.b,y1=pad.t;
+    axes(o,pad,0,0,'temperature, °C','activity %');
+    var X=function(v){return x0+(v-20)/26*(x1-x0);};
+    var Y=function(v){return y0-(v/130)*(y0-y1);};
+    g.fillStyle=C.coral; g.globalAlpha=.14; g.fillRect(X(41),y1,X(46)-X(41),y0-y1); g.globalAlpha=1;
+    g.strokeStyle=C.teal; g.lineWidth=2.4; g.beginPath();
+    for(var t=20;t<=46;t+=0.25){
+      var v=100*fTrel(t,E0.To)*fP(st.P,E0.pHo,E0.pHw);
+      var px=X(t), py=Math.max(y1,Y(v));
+      if(t===20) g.moveTo(px,py); else g.lineTo(px,py);
+    }
+    g.stroke();
+    g.strokeStyle=C.gold; g.setLineDash([3,3]); g.lineWidth=1.4;
+    g.beginPath(); g.moveTo(X(37),y1); g.lineTo(X(37),y0); g.stroke(); g.setLineDash([]);
+    g.fillStyle=C.coral; g.font='800 9px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('denaturation', X(41)+2, y1+10);
+    g.fillStyle=C.tealdk;
+    g.beginPath(); g.arc(X(st.T),Math.max(y1,Y(100*quality())),4.5,0,6.2832); g.fill();
+    g.fillStyle=C.muted; g.font='600 9px Inter, system-ui, sans-serif'; g.textAlign='center';
+    [25,30,35,40,45].forEach(function(v){g.fillText(String(v),X(v),y0+12);});
+  }
+
+  function drawP(){
+    var o=P1, g=o.g, E0=e(), pad={l:34,r:10,t:14,b:24};
+    var x0=pad.l,x1=o.w-pad.r,y0=o.h-pad.b,y1=pad.t;
+    axes(o,pad,0,0,'pH','activity %');
+    var X=function(v){return x0+(v-1)/9*(x1-x0);};
+    var Y=function(v){return y0-(v/130)*(y0-y1);};
+    g.strokeStyle=C.teal; g.lineWidth=2.4; g.beginPath();
+    for(var p=1;p<=10;p+=0.05){
+      var v=100*fTrel(st.T,E0.To)*fP(p,E0.pHo,E0.pHw);
+      var px=X(p), py=Math.max(y1,Y(v));
+      if(p===1) g.moveTo(px,py); else g.lineTo(px,py);
+    }
+    g.stroke();
+    g.strokeStyle=C.gold; g.setLineDash([3,3]); g.lineWidth=1.4;
+    g.beginPath(); g.moveTo(X(E0.pHo),y1); g.lineTo(X(E0.pHo),y0); g.stroke(); g.setLineDash([]);
+    g.fillStyle=C.gold; g.font='800 9px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('home pH '+E0.pHo.toFixed(1), X(E0.pHo), y1+10);
+    g.fillStyle=C.tealdk;
+    g.beginPath(); g.arc(X(st.P),Math.max(y1,Y(100*quality())),4.5,0,6.2832); g.fill();
+    g.fillStyle=C.muted; g.font='600 9px Inter, system-ui, sans-serif'; g.textAlign='center';
+    [2,4,6,8,10].forEach(function(v){g.fillText(String(v),X(v),y0+12);});
+  }
+
+  // ---------- text ----------
+  function explain(){
+    var E0=e(), q=quality(), t='<span class="h">'+E0.n+' &mdash; '+E0.s+'</span>';
+    t+=E0.about+'<br><br>';
+    if(st.T>42.5){
+      t+='<b>Denatured.</b> At '+st.T.toFixed(1)+' &deg;C the weak bonds that hold tertiary structure &mdash; hydrogen bonds, ionic attractions, hydrophobic clustering &mdash; have been shaken apart. Peptide bonds are intact, so the sequence survives; the shape does not, and shape is the function. Activity is <b>'+(100*q).toFixed(0)+'%</b> of normal and the loss is largely irreversible.';
+    } else if(st.T>41){
+      t+='<b>Losing shape.</b> Above about 41 to 42 &deg;C human enzymes start to unfold. The temperature term alone now stands at <b>'+(100*fTrel(st.T,E0.To)).toFixed(0)+'%</b> of the 37 &deg;C value, and it is falling fast. This is why a core temperature over 40 &deg;C is a medical emergency rather than an uncomfortable fever.';
+    } else if(st.T>37.6){
+      t+='A mild fever actually <i>speeds</i> the reaction &mdash; molecular collisions become more frequent and more energetic, so activity sits at <b>'+(100*fTrel(st.T,E0.To)).toFixed(0)+'%</b> of the 37 &deg;C rate. The benefit ends abruptly at the denaturation edge just above.';
+    } else if(st.T<34){
+      t+='Cooling slows the reaction roughly by half for every 10 &deg;C lost, so activity is <b>'+(100*fTrel(st.T,E0.To)).toFixed(0)+'%</b> of the 37 &deg;C rate. This is the whole basis of therapeutic hypothermia: a colder tissue needs less oxygen because its enzymes are running slower.';
+    }
+    var pf=fP(st.P,E0.pHo,E0.pHw);
+    if(pf<0.5){
+      t+='<br><br><b>Wrong compartment.</b> At pH '+st.P.toFixed(1)+' this protein retains only <b>'+(pf*100).toFixed(0)+'%</b> of its activity. Hydrogen ions bind to charged side chains and change the fold, so the active site no longer fits its substrate. Pepsin at duodenal pH and trypsin at gastric pH are the two classic demonstrations.';
+    }
+    if(st.k==='sglt'){
+      var r=renal(st.S);
+      t+='<br><br>At a plasma glucose of <b>'+st.S+' mg/dL</b>, the glomerulus filters '+r.F.toFixed(0)+' mg/min (GFR 125 mL/min &times; plasma concentration). The carriers can reclaim at most '+r.tm.toFixed(0)+' mg/min, so <b>'+r.R.toFixed(0)+' mg/min is reabsorbed and '+r.X.toFixed(0)+' mg/min spills into the urine</b>. ';
+      t+=(r.X<5)?'That is essentially nothing &mdash; the urine is glucose-free.':'That is glucosuria. It appears once plasma glucose climbs past roughly 180 to 200 mg/dL, and it is nothing more exotic than a saturated transporter.';
+    } else if(st.k==='pump'){
+      t+='<br><br>Intracellular sodium is <b>'+st.S+' mEq/L</b> against about 140 mEq/L outside, and the pump is running at <b>'+rate(st.S).toFixed(0)+'%</b> of maximum. Every cycle exports 3 Na<sup>+</sup> and imports 2 K<sup>+</sup> for one ATP, so the pump is electrogenic &mdash; it removes net positive charge and helps hold the resting membrane potential near &minus;70 mV.';
+    } else {
+      t+='<br><br>Active sites in use: <b>'+(occ(st.S)*100).toFixed(0)+'%</b>. Enzymes lower the activation energy of a reaction; they do not change whether it is thermodynamically favorable and they are not consumed. Once every site is occupied, the rate plateaus &mdash; and that plateau is what a transport maximum, and zero-order drug elimination, both are.';
+    }
+    E('exp').innerHTML=t;
+  }
+
+  function pumpLedger(){
+    if(st.k!=='pump'){E('pump').style.display='none';return;}
+    E('pump').style.display='';
+    var r=rate(st.S)/100, base=occ(12);        // resting intracellular Na+ about 12 mEq/L
+    var share=25*(r/ (base||1));
+    share=Math.max(0,Math.min(70,share));
+    var d='At rest the Na<sup>+</sup>/K<sup>+</sup> ATPase consumes on the order of <b>20 to 30 percent of resting metabolic rate</b>, and more than half of a neuron\'s energy budget. ';
+    d+='At the current pump rate that share scales to roughly <b>'+share.toFixed(0)+'%</b>. ';
+    d+='A cell holds only about <b>5 mmol/L of ATP</b>, enough for a few seconds of work, so what sustains life is turnover, not storage &mdash; an adult resynthesizes roughly their own body mass in ATP every 24 hours. ';
+    d+='Aerobic metabolism of one glucose yields about 30 to 32 ATP against only 2 from anaerobic glycolysis, which is why so much of the cardiovascular and respiratory system exists to protect oxygen delivery. ';
+    d+='Most of that spending buys nothing visible: it holds the gradients ready, so that when a signal arrives the cell need only open a gate and let physics do the work.';
+    E('pumpd').innerHTML=d;
+  }
+
+  function render(){
+    var E0=e(), q=quality();
+    E('lS').innerHTML=E0.sLab;
+    E('vS').innerHTML=st.S.toFixed(E0.dec)+E0.sUnit;
+    E('vT').textContent=st.T.toFixed(1)+' °C';
+    E('vP').textContent=st.P.toFixed(1);
+    E('mainTitle').textContent=(st.k==='sglt')?'2 · Filtered, reabsorbed, excreted':'2 · Saturation curve';
+
+    if(st.k==='sglt'){
+      var r=renal(st.S);
+      E('k1').textContent='Excreted in urine'; E('n1').textContent=r.X.toFixed(0); E('u1').innerHTML='mg/min';
+      E('k3').textContent='Carriers in use'; E('n3').textContent=Math.min(100,(r.R/Math.max(1,r.tm))*100).toFixed(0)+'%'; E('u3').innerHTML='of transport maximum';
+    } else {
+      E('k1').textContent='Reaction rate'; E('n1').textContent=rate(st.S).toFixed(0)+'%'; E('u1').innerHTML='of V<sub>max</sub>';
+      E('k3').textContent='Saturation'; E('n3').textContent=(occ(st.S)*100).toFixed(0)+'%'; E('u3').innerHTML='of active sites busy';
+    }
+    var ok=(q>0.6), part=(q>0.25);
+    E('n2').textContent=ok?'Yes':(part?'Partly':'No');
+    E('u2').textContent=ok?'folded and working':(part?'unfolding — activity falling':'denatured — shape lost');
+    E('n2').style.color=ok?C.tealdk:(part?C.gold:C.coral);
+
+    explain(); pumpLedger();
+    drawMain(); drawT(); drawP();
+    E('cvMain').setAttribute('aria-label',E0.n+': at '+st.T.toFixed(1)+' degrees and pH '+st.P.toFixed(1)+', activity is '+(100*q).toFixed(0)+' percent of ideal.');
+  }
+
+  function setEnz(k){
+    st.k=k; var E0=ENZ[k];
+    st.S=E0.sDef; st.T=37; st.P=(k==='pepsin')?2.0:((k==='trypsin')?8.0:((k==='pump')?7.2:7.4));
+    var s=E('sS'); s.min=E0.sMin; s.max=E0.sMax; s.step=E0.sStep; s.value=st.S;
+    E('sT').value=37; E('sP').value=st.P;
+    [].forEach.call(E('enz').children,function(c){c.classList.toggle('on',c.dataset.k===k);});
+    E('hS').textContent=(k==='sglt')
+      ? 'Filtered load is GFR (125 mL/min) times plasma glucose. Reabsorption cannot exceed the transport maximum of about 375 mg/min.'
+      : 'Rate rises with substrate until every active site is occupied. After that the enzyme is saturated and adding more substrate changes nothing.';
+    fitAll(); render();
+  }
+
+  function fitAll(){M.fit();T1.fit();P1.fit();}
+
+  E('sS').addEventListener('input',function(){st.S=parseFloat(this.value);render();});
+  E('sT').addEventListener('input',function(){st.T=parseFloat(this.value);render();});
+  E('sP').addEventListener('input',function(){st.P=parseFloat(this.value);render();});
+  E('bFever').addEventListener('click',function(){st.T=40;E('sT').value=40;render();});
+  E('bHeat').addEventListener('click',function(){st.T=42.5;E('sT').value=42.5;render();});
+  E('bReset').addEventListener('click',function(){
+    st.T=37; st.P=(st.k==='pepsin')?2.0:((st.k==='trypsin')?8.0:((st.k==='pump')?7.2:7.4));
+    E('sT').value=st.T; E('sP').value=st.P; render();
+  });
+  window.addEventListener('resize',function(){fitAll();render();});
+
+  var box=E('enz');
+  [['generic','A typical body enzyme','cytosol, pH 7.4'],
+   ['pepsin','Pepsin','gastric lumen, pH 2'],
+   ['trypsin','Pancreatic trypsin','duodenum, pH 8'],
+   ['pump','Na+/K+ ATPase','the cell\'s biggest bill'],
+   ['sglt','Renal glucose carrier','transport maximum']].forEach(function(p){
+    var b=document.createElement('button'); b.type='button'; b.dataset.k=p[0];
+    b.innerHTML=p[1]+'<small>'+p[2]+'</small>';
+    b.addEventListener('click',function(){setEnz(p[0]);});
+    box.appendChild(b);
+  });
+
+  setEnz('generic');
+})();
+</script>
+</body>
+</html>

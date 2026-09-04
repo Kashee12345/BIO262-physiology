@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 14 · Urinary &amp; Reproductive Systems — BIO 262</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --good:#2f7d4f; --good-lt:#e8f4ec; --bad:#b03a3a; --bad-lt:#fbeceb;
+    --blue:#3b6ea5; --blue-lt:#e8f0f8;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:var(--maroon);}
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px 90px;}
+  button{font:inherit;}
+
+  header.hero{text-align:center;padding:40px 20px 18px;}
+  header.hero .crest{font-size:32px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;margin:12px 0 8px;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(24px,4.9vw,36px);margin:0 0 10px;color:var(--maroon-dk);}
+  header.hero p.sub{margin:0 auto;max-width:600px;font-size:15px;color:var(--muted);}
+  .backlink{display:inline-block;margin-top:14px;font-size:13px;color:var(--maroon);font-weight:600;text-decoration:none;}
+  .backlink:hover{text-decoration:underline;}
+
+  .weight{background:linear-gradient(180deg,#fbf3e2,#f7ecd8);border:1px solid #ecdcb8;border-radius:var(--r);
+          padding:15px 17px;margin-top:20px;display:flex;gap:13px;align-items:flex-start;}
+  .weight .wx{font-size:24px;line-height:1;flex:0 0 auto;}
+  .weight .wt strong{display:block;font-family:var(--disp);font-size:16px;color:#57420f;margin-bottom:3px;}
+  .weight .wt span{font-size:13.5px;color:#6d5518;}
+
+  .mlo{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--maroon);
+       border-radius:var(--r);padding:15px 17px;margin-top:12px;box-shadow:var(--shadow);}
+  .mlo b{display:block;font-size:12px;letter-spacing:.9px;text-transform:uppercase;color:var(--maroon-dk);margin-bottom:7px;}
+  .mlo ol{margin:0;padding-left:19px;}
+  .mlo li{font-size:14px;color:var(--muted);margin-bottom:4px;}
+
+  h2.sec{font-family:var(--disp);font-size:22px;color:var(--maroon-dk);margin:38px 0 4px;}
+  h2.sec + .lede{font-size:14.5px;color:var(--muted);margin:0 0 8px;}
+
+  .strip{display:flex;gap:6px;overflow-x:auto;padding:14px 0 6px;-webkit-overflow-scrolling:touch;}
+  .strip button{flex:0 0 auto;background:var(--card);border:1.5px solid var(--line);border-radius:11px;
+                padding:10px 12px;cursor:pointer;text-align:center;min-width:96px;transition:all .15s;}
+  .strip button:hover{border-color:var(--maroon);}
+  .strip button.on{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+  .strip button .e{display:block;font-size:18px;line-height:1.2;}
+  .strip button .n{display:block;font-size:11px;font-weight:700;margin-top:3px;}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+         padding:20px 19px;margin-top:6px;}
+  .panel h3{font-family:var(--disp);font-size:20px;color:var(--maroon-dk);margin:0 0 3px;}
+  .panel .tagline{font-size:13.5px;color:var(--faint);margin-bottom:14px;font-style:italic;}
+  .panel p.body{margin:0 0 12px;font-size:14.5px;color:var(--muted);}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+  @media(max-width:700px){.duo{grid-template-columns:1fr;}}
+  .box{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 14px;}
+  .box b{display:block;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--maroon);margin-bottom:6px;}
+  .box p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .keynote{margin-top:14px;background:var(--gold-lt);border-radius:10px;padding:12px 14px;font-size:13.5px;color:#7a5c12;}
+  .keynote b{color:#57420f;}
+
+  .fill{background:var(--maroon-lt);color:var(--maroon-dk);border-bottom:2px dotted var(--maroon);
+        padding:0 4px;border-radius:3px;cursor:pointer;font-weight:700;user-select:none;}
+  .fill.hidden-ans{background:var(--line);color:transparent;border-bottom:2px solid var(--faint);}
+  .fill.hidden-ans::after{content:"?";color:var(--muted);font-weight:800;}
+
+  /* RAAS chain */
+  .chain{display:flex;flex-direction:column;gap:0;margin-top:12px;}
+  .step{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--blue);
+        border-radius:11px;padding:12px 15px;box-shadow:var(--shadow);}
+  .step b{display:block;font-size:14px;color:var(--maroon-dk);}
+  .step span{font-size:13.5px;color:var(--muted);}
+  .arrow{text-align:center;color:var(--faint);font-size:17px;line-height:1;padding:5px 0;}
+
+  /* cycle */
+  .cyc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 19px;
+       box-shadow:var(--shadow);margin-top:12px;}
+  .cyc .dayrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .cyc .daynum{font-family:var(--disp);font-size:30px;color:var(--maroon-dk);min-width:78px;}
+  .cyc input[type=range]{flex:1;min-width:200px;accent-color:var(--maroon);height:6px;}
+  .phasetag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;
+            border-radius:20px;padding:5px 12px;color:#fff;}
+  .cyc .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:15px;}
+  @media(max-width:700px){.cyc .grid{grid-template-columns:1fr;}}
+  .hbar{margin-top:13px;}
+  .hbar .hl{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px;}
+  .hbar .tr{height:9px;background:var(--gold-lt);border-radius:5px;overflow:hidden;}
+  .hbar .tr i{display:block;height:100%;border-radius:5px;transition:width .3s;}
+
+  .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+        border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);min-width:560px;}
+  th{background:var(--maroon);color:#fff;font-size:11px;letter-spacing:.9px;text-transform:uppercase;
+     padding:11px 12px;text-align:left;font-weight:700;}
+  td{padding:10px 12px;border-top:1px solid var(--line);font-size:13.5px;vertical-align:top;}
+  tr:hover td{background:var(--maroon-lt);}
+  td.n{font-weight:800;color:var(--maroon-dk);white-space:nowrap;}
+
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 19px;
+        box-shadow:var(--shadow);margin-top:14px;}
+  .quiz .qq{font-size:16px;font-weight:600;margin-bottom:14px;}
+  .quiz .opts{display:flex;flex-direction:column;gap:8px;}
+  .quiz .opt{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);
+             border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;width:100%;transition:all .12s;}
+  .quiz .opt:hover:not(:disabled){border-color:var(--maroon);background:var(--maroon-lt);}
+  .quiz .opt .k{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--gold-lt);color:var(--maroon-dk);
+                font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .quiz .opt .v{flex:1;font-size:14px;}
+  .quiz .opt.correct{border-color:var(--good);background:var(--good-lt);}
+  .quiz .opt.correct .k{background:var(--good);color:#fff;}
+  .quiz .opt.wrong{border-color:var(--bad);background:var(--bad-lt);}
+  .quiz .opt.wrong .k{background:var(--bad);color:#fff;}
+  .quiz .nav{display:flex;gap:10px;margin-top:14px;align-items:center;}
+  .quiz .nav button{background:var(--maroon);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;}
+  .quiz .nav .sc{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted);}
+
+  .hint{font-size:12.5px;color:var(--faint);margin-top:8px;}
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="crest">🫘</div>
+    <div class="kicker">Joyce University · BIO 262 · Module 14</div>
+    <h1>The Urinary &amp; Reproductive Systems</h1>
+    <p class="sub">Kidney function and the nephron, then spermatogenesis, oogenesis, the menstrual cycle and menopause.</p>
+    <a class="backlink" href="index.html">← Back to course hub</a>
+  </header>
+
+  <div class="weight">
+    <div class="wx">⚠️</div>
+    <div class="wt">
+      <strong>This module appears only on the Final — and it has the thinnest lecture material in the course</strong>
+      <span>Module 14 is never tested on a unit exam, and the course deck for it is two slides. This page fills that gap: it covers all six learning outcomes end to end.</span>
+    </div>
+  </div>
+
+  <div class="mlo">
+    <b>Module learning outcomes</b>
+    <ol>
+      <li>Identify the functions of the urinary system.</li>
+      <li>Describe how the nephron functions and how urine is formed.</li>
+      <li>Describe the process of spermatogenesis and sperm maturation.</li>
+      <li>Describe the process of oogenesis and follicular development.</li>
+      <li>Identify the menstrual cycle.</li>
+      <li>Describe menopause.</li>
+    </ol>
+  </div>
+
+  <!-- ============ KIDNEY FUNCTIONS ============ -->
+  <h2 class="sec">1 · What the kidneys actually do</h2>
+  <p class="lede">Seven jobs. Filtration is only the first one — the exam likes the others.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Function</th><th>How</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Filtration of blood</td><td>Removes waste, toxins and excess substances from the bloodstream.</td></tr>
+        <tr><td class="n">Blood volume &amp; pressure</td><td>By adjusting how much water is excreted. More water retained → higher blood volume → higher blood pressure.</td></tr>
+        <tr><td class="n">Electrolyte balance</td><td>Maintains sodium, potassium, calcium, chloride and magnesium — needed for nerve transmission and muscle contraction.</td></tr>
+        <tr><td class="n">Acid–base balance</td><td>Excretes hydrogen ions (H⁺) and reabsorbs bicarbonate (HCO₃⁻) to hold blood pH at 7.35–7.45.</td></tr>
+        <tr><td class="n">Excretion of waste</td><td>Urea and creatinine leave the body as urine.</td></tr>
+        <tr><td class="n">Hormone production</td><td><b>Erythropoietin</b> → stimulates red blood cell production. <b>Renin</b> → starts the RAAS cascade to raise blood pressure.</td></tr>
+        <tr><td class="n">Detoxification</td><td>Excretes metabolic by-products and drugs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keynote">
+    <b>The one-line rule for electrolytes:</b> water follows <span class="fill" data-a="sodium">sodium</span>. Retain sodium → retain water → blood volume and pressure <span class="fill" data-a="rise">rise</span>. Excrete sodium → water follows it out → blood volume and pressure <span class="fill" data-a="fall">fall</span>. <em>Tap a highlighted word to hide it and test yourself.</em>
+  </div>
+
+  <!-- ============ NEPHRON ============ -->
+  <h2 class="sec">2 · The nephron, segment by segment</h2>
+  <p class="lede">Tap a segment. The whole module hinges on knowing which segment does what to water versus ions.</p>
+  <div class="strip" id="nephStrip"></div>
+  <div class="panel" id="nephPanel"></div>
+
+  <h2 class="sec">Urine formation — the three stages</h2>
+  <p class="lede">Filtration, reabsorption, secretion. Then excretion carries it out.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Stage</th><th>Where</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1 · Filtration</td><td>Glomerulus → Bowman's capsule</td><td>Pressure forces water, electrolytes, glucose and small wastes out of the blood into the capsule. The result is <b>filtrate</b> — like plasma but without proteins or blood cells, which are too large to pass.</td></tr>
+        <tr><td class="n">2 · Reabsorption</td><td>Mostly PCT, then loop and DCT</td><td>Useful things are taken <b>back into the blood</b> — water, glucose, amino acids, sodium, chloride. The PCT does the bulk of it.</td></tr>
+        <tr><td class="n">3 · Secretion</td><td>DCT and collecting duct</td><td>Extra waste and ions — H⁺, K⁺, some drugs — are actively pushed <b>from the blood into the filtrate</b>. This is how the kidney fine-tunes pH and potassium.</td></tr>
+        <tr><td class="n">4 · Excretion</td><td>Collecting duct → renal pelvis → ureter → bladder</td><td>What's left is urine: water, urea, electrolytes and waste.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint">Reabsorption moves substances <b>filtrate → blood</b>. Secretion moves them <b>blood → filtrate</b>. Mixing these two up is the most common error on this material.</p>
+
+  <!-- ============ RAAS ============ -->
+  <h2 class="sec">3 · RAAS — how the kidney raises blood pressure</h2>
+  <p class="lede">A chain reaction that starts when blood pressure drops.</p>
+  <div class="chain">
+    <div class="step"><b>1 · Blood pressure falls</b><span>The kidney senses reduced perfusion.</span></div>
+    <div class="arrow">↓</div>
+    <div class="step"><b>2 · Kidney releases renin</b><span>Renin is an enzyme, released from the juxtaglomerular cells.</span></div>
+    <div class="arrow">↓</div>
+    <div class="step"><b>3 · Angiotensinogen → angiotensin I</b><span>Renin cleaves angiotensinogen (made by the liver) into angiotensin I.</span></div>
+    <div class="arrow">↓</div>
+    <div class="step"><b>4 · ACE converts it to angiotensin II</b><span>Angiotensin-converting enzyme, largely in the lungs. Angiotensin II is a powerful <b>vasoconstrictor</b> — that alone raises pressure.</span></div>
+    <div class="arrow">↓</div>
+    <div class="step"><b>5 · Angiotensin II triggers aldosterone</b><span>From the adrenal cortex. Aldosterone makes the kidney <b>reabsorb sodium</b> (and therefore water) and <b>excrete potassium</b>.</span></div>
+    <div class="arrow">↓</div>
+    <div class="step"><b>6 · Blood volume and pressure rise</b><span>Homeostasis restored — a classic negative feedback loop.</span></div>
+  </div>
+  <div class="keynote">
+    <b>Clinical tie-in:</b> if RAAS is chronically overactive you get hypertension from too much sodium and water retention. That's exactly why <b>ACE inhibitors</b> and <b>ARBs</b> are first-line blood pressure drugs — they interrupt step 4 or block the receptor downstream.
+  </div>
+
+  <!-- ============ SPERM ============ -->
+  <h2 class="sec">4 · Spermatogenesis</h2>
+  <p class="lede">Continuous from puberty onward, in the seminiferous tubules of the testes.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Step</th><th>Cell</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td>Spermatogonium (stem cell, 2n)</td><td>Divides by mitosis — one daughter stays a stem cell, one commits to becoming sperm. This is why men never run out.</td></tr>
+        <tr><td class="n">2</td><td>Primary spermatocyte (2n)</td><td>Undergoes <b>meiosis I</b> → two secondary spermatocytes.</td></tr>
+        <tr><td class="n">3</td><td>Secondary spermatocyte (n)</td><td>Undergoes <b>meiosis II</b> → two spermatids each.</td></tr>
+        <tr><td class="n">4</td><td>Spermatid → spermatozoon</td><td><b>Spermiogenesis</b>: no more division, just remodeling into a functional sperm.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keynote">
+    <b>The number question:</b> one primary spermatocyte yields <span class="fill" data-a="four">four</span> sperm. Contrast that with oogenesis, where one primary oocyte yields <span class="fill" data-a="one">one</span> ovum plus polar bodies. This comparison is a guaranteed exam item.
+  </div>
+
+  <h3 style="font-family:var(--disp);color:var(--maroon-dk);margin-top:22px;font-size:18px;">The three parts of a sperm</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Part</th><th>Contains</th><th>Function</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Head</td><td>Condensed nucleus + <b>acrosome</b> cap</td><td>Carries the genetic material. The acrosome holds enzymes that digest through the egg's coating at fertilization.</td></tr>
+        <tr><td class="n">Midpiece</td><td><b>Mitochondria</b>, tightly packed</td><td>Produces the ATP that powers swimming.</td></tr>
+        <tr><td class="n">Tail (flagellum)</td><td>Microtubules</td><td>Whips to propel the sperm toward the egg.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint"><b>Maturation:</b> sperm leaving the seminiferous tubules cannot yet fertilize. They gain motility and egg-binding ability while stored in the <b>epididymis</b>, then travel via the vas deferens and mix with fluid from the seminal vesicles, prostate and bulbourethral glands to form semen.</p>
+
+  <!-- ============ OOGENESIS ============ -->
+  <h2 class="sec">5 · Oogenesis &amp; follicular development</h2>
+  <p class="lede">Unlike sperm, this starts before birth and pauses for years.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Stage</th><th>When</th><th>What happens</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Fetal life</td><td>Before birth</td><td>Oogonia multiply and become primary oocytes, which <b>arrest in meiosis I</b>. Every egg a person will ever have is already present.</td></tr>
+        <tr><td class="n">At birth</td><td>—</td><td>Roughly 1–2 million primary oocytes, all still arrested. No new ones are ever made.</td></tr>
+        <tr><td class="n">Each cycle after puberty</td><td>Monthly</td><td>FSH rescues a cohort of follicles; usually one becomes dominant. It completes meiosis I, producing a <b>secondary oocyte</b> plus a small polar body.</td></tr>
+        <tr><td class="n">Ovulation</td><td>Day 14</td><td>The secondary oocyte is released — and arrests again, in <b>meiosis II</b>.</td></tr>
+        <tr><td class="n">Fertilization</td><td>Only if sperm arrives</td><td>Meiosis II completes <b>only if fertilized</b>, producing the mature ovum. No sperm, no completion — the oocyte degenerates.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keynote">
+    <b>Ovum vs secondary oocyte — the classic trap:</b> what is ovulated is a <b>secondary oocyte</b>, not an ovum. It only becomes a true ovum once a sperm penetrates it and meiosis II finishes. So strictly speaking, fertilization happens <em>before</em> the egg is finished.
+  </div>
+
+  <h3 style="font-family:var(--disp);color:var(--maroon-dk);margin-top:22px;font-size:18px;">Follicular development</h3>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Follicle</th><th>Features</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Primordial</td><td>Primary oocyte with a single flat layer of granulosa cells. Dormant until puberty.</td></tr>
+        <tr><td class="n">Primary</td><td>Under FSH, granulosa cells become cuboidal and the <b>zona pellucida</b> forms around the oocyte.</td></tr>
+        <tr><td class="n">Secondary</td><td>A <b>theca</b> layer forms, splitting into theca interna (makes hormones) and theca externa (support). Fluid-filled spaces called <b>antra</b> appear.</td></tr>
+        <tr><td class="n">Tertiary (Graafian)</td><td>One dominant follicle with a large antrum. Produces high <b>estrogen</b>, which triggers the <b>LH surge</b> → ovulation.</td></tr>
+        <tr><td class="n">Corpus luteum</td><td>What's left after ovulation. Secretes <b>progesterone</b> to maintain the endometrium. If no pregnancy, it degenerates into the corpus albicans and hormones drop → menstruation.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint"><b>Zona pellucida</b> = the glycoprotein coat that protects the oocyte and controls sperm entry (it also blocks polyspermy after the first sperm binds).</p>
+
+  <!-- ============ MENSTRUAL CYCLE ============ -->
+  <h2 class="sec">6 · The menstrual cycle</h2>
+  <p class="lede">Drag through the 28 days and watch which hormone is driving.</p>
+  <div class="cyc">
+    <div class="dayrow">
+      <div class="daynum" id="dayNum">Day 1</div>
+      <input type="range" id="daySlide" min="1" max="28" value="1">
+      <span class="phasetag" id="phaseTag">Menstrual</span>
+    </div>
+    <div class="hbar"><div class="hl"><span>FSH</span><span id="fshV"></span></div><div class="tr"><i id="fshB" style="background:var(--blue)"></i></div></div>
+    <div class="hbar"><div class="hl"><span>LH</span><span id="lhV"></span></div><div class="tr"><i id="lhB" style="background:var(--maroon)"></i></div></div>
+    <div class="hbar"><div class="hl"><span>Estrogen</span><span id="esV"></span></div><div class="tr"><i id="esB" style="background:var(--gold)"></i></div></div>
+    <div class="hbar"><div class="hl"><span>Progesterone</span><span id="pgV"></span></div><div class="tr"><i id="pgB" style="background:var(--good)"></i></div></div>
+    <div class="grid">
+      <div class="box"><b>In the ovary</b><p id="ovaryTxt"></p></div>
+      <div class="box"><b>In the uterus</b><p id="uterusTxt"></p></div>
+    </div>
+    <div class="keynote" id="cycKey"></div>
+  </div>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Phase</th><th>Days</th><th>Driving hormone</th><th>Key event</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Menstrual</td><td>1–5</td><td>All low</td><td>Endometrium sheds because progesterone and estrogen dropped at the end of the last cycle.</td></tr>
+        <tr><td class="n">Follicular</td><td>1–13</td><td><b>FSH</b>, then estrogen</td><td>Follicles mature; the dominant one pours out estrogen, which rebuilds the endometrium.</td></tr>
+        <tr><td class="n">Ovulation</td><td>14</td><td><b>LH surge</b></td><td>The Graafian follicle ruptures and releases the secondary oocyte into the fallopian tube.</td></tr>
+        <tr><td class="n">Luteal</td><td>15–28</td><td><b>Progesterone</b></td><td>Corpus luteum stabilizes the endometrium. No pregnancy → it degenerates → hormones fall → next cycle.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint"><b>FSH vs LH — know the difference:</b> FSH <em>grows the follicle</em>. LH <em>releases the egg</em> (and then maintains the corpus luteum). In males: FSH drives sperm production, LH drives testosterone.</p>
+
+  <!-- ============ MENOPAUSE ============ -->
+  <h2 class="sec">7 · Menopause</h2>
+  <p class="lede">Typically ages 45–55. Three phases.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Phase</th><th>What's happening</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Perimenopause</td><td>Begins years earlier. The <b>ovaries become less responsive to FSH and LH</b>, so estrogen and progesterone fall and fluctuate. Ovulation gets irregular; cycles lengthen, shorten, or are missed.</td></tr>
+        <tr><td class="n">Menopause</td><td>Defined as <b>12 consecutive months</b> without a period. Estrogen and progesterone are very low, ovulation has stopped entirely, and menstruation no longer occurs.</td></tr>
+        <tr><td class="n">Postmenopause</td><td>Hormones stay low and stable. Hot flashes and mood changes usually ease, but the long-term consequences of low estrogen — <b>osteoporosis</b> and increased <b>cardiovascular risk</b> — persist.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keynote">
+    <b>The counterintuitive bit that gets tested:</b> in menopause estrogen and progesterone fall — but <b>FSH and LH RISE</b>. The pituitary keeps shouting at ovaries that are no longer answering. Loss of negative feedback, so the signal climbs. Symptoms: hot flashes, night sweats, mood changes, vaginal dryness, bone loss.
+  </div>
+
+  <h2 class="sec">Test yourself</h2>
+  <p class="lede">Cover the page and answer these from memory before you look back.</p>
+  <div class="quiz">
+    <ol style="margin:0;padding-left:20px;">
+      <li style="margin-bottom:9px;">List the seven functions of the kidneys. Which two hormones do they produce?</li>
+      <li style="margin-bottom:9px;">Water follows which ion — and what does that do to blood pressure?</li>
+      <li style="margin-bottom:9px;">Which part of the nephron does most reabsorption? Which does filtration?</li>
+      <li style="margin-bottom:9px;">Contrast the descending and ascending limbs of the loop of Henle.</li>
+      <li style="margin-bottom:9px;">Explain the difference between reabsorption and secretion, including direction.</li>
+      <li style="margin-bottom:9px;">Walk through RAAS from low blood pressure to restored blood pressure.</li>
+      <li style="margin-bottom:9px;">How many sperm come from one primary spermatocyte? How many ova from one primary oocyte?</li>
+      <li style="margin-bottom:9px;">Name the three parts of a sperm and what each does.</li>
+      <li style="margin-bottom:9px;">What is ovulated — an ovum or a secondary oocyte? When does that change?</li>
+      <li style="margin-bottom:9px;">Name the four menstrual phases with their days and driving hormone.</li>
+      <li style="margin-bottom:0;">In menopause, what happens to estrogen? To FSH and LH? Why the difference?</li>
+    </ol>
+    <p style="margin:14px 0 0;font-size:13px;color:var(--faint);">
+      Every answer is somewhere on this page. For graded-style practice, use the
+      <a href="flashcards.html">flashcards</a> and the <a href="study-guide.html">study guide</a>.
+    </p>
+  </div>
+
+  <footer>
+    <b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences<br>
+    Module 14 content built by Dr. Akash Garg
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+
+  /* ---------- nephron ---------- */
+  var NEPH = [
+    { icon:"⬅️", name:"Afferent<br>arteriole", title:"Afferent arteriole", tag:"Delivers blood to the glomerulus.",
+      body:"Its diameter controls how much blood reaches the glomerulus, and therefore the filtration rate.",
+      l:{t:"Dilates",p:"More blood enters → filtration <b>increases</b>."},
+      r:{t:"Constricts",p:"Less blood enters → filtration <b>decreases</b>."},
+      key:"Afferent = <b>a</b>rrives. Efferent = <b>e</b>xits." },
+    { icon:"🕸️", name:"Glomerulus", title:"Glomerulus", tag:"Where filtration happens.",
+      body:"A capillary network under high pressure. Water, ions, glucose and small wastes are forced out into Bowman's capsule to become filtrate.",
+      l:{t:"Passes through",p:"Water, sodium, chloride, glucose, amino acids, urea, creatinine."},
+      r:{t:"Held back",p:"<b>Proteins and blood cells</b> — too large. Protein in urine means the filter is damaged."},
+      key:"This is the <b>only</b> site of filtration in the nephron. Everything downstream is reabsorption or secretion." },
+    { icon:"➡️", name:"Efferent<br>arteriole", title:"Efferent arteriole", tag:"Carries blood away — and keeps the pressure up.",
+      body:"It is <b>narrower</b> than the afferent arteriole. That constriction is what maintains the high pressure inside the glomerulus that filtration depends on.",
+      l:{t:"Why narrower?",p:"A smaller exit holds back-pressure in the glomerulus so filtration keeps working."},
+      r:{t:"Where next?",p:"Blood flows on to the peritubular capillaries, which pick up everything reabsorbed downstream."},
+      key:"Narrower exit than entrance = sustained filtration pressure." },
+    { icon:"🧽", name:"PCT", title:"Proximal convoluted tubule (PCT)", tag:"The bulk reabsorber.",
+      body:"<b>Most reabsorption happens here.</b> Water, sodium, chloride, glucose and amino acids all return to the blood. It also secretes some wastes into the filtrate.",
+      l:{t:"Reabsorbs",p:"~65% of filtered sodium and water, and essentially <b>all</b> glucose and amino acids."},
+      r:{t:"Clinical note",p:"Glucose appears in urine only when blood glucose exceeds what the PCT can reclaim — as in diabetes."},
+      key:"If a question says 'most reabsorption', the answer is the PCT." },
+    { icon:"⬇️", name:"Descending<br>limb", title:"Descending limb of the loop of Henle", tag:"Water leaves. Ions stay.",
+      body:"Permeable to <b>water</b> but not to solutes. As filtrate descends into the salty medulla, water is drawn out — concentrating the filtrate.",
+      l:{t:"Moves",p:"<b>Water</b> out, into surrounding tissue."},
+      r:{t:"Does not move",p:"Sodium and other ions stay in the filtrate."},
+      key:"Descending = <b>D</b>ehydrates the filtrate (water out)." },
+    { icon:"⬆️", name:"Ascending<br>limb", title:"Ascending limb of the loop of Henle", tag:"Ions leave. Water can't.",
+      body:"The exact opposite: <b>impermeable to water</b>, but actively pumps sodium, potassium and chloride out. Removing salt without water is what builds the medullary concentration gradient.",
+      l:{t:"Moves",p:"Na⁺, K⁺, Cl⁻ pumped out by <b>active transport</b>."},
+      r:{t:"Does not move",p:"Water — it cannot follow, so the filtrate becomes dilute."},
+      key:"The two limbs doing opposite things is what makes concentrated urine possible at all." },
+    { icon:"🎚️", name:"DCT", title:"Distal convoluted tubule (DCT)", tag:"The fine-tuner.",
+      body:"Adjusts sodium and calcium reabsorption and secretes potassium and hydrogen ions. This is where <b>aldosterone</b> acts.",
+      l:{t:"Reabsorbs",p:"Sodium and calcium — the amount is hormone-controlled, not fixed."},
+      r:{t:"Secretes",p:"K⁺ and H⁺ into the filtrate — this is how pH and potassium get corrected."},
+      key:"Aldosterone here → reabsorb sodium, excrete potassium." },
+    { icon:"💧", name:"Collecting<br>duct", title:"Collecting duct", tag:"The final say on urine concentration.",
+      body:"Determines how concentrated the urine ends up, under the control of <b>ADH</b> (antidiuretic hormone).",
+      l:{t:"ADH high",p:"Duct becomes permeable → water reabsorbed → <b>small volume of concentrated</b> urine. This is the dehydration response."},
+      r:{t:"ADH low",p:"Duct stays impermeable → water stays in → <b>large volume of dilute</b> urine."},
+      key:"<b>A</b>DH = <b>A</b>dds water back to the body. Alcohol suppresses ADH, which is why it makes you urinate more." }
+  ];
+  var curN = 0;
+  function renderNStrip(){
+    var h="";
+    for(var i=0;i<NEPH.length;i++){
+      h += '<button data-i="'+i+'" class="'+(i===curN?"on":"")+'">'
+         + '<span class="e">'+NEPH[i].icon+'</span><span class="n">'+NEPH[i].name+'</span></button>';
+    }
+    $("nephStrip").innerHTML = h;
+  }
+  function renderNPanel(){
+    var s = NEPH[curN];
+    $("nephPanel").innerHTML =
+        '<h3>'+s.title+'</h3><div class="tagline">'+s.tag+'</div>'
+      + '<p class="body">'+s.body+'</p>'
+      + '<div class="duo"><div class="box"><b>'+s.l.t+'</b><p>'+s.l.p+'</p></div>'
+      + '<div class="box"><b>'+s.r.t+'</b><p>'+s.r.p+'</p></div></div>'
+      + '<div class="keynote"><b>Exam hook:</b> '+s.key+'</div>';
+  }
+  $("nephStrip").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest("button[data-i]") : null;
+    if(!b) return;
+    curN = parseInt(b.dataset.i,10); renderNStrip(); renderNPanel();
+  });
+
+  /* ---------- menstrual cycle ---------- */
+  function lvl(d, peak, spread, max){
+    var v = Math.exp(-Math.pow(d-peak,2)/(2*spread*spread))*max;
+    return Math.max(4, Math.min(100, v));
+  }
+  function label(v){ return v>70?"High":v>40?"Rising":v>18?"Low":"Very low"; }
+
+  function cycle(d){
+    var fsh = Math.max(lvl(d,4,3.2,62), lvl(d,13,1.6,58));
+    var lh  = lvl(d,14,1.15,100);
+    var es  = Math.max(lvl(d,12.5,3.1,95), lvl(d,21,4.2,52));
+    var pg  = lvl(d,22,4.4,92);
+    if(d<=5) pg = Math.min(pg, 8);
+
+    var phase, color, ovary, uterus, key;
+    if(d<=5){
+      phase="Menstrual"; color="var(--bad)";
+      ovary="Hormones are at their lowest. FSH is just beginning to climb, recruiting a new cohort of follicles.";
+      uterus="The endometrium is shedding. Progesterone and estrogen collapsed at the end of the last cycle, prostaglandins constrict the vessels, and the lining breaks down.";
+      key="<b>Why bleeding happens:</b> not because a hormone rises, but because progesterone <em>falls</em>. Withdrawal of support, not an active signal.";
+    } else if(d<=13){
+      phase="Follicular"; color="var(--blue)";
+      ovary="FSH is driving several follicles to mature. One becomes dominant and pours out estrogen; the rest regress.";
+      uterus="Estrogen is rebuilding the endometrium — the proliferative phase. The lining thickens in preparation.";
+      key="<b>FSH grows the follicle.</b> The estrogen it produces is what rebuilds the uterine lining.";
+    } else if(d<=15){
+      phase="Ovulation"; color="var(--maroon)";
+      ovary="Estrogen has peaked, which triggers a sharp <b>LH surge</b>. The Graafian follicle ruptures and releases the secondary oocyte.";
+      uterus="The lining is at full thickness and receptive. Cervical mucus thins to let sperm through.";
+      key="<b>The LH surge is the trigger.</b> High estrogen flips from negative to positive feedback — one of the few positive feedback loops in the body.";
+    } else {
+      phase="Luteal"; color="var(--good)";
+      ovary="The ruptured follicle has become the <b>corpus luteum</b>, secreting progesterone. Without pregnancy it degenerates into the corpus albicans around day 26.";
+      uterus="Progesterone stabilizes and maintains the endometrium, making it receptive to implantation — the secretory phase.";
+      key="<b>Progesterone = pro-gestation.</b> It holds the lining in place. When the corpus luteum dies, support is withdrawn and the next period starts.";
+    }
+    return {fsh:fsh, lh:lh, es:es, pg:pg, phase:phase, color:color, ovary:ovary, uterus:uterus, key:key};
+  }
+
+  function renderCycle(){
+    var d = parseInt($("daySlide").value,10);
+    var c = cycle(d);
+    $("dayNum").textContent = "Day " + d;
+    var t = $("phaseTag"); t.textContent = c.phase; t.style.background = c.color;
+    $("fshB").style.width = c.fsh+"%"; $("fshV").textContent = label(c.fsh);
+    $("lhB").style.width  = c.lh+"%";  $("lhV").textContent  = label(c.lh);
+    $("esB").style.width  = c.es+"%";  $("esV").textContent  = label(c.es);
+    $("pgB").style.width  = c.pg+"%";  $("pgV").textContent  = label(c.pg);
+    $("ovaryTxt").innerHTML  = c.ovary;
+    $("uterusTxt").innerHTML = c.uterus;
+    $("cycKey").innerHTML    = c.key;
+  }
+  $("daySlide").addEventListener("input", renderCycle);
+
+  /* ---------- fill toggles ---------- */
+  document.addEventListener("click", function(ev){
+    var f = ev.target.closest ? ev.target.closest(".fill") : null;
+    if(!f) return;
+    f.classList.toggle("hidden-ans");
+  });
+
+  renderNStrip(); renderNPanel(); renderCycle();
+})();
+</script>
+</body>
+</html>

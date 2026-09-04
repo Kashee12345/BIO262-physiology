@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Calcium Loop &mdash; three effectors, three time constants</title>
+<meta name="description" content="Perturb ionized calcium, break the sensor or an effector, and watch the kidney answer in minutes, bone in hours and the gut in a day; then correct a calcium for albumin and pH and balance the daily ledger.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+.eq{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.9;font-variant-numeric:tabular-nums;}
+.eq .t{color:var(--coral);font-weight:700;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+.frbar{display:flex;height:34px;border-radius:9px;overflow:hidden;border:1px solid var(--line);margin-top:12px;}
+.frbar div{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;transition:width .25s;overflow:hidden;white-space:nowrap;}
+.symp{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.symp span{font-size:11px;font-weight:700;border-radius:20px;padding:4px 10px;border:1px solid var(--line);color:var(--soft);background:#fff;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch04.html">&larr; Module 4</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 4 &middot; Section 4</div>
+  <h1>The Calcium Loop</h1>
+  <div class="intro">Plasma <b>ionized calcium</b> is held near 1.2 mmol/L by a sensor that works backwards: calcium binding to the CaSR <i>suppresses</i> PTH, so a fall releases the brake. Knock calcium down and watch the kidney answer in <b>minutes</b>, bone in <b>hours</b> and the gut in a <b>day or two</b>. Then break the sensor, the gland or an effector, and read the pattern you get.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">The loop</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Total vs ionized</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Daily ledger</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">What happens at hour 6?</div>
+        <div class="chips" id="perts"></div>
+        <div class="lbl">Break something in the loop</div>
+        <div class="chips" id="lesions"></div>
+        <button class="tog" id="tPhos" type="button" aria-pressed="true"><span class="dot"></span><span>PTH is allowed to dump phosphate in the urine <small>Internalizing the proximal NaPi-IIa cotransporter. Switch it off and watch what happens to calcium.</small></span></button>
+        <div class="sl"><label for="sev">Size of the challenge <span class="v" id="sevV">1.0&times;</span></label>
+          <input type="range" id="sev" min="20" max="220" value="100" aria-label="Severity multiplier for the chosen challenge"></div>
+        <div class="hint"><b>Name the loop as you watch it.</b> Variable: plasma ionized calcium. Sensor: the <b>calcium-sensing receptor</b> on the parathyroid chief cell, set point near 1.2 mmol/L. Integrator: the parathyroid gland. Effectors: distal renal tubule, bone, and intestine via calcitriol. Response: a rise in ionized calcium that re-occupies the CaSR and shuts the signal off.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">A calcium panel to interpret</div>
+        <div class="chips" id="cases2"></div>
+        <div class="sl"><label for="tca">Measured total calcium <span class="v" id="tcaV">9.5 mg/dL</span></label>
+          <input type="range" id="tca" min="55" max="140" value="95" aria-label="Measured total serum calcium in milligrams per deciliter"></div>
+        <div class="sl"><label for="alb">Serum albumin <span class="v" id="albV">4.0 g/dL</span></label>
+          <input type="range" id="alb" min="10" max="55" value="40" aria-label="Serum albumin in grams per deciliter"></div>
+        <div class="sl"><label for="ph">Arterial pH <span class="v" id="phV">7.40</span></label>
+          <input type="range" id="ph" min="715" max="765" value="740" aria-label="Arterial pH"></div>
+        <div class="eq">corrected Ca = measured Ca + 0.8 &times; (4.0 &minus; albumin)
+          <span class="r">and ionized calcium falls about 0.05 mmol/L for every 0.1 unit rise in pH</span></div>
+        <div class="hint">Total calcium is a bookkeeping convenience. Roughly <b>45%</b> is bound to protein, chiefly albumin, about <b>10%</b> is complexed to citrate, phosphate and bicarbonate, and only <b>45&ndash;50%</b> circulates free. The homeostatic system does not know or care what the total is.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">A typical adult day, in milligrams</div>
+        <div class="chips" id="cases3"></div>
+        <div class="sl"><label for="intake">Dietary calcium intake <span class="v" id="intakeV">1,000 mg/d</span></label>
+          <input type="range" id="intake" min="150" max="2500" value="1000" step="50" aria-label="Dietary calcium intake in milligrams per day"></div>
+        <div class="sl"><label for="fabs">Fractional intestinal absorption <span class="v" id="fabsV">30%</span></label>
+          <input type="range" id="fabs" min="5" max="75" value="30" aria-label="Fractional intestinal calcium absorption, percent"></div>
+        <div class="sl"><label for="reab">Renal tubular reabsorption <span class="v" id="reabV">98.0%</span></label>
+          <input type="range" id="reab" min="940" max="998" value="980" aria-label="Fraction of filtered calcium reabsorbed, percent"></div>
+        <div class="hint">The kidneys filter on the order of <b>10,000 mg per day</b> of the non-protein-bound fraction. Small changes in the reabsorbed fraction therefore move very large amounts of calcium &mdash; which is why the renal arm is the fast one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Fifty-four hours of the loop</h2>
+      <canvas id="cv1" width="1040" height="720" aria-label="Three stacked traces against time in hours: plasma ionized calcium with its normal band, parathyroid hormone with its normal band, and the separate contributions of the renal, bone and gut effector arms"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>What the laboratory measured, and what the patient has</h2>
+      <div class="frbar" id="fr2"></div>
+      <div class="stats" id="s2"></div>
+      <canvas id="cv2" width="1040" height="300" aria-label="Scale showing where this patient's ionized calcium sits relative to the normal range of 1.10 to 1.35 millimoles per liter"></canvas>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="symp" id="sy2"></div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>The daily ledger</h2>
+      <canvas id="cv3" width="1040" height="560" aria-label="Flow diagram of daily calcium movement between diet, gut, extracellular fluid, bone and urine with the current values in milligrams per day"></canvas>
+      <div class="stats" id="s3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(p){p[0].classList.toggle('on',p[1]===n);p[0].setAttribute('aria-selected',p[1]===n?'true':'false');});
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =====================================================
+   BENCH 1 - the loop
+   ===================================================== */
+var PERTS=[
+ {k:'step',n:'Sudden fall of 0.10 mmol/L',d:'A step drop in ionized calcium at hour 6, then the loop is left to correct it.'},
+ {k:'bigstep',n:'Sudden fall of 0.25 mmol/L',d:'A large acute fall &mdash; the kind produced by inadvertent parathyroid injury or a rapid citrate load.'},
+ {k:'drain',n:'Sustained calcium drain',d:'A continuous loss, as in lactation or a chelating load. This is the perturbation that separates the three time constants most clearly.'},
+ {k:'diet',n:'Dietary calcium withdrawn',d:'Nothing arrives from the gut. The loop must hold calcium with the kidney and the skeleton alone.'},
+ {k:'load',n:'Intravenous calcium load',d:'A rise in ionized calcium. Watch PTH switch off &mdash; the CaSR is an inhibitory receptor.'}
+];
+var LES=[
+ {k:'none',n:'Intact loop'},
+ {k:'para',n:'Parathyroids removed'},
+ {k:'fhh',n:'CaSR inactivating mutation'},
+ {k:'adh',n:'CaSR activating mutation'},
+ {k:'vitd',n:'Vitamin D deficiency'},
+ {k:'ckd',n:'Chronic kidney disease'},
+ {k:'phpt',n:'Parathyroid adenoma'},
+ {k:'thyroidx',n:'Total thyroidectomy (no calcitonin)'}
+];
+var pert='step', lesion='none', phosOn=true;
+var pb=$('perts');
+PERTS.forEach(function(P){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(P.k===pert?' on':''); b.textContent=P.n;
+  b.onclick=function(){pert=P.k;[].forEach.call(pb.children,function(c,i){c.classList.toggle('on',PERTS[i].k===pert);});render1();};
+  pb.appendChild(b);
+});
+var lb=$('lesions');
+LES.forEach(function(L){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(L.k===lesion?' on':''); b.textContent=L.n;
+  b.onclick=function(){lesion=L.k;[].forEach.call(lb.children,function(c,i){c.classList.toggle('on',LES[i].k===lesion);});render1();};
+  lb.appendChild(b);
+});
+$('tPhos').onclick=function(){phosOn=!phosOn;this.setAttribute('aria-pressed',phosOn?'true':'false');render1();};
+$('sev').addEventListener('input',render1);
+
+function simulate(){
+  var SEV=+$('sev').value/100;
+  var SP=1.17, s=0.055, Pmin=6, Pmax=130;
+  var kR=0.130, kB=0.100, kG=0.058, kLoss=0.60, sink=0.72;
+  var phosExcr=phosOn?1:0, autoPTH=0, po4base=3.5;
+  if(lesion==='para'){ Pmin=2; Pmax=4; }
+  if(lesion==='fhh'){ SP=1.33; }
+  if(lesion==='adh'){ SP=1.03; }
+  if(lesion==='vitd'){ kG*=0.15; }
+  if(lesion==='ckd'){ kG*=0.20; kR*=0.40; phosExcr*=0.15; po4base=5.6; }
+  if(lesion==='phpt'){ SP=1.34; autoPTH=65; }
+
+  var dt=0.01, T=54, N=Math.round(T/dt)+1;
+  var iCa=1.20, PTH=40, Ar=1, Ab=1, Ag=1;
+  /* settle to this patient's own baseline before hour 0 */
+  var i,j;
+  for(j=0;j<9000;j++){
+    var Pt0=Pmin+(Pmax-Pmin)/(1+Math.exp((iCa-SP)/s)); if(autoPTH) Pt0=Math.max(Pt0,autoPTH);
+    PTH+=(Pt0-PTH)/0.072*dt;
+    var D0=PTH/40;
+    Ar+=(D0-Ar)/0.25*dt; Ab+=(D0-Ab)/3.0*dt; Ag+=(D0-Ag)/20.0*dt;
+    iCa+=(kR*Ar+kB*Ab+kG*Ag-kLoss*(iCa-sink))*dt;
+  }
+  var base={iCa:iCa,PTH:PTH};
+  var out=[];
+  for(i=0;i<N;i++){
+    var t=i*dt;
+    var Pt=Pmin+(Pmax-Pmin)/(1+Math.exp((iCa-SP)/s));
+    if(autoPTH) Pt=Math.max(Pt,autoPTH);
+    PTH+=(Pt-PTH)/0.072*dt;
+    var D=PTH/40;
+    Ar+=(D-Ar)/0.25*dt; Ab+=(D-Ab)/3.0*dt; Ag+=(D-Ag)/20.0*dt;
+
+    var kGt=kG, extraLoss=0;
+    if(t>=6){
+      if(pert==='drain') extraLoss=0.12*SEV;
+      if(pert==='diet') kGt=kG*0.08;
+    }
+    /* phosphate: bone and gut deliver it, PTH-driven phosphaturia removes it */
+    var PO4=po4base+0.85*(Ab-1)+0.45*(Ag-1)-2.20*(Ar-1)*phosExcr;
+    if(PO4<0.6)PO4=0.6;
+    /* if the calcium-phosphate product climbs, the two ions precipitate in soft tissue */
+    if(PO4>4.5) extraLoss+=Math.min(0.30,0.35*(PO4-4.5));
+
+    iCa+=(kR*Ar+kB*Ab+kGt*Ag-kLoss*(iCa-sink)-extraLoss)*dt;
+    if(Math.abs(t-6)<dt/2){
+      if(pert==='step') iCa-=0.10*SEV;
+      if(pert==='bigstep') iCa-=0.25*SEV;
+      if(pert==='load') iCa+=0.14*SEV;
+    }
+    if(iCa<0.35)iCa=0.35; if(iCa>2.1)iCa=2.1;
+    if(i%5===0) out.push({t:t,ca:iCa,pth:PTH,ar:kR*Ar,ab:kB*Ab,ag:kGt*Ag,po4:PO4});
+  }
+  return {out:out,base:base,phosExcr:phosExcr};
+}
+function render1(){
+  $('sevV').textContent=(+$('sev').value/100).toFixed(1)+'×';
+  var S=simulate(), o=S.out;
+  var nadir=o[0], last=o[o.length-1], peakPTH=0;
+  var i;
+  for(i=0;i<o.length;i++){
+    if(o[i].t>=6){
+      if(nadir.t<6||o[i].ca<nadir.ca) nadir=o[i];
+      if(o[i].pth>peakPTH) peakPTH=o[i].pth;
+    }
+  }
+  var totalCa=last.ca*7.9;
+  $('s1').innerHTML=
+    tile('Baseline ionized Ca',S.base.iCa.toFixed(3),'mmol/L &middot; normal 1.10&ndash;1.35')+
+    tile('Baseline PTH',S.base.PTH.toFixed(0),'pg/mL &middot; normal 15&ndash;65')+
+    tile('Lowest ionized Ca',nadir.ca.toFixed(3),'mmol/L after the challenge')+
+    tile('Peak PTH',peakPTH.toFixed(0),'pg/mL &middot; '+(peakPTH/Math.max(1,S.base.PTH)).toFixed(1)+'&times; baseline')+
+    tile('Ionized Ca at 54 h',last.ca.toFixed(3),'mmol/L &middot; total about '+totalCa.toFixed(1)+' mg/dL')+
+    tile('Phosphate at 54 h',last.po4.toFixed(2),'mg/dL &middot; normal 2.5&ndash;4.5');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(!phosOn&&last.po4>4.5){
+    cls='verdict bad';
+    txt='Phosphate was retained &mdash; and calcium could not rise<small>Bone resorption liberates calcium and phosphate together in the fixed stoichiometry of hydroxyapatite. With the phosphaturic arm switched off, the calcium&ndash;phosphate product climbs, the two ions precipitate in soft tissue, and free ionized calcium falls. PTH is working hard and achieving nothing.</small>';
+    inf='<span class="n">Why PTH must be phosphaturic</span>Dumping phosphate in the urine, by internalizing the proximal <b>NaPi-IIa</b> cotransporter, is what lets PTH raise calcium <i>selectively</i>. It is one of the most elegant pieces of coordination in endocrine physiology, and it is why the classic biochemical signature of primary hyperparathyroidism is a <b>high calcium with a low phosphate</b>.';
+  } else if(lesion==='para'){
+    cls='verdict bad';
+    txt='No parathyroid hormone &mdash; the loop has no integrator<small>Ionized calcium settles far below the window and stays there. Remove the parathyroids and the patient is in tetany within a day; this is the feared complication of thyroid surgery.</small>';
+    inf='<span class="n">The system is one-sided</span>Calcium homeostasis in adult humans is built around defending against <b>low</b> calcium, because low ionized calcium kills quickly through laryngospasm and seizure while modest hypercalcemia is tolerated for weeks. That asymmetry is why losing PTH is a medical emergency and losing calcitonin is not.';
+  } else if(lesion==='thyroidx'){
+    cls='verdict info';
+    txt='Calcitonin is gone &mdash; and nothing has happened<small>The trace is indistinguishable from the intact loop. Patients whose thyroid has been removed entirely have no calcitonin and normal calcium; patients with medullary thyroid carcinoma have enormous calcitonin levels and normal calcium.</small>';
+    inf='<span class="n">Calcitonin is not the mirror image of PTH</span>The symmetry is textbook tidiness, not human physiology. C-cell calcitonin does inhibit the osteoclast ruffled border within minutes, and it is genuinely potent in fish and in rapidly growing or lactating mammals. In adult humans it is close to vestigial &mdash; a useful tumor marker and a modest pharmacologic tool, not a pillar of homeostasis.';
+  } else if(lesion==='fhh'){
+    cls='verdict warn';
+    txt='Mild hypercalcemia with a PTH that refuses to switch off<small>An inactivating CaSR mutation moves the set point up: the gland reads a normal calcium as low, so it keeps secreting until calcium reaches the new, higher target. The loop is intact &mdash; the thermostat has been reset.</small>';
+    inf='<span class="n">Set point, not gain</span>Familial hypocalciuric hypercalcemia looks biochemically like mild primary hyperparathyroidism, and the same receptor defect in the kidney explains the <i>low</i> urine calcium that distinguishes them. Recognizing it matters, because parathyroid surgery does not fix a set-point problem.';
+  } else if(lesion==='adh'){
+    cls='verdict warn';
+    txt='Hypocalcemia with an inappropriately low PTH<small>An activating CaSR mutation makes the receptor read every calcium as high, so it suppresses PTH release at levels that should be calling for it. The gland is normal; the sensor is lying to it.</small>';
+    inf='<span class="n">The inverted logic that catches everyone</span>The CaSR is <b>inhibitory</b>. Calcium binding <i>suppresses</i> PTH release. A falling calcium therefore removes inhibition and secretion rises. The relationship is a steep inverse sigmoid, so a 0.1 mmol/L fall in ionized calcium can roughly double PTH within minutes.';
+  } else if(lesion==='ckd'){
+    cls='verdict bad';
+    txt='Several arms broken at once &mdash; and phosphate is climbing<small>The failing kidney cannot excrete phosphate, so phosphate rises; it cannot make calcitriol, so gut absorption falls; both changes drive PTH up, and the chronically stimulated glands hypertrophy into <b>secondary hyperparathyroidism</b>.</small>';
+    inf='<span class="n">A system failure, not a single lesion</span>High PTH strips the skeleton and produces high-turnover bone disease, while the high calcium&ndash;phosphate product drives vascular calcification. <b>FGF23</b> &mdash; secreted by osteocytes, acting through Klotho to cause phosphaturia and to suppress 1-alpha-hydroxylase &mdash; rises earliest of all these markers, sometimes years before phosphate is measurably abnormal, in a doomed attempt to keep phosphate normal.';
+  } else if(lesion==='vitd'){
+    cls='verdict warn';
+    txt='The slow arm is missing<small>Without calcitriol the gut contributes almost nothing, so correction depends entirely on the kidney and the skeleton. PTH stays chronically elevated to hold calcium &mdash; and it holds it by spending bone.</small>';
+    inf='<span class="n">Vitamin D is a steroid prohormone, not a vitamin</span>UVB converts 7-dehydrocholesterol in skin to cholecalciferol; the liver adds a hydroxyl at position 25 to make <b>25-hydroxyvitamin D</b>, the storage form with a half-life of 2&ndash;3 weeks that is measured clinically; the kidney adds the activating hydroxyl at position 1 to make <b>calcitriol</b>, which circulates at only 20&ndash;60 pg/mL. Calcitriol acts like the steroid it is, raising transcription of the enterocyte TRPV6 channel, calbindin-D9k and the basolateral calcium pump.';
+  } else if(lesion==='phpt'){
+    cls='verdict bad';
+    txt='Autonomous PTH &mdash; high calcium with a low phosphate<small>An adenoma secretes regardless of what the CaSR reports, so calcium is driven above the window and stays there. The phosphaturic arm keeps running too, which is why phosphate is low rather than high.</small>';
+    inf='<span class="n">Reading a hypercalcemia</span>Ninety percent of hypercalcemia is either primary hyperparathyroidism &mdash; typically an adenoma, usually an incidental finding &mdash; or malignancy, usually PTH-related peptide from a solid tumor or local osteolysis in myeloma. Hypercalcemia raises threshold and depresses excitable tissue: lethargy, confusion, constipation, nausea, weakness, a short QT and polyuria.';
+  } else if(pert==='load'){
+    cls='verdict info';
+    txt='PTH switched off, and calcium came back down<small>Rising calcium occupies the CaSR, which <i>inhibits</i> secretion. Notice how little else is needed: the defense against high calcium is mostly just withdrawing PTH.</small>';
+    inf='<span class="n">Three effectors, three time constants</span>The fast renal arm defends the next hour, the bone arm the rest of the day, the calcitriol-dependent gut arm the day or two after that. Look at the bottom panel: the colored layers switch on in that order, and their sum is what actually moves calcium.';
+  } else {
+    cls='verdict';
+    txt='The loop corrected it<small>PTH rose within minutes &mdash; its plasma half-life is only 2&ndash;4 minutes, which makes it a fast, tightly controllable signal &mdash; and the three effector arms came on in sequence.</small>';
+    inf='<span class="n">Three effectors, three time constants</span>In the <b>kidney</b>, within minutes, PTH inserts TRPV5 in the distal convoluted tubule and connecting tubule to reclaim calcium, and simultaneously causes phosphaturia proximally. In <b>bone</b>, over hours, it raises the RANKL/OPG ratio and mobilizes calcium and phosphate together. Back in the <b>kidney</b>, it stimulates <b>1-alpha-hydroxylase</b> to make calcitriol, which raises intestinal calcium absorption over 24&ndash;48 hours. The bottom panel shows those three layers switching on in order.';
+  }
+  v.className=cls; v.innerHTML=txt;
+  var pdesc=''; for(i=0;i<PERTS.length;i++){ if(PERTS[i].k===pert) pdesc=PERTS[i].d; }
+  $('i1').innerHTML=inf+'<div class="dd"><b>This challenge:</b> '+pdesc+'</div>';
+  draw1(o,S.base);
+}
+function draw1(o,base){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=94,R=W-24;
+  var A1=[30,258],A2=[300,478],A3=[520,H-52];
+  function X(t){return L+(t/54)*(R-L);}
+  function Y(v,ax,lo,hi){return ax[1]-((v-lo)/(hi-lo))*(ax[1]-ax[0]);}
+  var i;
+  g.font='600 14px Inter, system-ui, sans-serif';
+  /* panel 1 : ionized calcium */
+  g.fillStyle=GREEN; g.globalAlpha=0.10;
+  g.fillRect(L,Y(1.35,A1,0.6,1.6),R-L,Y(1.10,A1,0.6,1.6)-Y(1.35,A1,0.6,1.6)); g.globalAlpha=1;
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(i=6;i<=16;i+=2){ var vv=i/10; g.beginPath(); g.moveTo(L,Y(vv,A1,0.6,1.6)); g.lineTo(R,Y(vv,A1,0.6,1.6)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(vv.toFixed(1),L-9,Y(vv,A1,0.6,1.6)+5); }
+  g.strokeStyle=GREEN; g.lineWidth=2; g.setLineDash([5,5]);
+  g.beginPath(); g.moveTo(L,Y(1.20,A1,0.6,1.6)); g.lineTo(R,Y(1.20,A1,0.6,1.6)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GREEN; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('CaSR set point ~1.2 mmol/L', L+8, Y(1.20,A1,0.6,1.6)-6);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('Plasma ionized calcium  (mmol/L)   normal band 1.10–1.35', L, A1[0]-9);
+  g.strokeStyle=TEAL; g.lineWidth=4; g.beginPath();
+  o.forEach(function(p,k){ var x=X(p.t),y=Y(p.ca,A1,0.6,1.6); if(k===0)g.moveTo(x,y); else g.lineTo(x,y); }); g.stroke();
+
+  /* panel 2 : PTH */
+  g.fillStyle=GREEN; g.globalAlpha=0.10;
+  g.fillRect(L,Y(65,A2,0,150),R-L,Y(15,A2,0,150)-Y(65,A2,0,150)); g.globalAlpha=1;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 14px Inter, system-ui, sans-serif';
+  for(i=0;i<=150;i+=50){ g.beginPath(); g.moveTo(L,Y(i,A2,0,150)); g.lineTo(R,Y(i,A2,0,150)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-9,Y(i,A2,0,150)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Parathyroid hormone  (pg/mL)   normal band 15–65   half-life 2–4 minutes', L, A2[0]-9);
+  g.strokeStyle=CORAL; g.lineWidth=4; g.beginPath();
+  o.forEach(function(p,k){ var x=X(p.t),y=Y(Math.min(150,p.pth),A2,0,150); if(k===0)g.moveTo(x,y); else g.lineTo(x,y); }); g.stroke();
+
+  /* panel 3 : stacked effector arms */
+  var maxS=0.001;
+  o.forEach(function(p){ var s=p.ar+p.ab+p.ag; if(s>maxS)maxS=s; });
+  var top=Math.max(0.36,maxS*1.12);
+  g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.moveTo(L,A3[1]); g.lineTo(R,A3[1]); g.stroke();
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Contribution of each effector arm to plasma calcium', L, A3[0]-9);
+  function band(key,prevKeys,col){
+    g.beginPath();
+    o.forEach(function(p,k){
+      var lo=0; prevKeys.forEach(function(q){lo+=p[q];});
+      var y=Y(lo+p[key],A3,0,top);
+      if(k===0)g.moveTo(X(p.t),y); else g.lineTo(X(p.t),y);
+    });
+    for(i=o.length-1;i>=0;i--){
+      var lo2=0; prevKeys.forEach(function(q){lo2+=o[i][q];});
+      g.lineTo(X(o[i].t),Y(lo2,A3,0,top));
+    }
+    g.closePath(); g.globalAlpha=0.55; g.fillStyle=col; g.fill(); g.globalAlpha=1;
+  }
+  band('ar',[],BLUE); band('ab',['ar'],PURP); band('ag',['ar','ab'],GOLD);
+  var lx=L+10, ly=A3[0]+18;
+  [['Kidney — minutes',BLUE],['Bone — hours',PURP],['Gut via calcitriol — 24–48 h',GOLD]].forEach(function(p,k){
+    g.fillStyle=p[1]; g.globalAlpha=0.7; g.fillRect(lx+k*250,ly-11,14,14); g.globalAlpha=1;
+    g.fillStyle=MUT; g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(p[0],lx+k*250+20,ly+1);
+  });
+
+  /* x axis + perturbation marker */
+  g.fillStyle=MUT; g.font='600 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=54;i+=6){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A3[1]); g.lineTo(X(i),A3[1]+6); g.stroke();
+    g.fillText(i,X(i),A3[1]+24); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('HOURS',(L+R)/2,A3[1]+46);
+  g.strokeStyle=GOLD; g.lineWidth=2.5; g.setLineDash([7,5]);
+  g.beginPath(); g.moveTo(X(6),A1[0]); g.lineTo(X(6),A1[1]);
+  g.moveTo(X(6),A2[0]); g.lineTo(X(6),A2[1]);
+  g.moveTo(X(6),A3[0]); g.lineTo(X(6),A3[1]); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('challenge', X(6)+8, A1[0]+18);
+}
+
+/* =====================================================
+   BENCH 2 - total versus ionized
+   ===================================================== */
+var tca=$('tca'),alb=$('alb'),ph=$('ph');
+var CASES2=[
+ {n:'Healthy adult',c:95,a:40,p:740},
+ {n:'Malnourished, albumin 2.0',c:76,a:20,p:740},
+ {n:'Acute hyperventilation',c:94,a:40,p:760},
+ {n:'Nephrotic syndrome',c:72,a:18,p:740},
+ {n:'Primary hyperparathyroidism',c:114,a:40,p:740},
+ {n:'Post-thyroidectomy hypoparathyroidism',c:68,a:40,p:740},
+ {n:'Metabolic acidosis',c:90,a:38,p:722}
+];
+var cb2=$('cases2');
+CASES2.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){tca.value=K.c;alb.value=K.a;ph.value=K.p;render2();};
+  cb2.appendChild(b);
+});
+[tca,alb,ph].forEach(function(s){s.addEventListener('input',render2);});
+
+function render2(){
+  var T=+tca.value/10, A=+alb.value/10, P=+ph.value/100;
+  $('tcaV').textContent=T.toFixed(1)+' mg/dL'; $('albV').textContent=A.toFixed(1)+' g/dL'; $('phV').textContent=P.toFixed(2);
+  var corr=T+0.8*(4.0-A);
+  var iCa=corr*0.1265-0.5*(P-7.40);
+  var iMg=iCa*4.008;                                   /* mg/dL of ionized calcium */
+  var complexed=0.10*T;
+  var bound=Math.max(0,T-complexed-iMg);
+  var fB=bound/T*100, fC=complexed/T*100, fI=iMg/T*100;
+
+  $('fr2').innerHTML=
+    '<div style="width:'+fB.toFixed(1)+'%;background:'+PURP+'">protein-bound '+fB.toFixed(0)+'%</div>'+
+    '<div style="width:'+fC.toFixed(1)+'%;background:'+MUT+'">complexed '+fC.toFixed(0)+'%</div>'+
+    '<div style="width:'+fI.toFixed(1)+'%;background:'+TEAL+'">IONIZED '+fI.toFixed(0)+'%</div>';
+
+  $('s2').innerHTML=
+    tile('Measured total Ca',T.toFixed(1),'mg/dL &middot; normal 8.5&ndash;10.5')+
+    tile('Corrected total Ca',corr.toFixed(1),'mg/dL &middot; adjusted for albumin')+
+    tile('Ionized Ca',iCa.toFixed(2),'mmol/L &middot; normal 1.10&ndash;1.35')+
+    tile('Ionized Ca',iMg.toFixed(2),'mg/dL &middot; normal 4.4&ndash;5.4')+
+    tile('Shift from pH',((-0.5*(P-7.40))>=0?'+':'')+(-0.5*(P-7.40)).toFixed(2),'mmol/L at pH '+P.toFixed(2))+
+    tile('Albumin correction','+'+(0.8*(4.0-A)).toFixed(1),'mg/dL added to the total');
+
+  var v=$('v2'),cls='verdict',txt='',sym=[];
+  if(iCa<1.05){
+    cls='verdict bad';
+    txt='Genuine hypocalcemia &mdash; expect a hyperexcitable patient<small>Extracellular calcium screens negative charge on the outer face of the voltage-gated sodium channel. Lower it and the voltage sensor behaves as though the membrane were already partly depolarized, so threshold moves closer to resting potential and nerves fire spontaneously.</small>';
+    sym=['perioral and acral paraesthesia','muscle cramps','Chvostek sign','Trousseau sign','prolonged QT','laryngospasm','seizure'];
+  } else if(iCa<1.10){
+    cls='verdict warn';
+    txt='Ionized calcium is just below the window<small>Symptoms depend as much on the <i>rate</i> of fall as on the value. An acute drop of this size can produce tingling and cramp in a patient whose chronic value would be tolerated.</small>';
+    sym=['perioral tingling','fingertip paraesthesia','cramping'];
+  } else if(iCa>1.40){
+    cls='verdict bad';
+    txt='Hypercalcemia &mdash; excitable tissue is being depressed<small>High calcium raises threshold. It also activates the CaSR in the thick ascending limb, blunting sodium and calcium reabsorption and antagonizing antidiuretic hormone in the collecting duct &mdash; a nephrogenic diabetes insipidus.</small>';
+    sym=['lethargy and confusion','constipation','nausea','muscle weakness','short QT','polyuria then volume depletion'];
+  } else if(Math.abs(T-corr)>0.8){
+    cls='verdict';
+    txt='Normocalcemic once corrected for albumin<small>The measured total is misleading because roughly 0.8 mg/dL of it rides on every 1 g/dL of albumin. Correct first, then interpret &mdash; and remember the system regulates the ionized fraction, not the total.</small>';
+    sym=[];
+  } else {
+    cls='verdict';
+    txt='Normal ionized calcium<small>Ionized calcium stabilizes voltage-gated sodium channels, triggers neurotransmitter release, couples excitation to contraction and participates in the clotting cascade. It is the biologically active and the physiologically regulated species.</small>';
+    sym=[];
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('sy2').innerHTML=sym.map(function(x){return '<span>'+x+'</span>';}).join('');
+
+  var inf='<span class="n">Two corrections, in this order</span><b>Albumin.</b> corrected Ca = measured Ca + 0.8 &times; (4.0 &minus; albumin in g/dL). A malnourished patient with albumin 2.0 g/dL and calcium 7.6 mg/dL has a corrected calcium of 9.2 mg/dL and is perfectly normocalcemic. <b>Acid&ndash;base.</b> Alkalosis exposes more negative charge on albumin, which binds more calcium, so ionized calcium falls roughly 0.05 mmol/L for every 0.1 unit rise in pH &mdash; with the total unchanged.';
+  if(P>7.5&&iCa<1.15) inf+='<div class="dd">This is the mechanism of the perioral tingling and carpopedal spasm of an acute hyperventilation episode, and it is why an anxious patient can develop genuine tetany with a perfectly normal calcium panel. <b>The fix is to correct the alkalosis, not to give calcium.</b></div>';
+  $('i2').innerHTML=inf;
+  draw2(iCa);
+}
+function draw2(iCa){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=70,R=W-70,y=170,lo=0.7,hi=1.7;
+  function X(v){return L+((v-lo)/(hi-lo))*(R-L);}
+  g.fillStyle=LINE; g.fillRect(L,y-16,R-L,32);
+  g.fillStyle=GREEN; g.globalAlpha=0.32; g.fillRect(X(1.10),y-16,X(1.35)-X(1.10),32); g.globalAlpha=1;
+  g.strokeStyle=GREEN; g.lineWidth=2; g.strokeRect(X(1.10),y-16,X(1.35)-X(1.10),32);
+  g.fillStyle=GREEN; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('NORMAL  1.10 – 1.35 mmol/L',(X(1.10)+X(1.35))/2, y-30);
+  var i;
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+  for(i=7;i<=17;i++){ var vv=i/10; g.fillText(vv.toFixed(1),X(vv),y+40); }
+  g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('tetany, laryngospasm, seizure', L, y+80);
+  g.textAlign='right';
+  g.fillText('lethargy, constipation, polyuria, short QT', R, y+80);
+  var px=X(Math.max(lo,Math.min(hi,iCa)));
+  g.fillStyle=TDK;
+  g.beginPath(); g.moveTo(px,y-26); g.lineTo(px-13,y-52); g.lineTo(px+13,y-52); g.closePath(); g.fill();
+  g.fillRect(px-2.5,y-26,5,52);
+  g.font='800 22px Fraunces, Georgia, serif'; g.textAlign='center';
+  g.fillText(iCa.toFixed(2)+' mmol/L', px, y-64);
+  g.fillStyle=MUT; g.font='700 13px Inter, system-ui, sans-serif';
+  g.fillText('this patient', px, y+112);
+}
+
+/* =====================================================
+   BENCH 3 - the ledger
+   ===================================================== */
+var intake=$('intake'),fabs=$('fabs'),reab=$('reab');
+var CASES3=[
+ {n:'Typical adult in balance',i:1000,f:30,r:980},
+ {n:'Growth, pregnancy or lactation',i:1200,f:65,r:975},
+ {n:'Vitamin D deficiency',i:1000,f:11,r:985},
+ {n:'Low intake',i:350,f:38,r:988},
+ {n:'Thiazide diuretic',i:1000,f:30,r:990},
+ {n:'Loop diuretic',i:1000,f:30,r:962},
+ {n:'Hypercalcemia of malignancy',i:900,f:22,r:955}
+];
+var cb3=$('cases3');
+CASES3.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){intake.value=K.i;fabs.value=K.f;reab.value=K.r;render3();};
+  cb3.appendChild(b);
+});
+[intake,fabs,reab].forEach(function(s){s.addEventListener('input',render3);});
+
+function render3(){
+  var IN=+intake.value, FA=+fabs.value/100, RE=+reab.value/1000;
+  $('intakeV').textContent=IN.toLocaleString()+' mg/d';
+  $('fabsV').textContent=(FA*100).toFixed(0)+'%';
+  $('reabV').textContent=(RE*100).toFixed(1)+'%';
+  var absorbed=IN*FA, secreted=100, netGut=absorbed-secreted;
+  var filtered=10000, reabs=filtered*RE, urine=filtered-reabs;
+  var balance=netGut-urine;
+  var boneOut=500, boneIn=500;
+  if(balance<0){ boneOut=500+Math.abs(balance); }
+  else { boneIn=500+balance; }
+  var ecf=1000;
+  var days=balance<0?(ecf/Math.abs(balance)):Infinity;
+
+  $('s3').innerHTML=
+    tile('Absorbed from gut',Math.round(absorbed).toLocaleString(),'mg/d of '+IN.toLocaleString()+' eaten')+
+    tile('Net gut gain',(netGut>=0?'+':'')+Math.round(netGut),'mg/d after 100 mg secreted back')+
+    tile('Urinary calcium',Math.round(urine).toLocaleString(),'mg/d &middot; normal about 200')+
+    tile('Net whole-body balance',(balance>=0?'+':'')+Math.round(balance),'mg/d')+
+    tile('Skeleton pays',(balance<0?Math.round(Math.abs(balance)):0),'mg/d out of the bone bank')+
+    tile('ECF pool alone lasts',(balance<0?(days<1?(days*24).toFixed(1)+' h':days.toFixed(1)+' d'):'—'),'if bone could not be spent');
+
+  var v=$('v3'),cls='verdict',txt='';
+  if(Math.abs(balance)<40){
+    cls='verdict';
+    txt='In balance &mdash; intake matches output<small>About 1,000 mg eaten, 300 mg absorbed, 100 mg secreted back, so a net gain of 200 mg; the kidney filters 10,000 mg and reabsorbs 98 percent of it, so 200 mg leaves in urine. Meanwhile 500 mg per day moves out of bone and 500 mg moves back in through remodeling.</small>';
+  } else if(balance<-150){
+    cls='verdict bad';
+    txt='Substantial negative balance &mdash; the skeleton is being spent<small>Extracellular fluid contains only about <b>1,000 mg</b> of calcium in total. At this deficit that pool would be exhausted in '+(days<1?(days*24).toFixed(1)+' hours':days.toFixed(1)+' days')+' if bone were not available. That is why a rapidly accessible mineral reservoir exists at all.</small>';
+  } else if(balance<0){
+    cls='verdict warn';
+    txt='Mildly negative &mdash; and it will be paid from bone<small>PTH rises, the RANKL/OPG ratio rises, and remodeling releases the difference. Sustained for years this is exactly how a slow, silent bone loss is financed.</small>';
+  } else {
+    cls='verdict info';
+    txt='Positive balance &mdash; calcium is being banked<small>This is the state of childhood and adolescence, when fractional absorption is driven to 60&ndash;70 percent. Roughly 90 percent of peak bone mass is accrued by age 18, and the single largest determinant of fracture risk at 75 is how much bone was banked before 25.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  $('i3').innerHTML='<span class="n">Fractional absorption is a regulated variable</span>Intestinal calcium absorption is roughly <b>25&ndash;35 percent</b> on a normal intake &mdash; the 300 mg of the ledger above &mdash; but calcitriol can drive it to <b>60&ndash;70 percent</b> during growth, pregnancy, lactation or deficiency. Notice which term the kidney controls: it filters 10,000 mg a day and returns 98 percent, so shifting reabsorption by a single percentage point moves 100 mg. That is why the renal arm is fast and powerful, and why PTH acts there first.';
+
+  draw3(IN,absorbed,secreted,netGut,filtered,reabs,urine,balance,boneOut,boneIn);
+}
+function draw3(IN,absorbed,secreted,netGut,filtered,reabs,urine,balance,boneOut,boneIn){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function box(x,y,w,h,col,title,sub){
+    g.fillStyle=col; g.globalAlpha=0.15; g.fillRect(x,y,w,h); g.globalAlpha=1;
+    g.strokeStyle=col; g.lineWidth=2.5; g.strokeRect(x,y,w,h);
+    g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(title,x+w/2,y+30);
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText(sub,x+w/2,y+52);
+  }
+  function arrow(x1,y1,x2,y2,col,lab,val){
+    g.strokeStyle=col; g.lineWidth=Math.max(2,Math.min(15,Math.sqrt(Math.abs(val))/2.6));
+    g.beginPath(); g.moveTo(x1,y1); g.lineTo(x2,y2); g.stroke();
+    var a=Math.atan2(y2-y1,x2-x1);
+    g.fillStyle=col; g.beginPath();
+    g.moveTo(x2,y2);
+    g.lineTo(x2-13*Math.cos(a-0.4),y2-13*Math.sin(a-0.4));
+    g.lineTo(x2-13*Math.cos(a+0.4),y2-13*Math.sin(a+0.4));
+    g.closePath(); g.fill();
+    g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(lab+'  '+Math.round(val).toLocaleString()+' mg/d',(x1+x2)/2,(y1+y2)/2-10);
+  }
+  box(40,40,250,74,GOLD,'DIET','eats '+IN.toLocaleString()+' mg/d');
+  box(40,190,250,74,BLUE,'GUT','absorbs '+Math.round(absorbed).toLocaleString()+', secretes back 100');
+  box(400,190,250,86,TEAL,'EXTRACELLULAR FLUID','the whole pool is only ~1,000 mg');
+  box(760,190,250,74,PURP,'BONE','~500 mg out, ~500 mg in each day');
+  box(400,420,250,74,CORAL,'URINE','filters 10,000, reabsorbs '+Math.round(reabs).toLocaleString());
+
+  arrow(165,114,165,190,GOLD,'eaten',IN);
+  arrow(290,227,400,227,BLUE,'net absorbed',Math.max(1,netGut));
+  arrow(650,215,760,215,PURP,'into bone',boneIn);
+  arrow(760,252,650,252,PURP,'out of bone',boneOut);
+  arrow(525,276,525,420,CORAL,'excreted',Math.max(1,urine));
+
+  g.fillStyle=TDK; g.font='800 17px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Net whole-body balance:  '+(balance>=0?'+':'')+Math.round(balance)+' mg/day',40,H-42);
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+  g.fillText('The extracellular pool holds about 1,000 mg. Without a rapidly accessible bone reservoir a single missed meal would be dangerous.',40,H-18);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

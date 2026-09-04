@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 6 &middot; Sensations &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 6 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Sensations</h1>
+    <p class="sub">Every sense does the same job. It turns some kind of energy into a nerve signal.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Explain what a receptor does, and name the five kinds</li>
+      <li>Say why you stop noticing a smell but never stop noticing pain</li>
+      <li>Trace light to the retina, and explain how the eye focuses up close</li>
+      <li>Trace sound to the hair cells, and tell the two kinds of hearing loss apart</li>
+      <li>Explain referred pain, and why it shows up in the wrong place</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>One job, five ways of doing it</h2>
+  <p class="lead">A receptor is a translator. Whatever energy arrives, what leaves is always the same kind of signal.</p>
+  <p>Light, sound, pressure, chemicals, heat. All of it gets turned into a change in voltage. If that change is big enough, an action potential travels to the brain.</p>
+  <p>This conversion is called <span class="keyword" title="Turning a stimulus into an electrical signal a neuron can carry">transduction</span>, and every sense uses it.</p>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>Receptor type</th><th>Responds to</th><th>Example</th></tr>
+    <tr><td><b>Mechanoreceptor</b></td><td>Being pushed or bent</td><td>Touch, pressure, hearing, balance, blood pressure</td></tr>
+    <tr><td><b>Chemoreceptor</b></td><td>Chemicals</td><td>Taste, smell, blood oxygen and carbon dioxide</td></tr>
+    <tr><td><b>Photoreceptor</b></td><td>Light</td><td>Rods and cones</td></tr>
+    <tr><td><b>Thermoreceptor</b></td><td>Temperature</td><td>Warm and cold receptors in skin</td></tr>
+    <tr><td><b>Nociceptor</b></td><td>Tissue damage</td><td>Pain, anywhere</td></tr>
+  </table>
+  </div>
+  <p><b>The brain decides what a signal means, not the receptor.</b> Action potentials look the same wherever they come from.</p>
+  <p>What makes light look like light is which part of the brain the signal reaches. Press on a closed eye and you see a flash. That is pressure, read as light, because it arrived on the visual pathway.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Adaptation, and the one sense that refuses</h2>
+  <p class="lead">Most receptors stop reporting something that has not changed.</p>
+  <p>You feel your watch when you put it on, then stop feeling it. A smell fades within minutes of walking into a room.</p>
+  <p>This is <b>sensory adaptation</b>, and it is useful. Information that never changes is not worth the bandwidth.</p>
+  <p>Pain receptors barely adapt at all. Pain that stopped being reported is pain you would stop reacting to, and reacting is the whole point. That is why a burn keeps hurting long after you moved away from the stove.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>Vision &mdash; getting light onto the retina</h2>
+  <p class="lead">Move the object closer and watch the lens work.</p>
+  <div class="demo">
+    <div class="dh">Accommodation &mdash; and what happens when the lens stiffens</div>
+    <div class="stage" style="padding:8px;">
+      <svg id="eye" viewBox="0 0 520 190" style="width:100%;height:auto;display:block;">
+        <ellipse cx="330" cy="95" rx="118" ry="82" fill="#fdf7ea" stroke="#d8c7a6" stroke-width="2"></ellipse>
+        <path d="M448 55 A 96 96 0 0 1 448 135" fill="none" stroke="#8a2f36" stroke-width="6" stroke-linecap="round"></path>
+        <text x="452" y="150" font-size="11" fill="#8a2f36" font-weight="700">RETINA</text>
+        <ellipse id="lens" cx="222" cy="95" rx="12" ry="52" fill="#cfe4f0" stroke="#3a7aa8" stroke-width="2"></ellipse>
+        <text x="196" y="168" font-size="11" fill="#3a7aa8" font-weight="700">LENS</text>
+        <circle id="obj" cx="40" cy="95" r="9" fill="#c99a2e"></circle>
+        <line id="r1" x1="40" y1="95" x2="222" y2="52" stroke="#c99a2e" stroke-width="2"></line>
+        <line id="r2" x1="40" y1="95" x2="222" y2="138" stroke="#c99a2e" stroke-width="2"></line>
+        <line id="r3" x1="222" y1="52" x2="440" y2="95" stroke="#c99a2e" stroke-width="2"></line>
+        <line id="r4" x1="222" y1="138" x2="440" y2="95" stroke="#c99a2e" stroke-width="2"></line>
+        <circle id="focus" cx="440" cy="95" r="6" fill="#8a2f36"></circle>
+      </svg>
+    </div>
+    <div class="ctrls">
+      <label for="dist">Object distance</label>
+      <input type="range" id="dist" min="0" max="100" step="1" value="90">
+      <button class="btn" id="stiff">Stiffen the lens</button>
+      <span class="readout" id="vout"></span>
+    </div>
+    <p id="vnote" style="margin:12px 0 0;font-size:15px;color:#7a6f63;"></p>
+  </div>
+  <p>Light passes the cornea, then the pupil, then the lens, and lands on the <b>retina</b>.</p>
+  <p>The cornea does most of the bending, but only the lens can <em>change</em>. A muscle contracts, the lens gets rounder, and near objects come into focus. That is <span class="keyword" title="Changing the shape of the lens to focus on near objects">accommodation</span>.</p>
+  <p>On the retina, <b>rods</b> work in dim light and give no color. <b>Cones</b> need bright light and give color and fine detail, and they are packed at the center.</p>
+  <p>That is why you see poorly in color at night, and why looking slightly to one side of a dim star makes it easier to see.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>From the forties on, the lens stiffens and stops rounding up. Near vision blurs first, and reading glasses follow. The eye is not failing. One tissue is just losing its stretch, which is what the button above copies.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Hearing &mdash; three steps and a spiral</h2>
+  <p class="lead">Sound changes form twice on the way in. Where it fails tells you the type of deafness.</p>
+  <ol class="steps">
+    <li><b>Air.</b> Sound waves travel down the canal and shake the eardrum.</li>
+    <li><b>Bone.</b> Three tiny bones amplify that shaking and push it into the fluid of the inner ear.</li>
+    <li><b>Fluid.</b> Waves travel through the cochlea and bend hair cells, which fire the hearing nerve.</li>
+  </ol>
+  <p>Different parts of the spiral respond to different pitches. So <b>which</b> hair cells bend is what makes a sound high or low.</p>
+  <p>Hair cells do not grow back. That is why damage from loud noise is permanent.</p>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>Type of loss</th><th>Where the problem is</th><th>Common cause</th></tr>
+    <tr><td><b>Conductive</b></td><td>Outer or middle ear. Sound cannot get in</td><td>Wax, fluid behind the eardrum, a bone problem</td></tr>
+    <tr><td><b>Sensorineural</b></td><td>Cochlea or nerve. Sound arrives but is not converted</td><td>Loud noise, aging, certain drugs</td></tr>
+  </table>
+  </div>
+  <p>The inner ear also holds the balance organs. Fluid moving in the loops reports turning, and other parts report head position. That is why an inner ear infection can make the room spin.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Pain, and why it lies about location</h2>
+  <p class="lead">Nerves from organs and nerves from skin arrive at the same parts of the spinal cord.</p>
+  <p>The brain has spent a lifetime learning that traffic on a given segment means skin. When the heart sends pain up that same segment, the brain reads it the usual way, and reports pain in the left arm and jaw.</p>
+  <p>That is <b>referred pain</b>. The map is worth knowing. The diaphragm refers to the shoulder tip. The gallbladder refers to the right shoulder blade. The heart refers to the left arm and jaw.</p>
+  <div class="note"><p><b>Taste and smell are wired together.</b> Both use chemoreceptors. Most of what people call the taste of food is actually smell, arriving from the back of the mouth. That is why food seems flat with a blocked nose, even though the tongue works fine.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on the retina and on the cochlea's pitch map &mdash; <a href="../labs.html">Special Senses benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "A nurse stops noticing the smell of the unit after twenty minutes. What is this?",
+    "a": ["Transduction","Sensory adaptation","Referred sensation","Loss of chemoreceptors"],
+    "c": 1,
+    "fb": [
+      "Transduction is turning the stimulus into a signal, and that is still happening.",
+      "Correct. Receptors report less when a stimulus stops changing.",
+      "Referred sensation is about location, not fading.",
+      "The receptors are fine. They have just stopped reporting."
+    ]
+  },
+  {
+    "q": "Why does pressing on a closed eye produce a flash of light?",
+    "a": ["Pressure makes light inside the eye","The signal reaches the visual part of the brain, which reads anything there as light","Photoreceptors respond to pressure as well as light","The optic nerve glows when squeezed"],
+    "c": 1,
+    "fb": [
+      "No light is made. The stimulus is purely mechanical.",
+      "Right. Meaning comes from where the signal lands, not from the stimulus.",
+      "Even though the trigger is pressure, it is the destination that makes it look like light.",
+      "Nerves do not give off light."
+    ]
+  },
+  {
+    "q": "A 50-year-old has to hold a menu at arm's length to read it. What changed?",
+    "a": ["The retina lost its cones","The lens stiffened and cannot round up for near vision","The pupil no longer narrows","The cornea flattened suddenly"],
+    "c": 1,
+    "fb": [
+      "Losing cones would affect color and detail at every distance, not just near.",
+      "Correct. Focusing up close needs a lens that can change shape, and that ability fades with age.",
+      "Pupil size controls how much light enters, not focusing distance.",
+      "The cornea does most of the bending but does not change shape to focus."
+    ]
+  },
+  {
+    "q": "A patient has hearing loss from fluid trapped behind the eardrum. What kind is it?",
+    "a": ["Sensorineural loss","Conductive loss","Loss of the balance organs","Damage to the hearing part of the brain"],
+    "c": 1,
+    "fb": [
+      "Sensorineural loss involves the cochlea or the nerve, not the middle ear.",
+      "Right. Sound cannot get in, even though conversion would work fine if it arrived.",
+      "The balance organs do not cause deafness.",
+      "Brain damage would affect understanding, not conduction."
+    ]
+  },
+  {
+    "q": "A patient having a heart attack feels pain in the left arm and jaw. Why?",
+    "a": ["The heart pulls on the arm nerves","Nerves from the heart and from the skin arrive at the same spinal segments","Clots travel to the arm","The heart's pain receptors are located in the arm"],
+    "c": 1,
+    "fb": [
+      "Nothing is being pulled.",
+      "Correct. The brain reads familiar traffic the familiar way and puts the pain in the wrong place.",
+      "Referred pain happens with no clot traveling anywhere.",
+      "The receptors are in the heart. Only the interpretation is misplaced."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var sl=document.getElementById("dist"), btn=document.getElementById("stiff"),
+    out=document.getElementById("vout"), note=document.getElementById("vnote"),
+    lens=document.getElementById("lens"), obj=document.getElementById("obj"),
+    focus=document.getElementById("focus");
+var r1=document.getElementById("r1"), r2=document.getElementById("r2"),
+    r3=document.getElementById("r3"), r4=document.getElementById("r4");
+var RETINA=440, LX=222, stiff=false;
+function draw(){
+  var v=+sl.value;                       // 0 = very near, 100 = far
+  var objx = 20 + v*1.7;                 // object position
+  var need = 12 + (100-v)*0.16;          // lens thickness needed to focus
+  var have = stiff ? 13.5 : need;        // stiff lens cannot round up
+  var fx   = RETINA + (need-have)*13;    // focus falls behind retina if lens too flat
+  obj.setAttribute("cx", objx);
+  lens.setAttribute("rx", have.toFixed(1));
+  r1.setAttribute("x1",objx); r2.setAttribute("x1",objx);
+  r3.setAttribute("x2",fx);   r4.setAttribute("x2",fx);
+  focus.setAttribute("cx",fx);
+  var off = fx - RETINA, sharp = off < 8;
+  focus.setAttribute("fill", sharp ? "#3f6b4e" : "#8a2f36");
+  out.innerHTML = sharp ? "<span style='color:#3f6b4e'>In focus</span>"
+                        : "<span style='color:#8a2f36'>Blurred</span>";
+  if(sharp && !stiff && v<40) note.innerHTML="Near object. The ciliary muscle has contracted, the lens has rounded up, and the image still lands on the retina. That is accommodation doing its job.";
+  else if(sharp) note.innerHTML="Distant object. The lens is relaxed and thin, and light lands on the retina without effort. This is the eye's resting state.";
+  else note.innerHTML="The stiffened lens cannot round up, so the focal point falls <b>behind</b> the retina and near vision blurs. Distant objects are still sharp &mdash; push the slider right and see. This is presbyopia, and it is why reading glasses arrive in middle age.";
+}
+btn.addEventListener("click",function(){
+  stiff=!stiff;
+  btn.textContent = stiff ? "Restore a flexible lens" : "Stiffen the lens";
+  draw();
+});
+sl.addEventListener("input",draw); draw();
+
+})();
+</script>
+</body>
+</html>

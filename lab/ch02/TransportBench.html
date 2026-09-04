@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Transport Bench &mdash; Fick, T&#8344; and the pump that pays for everything</title>
+<meta name="description" content="Change one Fick term at a time and watch flux move, saturate a carrier until glucose spills into urine, then poison the Na+/K+ ATPase and watch every secondary transporter fail with it.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:12px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;}
+.hint b{color:var(--soft);}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.eq{font-family:var(--disp);font-size:16px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.9;font-variant-numeric:tabular-nums;}
+.eq .t{color:var(--coral);font-weight:700;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.hide{display:none;}
+.bandrow{display:flex;gap:4px;margin-top:10px;}
+.band{flex:1;border-radius:7px;padding:6px 5px;text-align:center;font-size:10px;font-weight:800;letter-spacing:.3px;color:var(--muted);background:#fff;border:1px solid var(--line);line-height:1.25;}
+.band.on{color:#fff;}
+.band.b1.on{background:var(--blue);border-color:var(--blue);}
+.band.b2.on{background:var(--green);border-color:var(--green);}
+.band.b3.on{background:var(--gold);border-color:var(--gold);}
+.band.b4.on{background:var(--coral);border-color:var(--coral);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch02.html">&larr; Module 2</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 2 &middot; Section 2</div>
+  <h1>The Transport Bench</h1>
+  <div class="intro">Every transport process is either falling down a gradient or spending energy to climb one. Here you change one <b>Fick</b> term at a time and watch flux respond, push a carrier past its <b>transport maximum</b> until glucose spills into urine, then inhibit the <b>Na&#8314;/K&#8314; ATPase</b> and watch every secondary active transporter weaken with it. Ask of each panel: what is the driving force, and who paid for it?</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" role="tab" aria-selected="true" class="on">Fick&rsquo;s law</button>
+        <button id="m2" role="tab" aria-selected="false">Saturation &amp; T&#8344;</button>
+        <button id="m3" role="tab" aria-selected="false">Pump &amp; secondary active</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Clinical presets &mdash; each changes one term</div>
+        <div class="chips" id="fickChips"></div>
+        <div class="sl"><label for="fA">A &middot; surface area available <span class="v" id="fAv">1.00 &times;</span></label><input type="range" id="fA" min="0.1" max="5" step="0.05" value="1" aria-label="Surface area available for diffusion, relative to normal"></div>
+        <div class="sl"><label for="fC">&Delta;C &middot; concentration (or pressure) gradient <span class="v" id="fCv">1.00 &times;</span></label><input type="range" id="fC" min="0.1" max="2" step="0.05" value="1" aria-label="Concentration gradient across the barrier, relative to normal"></div>
+        <div class="sl"><label for="fT">T &middot; barrier thickness <span class="v" id="fTv">1.00 &times;</span></label><input type="range" id="fT" min="0.4" max="4" step="0.05" value="1" aria-label="Barrier thickness, relative to normal"></div>
+        <div class="sl"><label for="fD">D &middot; diffusion coefficient (lipid solubility) <span class="v" id="fDv">1.00 &times;</span></label><input type="range" id="fD" min="0.1" max="3" step="0.05" value="1" aria-label="Diffusion coefficient of the solute in the membrane, relative to normal"></div>
+        <button class="tog" id="tAnemia" aria-pressed="false"><span class="dot"></span><span>Add anemia (Hb 7 g/dL)<small>Watch carefully: does any Fick term move?</small></span></button>
+        <div class="hint"><b>Surface area is the term physiology exploits hardest.</b> Microvilli on an enterocyte multiply A by roughly 20-fold, and folds plus villi plus microvilli bring the whole small intestine to about <b>200 square meters</b> of absorptive surface.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Push a carrier system past its ceiling</div>
+        <div class="hint" style="margin-top:0">The kidney filters glucose freely and then reabsorbs it on <b>SGLT</b> carriers. Carriers have a finite number of binding sites, so this route can saturate &mdash; and that is the cleanest experiment there is for telling a carrier from simple diffusion.</div>
+        <div class="sl"><label for="gP">Plasma glucose <span class="v" id="gPv">100 mg/dL</span></label><input type="range" id="gP" min="40" max="500" step="5" value="100" aria-label="Plasma glucose concentration in milligrams per deciliter"></div>
+        <div class="chips" id="gChips"></div>
+        <button class="tog" id="tComp" aria-pressed="false"><span class="dot"></span><span>Add a competing SGLT substrate<small>Structurally similar sugar occupying binding sites</small></span></button>
+        <div class="stats">
+          <div class="stat"><div class="k">Filtered load</div><div class="v" id="sF">125</div><div class="u">mg/min (GFR 125 mL/min)</div></div>
+          <div class="stat"><div class="k">Reabsorbed</div><div class="v" id="sR">125</div><div class="u">mg/min</div></div>
+          <div class="stat"><div class="k">Excreted</div><div class="v" id="sE">0.1</div><div class="u">mg/min</div></div>
+        </div>
+        <div class="hint" id="dipstick"></div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Inhibit the pump that everything else leans on</div>
+        <div class="sl"><label for="dig">Na&#8314;/K&#8314; ATPase inhibition (digoxin) <span class="v" id="digv">0&#37;</span></label><input type="range" id="dig" min="0" max="40" step="1" value="0" aria-label="Percent inhibition of the sodium potassium ATPase by digoxin"></div>
+        <div class="bandrow" aria-hidden="true">
+          <div class="band b1" id="bd1">BASELINE<br>Ca&sup2;&#8314; 100&ndash;150 nM</div>
+          <div class="band b2" id="bd2">THERAPEUTIC<br>150&ndash;250 nM</div>
+          <div class="band b3" id="bd3">CAUTION<br>250&ndash;400 nM</div>
+          <div class="band b4" id="bd4">TOXIC<br>&gt; 400 nM</div>
+        </div>
+        <div class="lbl">Test the secondary transporters</div>
+        <button class="tog" id="tLumen" aria-pressed="false"><span class="dot"></span><span>Give plain water instead of oral rehydration solution<small>Removes luminal glucose from the SGLT1 symporter</small></span></button>
+        <button class="tog" id="tIsch" aria-pressed="false"><span class="dot"></span><span>Ischemia &mdash; no ATP at all<small>The pump stops completely</small></span></button>
+        <div class="hint"><b>The cost.</b> Holding these gradients consumes on the order of <b>20&ndash;30&#37;</b> of basal metabolic rate, and considerably more in kidney and brain. Nothing in this panel is free.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Flux across the barrier</h2>
+      <svg id="fickSvg" viewBox="0 0 420 250" role="img" aria-label="Diagram of a diffusion barrier whose thickness and surface area change with the sliders, with an arrow whose width shows the resulting flux"></svg>
+      <div class="eq" id="fickEq"></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Flux J</div><div class="v" id="sJ">100</div><div class="u">&#37; of normal</div></div>
+        <div class="stat"><div class="k">Dominant change</div><div class="v" id="sDom" style="font-size:14px">none</div><div class="u">term doing the most work</div></div>
+        <div class="stat"><div class="k">Direction</div><div class="v" id="sDir" style="font-size:14px">normal</div><div class="u">versus a healthy barrier</div></div>
+      </div>
+      <div class="infobox"><span class="n" id="i1n">Fick&rsquo;s law</span><span id="i1t"></span></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>Simple diffusion has no ceiling. A carrier does.</h2>
+      <svg id="satSvg" viewBox="0 0 420 290" role="img" aria-label="Graph of filtered, reabsorbed and excreted glucose against plasma glucose, showing the carrier plateau at the transport maximum and the appearance of glucose in urine above the threshold"></svg>
+      <div class="infobox"><span class="n" id="i2n">Reading the curves</span><span id="i2t"></span></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>One pump, three consequences</h2>
+      <svg id="cellSvg" viewBox="0 0 420 330" role="img" aria-label="Diagram of a cell membrane carrying the sodium potassium ATPase, the sodium calcium exchanger and the SGLT1 symporter, with live intracellular sodium and calcium values"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Intracellular Na&#8314;</div><div class="v" id="sNa">12</div><div class="u">mM (normal 10&ndash;15)</div></div>
+        <div class="stat"><div class="k">Intracellular Ca&sup2;&#8314;</div><div class="v" id="sCa">100</div><div class="u">nM at rest</div></div>
+        <div class="stat"><div class="k">SGLT1 power</div><div class="v" id="sSg">136</div><div class="u">&times; glucose it can concentrate</div></div>
+      </div>
+      <div class="infobox"><span class="n" id="i3n">Who paid for it?</span><span id="i3t"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+function num(x,d){ return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toFixed(d); }
+
+/* ================= MODE 1 : FICK ================= */
+var F={A:1,C:1,T:1,D:1}, anemia=false, activePreset='normal';
+var PRESETS=[
+ {id:'normal', n:'Healthy alveolus', A:1,C:1,T:1,D:1, t:'Baseline. Every other preset moves exactly one term away from here.'},
+ {id:'emph',   n:'Emphysema',        A:0.35,C:1,T:1,D:1, t:'Alveolar walls are destroyed, so the surface available for exchange collapses. <b>A</b> falls in the numerator and flux falls with it — no thickening, no gradient problem, just less membrane.'},
+ {id:'edema', n:'Pulmonary edema', A:1,C:1,T:2.5,D:1, t:'Fluid in the interstitium and alveoli lengthens the diffusion path. <b>T</b> is in the <i>denominator</i>, so raising it drives flux down. This is why oxygenation improves as you diurese the patient.'},
+ {id:'alt',    n:'Altitude, 3 600 m',A:1,C:0.55,T:1,D:1, t:'Barometric pressure falls, so alveolar oxygen pressure falls, so <b>&Delta;C</b> falls. Same lung, same membrane — the driving force is simply smaller.'},
+ {id:'fibro',  n:'Interstitial fibrosis',A:0.7,C:1,T:2.0,D:1, t:'Two terms at once: scar tissue both thickens the barrier and obliterates alveoli. Flux falls faster than either change alone would predict, because the terms multiply.'},
+ {id:'villi',  n:'Villous atrophy (gut)',A:0.2,C:1,T:1,D:1, t:'Celiac disease flattens villi and blunts microvilli. The brush border normally multiplies A about 20-fold; lose it and absorption falls in direct proportion, because A sits in the numerator.'},
+ {id:'exer',   n:'Exercise',         A:1.5,C:1.4,T:1,D:1, t:'Capillary recruitment opens more exchange surface (<b>A</b> up) while working muscle drops tissue oxygen, steepening <b>&Delta;C</b>. Both numerator terms rise, so flux rises steeply.'}
+];
+var chipWrap=$('#fickChips');
+PRESETS.forEach(function(p){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(p.id==='normal'?' on':'');
+  b.textContent=p.n;
+  b.addEventListener('click',function(){
+    F.A=p.A; F.C=p.C; F.T=p.T; F.D=p.D; activePreset=p.id;
+    $('#fA').value=p.A; $('#fC').value=p.C; $('#fT').value=p.T; $('#fD').value=p.D;
+    [].forEach.call(chipWrap.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    drawFick();
+  });
+  chipWrap.appendChild(b);
+});
+['A','C','T','D'].forEach(function(k){
+  var el=$('#f'+k);
+  el.addEventListener('input',function(){
+    F[k]=+this.value; activePreset='custom';
+    [].forEach.call(chipWrap.children,function(c){c.classList.remove('on');});
+    drawFick();
+  });
+});
+$('#tAnemia').addEventListener('click',function(){
+  anemia=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',anemia?'true':'false'); drawFick();
+});
+
+function drawFick(){
+  $('#fAv').textContent=num(F.A,2)+' ×'; $('#fCv').textContent=num(F.C,2)+' ×';
+  $('#fTv').textContent=num(F.T,2)+' ×'; $('#fDv').textContent=num(F.D,2)+' ×';
+  var J=F.D*F.A*F.C/F.T;
+  $('#sJ').textContent=Math.round(J*100);
+  var dev={A:Math.abs(Math.log(F.A)),C:Math.abs(Math.log(F.C)),T:Math.abs(Math.log(F.T)),D:Math.abs(Math.log(F.D))};
+  var dom='none', best=0.02;
+  for(var k in dev){ if(dev[k]>best){best=dev[k];dom=k;} }
+  $('#sDom').textContent = dom==='none'?'none':(dom==='C'?'ΔC':dom);
+  $('#sDir').textContent = J>1.05?'flux up':(J<0.95?'flux down':'unchanged');
+  $('#fickEq').innerHTML='J = (D &times; A &times; <span class="t">&Delta;C</span>) / T'+
+    '<span class="r">= ('+num(F.D,2)+' &times; '+num(F.A,2)+' &times; '+num(F.C,2)+') / '+num(F.T,2)+
+    ' = <b>'+num(J,2)+'</b> &nbsp;&rarr;&nbsp; '+Math.round(J*100)+'&#37; of normal flux</span>';
+
+  /* geometry */
+  var W=420,H=250, cx=210, midY=125;
+  var tPix=Math.max(5,F.T*16);
+  var aPix=Math.max(14,Math.min(190,F.A*72));
+  var x0=cx-tPix/2, x1=cx+tPix/2, yTop=midY-aPix/2, yBot=midY+aPix/2;
+  var h='';
+  h+='<rect x="0" y="0" width="420" height="250" fill="none"></rect>';
+  /* compartments */
+  h+='<rect x="6" y="18" width="'+(x0-6)+'" height="214" rx="10" fill="var(--blue)" opacity="0.07"></rect>';
+  h+='<rect x="'+x1+'" y="18" width="'+(414-x1)+'" height="214" rx="10" fill="var(--gold)" opacity="0.07"></rect>';
+  /* dots showing gradient */
+  var nL=Math.round(6+F.C*36), nR=6;
+  var seedL=0;
+  for(var i=0;i<nL;i++){
+    seedL=(seedL*9301+49297)%233280; var rx1=seedL/233280;
+    seedL=(seedL*9301+49297)%233280; var ry1=seedL/233280;
+    h+='<circle cx="'+(14+rx1*(x0-26)).toFixed(1)+'" cy="'+(28+ry1*194).toFixed(1)+'" r="3.2" fill="var(--blue)" opacity="0.75"></circle>';
+  }
+  var seedR=77;
+  for(var j=0;j<nR;j++){
+    seedR=(seedR*9301+49297)%233280; var rx2=seedR/233280;
+    seedR=(seedR*9301+49297)%233280; var ry2=seedR/233280;
+    h+='<circle cx="'+(x1+12+rx2*(400-x1-14)).toFixed(1)+'" cy="'+(28+ry2*194).toFixed(1)+'" r="3.2" fill="var(--blue)" opacity="0.45"></circle>';
+  }
+  /* barrier */
+  h+='<rect x="'+x0.toFixed(1)+'" y="'+yTop.toFixed(1)+'" width="'+tPix.toFixed(1)+'" height="'+aPix.toFixed(1)+'" fill="var(--teal)" opacity="0.85" rx="2"></rect>';
+  h+='<line x1="'+x0.toFixed(1)+'" y1="14" x2="'+x1.toFixed(1)+'" y2="14" stroke="var(--coral)" stroke-width="2"></line>';
+  h+='<text x="'+cx+'" y="10" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--coral)">T</text>';
+  h+='<line x1="404" y1="'+yTop.toFixed(1)+'" x2="404" y2="'+yBot.toFixed(1)+'" stroke="var(--green)" stroke-width="2"></line>';
+  h+='<text x="412" y="'+midY+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--green)">A</text>';
+  /* flux arrow */
+  var J2=Math.max(0.02,Math.min(3,J));
+  var aw=Math.max(2,Math.min(46,J2*15));
+  h+='<line x1="'+(x0-58)+'" y1="'+midY+'" x2="'+(x1+40)+'" y2="'+midY+'" stroke="var(--coral)" stroke-width="'+aw.toFixed(1)+'" opacity="0.55" stroke-linecap="round"></line>';
+  h+='<polygon points="'+(x1+42)+','+(midY-aw/2-7)+' '+(x1+42)+','+(midY+aw/2+7)+' '+(x1+64)+','+midY+'" fill="var(--coral)" opacity="0.75"></polygon>';
+  h+='<text x="14" y="242" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="var(--blue)">HIGH CONCENTRATION</text>';
+  h+='<text x="406" y="242" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="var(--muted)">LOW</text>';
+  $('#fickSvg').innerHTML=h;
+
+  var txt;
+  if(anemia){
+    txt=' <b>Anemia is the instructive exception.</b> Hemoglobin 7 g/dL roughly halves oxygen <i>content</i> — about 10 mL O₂ per dL of blood instead of 20 — but it does not change D, A, &Delta;C or T. Alveolar and capillary oxygen <i>pressures</i> are unchanged, so the gradient driving diffusion is unchanged and the flux bar above did not move. Anemia is a delivery problem, not a Fick problem. That distinction is worth more than any single number in this module.';
+  } else {
+    var p=PRESETS.filter(function(x){return x.id===activePreset;})[0];
+    txt = p ? ' '+p.t : ' You are off-preset. Note that A, &Delta;C and D multiply the flux while T divides it — so doubling the thickness costs exactly what halving the area costs, and the two together are four-fold.';
+  }
+  $('#i1t').innerHTML=txt;
+}
+
+/* ================= MODE 2 : SATURATION ================= */
+var Pg=100, compete=false;
+var GFR=125, TM_BASE=375, NSHARP=6;
+function tm(){ return compete?250:TM_BASE; }
+function filtered(P){ return GFR*P/100; }
+function reab(P){ var Fl=filtered(P), u=Fl/tm(); return Fl/Math.pow(1+Math.pow(u,NSHARP),1/NSHARP); }
+function excr(P){ return Math.max(0,filtered(P)-reab(P)); }
+function threshold(){
+  for(var P=60;P<=520;P+=1){ if(excr(P)>1.5) return P; }
+  return 520;
+}
+var GCHIPS=[{n:'Fasting 90',v:90},{n:'After a meal 140',v:140},{n:'Threshold ~180',v:180},{n:'Poorly controlled 300',v:300},{n:'DKA 450',v:450}];
+var gw=$('#gChips');
+GCHIPS.forEach(function(c){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=c.n;
+  b.addEventListener('click',function(){ Pg=c.v; $('#gP').value=c.v; drawSat(); });
+  gw.appendChild(b);
+});
+$('#gP').addEventListener('input',function(){ Pg=+this.value; drawSat(); });
+$('#tComp').addEventListener('click',function(){
+  compete=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',compete?'true':'false'); drawSat();
+});
+
+function drawSat(){
+  $('#gPv').textContent=Pg+' mg/dL';
+  var Fl=filtered(Pg), R=reab(Pg), E=excr(Pg);
+  $('#sF').textContent=num(Fl,0); $('#sR').textContent=num(R,0); $('#sE').textContent=E<1?num(E,1):num(E,0);
+  var thr=threshold();
+  $('#dipstick').innerHTML = E>1.5
+    ? '<b style="color:var(--coral)">Urine dipstick: positive for glucose.</b> Plasma glucose is above the renal threshold of about '+thr+' mg/dL, every SGLT binding site is occupied, and the surplus leaves in the urine — dragging water with it osmotically. That is the polyuria and thirst of uncontrolled diabetes, produced by nothing more exotic than a saturated carrier.'
+    : '<b>Urine dipstick: negative.</b> Filtered glucose is fully reclaimed. Reabsorption is tracking the filtered load almost exactly, because the carriers still have spare binding sites.';
+
+  var W=420,H=290, x0=44,x1=406, y0=246,y1=16, PMAX=500, YMAX=650;
+  function X(P){ return x0+P/PMAX*(x1-x0); }
+  function Y(v){ return y0-v/YMAX*(y0-y1); }
+  var h='';
+  /* grid */
+  for(var g=0;g<=5;g++){ var gx=X(g*100); h+='<line x1="'+gx+'" y1="'+y1+'" x2="'+gx+'" y2="'+y0+'" stroke="var(--line)"></line>';
+    h+='<text x="'+gx+'" y="'+(y0+14)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="var(--muted)">'+(g*100)+'</text>'; }
+  for(var v=0;v<=600;v+=150){ var gy=Y(v); h+='<line x1="'+x0+'" y1="'+gy+'" x2="'+x1+'" y2="'+gy+'" stroke="var(--line)"></line>';
+    h+='<text x="'+(x0-5)+'" y="'+(gy+3.5)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="9" fill="var(--muted)">'+v+'</text>'; }
+  h+='<text x="'+((x0+x1)/2)+'" y="'+(y0+28)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="var(--muted)">PLASMA GLUCOSE (mg/dL)</text>';
+  h+='<text x="10" y="14" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">mg/min</text>';
+  /* Tm line */
+  h+='<line x1="'+x0+'" y1="'+Y(tm())+'" x2="'+x1+'" y2="'+Y(tm())+'" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="5 4"></line>';
+  h+='<text x="'+(x1-3)+'" y="'+(Y(tm())-5)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--gold)">T&#8344; = '+tm()+' mg/min</text>';
+  /* threshold line */
+  h+='<line x1="'+X(thr)+'" y1="'+y1+'" x2="'+X(thr)+'" y2="'+y0+'" stroke="var(--coral)" stroke-width="1.4" stroke-dasharray="3 4"></line>';
+  h+='<text x="'+(X(thr)+4)+'" y="'+(y1+11)+'" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--coral)">threshold '+thr+'</text>';
+  /* curves */
+  var pf='',pr='',pe='';
+  for(var P=0;P<=PMAX;P+=5){
+    pf+=(P===0?'M':'L')+X(P).toFixed(1)+' '+Y(filtered(P)).toFixed(1)+' ';
+    pr+=(P===0?'M':'L')+X(P).toFixed(1)+' '+Y(reab(P)).toFixed(1)+' ';
+    pe+=(P===0?'M':'L')+X(P).toFixed(1)+' '+Y(excr(P)).toFixed(1)+' ';
+  }
+  h+='<path d="'+pf+'" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"></path>';
+  h+='<path d="'+pr+'" fill="none" stroke="var(--teal)" stroke-width="3"></path>';
+  h+='<path d="'+pe+'" fill="none" stroke="var(--coral)" stroke-width="2.6"></path>';
+  /* markers */
+  h+='<circle cx="'+X(Pg).toFixed(1)+'" cy="'+Y(Fl).toFixed(1)+'" r="4" fill="var(--muted)"></circle>';
+  h+='<circle cx="'+X(Pg).toFixed(1)+'" cy="'+Y(R).toFixed(1)+'" r="5" fill="var(--teal)"></circle>';
+  h+='<circle cx="'+X(Pg).toFixed(1)+'" cy="'+Y(E).toFixed(1)+'" r="5" fill="var(--coral)"></circle>';
+  /* legend */
+  h+='<rect x="'+(x0+8)+'" y="'+(y1+6)+'" width="150" height="46" rx="8" fill="#fff" opacity="0.92" stroke="var(--line)"></rect>';
+  h+='<line x1="'+(x0+16)+'" y1="'+(y1+18)+'" x2="'+(x0+34)+'" y2="'+(y1+18)+'" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"></line>';
+  h+='<text x="'+(x0+40)+'" y="'+(y1+21)+'" font-family="Inter,sans-serif" font-size="9.4" font-weight="700" fill="var(--soft)">filtered (no ceiling)</text>';
+  h+='<line x1="'+(x0+16)+'" y1="'+(y1+31)+'" x2="'+(x0+34)+'" y2="'+(y1+31)+'" stroke="var(--teal)" stroke-width="3"></line>';
+  h+='<text x="'+(x0+40)+'" y="'+(y1+34)+'" font-family="Inter,sans-serif" font-size="9.4" font-weight="700" fill="var(--soft)">carrier reabsorption</text>';
+  h+='<line x1="'+(x0+16)+'" y1="'+(y1+44)+'" x2="'+(x0+34)+'" y2="'+(y1+44)+'" stroke="var(--coral)" stroke-width="2.6"></line>';
+  h+='<text x="'+(x0+40)+'" y="'+(y1+47)+'" font-family="Inter,sans-serif" font-size="9.4" font-weight="700" fill="var(--soft)">excreted in urine</text>';
+  $('#satSvg').innerHTML=h;
+
+  var t=' The dashed line is what a <b>non-saturable</b> route looks like: filtration has no binding sites, so it rises forever in a straight line, exactly as simple diffusion does. The solid teal line is the carrier. It tracks the straight line at low load, bends away as sites fill, and flattens at T&#8344; = '+tm()+' mg/min.';
+  if(compete) t+=' <b>With a competing substrate present the ceiling drops to 250 mg/min and the threshold falls to about '+thr+' mg/dL.</b> Competition and specificity are carrier fingerprints; simple diffusion shows neither.';
+  if(Pg>=thr) t+=' You are above threshold, so the gap between the two lines is spilling into urine.';
+  t+=' Note that the threshold ('+thr+' mg/dL) sits <i>below</i> the plasma level that would exactly saturate every nephron — some nephrons saturate before others, and that "splay" is why glucose appears at roughly 180&ndash;200 mg/dL rather than later.';
+  $('#i2t').innerHTML=t;
+}
+
+/* ================= MODE 3 : PUMP ================= */
+var inh=0, plainWater=false, isch=false;
+function state(){
+  var f=isch?0.98:inh/100;
+  var Nai=12/(1-f);
+  Nai=Math.min(60,Nai);
+  var Ki=Math.max(60,140-100*f);
+  var Cai=100*Math.pow(Nai/12,3);
+  var sglt=Math.pow(140/Nai,2);
+  return {f:f,Nai:Nai,Ki:Ki,Cai:Cai,sglt:sglt};
+}
+$('#dig').addEventListener('input',function(){ inh=+this.value; drawPump(); });
+$('#tLumen').addEventListener('click',function(){
+  plainWater=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',plainWater?'true':'false'); drawPump();
+});
+$('#tIsch').addEventListener('click',function(){
+  isch=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',isch?'true':'false'); drawPump();
+});
+
+function drawPump(){
+  var S=state();
+  $('#digv').textContent=(isch?'100':inh)+'%';
+  $('#sNa').textContent=num(S.Nai,1);
+  $('#sCa').textContent=Math.round(S.Cai);
+  $('#sSg').textContent=Math.round(S.sglt);
+  var band = S.Cai<150?1:(S.Cai<250?2:(S.Cai<400?3:4));
+  for(var b=1;b<=4;b++) $('#bd'+b).classList.toggle('on',b===band);
+
+  var pumpRate=1-S.f;
+  var glucoseUptake = plainWater?0:Math.min(1,S.sglt/136);
+  var W=420, memY=118, memH=34;
+  var h='';
+  h+='<rect x="0" y="0" width="420" height="'+(memY-memH/2)+'" fill="var(--blue)" opacity="0.06"></rect>';
+  h+='<rect x="0" y="'+(memY+memH/2)+'" width="420" height="'+(330-memY-memH/2)+'" fill="var(--gold)" opacity="0.05"></rect>';
+  h+='<rect x="0" y="'+(memY-memH/2)+'" width="420" height="'+memH+'" fill="var(--teal)" opacity="0.16"></rect>';
+  h+='<text x="10" y="16" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">LUMEN / EXTRACELLULAR &mdash; Na&#8314; 140 mM &nbsp; K&#8314; 4 mM</text>';
+  h+='<text x="10" y="'+(memY+memH/2+18)+'" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">CYTOSOL</text>';
+
+  function transporter(cx,label,col){
+    var s='';
+    s+='<rect x="'+(cx-28)+'" y="'+(memY-memH/2-8)+'" width="56" height="'+(memH+16)+'" rx="9" fill="'+col+'" opacity="0.92"></rect>';
+    s+='<text x="'+cx+'" y="'+(memY+4)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="#fff">'+label+'</text>';
+    return s;
+  }
+  function arrow(x,yA,yB,w,col,op){
+    return '<line x1="'+x+'" y1="'+yA+'" x2="'+x+'" y2="'+yB+'" stroke="'+col+'" stroke-width="'+w.toFixed(1)+'" opacity="'+op+'" stroke-linecap="round"></line>'+
+           '<polygon points="'+(x-4-w/2)+','+yB+' '+(x+4+w/2)+','+yB+' '+x+','+(yB+(yB>yA?9:-9))+'" fill="'+col+'" opacity="'+op+'"></polygon>';
+  }
+  /* Na/K ATPase */
+  h+=transporter(72,'Na⁺/K⁺','var(--teal-dk)');
+  h+=arrow(52,memY-memH/2-12,memY-memH/2-40,Math.max(1.5,7*pumpRate),'var(--coral)',0.9);
+  h+=arrow(92,memY+memH/2+12,memY+memH/2+40,Math.max(1.5,5*pumpRate),'var(--blue)',0.9);
+  h+='<text x="52" y="'+(memY-memH/2-46)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--coral)">3 Na⁺ out</text>';
+  h+='<text x="96" y="'+(memY+memH/2+56)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--blue)">2 K⁺ in</text>';
+  h+='<text x="72" y="'+(memY+memH/2+78)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="'+(pumpRate>0.05?'var(--gold)':'var(--muted)')+'">'+(pumpRate>0.05?'1 ATP · rate '+Math.round(pumpRate*100)+'%':'STOPPED')+'</text>';
+  /* NCX */
+  h+=transporter(210,'Na⁺/Ca²⁺','var(--purple)');
+  var ncx=Math.max(0.06,Math.min(1,Math.pow(12/S.Nai,3)));
+  h+=arrow(192,memY-memH/2-12,memY+memH/2+12,Math.max(1.5,6*ncx),'var(--coral)',0.75);
+  h+=arrow(230,memY+memH/2+12,memY-memH/2-12,Math.max(1.5,6*ncx),'var(--green)',0.85);
+  h+='<text x="188" y="'+(memY-memH/2-20)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--coral)">3 Na⁺ in</text>';
+  h+='<text x="246" y="'+(memY-memH/2-20)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--green)">1 Ca²⁺ out</text>';
+  h+='<text x="210" y="'+(memY+memH/2+78)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="var(--muted)">Ca²⁺ clearance '+Math.round(ncx*100)+'%</text>';
+  /* SGLT1 */
+  h+=transporter(348,'SGLT1','var(--green)');
+  h+=arrow(332,memY-memH/2-12,memY+memH/2+12,Math.max(1.5,6*glucoseUptake),'var(--coral)',0.75);
+  h+=arrow(366,memY-memH/2-12,memY+memH/2+12,Math.max(1.5,6*glucoseUptake),'var(--gold)',0.9);
+  h+='<text x="330" y="'+(memY-memH/2-20)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--coral)">2 Na⁺</text>';
+  h+='<text x="378" y="'+(memY-memH/2-20)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--gold)">glucose</text>';
+  h+='<text x="348" y="'+(memY+memH/2+78)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="700" fill="var(--muted)">uptake '+Math.round(glucoseUptake*100)+'%</text>';
+
+  /* bars */
+  var by=250;
+  function bar(x,label,val,max,col,unit){
+    var wpx=Math.max(3,Math.min(150,val/max*150));
+    return '<text x="'+x+'" y="'+by+'" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--soft)">'+label+'</text>'+
+           '<rect x="'+x+'" y="'+(by+6)+'" width="150" height="12" rx="6" fill="var(--line)"></rect>'+
+           '<rect x="'+x+'" y="'+(by+6)+'" width="'+wpx.toFixed(1)+'" height="12" rx="6" fill="'+col+'"></rect>'+
+           '<text x="'+x+'" y="'+(by+31)+'" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="var(--muted)">'+unit+'</text>';
+  }
+  h+=bar(30,'INTRACELLULAR Na⁺',S.Nai,40,'var(--coral)',num(S.Nai,1)+' mM (normal 10–15)');
+  h+=bar(232,'INTRACELLULAR Ca²⁺',S.Cai,600,'var(--purple)',Math.round(S.Cai)+' nM (rest 100)');
+  h+='<text x="30" y="320" font-family="Inter,sans-serif" font-size="9.4" font-weight="700" fill="var(--muted)">Na⁺ gradient out:in = '+num(140/S.Nai,1)+' : 1</text>';
+  $('#cellSvg').innerHTML=h;
+
+  var t;
+  if(isch){
+    t=' <b>No ATP, no gradients.</b> The pump has stopped, so sodium leaks in unopposed and the whole edifice collapses: the Na⁺/Ca²⁺ exchanger loses its driving force and calcium accumulates, SGLT1 stops concentrating glucose, and the resting membrane potential decays. Nothing here is directly ATP-dependent except the pump — and that is exactly the point. Poison one primary transporter and every secondary transporter fails downstream of it.';
+  } else if(plainWater){
+    t=' <b>Plain water offers SGLT1 nothing to carry.</b> The symporter will not move sodium efficiently without glucose and will not move glucose without sodium — both passengers or neither. In cholera the toxin wrecks secretion but leaves SGLT1 intact, so sugar-and-salt water is absorbed and drags water with it osmotically. That is why oral rehydration solution contains both, and why plain water does far less.';
+  } else if(inh===0){
+    t=' At rest the pump exports 3 Na⁺ and imports 2 K⁺ per ATP, holding intracellular Na⁺ near 12 mM against 140 mM outside and K⁺ near 140 mM against 4 mM outside. The unequal stoichiometry makes it electrogenic — a few millivolts of negativity directly — but its far larger contribution is the gradient itself. Now start inhibiting it and watch what leans on that gradient.';
+  } else {
+    t=' Digoxin inhibits the pump, so intracellular Na⁺ climbs to '+num(S.Nai,1)+' mM. The Na⁺/Ca²⁺ exchanger extrudes calcium <i>using</i> that sodium gradient, three sodium in for one calcium out — so a flatter gradient means less calcium cleared, and cytosolic Ca²⁺ rises to about '+Math.round(S.Cai)+' nM. More calcium available to the myofilaments means more force: digoxin is a positive inotrope by a two-step mechanism, neither step of which touches calcium directly.';
+    if(S.Cai>=400) t+=' <b>You have gone too far.</b> Calcium overload of this degree triggers delayed afterdepolarizations and arrhythmia — the therapeutic window here is genuinely narrow, and you can see how narrow it is on the band strip.';
+    else if(S.Cai>=250) t+=' Note how steeply calcium is now rising: the exchanger scales with the <i>cube</i> of the sodium ratio, so small further pump inhibition produces large calcium changes.';
+    t+=' Meanwhile SGLT1 can now concentrate glucose only '+Math.round(S.sglt)+'-fold instead of 136-fold, because its driving force is the same sodium gradient.';
+  }
+  $('#i3t').innerHTML=t;
+}
+
+/* ================= modes ================= */
+function setMode(n){
+  [1,2,3].forEach(function(k){
+    $('#m'+k).classList.toggle('on',k===n);
+    $('#m'+k).setAttribute('aria-selected',k===n?'true':'false');
+    $('#p'+k).classList.toggle('hide',k!==n);
+    $('#r'+k).classList.toggle('hide',k!==n);
+  });
+  if(n===1) drawFick(); if(n===2) drawSat(); if(n===3) drawPump();
+}
+$('#m1').addEventListener('click',function(){setMode(1);});
+$('#m2').addEventListener('click',function(){setMode(2);});
+$('#m3').addEventListener('click',function(){setMode(3);});
+
+drawFick(); drawSat(); drawPump();
+})();
+</script>
+</body>
+</html>

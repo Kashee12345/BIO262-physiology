@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Baroreceptor Reflex &mdash; Break the Loop and Watch</title>
+<meta name="description" content="Stand a patient up and watch the medulla defend arterial pressure in real time, then block one receptor at a time and find out which part of the loop you just removed.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.bp{display:flex;align-items:baseline;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px 14px;background:#fff;margin-top:12px;}
+.bp .big{font-family:var(--disp);font-size:30px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1;}
+.bp .sm{font-size:12px;color:var(--muted);font-weight:700;line-height:1.35;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch06.html">&larr; Module 6</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 6</div>
+  <h1>The Baroreceptor Reflex: Break the Loop and Watch</h1>
+  <div class="intro">Stand up and <b>500&ndash;800 mL</b> of blood pools in your legs within seconds. Venous return falls, stroke volume falls, arterial pressure falls &mdash; and you do not faint, because the medulla notices and answers within a few heartbeats. Run that event here in real time, then block one receptor at a time and watch exactly which part of the loop you removed.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Do something to the circulation</div>
+      <div class="chips" id="chal"></div>
+
+      <div class="lbl">How much blood pools on standing</div>
+      <div class="sl"><label for="pool">Volume shifted to the legs <span class="v" id="poolV">500 mL</span></label>
+        <input type="range" id="pool" min="300" max="900" value="500" step="10" aria-label="Volume of blood pooling in the legs on standing, in milliliters"></div>
+
+      <div class="lbl">Break one component of the loop</div>
+      <div class="chips" id="drugs"></div>
+
+      <div class="bp">
+        <div class="big" id="bpBig">122/78</div>
+        <div class="sm">mmHg<br><span id="bpNote">supine, no drug</span></div>
+      </div>
+
+      <div class="row">
+        <button class="btn solid" id="bPause" type="button">Pause</button>
+        <button class="btn" id="bReset" type="button">Reset to supine</button>
+      </div>
+
+      <div class="hint"><b>Watch the order of events.</b> Vagal tone is withdrawn first, because the vagus acts through M<sub>2</sub> receptors coupled to G<sub>i</sub> and potassium channels &mdash; the effect appears within one or two beats. Sympathetic tone through &beta;<sub>1</sub> and &alpha;<sub>1</sub> takes several seconds, because those are G protein&ndash;coupled second messenger cascades. <b>The brake is released before the accelerator is pressed</b>, and the same order explains why the first 30&ndash;40 bpm of the heart rate rise at the start of exercise come from vagal withdrawal rather than from sympathetic activation.</div>
+      <div class="hint"><b>Why the heart is slower than its own pacemaker.</b> The intrinsic firing rate of the sinoatrial node is <b>100&ndash;110 beats per minute</b>, yet resting heart rate is about 70. The difference is continuous vagal restraint. Choose atropine and watch the restraint disappear.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The loop, component by component</h2>
+      <canvas id="cvLoop" width="1040" height="410" aria-label="Diagram of the baroreceptor reflex showing regulated variable, carotid and aortic sensors, the medullary integrator and the autonomic effectors, with live values and any blocked component marked"></canvas>
+      <canvas id="cvTrace" width="1040" height="300" aria-label="Plot of mean arterial pressure and heart rate over the last sixty seconds, with the moment of the disturbance marked"></canvas>
+      <div class="stats" id="st"></div>
+      <div class="verdict" id="vd">&nbsp;</div>
+      <div class="infobox" id="ib"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+/* ---------- baseline constants ---------- */
+var SV0=70, SVR0=18.98, MAPSET=93, SN0=0.20, VN0=1.00, CART=1.6;
+
+var DRUGS=[
+ {id:'none', n:'No drug &mdash; intact loop', p:'no drug'},
+ {id:'beta', n:'&beta;<sub>1</sub> blocker', p:'beta-1 blocker'},
+ {id:'atrop',n:'Atropine &mdash; M<sub>2</sub> block', p:'atropine'},
+ {id:'alpha',n:'&alpha;<sub>1</sub> blocker', p:'alpha-1 blocker'},
+ {id:'gang', n:'Ganglionic blocker &mdash; nicotinic', p:'ganglionic blocker'},
+ {id:'denerv',n:'Afferents cut / autonomic neuropathy', p:'afferents cut'}
+];
+var CHALS=[
+ {id:'supine', n:'Lying quietly', pre:1.00},
+ {id:'stand',  n:'Stand up', pre:null},
+ {id:'bleed',  n:'Hemorrhage 1 liter', pre:0.62},
+ {id:'raise',  n:'Legs raised', pre:1.15}
+];
+var drug='none', chal='supine';
+
+/* ---------- the model ---------- */
+function pre(){
+  var ch=CHALS.filter(function(c){return c.id===chal;})[0];
+  if(ch.pre!==null) return ch.pre;
+  return clamp(1-(+$('pool').value)/2000,0.3,1);
+}
+function mech(Sn,Vn,preload){
+  var betaF=(drug==='beta')?0.15:1;
+  var vagF=(drug==='atrop'||drug==='gang')?0:1;
+  var alphaMul=(drug==='alpha')?0.78:1, alphaG=(drug==='alpha')?0.15:1;
+  var HR=clamp(105-46*(Vn*vagF)+55*(Sn*betaF),30,200);
+  var fill=HR>80?Math.max(0.55,1-0.006*(HR-80)):1;
+  var SV=SV0*preload*(1+0.30*(Sn*betaF-SN0))*fill;
+  var SVR=SVR0*alphaMul*(1+0.55*alphaG*(Sn-SN0));
+  var CO=HR*SV/1000;
+  var MAP=CO*SVR;
+  var PP=SV/CART, DBP=MAP-PP/3, SBP=DBP+PP;
+  return {HR:HR,SV:SV,SVR:SVR,CO:CO,MAP:MAP,PP:PP,SBP:SBP,DBP:DBP,fill:fill};
+}
+function targets(MAP){
+  if(drug==='gang') return {S:0,V:0};
+  if(drug==='denerv') return {S:SN0,V:VN0};
+  var d=MAPSET-MAP;
+  return {S:clamp(SN0+0.010*d,0,1), V:clamp(VN0-0.018*d,0,1.5)};
+}
+function settle(preload){
+  var Sn=SN0,Vn=VN0,M=null,i;
+  for(i=0;i<900;i++){
+    M=mech(Sn,Vn,preload);
+    var T=targets(M.MAP);
+    Sn+=(T.S-Sn)*0.05; Vn+=(T.V-Vn)*0.12;
+  }
+  M=mech(Sn,Vn,preload); M.Sn=Sn; M.Vn=Vn;
+  return M;
+}
+
+/* ---------- live state ---------- */
+var Sn=SN0, Vn=VN0, preload=1.0, hist=[], tsec=0, running=true, lastTs=0, evtAt=null, supineRef=null;
+
+function buildChips(box,list,cur,cb){
+  box.innerHTML='';
+  list.forEach(function(D){
+    var b=document.createElement('button'); b.type='button';
+    b.className='chip'+(D.id===cur?' on':''); b.innerHTML=D.n;
+    b.setAttribute('aria-pressed',D.id===cur?'true':'false');
+    b.onclick=function(){ cb(D.id); };
+    box.appendChild(b);
+  });
+}
+function refreshChips(){
+  buildChips($('chal'),CHALS,chal,function(id){ chal=id; evtAt=tsec; refreshChips(); });
+  buildChips($('drugs'),DRUGS,drug,function(id){ drug=id; evtAt=tsec; supineRef=settle(1.0); refreshChips(); });
+}
+$('pool').addEventListener('input',function(){ $('poolV').textContent=this.value+' mL'; });
+$('bPause').onclick=function(){ running=!running; this.textContent=running?'Pause':'Resume'; };
+$('bReset').onclick=function(){ chal='supine'; Sn=SN0; Vn=VN0; preload=1.0; hist=[]; tsec=0; evtAt=null; refreshChips(); };
+
+function loop(ts){
+  requestAnimationFrame(loop);
+  if(!lastTs) lastTs=ts;
+  var dt=Math.min(0.1,(ts-lastTs)/1000); lastTs=ts;
+  if(running){
+    tsec+=dt;
+    preload+=(pre()-preload)*Math.min(1,dt/1.5);
+    var M=mech(Sn,Vn,preload);
+    var T=targets(M.MAP);
+    Vn+=(T.V-Vn)*Math.min(1,dt/1.2);
+    Sn+=(T.S-Sn)*Math.min(1,dt/4.5);
+    hist.push([tsec,M.MAP,M.HR,M.SBP,M.DBP]);
+    while(hist.length&&hist[0][0]<tsec-60) hist.shift();
+  }
+  render();
+}
+requestAnimationFrame(loop);
+
+function render(){
+  var M=mech(Sn,Vn,preload);
+  if(!supineRef) supineRef=settle(1.0);
+  var dS=supineRef.SBP-M.SBP, dD=supineRef.DBP-M.DBP;
+  var ortho=(chal!=='supine'&&chal!=='raise')&&(dS>=20||dD>=10);
+  var aff=clamp((M.MAP-60)/120,0,1)*100;
+
+  $('bpBig').textContent=Math.round(M.SBP)+'/'+Math.round(M.DBP);
+  $('bpNote').textContent=CHALS.filter(function(c){return c.id===chal;})[0].n.toLowerCase()+' · '+DRUGS.filter(function(d){return d.id===drug;})[0].p;
+
+  $('st').innerHTML=
+    tile('Mean arterial pressure',M.MAP.toFixed(0),'mmHg &middot; DBP + one third of pulse pressure')+
+    tile('Heart rate',M.HR.toFixed(0),'bpm &middot; SA node fires at 100&ndash;110 unrestrained')+
+    tile('Stroke volume',M.SV.toFixed(0),'mL &middot; 70 supine')+
+    tile('Cardiac output',M.CO.toFixed(2),'L/min &middot; MAP = CO &times; SVR')+
+    tile('Systemic vascular resistance',M.SVR.toFixed(1),'mmHg&middot;min/L &middot; &alpha;<sub>1</sub> sets it')+
+    tile('Baroreceptor firing',aff.toFixed(0),'% of maximum &middot; sensitive 60 to 180 mmHg')+
+    tile('Sympathetic tone',(Sn*100).toFixed(0)+'%','baseline 20% &middot; &beta;<sub>1</sub> and &alpha;<sub>1</sub>')+
+    tile('Vagal tone',(Vn*100).toFixed(0)+'%','baseline 100% &middot; M<sub>2</sub> on SA and AV nodes')+
+    tile('Fall from supine',(dS>0?'−':'+')+Math.abs(dS).toFixed(0)+' / '+(dD>0?'−':'+')+Math.abs(dD).toFixed(0),'mmHg systolic / diastolic');
+
+  var v=$('vd'),cls='verdict',txt='',inf='';
+  if(drug==='gang'){
+    cls='verdict bad';
+    txt='Ganglionic blockade &mdash; both divisions silenced at once<small>Heart rate has drifted to '+M.HR.toFixed(0)+' bpm, close to the unrestrained sinoatrial rate, and vascular tone has collapsed. There is no loop left to correct anything.</small>';
+    inf='<span class="n">One receptor, both divisions</span>Every preganglionic fiber in the autonomic nervous system &mdash; sympathetic and parasympathetic alike &mdash; releases acetylcholine onto <b>nicotinic</b> receptors in its ganglion. Block that one synapse and you remove sympathetic and parasympathetic output together, which is why these drugs are unusable clinically and why they are such a clean demonstration of the two-neuron chain.<div class="dd">Notice the pattern the blockade reveals: the heart speeds up, because vagal restraint was the dominant tone there, while the vasculature dilates, because &alpha;<sub>1</sub> sympathetic tone was the dominant tone there. <b>Most arterioles have no parasympathetic supply at all</b> &mdash; they, along with the adrenal medulla, sweat glands, piloerector muscles and the spleen, are regulated by varying one tone up and down rather than by opposing input.</div>';
+  } else if(drug==='denerv' && chal!=='supine'){
+    cls='verdict bad';
+    txt='The sensor is disconnected &mdash; the medulla never learns anything happened<small>Pressure has fallen to '+Math.round(M.SBP)+'/'+Math.round(M.DBP)+' and heart rate has not moved from '+M.HR.toFixed(0)+' bpm. Every effector is intact and untouched; none of them has been told to act.</small>';
+    inf='<span class="n">A negative feedback loop is only as good as its afferent limb</span>The sensors are stretch-sensitive baroreceptors in the <b>carotid sinus</b>, whose afferents run in the glossopharyngeal nerve (CN IX), and in the <b>aortic arch</b>, whose afferents run in the vagus (CN X). They fire faster as wall stretch increases, and the medullary cardiovascular center reads that traffic at the nucleus tractus solitarius.<div class="dd">Cut or blunt that limb &mdash; by diabetic autonomic neuropathy, by age, by Parkinson disease, by amyloid &mdash; and the patient meets the definition of <b>orthostatic hypotension</b>: a fall of 20 mmHg systolic or 10 mmHg diastolic within three minutes of standing. This is the physiology sitting underneath a fall risk assessment.</div>';
+  } else if(drug==='atrop'){
+    cls='verdict warn';
+    txt='Vagal restraint removed &mdash; heart rate '+M.HR.toFixed(0)+' bpm<small>The sinoatrial node is now running close to its own intrinsic pace of 100&ndash;110 bpm. Nothing has been stimulated; something has simply stopped being inhibited.</small>';
+    inf='<span class="n">Tone, not switches</span>The resting heart rate of about 70 is not the pacemaker&rsquo;s natural rate &mdash; it is the pacemaker&rsquo;s rate <i>minus</i> continuous vagal restraint through M<sub>2</sub> receptors, which are G<sub>i</sub>-coupled, lower cAMP and open potassium channels. Block those receptors with atropine and the restraint disappears.<div class="dd">This is the single best argument against describing a patient as being &ldquo;in&rdquo; sympathetic or parasympathetic mode. <b>Both divisions fire continuously</b>, and almost every autonomic adjustment is a change in the ratio of two ongoing tones. Note also how little the mean pressure rises despite the fast rate &mdash; a short diastole fills the ventricle less, so stroke volume falls as rate climbs.</div>';
+  } else if(drug==='beta' && chal!=='supine' && ortho){
+    cls='verdict bad';
+    txt='&beta;<sub>1</sub> blocked &mdash; the reflex can constrict but it cannot accelerate<small>Pressure '+Math.round(M.SBP)+'/'+Math.round(M.DBP)+', a fall of '+dS.toFixed(0)+' systolic and '+dD.toFixed(0)+' diastolic from supine. That meets the definition of orthostatic hypotension.</small>';
+    inf='<span class="n">Half a loop is not half as good</span>Sympathetic outflow is still reaching the vasculature, so &alpha;<sub>1</sub>-mediated arteriolar and venous constriction still happen. What has been removed is the cardiac arm: &beta;<sub>1</sub>-mediated rise in rate and contractility. Since mean arterial pressure equals cardiac output times systemic vascular resistance, the reflex is now trying to defend pressure with only one of its two terms.<div class="dd">The same receptor logic explains the rest of the drug. &beta;<sub>1</sub> sits on the SA node, AV node, myocardium and juxtaglomerular cells; &beta;<sub>2</sub> sits on bronchiolar and skeletal-muscle vascular smooth muscle, uterus and liver. A &beta;<sub>1</sub>-selective agent slows the heart without provoking bronchospasm; a non-selective one removes &beta;<sub>2</sub> bronchodilation as well &mdash; though selectivity is relative and fades at higher doses.</div>';
+  } else if(drug==='alpha' && chal!=='supine' && ortho){
+    cls='verdict bad';
+    txt='&alpha;<sub>1</sub> blocked &mdash; the vessels will not constrict<small>Systemic vascular resistance is stuck near '+M.SVR.toFixed(1)+' and heart rate has climbed to '+M.HR.toFixed(0)+' bpm trying to compensate. Pressure is '+Math.round(M.SBP)+'/'+Math.round(M.DBP)+'.</small>';
+    inf='<span class="n">Resistance is the term the reflex normally leans on</span>&alpha;<sub>1</sub> receptors are G<sub>q</sub>-coupled, raise IP<sub>3</sub> and intracellular calcium, and produce vasoconstriction &mdash; along with mydriasis and bladder neck contraction, which is why the same drug class treats both hypertension and prostatic obstruction. Remove them and the reflex has to defend pressure with heart rate alone, which is far less effective.<div class="dd">This is exactly the first-dose syncope of an &alpha;<sub>1</sub> blocker, and why patients are told to take the first dose at bedtime. Contrast <b>clonidine</b>, which lowers pressure by stimulating central &alpha;<sub>2</sub> receptors and reducing sympathetic outflow at its source &mdash; a different receptor, a different place in the loop, the same direction of effect.</div>';
+  } else if(chal==='bleed'){
+    cls=(M.MAP<70)?'verdict bad':'verdict warn';
+    txt='Hemorrhage &mdash; MAP '+M.MAP.toFixed(0)+' mmHg with heart rate '+M.HR.toFixed(0)+' and sympathetic tone at '+(Sn*100).toFixed(0)+'%<small>Baroreceptor firing has fallen to '+aff.toFixed(0)+'% of maximum. The medulla reads reduced afferent traffic as hypotension and answers by withdrawing vagal tone and driving sympathetic outflow hard.</small>';
+    inf='<span class="n">Why blood pressure is a late sign of blood loss</span>Watch the numbers in order: stroke volume falls first, heart rate rises, resistance rises, and mean pressure is the <i>last</i> thing to move because the reflex is actively defending it. A young patient can lose a substantial volume with a nearly normal pressure and a tachycardia as the only clue.<div class="dd">The adrenal medulla is part of this response and prolongs it. It is a modified sympathetic ganglion whose chromaffin cells receive preganglionic input directly and secrete about <b>80% epinephrine and 20% norepinephrine</b> into the bloodstream rather than onto a synapse &mdash; converting a neural signal into a circulating hormonal one that lasts roughly ten times longer.</div>';
+  } else if(chal==='raise'){
+    cls='verdict cool';
+    txt='Legs raised &mdash; venous return increased, and the reflex is pushing back<small>MAP '+M.MAP.toFixed(0)+' mmHg. Baroreceptor firing has <i>risen</i> to '+aff.toFixed(0)+'%, so the medulla is doing the opposite of everything it does on standing: increasing vagal tone and withdrawing sympathetic outflow.</small>';
+    inf='<span class="n">The loop runs in both directions</span>Negative feedback is symmetrical. Rising pressure stretches the carotid sinus and aortic arch more, afferent firing increases, and the medulla responds by slowing the heart through the vagus and dilating vessels by removing &alpha;<sub>1</sub> tone. This is why a passive leg raise is a bedside test of whether a patient will respond to fluid &mdash; it is a reversible, self-limited volume challenge.';
+  } else if(chal==='stand'){
+    cls=ortho?'verdict warn':'verdict';
+    txt=(ortho?'Orthostatic hypotension &mdash; ':'Standing, and the loop is holding &mdash; ')+'pressure '+Math.round(M.SBP)+'/'+Math.round(M.DBP)+', heart rate '+M.HR.toFixed(0)+'<small>'+(+$('pool').value)+' mL has pooled in the legs, stroke volume is '+M.SV.toFixed(0)+' mL against 70 supine, and the reflex has answered with '+(Vn*100).toFixed(0)+'% vagal tone and '+(Sn*100).toFixed(0)+'% sympathetic tone. Fall from supine: '+dS.toFixed(0)+' systolic, '+dD.toFixed(0)+' diastolic.</small>';
+    inf='<span class="n">Follow it through, component by component</span>Blood pools, venous return falls, stroke volume falls, arterial pressure falls. Baroreceptor stretch decreases and afferent firing drops. The medulla interprets reduced afferent traffic as hypotension and responds by <b>withdrawing vagal tone</b> and <b>increasing sympathetic outflow</b>. Heart rate rises through &beta;<sub>1</sub>, contractility rises through &beta;<sub>1</sub>, arteriolar and venous constriction rise through &alpha;<sub>1</sub> &mdash; and since MAP = CO &times; SVR, raising both terms restores pressure within a few heartbeats.<div class="dd">'+(ortho?'This one has not held. Push the pooling slider back toward 500 mL, or clear the drug, and watch the same loop succeed.':'Push the pooling volume toward 900 mL and watch how much reserve the loop actually has. Then break one component and try again.')+'</div>';
+  } else {
+    cls='verdict';
+    txt='Supine and steady &mdash; '+Math.round(M.SBP)+'/'+Math.round(M.DBP)+' mmHg, MAP '+M.MAP.toFixed(0)+', heart rate '+M.HR.toFixed(0)+'<small>Both divisions are firing continuously: vagal tone at '+(Vn*100).toFixed(0)+'% and sympathetic tone at '+(Sn*100).toFixed(0)+'%. Nothing is switched off; everything is being held in balance.</small>';
+    inf='<span class="n">The whole loop, named</span><b>Regulated variable</b>: mean arterial pressure, normally about 93 mmHg, estimated as diastolic pressure plus one third of the pulse pressure. <b>Sensors</b>: stretch-sensitive baroreceptors in the carotid sinus (CN IX) and aortic arch (CN X), most sensitive between 60 and 180 mmHg. <b>Integrator</b>: the cardiovascular center of the medulla, receiving those afferents at the nucleus tractus solitarius. <b>Effectors</b>: sympathetic outflow to heart and vasculature, vagal outflow to the SA and AV nodes, and the adrenal medulla. <b>Response</b>: whatever restores pressure toward set point.<div class="dd">Now pick a challenge, and then break a component. The reflex is easiest to understand from the outside in &mdash; by removing one piece at a time and naming what stops working.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('ib').innerHTML=inf;
+  $('cvLoop').setAttribute('aria-label','Baroreflex loop: mean arterial pressure '+M.MAP.toFixed(0)+' millimeters of mercury, heart rate '+M.HR.toFixed(0)+', sympathetic tone '+(Sn*100).toFixed(0)+' percent, vagal tone '+(Vn*100).toFixed(0)+' percent.');
+  drawLoop(M,aff); drawTrace(M);
+}
+
+function drawLoop(M,aff){
+  var cv=$('cvLoop'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var sensorBroken=(drug==='denerv');
+  var boxes=[
+   {x:30, y:52,w:212,h:92,t:'REGULATED VARIABLE',s:'mean arterial pressure',v:M.MAP.toFixed(0)+' mmHg',c:TDK,bad:false},
+   {x:272,y:52,w:222,h:92,t:'SENSORS',s:'carotid sinus IX · aortic arch X',v:aff.toFixed(0)+'% firing',c:BLUE,bad:sensorBroken},
+   {x:524,y:52,w:222,h:92,t:'INTEGRATOR',s:'medullary CV center · NTS',v:(MAPSET-M.MAP>=0?'−':'+')+Math.abs(MAPSET-M.MAP).toFixed(0)+' mmHg error',c:PURP,bad:sensorBroken},
+   {x:776,y:52,w:234,h:92,t:'EFFECTORS',s:'autonomic outflow + adrenal medulla',v:(MAPSET-M.MAP>1?'driving up':(MAPSET-M.MAP<-1?'backing off':'holding')),c:CORAL,bad:(drug==='gang')}
+  ];
+  boxes.forEach(function(b,i){
+    g.fillStyle='#fff'; g.strokeStyle=b.bad?CORAL:b.c; g.lineWidth=b.bad?3.4:2.6;
+    g.beginPath(); if(g.roundRect) g.roundRect(b.x,b.y,b.w,b.h,12); else g.rect(b.x,b.y,b.w,b.h);
+    g.fill(); g.stroke();
+    g.fillStyle=b.bad?CORAL:b.c; g.font='800 11px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(b.t,b.x+b.w/2,b.y+21);
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+    g.fillText(b.s,b.x+b.w/2,b.y+41);
+    g.fillStyle=b.bad?CORAL:TDK; g.font='800 17px Inter, system-ui, sans-serif';
+    g.fillText(b.bad?'BLOCKED':b.v,b.x+b.w/2,b.y+72);
+    if(b.bad){
+      g.strokeStyle=CORAL; g.lineWidth=3;
+      g.beginPath(); g.moveTo(b.x+10,b.y+8); g.lineTo(b.x+b.w-10,b.y+b.h-8);
+      g.moveTo(b.x+b.w-10,b.y+8); g.lineTo(b.x+10,b.y+b.h-8); g.stroke();
+    }
+    if(i<boxes.length-1){
+      var x0=b.x+b.w,x1=boxes[i+1].x,my=b.y+b.h/2;
+      var brk=(i===0&&sensorBroken);
+      g.strokeStyle=brk?CORAL:MUT; g.lineWidth=2.4;
+      if(brk) g.setLineDash([5,6]);
+      g.beginPath(); g.moveTo(x0+4,my); g.lineTo(x1-12,my); g.stroke(); g.setLineDash([]);
+      g.beginPath(); g.moveTo(x1-4,my); g.lineTo(x1-16,my-6); g.lineTo(x1-16,my+6); g.closePath();
+      g.fillStyle=brk?CORAL:MUT; g.fill();
+    }
+  });
+  g.strokeStyle=GREEN; g.lineWidth=3; g.setLineDash([8,5]);
+  g.beginPath(); g.moveTo(893,144); g.lineTo(893,186); g.lineTo(136,186); g.lineTo(136,146); g.stroke(); g.setLineDash([]);
+  g.beginPath(); g.moveTo(136,140); g.lineTo(129,154); g.lineTo(143,154); g.closePath(); g.fillStyle=GREEN; g.fill();
+  g.fillStyle=GREEN; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('NEGATIVE FEEDBACK — the response opposes the change that produced it', W/2, 204);
+
+  /* effector arms */
+  var arms=[
+   {n:'Vagus → M₂ → SA and AV node', f:clamp(Vn/1.5,0,1), c:BLUE,
+    r:(drug==='atrop'||drug==='gang')?'BLOCKED':(Vn*100).toFixed(0)+'% tone', e:'slows the heart'},
+   {n:'Cardiac sympathetic → β₁', f:clamp((drug==='beta'?Sn*0.15:Sn),0,1), c:CORAL,
+    r:(drug==='gang')?'BLOCKED':(drug==='beta'?'β₁ BLOCKED':(Sn*100).toFixed(0)+'% tone'), e:'rate + contractility'},
+   {n:'Vascular sympathetic → α₁', f:clamp((drug==='alpha'?Sn*0.15:Sn),0,1), c:GOLD,
+    r:(drug==='gang')?'BLOCKED':(drug==='alpha'?'α₁ BLOCKED':(Sn*100).toFixed(0)+'% tone'), e:'arteriolar + venous constriction'},
+   {n:'Adrenal medulla → circulating catecholamines', f:clamp(Sn,0,1), c:PURP,
+    r:(drug==='gang')?'BLOCKED':(Sn*100).toFixed(0)+'% drive', e:'80% epinephrine, 20% norepinephrine'}
+  ];
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE EFFECTOR ARMS, AND THE RECEPTOR EACH ONE USES', 30, 238);
+  arms.forEach(function(a,i){
+    var yy=256+i*38;
+    var off=(a.r.indexOf('BLOCK')>=0);
+    g.fillStyle=off?CORAL:MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(a.n, 344, yy+13);
+    g.strokeStyle=LINE; g.lineWidth=1; g.strokeRect(358,yy,432,18);
+    g.fillStyle=a.c; g.globalAlpha=off?0.2:1; g.fillRect(358,yy,432*a.f,18); g.globalAlpha=1;
+    g.fillStyle=off?CORAL:TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(a.r, 802, yy+14);
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif';
+    g.fillText(a.e, 802, yy+28);
+  });
+}
+
+function drawTrace(M){
+  var cv=$('cvTrace'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=76,R=W-84,T=32,B=H-46;
+  var t1=Math.max(60,tsec), t0=t1-60;
+  function X(t){ return L+((t-t0)/60)*(R-L); }
+  function Yp(p){ return B-((clamp(p,30,160)-30)/130)*(B-T); }
+  function Yh(h){ return B-((clamp(h,30,180)-30)/150)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var p=40;p<=160;p+=30){
+    g.beginPath(); g.moveTo(L,Yp(p)); g.lineTo(R,Yp(p)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(p, L-8, Yp(p)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('the last sixty seconds', (L+R)/2, B+34);
+  g.textAlign='right'; g.fillStyle=MUT; g.font='700 11px Inter, system-ui, sans-serif';
+  g.fillText('mmHg', L-8, T+2);
+  g.textAlign='left'; g.fillText('bpm', R+8, T+2);
+  for(var h=40;h<=180;h+=35){
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(h, R+8, Yh(h)+4);
+  }
+
+  g.fillStyle=GREEN; g.globalAlpha=0.10; g.fillRect(L,Yp(100),R-L,Yp(85)-Yp(100)); g.globalAlpha=1;
+  g.fillStyle=GREEN; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('MAP set point ≈ 93', L+6, Yp(100)+14);
+
+  if(evtAt!==null && evtAt>t0){
+    g.strokeStyle=PURP; g.lineWidth=2; g.setLineDash([5,5]);
+    g.beginPath(); g.moveTo(X(evtAt),T); g.lineTo(X(evtAt),B); g.stroke(); g.setLineDash([]);
+    g.fillStyle=PURP; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('change applied', X(evtAt)+6, T+12);
+  }
+
+  function line(idx,fy,col,wid,dash){
+    if(hist.length<2) return;
+    g.strokeStyle=col; g.lineWidth=wid; if(dash) g.setLineDash(dash);
+    g.beginPath();
+    hist.forEach(function(p,i){ var yy=fy(p[idx]); if(i===0) g.moveTo(X(p[0]),yy); else g.lineTo(X(p[0]),yy); });
+    g.stroke(); g.setLineDash([]);
+  }
+  line(3,Yp,MUT,1.6,[4,4]);
+  line(4,Yp,MUT,1.6,[4,4]);
+  line(1,Yp,TDK,3.2,null);
+  line(2,Yh,CORAL,2.6,[8,5]);
+
+  g.textAlign='left'; g.font='800 12px Inter, system-ui, sans-serif';
+  g.fillStyle=TDK; g.fillText('—  mean arterial pressure', L+6, T+2);
+  g.fillStyle=CORAL; g.fillText('- -  heart rate', L+186, T+2);
+  g.fillStyle=MUT; g.fillText('· ·  systolic and diastolic', L+306, T+2);
+
+  if(hist.length){
+    var last=hist[hist.length-1];
+    g.fillStyle=TDK; g.beginPath(); g.arc(X(last[0]),Yp(last[1]),6,0,6.3); g.fill();
+    g.strokeStyle='#fff'; g.lineWidth=2.2; g.stroke();
+    g.fillStyle=CORAL; g.beginPath(); g.arc(X(last[0]),Yh(last[2]),5,0,6.3); g.fill();
+    g.strokeStyle='#fff'; g.lineWidth=2; g.stroke();
+  }
+}
+
+/* boot */
+refreshChips();
+supineRef=settle(1.0);
+render();
+})();
+</script>
+</body>
+</html>

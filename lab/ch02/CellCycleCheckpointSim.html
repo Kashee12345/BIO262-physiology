@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Checkpoints &amp; Chemiosmosis &mdash; run a cell cycle, then pay for it</title>
+<meta name="description" content="Set DNA damage, growth signals, spindle attachment and p53 status, run the cell cycle and watch the checkpoints decide; then cut off oxygen and find out whether the cell can still afford to die properly.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:12px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:18px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;}
+.hint b{color:var(--soft);}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog.danger[aria-pressed="true"] .dot{background:var(--coral);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.hide{display:none;}
+.log{margin-top:12px;border:1px solid var(--line);border-radius:11px;background:#fff;max-height:212px;overflow-y:auto;}
+.log .e{display:flex;gap:9px;padding:8px 11px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.45;color:var(--soft);}
+.log .e:last-child{border-bottom:none;}
+.log .e .h{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--muted);flex:none;width:38px;font-variant-numeric:tabular-nums;}
+.log .e b{color:var(--teal-dk);}
+.log .e.bad b,.log .e.bad{color:var(--coral);}
+.log .e.good b{color:var(--green);}
+.banner{margin-top:12px;border-radius:12px;padding:12px 14px;font-family:var(--sans);font-size:12.5px;line-height:1.5;color:#fff;background:var(--coral);}
+.banner b{color:#fff;}
+.banner.ok{background:var(--green);}
+.banner.warn{background:var(--gold);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch02.html">&larr; Module 2</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 2 &middot; Section 5</div>
+  <h1>Checkpoints &amp; Chemiosmosis</h1>
+  <div class="intro">The cell cycle is a feedback-regulated control system, and cancer is what happens when the loop is cut. Set the conditions, run a full 24-hour cycle and watch each <b>checkpoint</b> decide whether the cell may proceed, arrest, repair or die. Then switch benches, take the oxygen away, and discover that dying properly costs ATP the cell may no longer have.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" role="tab" aria-selected="true" class="on">Cell cycle &amp; checkpoints</button>
+        <button id="m2" role="tab" aria-selected="false">Energy &amp; death mode</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">What kind of cell is this?</div>
+        <div class="chips" id="ctype">
+          <button class="chip on" type="button" data-g0="0">Cycling cell (24 h)</button>
+          <button class="chip" type="button" data-g0="1">Neuron / cardiac myocyte (G&#8320;)</button>
+        </div>
+        <div class="sl"><label for="dmg">DNA damage entering G&#8321; <span class="v" id="dmgV">10&#37;</span></label><input type="range" id="dmg" min="0" max="100" step="1" value="10" aria-label="Percent DNA damage entering G one"></div>
+        <button class="tog" id="tGrow" aria-pressed="true"><span class="dot"></span><span>Growth signals, nutrients, adequate size<small>What the G&#8321; checkpoint actually asks about</small></span></button>
+        <button class="tog" id="tSpin" aria-pressed="true"><span class="dot"></span><span>Every chromosome attached to the spindle<small>What the M checkpoint verifies before anaphase</small></span></button>
+        <button class="tog danger" id="tP53" aria-pressed="false"><span class="dot"></span><span>Mutate p53<small>The guardian at G&#8321; &mdash; mutated in over half of human cancers</small></span></button>
+        <div class="row"><button class="btn solid" id="run">Run one cycle</button><button class="btn" id="clear">Reset lineage</button></div>
+        <div class="hint">Phase lengths here are the real ones: <b>G&#8321; 11 h</b>, <b>S 6&ndash;8 h</b> for replication, <b>G&#8322; 5 h</b>, and mitosis itself only about <b>one hour</b> of a 24-hour cycle. Most of a cell&rsquo;s life is interphase.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Who pays for everything</div>
+        <button class="tog" id="tOx" aria-pressed="true"><span class="dot"></span><span>Oxygen available &mdash; oxidative phosphorylation running<small>Switch off to make this cell ischemic</small></span></button>
+        <div class="sl"><label for="glu">Glucose supply <span class="v" id="gluV">1.00 &times;</span></label><input type="range" id="glu" min="0" max="2" step="0.05" value="1" aria-label="Glucose supply relative to normal"></div>
+        <div class="sl"><label for="mito">Mitochondrial volume fraction <span class="v" id="mitoV">30&#37;</span></label><input type="range" id="mito" min="2" max="40" step="1" value="30" aria-label="Percent of cell volume occupied by mitochondria"></div>
+        <div class="chips" id="tissue">
+          <button class="chip" type="button" data-m="35">Cardiac myocyte 30&ndash;40&#37;</button>
+          <button class="chip" type="button" data-m="18">Hepatocyte</button>
+          <button class="chip" type="button" data-m="4">Skin cell</button>
+        </div>
+        <div class="row"><button class="btn solid" id="die">Trigger cell death</button><button class="btn" id="reox">Restore oxygen</button></div>
+        <div class="hint"><b>Compartmentation is a requirement, not tidiness.</b> Lysosomal hydrolases need pH 4.8, which a cytosol at pH 7.2 would never tolerate; oxidative phosphorylation needs a proton gradient, and a gradient can only exist across a membrane tight enough to hold it. That membrane is the inner mitochondrial one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>One turn of the cycle</h2>
+      <svg id="wheel" viewBox="0 0 340 300" role="img" aria-label="Cell cycle wheel showing G1, S, G2 and M phases sized by their real durations, with checkpoint gates and a marker showing the current position"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Divisions completed</div><div class="v" id="sDiv">0</div><div class="u">this lineage</div></div>
+        <div class="stat"><div class="k">Mutations carried</div><div class="v" id="sMut">0</div><div class="u">passed to daughters</div></div>
+        <div class="stat"><div class="k">Cellular ATP</div><div class="v" id="sAtp">100</div><div class="u">&#37; of demand</div></div>
+      </div>
+      <div id="cycBanner"></div>
+      <div class="log" id="log"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>Chemiosmosis, and what death costs</h2>
+      <svg id="mitoSvg" viewBox="0 0 420 250" role="img" aria-label="Cross-section of a mitochondrion showing the respiratory chain pumping protons into the intermembrane space and ATP synthase spending that gradient"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">ATP per glucose</div><div class="v" id="eYield">30&ndash;32</div><div class="u" id="eYieldU">glycolysis 2 &#43; oxphos</div></div>
+        <div class="stat"><div class="k">ATP supply</div><div class="v" id="eAtp">100</div><div class="u">&#37; of demand</div></div>
+        <div class="stat"><div class="k">Death available</div><div class="v" id="eDeath" style="font-size:14px">apoptosis</div><div class="u">if this cell must die</div></div>
+      </div>
+      <svg id="death" viewBox="0 0 420 160" role="img" aria-label="Illustration of the cell dying either by orderly apoptosis into blebs cleared by a phagocyte, or by necrotic rupture that spills contents and provokes inflammation"></svg>
+      <div id="info"><span class="n" id="i2n">The gradient is the currency</span><span id="i2t"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s);};
+
+/* ================= shared energy state ================= */
+var E={ox:true,glu:1,mito:0.30};
+var REF=2+29*1;                        /* glucose 1, oxphos running, mitochondria at the cardiac reference */
+function yieldPerGlucose(){ return E.ox? 31 : 2; }
+function atpPct(){
+  var oxCap=Math.min(1,E.mito/0.30);
+  var pasteur=E.ox?1:3;                /* anaerobic glycolytic flux rises several-fold, nowhere near enough */
+  var rate=E.glu*(2*pasteur + (E.ox? 29*oxCap : 0));
+  return Math.max(0,Math.min(130,rate/REF*100));
+}
+function canApoptose(){ return atpPct()>=25; }
+
+/* ================= MODE 1 : cell cycle ================= */
+var PH=[{n:'G₁',h0:0,h1:11,c:'var(--blue)'},
+        {n:'S', h0:11,h1:18,c:'var(--teal)'},
+        {n:'G₂',h0:18,h1:23,c:'var(--purple)'},
+        {n:'M', h0:23,h1:24,c:'var(--coral)'}];
+var CP=[{h:11,id:'G₁'},{h:23,id:'G₂'},{h:23.5,id:'M'}];
+var C={dmg:10,grow:true,spin:true,p53bad:false,g0:false};
+var run={t:0,active:false,hold:0,next:0,gate:{},divisions:0,mut:0,dead:null,arrest:null};
+var logArr=[];
+
+function log(h,txt,cls){ logArr.push({h:h,t:txt,c:cls||''}); drawLog(); }
+function drawLog(){
+  var el=$('#log'), h='';
+  logArr.slice(-40).forEach(function(e){
+    h+='<div class="e '+e.c+'"><span class="h">'+(e.h===null?'':(e.h.toFixed(0)+' h'))+'</span><span>'+e.t+'</span></div>';
+  });
+  el.innerHTML=h; el.scrollTop=el.scrollHeight;
+}
+
+$('#dmg').addEventListener('input',function(){ C.dmg=+this.value; $('#dmgV').textContent=C.dmg+'%'; drawWheel(); });
+[['tGrow','grow'],['tSpin','spin'],['tP53','p53bad']].forEach(function(p){
+  $('#'+p[0]).addEventListener('click',function(){
+    C[p[1]]=this.getAttribute('aria-pressed')!=='true';
+    this.setAttribute('aria-pressed',C[p[1]]?'true':'false'); drawWheel();
+  });
+});
+[].forEach.call($('#ctype').children,function(b){
+  b.addEventListener('click',function(){
+    C.g0=this.getAttribute('data-g0')==='1';
+    [].forEach.call($('#ctype').children,function(c){c.classList.remove('on');});
+    this.classList.add('on'); drawWheel();
+  });
+});
+$('#clear').addEventListener('click',function(){
+  run={t:0,active:false,hold:0,next:0,gate:{},divisions:0,mut:0,dead:null,arrest:null};
+  logArr=[]; drawLog(); banner(''); drawWheel(); stats();
+});
+$('#run').addEventListener('click',function(){
+  if(run.active) return;
+  if(C.g0){
+    logArr=[];
+    log(null,'This cell has exited the cycle into <b>G₀</b>. Neurons and cardiac myocytes are terminally differentiated and do not re-enter mitosis in meaningful numbers.','bad');
+    log(null,'That is why a myocardial infarction heals with <b>scar rather than new cardiac muscle</b>: fibroblasts remain capable of division and fill the defect with collagen. The replacement is mechanically passive and electrically inert &mdash; permanently reduced contractile function, and a substrate for arrhythmia.','bad');
+    banner('warn','<b>Arrested in G₀.</b> Switch the cell type back to a cycling cell to run the checkpoints.');
+    drawWheel(); return;
+  }
+  run.t=0; run.active=true; run.hold=0; run.next=0; run.gate={}; run.dead=null; run.arrest=null;
+  logArr=[]; banner('');
+  log(0,'Entering <b>G₁</b> with '+C.dmg+'&#37; DNA damage. Growth and function proceed while cyclin D&ndash;CDK4/6 activity builds.');
+  requestAnimationFrame(tick);
+});
+
+function fail(txt,cls){ run.active=false; run.arrest=txt; log(run.t,txt,cls||'bad'); drawWheel(); stats(); }
+
+function evalCP(cp){
+  if(cp.id==='G₁'){
+    if(!C.grow){
+      run.gate['G₁']='stop';
+      fail('<b>G₁ checkpoint: refused.</b> No growth signal, or the cell is too small, or nutrients are short. The cell exits sideways into <b>G₀</b> and waits. Nothing is wrong with it &mdash; the gate simply asks whether dividing now is a good idea.');
+      banner('warn','<b>Quiescent in G₀.</b> A checkpoint doing exactly its job.');
+      return false;
+    }
+    if(C.dmg>30){
+      if(!C.p53bad){
+        if(C.dmg<=70){
+          run.gate['G₁']='hold';
+          log(11,'<b>G₁ checkpoint: DNA damage detected at '+C.dmg+'&#37;.</b> <b>p53</b> halts the cycle and holds the cell here while repair enzymes work. The gate is not a formality &mdash; the cycle genuinely stops.','');
+          run.hold=1.6; run.repair=true; return true;
+        }
+        run.gate['G₁']='stop';
+        if(canApoptose()){
+          run.dead='apoptosis';
+          fail('<b>G₁ checkpoint: damage beyond repair.</b> p53 stops asking for repair and orders the cell to die. The caspase cascade shrinks the cell, fragments its DNA, flips phosphatidylserine to the outer leaflet as an &ldquo;eat me&rdquo; flag and packages the remains into blebs a phagocyte clears without inflammation.');
+          banner('ok','<b>Apoptosis.</b> The loop worked. A damaged cell removed itself, at ATP cost, without inflaming anything around it.');
+        } else {
+          run.dead='necrosis';
+          fail('<b>G₁ checkpoint: damage beyond repair &mdash; and this cell cannot afford to die properly.</b> Apoptosis is an active, ATP-requiring program, and ATP is at '+Math.round(atpPct())+'&#37; of demand. The cell swells, ruptures and spills its contents instead.');
+          banner('','<b>Necrosis.</b> Same verdict, wrong mechanism: uncontrolled death, contents released, inflammation provoked. Visit the energy bench to see why.');
+        }
+        return false;
+      }
+      run.gate['G₁']='open';
+      var add=Math.max(1,Math.round(C.dmg/25));
+      run.mut+=add;
+      log(11,'<b>G₁ checkpoint: waved through.</b> p53 is mutated, so nothing halts the cycle and nothing orders death. The cell carries '+C.dmg+'&#37; damage forward and will hand <b>'+add+'</b> new mutation'+(add>1?'s':'')+' to both daughters. p53 is mutated in over half of human cancers &mdash; which tells you how much work the intact gate was doing.','bad');
+      return true;
+    }
+    run.gate['G₁']='pass';
+    log(11,'<b>G₁ checkpoint: passed.</b> Adequate size, nutrients and growth signals; DNA undamaged. Cyclin E&ndash;CDK2 commits the cell to S phase, and from here it is going to replicate whether you like it or not.','good');
+    return true;
+  }
+  if(cp.id==='G₂'){
+    var incomplete = C.dmg>50 && C.p53bad;
+    if(incomplete){
+      run.gate['G₂']='open';
+      run.mut+=1;
+      log(23,'<b>G₂ checkpoint: waved through.</b> Replication did not finish cleanly on a damaged template, and with the damage-response pathway compromised the gate does not hold. A second mutation joins the load.','bad');
+      return true;
+    }
+    run.gate['G₂']='pass';
+    log(23,'<b>G₂ checkpoint: passed.</b> Replication verified complete and correct; the cell has assembled what mitosis needs.','good');
+    return true;
+  }
+  /* M checkpoint */
+  if(!C.spin){
+    run.gate['M']='stop';
+    log(23.5,'<b>M checkpoint: anaphase blocked.</b> At least one chromosome is not attached to the spindle, so the cell holds at metaphase rather than tearing an unequal set of chromosomes apart. This is precisely how spindle poisons work &mdash; and precisely why rapidly cycling tissues feel them first.','bad');
+    if(canApoptose()){
+      run.dead='apoptosis'; run.active=false;
+      log(24,'Prolonged metaphase arrest triggers apoptosis. The cell dies rather than divide wrongly.','');
+      banner('ok','<b>Arrested, then apoptosis.</b> The M checkpoint refused an unequal division and the cell removed itself.');
+    } else {
+      run.dead='necrosis'; run.active=false;
+      banner('','<b>Arrested, then necrosis.</b> Too little ATP to run the death program.');
+    }
+    drawWheel(); stats(); return false;
+  }
+  run.gate['M']='pass';
+  log(23.5,'<b>M checkpoint: passed.</b> Every kinetochore attached. Anaphase separates the sister chromatids.','good');
+  return true;
+}
+
+function tick(){
+  if(!run.active){ drawWheel(); return; }
+  if(run.hold>0){
+    run.hold-=0.016;
+    if(run.hold<=0 && run.repair){
+      run.repair=false; var before=C.dmg; C.dmg=Math.round(C.dmg*0.25);
+      $('#dmg').value=C.dmg; $('#dmgV').textContent=C.dmg+'%';
+      run.gate['G₁']='pass';
+      log(11,'Repair complete: damage fell from '+before+'&#37; to '+C.dmg+'&#37;. The gate opens and the cell commits to S phase. A halt is not a failure &mdash; it is the whole point of a checkpoint.','good');
+    }
+    drawWheel(); requestAnimationFrame(tick); return;
+  }
+  run.t+=0.055;
+  while(run.next<CP.length && run.t>=CP[run.next].h){
+    run.t=CP[run.next].h;
+    var cp=CP[run.next]; run.next++;
+    if(!evalCP(cp)) return;
+    if(run.hold>0){ drawWheel(); requestAnimationFrame(tick); return; }
+  }
+  if(run.t>=24){
+    run.t=24; run.active=false; run.divisions++;
+    log(24,'<b>Cytokinesis.</b> The cytoplasm divides and two daughter cells enter G₁. Mitosis took about an hour of a 24-hour cycle; everything before it was interphase.','good');
+    if(run.mut>=4){
+      banner('','<b>This lineage is now behaving like a cancer.</b> Proliferation signals stuck on, checkpoints disabled, apoptosis suppressed &mdash; the control system failing in both directions at once. '+run.mut+' mutations have been handed down across '+run.divisions+' division'+(run.divisions>1?'s':'')+', and nothing in this cell is now checking whether it should divide.');
+    } else if(run.mut>0){
+      banner('warn','<b>Division completed with '+run.mut+' mutation'+(run.mut>1?'s':'')+' carried.</b> Run the cycle again and watch the load compound &mdash; cancer is not one event, it is an accumulation permitted by a broken gate.');
+    } else {
+      banner('ok','<b>A clean division.</b> Every gate asked its question and got the right answer.');
+    }
+    drawWheel(); stats(); return;
+  }
+  drawWheel(); stats(); requestAnimationFrame(tick);
+}
+
+function banner(cls,txt){
+  var el=$('#cycBanner');
+  if(!txt){ el.innerHTML=''; return; }
+  el.innerHTML='<div class="banner '+cls+'">'+txt+'</div>';
+}
+function stats(){
+  $('#sDiv').textContent=run.divisions;
+  $('#sMut').textContent=run.mut;
+  $('#sAtp').textContent=Math.round(atpPct());
+}
+
+function drawWheel(){
+  var cx=170, cy=140, rO=104, rI=68, h='';
+  function pt(hr,r){ var a=(hr/24)*6.2832-1.5708; return [(cx+Math.cos(a)*r).toFixed(2),(cy+Math.sin(a)*r).toFixed(2)]; }
+  function arc(h0,h1,r0,r1,fill,op){
+    var a0=pt(h0,r1), a1=pt(h1,r1), b1=pt(h1,r0), b0=pt(h0,r0);
+    var big=(h1-h0)>12?1:0;
+    return '<path d="M '+a0[0]+' '+a0[1]+' A '+r1+' '+r1+' 0 '+big+' 1 '+a1[0]+' '+a1[1]+
+           ' L '+b1[0]+' '+b1[1]+' A '+r0+' '+r0+' 0 '+big+' 0 '+b0[0]+' '+b0[1]+' Z" fill="'+fill+'" opacity="'+op+'"></path>';
+  }
+  PH.forEach(function(p){
+    var reached = run.t>=p.h1 ? 1 : (run.t>p.h0?0.72:0.22);
+    h+=arc(p.h0,p.h1,rI,rO,p.c,reached);
+    var mid=pt((p.h0+p.h1)/2,(rI+rO)/2);
+    h+='<text x="'+mid[0]+'" y="'+(+mid[1]+4)+'" text-anchor="middle" font-family="Fraunces,serif" font-size="'+(p.h1-p.h0<2?12:16)+'" font-weight="700" fill="#fff">'+p.n+'</text>';
+  });
+  /* checkpoint gates */
+  CP.forEach(function(cp){
+    var st=run.gate[cp.id];
+    var col = st==='pass'?'var(--green)':(st==='stop'?'var(--coral)':(st==='open'?'var(--gold)':(st==='hold'?'var(--gold)':'var(--muted)')));
+    var a=pt(cp.h,rO+13), b=pt(cp.h,rI-6);
+    h+='<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="'+col+'" stroke-width="3.4" stroke-linecap="round"></line>';
+    var lab=pt(cp.h,rO+27);
+    h+='<circle cx="'+lab[0]+'" cy="'+lab[1]+'" r="12" fill="'+col+'"></circle>';
+    h+='<text x="'+lab[0]+'" y="'+(+lab[1]+4)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="800" fill="#fff">'+cp.id+'</text>';
+  });
+  /* marker */
+  var m=pt(run.t,(rI+rO)/2);
+  h+='<circle cx="'+m[0]+'" cy="'+m[1]+'" r="9" fill="#fff" stroke="var(--teal-dk)" stroke-width="3"></circle>';
+  /* hub */
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(rI-6)+'" fill="#fff" stroke="var(--line)"></circle>';
+  h+='<text x="'+cx+'" y="'+(cy-10)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">'+(run.dead?'OUTCOME':'HOUR')+'</text>';
+  h+='<text x="'+cx+'" y="'+(cy+12)+'" text-anchor="middle" font-family="Fraunces,serif" font-size="'+(run.dead?15:24)+'" font-weight="700" fill="'+(run.dead?'var(--coral)':'var(--teal-dk)')+'">'+(run.dead?run.dead.toUpperCase():run.t.toFixed(1))+'</text>';
+  h+='<text x="'+cx+'" y="'+(cy+30)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="var(--muted)">'+(C.p53bad?'p53 MUTATED':'p53 intact')+'</text>';
+  /* legend */
+  h+='<text x="10" y="16" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">INTERPHASE = G₁ + S + G₂ &nbsp;&middot;&nbsp; MITOSIS &asymp; 1 h OF 24</text>';
+  h+='<text x="10" y="288" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="var(--muted)">Gate colors: gray not yet reached &middot; green passed &middot; gold held or waved through &middot; red refused</text>';
+  $('#wheel').innerHTML=h;
+}
+
+/* ================= MODE 2 : energy ================= */
+var deathShown=null;
+$('#tOx').addEventListener('click',function(){
+  E.ox=this.getAttribute('aria-pressed')!=='true';
+  this.setAttribute('aria-pressed',E.ox?'true':'false'); deathShown=null; drawEnergy();
+});
+$('#glu').addEventListener('input',function(){ E.glu=+this.value; deathShown=null; drawEnergy(); });
+$('#mito').addEventListener('input',function(){ E.mito=+this.value/100; deathShown=null; drawEnergy(); });
+[].forEach.call($('#tissue').children,function(b){
+  b.addEventListener('click',function(){
+    E.mito=+this.getAttribute('data-m')/100; $('#mito').value=this.getAttribute('data-m');
+    [].forEach.call($('#tissue').children,function(c){c.classList.remove('on');});
+    this.classList.add('on'); deathShown=null; drawEnergy();
+  });
+});
+$('#die').addEventListener('click',function(){ deathShown=canApoptose()?'apoptosis':'necrosis'; drawEnergy(); });
+$('#reox').addEventListener('click',function(){
+  E.ox=true; $('#tOx').setAttribute('aria-pressed','true'); deathShown=null; drawEnergy();
+});
+
+function drawEnergy(){
+  $('#gluV').textContent=E.glu.toFixed(2)+' ×';
+  $('#mitoV').textContent=Math.round(E.mito*100)+'%';
+  var pct=atpPct();
+  $('#eYield').textContent=E.ox?'30–32':'2';
+  $('#eYieldU').textContent=E.ox?'glycolysis 2 + oxphos ~29':'glycolysis only';
+  $('#eAtp').textContent=Math.round(pct);
+  $('#sAtp').textContent=Math.round(pct);
+  $('#eDeath').textContent=canApoptose()?'apoptosis':'necrosis';
+
+  /* mitochondrion */
+  var h='';
+  h+='<rect x="0" y="0" width="420" height="250" rx="14" fill="var(--teal)" opacity="0.05"></rect>';
+  h+='<ellipse cx="210" cy="125" rx="196" ry="112" fill="#fff" stroke="var(--teal)" stroke-width="2"></ellipse>';
+  h+='<ellipse cx="210" cy="125" rx="176" ry="92" fill="var(--teal)" opacity="0.07" stroke="var(--teal)" stroke-width="1.5"></ellipse>';
+  h+='<text x="210" y="26" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">INTERMEMBRANE SPACE &mdash; PROTONS ACCUMULATE HERE</text>';
+  h+='<text x="210" y="238" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="800" fill="var(--muted)">MATRIX &mdash; CITRIC ACID CYCLE</text>';
+  var gradient=E.ox?Math.min(1,E.mito/0.30):0.05;
+  var nH=Math.round(6+gradient*30);
+  var seed=5;
+  for(var i=0;i<nH;i++){
+    seed=(seed*9301+49297)%233280; var rx=seed/233280;
+    seed=(seed*9301+49297)%233280; var ry=seed/233280;
+    var px=40+rx*340, py=40+ry*22;
+    h+='<circle cx="'+px.toFixed(1)+'" cy="'+py.toFixed(1)+'" r="3.4" fill="var(--gold)" opacity="0.85"></circle>';
+  }
+  /* respiratory complexes */
+  var names=['I','II','III','IV'];
+  names.forEach(function(n,k){
+    var x=72+k*62;
+    h+='<rect x="'+(x-19)+'" y="72" width="38" height="34" rx="8" fill="'+(E.ox?'var(--teal)':'var(--line)')+'"></rect>';
+    h+='<text x="'+x+'" y="94" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="800" fill="'+(E.ox?'#fff':'var(--muted)')+'">'+n+'</text>';
+    if(E.ox){
+      h+='<line x1="'+x+'" y1="70" x2="'+x+'" y2="52" stroke="var(--gold)" stroke-width="2.6" stroke-linecap="round"></line>';
+      h+='<polygon points="'+(x-4)+',54 '+(x+4)+',54 '+x+',45" fill="var(--gold)"></polygon>';
+    }
+  });
+  h+='<text x="150" y="122" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.4" font-weight="700" fill="'+(E.ox?'var(--teal)':'var(--coral)')+'">'+(E.ox?'electrons pass down the chain to O₂':'no O₂ &mdash; the chain has stopped, the gradient is gone')+'</text>';
+  /* ATP synthase */
+  var sx=350;
+  h+='<rect x="'+(sx-24)+'" y="66" width="48" height="46" rx="10" fill="'+(E.ox?'var(--green)':'var(--line)')+'"></rect>';
+  h+='<circle cx="'+sx+'" cy="126" r="16" fill="'+(E.ox?'var(--green)':'var(--line)')+'"></circle>';
+  h+='<text x="'+sx+'" y="'+(E.ox?93:93)+'" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="'+(E.ox?'#fff':'var(--muted)')+'">ATP</text>';
+  h+='<text x="'+sx+'" y="130" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="'+(E.ox?'#fff':'var(--muted)')+'">synthase</text>';
+  if(E.ox){
+    h+='<line x1="'+sx+'" y1="48" x2="'+sx+'" y2="64" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"></line>';
+    h+='<polygon points="'+(sx-5)+',62 '+(sx+5)+',62 '+sx+',72" fill="var(--gold)"></polygon>';
+    h+='<text x="'+sx+'" y="160" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.4" font-weight="800" fill="var(--green)">ADP + Pᵢ &rarr; ATP</text>';
+  }
+  /* ATP bar */
+  var bw=Math.max(3,Math.min(300,pct/130*300));
+  var bcol = pct>=25?'var(--green)':'var(--coral)';
+  h+='<rect x="60" y="196" width="300" height="15" rx="7.5" fill="var(--line)"></rect>';
+  h+='<rect x="60" y="196" width="'+bw.toFixed(1)+'" height="15" rx="7.5" fill="'+bcol+'"></rect>';
+  h+='<line x1="'+(60+25/130*300)+'" y1="192" x2="'+(60+25/130*300)+'" y2="215" stroke="var(--coral)" stroke-width="2" stroke-dasharray="3 3"></line>';
+  h+='<text x="'+(60+25/130*300+4)+'" y="190" font-family="Inter,sans-serif" font-size="8.6" font-weight="800" fill="var(--coral)">25&#37; &mdash; apoptosis needs at least this</text>';
+  h+='<text x="60" y="190" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--muted)">ATP SUPPLY '+Math.round(pct)+'&#37;</text>';
+  $('#mitoSvg').innerHTML=h;
+
+  /* death illustration */
+  var d='';
+  if(!deathShown){
+    d+='<rect x="0" y="0" width="420" height="160" rx="12" fill="var(--line)" opacity="0.35"></rect>';
+    d+='<text x="210" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" font-weight="700" fill="var(--muted)">Press <tspan font-weight="800" fill="var(--teal)">Trigger cell death</tspan> to see which route this cell can still afford.</text>';
+    d+='<text x="210" y="98" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" fill="var(--muted)">Apoptosis is an active, ATP-requiring program. Necrosis is what happens when it cannot be run.</text>';
+  } else if(deathShown==='apoptosis'){
+    d+='<rect x="0" y="0" width="420" height="160" rx="12" fill="var(--green)" opacity="0.08"></rect>';
+    d+='<circle cx="62" cy="80" r="34" fill="var(--green)" opacity="0.85"></circle>';
+    d+='<text x="62" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">cell shrinks</text>';
+    d+='<circle cx="160" cy="80" r="24" fill="var(--green)" opacity="0.85"></circle>';
+    for(var b=0;b<5;b++){
+      var ang=b/5*6.2832;
+      d+='<circle cx="'+(160+Math.cos(ang)*33).toFixed(1)+'" cy="'+(80+Math.sin(ang)*33).toFixed(1)+'" r="9" fill="var(--green)" opacity="0.7"></circle>';
+    }
+    d+='<text x="160" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">DNA fragments, blebs form</text>';
+    d+='<circle cx="272" cy="80" r="16" fill="var(--coral)" opacity="0.6"></circle>';
+    d+='<text x="272" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">PS flips: &ldquo;eat me&rdquo;</text>';
+    d+='<path d="M 330 52 a 34 34 0 1 0 0 56 a 26 26 0 0 1 0 -56" fill="var(--teal)" opacity="0.8"></path>';
+    d+='<text x="352" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">phagocyte clears it</text>';
+    d+='<text x="210" y="20" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="700" fill="var(--green)">APOPTOSIS &mdash; NO INFLAMMATION</text>';
+  } else {
+    d+='<rect x="0" y="0" width="420" height="160" rx="12" fill="var(--coral)" opacity="0.09"></rect>';
+    d+='<circle cx="80" cy="80" r="30" fill="var(--coral)" opacity="0.75"></circle>';
+    d+='<text x="80" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">pumps fail, cell swells</text>';
+    d+='<circle cx="200" cy="80" r="42" fill="var(--coral)" opacity="0.45" stroke="var(--coral)" stroke-width="2" stroke-dasharray="6 5"></circle>';
+    for(var q=0;q<12;q++){
+      var qa=q/12*6.2832;
+      d+='<circle cx="'+(200+Math.cos(qa)*(52+ (q%3)*7)).toFixed(1)+'" cy="'+(80+Math.sin(qa)*(52+(q%3)*7)).toFixed(1)+'" r="4.5" fill="var(--coral)" opacity="0.7"></circle>';
+    }
+    d+='<text x="200" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">membrane ruptures, contents spill</text>';
+    d+='<circle cx="340" cy="66" r="12" fill="var(--purple)" opacity="0.8"></circle>';
+    d+='<circle cx="368" cy="88" r="12" fill="var(--purple)" opacity="0.8"></circle>';
+    d+='<circle cx="336" cy="98" r="12" fill="var(--purple)" opacity="0.8"></circle>';
+    d+='<text x="352" y="134" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" font-weight="800" fill="var(--soft)">inflammation</text>';
+    d+='<text x="210" y="20" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="700" fill="var(--coral)">NECROSIS &mdash; INFLAMMATION FOLLOWS</text>';
+  }
+  $('#death').innerHTML=d;
+
+  var t;
+  if(!E.ox){
+    t=' <b>Oxygen gone, chain stopped.</b> Without a terminal electron acceptor the respiratory complexes cannot pump protons, so the gradient across the inner membrane collapses and ATP synthase has nothing to spend. Yield drops from about <b>30&ndash;32 ATP per glucose</b> to the <b>2</b> that glycolysis makes in the cytosol. Glycolytic flux does rise several-fold, and it is nowhere near enough. Note what chemiosmosis actually is: a gradient built with energy and then spent to do work &mdash; exactly the logic of secondary active transport, one compartment further in.';
+    if(!canApoptose()) t+=' ATP is now at '+Math.round(pct)+'&#37; of demand, below what the caspase cascade costs, so this cell can no longer die in an orderly way. Push the glucose supply up and watch the option come back.';
+    else t+=' At '+Math.round(pct)+'&#37; of demand there is still enough ATP to run the death program, because you have left the cell plenty of glucose. Take that away too and the option disappears.';
+  } else if(E.mito<0.10){
+    t=' Few mitochondria, so oxidative capacity is limited no matter how much oxygen and glucose you supply. Cells match mitochondrial content to demand: a <b>cardiac myocyte devotes about 30&ndash;40&#37; of its volume</b> to them, a skin cell far less. Mitochondria also carry their own circular DNA, inherited maternally &mdash; which is why mitochondrial disease follows a maternal pattern and strikes brain, muscle and heart first, the tissues with the least tolerance for an energy shortfall.';
+  } else {
+    t=' Electrons pass down the respiratory chain to oxygen while protons are pumped into the intermembrane space; ATP synthase lets them fall back through and phosphorylates ADP as they go. Glycolysis in the cytosol nets 2 ATP per glucose, and the citric acid cycle plus oxidative phosphorylation raise the total to roughly <b>30&ndash;32</b>. At '+Math.round(pct)+'&#37; of demand this cell can afford everything it does &mdash; including, if a checkpoint ever orders it, dying properly.';
+  }
+  $('#i2t').innerHTML=t;
+}
+
+/* ================= modes ================= */
+function setMode(n){
+  [1,2].forEach(function(k){
+    $('#m'+k).classList.toggle('on',k===n);
+    $('#m'+k).setAttribute('aria-selected',k===n?'true':'false');
+    $('#p'+k).classList.toggle('hide',k!==n);
+    $('#r'+k).classList.toggle('hide',k!==n);
+  });
+  if(n===1){ drawWheel(); stats(); } else { drawEnergy(); }
+}
+$('#m1').addEventListener('click',function(){setMode(1);});
+$('#m2').addEventListener('click',function(){setMode(2);});
+
+log(null,'Set the conditions on the left, then press <b>Run one cycle</b>. Each gate will report what it asked and what it decided.');
+drawWheel(); stats(); drawEnergy();
+})();
+</script>
+</body>
+</html>

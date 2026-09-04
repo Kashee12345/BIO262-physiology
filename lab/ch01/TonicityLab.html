@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Osmolality and Tonicity Lab</title>
+<meta name="description" content="Estimate plasma osmolality from sodium, glucose and BUN, then drop a cell into a bath and watch it swell, crenate or lyse.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px;}
+.ctl{margin-top:12px;}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.ctl .lab .v{font-family:var(--disp);font-size:16px;font-weight:700;color:var(--teal-dk);}
+.ctl .hint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45;}
+.osm{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px dashed var(--line);border-radius:11px;padding:11px 13px;margin-top:12px;}
+.osm .eqn{font-family:var(--disp);font-size:14.5px;font-weight:700;color:var(--teal-dk);line-height:1.35;}
+.osm .eqn small{display:block;font-family:var(--sans);font-weight:600;font-size:11px;color:var(--muted);margin-top:3px;}
+.osm .big{font-family:var(--disp);font-size:26px;font-weight:700;color:var(--teal-dk);text-align:right;line-height:1.05;}
+.osm .big span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.5px;}
+.sols{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:10px;}
+.sols button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 9px;font-family:var(--sans);font-weight:700;font-size:12px;color:var(--ink);cursor:pointer;text-align:left;line-height:1.25;}
+.sols button:hover{border-color:var(--teal);}
+.sols button.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.sols button small{display:block;font-weight:500;font-size:10.5px;color:var(--muted);margin-top:2px;}
+.sols button.on small{color:rgba(255,255,255,.9);}
+canvas{width:100%;display:block;border-radius:12px;background:var(--card);border:1px solid var(--line);}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.stat > div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 8px;text-align:center;}
+.stat .k{font-size:10px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .n{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+.verdict{display:flex;align-items:center;gap:10px;margin-top:12px;}
+.exp{border:1px solid var(--line);border-left:5px solid var(--teal);background:var(--card);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13.5px;color:var(--soft);line-height:1.55;}
+.exp b{color:var(--teal-dk);font-weight:700;}
+.exp .h{font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);display:block;margin-bottom:4px;}
+.compbar{display:flex;height:44px;border-radius:11px;overflow:hidden;border:1px solid var(--line);margin-top:8px;}
+.compbar div{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;color:#fff;line-height:1.25;text-align:center;padding:0 4px;}
+.compbar div span{font-weight:600;font-size:9.5px;opacity:.9;}
+.iontab{width:100%;border-collapse:collapse;font-size:12px;margin-top:11px;}
+.iontab th,.iontab td{border-bottom:1px solid var(--line);padding:6px 7px;text-align:left;}
+.iontab th{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.iontab td b{color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch01.html">&larr; Module 1</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 1</div>
+  <h1>Osmolality and Tonicity Lab</h1>
+  <div class="intro">Osmolarity counts every dissolved particle. <b>Tonicity counts only the effective osmoles</b> &mdash; the particles that cannot cross the membrane and therefore actually pull water. Build a patient's plasma from sodium, glucose and urea, then put a red cell in a bath and watch what the <i>effective</i> particles do to its volume.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>1 &middot; Estimate plasma osmolality</h2>
+      <div class="ctl">
+        <div class="lab"><label for="sNa">Plasma Na<sup>+</sup></label><span class="v" id="vNa">140 mEq/L</span></div>
+        <input type="range" id="sNa" min="110" max="170" step="1" value="140" aria-label="Plasma sodium in milliequivalents per liter">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sGl">Plasma glucose</label><span class="v" id="vGl">90 mg/dL</span></div>
+        <input type="range" id="sGl" min="40" max="900" step="5" value="90" aria-label="Plasma glucose in milligrams per deciliter">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sBu">BUN (urea nitrogen)</label><span class="v" id="vBu">14 mg/dL</span></div>
+        <input type="range" id="sBu" min="4" max="120" step="1" value="14" aria-label="Blood urea nitrogen in milligrams per deciliter">
+        <div class="hint">Urea crosses cell membranes freely, so it raises measured osmolality without contributing any tonicity.</div>
+      </div>
+      <div class="osm">
+        <div class="eqn" id="eqn">2 &times; 140 + 90/18 + 14/2.8<small>2 &times; [Na<sup>+</sup>] + glucose/18 + BUN/2.8</small></div>
+        <div class="big"><b id="osmv" style="font-family:var(--disp);font-weight:700;font-size:26px;color:var(--teal-dk);letter-spacing:-.5px;">290</b><span>mOsm/kg</span></div>
+      </div>
+      <div class="row">
+        <span class="pill normal" id="pOsm" style="align-self:center;">NORMAL 275&ndash;295</span>
+        <button class="btn" type="button" id="bCase">Worked case from the text</button>
+      </div>
+      <div class="row"><button class="btn solid" type="button" id="bUse">Use this plasma as the bath &rarr;</button></div>
+      <div class="ctl"><div class="hint"><b style="color:var(--teal-dk)">Effective</b> osmolality &mdash; the number that actually moves water &mdash; is 2 &times; [Na<sup>+</sup>] + glucose/18. Urea is deliberately left out.</div></div>
+    </div>
+
+    <div class="card">
+      <h2>2 &middot; Choose the bath</h2>
+      <div class="sols" id="sols"></div>
+      <div class="ctl">
+        <div class="lab"><label for="sEff">Effective (impermeant) osmoles</label><span class="v" id="vEff">290 mOsm/L</span></div>
+        <input type="range" id="sEff" min="0" max="1100" step="2" value="290" aria-label="Effective impermeant osmoles in the bath">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sIneff">Ineffective (permeant) osmoles</label><span class="v" id="vIneff">0 mOsm/L</span></div>
+        <input type="range" id="sIneff" min="0" max="600" step="2" value="0" aria-label="Ineffective permeant osmoles in the bath">
+        <div class="hint">Urea and metabolized dextrose live here. Slide this up as far as you like &mdash; the cell will not care.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>3 &middot; What happens to the cell</h2>
+      <canvas id="cv" height="290" role="img" aria-label="A red cell in a bath, drawn at its equilibrium volume"></canvas>
+      <div class="stat">
+        <div><div class="k">Osmolarity</div><div class="n" id="nTot">290</div><div class="u">mOsm/L, all particles</div></div>
+        <div><div class="k">Tonicity</div><div class="n" id="nEff">290</div><div class="u">mOsm/L, effective only</div></div>
+        <div><div class="k">Cell volume</div><div class="n" id="nVol">100%</div><div class="u">of normal, at equilibrium</div></div>
+      </div>
+      <div class="verdict"><span class="pill normal" id="pV">ISOTONIC &mdash; no net water movement</span></div>
+      <div class="exp" id="exp" aria-live="polite"></div>
+    </div>
+
+    <div class="card">
+      <h2>Where the 42 L sits, and what is dissolved in it</h2>
+      <div class="compbar" role="img" aria-label="Body water compartments: 28 liters intracellular, 10.5 liters interstitial, 3.5 liters plasma">
+        <div style="flex:28;background:var(--teal);">ICF 28 L<span>two-thirds</span></div>
+        <div style="flex:10.5;background:var(--blue);">Interstitial 10.5 L<span>ECF</span></div>
+        <div style="flex:3.5;background:var(--purple);">Plasma<span>3.5 L</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5;">The plasma membrane separates ICF from ECF and passes water but few solutes. The capillary wall separates plasma from interstitium and passes water and small solutes but not plasma proteins &mdash; which is why retained albumin generates about 25 mm Hg of oncotic pressure.</div>
+      <table class="iontab">
+        <thead><tr><th>Ion</th><th>Outside the cell</th><th>Inside the cell</th></tr></thead>
+        <tbody>
+          <tr><td><b>Na<sup>+</sup></b></td><td>about 140 mEq/L</td><td>10 to 15 mEq/L</td></tr>
+          <tr><td><b>K<sup>+</sup></b></td><td>3.5 to 5.0 mEq/L</td><td>140 to 150 mEq/L</td></tr>
+          <tr><td><b>Ca<sup>2+</sup></b> (free)</td><td>1.1 to 1.3 mmol/L</td><td>about 100 nmol/L</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:12px;color:var(--muted);margin-top:7px;line-height:1.5;">Free calcium sits roughly ten thousand times lower inside the cell, which is why opening a calcium channel for a few milliseconds is enough to trigger a contraction or a secretion.</div>
+    </div>
+  </div>
+</div>
+<footer>Human Physiology &middot; <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b></footer>
+<script>
+(function(){
+  var css=function(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();};
+  var C={teal:css('--teal'),tealdk:css('--teal-dk'),blue:css('--blue'),coral:css('--coral'),gold:css('--gold'),green:css('--green'),purple:css('--purple'),line:css('--line'),muted:css('--muted'),soft:css('--soft'),card:css('--card')};
+  var E=function(i){return document.getElementById(i);};
+
+  var ICF_OSM=290;      // impermeant intracellular osmoles, in a normal-volume cell
+  var B=0.30;           // osmotically inactive fraction of cell volume (protein, organelles)
+  var LYSE=1.60, CREN=0.82;
+
+  var SOLS=[
+    ['0.9% saline','308 mOsm/L, all effective',308,0],
+    ['0.45% saline','154 mOsm/L, all effective',154,0],
+    ['3% saline','1026 mOsm/L, all effective',1026,0],
+    ['5% dextrose (D5W)','278 mOsm/L, effective 0 once metabolized',0,278],
+    ['300 mOsm/L urea','isosmotic, effective 0',0,300],
+    ['Plasma','290 mOsm/L, effective 290',290,0]
+  ];
+
+  var st={na:140, gl:90, bun:14, eff:290, ineff:0, sel:5};
+
+  function osmEst(){return 2*st.na + st.gl/18 + st.bun/2.8;}
+
+  function cellVol(){
+    if(st.eff<=0) return 99;                 // no effective osmoles: water enters without limit
+    return B + (1-B)*(ICF_OSM/st.eff);
+  }
+
+  function renderOsm(){
+    var o=osmEst();
+    E('vNa').textContent=st.na+' mEq/L';
+    E('vGl').textContent=st.gl+' mg/dL';
+    E('vBu').textContent=st.bun+' mg/dL';
+    E('eqn').innerHTML='2 × '+st.na+' + '+st.gl+'/18 + '+st.bun+'/2.8<small>2 × [Na<sup>+</sup>] + glucose/18 + BUN/2.8</small>';
+    E('osmv').textContent=o.toFixed(0);
+    var p=E('pOsm');
+    if(o<275){p.className='pill low';p.textContent='LOW — under 275';}
+    else if(o>295){p.className='pill high';p.textContent='HIGH — over 295';}
+    else {p.className='pill normal';p.textContent='NORMAL 275–295';}
+  }
+
+  function renderBath(){
+    E('vEff').textContent=Math.round(st.eff)+' mOsm/L';
+    E('vIneff').textContent=Math.round(st.ineff)+' mOsm/L';
+    E('sEff').value=st.eff; E('sIneff').value=st.ineff;
+    var tot=st.eff+st.ineff, V=cellVol();
+    E('nTot').textContent=Math.round(tot);
+    E('nEff').textContent=Math.round(st.eff);
+    E('nVol').textContent=(V>=LYSE)?'lysed':(V*100).toFixed(0)+'%';
+
+    var p=E('pV');
+    if(V>=LYSE){p.className='pill high';p.textContent='HYPOTONIC — the cell has burst';}
+    else if(V>1.05){p.className='pill low';p.textContent='HYPOTONIC — the cell swells';}
+    else if(V<CREN){p.className='pill high';p.textContent='HYPERTONIC — the cell crenates';}
+    else if(V<0.95){p.className='pill high';p.textContent='HYPERTONIC — the cell shrinks';}
+    else {p.className='pill normal';p.textContent='ISOTONIC — no net water movement';}
+    explain(tot,V);
+    E('cv').setAttribute('aria-label','Bath osmolarity '+Math.round(tot)+' mOsm per liter, tonicity '+Math.round(st.eff)+' mOsm per liter, cell volume '+(V>=99?'burst':(V*100).toFixed(0)+' percent of normal'));
+  }
+
+  function explain(tot,V){
+    var t='<span class="h">Read it as two separate numbers</span>';
+    t+='This bath contains <b>'+Math.round(tot)+' mOsm/L</b> of dissolved particles, but only <b>'+Math.round(st.eff)+' mOsm/L</b> of them cannot cross the membrane. Water responds only to that second number.<br><br>';
+    if(st.eff<=0){
+      t+='<b>Every particle here is permeant.</b> It equilibrates across the membrane instead of holding water outside, so the solution behaves as free water. The cell\'s own impermeant solutes &mdash; about 290 mOsm of protein, phosphate and potassium salts &mdash; pull water in with nothing opposing them, and the cell swells until it bursts. This is exactly why a 300 mOsm/L urea solution is isosmotic with plasma yet profoundly hypotonic, and why 5% dextrose in water is not a volume expander once the glucose is burned.';
+    } else if(V>=LYSE){
+      t+='Effective osmolality outside ('+Math.round(st.eff)+') is far below the cell\'s 290, so water floods in. Predicted volume is over '+(LYSE*100).toFixed(0)+'% of normal, past the point a red cell membrane can stretch, and the cell hemolyzes. Note that this is where 0.45% saline sits &mdash; hemolysis classically begins around that concentration.';
+    } else if(V>1.05){
+      t+='Effective osmolality outside ('+Math.round(st.eff)+') is below the cell\'s 290, so water moves in and the cell swells to about <b>'+(V*100).toFixed(0)+'%</b> of normal volume. In the brain, where the skull permits no expansion, this is exactly why sodium disorders must be corrected slowly.';
+    } else if(V<CREN){
+      t+='Effective osmolality outside ('+Math.round(st.eff)+') exceeds the cell\'s 290, so water leaves and the cell shrivels to about <b>'+(V*100).toFixed(0)+'%</b> of normal volume, its membrane crumpling into the spiked shape called crenation. Hypertonic saline works by exactly this mechanism &mdash; it draws water out of swollen brain cells.';
+    } else {
+      t+='Effective osmolality outside ('+Math.round(st.eff)+') is close enough to the cell\'s own 290 that no net water movement occurs and volume holds near <b>'+(V*100).toFixed(0)+'%</b>. This is why 0.9% saline, at about 308 mOsm/L, is the default resuscitation fluid: it expands the extracellular space without dragging water across cell membranes.';
+    }
+    t+='<br><br><span style="font-size:12px;color:var(--muted)">Model note: about 30% of a red cell\'s volume is osmotically inactive (protein and organelles), so the cell is not a perfect osmometer. Equilibrium volume here is 0.30 + 0.70 &times; (290 / effective osmolality).</span>';
+    E('exp').innerHTML=t;
+  }
+
+  function buildSols(){
+    var box=E('sols');
+    SOLS.forEach(function(s,i){
+      var b=document.createElement('button'); b.type='button';
+      b.innerHTML=s[0]+'<small>'+s[1]+'</small>';
+      b.addEventListener('click',function(){
+        st.eff=s[2]; st.ineff=s[3]; st.sel=i; mark(); renderBath();
+      });
+      box.appendChild(b);
+    });
+    mark();
+  }
+  function mark(){
+    var box=E('sols');
+    [].forEach.call(box.children,function(c,i){c.classList.toggle('on',i===st.sel);});
+  }
+
+  // ---- canvas ----
+  var cvs=E('cv'), ctx=cvs.getContext('2d'), W=600, H=290, drops=[];
+  function fit(){
+    var d=window.devicePixelRatio||1;
+    W=cvs.clientWidth||600;
+    cvs.width=Math.round(W*d); cvs.height=Math.round(H*d);
+    cvs.style.height=H+'px'; ctx.setTransform(d,0,0,d,0,0);
+  }
+  for(var i=0;i<46;i++){drops.push({a:Math.random()*6.2832,t:Math.random()});}
+
+  var burstT=0;
+  function draw(){
+    var V=cellVol(), cx=W/2, cy=H/2+6;
+    ctx.clearRect(0,0,W,H);
+
+    // bath
+    ctx.fillStyle=C.blue; ctx.globalAlpha=Math.min(.22,.05+st.eff/2600+st.ineff/2600);
+    ctx.fillRect(0,0,W,H); ctx.globalAlpha=1;
+    ctx.strokeStyle=C.line; ctx.strokeRect(.5,.5,W-1,H-1);
+    ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.fillStyle=C.muted; ctx.textAlign='left';
+    ctx.fillText('BATH  ·  effective '+Math.round(st.eff)+'  ·  ineffective '+Math.round(st.ineff)+' mOsm/L', 12, 20);
+
+    var lysed=(V>=LYSE);
+    var Vd=Math.min(V,LYSE);
+    var R=52*Math.pow(Vd,1/3);
+
+    // water direction
+    var inward=(st.eff<ICF_OSM);
+    var drive=Math.min(1,Math.abs(ICF_OSM-st.eff)/290);
+    if(st.eff<=0) drive=1;
+    if(drive>0.02){
+      ctx.strokeStyle=C.blue; ctx.lineWidth=2; ctx.globalAlpha=.75;
+      drops.forEach(function(d){
+        d.t+=0.006+drive*0.02; if(d.t>1) d.t-=1;
+        var far=R+92, near=R+10;
+        var rad=inward?(far-(far-near)*d.t):(near+(far-near)*d.t);
+        var x=cx+Math.cos(d.a)*rad, y=cy+Math.sin(d.a)*rad*0.72;
+        ctx.beginPath(); ctx.arc(x,y,2.4,0,6.2832); ctx.stroke();
+      });
+      ctx.globalAlpha=1;
+      ctx.fillStyle=C.blue; ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+      ctx.fillText(inward?'water moves IN →':'← water moves OUT', W-12, 20);
+    } else {
+      ctx.fillStyle=C.green; ctx.font='800 11px Inter, system-ui, sans-serif'; ctx.textAlign='right';
+      ctx.fillText('no net water movement', W-12, 20);
+    }
+
+    // normal-size reference ring
+    ctx.strokeStyle=C.muted; ctx.setLineDash([3,4]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.ellipse(cx,cy,52,52*0.72,0,0,6.2832); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=C.muted; ctx.font='600 10px Inter, system-ui, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('normal volume', cx, cy+52*0.72+15);
+
+    // the cell
+    ctx.beginPath();
+    var spike=(Vd<CREN)?Math.min(0.20,(CREN-Vd)*0.55):0;
+    for(var a=0;a<=6.2832+0.01;a+=0.06){
+      var rr=R*(1+spike*Math.cos(11*a));
+      var x=cx+Math.cos(a)*rr, y=cy+Math.sin(a)*rr*0.72;
+      if(a===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.fillStyle=lysed?C.muted:C.coral; ctx.globalAlpha=lysed?.25:.75; ctx.fill(); ctx.globalAlpha=1;
+    ctx.strokeStyle=lysed?C.muted:C.coral; ctx.lineWidth=lysed?2:3; if(lysed) ctx.setLineDash([5,5]);
+    ctx.stroke(); ctx.setLineDash([]);
+
+    if(lysed){
+      burstT+=0.02; if(burstT>1) burstT=0;
+      ctx.fillStyle=C.coral;
+      for(var k=0;k<16;k++){
+        var ang=k*0.3927, dd=R+burstT*70;
+        ctx.globalAlpha=Math.max(0,1-burstT);
+        ctx.beginPath(); ctx.arc(cx+Math.cos(ang)*dd, cy+Math.sin(ang)*dd*0.72, 3.2, 0, 6.2832); ctx.fill();
+      }
+      ctx.globalAlpha=1;
+      ctx.fillStyle=C.coral; ctx.font='800 14px Inter, system-ui, sans-serif'; ctx.textAlign='center';
+      ctx.fillText('HEMOLYSIS', cx, cy+4);
+    } else {
+      ctx.fillStyle=C.card; ctx.font='800 12px Inter, system-ui, sans-serif'; ctx.textAlign='center';
+      ctx.fillText((V*100).toFixed(0)+'%', cx, cy+4);
+    }
+
+    // scale note
+    ctx.fillStyle=C.muted; ctx.font='600 10.5px Inter, system-ui, sans-serif'; ctx.textAlign='left';
+    ctx.fillText('cell interior holds about 290 mOsm of impermeant solute', 12, H-12);
+    requestAnimationFrame(draw);
+  }
+
+  // ---- wiring ----
+  ['sNa','sGl','sBu'].forEach(function(id){
+    E(id).addEventListener('input',function(){
+      st.na=parseFloat(E('sNa').value); st.gl=parseFloat(E('sGl').value); st.bun=parseFloat(E('sBu').value);
+      renderOsm();
+    });
+  });
+  E('sEff').addEventListener('input',function(){st.eff=parseFloat(this.value);st.sel=-1;mark();renderBath();});
+  E('sIneff').addEventListener('input',function(){st.ineff=parseFloat(this.value);st.sel=-1;mark();renderBath();});
+  E('bCase').addEventListener('click',function(){
+    st.na=140; st.gl=90; st.bun=14;
+    E('sNa').value=140; E('sGl').value=90; E('sBu').value=14; renderOsm();
+  });
+  E('bUse').addEventListener('click',function(){
+    st.eff=Math.round(2*st.na + st.gl/18);
+    st.ineff=Math.round(st.bun/2.8);
+    st.sel=-1; mark(); renderBath();
+    E('exp').scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+  window.addEventListener('resize',fit);
+
+  fit(); buildSols(); renderOsm(); renderBath(); requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

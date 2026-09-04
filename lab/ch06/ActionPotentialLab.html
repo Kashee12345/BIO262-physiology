@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Action Potential &mdash; Threshold, Refractoriness and Speed</title>
+<meta name="description" content="Push a stimulus through threshold and watch an all-or-none spike appear, fire a second stimulus into the refractory period, then strip the myelin off an axon and see conduction slow and fail.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.hide{display:none;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch06.html">&larr; Module 6</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 6</div>
+  <h1>The Action Potential: Threshold, Refractoriness and Speed</h1>
+  <div class="intro">A graded potential is proportional to its stimulus and dies out. An action potential is not, and does not. Drive a stimulus up through the <b>&minus;55 mV threshold</b> and watch a proportional response turn abruptly into an identical, self-regenerating spike &mdash; then fire a second stimulus into the wake of the first to find the refractory periods, and strip myelin off an axon to watch conduction slow and then fail outright.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Threshold &amp; refractoriness</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Myelin &amp; conduction</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">First stimulus, delivered at 2.0 ms</div>
+        <div class="sl"><label for="s1">Depolarization from rest <span class="v" id="s1V">18 mV</span></label>
+          <input type="range" id="s1" min="0" max="45" value="18" step="1" aria-label="Strength of the first stimulus, in millivolts of depolarization from the resting potential"></div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl">Second stimulus &mdash; test the refractory periods</div>
+        <button class="tog" id="tS2" type="button" aria-pressed="false"><span class="dot"></span><span>Deliver a second stimulus <small>Place it early and no strength will fire the cell. Place it a little later and a larger-than-normal stimulus will.</small></span></button>
+        <div class="sl"><label for="d2">Delay after the first stimulus <span class="v" id="d2V">3.0 ms</span></label>
+          <input type="range" id="d2" min="2" max="120" value="30" step="1" aria-label="Delay of the second stimulus after the first, in tenths of a millisecond"></div>
+        <div class="sl"><label for="s2">Second stimulus strength <span class="v" id="s2V">18 mV</span></label>
+          <input type="range" id="s2" min="0" max="45" value="18" step="1" aria-label="Strength of the second stimulus, in millivolts of depolarization"></div>
+
+        <div class="row">
+          <button class="btn solid" id="bPin" type="button">Pin this trace</button>
+          <button class="btn" id="bClear" type="button">Clear pinned</button>
+        </div>
+        <div class="hint"><b>The experiment that proves all-or-none.</b> Set the first stimulus to 15 mV and pin the trace. Now set it to 30 mV and pin again. Then 45 mV. Three pinned traces, three very different stimuli, <b>one waveform</b>. Amplitude carries no information about stimulus size &mdash; which is exactly why the nervous system has to code intensity as frequency and recruitment instead.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Pick a fiber from the module&rsquo;s table</div>
+        <div class="chips" id="pre2"></div>
+
+        <div class="lbl">Cable properties</div>
+        <div class="sl"><label for="dia">Axon diameter <span class="v" id="diaV">3.0 &micro;m</span></label>
+          <input type="range" id="dia" min="2" max="200" value="30" step="1" aria-label="Axon diameter in tenths of a micrometer"></div>
+        <button class="tog" id="tMy" type="button" aria-pressed="true"><span class="dot"></span><span>Myelinated <small>20&ndash;100 wraps of lipid membrane. Raises membrane resistance, drops membrane capacitance, so current leaks out far less along the internode.</small></span></button>
+        <div class="sl"><label for="myi">Myelin still intact <span class="v" id="myiV">100%</span></label>
+          <input type="range" id="myi" min="0" max="100" value="100" step="1" aria-label="Percentage of myelin remaining intact along the axon"></div>
+        <div class="sl"><label for="temp">Body temperature <span class="v" id="tempV">37.0 &deg;C</span></label>
+          <input type="range" id="temp" min="355" max="410" value="370" step="1" aria-label="Body temperature in tenths of a degree Celsius"></div>
+
+        <div class="row">
+          <button class="btn solid" id="bFire" type="button">Fire an impulse</button>
+        </div>
+        <div class="hint"><b>Two things to try.</b> Take a 10 &micro;m myelinated fiber down to about 35% myelin and it still conducts, slowly. Now raise the temperature to 39 &deg;C and it stops. Nothing was added to the lesion &mdash; heat simply shortens the time voltage-gated Na<sup>+</sup> channels stay open, and a safety factor that was already marginal falls below one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Membrane voltage, with the two conductances that cause it</h2>
+      <canvas id="cv1" width="1040" height="380" aria-label="Plot of membrane potential against time showing resting potential, threshold at minus 55 millivolts, the action potential upstroke and peak, repolarization and afterhyperpolarization"></canvas>
+      <canvas id="cv1b" width="1040" height="210" aria-label="Plot of relative sodium and potassium conductance against time, showing the fast sodium rise and inactivation and the slower delayed potassium rise"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>One axon, and a meter to travel</h2>
+      <canvas id="cv2" width="1040" height="300" aria-label="Diagram of an axon showing myelin internodes and nodes of Ranvier with an impulse traveling along it"></canvas>
+      <canvas id="cv2b" width="1040" height="230" aria-label="Race diagram comparing the time taken by the chosen fiber and by an unmyelinated C fiber to carry a signal one meter"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =========================================================
+   BENCH 1 -- threshold, all-or-none, refractory periods
+   ========================================================= */
+var REST=-70, THRESH=-55, PEAK=35, AHP=-82, TSTIM=2.0, TMAX=14;
+
+function apT(x){                       /* membrane voltage x ms after threshold crossing */
+  if(x<0) return REST;
+  if(x<0.40){ return THRESH+(PEAK-THRESH)*(0.5-0.5*Math.cos(Math.PI*x/0.40)); }
+  if(x<1.45){ return PEAK-(PEAK-REST)*(0.5-0.5*Math.cos(Math.PI*(x-0.40)/1.05)); }
+  if(x<2.10){ return REST-(REST-AHP)*(0.5-0.5*Math.cos(Math.PI*(x-1.45)/0.65)); }
+  return REST+(AHP-REST)*Math.exp(-(x-2.10)/1.4);
+}
+var GNA_MAX=0.4548, GK_MAX=0.4726;
+function gNa(x){ if(x<0) return 0.02; return Math.pow(1-Math.exp(-x/0.09),3)*Math.exp(-x/0.42)/GNA_MAX; }
+function gK(x){ if(x<0) return 0.06; return Math.pow(1-Math.exp(-x/0.40),4)*Math.exp(-x/2.2)/GK_MAX; }
+function thEff(x){ return (x<1.0) ? 999 : THRESH+25*Math.exp(-(x-1.0)/1.6); }
+
+var pinned=[];
+var PRE1=[{n:'Subthreshold 10 mV',v:10},{n:'Just at threshold 15 mV',v:15},{n:'Twice threshold 30 mV',v:30},{n:'Three times 45 mV',v:45}];
+(function(){
+  var b1=$('pre1');
+  PRE1.forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+    b.onclick=function(){ $('s1').value=P.v; render1(); };
+    b1.appendChild(b);
+  });
+})();
+var useS2=false;
+$('tS2').onclick=function(){ useS2=!useS2; this.setAttribute('aria-pressed',useS2?'true':'false'); render1(); };
+['s1','d2','s2'].forEach(function(id){ $(id).addEventListener('input',render1); });
+$('bPin').onclick=function(){ var r=simulate(); pinned.push(r.pts); if(pinned.length>5) pinned.shift(); render1(); };
+$('bClear').onclick=function(){ pinned=[]; render1(); };
+
+function simulate(){
+  var S1=+$('s1').value, D=(+$('d2').value)/10, S2=+$('s2').value;
+  var stims=[{t:TSTIM,s:S1}];
+  if(useS2) stims.push({t:TSTIM+D,s:S2});
+  var pts=[], gs=[], spikes=[], state=0, ts=0, blocked=null, dt=0.01, t, s2seen=false;
+  function passive(now,from){
+    var P=0;
+    for(var i=0;i<stims.length;i++){ var x=stims[i]; if(now>=x.t && x.t>=from) P+=x.s*Math.exp(-(now-x.t)/2.5); }
+    return P;
+  }
+  for(t=0;t<=TMAX+0.0001;t+=dt){
+    var V, gn, gk;
+    if(state===0){
+      V=REST+passive(t,0);
+      if(V>=THRESH){ state=1; ts=t; spikes.push(t); V=THRESH; }
+      gn=gNa(-1); gk=gK(-1);
+    } else {
+      var tau=t-ts, base=apT(tau), extra=passive(t,ts);
+      var th=(tau>=1.0)?thEff(tau):999;
+      if(base+extra>=th){ state=1; ts=t; spikes.push(t); tau=0; base=THRESH; }
+      else if(useS2 && !s2seen && t>=TSTIM+D && spikes.length===1){
+        s2seen=true;
+        blocked={t:t, need:(tau>=1.0)?(th-base):null, tau:t-spikes[0]};
+      }
+      V=base; gn=gNa(tau); gk=gK(tau);
+      if(tau>7.6){ state=0; }
+    }
+    pts.push([t,V]); gs.push([t,gn,gk]);
+  }
+  var peakV=REST; pts.forEach(function(p){ if(p[1]>peakV) peakV=p[1]; });
+  return {pts:pts,gs:gs,spikes:spikes,blocked:blocked,peak:peakV,S1:S1,S2:S2,D:D};
+}
+
+function render1(){
+  var S1=+$('s1').value, D=(+$('d2').value)/10, S2=+$('s2').value;
+  $('s1V').textContent=S1+' mV';
+  $('d2V').textContent=D.toFixed(1)+' ms';
+  $('s2V').textContent=S2+' mV';
+  $('d2').disabled=!useS2; $('s2').disabled=!useS2;
+  var R=simulate();
+  var n=R.spikes.length;
+  var interval=n>1?(R.spikes[1]-R.spikes[0]):0;
+  var freq=interval>0?(1000/interval):0;
+
+  $('st1').innerHTML=
+    tile('Action potentials fired',n,'from '+(useS2?'two stimuli':'one stimulus'))+
+    tile('Peak voltage reached',(R.peak>0?'+':'')+R.peak.toFixed(0),'mV &middot; module range +30 to +40')+
+    tile('Voltage the cell must climb',Math.max(0,THRESH-REST),'mV &middot; from &minus;70 to the &minus;55 threshold')+
+    tile('Spike duration','1.45','ms &middot; threshold back to rest')+
+    tile('Afterhyperpolarization',AHP,'mV &middot; module range &minus;80 to &minus;90')+
+    tile(n>1?'Interval achieved':'Absolute refractory period',n>1?interval.toFixed(2):'1.0','ms'+(n>1?' &middot; '+freq.toFixed(0)+' Hz if sustained':' &middot; no stimulus works inside it'));
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(n===0){
+    cls='verdict cool';
+    txt='Subthreshold &mdash; a graded potential that decays away<small>The membrane rose to '+(REST+S1)+' mV and then leaked back to rest. It never reached &minus;55 mV, so no voltage-gated Na<sup>+</sup> channel population ever committed.</small>';
+    inf='<span class="n">This is what a synaptic input looks like</span>Graded potentials are <b>proportional</b> to their stimulus and <b>decremental</b> &mdash; they shrink as they spread. That is why they cannot carry a signal down a meter of axon, and why the neuron needs the regenerative event instead.<div class="dd">Turn on the second stimulus and place it 1&ndash;2 ms after the first while both are subthreshold. Two responses that individually fail can add to cross threshold. That is <b>temporal summation</b>, and it is the subject of the synapse bench.</div>';
+  } else if(n===1 && !useS2){
+    cls='verdict';
+    txt='Threshold crossed &mdash; one full-size action potential<small>Peak +'+R.peak.toFixed(0)+' mV, back to rest in 1.45 ms, then an afterhyperpolarization to &minus;82 mV. Every suprathreshold stimulus produces exactly this.</small>';
+    inf='<span class="n">The upstroke is genuine positive feedback</span>Depolarization opens voltage-gated Na<sup>+</sup> channels; Na<sup>+</sup> entry depolarizes further; further depolarization opens more channels. The loop runs away in under a millisecond. Physiology tolerates it here only because it is <b>self-terminating</b>: the inactivation gate swings shut within 0.5&ndash;1 ms regardless of what the stimulus is doing.<div class="dd">Look at the conductance panel. The membrane peaks at about +35 mV rather than at E<sub>Na</sub> of +60 mV because the two curves overlap &mdash; Na<sup>+</sup> conductance is already falling while K<sup>+</sup> conductance is still climbing, and the peak is simply where the two currents cross.</div>';
+  } else if(n===1 && useS2 && R.blocked && R.blocked.need===null){
+    cls='verdict bad';
+    txt='Absolute refractory period &mdash; the second stimulus does nothing at any strength<small>It arrived '+R.blocked.tau.toFixed(2)+' ms into the spike, while the Na<sup>+</sup> inactivation gates are shut. Turn the second stimulus to 45 mV if you like; nothing changes.</small>';
+    inf='<span class="n">Availability, not distance</span>The inactivation gate is closed and only <b>repolarization</b> reopens it. Until then the channels are not merely closed, they are unavailable, so the membrane is not weakly excitable &mdash; it is inexcitable.<div class="dd">Two consequences fall straight out of this. Propagation becomes <b>unidirectional</b>, because the membrane behind an advancing impulse is refractory and the impulse cannot double back. And firing frequency is <b>capped</b> &mdash; roughly 100&ndash;500 Hz in a neuron with a 1 ms absolute refractory period. In ventricular myocardium the same period lasts <b>200&ndash;250 ms</b>, which is precisely why heart muscle cannot be tetanized.</div>';
+  } else if(n===1 && useS2 && R.blocked){
+    cls='verdict warn';
+    txt='Relative refractory period &mdash; this stimulus is too small, but a bigger one would work<small>It arrived '+R.blocked.tau.toFixed(2)+' ms in, when about <b>'+R.blocked.need.toFixed(0)+' mV</b> of depolarization was required instead of the usual 15 mV. Raise the second stimulus and watch it break through.</small>';
+    inf='<span class="n">Two things are working against it at once</span>Some Na<sup>+</sup> channels have reset but not all of them, so the effective threshold is raised. And the membrane is sitting in afterhyperpolarization near &minus;82 mV, further from threshold than it would be at rest. Both effects fade over the next few milliseconds.<div class="dd">This is where <b>frequency coding</b> is actually set. A stronger stimulus does not make a bigger spike, but it <i>can</i> break through the relative refractory period sooner, so the interval shortens and the firing rate rises. A hot stove fires nociceptors near 80 Hz where warm water fires them near 5 Hz.</div>';
+  } else {
+    cls='verdict';
+    txt='Two action potentials, '+interval.toFixed(2)+' ms apart &mdash; a firing rate of '+freq.toFixed(0)+' Hz<small>Identical amplitude, identical duration. The only thing that changed between them is timing.</small>';
+    inf='<span class="n">Intensity lives in the pattern, not in the size</span>Because every suprathreshold stimulus produces the same spike, the nervous system codes stimulus strength two other ways: <b>frequency</b>, which you have just changed, and <b>population recruitment</b>, in which more fibers and higher-threshold fibers join in as the stimulus grows. It is the same rate-and-recruitment logic as motor unit control.<div class="dd">'+(freq>500?'Note that '+freq.toFixed(0)+' Hz is above the usual physiologic ceiling of 100&ndash;500 Hz. In a real neuron the relative refractory period and the metabolic cost of resetting the gradients both intervene long before this.':'That sits inside the usual physiologic range of 100&ndash;500 Hz.')+'</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Membrane potential trace: '+n+' action potential'+(n===1?'':'s')+' fired, peak '+R.peak.toFixed(0)+' millivolts.');
+  draw1(R);
+}
+
+function draw1(R){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=78,Rt=W-18,T=22,B=H-46;
+  function X(t){ return L+(t/TMAX)*(Rt-L); }
+  function Y(v){ return B-((v+95)/145)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var v=-90;v<=40;v+=20){
+    g.beginPath(); g.moveTo(L,Y(v)); g.lineTo(Rt,Y(v)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText((v>0?'+':'')+v, L-8, Y(v)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(Rt,B); g.stroke();
+  for(var t=0;t<=TMAX;t+=2){
+    g.beginPath(); g.moveTo(X(t),B); g.lineTo(X(t),B+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(t, X(t), B+20);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('milliseconds', (L+Rt)/2, B+38);
+  g.textAlign='left'; g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif';
+  g.fillText('mV', L-46, T+10);
+
+  /* threshold and rest */
+  g.strokeStyle=GOLD; g.lineWidth=2; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(L,Y(THRESH)); g.lineTo(Rt,Y(THRESH)); g.stroke();
+  g.strokeStyle=MUT; g.lineWidth=1.4;
+  g.beginPath(); g.moveTo(L,Y(REST)); g.lineTo(Rt,Y(REST)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('threshold −55', Rt-104, Y(THRESH)-6);
+  g.fillStyle=MUT; g.fillText('rest −70', Rt-104, Y(REST)+16);
+
+  /* refractory shading behind the first spike */
+  if(R.spikes.length){
+    var s0=R.spikes[0];
+    g.fillStyle=CORAL; g.globalAlpha=0.10; g.fillRect(X(s0),T,X(s0+1.0)-X(s0),B-T); g.globalAlpha=1;
+    g.fillStyle=GOLD; g.globalAlpha=0.10; g.fillRect(X(s0+1.0),T,X(s0+5.0)-X(s0+1.0),B-T); g.globalAlpha=1;
+    g.fillStyle=CORAL; g.font='800 10.6px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('ABSOLUTE', X(s0+0.5), T+14);
+    g.fillStyle=GOLD; g.fillText('RELATIVE REFRACTORY', X(s0+3.0), T+14);
+  }
+
+  /* pinned ghosts */
+  pinned.forEach(function(P){
+    g.strokeStyle=MUT; g.globalAlpha=0.42; g.lineWidth=2;
+    g.beginPath();
+    for(var i=0;i<P.length;i+=2){ var p=P[i]; if(i===0) g.moveTo(X(p[0]),Y(p[1])); else g.lineTo(X(p[0]),Y(p[1])); }
+    g.stroke(); g.globalAlpha=1;
+  });
+
+  /* stimulus markers */
+  function stimMark(tt,ss,col){
+    g.strokeStyle=col; g.lineWidth=2; g.setLineDash([3,3]);
+    g.beginPath(); g.moveTo(X(tt),B); g.lineTo(X(tt),T+26); g.stroke(); g.setLineDash([]);
+    g.fillStyle=col; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(ss+' mV', X(tt), T+20);
+  }
+  stimMark(TSTIM,R.S1,PURP);
+  if(useS2) stimMark(TSTIM+R.D,R.S2,BLUE);
+
+  /* main trace */
+  g.strokeStyle=TDK; g.lineWidth=3.4; g.lineJoin='round';
+  g.beginPath();
+  for(var i=0;i<R.pts.length;i++){ var p=R.pts[i]; if(i===0) g.moveTo(X(p[0]),Y(p[1])); else g.lineTo(X(p[0]),Y(p[1])); }
+  g.stroke();
+
+  /* conductance panel */
+  var c2=$('cv1b'),h=c2.getContext('2d'),W2=c2.width,H2=c2.height;
+  h.clearRect(0,0,W2,H2); h.fillStyle='#fff'; h.fillRect(0,0,W2,H2);
+  var T2=26,B2=H2-40;
+  function Y2(u){ return B2-u*(B2-T2); }
+  h.strokeStyle=LINE; h.lineWidth=1;
+  [0,0.5,1].forEach(function(u){ h.beginPath(); h.moveTo(L,Y2(u)); h.lineTo(Rt,Y2(u)); h.stroke(); });
+  h.strokeStyle=MUT; h.lineWidth=1.6;
+  h.beginPath(); h.moveTo(L,T2); h.lineTo(L,B2); h.lineTo(Rt,B2); h.stroke();
+  h.fillStyle=MUT; h.font='600 11.5px Inter, system-ui, sans-serif'; h.textAlign='right';
+  h.fillText('max', L-8, Y2(1)+4); h.fillText('0', L-8, Y2(0)+4);
+  function cond(idx,col,lab){
+    h.strokeStyle=col; h.lineWidth=3; h.beginPath();
+    for(var i=0;i<R.gs.length;i++){ var p=R.gs[i]; if(i===0) h.moveTo(X(p[0]),Y2(p[idx])); else h.lineTo(X(p[0]),Y2(p[idx])); }
+    h.stroke();
+    h.fillStyle=col; h.font='800 12.5px Inter, system-ui, sans-serif'; h.textAlign='left';
+    h.fillText(lab, L+10, idx===1?T2+4:T2+22);
+  }
+  cond(1,CORAL,'g Na⁺  — fast to open, then inactivates');
+  cond(2,TEAL,'g K⁺  — slow to open, slow to close');
+  h.fillStyle=TDK; h.font='800 12.5px Inter, system-ui, sans-serif'; h.textAlign='center';
+  h.fillText('relative membrane conductance', (L+Rt)/2, B2+26);
+}
+
+/* =========================================================
+   BENCH 2 -- myelin, diameter and conduction velocity
+   ========================================================= */
+var FIBERS=[
+ {n:'A&alpha; &middot; motor, proprioception', d:160, my:true},
+ {n:'A&beta; &middot; touch, vibration',       d:90,  my:true},
+ {n:'A&delta; &middot; sharp pain, cold',      d:30,  my:true},
+ {n:'B &middot; preganglionic autonomic',      d:20,  my:true},
+ {n:'C &middot; burning pain, warmth',         d:10,  my:false}
+];
+(function(){
+  var box=$('pre2');
+  FIBERS.forEach(function(F){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=F.n;
+    b.onclick=function(){ $('dia').value=F.d; myel=F.my; $('tMy').setAttribute('aria-pressed',myel?'true':'false'); $('myi').value=100; render2(); };
+    box.appendChild(b);
+  });
+})();
+var myel=true;
+$('tMy').onclick=function(){ myel=!myel; this.setAttribute('aria-pressed',myel?'true':'false'); render2(); };
+['dia','myi','temp'].forEach(function(id){ $(id).addEventListener('input',render2); });
+
+function fiber(){
+  var d=(+$('dia').value)/10;
+  var m=myel?(+$('myi').value)/100:0;
+  var T=(+$('temp').value)/10;
+  var k=(d>=6)?6:5;
+  var vMy=k*d, vUn=1.6*Math.sqrt(d);
+  var v=myel?(vUn+(vMy-vUn)*Math.pow(m,1.8)):vUn;
+  var tempF=T>37?Math.max(0.2,1-0.08*(T-37)):Math.min(1.12,1+0.03*(37-T));
+  var SF=myel?(5.5*Math.pow(m,1.5)*tempF):(3.0*tempF);
+  var blocked=SF<1;
+  var node=100*d;                       /* internode length in micrometers */
+  return {d:d,m:m,T:T,v:v,vMy:vMy,vUn:vUn,SF:SF,blocked:blocked,node:node,tempF:tempF};
+}
+
+var animT=0, animRaf=null, animStart=0;
+$('bFire').onclick=function(){ animStart=performance.now(); if(!animRaf) animRaf=requestAnimationFrame(animLoop); };
+function animLoop(ts){
+  animT=(ts-animStart)/1000;
+  render2();
+  if(animT<3.4){ animRaf=requestAnimationFrame(animLoop); } else { animRaf=null; animT=0; render2(); }
+}
+
+function render2(){
+  var F=fiber();
+  $('diaV').textContent=F.d.toFixed(1)+' µm';
+  $('myiV').textContent=myel?Math.round(F.m*100)+'%':'no myelin';
+  $('tempV').textContent=F.T.toFixed(1)+' °C';
+  $('myi').disabled=!myel;
+  var travel=1000/F.v;                 /* ms to cross 1 meter */
+  var cTravel=1000/1.6;
+
+  $('st2').innerHTML=
+    tile('Conduction velocity',F.blocked?'0':F.v.toFixed(1),F.blocked?'m/s &middot; conduction has failed':'m/s')+
+    tile('One meter takes',F.blocked?'never':(travel<1000?travel.toFixed(0)+' ms':(travel/1000).toFixed(2)+' s'),'fingertip to spinal cord')+
+    tile('Safety factor',F.SF.toFixed(2),'must stay above 1.00 to conduct')+
+    tile(myel?'Internode length':'Channels are continuous',myel?(F.node/1000).toFixed(2):'&mdash;',myel?'mm between nodes &middot; module range 0.2 to 2':'no nodes in an unmyelinated axon')+
+    tile('Na<sup>+</sup> channel density',myel?'1,000–2,000':'a few dozen',myel?'per &micro;m&sup2; at the nodes':'per &micro;m&sup2;, spread evenly')+
+    tile('If it were unmyelinated',F.vUn.toFixed(1),'m/s at this same diameter');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(F.blocked){
+    cls='verdict bad';
+    txt='Conduction block &mdash; the impulse dies partway along<small>Safety factor '+F.SF.toFixed(2)+'. Local current leaking across the bared internode arrives at the next node <b>below threshold</b>, so there is nothing left to regenerate.</small>';
+    inf='<span class="n">Demyelination does not damage the axon</span>The axon is intact, the channels are intact, the cell body is intact. What has been lost is the <b>insulation</b>. Myelin raises membrane resistance and lowers membrane capacitance so that local current reaches the next node with enough amplitude to fire it; strip it and the current leaks out along the way.<div class="dd">'+(F.T>37.4?'You raised the temperature to '+F.T.toFixed(1)+' &deg;C, and that alone tipped it over. Heat shortens the time voltage-gated Na<sup>+</sup> channels stay open, eroding a safety factor that was already marginal. This is <b>Uhthoff phenomenon</b> &mdash; the classic account of multiple sclerosis symptoms worsening in a hot bath or on a hot day, then recovering when the patient cools.':'In <b>multiple sclerosis</b>, immune attack strips central myelin and produces exactly this: optic neuritis, sensory loss and weakness. In <b>Guillain&ndash;Barr&eacute; syndrome</b> the target is peripheral myelin, and weakness ascends from the feet over days, with respiratory muscle involvement the feared complication.')+'</div>';
+  } else if(myel && F.m<0.75){
+    cls='verdict warn';
+    txt='Partially demyelinated &mdash; still conducting, but slowly and with little margin<small>'+F.v.toFixed(1)+' m/s against '+F.vMy.toFixed(0)+' m/s intact. Safety factor is down to '+F.SF.toFixed(2)+', where a healthy myelinated fiber runs near 5.</small>';
+    inf='<span class="n">Slowing comes before failure</span>This is why nerve conduction studies are useful before a fiber stops working altogether: velocity falls, and latencies stretch, while the patient still has function. Push the myelin slider lower, or raise the temperature, and watch the safety factor cross 1.00.<div class="dd">Local anesthetics attack the same physiology from the opposite end. Lidocaine binds the voltage-gated Na<sup>+</sup> channel from the inside, preferentially in channels that are <b>frequently opening</b>, which is why it silences small rapidly firing pain fibers before it touches large motor fibers.</div>';
+  } else if(!myel){
+    cls='verdict cool';
+    txt='Unmyelinated &mdash; continuous conduction at '+F.v.toFixed(1)+' m/s<small>Every patch of membrane must depolarize its neighbor to threshold, and every patch must then be repaired by the pump. One meter takes '+(travel/1000).toFixed(2)+' s.</small>';
+    inf='<span class="n">The cost, not just the speed</span>Saltatory conduction is faster <i>and</i> far cheaper. When the impulse regenerates only at nodes, far fewer ions cross the membrane per impulse, so the Na<sup>+</sup>/K<sup>+</sup> ATPase does much less work to restore the gradients. An unmyelinated axon pays full price along its whole length.<div class="dd">Switch myelin on at this same diameter and the velocity jumps from '+F.vUn.toFixed(1)+' to '+F.vMy.toFixed(0)+' m/s &mdash; without changing the axon&rsquo;s width at all.</div>';
+  } else {
+    cls='verdict';
+    txt='Healthy saltatory conduction at '+F.v.toFixed(1)+' m/s<small>The impulse regenerates only at the nodes of Ranvier, '+(F.node/1000).toFixed(2)+' mm apart, and leaps electrotonically across each internode. Safety factor '+F.SF.toFixed(2)+'.</small>';
+    inf='<span class="n">Two variables, and they are not equal partners</span>Larger diameter lowers internal axial resistance so current spreads farther &mdash; the same logic as a wider pipe in Q = &Delta;P / R. Myelin raises membrane resistance and lowers capacitance so less current leaks away. Diameter buys you a linear gain; myelin buys you an order of magnitude.<div class="dd">Saltatory comes from the Latin <i>saltare</i>, to leap. The impulse is not moving faster through the axon &mdash; it is simply being regenerated in fewer places.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Axon '+F.d.toFixed(1)+' micrometers wide, '+(myel?'myelinated with '+Math.round(F.m*100)+' percent of myelin intact':'unmyelinated')+', conducting at '+(F.blocked?'zero, blocked':F.v.toFixed(1)+' meters per second')+'.');
+  drawAxon(F); drawRace(F,travel,cTravel);
+}
+
+function drawAxon(F){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=52,R=W-52,y=150, NN=7;
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(myel?'MYELINATED AXON — the impulse leaps node to node':'UNMYELINATED AXON — every patch must fire its neighbor', L, 34);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText(myel?'internodes '+(F.node/1000).toFixed(2)+' mm apart in a fiber this size':'no nodes, no leaps — continuous regeneration', L, 54);
+
+  /* bare axon */
+  g.strokeStyle=MUT; g.lineWidth=Math.max(8,Math.min(30,F.d*1.6+8)); g.lineCap='butt';
+  g.beginPath(); g.moveTo(L,y); g.lineTo(R,y); g.stroke();
+
+  var seg=(R-L)/NN, nodesX=[];
+  if(myel){
+    for(var i=0;i<NN;i++){
+      var x0=L+i*seg+7, x1=L+(i+1)*seg-7;
+      var thick=6+16*F.m;
+      g.fillStyle=BLUE; g.globalAlpha=0.18+0.55*F.m;
+      g.fillRect(x0,y-thick-Math.max(4,F.d*0.8),x1-x0,thick);
+      g.fillRect(x0,y+Math.max(4,F.d*0.8),x1-x0,thick);
+      g.globalAlpha=1;
+      g.strokeStyle=BLUE; g.lineWidth=1.6;
+      g.strokeRect(x0,y-thick-Math.max(4,F.d*0.8),x1-x0,thick);
+      g.strokeRect(x0,y+Math.max(4,F.d*0.8),x1-x0,thick);
+      if(F.m<0.85){
+        g.strokeStyle=CORAL; g.lineWidth=2; g.globalAlpha=0.8;
+        for(var k=0;k<3;k++){
+          var lx=x0+(x1-x0)*(0.25+0.25*k);
+          g.beginPath(); g.moveTo(lx,y-10); g.lineTo(lx,y-30-14*(1-F.m)); g.stroke();
+          g.beginPath(); g.moveTo(lx,y-30-14*(1-F.m)); g.lineTo(lx-4,y-22-14*(1-F.m)); g.lineTo(lx+4,y-22-14*(1-F.m)); g.closePath(); g.fillStyle=CORAL; g.fill();
+        }
+        g.globalAlpha=1;
+      }
+      if(i<NN) nodesX.push(L+(i+1)*seg);
+    }
+    nodesX.pop(); nodesX.unshift(L+2);
+    g.fillStyle=GOLD;
+    nodesX.forEach(function(nx){ g.fillRect(nx-3,y-16,6,32); });
+    g.fillStyle=GOLD; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('node', nodesX[1], y+44);
+    g.fillStyle=BLUE; g.fillText('internode', (nodesX[1]+nodesX[2])/2, y-44);
+    if(F.m<0.85){ g.fillStyle=CORAL; g.textAlign='right'; g.fillText('current leaking out', R, y-52); }
+  } else {
+    for(var q=0;q<40;q++){ var qx=L+q*((R-L)/39); g.fillStyle=GOLD; g.fillRect(qx-1.5,y-13,3,26); }
+    g.fillStyle=GOLD; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('Na⁺ channels spread evenly along the whole membrane', (L+R)/2, y+46);
+  }
+
+  /* impulse */
+  if(animT>0 && animT<3.2){
+    var frac=Math.min(1,animT/2.6);
+    if(F.blocked) frac=Math.min(frac,0.52);
+    var px=L+frac*(R-L);
+    if(myel && nodesX.length){
+      var best=nodesX[0];
+      for(var j=0;j<nodesX.length;j++){ if(nodesX[j]<=px) best=nodesX[j]; }
+      px=best;
+    }
+    var col=F.blocked&&frac>=0.5?CORAL:GREEN;
+    g.fillStyle=col; g.globalAlpha=0.28;
+    g.beginPath(); g.arc(px,y,26,0,6.3); g.fill(); g.globalAlpha=1;
+    g.fillStyle=col;
+    g.beginPath(); g.arc(px,y,12,0,6.3); g.fill();
+    g.fillStyle=col; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(F.blocked&&frac>=0.5?'BLOCKED':'+35 mV here', px, y-46);
+  } else {
+    g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('press "Fire an impulse" to send one along', (L+R)/2, H-16);
+  }
+}
+
+function drawRace(F,travel,cTravel){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=150,R=W-150;
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('ONE METER — fingertip to spinal cord', 24, 28);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif';
+  g.fillText('animation runs at about three times slower than life', 24, 46);
+
+  function lane(yy,label,ms,col,live,readout){
+    g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(label, L-14, yy+4);
+    g.strokeStyle=LINE; g.lineWidth=12; g.lineCap='round';
+    g.beginPath(); g.moveTo(L,yy); g.lineTo(R,yy); g.stroke();
+    var frac=0;
+    if(live && animT>0){ frac=Math.min(1,(animT*1000/3)/ms); }
+    g.strokeStyle=col; g.lineWidth=12;
+    if(frac>0){ g.beginPath(); g.moveTo(L,yy); g.lineTo(L+frac*(R-L),yy); g.stroke(); }
+    g.fillStyle=col;
+    g.beginPath(); g.arc(L+frac*(R-L),yy,9,0,6.3); g.fill();
+    g.fillStyle=col; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(readout, R+14, yy+4);
+  }
+  function ms2s(ms){ return ms>=1000?(ms/1000).toFixed(2)+' s':ms.toFixed(0)+' ms'; }
+  lane(96,'your fiber  '+(F.blocked?'BLOCKED':F.v.toFixed(1)+' m/s'),travel,F.blocked?CORAL:TEAL,!F.blocked,F.blocked?'never arrives':ms2s(travel));
+  lane(150,'C fiber  1.6 m/s',cTravel,CORAL,true,ms2s(cTravel));
+  g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('This gap is the double sensation of injury: the sharp pinprick on Aδ arrives about a second before the slow ache on C fibers from the same foot.', W/2, H-22);
+}
+
+/* boot */
+render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>One Axis, Two Patterns: the Surge and the Steady State</title>
+<meta name="description" content="Scrub through the ovarian cycle to watch estradiol flip its own feedback from negative to positive and fire the LH surge, then switch to the male axis and suppress it with exogenous androgen.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:19px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+.modeseg{margin-bottom:12px;}
+.fb{display:inline-block;font-size:10.6px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border-radius:20px;padding:5px 12px;color:#fff;background:var(--teal);}
+.fb.pos{background:var(--coral);} .fb.off{background:var(--muted);} .fb.strong{background:var(--purple);}
+.axis{margin-top:4px;}
+.ar{display:grid;grid-template-columns:126px 1fr 74px;align-items:center;gap:9px;margin:8px 0;font-size:12px;font-weight:700;color:var(--soft);}
+.ar .track{height:15px;background:var(--line);border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+.ar .fill{height:100%;border-radius:7px;transition:width .25s;}
+.ar .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--teal-dk);font-weight:800;font-size:12px;}
+.ar small{display:block;font-weight:500;font-size:10.4px;color:var(--muted);}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch14.html">&larr; Module 14</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 14</div>
+  <h1>One Axis, Two Patterns: the Surge and the Steady State</h1>
+  <div class="intro">Both sexes run the same three tiers: pulsatile <b>GnRH</b>, two pituitary gonadotropins, gonadal steroids feeding back. The female cycle differs from the male steady state because of a single inversion &mdash; when estradiol passes about <b>200 pg/mL and stays there for roughly 48 hours</b>, its effect on the hypothalamic&ndash;pituitary unit flips from inhibitory to stimulatory. Scrub through the days below, break the inversion, and see what a cycle looks like without it. Then switch to the male axis and suppress it with exogenous androgen.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <div class="modeseg">
+        <div class="seg" role="group" aria-label="Choose the female cycle or the male axis">
+          <button type="button" id="mF" class="on" aria-pressed="true">Female cycle<small>a feedback inversion</small></button>
+          <button type="button" id="mM" aria-pressed="false">Male axis<small>a tonic steady state</small></button>
+        </div>
+      </div>
+
+      <div id="paneF">
+        <div class="sl"><label for="sDay">Day of the cycle <span class="v" id="vDay">day 14</span></label>
+          <input type="range" id="sDay" min="1" max="28" value="14" step="1" aria-label="Day of the ovarian cycle"></div>
+        <div class="sl"><label for="sLen">Cycle length <span class="v" id="vLen">28 days</span></label>
+          <input type="range" id="sLen" min="21" max="35" value="28" step="1" aria-label="Total cycle length in days"></div>
+        <div class="lbl">Change the axis</div>
+        <div class="chips" id="chipsF"></div>
+        <div class="hint"><b>The luteal phase does not move.</b> The corpus luteum lives 12 to 14 days and then involutes unless hCG rescues it, so lengthening the cycle lengthens the <i>follicular</i> phase only. Slide cycle length from 21 to 35 and watch ovulation walk to the right while the distance from ovulation to the next menses stays put &mdash; that is why you count back 14 days to find the ovulation day.</div>
+      </div>
+
+      <div id="paneM" class="hidden">
+        <div class="sl"><label for="sT">Exogenous testosterone <span class="v" id="vT">none</span></label>
+          <input type="range" id="sT" min="0" max="2500" value="0" step="25" aria-label="Exogenous testosterone contribution to serum level in nanograms per deciliter"></div>
+        <div class="sl"><label for="sPulse">GnRH pulse interval <span class="v" id="vPulse">90 min</span></label>
+          <input type="range" id="sPulse" min="30" max="240" value="90" step="5" aria-label="Interval between hypothalamic GnRH pulses in minutes"></div>
+        <div class="lbl">Change the axis</div>
+        <div class="chips" id="chipsM"></div>
+        <div class="hint"><b>Pulsatility is the message.</b> GnRH must arrive in pulses every 60 to 120 minutes. Deliver it continuously and pituitary receptors downregulate and the axis switches off &mdash; not a side effect but the therapeutic mechanism of GnRH agonists.</div>
+      </div>
+    </div>
+
+    <div class="card" id="cardAxis">
+      <h2 id="axisTitle">The axis right now</h2>
+      <div class="axis" id="axis"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2 id="chartTitle">Hormones across the cycle</h2>
+      <canvas id="cv" width="640" height="380" role="img" aria-label="Follicle stimulating hormone, luteinizing hormone, estradiol and progesterone plotted across the cycle, with the ovarian and uterine phases marked below"></canvas>
+      <div class="labs" id="labs"></div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'),
+    LINE=cvar('--line'), MUTED=cvar('--muted'), SOFT=cvar('--soft');
+function $(id){return document.getElementById(id);}
+function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+function bell(x,mu,sd){return Math.exp(-0.5*Math.pow((x-mu)/sd,2));}
+
+var LUTEAL=14, E2_TRIGGER=200;
+var S={mode:'F',day:14,len:28,mod:'none',texo:0,pulse:90};
+
+/* ---------------- female cycle ---------------- */
+/* The luteal phase is fixed at 14 days, so ovulation sits 14 days before the next
+   menses: day 14 of a 28-day cycle, day 21 of a 35-day cycle. All the variation in
+   cycle length lives in the follicular phase. */
+function ovDay(){ return S.len-LUTEAL; }
+function e2Climb(d,fol){
+  return 35+25*clamp(d/Math.max(1,fol),0,1)+200*bell(d,fol,2.2)+45*bell(d,fol,5.5);
+}
+function cycle(d){
+  var ov=ovDay(), fol=ov-1, m=S.mod;
+  var e2,lh,fsh,p4,hcg=0;
+
+  if(m==='coc'){                                  /* steady exogenous steroid */
+    return {e2:45,lh:2.5,fsh:2.0,p4:1.0,hcg:0,ovul:false,surge:false};
+  }
+  if(m==='agonist'){                              /* continuous GnRH: receptors downregulated */
+    return {e2:18,lh:0.6,fsh:1.2,p4:0.3,hcg:0,ovul:false,surge:false};
+  }
+  if(m==='energy'){                               /* kisspeptin gated by energy status */
+    return {e2:28,lh:1.6,fsh:3.2,p4:0.3,hcg:0,ovul:false,surge:false};
+  }
+
+  /* estradiol: a follicular climb to the pre-ovulatory peak, a post-ovulatory dip,
+     then the smaller luteal shoulder from the corpus luteum */
+  var climb=e2Climb(d,fol);
+  var luteal=35+120*bell(d,ov+7,4.2);
+  e2=(d<=fol)?climb:Math.max(luteal,45+180*bell(d,fol,1.4));
+
+  /* does the inversion fire?  Estradiol must cross 200 pg/mL and hold it ~48 hours */
+  var sustained=(function(){
+    if(m==='noflip') return false;
+    var hits=0;
+    for(var k=fol-2;k<=fol;k++){ if(e2Climb(k,fol)>=E2_TRIGGER) hits++; }
+    return hits>=2;
+  })();
+
+  fsh=Math.max(0.5, 3.8+5.5*bell(d,2.5,2.8)+(sustained?7.0*bell(d,ov,0.9):0)
+      +2.5*bell(d,S.len+1,2.4)-1.2*bell(d,fol-2,3.5));
+  lh=Math.max(0.4, 4.5+(sustained?62*bell(d,ov,0.85):0)+1.6*bell(d,fol-3,4)-1.5*bell(d,ov+7,5));
+
+  if(sustained){
+    p4=0.4+(d>ov ? 16*bell(d,ov+7,3.6)*clamp((d-ov)/3,0,1) : 0);
+    if(m==='hcg'&&d>=ov+8){ hcg=Math.pow(2,(d-(ov+8))/2)*25; p4=Math.max(p4,8+0.9*(d-(ov+8))); }
+    else if(d>=S.len-1) p4=Math.max(0.5,p4*0.35);
+  }else{
+    p4=0.4;                                        /* no rupture, no corpus luteum, no progesterone */
+  }
+  return {e2:e2,lh:lh,fsh:fsh,p4:p4,hcg:hcg,ovul:sustained,surge:sustained};
+}
+function phases(d){
+  var ov=ovDay(), fol=ov-1, m=S.mod, c=cycle(d);
+  var ovarian,uterine;
+  if(!c.ovul){
+    ovarian=(m==='coc')?'Suppressed &mdash; no follicular recruitment':
+            (m==='agonist')?'Quiescent &mdash; axis switched off':
+            (m==='energy')?'Quiescent &mdash; hypothalamic suppression':
+            'Follicular, anovulatory';
+    uterine=(m==='coc')?'Thin, stable &mdash; no proliferative surge, no secretory conversion':
+            (m==='agonist'||m==='energy')?'Atrophic &mdash; unstimulated':
+            'Proliferative only &mdash; unopposed estrogen, no secretory phase';
+    return {ov:ovarian,ut:uterine,fb:(m==='noflip'?'Negative, stuck':'Negative')};
+  }
+  if(d<=5){ ovarian='Early follicular'; uterine='Menstrual'; }
+  else if(d<ov){ ovarian='Late follicular &mdash; dominant follicle selected'; uterine='Proliferative'; }
+  else if(d===ov){ ovarian='Ovulation'; uterine='Late proliferative'; }
+  else { ovarian='Luteal &mdash; corpus luteum active'; uterine='Secretory'; }
+  if(m==='hcg'&&d>=ov+8){ ovarian='Corpus luteum rescued by hCG'; uterine='Secretory, maintained'; }
+  var fb;
+  if(d>=fol-1&&d<=ov) fb='Positive';
+  else if(d>ov) fb='Strong negative';
+  else fb='Negative';
+  return {ov:ovarian,ut:uterine,fb:fb};
+}
+function endometrium(d){
+  var ov=ovDay(), fol=ov-1, c=cycle(d);
+  if(!c.ovul){
+    if(S.mod==='coc') return 3.5;
+    if(S.mod==='agonist'||S.mod==='energy') return 2.0;
+    return clamp(2+8*(d/Math.max(1,S.len)),2,11);
+  }
+  if(d<=5) return clamp(4-0.6*d,1.5,4);
+  if(d<=fol) return clamp(1.8+ (d-5)*(8.6/Math.max(1,fol-5)),2,10.5);
+  if(S.mod==='hcg'&&d>=ov+8) return clamp(11+0.25*(d-ov),11,15);
+  return clamp(10.5+2.5*bell(d,ov+7,5),9,13.5);
+}
+function bbt(d){
+  var c=cycle(d), ov=ovDay();
+  if(!c.ovul) return 36.5;
+  if(d<=ov) return 36.5;
+  if(S.mod!=='hcg'&&d>=S.len-1) return 36.6;
+  return 36.9;
+}
+
+/* ---------------- male axis ---------------- */
+var LH0=5.0, FSH0=4.2, T0=550;
+function male(){
+  if(S.mod==='magonist'){
+    var t0=18, serum0=t0+S.texo, itt0=75*t0+serum0;
+    return {lh:0.4,fsh:0.7,tEndo:t0,tSerum:serum0,itt:itt0,inhibin:12,sperm:sperm(itt0,0.15),cont:true};
+  }
+  /* Negative feedback: total circulating androgen suppresses GnRH and LH, and the
+     feedback cannot tell endogenous from exogenous. Solved as a fixed point. */
+  var tEndo=T0, lh=LH0;
+  for(var i=0;i<120;i++){
+    var total=tEndo+S.texo;
+    lh=LH0*2/(1+Math.pow(total/T0,3.0));
+    tEndo=tEndo*0.5+(T0*lh/LH0)*0.5;
+  }
+  var serum=tEndo+S.texo;
+  var freq=clamp(90/S.pulse,0.45,2.0);            /* faster pulses favor LH, slower favor FSH */
+  var itt=75*tEndo+serum;                          /* androgen-binding protein concentrates it */
+  var inhibin=clamp(150*Math.pow(clamp(itt/(75*T0),0,1.4),0.6),4,170);
+  var fsh=clamp(FSH0*2*(1/(1+Math.pow(serum/T0,2.2)))*(1/(0.5+0.5*inhibin/150))/Math.max(0.7,freq),0.2,16);
+  lh=clamp(lh*freq,0.2,20);
+  return {lh:lh,fsh:fsh,tEndo:tEndo,tSerum:serum,itt:itt,inhibin:inhibin,sperm:sperm(itt,fsh/FSH0),cont:false};
+}
+function sperm(itt,fshRel){
+  var ittN=75*T0+T0;
+  var a=Math.pow(clamp(itt/ittN,0,1.4),1.1);       /* intratesticular androgen is the dominant term */
+  var b=clamp(0.35+0.65*fshRel,0,1.3);             /* Sertoli support scales with FSH */
+  return clamp(150*a*b,0,240);
+}
+
+/* ---------------- presets ---------------- */
+var PREF=[
+ {n:'Ordinary cycle',mod:'none'},
+ {n:'Conception &middot; hCG rescue',mod:'hcg'},
+ {n:'Positive feedback blocked',mod:'noflip'},
+ {n:'Combined oral contraceptive',mod:'coc'},
+ {n:'Continuous GnRH agonist',mod:'agonist'},
+ {n:'Energy deficit &middot; kisspeptin gated',mod:'energy'}
+];
+var PREM=[
+ {n:'Healthy adult',mod:'none',texo:0,pulse:90},
+ {n:'Anabolic steroid user',mod:'none',texo:1600,pulse:90},
+ {n:'Replacement dose',mod:'none',texo:500,pulse:90},
+ {n:'Continuous GnRH agonist',mod:'magonist',texo:0,pulse:90},
+ {n:'Slow pulses &middot; FSH favored',mod:'none',texo:0,pulse:190}
+];
+
+function buildChips(id,arr,fn){
+  var box=$(id); box.innerHTML='';
+  arr.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=p.n;
+    b.addEventListener('click',function(){ fn(p); mark(id,i); });
+    box.appendChild(b);
+  });
+}
+function mark(id,i){ var cs=$(id).children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i); }
+
+/* ---------------- render ---------------- */
+function render(){
+  if(S.mode==='F') renderF(); else renderM();
+}
+
+function renderF(){
+  $('vDay').textContent='day '+S.day;
+  $('vLen').textContent=S.len+' days';
+  var c=cycle(S.day), ph=phases(S.day), ov=ovDay();
+  $('labs').innerHTML=
+    labBox('Estradiol',c.e2.toFixed(0),'pg/mL')+
+    labBox('LH',c.lh.toFixed(1),'mIU/mL')+
+    labBox('FSH',c.fsh.toFixed(1),'mIU/mL')+
+    labBox('Progesterone',c.p4.toFixed(1),'ng/mL')+
+    labBox('Endometrium',endometrium(S.day).toFixed(1),'mm')+
+    labBox('Basal temperature',bbt(S.day).toFixed(1),'&deg;C');
+  axisF(c,ph,ov);
+  verdictF(c,ph,ov);
+  drawF();
+}
+function labBox(k,v,u){ return '<div class="lab"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>'; }
+
+function axisF(c,ph,ov){
+  var fbClass=ph.fb==='Positive'?'pos':(ph.fb==='Strong negative'?'strong':(ph.fb.indexOf('stuck')>-1?'off':''));
+  function bar(name,sub,val,max,color,txt){
+    var w=clamp(val/max*100,2,100);
+    return '<div class="ar"><span>'+name+'<small>'+sub+'</small></span><span class="track"><span class="fill" style="width:'+w.toFixed(1)+'%;background:'+color+'"></span></span><span class="num">'+txt+'</span></div>';
+  }
+  $('axisTitle').innerHTML='Day '+S.day+' &middot; '+ph.ov;
+  $('axis').innerHTML=
+    '<div style="margin-bottom:10px;"><span class="fb '+fbClass+'">Feedback mode: '+ph.fb+'</span></div>'+
+    bar('GnRH','pulsatile, every 60&ndash;120 min into the portal circulation',(S.mod==='agonist'?0.2:(S.mod==='energy'?0.35:(ph.fb==='Positive'?1.6:1))),2,TEAL,(S.mod==='agonist'?'off':(S.mod==='energy'?'slow':(ph.fb==='Positive'?'fast':'normal'))))+
+    bar('FSH','recruits antral follicles; granulosa aromatase',c.fsh,14,BLUE,c.fsh.toFixed(1))+
+    bar('LH','theca androgen synthesis; the surge that ruptures the follicle',c.lh,70,CORAL,c.lh.toFixed(1))+
+    bar('Estradiol','granulosa product; crosses 200 pg/mL and the sign flips',c.e2,320,GOLD,c.e2.toFixed(0))+
+    bar('Progesterone','corpus luteum; restores strong negative feedback',c.p4,20,PURPLE,c.p4.toFixed(1))+
+    (c.hcg>0?bar('hCG','syncytiotrophoblast; an LH analog rescuing the corpus luteum',Math.min(c.hcg,4000),4000,GREEN,c.hcg.toFixed(0)):'')+
+    '<div class="hint" style="margin-top:12px;"><b>Uterus:</b> '+ph.ut+'. Endometrium about '+endometrium(S.day).toFixed(1)+' mm.</div>';
+}
+
+function verdictF(c,ph,ov){
+  var v=$('verdict'), cls='cool', t, s, fol=ov-1;
+  if(S.mod==='noflip'){
+    cls='bad'; t='The inversion is blocked &mdash; no surge, no ovulation.';
+    s='Estradiol still climbs to '+c.e2.toFixed(0)+' pg/mL and still suppresses FSH, but the hypothalamic&ndash;pituitary unit never switches its sign, so LH stays at its baseline of about '+c.lh.toFixed(1)+' mIU/mL. Without rupture there is no corpus luteum, so progesterone stays under 1 ng/mL, the endometrium proliferates without ever becoming secretory, and basal temperature never steps up. Nothing new was needed to make a cycle &mdash; only a change in the <b>sign</b> of an existing feedback loop.';
+  }else if(S.mod==='coc'){
+    cls='warn'; t='Combined oral contraceptive &mdash; the cycle is flattened.';
+    s='Steady exogenous estrogen and progestogen hold negative feedback constant, so FSH never rises enough to recruit a cohort and endogenous estradiol never reaches the 200 pg/mL trigger. No dominant follicle, no surge, no ovulation. The withdrawal bleed on the placebo days is a response to falling exogenous steroid, not the end of a luteal phase.';
+  }else if(S.mod==='agonist'){
+    cls='bad'; t='Continuous GnRH &mdash; the axis is switched off at the top.';
+    s='Gonadotrophs need pulses. Held under continuous exposure their receptors downregulate, LH and FSH collapse, and the ovary falls silent with estradiol near '+c.e2.toFixed(0)+' pg/mL. This is the difference between a signal and its <b>pattern</b>: the same molecule that runs the axis in pulses shuts it down when delivered continuously.';
+  }else if(S.mod==='energy'){
+    cls='warn'; t='Energy deficit &mdash; suppression at the hypothalamus.';
+    s='Kisspeptin neurons in the arcuate nucleus are the gate through which steroids, leptin and energy availability reach the GnRH cells. In sustained energy deficit that gate closes: GnRH pulses slow, LH falls to '+c.lh.toFixed(1)+' mIU/mL, follicles are never recruited. The ovary is healthy &mdash; the failure is two tiers above it, which is why the treatment is nutritional rather than gonadal.';
+  }else if(S.mod==='hcg'&&S.day>=ov+8){
+    cls='ok'; t='Implantation &mdash; the corpus luteum is rescued.';
+    s='The syncytiotrophoblast is making hCG (now about '+c.hcg.toFixed(0)+' mIU/mL, roughly doubling every 48 hours), and because hCG is an LH analog it binds the same receptor and overrides the corpus luteum&rsquo;s scheduled involution. Progesterone keeps climbing instead of falling, the endometrium is never shed, and no menses occurs. By weeks 8 to 10 the placenta takes over steroid production and hCG falls &mdash; the luteal&ndash;placental shift.';
+  }else if(S.day>=fol-1&&S.day<=ov){
+    cls='bad'; t='The inversion: this is genuine positive feedback.';
+    s='Estradiol has been above '+E2_TRIGGER+' pg/mL for about 48 hours, and its effect on the hypothalamic&ndash;pituitary unit has flipped from inhibitory to stimulatory. More estradiol now drives more LH, which drives more estradiol &mdash; self-amplifying, not self-correcting. LH is '+c.lh.toFixed(0)+' mIU/mL. Ovulation follows 24 to 36 hours after the surge begins and about 10 to 12 hours after its peak. It is safe because it is <b>self-terminating</b>: the follicle that generated the signal ruptures and stops producing it.';
+  }else if(S.day>ov){
+    cls='cool'; t='Luteal phase &mdash; day '+(S.day-ov)+' after ovulation.';
+    s='The ruptured follicle is now a corpus luteum secreting progesterone ('+c.p4.toFixed(1)+' ng/mL), plus estradiol and inhibin A. Progesterone has converted the endometrium from proliferative to <b>secretory</b>, raised basal temperature by 0.3 to 0.5 &deg;C, thickened cervical mucus and restored strong negative feedback so a second ovulation cannot happen. This phase is fixed at 14 days plus or minus 2 &mdash; if no embryo appears, the corpus luteum involutes, steroid falls, the brake on FSH lifts, and the next cohort is recruited.';
+  }else if(S.day<=5){
+    cls='cool'; t='Early follicular &mdash; menstruation.';
+    s='Progesterone and estradiol have fallen with the dying corpus luteum, spiral arterioles have constricted, and the functional layer is being shed. That same steroid withdrawal removes the brake on FSH, which is now '+c.fsh.toFixed(1)+' mIU/mL and rising &mdash; recruiting the next cohort of antral follicles. Menstruation and recruitment are the same event seen from two ends.';
+  }else{
+    cls='ok'; t='Late follicular &mdash; selection by <i>declining</i> hormone.';
+    s='Theca cells under LH make androgens; granulosa cells under FSH aromatize them to estradiol, now '+c.e2.toFixed(0)+' pg/mL. That rising estradiol, with inhibin B, feeds back <b>negatively</b> and pulls FSH down to '+c.fsh.toFixed(1)+' mIU/mL. The follicle with the most FSH receptors survives the withdrawal and becomes dominant; the rest undergo atresia. Selection here is done by a falling signal, not a rising one.';
+  }
+  v.className='verdict '+cls;
+  v.innerHTML=t+'<small>'+s+'</small>';
+}
+
+function drawF(){
+  var cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=44,padR=44,padT=16,padB=76, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var ov=ovDay();
+  function X(d){return padL+(d-1)/(S.len-1)*pw;}
+  function Yn(f){return padT+ph-clamp(f,0,1)*ph;}
+  g.lineWidth=1; g.font='600 10px Inter,sans-serif'; g.textAlign='center';
+  for(var i=0;i<=4;i++){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(padL,Yn(i/4)); g.lineTo(padL+pw,Yn(i/4)); g.stroke();
+  }
+  for(var d=1;d<=S.len;d+=(S.len>30?4:3)){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(X(d),padT); g.lineTo(X(d),padT+ph); g.stroke();
+    g.fillStyle=MUTED; g.fillText(d,X(d),padT+ph+15);
+  }
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif';
+  g.fillText('day of cycle',padL+pw/2,padT+ph+31);
+  g.textAlign='right'; g.fillStyle=MUTED; g.font='600 9.6px Inter,sans-serif';
+  g.fillText('max',padL-6,Yn(1)+4); g.fillText('0',padL-6,Yn(0)+3);
+
+  var series=[
+    {k:'fsh',max:14,c:BLUE,n:'FSH'},
+    {k:'lh',max:70,c:CORAL,n:'LH'},
+    {k:'e2',max:320,c:GOLD,n:'Estradiol'},
+    {k:'p4',max:20,c:PURPLE,n:'Progesterone'}
+  ];
+  series.forEach(function(s){
+    g.beginPath(); g.strokeStyle=s.c; g.lineWidth=2.6;
+    for(var d2=1;d2<=S.len;d2+=0.25){
+      var y=Yn(cycle(d2)[s.k]/s.max);
+      if(d2===1) g.moveTo(X(d2),y); else g.lineTo(X(d2),y);
+    }
+    g.stroke();
+  });
+
+  /* the 200 pg/mL trigger line, in estradiol units */
+  g.setLineDash([3,4]); g.strokeStyle=GOLD; g.lineWidth=1.3;
+  g.beginPath(); g.moveTo(padL,Yn(E2_TRIGGER/320)); g.lineTo(padL+pw,Yn(E2_TRIGGER/320)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 9.6px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('estradiol 200 pg/mL — the trigger',padL+5,Yn(E2_TRIGGER/320)-5);
+
+  /* current day marker */
+  g.strokeStyle=TEALD; g.lineWidth=1.6; g.setLineDash([2,3]);
+  g.beginPath(); g.moveTo(X(S.day),padT); g.lineTo(X(S.day),padT+ph); g.stroke(); g.setLineDash([]);
+  var cNow=cycle(S.day);
+  series.forEach(function(s){
+    g.fillStyle=s.c; g.beginPath(); g.arc(X(S.day),Yn(cNow[s.k]/s.max),4.4,0,6.2832); g.fill();
+    g.strokeStyle='#fff'; g.lineWidth=1.7; g.stroke();
+  });
+
+  /* phase bands */
+  var by=padT+ph+38, bh=14;
+  function band(d0,d1,color,label,row){
+    var x0=X(Math.max(1,d0)), x1=X(Math.min(S.len,d1));
+    g.fillStyle=color; g.globalAlpha=0.85;
+    g.fillRect(x0,by+row*(bh+5),Math.max(2,x1-x0),bh); g.globalAlpha=1;
+    if(x1-x0>40){
+      g.fillStyle='#fff'; g.font='800 9.4px Inter,sans-serif'; g.textAlign='center';
+      g.fillText(label,(x0+x1)/2,by+row*(bh+5)+10);
+    }
+  }
+  var ovul=cycle(S.day).ovul;
+  if(ovul){
+    band(1,ov-0.5,TEAL,'follicular',0);
+    band(ov-0.5,ov+0.5,CORAL,'',0);
+    band(ov+0.5,S.len,PURPLE,'luteal',0);
+    band(1,5.5,CORAL,'menstrual',1);
+    band(5.5,ov+0.5,BLUE,'proliferative',1);
+    band(ov+0.5,S.len,GREEN,'secretory',1);
+  }else{
+    band(1,S.len,MUTED,'no ovarian cycle',0);
+    band(1,S.len,MUTED,'no secretory conversion',1);
+  }
+  g.fillStyle=MUTED; g.font='700 9px Inter,sans-serif'; g.textAlign='right';
+  g.fillText('ovary',padL-5,by+10); g.fillText('uterus',padL-5,by+bh+5+10);
+
+  g.font='800 10px Inter,sans-serif'; g.textAlign='left';
+  var lx=padL+7, ly=padT+12;
+  series.forEach(function(s,i){ g.fillStyle=s.c; g.fillText(s.n,lx+i*88,ly); });
+}
+
+/* ---------------- male render ---------------- */
+function renderM(){
+  var m=male();
+  $('vT').textContent=S.texo===0?'none':('+'+S.texo+' ng/dL');
+  $('vPulse').textContent=(S.mod==='magonist')?'continuous':(S.pulse+' min');
+  $('labs').innerHTML=
+    labBox('Serum testosterone',m.tSerum.toFixed(0),'ng/dL &middot; normal 300&ndash;1000')+
+    labBox('LH',m.lh.toFixed(1),'mIU/mL')+
+    labBox('FSH',m.fsh.toFixed(1),'mIU/mL')+
+    labBox('Intratesticular T',(m.itt/1000).toFixed(1),'thousand ng/dL')+
+    labBox('Inhibin B',m.inhibin.toFixed(0),'pg/mL')+
+    labBox('Sperm production',m.sperm.toFixed(0),'million/day');
+  axisM(m); verdictM(m); drawM(m);
+}
+function axisM(m){
+  function bar(name,sub,val,max,color,txt){
+    var w=clamp(val/max*100,2,100);
+    return '<div class="ar"><span>'+name+'<small>'+sub+'</small></span><span class="track"><span class="fill" style="width:'+w.toFixed(1)+'%;background:'+color+'"></span></span><span class="num">'+txt+'</span></div>';
+  }
+  $('axisTitle').innerHTML='The male axis &middot; '+(m.cont?'continuous GnRH':'pulses every '+S.pulse+' min');
+  var ittN=75*550+550;
+  $('axis').innerHTML=
+    '<div style="margin-bottom:10px;"><span class="fb '+(m.lh<1.2?'off':'')+'">Feedback mode: tonic negative</span></div>'+
+    bar('GnRH',(m.cont?'delivered continuously &mdash; receptors downregulated':'pulsatile; frequency shapes the LH to FSH ratio'),(m.cont?0.15:clamp(90/S.pulse,0.4,2)),2,TEAL,(m.cont?'off':(S.pulse<75?'fast':(S.pulse>130?'slow':'normal'))))+
+    bar('LH','acts on <b>L</b>eydig cells &rarr; testosterone',m.lh,8,CORAL,m.lh.toFixed(1))+
+    bar('FSH','acts on Sertoli cells &rarr; <b>f</b>ertility support',m.fsh,8,BLUE,m.fsh.toFixed(1))+
+    bar('Serum testosterone','what a blood test measures',m.tSerum,2600,GOLD,m.tSerum.toFixed(0))+
+    bar('Intratesticular testosterone','androgen-binding protein keeps it 50&ndash;100&times; plasma',m.itt,ittN*1.2,PURPLE,(m.itt/1000).toFixed(1)+'k')+
+    bar('Inhibin B','Sertoli product; selectively suppresses FSH',m.inhibin,170,GREEN,m.inhibin.toFixed(0))+
+    '<div class="hint" style="margin-top:12px;"><b>Sperm output:</b> '+m.sperm.toFixed(0)+' million a day, roughly '+(m.sperm/150*70).toFixed(0)+' million/mL in a 3 mL ejaculate against a lower reference limit of 15 million/mL. Because spermatogenesis takes 64 to 74 days plus 10 to 14 days of epididymal maturation, a change made today shows up in a semen sample about three months from now.</div>';
+}
+function verdictM(m){
+  var v=$('verdict'), cls, t, s, ittN=75*550+550;
+  if(m.cont){
+    cls='bad'; t='Continuous GnRH &mdash; medical castration.';
+    s='Gonadotrophs answer pulses, not concentrations. Under continuous exposure their GnRH receptors downregulate: LH falls to '+m.lh.toFixed(1)+' and FSH to '+m.fsh.toFixed(1)+' mIU/mL, Leydig cells stop making testosterone, and intratesticular androgen collapses to '+(m.itt/1000).toFixed(1)+' thousand ng/dL against a normal of '+(ittN/1000).toFixed(1)+'. Sperm production falls to '+m.sperm.toFixed(0)+' million a day. This is the therapeutic mechanism of GnRH agonists, and it is reversible when pulsatility returns.';
+  }else if(S.texo>=1000){
+    cls='bad'; t='High exogenous androgen &mdash; a high blood level and a failing testis.';
+    s='Serum testosterone reads '+m.tSerum.toFixed(0)+' ng/dL, comfortably above the normal 300 to 1000, so the blood test looks excellent. But that same androgen feeds back on GnRH and LH, which has fallen to '+m.lh.toFixed(1)+' mIU/mL. Without LH the Leydig cells stop, and <b>intratesticular</b> testosterone &mdash; normally 50 to 100 times plasma and the concentration spermatogenesis actually requires &mdash; has collapsed from '+(ittN/1000).toFixed(1)+' to '+(m.itt/1000).toFixed(1)+' thousand ng/dL. Sperm production is '+m.sperm.toFixed(0)+' million a day. High testosterone in the blood, low testosterone where it counts.';
+  }else if(S.texo>0){
+    cls='warn'; t='Exogenous androgen at a replacement dose.';
+    s='Serum testosterone is '+m.tSerum.toFixed(0)+' ng/dL, but notice that the axis has already responded: LH is '+m.lh.toFixed(1)+' mIU/mL and endogenous production has fallen to '+m.tEndo.toFixed(0)+' ng/dL. Intratesticular androgen is '+(m.itt/1000).toFixed(1)+' thousand ng/dL and sperm output '+m.sperm.toFixed(0)+' million a day. Even a modest exogenous dose partly replaces rather than adds to what the testis was making &mdash; negative feedback does not care where the hormone came from.';
+  }else if(S.pulse>130){
+    cls='cool'; t='Slow GnRH pulses favor FSH.';
+    s='At an interval of '+S.pulse+' minutes the gonadotroph output shifts: LH is '+m.lh.toFixed(1)+' and FSH '+m.fsh.toFixed(1)+' mIU/mL. Frequency, not just amplitude, is information in this axis. The division of labor is what makes that useful &mdash; testosterone suppresses LH while inhibin B selectively suppresses FSH, so steroid output and sperm output can be regulated semi-independently.';
+  }else{
+    cls='ok'; t='Healthy adult male axis &mdash; a steady state, not a cycle.';
+    s='LH '+m.lh.toFixed(1)+' mIU/mL drives Leydig cells to make '+m.tEndo.toFixed(0)+' ng/dL of testosterone; FSH '+m.fsh.toFixed(1)+' drives Sertoli cells, which form the blood&ndash;testis barrier, make androgen-binding protein that holds intratesticular testosterone at '+(m.itt/1000).toFixed(1)+' thousand ng/dL, and secrete inhibin B at '+m.inhibin.toFixed(0)+' pg/mL to hold FSH down. Production runs at '+m.sperm.toFixed(0)+' million sperm a day. Because production is continuous and feedback is purely negative, these numbers barely change from day to day &mdash; the opposite of the ovarian pattern.';
+  }
+  v.className='verdict '+cls;
+  v.innerHTML=t+'<small>'+s+'</small>';
+}
+
+function drawM(m){
+  var cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=54,padR=20,padT=18,padB=52, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var ittN=75*550+550;
+  var items=[
+    {n:'LH',v:m.lh,max:8,c:CORAL,u:'mIU/mL',ref:5.0},
+    {n:'FSH',v:m.fsh,max:8,c:BLUE,u:'mIU/mL',ref:4.2},
+    {n:'Serum T',v:m.tSerum,max:2600,c:GOLD,u:'ng/dL',ref:550},
+    {n:'Intratesticular T',v:m.itt,max:ittN*1.2,c:PURPLE,u:'ng/dL',ref:ittN},
+    {n:'Inhibin B',v:m.inhibin,max:170,c:GREEN,u:'pg/mL',ref:150},
+    {n:'Sperm output',v:m.sperm,max:240,c:TEAL,u:'million/day',ref:150}
+  ];
+  var bw=pw/items.length, iw=bw*0.5;
+  g.lineWidth=1; g.font='600 10px Inter,sans-serif';
+  for(var i=0;i<=4;i++){
+    var y=padT+ph-i/4*ph;
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(padL,y); g.lineTo(padL+pw,y); g.stroke();
+  }
+  items.forEach(function(it,i){
+    var x=padL+i*bw+(bw-iw)/2;
+    var h=clamp(it.v/it.max,0,1)*ph;
+    var yr=padT+ph-clamp(it.ref/it.max,0,1)*ph;
+    g.fillStyle=it.c; g.globalAlpha=0.92;
+    g.fillRect(x,padT+ph-h,iw,h); g.globalAlpha=1;
+    g.strokeStyle=MUTED; g.lineWidth=1.6; g.setLineDash([4,3]);
+    g.beginPath(); g.moveTo(x-6,yr); g.lineTo(x+iw+6,yr); g.stroke(); g.setLineDash([]);
+    g.fillStyle=SOFT; g.font='800 10px Inter,sans-serif'; g.textAlign='center';
+    g.fillText(it.n,x+iw/2,padT+ph+16);
+    g.fillStyle=MUTED; g.font='600 9.4px Inter,sans-serif';
+    g.fillText((it.v>=1000?(it.v/1000).toFixed(1)+'k':it.v.toFixed(1))+' '+it.u,x+iw/2,padT+ph+29);
+    var pct=it.ref>0?(it.v/it.ref*100):0;
+    g.fillStyle=it.c; g.font='800 10.5px Inter,sans-serif';
+    g.fillText(pct.toFixed(0)+'%',x+iw/2,Math.max(padT+11,padT+ph-h-6));
+  });
+  g.fillStyle=MUTED; g.font='700 9.6px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('dashed line = healthy adult reference; the percentage is this value against it',padL,padT+ph+45);
+}
+
+/* ---------------- wiring ---------------- */
+function setMode(mode){
+  S.mode=mode;
+  var f=(mode==='F');
+  $('mF').classList.toggle('on',f); $('mM').classList.toggle('on',!f);
+  $('mF').setAttribute('aria-pressed',f?'true':'false');
+  $('mM').setAttribute('aria-pressed',f?'false':'true');
+  $('paneF').classList.toggle('hidden',!f);
+  $('paneM').classList.toggle('hidden',f);
+  $('chartTitle').textContent=f?'Hormones across the cycle':'The axis against a healthy reference';
+  S.mod='none';
+  if(!f){ S.texo=0; S.pulse=90; $('sT').value=0; $('sPulse').value=90; }
+  mark('chipsF',f?0:-1); mark('chipsM',f?-1:0);
+  render();
+}
+$('mF').addEventListener('click',function(){setMode('F');});
+$('mM').addEventListener('click',function(){setMode('M');});
+
+$('sDay').addEventListener('input',function(){ S.day=parseInt(this.value,10); render(); });
+$('sLen').addEventListener('input',function(){
+  S.len=parseInt(this.value,10);
+  $('sDay').max=S.len;
+  if(S.day>S.len){ S.day=S.len; $('sDay').value=S.len; }
+  render();
+});
+$('sT').addEventListener('input',function(){ S.texo=parseInt(this.value,10); if(S.mod==='magonist') S.mod='none'; mark('chipsM',-1); render(); });
+$('sPulse').addEventListener('input',function(){ S.pulse=parseInt(this.value,10); if(S.mod==='magonist') S.mod='none'; mark('chipsM',-1); render(); });
+
+buildChips('chipsF',PREF,function(p){ S.mod=p.mod; render(); });
+buildChips('chipsM',PREM,function(p){
+  S.mod=p.mod; S.texo=p.texo; S.pulse=p.pulse;
+  $('sT').value=p.texo; $('sPulse').value=p.pulse; render();
+});
+window.addEventListener('resize',render);
+
+mark('chipsF',0); mark('chipsM',0);
+render();
+})();
+</script>
+</body>
+</html>

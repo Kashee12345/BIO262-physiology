@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Skin Barrier and Its Repair Loop</title>
+<meta name="description" content="Strip the stratum corneum, watch transepidermal water loss jump, then watch the calcium-sensed negative feedback loop rebuild the lipid lamellae in simulated time — and break the loop to see it fail.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:4px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.notebox{border:1px solid var(--line);border-left:5px solid var(--gold);background:#fff;border-radius:10px;padding:11px 13px;margin-top:10px;font-size:12px;color:var(--soft);line-height:1.5;}
+.notebox b{color:var(--gold);}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.94;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+svg.dia{border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:12px;}
+.loop{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:11px;}
+.lp{border:1px solid var(--line);border-radius:9px;padding:7px 6px;background:#fff;text-align:center;}
+.lp .k{font-size:8.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+.lp .t{font-size:11px;font-weight:700;color:var(--teal-dk);line-height:1.25;margin-top:3px;}
+.lp.hot{border-color:var(--coral);background:rgba(209,73,91,.09);}
+.lp.hot .t{color:var(--coral);}
+.lp.off{opacity:.35;}
+.hide{display:none;}
+.mini{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch03.html">&larr; Module 3</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 3 &middot; Section 4</div>
+  <h1>The Skin Barrier and Its Repair Loop</h1>
+  <div class="intro">The barrier is not the cells &mdash; it is the <b>lipid mortar</b> between dead corneocytes, and it is defended by a genuine negative feedback loop with a calcium gradient as its sensor. Strip it, watch transepidermal water loss jump more than tenfold, then let the clock run and watch lamellar bodies discharge and lipid synthesis rebuild it. Then break one component of the loop and see what a barrier without feedback looks like.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" role="tab" aria-selected="true" class="on">Barrier &amp; repair loop</button>
+        <button id="m2" role="tab" aria-selected="false">Ultraviolet &amp; vitamin D</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Scenarios</div>
+        <div class="chips" id="scen"></div>
+
+        <div class="row">
+          <button class="btn solid" id="strip" type="button">Tape-strip the stratum corneum</button>
+        </div>
+        <div class="row">
+          <button class="btn" id="jump" type="button">Fast-forward 6 h</button>
+          <button class="btn" id="restore" type="button">Restore intact skin</button>
+        </div>
+
+        <div class="sl">
+          <label for="lipid">Lipid lamellae &mdash; the mortar <span class="v" id="lipidV">100%</span></label>
+          <input type="range" id="lipid" min="0" max="100" value="100" aria-label="Intercellular lipid lamellae integrity, 0 to 100 percent">
+        </div>
+        <div class="sl">
+          <label for="layers">Corneocyte layers &mdash; the bricks <span class="v" id="layersV">17</span></label>
+          <input type="range" id="layers" min="0" max="24" value="17" aria-label="Number of corneocyte layers in the stratum corneum">
+        </div>
+        <div class="sl">
+          <label for="transit">Keratinocyte transit time <span class="v" id="transitV">48 days</span></label>
+          <input type="range" id="transit" min="4" max="56" value="48" aria-label="Transit time from basal division to shedding, days">
+        </div>
+        <div class="sl">
+          <label for="ph">Surface pH &mdash; the acid mantle <span class="v" id="phV">5.0</span></label>
+          <input type="range" id="ph" min="40" max="75" value="50" aria-label="Skin surface pH, 4.0 to 7.5">
+        </div>
+        <div class="sl">
+          <label for="bsa">Body surface area <span class="v" id="bsaV">1.75 m&sup2;</span></label>
+          <input type="range" id="bsa" min="150" max="200" value="175" aria-label="Body surface area, 1.5 to 2.0 square meters">
+        </div>
+
+        <div class="lbl">Break the loop on purpose</div>
+        <button class="tog" id="tFLG" aria-pressed="true" type="button"><span class="dot"></span><span>Filaggrin present <small>Aggregates keratin and yields natural moisturizing factor &mdash; urocanic acid, pyrrolidone carboxylic acid</small></span></button>
+        <button class="tog" id="tExo" aria-pressed="true" type="button"><span class="dot"></span><span>Lamellar body exocytosis allowed <small>Switch off to model calcium clamped high &mdash; the effector is inhibited</small></span></button>
+        <button class="tog" id="tSyn" aria-pressed="true" type="button"><span class="dot"></span><span>Ceramide / cholesterol / fatty acid synthesis allowed <small>Switch off to remove the slow, synthetic arm of the response</small></span></button>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Conditions</div>
+        <div class="chips" id="uvScen"></div>
+        <div class="sl">
+          <label for="mins">Exposure <span class="v" id="minsV">20 min</span></label>
+          <input type="range" id="mins" min="0" max="120" value="20" aria-label="Exposure time in minutes">
+        </div>
+        <div class="sl">
+          <label for="pig">Constitutive pigmentation (eumelanin) <span class="v" id="pigV">Light</span></label>
+          <input type="range" id="pig" min="0" max="100" value="15" aria-label="Eumelanin content of the epidermis, lightly to deeply pigmented">
+        </div>
+        <div class="sl">
+          <label for="uvb">Available ultraviolet B <span class="v" id="uvbV">100%</span></label>
+          <input type="range" id="uvb" min="0" max="100" value="100" aria-label="Available ultraviolet B, 0 to 100 percent of midday summer sun">
+        </div>
+        <div class="sl">
+          <label for="uva">Available ultraviolet A <span class="v" id="uvaV">100%</span></label>
+          <input type="range" id="uva" min="0" max="100" value="100" aria-label="Available ultraviolet A, 0 to 100 percent of midday summer sun">
+        </div>
+        <button class="tog" id="tScreen" aria-pressed="false" type="button"><span class="dot"></span><span>Sunscreen applied <small>Blocks most of both wavebands &mdash; and therefore blocks vitamin D synthesis too</small></span></button>
+        <div class="mini">Melanocyte density is roughly one per 4&ndash;10 basal keratinocytes in <i>all</i> human populations. Move the pigmentation slider and notice that the number of melanocytes on the diagram never changes &mdash; only what they make and how the melanosomes are handled.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <svg id="svg" class="dia" viewBox="0 0 520 340" role="img" aria-label="Cross-section of the epidermis showing corneocyte layers, intercellular lipid lamellae, the epidermal calcium gradient and water escaping through the barrier"></svg>
+      <canvas id="cv" class="hide" width="1040" height="300" aria-label="Plot of transepidermal water loss against simulated time during barrier disruption and recovery"></canvas>
+      <div class="stats" id="stats"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <div id="loopWrap">
+        <div class="lbl" style="margin-top:0">The barrier-repair loop, component by component</div>
+        <div class="loop" id="loop"></div>
+      </div>
+      <div class="infobox" id="info"></div>
+      <div class="notebox" id="note"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+var C={teal:css('--teal')||'#1f5b73',tealdk:css('--teal-dk')||'#0f3040',coral:css('--coral')||'#d1495b',
+  line:css('--line')||'#ebe3d5',muted:css('--muted')||'#8d8270',blue:css('--blue')||'#2f6f9f',
+  green:css('--green')||'#2f9e5b',gold:css('--gold')||'#b8862f',soft:css('--soft')||'#5f5340',
+  purple:css('--purple')||'#7a5a8a'};
+function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+
+/* ---------------- state ---------------- */
+var S={lipid:100,layers:17,transit:48,ph:5.0,bsa:1.75,flg:true,exo:true,syn:true};
+var dFast=0,dSlow=0,tH=0,trace=[],mode=1,phase=0;
+var TAU_F=7, TAU_S=48, TAU_L=60, FASTFRAC=0.35;
+var RMAX=250;        /* g/m2/h from a freely evaporating wet surface */
+var RNORM=40;        /* barrier resistance of intact skin, calibrated to give 6 g/m2/h */
+
+function ceiling(){ return 30+70*clamp((S.transit-4)/34,0,1); }
+function phFactor(){ return S.ph<=5.5 ? 1 : clamp(1-0.30*(S.ph-5.5),0.4,1); }
+
+function tewlOf(lipid,layers){
+  var f=clamp(lipid,0,100)/100;
+  var R=RNORM*Math.pow(f,1.6)*(clamp(layers,0,24)/17)*(S.flg?1:0.45);
+  return clamp(RMAX/(1+R),1,RMAX);
+}
+function model(){
+  var t=tewlOf(S.lipid,S.layers);
+  var ca=clamp(1-(t-6)/45,0,1);          /* the epidermal calcium gradient: washed out by water flux */
+  var daily=t*S.bsa*24;
+  return {tewl:t,ca:ca,daily:daily};
+}
+function reseed(){
+  var D=Math.max(0,ceiling()-S.lipid);
+  dFast=FASTFRAC*D; dSlow=(1-FASTFRAC)*D;
+}
+var breachTEWL=null;
+
+/* ---------------- scenarios ---------------- */
+var SCEN=[
+  {n:'Intact skin',f:function(){S.lipid=100;S.layers=17;S.transit=48;S.ph=5.0;S.flg=true;S.exo=true;S.syn=true;breachTEWL=null;}},
+  {n:'Tape-stripped',f:function(){S.lipid=30;S.layers=8;S.transit=48;S.ph=5.0;S.flg=true;S.exo=true;S.syn=true;}},
+  {n:'Atopic dermatitis &mdash; filaggrin loss',f:function(){S.lipid=72;S.layers=15;S.transit=48;S.ph=5.6;S.flg=false;S.exo=true;S.syn=true;}},
+  {n:'Psoriasis &mdash; transit 4&ndash;7 days',f:function(){S.transit=6;S.layers=22;S.lipid=Math.min(S.lipid,35);S.ph=5.2;S.flg=false;S.exo=true;S.syn=true;}},
+  {n:'Washed with alkaline soap',f:function(){S.lipid=62;S.layers=16;S.ph=6.8;S.flg=true;S.exo=true;S.syn=true;}},
+  {n:'Barrier destroyed (deep burn)',f:function(){S.lipid=0;S.layers=0;S.exo=false;S.syn=false;}}
+];
+(function(){
+  var h='';
+  for(var i=0;i<SCEN.length;i++) h+='<button class="chip'+(i===0?' on':'')+'" type="button" data-i="'+i+'">'+SCEN[i].n+'</button>';
+  $('scen').innerHTML=h;
+  $('scen').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    var i=+b.dataset.i; SCEN[i].f();
+    var cs=$('scen').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i);
+    tH=0; trace=[]; reseed(); breachTEWL=tewlOf(S.lipid,S.layers); if(i===0) breachTEWL=null;
+    sync();
+  });
+})();
+
+function sync(){
+  $('lipid').value=Math.round(S.lipid); $('layers').value=Math.round(S.layers);
+  $('transit').value=S.transit; $('ph').value=Math.round(S.ph*10); $('bsa').value=Math.round(S.bsa*100);
+  $('lipidV').textContent=Math.round(S.lipid)+'%';
+  $('layersV').textContent=Math.round(S.layers)+' (normal 15&ndash;20)';
+  $('transitV').textContent=S.transit+' days';
+  $('phV').textContent=S.ph.toFixed(1)+(S.ph>=4.5&&S.ph<=5.5?' (acid mantle)':' (alkaline shift)');
+  $('bsaV').textContent=S.bsa.toFixed(2)+' m²';
+  $('tFLG').setAttribute('aria-pressed',S.flg?'true':'false');
+  $('tExo').setAttribute('aria-pressed',S.exo?'true':'false');
+  $('tSyn').setAttribute('aria-pressed',S.syn?'true':'false');
+  render();
+}
+function clearScen(){var cs=$('scen').children;for(var j=0;j<cs.length;j++)cs[j].classList.remove('on');}
+$('lipid').addEventListener('input',function(){S.lipid=+this.value;clearScen();reseed();sync();});
+$('layers').addEventListener('input',function(){S.layers=+this.value;clearScen();sync();});
+$('transit').addEventListener('input',function(){S.transit=+this.value;clearScen();reseed();sync();});
+$('ph').addEventListener('input',function(){S.ph=+this.value/10;clearScen();sync();});
+$('bsa').addEventListener('input',function(){S.bsa=+this.value/100;sync();});
+$('tFLG').addEventListener('click',function(){S.flg=!S.flg;clearScen();sync();});
+$('tExo').addEventListener('click',function(){S.exo=!S.exo;clearScen();sync();});
+$('tSyn').addEventListener('click',function(){S.syn=!S.syn;clearScen();sync();});
+$('strip').addEventListener('click',function(){
+  S.lipid=30; S.layers=8; tH=0; trace=[]; reseed();
+  breachTEWL=tewlOf(30,8); clearScen(); sync();
+});
+$('restore').addEventListener('click',function(){
+  S.lipid=ceiling(); S.layers=17; dFast=0; dSlow=0; tH=0; trace=[]; breachTEWL=null; clearScen(); sync();
+});
+$('jump').addEventListener('click',function(){ for(var i=0;i<25;i++) advance(0.24*1); });
+
+/* ---------------- integrate ---------------- */
+function advance(dh){
+  var p=phFactor();
+  if(S.exo) dFast*=Math.exp(-dh*p/TAU_F);
+  if(S.syn) dSlow*=Math.exp(-dh*p/TAU_S);
+  S.lipid=clamp(ceiling()-dFast-dSlow,0,100);
+  if(S.layers<17 && (S.exo||S.syn)) S.layers=17-(17-S.layers)*Math.exp(-dh/TAU_L);
+  tH+=dh;
+  trace.push([tH,tewlOf(S.lipid,S.layers)]);
+  if(trace.length>4000) trace.shift();
+}
+setInterval(function(){
+  phase++;
+  if(mode===1) advance(0.24);
+  render();
+},60);
+
+/* ---------------- mode ---------------- */
+function setMode(n){
+  mode=n;
+  $('m1').classList.toggle('on',n===1); $('m1').setAttribute('aria-selected',n===1?'true':'false');
+  $('m2').classList.toggle('on',n===2); $('m2').setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1);
+  $('p2').classList.toggle('hide',n!==2);
+  $('cv').classList.toggle('hide',n!==1);
+  $('loopWrap').classList.toggle('hide',n!==1);
+  render();
+}
+$('m1').addEventListener('click',function(){setMode(1);});
+$('m2').addEventListener('click',function(){setMode(2);});
+
+/* ---------------- UV mode ---------------- */
+var U={mins:20,pig:15,uvb:100,uva:100,screen:false};
+var UVSCEN=[
+  {n:'Midday summer sun',s:{uvb:100,uva:100,screen:false}},
+  {n:'Winter above latitude 37&deg;',s:{uvb:8,uva:55,screen:false}},
+  {n:'Behind window glass',s:{uvb:2,uva:75,screen:false}},
+  {n:'Late afternoon',s:{uvb:22,uva:60,screen:false}},
+  {n:'Sunscreen on, midday',s:{uvb:100,uva:100,screen:true}}
+];
+(function(){
+  var h='';
+  for(var i=0;i<UVSCEN.length;i++) h+='<button class="chip'+(i===0?' on':'')+'" type="button" data-i="'+i+'">'+UVSCEN[i].n+'</button>';
+  $('uvScen').innerHTML=h;
+  $('uvScen').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return; var i=+b.dataset.i, s=UVSCEN[i].s;
+    for(var k in s){ if(Object.prototype.hasOwnProperty.call(s,k)) U[k]=s[k]; }
+    var cs=$('uvScen').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i);
+    syncU();
+  });
+})();
+function syncU(){
+  $('mins').value=U.mins; $('pig').value=U.pig; $('uvb').value=U.uvb; $('uva').value=U.uva;
+  $('minsV').textContent=U.mins+' min';
+  $('pigV').textContent=U.pig<25?'Lightly pigmented':(U.pig<60?'Moderately pigmented':'Deeply pigmented');
+  $('uvbV').textContent=U.uvb+'%'; $('uvaV').textContent=U.uva+'%';
+  $('tScreen').setAttribute('aria-pressed',U.screen?'true':'false');
+  render();
+}
+$('mins').addEventListener('input',function(){U.mins=+this.value;syncU();});
+$('pig').addEventListener('input',function(){U.pig=+this.value;syncU();});
+$('uvb').addEventListener('input',function(){U.uvb=+this.value;syncU();});
+$('uva').addEventListener('input',function(){U.uva=+this.value;syncU();});
+$('tScreen').addEventListener('click',function(){U.screen=!U.screen;syncU();});
+
+function uvModel(){
+  var sc=U.screen?0.05:1;
+  var pigFac=1+4*(U.pig/100);                   /* deeply pigmented skin needs 3–6× the exposure */
+  var uvbDose=U.mins*(U.uvb/100)*sc;
+  var uvaDose=U.mins*(U.uva/100)*(U.screen?0.15:1);
+  var vitD=uvbDose/pigFac;                      /* 20 units = sufficient for a lightly pigmented adult */
+  var cpd=uvbDose/(1+2.6*(U.pig/100));          /* melanin caps the nucleus, so DNA damage falls */
+  var ros=uvaDose*0.9;                          /* UVA reaches the dermis and works through radicals */
+  return {vitD:vitD,cpd:cpd,ros:ros,pigFac:pigFac,uvbDose:uvbDose,uvaDose:uvaDose};
+}
+
+/* ---------------- drawing ---------------- */
+function drawBarrier(){
+  var m=model(), s=[];
+  s.push('<rect x="0" y="0" width="520" height="340" fill="#fff"/>');
+  s.push('<text x="12" y="19" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+C.muted+'">OUTSIDE AIR</text>');
+  var nL=Math.round(S.layers), topY=30, bh=13, gapv=2;
+  var scH=nL*(bh+gapv);
+  /* corneocyte bricks in lipid mortar */
+  var mortar=clamp(S.lipid,0,100)/100;
+  s.push('<rect x="14" y="'+topY+'" width="492" height="'+Math.max(4,scH)+'" rx="6" fill="rgba(184,134,47,'+(0.08+0.30*mortar)+')"/>');
+  for(var r=0;r<nL;r++){
+    var y=topY+r*(bh+gapv), off=(r%2)*26;
+    for(var c=0;c<10;c++){
+      var x=18+off+c*49;
+      if(x>498) continue;
+      s.push('<rect x="'+x+'" y="'+y+'" width="45" height="'+bh+'" rx="3" fill="rgba(31,91,115,.13)" stroke="'+C.teal+'" stroke-width="1"/>');
+      if(S.transit<14 && r<nL) s.push('<circle cx="'+(x+22)+'" cy="'+(y+bh/2)+'" r="2.6" fill="'+C.coral+'" opacity=".8"/>');
+    }
+  }
+  var lowerTop=topY+Math.max(4,scH)+6;
+  s.push('<text x="510" y="'+(topY+12)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.gold+'">stratum corneum &mdash; '+nL+' layers</text>');
+  if(S.transit<14) s.push('<text x="510" y="'+(topY+26)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="'+C.coral+'">nuclei retained (parakeratosis)</text>');
+
+  /* living layers */
+  var lay=[['stratum granulosum',34,'rgba(122,90,138,.18)'],['stratum spinosum',44,'rgba(31,91,115,.10)'],['stratum basale',26,'rgba(31,91,115,.16)']];
+  var yy=lowerTop;
+  for(var i=0;i<lay.length;i++){
+    s.push('<rect x="14" y="'+yy+'" width="492" height="'+lay[i][1]+'" rx="5" fill="'+lay[i][2]+'" stroke="'+C.line+'" stroke-width="1"/>');
+    s.push('<text x="20" y="'+(yy+15)+'" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.soft+'">'+lay[i][0].toUpperCase()+'</text>');
+    yy+=lay[i][1]+4;
+  }
+  /* lamellar bodies discharging */
+  var secreting=(1-m.ca)*(S.exo?1:0);
+  var gY=lowerTop+8;
+  for(var b=0;b<9;b++){
+    var prog=((phase*1.6+b*11)%60)/60;
+    var op=secreting>0.05?(0.9-0.5*prog)*Math.min(1,secreting*1.6):0.12;
+    s.push('<ellipse cx="'+(38+b*52)+'" cy="'+(gY+18-prog*22)+'" rx="8" ry="5" fill="'+C.gold+'" opacity="'+op.toFixed(2)+'"/>');
+  }
+  s.push('<text x="510" y="'+(gY+14)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="700" fill="'+(secreting>0.05?C.gold:C.muted)+'">'+(S.exo?(secreting>0.05?'lamellar bodies discharging':'secretion switched off &mdash; calcium restored'):'exocytosis blocked')+'</text>');
+
+  /* calcium gradient bar */
+  var cgx=14, cgy=lowerTop, cgh=yy-lowerTop-4;
+  s.push('<rect x="'+cgx+'" y="'+cgy+'" width="8" height="'+cgh+'" rx="4" fill="rgba(47,111,159,.15)"/>');
+  s.push('<rect x="'+cgx+'" y="'+cgy+'" width="8" height="'+(cgh*0.42*m.ca)+'" rx="4" fill="'+C.blue+'"/>');
+  s.push('<text x="26" y="'+(yy+16)+'" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.blue+'">Ca²⁺ gradient '+Math.round(m.ca*100)+'% intact</text>');
+
+  /* water escaping */
+  var flux=clamp(m.tewl/60,0,1);
+  var nA=Math.max(1,Math.round(1+flux*11));
+  for(var a=0;a<nA;a++){
+    var ax=32+((a*44+phase*2)%460);
+    var ay=topY-6-(((phase*2.4+a*9)%26));
+    s.push('<circle cx="'+ax+'" cy="'+ay+'" r="'+(2.4+2.4*flux)+'" fill="'+C.blue+'" opacity="'+(0.35+0.5*flux)+'"/>');
+  }
+  s.push('<text x="12" y="332" font-family="Inter,sans-serif" font-size="11.5" font-weight="800" fill="'+C.blue+'">Water takes a tortuous path through the lipid &mdash; the effective route is 10&ndash;50 times longer than the layer is thick</text>');
+  $('svg').innerHTML=s.join('');
+}
+
+function drawUV(){
+  var u=uvModel(), s=[];
+  s.push('<rect x="0" y="0" width="520" height="340" fill="#fff"/>');
+  var topY=52;
+  s.push('<rect x="0" y="0" width="520" height="'+topY+'" fill="rgba(184,134,47,.10)"/>');
+  s.push('<text x="12" y="20" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+C.gold+'">UVB 280&ndash;315 nm &mdash; absorbed by DNA</text>');
+  s.push('<text x="12" y="38" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+C.purple+'">UVA 315&ndash;400 nm &mdash; penetrates to the dermis</text>');
+  /* photons */
+  var i,j;
+  var nB=Math.round(clamp(u.uvbDose/6,0,14)), nA2=Math.round(clamp(u.uvaDose/6,0,14));
+  for(i=0;i<nB;i++){
+    var p=((phase*2.6+i*17)%100)/100;
+    var x=30+i*34, y=topY-14+p*84;
+    s.push('<line x1="'+x+'" y1="'+y+'" x2="'+(x+7)+'" y2="'+(y+16)+'" stroke="'+C.gold+'" stroke-width="2.6" stroke-linecap="round"/>');
+  }
+  for(j=0;j<nA2;j++){
+    var p2=((phase*2.0+j*13)%100)/100;
+    var x2=44+j*34, y2=topY-14+p2*216;
+    s.push('<line x1="'+x2+'" y1="'+y2+'" x2="'+(x2+7)+'" y2="'+(y2+18)+'" stroke="'+C.purple+'" stroke-width="2.6" stroke-linecap="round"/>');
+  }
+  if(U.screen) s.push('<rect x="0" y="'+(topY-6)+'" width="520" height="10" fill="'+C.green+'" opacity=".55"/>');
+  /* epidermis */
+  s.push('<rect x="0" y="'+topY+'" width="520" height="150" fill="rgba(31,91,115,.07)" stroke="'+C.line+'"/>');
+  s.push('<text x="510" y="'+(topY+16)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.soft+'">EPIDERMIS</text>');
+  /* keratinocytes with melanin caps */
+  var mel=U.pig/100;
+  for(i=0;i<12;i++){
+    var kx=14+i*42, ky=topY+96;
+    s.push('<rect x="'+kx+'" y="'+ky+'" width="36" height="46" rx="7" fill="rgba(31,91,115,.10)" stroke="'+C.teal+'" stroke-width="1.2"/>');
+    s.push('<circle cx="'+(kx+18)+'" cy="'+(ky+27)+'" r="9" fill="'+C.tealdk+'" opacity=".4"/>');
+    s.push('<path d="M'+(kx+7)+','+(ky+20)+' a11,11 0 0 1 22,0" fill="none" stroke="#4a3520" stroke-width="'+(1.5+5*mel)+'" stroke-linecap="round" opacity="'+(0.25+0.7*mel)+'"/>');
+  }
+  /* melanocytes: always the same number */
+  for(i=0;i<3;i++){
+    var mxp=70+i*170, myp=topY+150;
+    s.push('<circle cx="'+mxp+'" cy="'+(myp-10)+'" r="11" fill="#4a3520" opacity="'+(0.4+0.5*mel)+'"/>');
+    for(j=0;j<5;j++){
+      s.push('<line x1="'+mxp+'" y1="'+(myp-16)+'" x2="'+(mxp-46+j*23)+'" y2="'+(myp-58)+'" stroke="#4a3520" stroke-width="1.8" opacity="'+(0.3+0.5*mel)+'"/>');
+    }
+  }
+  s.push('<text x="12" y="'+(topY+146)+'" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.soft+'">3 melanocytes drawn &mdash; density is the same in every population</text>');
+  /* dermis */
+  s.push('<rect x="0" y="'+(topY+150)+'" width="520" height="'+(340-topY-150)+'" fill="rgba(209,73,91,.06)"/>');
+  s.push('<text x="510" y="'+(topY+170)+'" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="800" fill="'+C.soft+'">DERMIS</text>');
+  var dam=clamp(u.ros/60,0,1);
+  for(i=0;i<9;i++){
+    var fy=topY+178+ (i%3)*26, fx=20+Math.floor(i/3)*168;
+    var wob=dam*8;
+    s.push('<path d="M'+fx+','+fy+' q40,'+(-10-wob)+' 80,0 q40,'+(10+wob)+' 70,0" fill="none" stroke="'+(dam>0.5?C.coral:C.teal)+'" stroke-width="'+(2.5+2*dam)+'" opacity="'+(0.4+0.5*dam)+'" stroke-linecap="round"/>');
+  }
+  s.push('<text x="12" y="334" font-family="Inter,sans-serif" font-size="11" font-weight="800" fill="'+(dam>0.5?C.coral:C.muted)+'">'+(dam>0.5?'Collagen disorganized, elastin clumped &mdash; solar elastosis':'Dermal collagen and elastin intact')+'</text>');
+  $('svg').innerHTML=s.join('');
+}
+
+/* TEWL trace */
+var cv=$('cv'), cx=cv.getContext('2d');
+function drawTrace(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=64,Rr=W-16,T=22,B=H-40;
+  var span=Math.max(24,tH+6);
+  function X(t){ return L+(t/span)*(Rr-L); }
+  function Y(v){ var lv=Math.log10(Math.max(2,v)), l0=Math.log10(2), l1=Math.log10(260); return B-(lv-l0)/(l1-l0)*(B-T); }
+  cx.strokeStyle=C.line; cx.lineWidth=1.5;
+  cx.beginPath(); cx.moveTo(L,T); cx.lineTo(L,B); cx.lineTo(Rr,B); cx.stroke();
+  var ticks=[4,8,20,60,200];
+  cx.font='600 17px Inter,system-ui,sans-serif'; cx.fillStyle=C.muted; cx.textAlign='right';
+  for(var i=0;i<ticks.length;i++){
+    var y=Y(ticks[i]);
+    cx.strokeStyle='rgba(0,0,0,.06)'; cx.beginPath(); cx.moveTo(L,y); cx.lineTo(Rr,y); cx.stroke();
+    cx.fillText(ticks[i],L-8,y+6);
+  }
+  /* normal band 4-8 */
+  cx.fillStyle='rgba(47,159,91,.14)'; cx.fillRect(L,Y(8),Rr-L,Y(4)-Y(8));
+  cx.fillStyle=C.green; cx.textAlign='left'; cx.font='700 16px Inter,system-ui,sans-serif';
+  cx.fillText('normal 4–8 g/m²/h',L+8,Y(8)-8);
+  /* 6 h and 3-5 day markers */
+  var marks=[[6,'6 h'],[72,'3 days'],[120,'5 days']];
+  cx.setLineDash([7,6]);
+  for(var k=0;k<marks.length;k++){
+    if(marks[k][0]>span) continue;
+    var xx=X(marks[k][0]);
+    cx.strokeStyle=C.gold; cx.lineWidth=2; cx.beginPath(); cx.moveTo(xx,T); cx.lineTo(xx,B); cx.stroke();
+    cx.fillStyle=C.gold; cx.font='700 16px Inter,system-ui,sans-serif'; cx.textAlign='center';
+    cx.fillText(marks[k][1],xx,B+24);
+  }
+  cx.setLineDash([]);
+  /* trace */
+  if(trace.length>1){
+    cx.strokeStyle=C.coral; cx.lineWidth=3.4; cx.beginPath();
+    for(var t2=0;t2<trace.length;t2++){
+      var px=X(trace[t2][0]), py=Y(trace[t2][1]);
+      if(t2===0) cx.moveTo(px,py); else cx.lineTo(px,py);
+    }
+    cx.stroke();
+  }
+  cx.fillStyle=C.tealdk; cx.font='800 19px Inter,system-ui,sans-serif'; cx.textAlign='left';
+  cx.fillText('TEWL (g/m²/h) vs simulated hours',L+8,T+2);
+  cx.fillStyle=C.muted; cx.font='600 17px Inter,system-ui,sans-serif'; cx.textAlign='right';
+  cx.fillText('t = '+(tH<48?tH.toFixed(1)+' h':(tH/24).toFixed(1)+' days'),Rr,T+2);
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  if(mode===2){ drawUV(); renderUV(); return; }
+  drawBarrier(); drawTrace();
+  $('lipid').value=Math.round(S.lipid); $('layers').value=Math.round(S.layers);
+  $('lipidV').textContent=Math.round(S.lipid)+'%';
+  $('layersV').textContent=Math.round(S.layers)+' (normal 15&ndash;20)';
+  var m=model();
+  var rec=null;
+  if(breachTEWL && breachTEWL>7) rec=clamp((breachTEWL-m.tewl)/(breachTEWL-6.1),0,1);
+
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Transepidermal water loss</div><div class="v">'+m.tewl.toFixed(1)+'</div><div class="u">g/m²/h (normal 4&ndash;8)</div></div>'+
+    '<div class="stat"><div class="k">Insensible loss through skin</div><div class="v">'+Math.round(m.daily)+'</div><div class="u">mL/day (normal 200&ndash;400)</div></div>'+
+    '<div class="stat"><div class="k">Barrier recovered</div><div class="v">'+(rec===null?'—':Math.round(rec*100))+'</div><div class="u">'+(rec===null?'barrier intact':'% since the breach')+'</div></div>';
+
+  var lp=[
+    {k:'Variable',t:'Barrier integrity, read as water flux',hot:m.tewl>9},
+    {k:'Sensor',t:'Epidermal Ca²⁺ gradient &mdash; '+Math.round(m.ca*100)+'% intact',hot:m.ca<0.85},
+    {k:'Integrator',t:'Granular keratinocyte',hot:m.ca<0.85},
+    {k:'Effector',t:(S.exo?'Lamellar body exocytosis':'exocytosis BLOCKED')+' + '+(S.syn?'lipid synthesis':'synthesis BLOCKED'),hot:m.ca<0.85&&(S.exo||S.syn),off:!S.exo&&!S.syn},
+    {k:'Response',t:'Lipid lamellae reform, flux falls, Ca²⁺ returns, secretion stops',hot:rec!==null&&rec>0.2}
+  ];
+  var h='';
+  for(var i=0;i<lp.length;i++) h+='<div class="lp'+(lp[i].off?' off':(lp[i].hot?' hot':''))+'"><div class="k">'+lp[i].k+'</div><div class="t">'+lp[i].t+'</div></div>';
+  $('loop').innerHTML=h;
+
+  var v=$('verd'), cls='verdict', txt='';
+  if(m.tewl>150){
+    cls='verdict bad';
+    txt='Barrier gone &mdash; water is leaving as if from an open dish<small>At '+m.tewl.toFixed(0)+' g/m² per hour the skin is losing water at close to the free-evaporation rate, against a normal 4&ndash;8. Over this surface that is '+Math.round(m.daily/1000*10)/10+' L a day. Intravascular volume falls, and every liter that evaporates also carries heat away.</small>';
+  } else if(!S.exo && !S.syn && m.tewl>10){
+    cls='verdict bad';
+    txt='The loop is broken &mdash; nothing is repairing this<small>Both arms of the effector are switched off, so the calcium gradient can fall as far as it likes and no lipid is delivered. Water flux sits at '+m.tewl.toFixed(1)+' g/m²/h indefinitely. A control loop is only as good as its effector.</small>';
+  } else if(!S.flg){
+    cls='verdict warn';
+    txt='Filaggrin missing &mdash; the barrier starts out leaky<small>Without filaggrin, keratin is not bundled properly and natural moisturizing factor (urocanic acid, pyrrolidone carboxylic acid) is reduced, so water loss runs at '+m.tewl.toFixed(1)+' g/m²/h even between flares. Loss-of-function mutations in the filaggrin gene are the strongest known genetic risk factor for atopic dermatitis: the <i>barrier defect comes first</i>, and allergens reaching the immune system beneath is the consequence. That reframes emollient therapy as mechanism-directed treatment, not symptom relief.</small>';
+  } else if(S.transit<14){
+    cls='verdict warn';
+    txt='Transit far too fast &mdash; the differentiation program never finishes<small>At '+S.transit+' days instead of 40&ndash;56, cells reach the surface before they can make filaggrin, discharge their lamellar bodies, build a cornified envelope and degrade their nuclei. The corneum is thick but disorganized, the mortar is deficient, and the scale is poorly adherent &mdash; the mechanism of psoriatic scale.</small>';
+  } else if(rec!==null && rec<0.99){
+    cls='verdict warn';
+    txt='Repairing &mdash; '+Math.round(rec*100)+'% of barrier function back at '+(tH<48?tH.toFixed(1)+' h':(tH/24).toFixed(1)+' days')+'<small>Preformed lamellar bodies were exocytosed within minutes; ceramide, cholesterol and fatty acid synthesis is now doing the slower half. Expect roughly 50&ndash;60% recovery by 6 hours and full recovery in 3&ndash;5 days'+(S.ph>5.5?' &mdash; though the alkaline surface pH here is measurably slowing it':'')+'.</small>';
+  } else if(m.tewl<=8.5){
+    cls='verdict';
+    txt='Intact barrier<small>'+m.tewl.toFixed(1)+' g/m² per hour across '+S.bsa.toFixed(2)+' m² for 24 hours is about '+Math.round(m.daily)+' mL/day of insensible loss through skin, with another 250&ndash;350 mL/day leaving through the airway. All of that is achieved by 15&ndash;20 layers of dead corneocytes set in roughly equimolar ceramide, cholesterol and free fatty acid.</small>';
+  } else {
+    cls='verdict warn';
+    txt='Impaired barrier<small>Water loss is '+m.tewl.toFixed(1)+' g/m²/h, above the normal 4&ndash;8. Ask which component is missing: bricks (corneocyte layers), mortar (lipid lamellae), or the filaggrin that organizes them.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  $('info').innerHTML='<span class="n">Read the loop, not the lesion</span>The controlled variable is barrier integrity, read out as water flux. The sensor is the <b>epidermal calcium gradient</b> &mdash; calcium is normally low basally and high in the stratum granulosum, and that gradient exists only because water is <i>not</i> flowing outward. Breach the barrier and the flux washes the gradient away; calcium falls; the tonic inhibition on the granular keratinocyte is released; preformed lamellar bodies are exocytosed within minutes and lipid synthesis is upregulated over hours. Lamellae reform, flux falls, calcium re-accumulates, and secretion switches itself off. Roughly 50&ndash;60% of barrier function returns within 6 hours; full recovery takes 3&ndash;5 days.';
+  $('note').innerHTML='<b>Two chemical features complete the barrier.</b> Surface pH of 4.5&ndash;5.5 &mdash; the acid mantle, from sweat lactate, sebum fatty acids and the granular layer&rsquo;s sodium&ndash;hydrogen exchanger &mdash; favors the enzymes that make ceramides, restrains the serine proteases that dissolve desmosomes, and suppresses <i>Staphylococcus aureus</i>. Alkaline soaps push pH to 6&ndash;7 and measurably slow recovery. Sebum, secreted holocrine at 1&ndash;2 mg per 10 cm&sup2; per 3 hours and strongly androgen-driven, adds triglycerides, wax esters and squalene. And remember the barrier is <i>selectively</i> permeable, not impermeable: small lipophilic molecules cross the lamellae easily, which is exactly how nicotine, fentanyl, estradiol and nitroglycerin patches work.';
+}
+
+function renderUV(){
+  var u=uvModel();
+  $('stats').innerHTML=
+    '<div class="stat"><div class="k">Vitamin D yield</div><div class="v">'+Math.round(u.vitD/20*100)+'</div><div class="u">% of a day&rsquo;s need</div></div>'+
+    '<div class="stat"><div class="k">UVB dose to DNA</div><div class="v">'+u.cpd.toFixed(0)+'</div><div class="u">pyrimidine-dimer units</div></div>'+
+    '<div class="stat"><div class="k">UVA dose to dermis</div><div class="v">'+u.ros.toFixed(0)+'</div><div class="u">radical units</div></div>';
+  var v=$('verd'), cls='verdict', txt='';
+  if(U.screen){
+    cls='verdict warn';
+    txt='Sunscreen blocks the damage &mdash; and the hormone<small>The same ultraviolet B that generates cyclobutane pyrimidine dimers in DNA is the wavelength that converts 7-dehydrocholesterol in basal and spinous keratinocyte membranes into previtamin D&#8323;. Block it and both stop. That is the genuine trade-off, not a myth &mdash; it is why the advice is short, deliberate, unprotected exposure rather than none.</small>';
+  } else if(U.uvb<10 && U.uva>50){
+    cls='verdict bad';
+    txt='Ageing without the benefit<small>Glass and winter latitude strip out ultraviolet B while letting ultraviolet A through. You get no previtamin D&#8323; at all, but UVA still reaches the dermis and works through reactive oxygen species on collagen and elastin. Elastin is made almost entirely before age 20 and is effectively non-renewable, so this damage accumulates as solar elastosis.</small>';
+  } else if(u.vitD>=20){
+    cls='verdict';
+    txt='Enough for cutaneous vitamin D synthesis<small>Ten to thirty minutes of midday sun on face and arms, several times a week, suffices for most lightly pigmented adults. Deeply pigmented skin may need three to six times the exposure for the same yield &mdash; this model is asking for '+Math.round(u.pigFac*20)+' equivalent minutes here. The liver then adds a hydroxyl at position 25 and the kidney adds another at position 1 under parathyroid hormone control, giving 1,25-dihydroxyvitamin D. The skin is, in this respect, an endocrine organ.</small>';
+  } else {
+    cls='verdict warn';
+    txt='Not yet enough &mdash; '+Math.round(u.vitD/20*100)+'% of the target<small>Yield falls with pigmentation, latitude, season, glass, sunscreen and age. Note that the tanning response cannot help you here: it is delayed 48&ndash;72 hours because it needs new melanin made by tyrosinase after p53-mediated signaling. The immediate darkening within minutes is only oxidation of melanin that already existed, and confers little protection.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('info').innerHTML='<span class="n">Same melanocytes, different output</span>Melanocytes sit in the stratum basale at roughly one per 4&ndash;10 keratinocytes, and that density is essentially the same in all human populations. Differences in skin color come from melanosome <b>size, number, degradation rate and dispersion</b>, and from the ratio of brown-black eumelanin to red-yellow pheomelanin &mdash; not from melanocyte counts. Each melanocyte extends dendrites to 30&ndash;40 keratinocytes, forming an epidermal melanin unit, and the transferred melanosomes are arranged as a cap over the nucleus: a physical parasol positioned exactly where the DNA is.';
+  $('note').innerHTML='<b>Two wavebands, two mechanisms.</b> Ultraviolet B (280&ndash;315 nm) is absorbed directly by DNA and generates cyclobutane pyrimidine dimers. Ultraviolet A (315&ndash;400 nm) penetrates deeper into the dermis and works mostly through reactive oxygen species, damaging collagen and elastin. Melanin absorbs both and quenches radicals. More eumelanin means greater ultraviolet protection but reduced cutaneous vitamin D synthesis for the same exposure &mdash; one pigment, two consequences pulling in opposite directions.';
+}
+
+reseed();
+sync();
+syncU();
+setMode(1);
+})();
+</script>
+</body>
+</html>

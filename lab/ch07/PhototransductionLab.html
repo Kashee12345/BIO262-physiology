@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Dark Current &mdash; Phototransduction, Adaptation and Center-Surround</title>
+<meta name="description" content="Turn light on a rod and watch cGMP fall, channels close, the dark current stop and the cell hyperpolarize, then dark-adapt a retina and build a center-surround receptive field.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--coral);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);} .verdict.night{background:var(--teal-dk);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch07.html">&larr; Module 7</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 7</div>
+  <h1>The Dark Current</h1>
+  <div class="intro">Photoreceptors break the rule that stimuli depolarize. In darkness cGMP holds channels <b>open</b>, Na<sup>+</sup> and Ca<sup>2+</sup> pour in, and the rod sits at about &minus;40 mV releasing glutamate continuously &mdash; darkness is the maximum signal. Turn the light up below and watch cGMP fall, channels shut, and the cell hyperpolarize toward &minus;70 mV. Then dark-adapt a retina over thirty minutes, and build a center-surround receptive field out of lateral inhibition.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">The cascade</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Dark adaptation</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Center-surround</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">How much light is falling on this rod?</div>
+        <div class="sl"><label for="lux">Illumination <span class="v" id="luxV">darkness</span></label>
+          <input type="range" id="lux" min="0" max="60" value="0" step="1" aria-label="Light intensity, from total darkness through six log units of illumination"></div>
+        <div class="chips" id="pre1"></div>
+
+        <div class="lbl">Fire a brief flash and watch it recover</div>
+        <div class="row"><button class="btn solid" id="bFlash" type="button">Deliver a 10 ms flash</button></div>
+        <button class="tog" id="tKin" type="button" aria-pressed="false"><span class="dot"></span><span>Block rhodopsin kinase and arrestin <small>The shut-off machinery. Without it, activated rhodopsin keeps switching on transducin long after the flash is over.</small></span></button>
+        <button class="tog" id="tGcap" type="button" aria-pressed="false"><span class="dot"></span><span>Block the calcium feedback onto guanylyl cyclase <small>Falling calcium is what tells the cell to rebuild cGMP and reset its own gain. Remove it and light adaptation disappears.</small></span></button>
+        <div class="hint"><b>The claim to test.</b> Set illumination to darkness and read the membrane potential: about &minus;40 mV, unusually depolarized for a neuron, with glutamate release at maximum. Now step the light up. Everything falls &mdash; cGMP, open channels, dark current, membrane potential and glutamate. Any description of &ldquo;more glutamate from a rod&rdquo; is a description of darkness.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Step from bright light into a dark room</div>
+        <div class="row">
+          <button class="btn solid" id="bDark" type="button">Walk into the dark</button>
+          <button class="btn" id="bReset" type="button">Back to daylight</button>
+        </div>
+        <div class="sl"><label for="mins">Minutes in the dark <span class="v" id="minsV">0.0 min</span></label>
+          <input type="range" id="mins" min="0" max="350" value="0" step="1" aria-label="Time spent in darkness, in tenths of a minute"></div>
+        <button class="tog" id="tVitA" type="button" aria-pressed="false"><span class="dot"></span><span>Vitamin A deficiency <small>11-<i>cis</i>-retinal is a vitamin A derivative, and the pigment epithelium cannot regenerate what it does not have.</small></span></button>
+        <div class="hint"><b>Watch for the break.</b> Sensitivity improves in two limbs, not one. Cones finish in about 5&ndash;7 minutes and then stop improving; the curve bends at the <b>rod&ndash;cone break</b> and rods carry on for another 20&ndash;30 minutes, ending roughly 100,000 times more sensitive than where they started.</div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Which ganglion cell are you recording from?</div>
+        <div class="chips" id="cellsel"></div>
+        <div class="lbl">Shine light on the receptive field</div>
+        <div class="chips" id="pre3"></div>
+        <div class="sl"><label for="rin">Inner radius of the light <span class="v" id="rinV">0 &micro;m</span></label>
+          <input type="range" id="rin" min="0" max="120" value="0" step="1" aria-label="Inner radius of the illuminated annulus in micrometers"></div>
+        <div class="sl"><label for="rout">Outer radius of the light <span class="v" id="routV">25 &micro;m</span></label>
+          <input type="range" id="rout" min="0" max="120" value="25" step="1" aria-label="Outer radius of the illuminated region in micrometers"></div>
+        <div class="hint"><b>The result that surprises people.</b> Diffuse light over the whole receptive field &mdash; the brightest stimulus available &mdash; barely changes the firing rate at all. Center and surround cancel. The retina is not built to report how much light there is. It is built to report where the light <i>changes</i>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>One photon in, one sign flip out</h2>
+      <canvas id="cv1" width="1040" height="410" aria-label="Diagram of the phototransduction cascade from rhodopsin through transducin and phosphodiesterase to cyclic GMP, the channels, the membrane potential and glutamate release"></canvas>
+      <canvas id="cv1b" width="1040" height="240" aria-label="Photocurrent trace showing the response to a brief flash and its recovery"></canvas>
+      <div class="stats" id="st1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+
+    <div class="card hide" id="r2">
+      <h2>Thirty minutes of getting your eyes back</h2>
+      <canvas id="cv2" width="1040" height="400" aria-label="Dark adaptation curve plotting log threshold against minutes in darkness, showing the cone limb, the rod-cone break and the rod limb"></canvas>
+      <canvas id="cv2b" width="1040" height="200" aria-label="A simulated night scene that becomes visible as dark adaptation proceeds"></canvas>
+      <div class="stats" id="st2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+
+    <div class="card hide" id="r3">
+      <h2>Center, surround, and the edge between them</h2>
+      <canvas id="cv3" width="1040" height="360" aria-label="Map of a ganglion cell receptive field with an excitatory center and inhibitory surround, and the light stimulus drawn on top"></canvas>
+      <canvas id="cv3b" width="1040" height="260" aria-label="Firing rate of a row of ganglion cells across a luminance edge, showing overshoot and undershoot at the border"></canvas>
+      <div class="stats" id="st3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(P){
+    P[0].classList.toggle('on',n===P[1]);
+    P[0].setAttribute('aria-selected',n===P[1]?'true':'false');
+  });
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) render2(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =========================================================
+   BENCH 1 -- the cascade, the dark current, and recovery
+   ========================================================= */
+var VDARK=-40, VSAT=-70, IDARK=40;
+var blkKin=false, blkGcap=false;
+$('tKin').onclick=function(){ blkKin=!blkKin; this.setAttribute('aria-pressed',blkKin?'true':'false'); render1(); };
+$('tGcap').onclick=function(){ blkGcap=!blkGcap; this.setAttribute('aria-pressed',blkGcap?'true':'false'); render1(); };
+$('lux').addEventListener('input',render1);
+(function(){
+  var pre=$('pre1');
+  [['Total darkness',0],['A handful of photons',8],['Starlight',18],['Moonlight',30],['Indoor light',44],['Daylight — rod saturated',58]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('lux').value=P[1]; render1(); };
+    pre.appendChild(b);
+  });
+})();
+
+function photo(){
+  var s=+$('lux').value;
+  var L = s===0 ? 0 : Math.pow(10,-1+(s-1)*(5.6/59));   /* isomerizations per rod per second */
+  var cg = 1/(1+Math.pow(L/40,0.9));                     /* cGMP as a fraction of the dark level */
+  var open = Math.pow(cg,3);                             /* three cGMP bind cooperatively */
+  var I = IDARK*open;
+  var Vm = VSAT+(VDARK-VSAT)*open;
+  var glu = Math.pow(open,1.4);                          /* release falls steeply with hyperpolarization */
+  var onBip = -60+26*(1-glu);
+  var offBip = -60+26*glu;
+  return {L:L,cg:cg,open:open,I:I,Vm:Vm,glu:glu,onBip:onBip,offBip:offBip,s:s};
+}
+
+var flashT=0, flashRaf=null, flashStart=0;
+$('bFlash').onclick=function(){ flashStart=performance.now(); if(!flashRaf) flashRaf=requestAnimationFrame(flashLoop); };
+function flashLoop(ts){
+  flashT=(ts-flashStart)/1000;
+  drawFlash(photo());
+  if(flashT<(blkKin?6.0:2.6)){ flashRaf=requestAnimationFrame(flashLoop); }
+  else { flashRaf=null; flashT=0; drawFlash(photo()); }
+}
+function flashResp(t){
+  if(t<=0) return 0;
+  var rise=1-Math.exp(-t/0.055);
+  var tau=blkKin?2.2:0.20;
+  var amp=blkGcap?1.0:0.72;                              /* without calcium feedback the response is bigger and slower */
+  var dec=Math.exp(-t/(blkGcap?tau*1.9:tau));
+  return amp*rise*dec;
+}
+
+function render1(){
+  var S=photo();
+  $('luxV').textContent = S.s===0 ? 'darkness' : (S.L<1?S.L.toFixed(2):S.L.toFixed(0))+' R*/rod/s';
+  $('st1').innerHTML=
+    tile('cGMP level',(S.cg*100).toFixed(0)+'%','of the dark concentration')+
+    tile('cGMP-gated channels open',(S.open*100).toFixed(0)+'%','three cGMP must bind each channel')+
+    tile('Dark current',S.I.toFixed(1),'pA of Na<sup>+</sup> and Ca<sup>2+</sup> flowing in')+
+    tile('Membrane potential',S.Vm.toFixed(0),'mV &middot; &minus;40 in the dark, &minus;70 in bright light')+
+    tile('Glutamate release',(S.glu*100).toFixed(0)+'%','of the maximum, which happens in darkness')+
+    tile('ON bipolar cell',S.onBip.toFixed(0),'mV &middot; mGluR6 is inhibitory, so it does the opposite');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(S.s===0){
+    cls='verdict night';
+    txt='Darkness &mdash; and the cell is working at full output<small>cGMP is high, the channels are open, '+IDARK.toFixed(0)+' pA of dark current is flowing in, the membrane sits at &minus;40 mV and glutamate is pouring onto the bipolar cells. This is the resting state of a photoreceptor.</small>';
+    inf='<span class="n">Darkness is not the absence of a signal</span>It is the maximum signal. A photoreceptor in the dark is the busiest cell in the retina: the outer segment is holding cyclic-nucleotide-gated channels open, sodium and calcium are flowing in continuously, and the synaptic terminal is releasing transmitter without pause. Light is what <i>interrupts</i> all of this.<div class="dd">That constant influx has to be paid for. The Na<sup>+</sup>/K<sup>+</sup>-ATPase in the inner segment works flat out to bail out the sodium, which is why the retina has one of the highest metabolic rates in the body and why photoreceptors are so vulnerable to ischemia.</div>';
+  } else if(S.open>0.75){
+    cls='verdict cool';
+    txt='Dim light &mdash; a small, graded, hyperpolarizing response<small>Only '+((1-S.open)*100).toFixed(0)+'% of channels have closed, the membrane moved to '+S.Vm.toFixed(0)+' mV, and glutamate fell to '+(S.glu*100).toFixed(0)+'%. Notice the direction: the stimulus made the cell <i>more</i> negative.</small>';
+    inf='<span class="n">The amplification is enormous, which is why this works at all</span>One activated rhodopsin switches on hundreds of transducin molecules; each activated phosphodiesterase 6 destroys on the order of a thousand cGMP molecules per second. A <b>single photon</b> therefore closes several hundred channels and produces a measurable response of about 1 mV.<div class="dd">That is why a fully dark-adapted human can reliably report a flash of only a handful of photons. The transduction cascade is a chemical amplifier with a gain in the millions, built out of a G protein and an enzyme.</div>';
+  } else if(S.open>0.06){
+    cls='verdict warn';
+    txt='Working range &mdash; '+((1-S.open)*100).toFixed(0)+'% of channels closed<small>cGMP is at '+(S.cg*100).toFixed(0)+'% of its dark level, dark current down to '+S.I.toFixed(1)+' pA, membrane at '+S.Vm.toFixed(0)+' mV. Glutamate release has fallen to '+(S.glu*100).toFixed(0)+'%, and the ON bipolar cell is depolarizing in response.</small>';
+    inf='<span class="n">Follow the sign through the circuit</span>Light &rarr; rhodopsin activated &rarr; transducin &rarr; phosphodiesterase 6 &rarr; <b>cGMP falls</b> &rarr; channels close &rarr; dark current stops &rarr; cell <b>hyperpolarizes</b> &rarr; <b>less</b> glutamate.<div class="dd">Then the sign is flipped back. <b>ON bipolar cells</b> express mGluR6, a metabotropic glutamate receptor that is <i>inhibitory</i>, so removing glutamate depolarizes them: light now means more signal again. <b>OFF bipolar cells</b> use ordinary ionotropic receptors and do the opposite, so the retina reports increments and decrements on parallel channels from this point on.</div>';
+  } else {
+    cls='verdict bad';
+    txt='Saturated &mdash; this rod has nothing left to say<small>Essentially every channel is shut, the dark current has stopped, and the membrane is pinned near '+S.Vm.toFixed(0)+' mV. More light cannot produce more response, so rods are useless in daylight and cones take over entirely.</small>';
+    inf='<span class="n">Saturation is a design consequence, not a fault</span>A receptor built for single-photon sensitivity has to give up its range at the top. Rods saturate in daylight; cones, which need far more photons to respond at all, work perfectly there. The retina solves the ten-billion-fold range of natural light levels by using two receptor populations plus photoreceptor light adaptation &mdash; the pupil contributes only about 1.5 log units of the total.<div class="dd">This is also why the rod&ndash;cone handover in dark adaptation matters so much: the two systems do not overlap in sensitivity, they hand off.</div>';
+  }
+  if(blkKin){
+    cls='verdict bad';
+    txt='Shut-off machinery blocked &mdash; the response will not terminate<small>Rhodopsin kinase normally phosphorylates the activated pigment and arrestin caps it. Without that step, one photon keeps generating signal for seconds. Fire the flash and watch the recovery limb stretch out.</small>';
+    inf='<span class="n">Recovery is as important as activation</span>Three shut-off steps run in parallel: rhodopsin kinase plus arrestin quench the pigment, the transducin alpha subunit hydrolyzes its own GTP, and guanylyl cyclase rebuilds cGMP. Break any of them and the cell cannot signal the <i>next</i> photon, because it is still reporting the last one.<div class="dd">Inherited defects in these shut-off proteins cause stationary night blindness and delayed dark adaptation in humans &mdash; the transduction works, but the reset does not.</div>';
+  } else if(blkGcap){
+    cls='verdict warn';
+    txt='Calcium feedback blocked &mdash; the cell can no longer reset its own gain<small>Normally, closed channels stop admitting calcium, intracellular calcium falls, the guanylyl cyclase activating proteins are freed, cyclase switches on and cGMP is rebuilt. That is light adaptation.</small>';
+    inf='<span class="n">Why stepping outdoors is blinding for a few seconds and then simply bright</span>The photoreceptor turns its own sensitivity down. Falling calcium during illumination stimulates guanylyl cyclase, cGMP is replaced, and the same light now produces a smaller response &mdash; the receptor has rescaled itself to the new ambient level.<div class="dd">Remove that step, as this switch does, and the response grows larger and slower and the cell saturates at illumination it would otherwise have handled comfortably. Fire the flash and compare.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Cascade diagram: cGMP at '+(S.cg*100).toFixed(0)+' percent, '+(S.open*100).toFixed(0)+' percent of channels open, membrane potential '+S.Vm.toFixed(0)+' millivolts, glutamate release '+(S.glu*100).toFixed(0)+' percent.');
+  drawCascade(S); drawFlash(S);
+}
+
+function drawCascade(S){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE CASCADE, LEFT TO RIGHT — EVERY BOX FALLS WHEN LIGHT RISES',24,28);
+
+  var steps=[
+    {t:'PHOTON',s:S.L>0?'absorbed':'none',lvl:S.L>0?1:0,col:GOLD},
+    {t:'RHODOPSIN',s:'11-cis → all-trans',lvl:1-S.cg,col:GOLD},
+    {t:'TRANSDUCIN',s:'G protein, ×500 gain',lvl:1-S.cg,col:PURP},
+    {t:'PDE6',s:'hydrolyzes cGMP',lvl:1-S.cg,col:PURP},
+    {t:'cGMP',s:(S.cg*100).toFixed(0)+'% of dark level',lvl:S.cg,col:TEAL},
+    {t:'CNG CHANNELS',s:(S.open*100).toFixed(0)+'% open',lvl:S.open,col:TEAL},
+    {t:'DARK CURRENT',s:S.I.toFixed(1)+' pA in',lvl:S.open,col:BLUE},
+    {t:'GLUTAMATE',s:(S.glu*100).toFixed(0)+'% release',lvl:S.glu,col:BLUE}
+  ];
+  var bw=(W-60)/steps.length, y=62, bh=76;
+  steps.forEach(function(St,i){
+    var x=30+i*bw;
+    g.fillStyle=St.col; g.globalAlpha=0.13+0.55*clamp(St.lvl,0,1);
+    g.fillRect(x+4,y,bw-12,bh); g.globalAlpha=1;
+    g.strokeStyle=St.col; g.lineWidth=2; g.strokeRect(x+4,y,bw-12,bh);
+    g.fillStyle=TDK; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(St.t,x+bw/2-4,y+26);
+    g.fillStyle=MUT; g.font='600 10.5px Inter, system-ui, sans-serif';
+    g.fillText(St.s,x+bw/2-4,y+44);
+    /* level bar */
+    g.fillStyle=LINE; g.fillRect(x+14,y+54,bw-32,9);
+    g.fillStyle=St.col; g.fillRect(x+14,y+54,(bw-32)*clamp(St.lvl,0,1),9);
+    if(i<steps.length-1){
+      g.strokeStyle=MUT; g.lineWidth=2;
+      g.beginPath(); g.moveTo(x+bw-6,y+bh/2); g.lineTo(x+bw+2,y+bh/2); g.stroke();
+    }
+  });
+
+  /* membrane potential column */
+  var mx=90, my=180, mh=150;
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('PHOTORECEPTOR MEMBRANE POTENTIAL',24,my-10);
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(mx,my); g.lineTo(mx,my+mh); g.stroke();
+  function VY(mv){ return my+mh-((mv+80)/45)*mh; }
+  [-40,-50,-60,-70,-80].forEach(function(mv){
+    g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.moveTo(mx,VY(mv)); g.lineTo(mx+300,VY(mv)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(mv,mx-8,VY(mv)+4);
+  });
+  g.fillStyle=TDK; g.fillRect(mx,VY(S.Vm)-4,300,8);
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(S.Vm.toFixed(0)+' mV',mx+308,VY(S.Vm)+5);
+  g.fillStyle=GOLD; g.font='700 11px Inter, system-ui, sans-serif';
+  g.fillText('−40 mV: dark, depolarized, releasing',mx+8,VY(-40)-6);
+  g.fillStyle=BLUE;
+  g.fillText('−70 mV: bright light, hyperpolarized, silent',mx+8,VY(-70)+16);
+
+  /* the two bipolar cells */
+  var bx=W-430;
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('THE SIGN IS FLIPPED BACK AT THE BIPOLAR SYNAPSE',bx,my-10);
+  [['ON bipolar · mGluR6 · inhibitory receptor',S.onBip,GREEN],['OFF bipolar · ionotropic receptor',S.offBip,CORAL]].forEach(function(P,i){
+    var yy=my+22+i*70;
+    g.fillStyle=MUT; g.font='700 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(P[0],bx,yy-8);
+    g.fillStyle=LINE; g.fillRect(bx,yy,340,22);
+    var frac=(P[1]+60)/26;
+    g.fillStyle=P[2]; g.fillRect(bx,yy,340*clamp(frac,0,1),22);
+    g.fillStyle='#fff'; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(P[1].toFixed(0)+' mV',bx+8,yy+16);
+  });
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Light reduces glutamate. The ON cell reads that as excitation; the OFF cell reads it as inhibition.',bx,my+180);
+}
+
+function drawFlash(S){
+  var cv=$('cv1b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=80,R=W-24,T=32,B=H-42, TMAX=blkKin?6.0:2.6;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(t){ return L+(t/TMAX)*(R-L); }
+  function Y(f){ return T+f*(B-T); }                       /* f = fraction of dark current suppressed, drawn downward */
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,0.25,0.5,0.75,1].forEach(function(f){
+    g.beginPath(); g.moveTo(L,Y(f)); g.lineTo(R,Y(f)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText((IDARK*(1-f)).toFixed(0)+' pA',L-8,Y(f)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  var t;
+  for(t=0;t<=TMAX+0.001;t+=(TMAX>3?1:0.5)){
+    g.beginPath(); g.moveTo(X(t),B); g.lineTo(X(t),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(t.toFixed(1),X(t),B+20);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('seconds after a 10 ms flash',(L+R)/2,H-10);
+
+  /* flash marker */
+  g.fillStyle=GOLD; g.fillRect(X(0.10),T,3.4,B-T);
+  g.fillStyle=GOLD; g.font='800 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('flash',X(0.10)+7,T+13);
+
+  g.strokeStyle=blkKin?CORAL:(blkGcap?GOLD:TEAL); g.lineWidth=3.4; g.beginPath();
+  var n,tt,f;
+  for(n=0;n<=600;n++){
+    tt=TMAX*n/600; f=flashResp(tt-0.10);
+    if(n===0) g.moveTo(X(tt),Y(f)); else g.lineTo(X(tt),Y(f));
+  }
+  g.stroke();
+  /* live marker while the animation runs */
+  if(flashT>0){
+    var fc=flashResp(flashT-0.10);
+    g.fillStyle=blkKin?CORAL:TEAL;
+    g.beginPath(); g.arc(X(Math.min(flashT,TMAX)),Y(fc),8,0,6.3); g.fill();
+  }
+  g.fillStyle=blkKin?CORAL:(blkGcap?GOLD:TEAL); g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(blkKin?'SHUT-OFF BLOCKED — recovery takes seconds instead of a fraction of one'
+    :(blkGcap?'NO CALCIUM FEEDBACK — bigger, slower, no gain reset':'NORMAL — suppression peaks in about 0.15 s and is over within a second'),L+12,T+16);
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+  g.fillText('the trace falls because light SUBTRACTS current — the dark current is being switched off',L+12,B-10);
+}
+
+/* =========================================================
+   BENCH 2 -- dark adaptation
+   ========================================================= */
+var vitA=false, darkRaf=null, darkStart=0;
+$('tVitA').onclick=function(){ vitA=!vitA; this.setAttribute('aria-pressed',vitA?'true':'false'); render2(); };
+$('mins').addEventListener('input',function(){ if(darkRaf){cancelAnimationFrame(darkRaf); darkRaf=null;} render2(); });
+$('bDark').onclick=function(){ darkStart=performance.now()-(((+$('mins').value)/10)/6)*1000; if(!darkRaf) darkRaf=requestAnimationFrame(darkLoop); };
+$('bReset').onclick=function(){ if(darkRaf){cancelAnimationFrame(darkRaf); darkRaf=null;} $('mins').value=0; render2(); };
+function darkLoop(ts){
+  var mins=(ts-darkStart)/1000*6;                    /* 6 simulated minutes per real second */
+  if(mins>=35){ mins=35; $('mins').value=350; render2(); darkRaf=null; return; }
+  $('mins').value=Math.round(mins*10); render2();
+  darkRaf=requestAnimationFrame(darkLoop);
+}
+function coneLimb(t){ return 2.8+2.2*Math.exp(-t/1.6); }
+function rodLimb(t){ return vitA ? (2.35+2.85*Math.exp(-t/9.5)) : (5.2*Math.exp(-t/9.5)); }
+function thresholdAt(t){ return Math.min(coneLimb(t),rodLimb(t)); }
+
+function render2(){
+  var t=(+$('mins').value)/10;
+  var Lc=coneLimb(t), Lr=rodLimb(t), Th=Math.min(Lc,Lr);
+  var gain=Math.pow(10,5.0-Th);
+  var breakT=null,k;
+  for(k=0;k<=350;k++){ var tt=k/10; if(rodLimb(tt)<coneLimb(tt)){ breakT=tt; break; } }
+  $('minsV').textContent=t.toFixed(1)+' min';
+  $('st2').innerHTML=
+    tile('Time in the dark',t.toFixed(1),'minutes')+
+    tile('Threshold now',Th.toFixed(2),'log units above the fully dark-adapted floor')+
+    tile('Sensitivity gained',gain>=1000?(gain/1000).toFixed(0)+'k&times;':gain.toFixed(0)+'&times;','since you stepped out of the light')+
+    tile('Which receptor is limiting',(Lr<Lc?'Rods':'Cones'),(Lr<Lc?'the rod limb has taken over':'cones are still the more sensitive system'))+
+    tile('Rod&ndash;cone break',breakT?breakT.toFixed(1)+' min':'never','where the curve bends')+
+    tile('Cone plateau',coneLimb(30).toFixed(2),'log units &middot; cones stop improving after 5&ndash;7 min');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(vitA){
+    cls='verdict bad';
+    txt='Vitamin A deficiency &mdash; the rod limb never arrives<small>Threshold is stuck at '+Th.toFixed(2)+' log units. Cone adaptation is normal, so daytime vision is unaffected, but the rods cannot regenerate their pigment and night vision never comes back.</small>';
+    inf='<span class="n">Night blindness before anything else</span>The rate-limiting step in dark adaptation is regeneration of <b>11-<i>cis</i>-retinal</b> by the retinal pigment epithelium, and 11-<i>cis</i>-retinal is a vitamin A derivative. Deprive the pathway of substrate and the slow rod limb of the curve flattens out while the fast cone limb is untouched.<div class="dd">That is why nyctalopia appears long before any daytime symptom, and why it is one of the earliest clinical signs of vitamin A deficiency worldwide. The same asymmetry appears in retinitis pigmentosa, which attacks rods first: night vision and peripheral field go years before central acuity.</div>';
+  } else if(t<0.2){
+    cls='verdict warn';
+    txt='You have just stepped into the dark &mdash; and you cannot see anything<small>Threshold is '+Th.toFixed(2)+' log units above where it will end up. Both pigments are heavily bleached and the retina is running at daylight gain.</small>';
+    inf='<span class="n">Adaptation is regeneration</span>Bright light bleaches photopigment faster than the pigment epithelium can rebuild it, and a bleached pigment cannot catch a photon. Recovery of sensitivity is essentially recovery of pigment.<div class="dd">Press <b>Walk into the dark</b> and watch. Two things will happen in sequence, not together.</div>';
+  } else if(breakT && t<breakT){
+    cls='verdict cool';
+    txt='Cone limb &mdash; improving fast, and about to stop<small>Threshold '+Th.toFixed(2)+' log units. Cones regenerate their pigment quickly and are nearly finished; they will plateau at about '+coneLimb(30).toFixed(1)+' log units and go no further.</small>';
+    inf='<span class="n">First limb: cones, done in 5&ndash;7 minutes</span>Cone pigment regenerates rapidly, so most of the early improvement belongs to cones. But cones are intrinsically insensitive &mdash; they need many photons to respond at all &mdash; so their improvement runs into a ceiling.<div class="dd">Keep the clock running past about '+breakT.toFixed(0)+' minutes and watch the curve <b>bend</b>. That bend is the rod&ndash;cone break, and it is the moment the rods become the more sensitive system and take over the job of seeing.</div>';
+  } else if(t<25){
+    cls='verdict night';
+    txt='Rod limb &mdash; still improving, and you can see the faint stars now<small>Threshold '+Th.toFixed(2)+' log units, sensitivity already '+(gain>=1000?(gain/1000).toFixed(0)+',000':gain.toFixed(0))+' times better than when you walked in. Rods keep going for another 20&ndash;30 minutes.</small>';
+    inf='<span class="n">Second limb: rods, and it is slow</span>Rod pigment regenerates far more slowly, so the second limb takes 20&ndash;30 minutes. It is worth the wait: by the end, threshold sensitivity has improved by a factor of roughly <b>100,000</b>.<div class="dd">Rods buy that sensitivity with <b>convergence</b>. Many rods feed one bipolar cell, and the summed signal is far larger than any single rod could produce &mdash; at the cost of spatial resolution, since the brain can no longer tell which rod fired. That is the whole rod&ndash;cone trade-off in one sentence.</div>';
+  } else {
+    cls='verdict night';
+    txt='Fully dark adapted &mdash; roughly 100,000 times more sensitive than when you walked in<small>Threshold has reached the floor at '+Th.toFixed(2)+' log units. A fully dark-adapted human can reliably detect a flash of only a handful of photons.</small>';
+    inf='<span class="n">Now look slightly to one side of a faint star</span>Direct gaze places the image on the <b>fovea</b>, which is cone-only and rod-free, and cones connect nearly one-to-one to ganglion cells with almost no summation. Look a few degrees off and the image falls on peripheral rods, which converge heavily onto shared bipolar cells &mdash; and the star reappears.<div class="dd">The same anatomy predicts disease patterns without any memorization. Rod-first disease takes night vision and peripheral field; fovea-first disease, like macular degeneration, takes central detail and leaves navigation intact.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','Dark adaptation curve at '+t.toFixed(1)+' minutes: threshold '+Th.toFixed(2)+' log units, '+(Lr<Lc?'rods':'cones')+' currently limiting.');
+  drawAdapt(t,Th,breakT); drawNight(Th);
+}
+
+function drawAdapt(t,Th,breakT){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=92,R=W-26,T=32,B=H-52;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  function X(x){ return L+(x/35)*(R-L); }
+  function Y(y){ return B-(y/5.6)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,1,2,3,4,5].forEach(function(d){
+    g.beginPath(); g.moveTo(L,Y(d)); g.lineTo(R,Y(d)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(d+' log',L-8,Y(d)+4);
+  });
+  [0,5,10,15,20,25,30,35].forEach(function(x){
+    g.beginPath(); g.moveTo(X(x),B); g.lineTo(X(x),B+5); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(x,X(x),B+20);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('minutes in the dark',(L+R)/2,B+40);
+  g.save(); g.translate(26,(T+B)/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('log threshold — lower means more sensitive',0,0); g.restore();
+
+  function limb(fn,col,dash){
+    g.strokeStyle=col; g.lineWidth=2.4; if(dash) g.setLineDash([6,5]);
+    g.beginPath();
+    var x;
+    for(x=0;x<=35;x+=0.2){ var px=X(x),py=Y(fn(x)); if(x===0) g.moveTo(px,py); else g.lineTo(px,py); }
+    g.stroke(); g.setLineDash([]);
+  }
+  limb(coneLimb,GOLD,true);
+  limb(rodLimb,BLUE,true);
+
+  /* the measured curve = whichever is lower, drawn only as far as the clock has run */
+  g.strokeStyle=TDK; g.lineWidth=4; g.lineJoin='round'; g.beginPath();
+  var x2,first=true;
+  for(x2=0;x2<=t;x2+=0.1){ var a=X(x2),b=Y(thresholdAt(x2)); if(first){g.moveTo(a,b); first=false;} else g.lineTo(a,b); }
+  g.stroke();
+  g.fillStyle=TDK; g.beginPath(); g.arc(X(t),Y(Th),8,0,6.3); g.fill();
+
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('cone limb — plateaus at 5–7 min',X(9),Y(coneLimb(9))-12);
+  g.fillStyle=BLUE;
+  g.fillText(vitA?'rod limb — cannot regenerate pigment':'rod limb — keeps improving for 20–30 min',X(17),Y(rodLimb(17))+22);
+  if(breakT && !vitA){
+    g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([4,4]);
+    g.beginPath(); g.moveTo(X(breakT),T); g.lineTo(X(breakT),B); g.stroke(); g.setLineDash([]);
+    g.fillStyle=CORAL; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('rod–cone break',X(breakT),T+14);
+  }
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('five log units of improvement is a hundred-thousand-fold gain in sensitivity',R,T+16);
+}
+
+function drawNight(Th){
+  var cv=$('cv2b'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  var vis=clamp(1-(Th/5.0),0,1);
+  g.clearRect(0,0,W,H);
+  g.fillStyle=TDK; g.fillRect(0,0,W,H);
+  g.globalAlpha=1;
+  /* stars appear as sensitivity improves */
+  var seed=7, i;
+  function rnd(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+  for(i=0;i<170;i++){
+    var x=rnd()*W, y=rnd()*(H-34)+8, mag=rnd();
+    var need=mag;                                     /* dim stars need more adaptation */
+    var a=clamp((vis-need*0.92)*3.2,0,1);
+    if(a<=0) continue;
+    g.globalAlpha=a; g.fillStyle='#ffffff';
+    g.beginPath(); g.arc(x,y,0.9+2.0*(1-mag),0,6.3); g.fill();
+  }
+  g.globalAlpha=1;
+  g.fillStyle='rgba(255,255,255,0.72)'; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(vis<0.15?'you can see essentially nothing yet':(vis<0.6?'the bright stars are back':'faint stars are visible — and they vanish if you look straight at them'),20,H-14);
+}
+
+/* =========================================================
+   BENCH 3 -- center-surround receptive fields
+   ========================================================= */
+var onCenter=true;
+var RC=22, RS=68, BASE=22;                            /* center radius, surround radius, maintained rate */
+(function(){
+  var box=$('cellsel');
+  [['ON-center ganglion cell',true],['OFF-center ganglion cell',false]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'+(P[1]===onCenter?' on':'');
+    b.textContent=P[0];
+    b.onclick=function(){ onCenter=P[1]; [].slice.call(box.children).forEach(function(c,i){ c.classList.toggle('on',(i===0)===onCenter); }); render3(); };
+    box.appendChild(b);
+  });
+  var pre=$('pre3');
+  [['Darkness',0,0],['Small center spot',0,18],['Large center spot',0,40],['Annulus on the surround',34,90],['Diffuse light, whole field',0,120]].forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=P[0];
+    b.onclick=function(){ $('rin').value=P[1]; $('rout').value=P[2]; render3(); };
+    pre.appendChild(b);
+  });
+})();
+['rin','rout'].forEach(function(id){ $(id).addEventListener('input',function(){
+  if(+$('rin').value>+$('rout').value){ if(this.id==='rin') $('rout').value=$('rin').value; else $('rin').value=$('rout').value; }
+  render3();
+}); });
+
+/* fraction of the center / surround mechanism covered by an annulus of light */
+function cover(r0,r1,R){
+  if(r1<=r0) return 0;
+  var a=clamp(r0,0,R), b=clamp(r1,0,R);
+  return (b*b-a*a)/(R*R);
+}
+function response(){
+  var r0=+$('rin').value, r1=+$('rout').value;
+  var c=cover(r0,r1,RC);
+  var s=(cover(r0,r1,RS)*RS*RS-cover(r0,r1,RC)*RC*RC)/(RS*RS-RC*RC);
+  var drive=(c*1.0-s*0.85);
+  if(!onCenter) drive=-drive;
+  var rate=clamp(BASE+drive*78,0,120);
+  return {r0:r0,r1:r1,c:c,s:s,drive:drive,rate:rate};
+}
+function render3(){
+  var S=response();
+  $('rinV').textContent=S.r0+' µm';
+  $('routV').textContent=S.r1+' µm';
+  $('st3').innerHTML=
+    tile('Firing rate',S.rate.toFixed(0),'spikes/s &middot; maintained rate is '+BASE)+
+    tile('Center covered',(S.c*100).toFixed(0)+'%','radius of the center mechanism is '+RC+' &micro;m')+
+    tile('Surround covered',(S.s*100).toFixed(0)+'%','surround extends to '+RS+' &micro;m')+
+    tile('Net drive',(S.drive>0?'+':'')+S.drive.toFixed(2),'center minus surround')+
+    tile('Cell type',onCenter?'ON-center':'OFF-center',onCenter?'light in the center excites':'darkness in the center excites')+
+    tile('First spiking cell','ganglion','everything upstream uses graded potentials');
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  var full=(S.c>0.9 && S.s>0.9);
+  if(S.r1<=S.r0){
+    cls='verdict night';
+    txt='No light on the field &mdash; the cell fires at its maintained rate of '+S.rate.toFixed(0)+' spikes/s<small>Ganglion cells never go completely silent. A maintained discharge is what allows them to signal decrements as well as increments.</small>';
+  } else if(full){
+    cls='verdict warn';
+    txt='Diffuse light over the whole field &mdash; and almost nothing happens<small>'+(S.c*100).toFixed(0)+'% of the center and '+(S.s*100).toFixed(0)+'% of the surround are lit, so the two mechanisms cancel and the rate is '+S.rate.toFixed(0)+' spikes/s, barely different from rest.</small>';
+  } else if(S.drive>0.25){
+    cls='verdict';
+    txt='Strong excitation &mdash; '+S.rate.toFixed(0)+' spikes/s<small>The light is sitting on the '+(onCenter?'center':'surround')+' and largely sparing the '+(onCenter?'surround':'center')+'. This is the stimulus this cell is built to detect.</small>';
+  } else if(S.drive<-0.25){
+    cls='verdict bad';
+    txt='Suppressed below the maintained rate &mdash; '+S.rate.toFixed(0)+' spikes/s<small>The antagonistic mechanism is being driven harder than the center. Firing falls below baseline, which is itself a signal.</small>';
+  } else {
+    cls='verdict cool';
+    txt='Weak net drive &mdash; '+S.rate.toFixed(0)+' spikes/s<small>Center and surround are close to balanced. Adjust the inner and outer radius and watch the balance tip.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+
+  inf='<span class="n">Where the surround comes from</span><b>Horizontal cells</b> spread laterally in the outer retina and feed inhibition back onto neighboring photoreceptors and bipolar terminals. A ganglion cell therefore does not report the light falling on its center; it reports the light on its center <i>minus</i> the light around it.<div class="dd"><b>The payoff is compression.</b> Uniform illumination carries almost no information &mdash; and, as you can see above, produces almost no response. Boundaries carry the information, and boundaries are exactly what survives the subtraction. The lower panel shows a row of these cells looking at a single luminance edge: firing overshoots on the bright side and undershoots on the dark side, which is why you see <b>Mach bands</b> &mdash; a bright line and a dark line at the border that are not physically there.</div><div class="dd">Note also which cell is doing the firing. <b>Ganglion cells are the first cells in the visual pathway to fire action potentials</b>; photoreceptors, horizontal, bipolar and most amacrine cells all communicate with graded potentials over short distances. Their axons form the optic nerve, cross at the chiasm if they come from the nasal hemiretina, and reach the lateral geniculate nucleus and then primary visual cortex.</div>';
+  $('i3').innerHTML=inf;
+  $('cv3').setAttribute('aria-label','Receptive field map: '+(S.c*100).toFixed(0)+' percent of the center and '+(S.s*100).toFixed(0)+' percent of the surround are illuminated, giving '+S.rate.toFixed(0)+' spikes per second.');
+  drawRF(S); drawEdge();
+}
+
+function drawRF(S){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height,cx=250,cy=H/2+6,SC=1.75;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText((onCenter?'ON':'OFF')+'-CENTER RECEPTIVE FIELD',24,28);
+
+  /* surround */
+  g.fillStyle=onCenter?CORAL:GREEN; g.globalAlpha=0.16;
+  g.beginPath(); g.arc(cx,cy,RS*SC,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=onCenter?CORAL:GREEN; g.lineWidth=2; g.setLineDash([5,4]);
+  g.beginPath(); g.arc(cx,cy,RS*SC,0,6.3); g.stroke(); g.setLineDash([]);
+  /* center */
+  g.fillStyle=onCenter?GREEN:CORAL; g.globalAlpha=0.24;
+  g.beginPath(); g.arc(cx,cy,RC*SC,0,6.3); g.fill(); g.globalAlpha=1;
+  g.strokeStyle=onCenter?GREEN:CORAL; g.lineWidth=2;
+  g.beginPath(); g.arc(cx,cy,RC*SC,0,6.3); g.stroke();
+
+  /* the light */
+  if(S.r1>S.r0){
+    g.save();
+    g.beginPath(); g.arc(cx,cy,S.r1*SC,0,6.3);
+    if(S.r0>0){ g.arc(cx,cy,S.r0*SC,0,6.3,true); }
+    g.fillStyle=GOLD; g.globalAlpha=0.55; g.fill(); g.restore(); g.globalAlpha=1;
+    g.strokeStyle=GOLD; g.lineWidth=2.5;
+    g.beginPath(); g.arc(cx,cy,S.r1*SC,0,6.3); g.stroke();
+    if(S.r0>0){ g.beginPath(); g.arc(cx,cy,S.r0*SC,0,6.3); g.stroke(); }
+  }
+  g.fillStyle=onCenter?GREEN:CORAL; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(onCenter?'center: light EXCITES':'center: light INHIBITS',cx,cy-RC*SC-10);
+  g.fillStyle=onCenter?CORAL:GREEN;
+  g.fillText(onCenter?'surround: light INHIBITS':'surround: light EXCITES',cx,cy+RS*SC+22);
+
+  /* response bar */
+  var bx=W-460, by=90, bw=380, bh=30;
+  g.fillStyle=TDK; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('GANGLION CELL FIRING RATE',bx,by-12);
+  g.fillStyle=LINE; g.fillRect(bx,by,bw,bh);
+  g.fillStyle=S.rate>BASE+4?GREEN:(S.rate<BASE-4?CORAL:MUT);
+  g.fillRect(bx,by,bw*(S.rate/120),bh);
+  g.strokeStyle=MUT; g.lineWidth=2;
+  g.beginPath(); g.moveTo(bx+bw*(BASE/120),by-6); g.lineTo(bx+bw*(BASE/120),by+bh+6); g.stroke();
+  g.fillStyle=MUT; g.font='700 11px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('maintained '+BASE+'/s',bx+bw*(BASE/120),by+bh+22);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText(S.rate.toFixed(0)+' spikes/s',bx,by+bh+52);
+
+  /* spike raster */
+  var ry=by+78, acc=0, i;
+  g.strokeStyle=TDK; g.lineWidth=1.6;
+  for(i=0;i<bw;i++){
+    acc+=S.rate/120*0.9;
+    if(acc>=1){ acc-=1; g.beginPath(); g.moveTo(bx+i,ry); g.lineTo(bx+i,ry+30); g.stroke(); }
+  }
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+  g.fillText('one second of recording',bx,ry+48);
+
+  /* the circuit, in words */
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('photoreceptor → bipolar → ganglion, with horizontal cells cutting across the pathway sideways',bx,ry+76);
+  g.fillText('and supplying the antagonistic surround by lateral inhibition',bx,ry+96);
+}
+
+function drawEdge(){
+  var cv=$('cv3b'),g=cv.getContext('2d'),W=cv.width,H=cv.height,L=60,R=W-30,T=76,B=H-40;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('A ROW OF THE SAME CELLS, LOOKING AT ONE LUMINANCE EDGE',24,26);
+  /* the physical stimulus strip */
+  var sy=38,sh=22, mid=(L+R)/2;
+  g.fillStyle='#f0f0f0'; g.fillRect(L,sy,mid-L,sh);
+  g.fillStyle='#606060'; g.fillRect(mid,sy,R-mid,sh);
+  g.strokeStyle=LINE; g.lineWidth=1; g.strokeRect(L,sy,R-L,sh);
+  g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('physically: a step, flat on both sides',L+6,sy+16);
+
+  function lum(x){ return x<mid?1.0:0.35; }
+  function resp(x){
+    var c=lum(x), s=0, n=0, k;
+    for(k=-100;k<=100;k+=4){ if(Math.abs(k)>RC){ s+=lum(x+k); n++; } }
+    s=n?s/n:0;
+    var d=c-0.85*s;
+    return clamp(BASE+d*70,0,110);
+  }
+  function Y(r){ return B-(r/110)*(B-T); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  [0,25,50,75,100].forEach(function(r){
+    g.beginPath(); g.moveTo(L,Y(r)); g.lineTo(R,Y(r)); g.stroke();
+    g.fillStyle=MUT; g.font='600 10.5px Inter, system-ui, sans-serif'; g.textAlign='right'; g.fillText(r,L-8,Y(r)+4);
+  });
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  g.strokeStyle=TEAL; g.lineWidth=3.2; g.beginPath();
+  var x;
+  for(x=L;x<=R;x+=2){ var y=Y(resp(x)); if(x===L) g.moveTo(x,y); else g.lineTo(x,y); }
+  g.stroke();
+  g.strokeStyle=MUT; g.lineWidth=1.5; g.setLineDash([5,4]);
+  g.beginPath(); g.moveTo(L,Y(BASE)); g.lineTo(R,Y(BASE)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('overshoot — a bright band you can see but cannot measure',mid-150,Y(resp(mid-40))-14);
+  g.fillText('undershoot — a dark band, equally imaginary',mid+160,Y(resp(mid+40))+22);
+  g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('perceptually: Mach bands — the retina has enhanced the edge and thrown the flat regions away',W/2,H-10);
+}
+
+/* boot */
+render1(); render2(); render3(); setMode(1);
+})();
+</script>
+</body>
+</html>

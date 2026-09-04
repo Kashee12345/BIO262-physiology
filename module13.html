@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 13 · The Digestive System — BIO 262</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --good:#2f7d4f; --good-lt:#e8f4ec; --bad:#b03a3a; --bad-lt:#fbeceb;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:var(--maroon);}
+  .wrap{max-width:860px;margin:0 auto;padding:0 18px 90px;}
+  button{font:inherit;}
+
+  header.hero{text-align:center;padding:40px 20px 18px;}
+  header.hero .crest{font-size:32px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;margin:12px 0 8px;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(25px,5.2vw,38px);margin:0 0 10px;color:var(--maroon-dk);}
+  header.hero p.sub{margin:0 auto;max-width:600px;font-size:15px;color:var(--muted);}
+  .backlink{display:inline-block;margin-top:14px;font-size:13px;color:var(--maroon);font-weight:600;text-decoration:none;}
+  .backlink:hover{text-decoration:underline;}
+
+  .weight{background:linear-gradient(180deg,#fbf3e2,#f7ecd8);border:1px solid #ecdcb8;border-radius:var(--r);
+          padding:15px 17px;margin-top:20px;display:flex;gap:13px;align-items:flex-start;}
+  .weight .wx{font-size:24px;line-height:1;flex:0 0 auto;}
+  .weight .wt strong{display:block;font-family:var(--disp);font-size:16px;color:#57420f;margin-bottom:3px;}
+  .weight .wt span{font-size:13.5px;color:#6d5518;}
+
+  .mlo{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--maroon);
+       border-radius:var(--r);padding:15px 17px;margin-top:12px;box-shadow:var(--shadow);}
+  .mlo b{display:block;font-size:12px;letter-spacing:.9px;text-transform:uppercase;color:var(--maroon-dk);margin-bottom:7px;}
+  .mlo ol{margin:0;padding-left:19px;}
+  .mlo li{font-size:14px;color:var(--muted);margin-bottom:4px;}
+
+  h2.sec{font-family:var(--disp);font-size:22px;color:var(--maroon-dk);margin:38px 0 4px;}
+  h2.sec + .lede{font-size:14.5px;color:var(--muted);margin:0 0 8px;}
+
+  /* organ selector */
+  .canal{display:flex;gap:6px;overflow-x:auto;padding:14px 0 6px;-webkit-overflow-scrolling:touch;}
+  .canal button{flex:0 0 auto;background:var(--card);border:1.5px solid var(--line);border-radius:11px;
+                padding:10px 13px;cursor:pointer;text-align:center;min-width:86px;transition:all .15s;}
+  .canal button:hover{border-color:var(--maroon);}
+  .canal button.on{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+  .canal button .e{display:block;font-size:20px;line-height:1.2;}
+  .canal button .n{display:block;font-size:11.5px;font-weight:700;margin-top:3px;}
+
+  .organ{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+         padding:20px 19px;margin-top:6px;}
+  .organ h3{font-family:var(--disp);font-size:21px;color:var(--maroon-dk);margin:0 0 3px;}
+  .organ .tagline{font-size:13.5px;color:var(--faint);margin-bottom:16px;font-style:italic;}
+  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;}
+  @media(max-width:700px){.trio{grid-template-columns:1fr;}}
+  .box{background:#fff;border:1px solid var(--line);border-radius:11px;padding:13px 14px;}
+  .box b{display:block;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--maroon);margin-bottom:6px;}
+  .box p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .box.none{background:#faf7f0;}
+  .box.none p{color:var(--faint);font-style:italic;}
+  .keynote{margin-top:14px;background:var(--gold-lt);border-radius:10px;padding:12px 14px;font-size:13.5px;color:#7a5c12;}
+  .keynote b{color:#57420f;}
+
+  /* fill-in reveal */
+  .fill{background:var(--maroon-lt);color:var(--maroon-dk);border-bottom:2px dotted var(--maroon);
+        padding:0 4px;border-radius:3px;cursor:pointer;font-weight:700;user-select:none;}
+  .fill.hidden-ans{background:var(--line);color:transparent;border-bottom:2px solid var(--faint);}
+  .fill.hidden-ans::after{content:"?";color:var(--muted);font-weight:800;}
+
+  /* tables */
+  .scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+        border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);min-width:560px;}
+  th{background:var(--maroon);color:#fff;font-size:11px;letter-spacing:.9px;text-transform:uppercase;
+     padding:11px 12px;text-align:left;font-weight:700;}
+  td{padding:10px 12px;border-top:1px solid var(--line);font-size:13.5px;vertical-align:top;}
+  tr:hover td{background:var(--maroon-lt);}
+  td.n{font-weight:800;color:var(--maroon-dk);white-space:nowrap;}
+
+  .filters{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+  .filters button{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:7px 14px;
+                  font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;}
+  .filters button:hover{border-color:var(--maroon);}
+  .filters button.on{background:var(--maroon);border-color:var(--maroon);color:#fff;}
+
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 19px;
+        box-shadow:var(--shadow);margin-top:14px;}
+  .quiz .qq{font-size:16px;font-weight:600;margin-bottom:14px;}
+  .quiz .opts{display:flex;flex-direction:column;gap:8px;}
+  .quiz .opt{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1.5px solid var(--line);
+             border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;width:100%;transition:all .12s;}
+  .quiz .opt:hover:not(:disabled){border-color:var(--maroon);background:var(--maroon-lt);}
+  .quiz .opt .k{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--gold-lt);color:var(--maroon-dk);
+                font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .quiz .opt .v{flex:1;font-size:14px;}
+  .quiz .opt.correct{border-color:var(--good);background:var(--good-lt);}
+  .quiz .opt.correct .k{background:var(--good);color:#fff;}
+  .quiz .opt.wrong{border-color:var(--bad);background:var(--bad-lt);}
+  .quiz .opt.wrong .k{background:var(--bad);color:#fff;}
+  .quiz .nav{display:flex;gap:10px;margin-top:14px;align-items:center;}
+  .quiz .nav button{background:var(--maroon);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;}
+  .quiz .nav .sc{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted);}
+
+  .hint{font-size:12.5px;color:var(--faint);margin-top:8px;}
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="crest">🍽️</div>
+    <div class="kicker">Joyce University · BIO 262 · Module 13</div>
+    <h1>The Digestive System</h1>
+    <p class="sub">Mechanical and chemical digestion organ by organ, plus the accessory organs that make it work.</p>
+    <a class="backlink" href="index.html">← Back to course hub</a>
+  </header>
+
+  <div class="weight">
+    <div class="wx">⚠️</div>
+    <div class="wt">
+      <strong>This module appears only on the Final</strong>
+      <span>Module 13 is never tested on a unit exam — the Final is your first and only assessment on it. Together with Module 14 it's <b>32 of 100 marks</b>, more than any other pair. Don't leave it to the last week.</span>
+    </div>
+  </div>
+
+  <div class="mlo">
+    <b>Module learning outcomes</b>
+    <ol>
+      <li>Describe the physiological processes of mechanical and chemical digestion and absorption in each organ of the alimentary canal.</li>
+      <li>Identify the physiological roles of accessory digestive organs.</li>
+    </ol>
+  </div>
+
+  <!-- ============ ALIMENTARY CANAL ============ -->
+  <h2 class="sec">Journey down the alimentary canal</h2>
+  <p class="lede">Tap an organ. For each one, ask the same three questions: what breaks food up <em>physically</em>, what breaks it down <em>chemically</em>, and what actually gets <em>absorbed</em> here.</p>
+
+  <div class="canal" id="canal"></div>
+  <div class="organ" id="organ"></div>
+
+  <!-- ============ ENZYMES ============ -->
+  <h2 class="sec">The enzyme table</h2>
+  <p class="lede">If you learn one table for this module, learn this one. Every enzyme: where it's made, where it works, what it acts on, and what it produces.</p>
+  <div class="filters" id="enzFilters"></div>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Enzyme / secretion</th><th>Made by</th><th>Acts in</th><th>Substrate → product</th></tr></thead>
+      <tbody id="enzBody"></tbody>
+    </table>
+  </div>
+  <p class="hint">Note the trap: <b>bile is not an enzyme.</b> It emulsifies fat — a mechanical job — so that pancreatic lipase (a real enzyme) can chemically digest it.</p>
+
+  <!-- ============ ACCESSORY ============ -->
+  <h2 class="sec">Accessory organs</h2>
+  <p class="lede">None of these touch food directly. All of them are essential.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Organ</th><th>What it contributes</th><th>Exam hook</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Tongue</td><td>Mechanical: manipulates the bolus and initiates swallowing. Sensory: taste. Chemical: secretes lingual lipase.</td><td>Lingual lipase is secreted in the mouth but <b>activated in the stomach</b>.</td></tr>
+        <tr><td class="n">Teeth</td><td>Mastication — the first step of mechanical digestion. Incisors cut, canines tear, premolars and molars grind.</td><td>Increases surface area so enzymes can work faster later.</td></tr>
+        <tr><td class="n">Salivary glands</td><td>Parotid, submandibular, sublingual. Secrete salivary amylase, mucins for lubrication, bicarbonate to buffer pH, and lysozyme + IgA as antibacterials.</td><td>Salivary amylase starts <b>carbohydrate</b> digestion — the only chemical digestion in the mouth.</td></tr>
+        <tr><td class="n">Liver</td><td>Produces bile (bile salts, bilirubin, cholesterol). Processes absorbed nutrients, stores glucose as glycogen, detoxifies, and makes albumin and clotting factors.</td><td>The liver <b>produces</b> bile; it does not store it.</td></tr>
+        <tr><td class="n">Gallbladder</td><td>Stores and concentrates bile, then releases it into the duodenum via the common bile duct when fat arrives.</td><td>The gallbladder <b>stores and concentrates</b> bile. Released on the CCK signal.</td></tr>
+        <tr><td class="n">Pancreas</td><td><b>Exocrine:</b> amylase, lipase, proteases (trypsinogen, chymotrypsinogen, procarboxypeptidase), nucleases, bicarbonate. <b>Endocrine:</b> insulin and glucagon.</td><td>Produces most of the enzymes used in the small intestine — and the only ones that digest all three macronutrients.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="keynote" style="margin-top:14px;">
+    <b>Why proteases are released inactive:</b> trypsinogen, chymotrypsinogen and procarboxypeptidase are secreted in inactive form so the pancreas doesn't digest itself. They're activated once they reach the small intestine.
+  </div>
+
+  <!-- ============ HORMONES ============ -->
+  <h2 class="sec">The four GI hormones</h2>
+  <p class="lede">Each one is triggered by something specific arriving somewhere specific. Learn the trigger and the target.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Hormone</th><th>Released by</th><th>Trigger</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Gastrin</td><td>Stomach (G cells)</td><td>Food entering the stomach; stretch</td><td>Stimulates gastric acid (HCl) secretion and gastric motility.</td></tr>
+        <tr><td class="n">CCK<br><span style="font-weight:400;color:var(--faint);font-size:12px;">cholecystokinin</span></td><td>Duodenum</td><td><b>Fat and protein</b> in the duodenum</td><td>Contracts the <b>gallbladder</b> to release bile; stimulates pancreatic enzyme secretion; slows gastric emptying.</td></tr>
+        <tr><td class="n">Secretin</td><td>Duodenum</td><td><b>Acidic chyme</b> arriving from the stomach</td><td>Stimulates the pancreas to release <b>bicarbonate</b>, neutralizing the acid.</td></tr>
+        <tr><td class="n">Insulin &amp; glucagon</td><td>Pancreas (beta / alpha cells)</td><td>High / low blood glucose</td><td>Insulin moves glucose <em>into</em> cells and stores it as glycogen. Glucagon breaks glycogen back down to raise blood glucose.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint">Mnemonic: <b>C</b>CK → <b>C</b>ontracts the gallbladder (fat trigger). <b>S</b>ecretin → neutralizes with bicarbonate (acid trigger).</p>
+
+  <!-- ============ ABSORPTION MAP ============ -->
+  <h2 class="sec">Who absorbs what</h2>
+  <p class="lede">A favorite exam target. The three regions of the small intestine do different jobs.</p>
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Region</th><th>Absorbs</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Stomach</td><td>Very little — water, alcohol, and some drugs such as aspirin.</td></tr>
+        <tr><td class="n">Duodenum</td><td>Iron, calcium, magnesium. Most chemical digestion happens here.</td></tr>
+        <tr><td class="n">Jejunum</td><td><b>The main absorptive site</b> — carbohydrates, proteins, lipids, and water-soluble vitamins (B and C).</td></tr>
+        <tr><td class="n">Ileum</td><td><b>Vitamin B12</b> (bound to intrinsic factor), bile salts, and fat-soluble vitamins A, D, E, K.</td></tr>
+        <tr><td class="n">Large intestine</td><td>Water and electrolytes. Gut bacteria synthesize vitamin K and some B vitamins. No enzymes of its own.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="keynote" style="margin-top:14px;">
+    <b>Intrinsic factor:</b> a glycoprotein made by the <span class="fill" data-a="parietal">parietal</span> cells of the stomach. It binds vitamin <span class="fill" data-a="B12">B12</span> so it can be absorbed in the <span class="fill" data-a="ileum">ileum</span>. Lose the parietal cells and you get pernicious anemia — the stomach problem that shows up as a blood problem. <em>Tap any highlighted word to hide/show it.</em>
+  </div>
+
+  <h2 class="sec">Test yourself</h2>
+  <p class="lede">Cover the page and answer these from memory before you look back.</p>
+  <div class="quiz">
+    <ol style="margin:0;padding-left:20px;">
+      <li style="margin-bottom:9px;">Name the enzyme that starts carbohydrate digestion, and where it acts.</li>
+      <li style="margin-bottom:9px;">Where does protein digestion begin, and which enzyme does it?</li>
+      <li style="margin-bottom:9px;">Explain the difference between what bile does and what pancreatic lipase does.</li>
+      <li style="margin-bottom:9px;">Which hormone empties the gallbladder, and what triggers its release?</li>
+      <li style="margin-bottom:9px;">Which hormone triggers bicarbonate release, and why is it needed?</li>
+      <li style="margin-bottom:9px;">Name what is absorbed in the duodenum, the jejunum, and the ileum.</li>
+      <li style="margin-bottom:9px;">Which cells make intrinsic factor, and what happens without it?</li>
+      <li style="margin-bottom:0;">Why are pancreatic proteases secreted in an inactive form?</li>
+    </ol>
+    <p style="margin:14px 0 0;font-size:13px;color:var(--faint);">
+      Every answer is somewhere on this page. For graded-style practice, use the
+      <a href="flashcards.html">flashcards</a> and the <a href="study-guide.html">study guide</a>.
+    </p>
+  </div>
+
+  <footer>
+    <b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences<br>
+    Module 13 content built by Dr. Akash Garg
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function $(id){return document.getElementById(id);}
+
+  /* ---------- alimentary canal ---------- */
+  var ORGANS = [
+    { id:"mouth", icon:"👄", name:"Mouth", tag:"Where carbohydrate digestion begins.",
+      mech:"Mastication (chewing) by the teeth, plus the tongue forming food into a bolus. Breaking food into smaller pieces increases surface area for enzymes.",
+      chem:"<b>Salivary amylase</b> begins breaking down starch into maltose. <b>Lingual lipase</b> is secreted here but stays inactive until it reaches the acidic stomach.",
+      abs:"", key:"The mouth is the <b>only</b> place carbohydrate digestion starts. Protein starts in the stomach, fat effectively in the small intestine." },
+    { id:"pharynx", icon:"🗣️", name:"Pharynx", tag:"The traffic controller of swallowing.",
+      mech:"Deglutition (swallowing) in three phases — <b>voluntary</b> (tongue pushes the bolus back), <b>pharyngeal</b> (nasopharynx is sealed and the epiglottis covers the trachea), and <b>esophageal</b> (peristalsis takes over).",
+      chem:"", abs:"",
+      key:"Only the first phase is voluntary. Once the pharyngeal phase starts, you cannot stop the swallow." },
+    { id:"esophagus", icon:"🧵", name:"Esophagus", tag:"A muscular tube — transport only.",
+      mech:"<b>Peristalsis</b> — wave-like smooth muscle contractions pushing the bolus downward. The <b>upper</b> esophageal sphincter lets food in; the <b>lower</b> esophageal sphincter lets it into the stomach and prevents acid reflux.",
+      chem:"", abs:"",
+      key:"No digestion and no absorption happen here. If the lower esophageal sphincter fails, stomach acid refluxes upward — that's GERD." },
+    { id:"stomach", icon:"🫙", name:"Stomach", tag:"Where protein digestion begins.",
+      mech:"Muscular churning mixes food with gastric juice, turning the bolus into <b>chyme</b>, which is then released into the duodenum.",
+      chem:"<b>HCl</b> denatures proteins and activates pepsinogen into <b>pepsin</b>, which digests protein into peptides. <b>Gastric lipase</b> works on some fat. <b>Mucus</b> protects the stomach lining from its own acid.",
+      abs:"Very little — water, alcohol, and some drugs such as aspirin.",
+      key:"<b>Protein digestion begins here.</b> The stomach also makes <b>intrinsic factor</b>, required to absorb vitamin B12 further down in the ileum." },
+    { id:"duodenum", icon:"🌀", name:"Duodenum", tag:"The chemical powerhouse.",
+      mech:"<b>Segmentation</b> — back-and-forth mixing contractions that blend chyme with pancreatic enzymes and bile rather than pushing it forward.",
+      chem:"Everything arrives at once: <b>pancreatic amylase</b> (carbohydrate), <b>pancreatic lipase</b> (fat, after bile emulsifies it), <b>trypsin, chymotrypsin and carboxypeptidase</b> (protein), and <b>bicarbonate</b> to neutralize the acid.",
+      abs:"Iron, calcium, magnesium.",
+      key:"Most chemical digestion in the whole tract happens here — but most <em>absorption</em> happens next door in the jejunum." },
+    { id:"jejunum", icon:"🧶", name:"Jejunum", tag:"The main absorptive site.",
+      mech:"Segmentation continues, keeping chyme against the absorptive surface.",
+      chem:"Brush-border enzymes on the microvilli finish the job — carbohydrates down to <b>monosaccharides</b> (glucose, fructose, galactose) and proteins down to <b>amino acids</b>.",
+      abs:"<b>The primary site</b> — carbohydrates, proteins, lipids, and water-soluble vitamins (B and C). Folds, villi and microvilli multiply the surface area enormously.",
+      key:"If a question asks where most nutrients are absorbed, the answer is the jejunum." },
+    { id:"ileum", icon:"🪢", name:"Ileum", tag:"The specialist.",
+      mech:"Peristalsis moves residue toward the ileocecal valve, which controls entry into the large intestine.",
+      chem:"Brush-border digestion finishes here.",
+      abs:"<b>Vitamin B12</b> (with intrinsic factor), <b>bile salts</b> (recycled back to the liver), fat-soluble vitamins <b>A, D, E, K</b>, and anything the jejunum missed.",
+      key:"Vitamin B12 → ileum. This is the single most-asked absorption fact in this module." },
+    { id:"colon", icon:"🌵", name:"Large intestine", tag:"Water recovery.",
+      mech:"Haustral churning and mass movements push residue toward the rectum.",
+      chem:"No enzymes of its own. Resident bacteria ferment remaining material and synthesize <b>vitamin K</b> and some B vitamins.",
+      abs:"<b>Water and electrolytes</b> — this is what turns liquid residue into formed stool.",
+      key:"The colon secretes no digestive enzymes. Everything chemical here is done by bacteria." },
+    { id:"rectum", icon:"🚪", name:"Rectum &amp; anus", tag:"Storage and elimination.",
+      mech:"The rectum stores feces; stretching of the rectal wall signals the urge to defecate. The <b>defecation reflex</b> is involuntary relaxation of the <b>internal</b> anal sphincter plus voluntary relaxation of the <b>external</b> anal sphincter.",
+      chem:"", abs:"",
+      key:"<b>Elimination</b> — the expulsion of undigested waste — is the final step of the digestive process." }
+  ];
+
+  var curOrgan = 0;
+  function renderCanal(){
+    var h="";
+    for(var i=0;i<ORGANS.length;i++){
+      h += '<button data-i="'+i+'" class="'+(i===curOrgan?"on":"")+'">'
+         + '<span class="e">'+ORGANS[i].icon+'</span><span class="n">'+ORGANS[i].name+'</span></button>';
+    }
+    $("canal").innerHTML = h;
+  }
+  function renderOrgan(){
+    var o = ORGANS[curOrgan];
+    var h = '<h3>'+o.name+'</h3><div class="tagline">'+o.tag+'</div><div class="trio">'
+      + '<div class="box'+(o.mech?"":" none")+'"><b>Mechanical</b><p>'+(o.mech||"None here.")+'</p></div>'
+      + '<div class="box'+(o.chem?"":" none")+'"><b>Chemical</b><p>'+(o.chem||"None here.")+'</p></div>'
+      + '<div class="box'+(o.abs?"":" none")+'"><b>Absorption</b><p>'+(o.abs||"None here.")+'</p></div>'
+      + '</div>';
+    if(o.key) h += '<div class="keynote"><b>Exam hook:</b> '+o.key+'</div>';
+    $("organ").innerHTML = h;
+  }
+  $("canal").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest("button[data-i]") : null;
+    if(!b) return;
+    curOrgan = parseInt(b.dataset.i,10);
+    renderCanal(); renderOrgan();
+  });
+
+  /* ---------- enzymes ---------- */
+  var ENZ = [
+    {n:"Salivary amylase", by:"Salivary glands", at:"Mouth", s:"Starch → maltose", c:"carb"},
+    {n:"Lingual lipase",   by:"Tongue glands",  at:"Stomach (activated)", s:"Triglycerides → fatty acids", c:"fat"},
+    {n:"HCl",              by:"Stomach (parietal cells)", at:"Stomach", s:"Denatures protein; activates pepsinogen", c:"protein"},
+    {n:"Pepsin",           by:"Stomach (chief cells, as pepsinogen)", at:"Stomach", s:"Protein → peptides", c:"protein"},
+    {n:"Gastric lipase",   by:"Stomach",        at:"Stomach", s:"Triglycerides → fatty acids", c:"fat"},
+    {n:"Intrinsic factor", by:"Stomach (parietal cells)", at:"Binds in stomach, absorbed in ileum", s:"Enables vitamin B12 absorption", c:"other"},
+    {n:"Pancreatic amylase", by:"Pancreas",     at:"Duodenum", s:"Starch → disaccharides", c:"carb"},
+    {n:"Pancreatic lipase",  by:"Pancreas",     at:"Duodenum", s:"Emulsified fat → monoglycerides + free fatty acids", c:"fat"},
+    {n:"Trypsin",            by:"Pancreas (as trypsinogen)", at:"Duodenum", s:"Protein → peptides", c:"protein"},
+    {n:"Chymotrypsin",       by:"Pancreas (as chymotrypsinogen)", at:"Duodenum", s:"Protein → peptides", c:"protein"},
+    {n:"Carboxypeptidase",   by:"Pancreas (as procarboxypeptidase)", at:"Duodenum", s:"Peptides → amino acids", c:"protein"},
+    {n:"Nucleases",          by:"Pancreas",     at:"Duodenum", s:"DNA / RNA → nucleotides", c:"other"},
+    {n:"Bicarbonate",        by:"Pancreas",     at:"Duodenum", s:"Neutralizes acidic chyme", c:"other"},
+    {n:"Bile (NOT an enzyme)", by:"Liver, stored in gallbladder", at:"Duodenum", s:"Emulsifies large fat globules into droplets", c:"fat"},
+    {n:"Brush-border enzymes", by:"Small intestine microvilli", at:"Jejunum", s:"Disaccharides → monosaccharides; peptides → amino acids", c:"carb"}
+  ];
+  var FILTERS = [["all","All"],["carb","Carbohydrate"],["protein","Protein"],["fat","Fat"],["other","Other"]];
+  var curFilter = "all";
+  function renderFilters(){
+    var h="";
+    for(var i=0;i<FILTERS.length;i++){
+      h += '<button data-f="'+FILTERS[i][0]+'" class="'+(FILTERS[i][0]===curFilter?"on":"")+'">'+FILTERS[i][1]+'</button>';
+    }
+    $("enzFilters").innerHTML = h;
+  }
+  function renderEnz(){
+    var h="";
+    for(var i=0;i<ENZ.length;i++){
+      var e = ENZ[i];
+      if(curFilter!=="all" && e.c!==curFilter) continue;
+      h += "<tr><td class='n'>"+e.n+"</td><td>"+e.by+"</td><td>"+e.at+"</td><td>"+e.s+"</td></tr>";
+    }
+    $("enzBody").innerHTML = h;
+  }
+  $("enzFilters").addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest("button[data-f]") : null;
+    if(!b) return;
+    curFilter = b.dataset.f; renderFilters(); renderEnz();
+  });
+
+  /* ---------- fill-in toggles ---------- */
+  document.addEventListener("click", function(ev){
+    var f = ev.target.closest ? ev.target.closest(".fill") : null;
+    if(!f) return;
+    f.classList.toggle("hidden-ans");
+  });
+
+  renderCanal(); renderOrgan(); renderFilters(); renderEnz();
+})();
+</script>
+</body>
+</html>

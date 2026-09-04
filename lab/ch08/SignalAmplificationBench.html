@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solubility, Receptor Address and Amplification</title>
+<meta name="description" content="Release a burst of four real hormones and watch how solubility decides where the receptor sits, how fast the response appears, how long it outlasts the hormone, and how one binding event becomes a millionfold response.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip small{display:block;font-weight:600;font-size:10px;opacity:.75;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+svg{display:block;width:100%;height:auto;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.2px;opacity:.95;margin-top:4px;}
+.verdict.slow{background:var(--purple);} .verdict.fast{background:var(--blue);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:16px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.big{font-family:var(--disp);font-size:26px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.1;}
+table.mini{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
+table.mini th,table.mini td{text-align:left;padding:6px 7px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;}
+table.mini th{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;}
+table.mini td b{color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch08.html">&larr; Module 8</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 8</div>
+  <h1>Solubility, Receptor Address and Amplification</h1>
+  <div class="intro">One question predicts almost everything about a hormone: <b>is it lipid-soluble?</b> That single property decides whether the receptor sits on the membrane or in the nucleus, whether the answer arrives in seconds or in hours, and whether it stops when the hormone stops. Release a burst of four real hormones here, watch the plasma level decay by its own half-life while the cellular response follows on its own timescale, then build the cascade that turns one binding event into a millionfold answer.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Release a burst of one hormone</div>
+      <div class="chips" id="hchips"></div>
+
+      <div class="lbl">How big is the secretory burst</div>
+      <div class="sl"><label for="dose">Peak plasma level <span class="v" id="doseV">1.0 &times; normal</span></label>
+        <input type="range" id="dose" min="25" max="400" value="100" step="5" aria-label="Size of the secretory burst, as a multiple of the normal peak plasma level"></div>
+
+      <div class="lbl">Target-cell receptor number</div>
+      <div class="chips" id="rchips"></div>
+      <div class="hint"><b>Receptors are the bottleneck.</b> Chronic exposure to a high hormone level causes <b>downregulation</b> &mdash; receptors are internalized, so the same plasma concentration produces less effect. That is a central feature of type 2 diabetes and of tolerance to beta-agonists. Chronic low exposure causes <b>upregulation</b>, which is why a long-suppressed tissue can overshoot when stimulation returns.</div>
+    </div>
+
+    <div class="card">
+      <h2>Build the cascade</h2>
+      <div class="sl"><label for="steps">Steps in the cascade <span class="v" id="stepsV">3 steps</span></label>
+        <input type="range" id="steps" min="1" max="4" value="3" step="1" aria-label="Number of amplifying steps in the second messenger cascade"></div>
+      <div class="sl"><label for="gain">Gain at each step <span class="v" id="gainV">&times;100</span></label>
+        <input type="range" id="gain" min="0" max="6" value="3" step="1" aria-label="Amplification factor at each cascade step"></div>
+      <div style="margin-top:12px;text-align:center;">
+        <div class="big" id="ampBig">1,000,000&times;</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:700;margin-top:2px;">molecules of end-product per hormone molecule bound</div>
+      </div>
+      <svg id="casc" viewBox="0 0 700 120" role="img" aria-label="Diagram of an amplifying cascade in which each step multiplies the number of active molecules"></svg>
+      <div class="hint" id="ampNote"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Plasma level and cellular response after one burst</h2>
+      <canvas id="cv" width="700" height="330" aria-label="Graph of plasma hormone concentration and the resulting cellular response against time after a single secretory burst"></canvas>
+      <div class="legend"><span><i style="background:var(--teal)"></i>Plasma hormone level</span><span><i style="background:var(--coral)"></i>Cellular response</span><span><i style="background:var(--muted)"></i>One half-life</span></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Half-life</div><div class="v" id="sHalf">&mdash;</div><div class="u" id="sHalfU">in plasma</div></div>
+        <div class="stat"><div class="k">Time to half response</div><div class="v" id="sOnset">&mdash;</div><div class="u">after the burst</div></div>
+        <div class="stat"><div class="k">Response above half-max</div><div class="v" id="sDur">&mdash;</div><div class="u">duration</div></div>
+      </div>
+      <div class="verdict" id="verd">&nbsp;</div>
+    </div>
+
+    <div class="card">
+      <h2>Where the receptor sits</h2>
+      <svg id="cell" viewBox="0 0 700 250" role="img" aria-label="Diagram of a target cell showing either a surface receptor with a second messenger cascade or a hormone crossing the membrane to a nuclear receptor"></svg>
+      <div class="infobox" id="info"></div>
+      <table class="mini">
+        <thead><tr><th>Class</th><th>Receptor site</th><th>Transport in plasma</th><th>Onset / duration</th></tr></thead>
+        <tbody>
+          <tr><td><b>Peptide / protein</b><br>insulin, glucagon, PTH, ADH, GH, TSH, ACTH</td><td>Plasma membrane</td><td>Mostly free</td><td>Seconds&ndash;minutes / minutes</td></tr>
+          <tr><td><b>Catecholamine</b><br>epinephrine, norepinephrine</td><td>Plasma membrane (adrenoceptors)</td><td>Mostly free</td><td>Seconds / 1&ndash;3 min</td></tr>
+          <tr><td><b>Steroid</b><br>cortisol, aldosterone, estradiol, calcitriol</td><td>Cytosolic / nuclear</td><td>90&ndash;99 percent bound</td><td>Hours / hours&ndash;days</td></tr>
+          <tr><td><b>Thyroid</b><br>T4, T3</td><td>Nuclear</td><td>Over 99 percent bound</td><td>Hours&ndash;days / days&ndash;weeks</td></tr>
+        </tbody>
+      </table>
+      <div class="hint"><b>Specificity is never in the delivery.</b> A neuron drops perhaps 10 000 molecules of acetylcholine into a cleft 20&ndash;40 nanometers wide and hits one cell. An endocrine cell empties into a capillary and dilutes into roughly 5 liters of plasma &mdash; thyroid hormone circulates near 10<sup>&minus;9</sup> molar and many peptides near 10<sup>&minus;12</sup> molar. Thyroid hormone bathes your heart and your fingernail at exactly the same concentration; only the heart answers, because only the heart carries dense nuclear T3 receptors. <b>Paracrine</b> and <b>autocrine</b> signals use the same receptors and cascades but skip the bloodstream, so they stay local and brief.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function V(n){return CS.getPropertyValue(n).trim();}
+var C_TEAL=V('--teal'),C_TEALD=V('--teal-dk'),C_CORAL=V('--coral'),C_LINE=V('--line'),C_MUTED=V('--muted'),C_GOLD=V('--gold'),C_BLUE=V('--blue'),C_PURPLE=V('--purple'),C_GREEN=V('--green'),C_SOFT=V('--soft');
+
+var HORM=[
+ {id:'epi',nm:'Epinephrine',sub:'catecholamine',lipo:false,t12:2,
+  t12txt:'about 1&ndash;3 minutes',rec:'Plasma membrane &mdash; adrenoceptors',
+  tau:0.12,bound:'Travels largely unbound',boundShort:'mostly free',
+  casc:'&beta;<sub>1</sub>, &beta;<sub>2</sub> or &alpha;<sub>1</sub> adrenoceptor &rarr; G protein &rarr; adenylyl cyclase &rarr; cyclic AMP &rarr; protein kinase A',
+  why:'Blood pressure needs second-to-second correction, so the body uses a messenger it can switch off in a minute or two. Nothing here waits for transcription: channels open, enzymes are phosphorylated, and the effect is reversible the moment secretion stops.'},
+ {id:'ins',nm:'Insulin',sub:'peptide',lipo:false,t12:5.5,
+  t12txt:'about 5&ndash;6 minutes',rec:'Plasma membrane &mdash; receptor tyrosine kinase',
+  tau:0.9,bound:'Travels largely unbound',boundShort:'mostly free',
+  casc:'insulin receptor autophosphorylates &rarr; docking proteins &rarr; GLUT4 transporters translocate into the membrane',
+  why:'A meal has to be cleared in a couple of hours and then the signal has to disappear, or glucose keeps falling. A five to six minute half-life gives that precision. The receptor is itself an enzyme, so no G protein is needed.'},
+ {id:'cort',nm:'Cortisol',sub:'steroid',lipo:true,t12:75,
+  t12txt:'about 60&ndash;90 minutes',rec:'Cytosolic / nuclear receptor',
+  tau:75,bound:'90&ndash;99 percent bound to corticosteroid-binding globulin and albumin; only the free fraction is active',boundShort:'90&ndash;99% bound',
+  casc:'diffuses through the membrane &rarr; cytosolic receptor &rarr; hormone response element on DNA &rarr; new mRNA &rarr; new enzyme protein',
+  why:'The response needs new messenger RNA and new protein, so it cannot appear in under about 30 minutes &mdash; and once the enzyme has been made it keeps working long after the hormone has been cleared. That lag is why a steroid is useless as an emergency vasoconstrictor and excellent as a daily fuel-mobilizing signal.'},
+ {id:'t4',nm:'Thyroxine (T4)',sub:'thyroid hormone',lipo:true,t12:10080,
+  t12txt:'about 7 days',rec:'Nuclear receptor (acting as T3)',
+  tau:4320,bound:'Over 99 percent bound to thyroxine-binding globulin; the bound pool is a buffer, not a signal',boundShort:'over 99% bound',
+  casc:'diffuses in &rarr; deiodinase makes T3 &rarr; nuclear T3 receptor &rarr; transcription of Na<sup>+</sup>/K<sup>+</sup>-ATPase and mitochondrial enzymes',
+  why:'Basal metabolic rate must not swing with a single meal, so it is set by a hormone with a seven-day half-life sitting in a huge protein-bound buffer. Change the input today and the level is still moving next week &mdash; stability bought at the price of speed.'}
+];
+var GAINS=[10,20,50,100,200,500,1000];
+var cur=HORM[0], dose=1, rec=1, steps=3, gainIx=3;
+
+/* ---------- chips ---------- */
+var hc=document.getElementById('hchips');
+HORM.forEach(function(h,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.dataset.i=i;
+  b.innerHTML=h.nm+'<small>'+h.sub+'</small>';
+  b.setAttribute('aria-pressed',i===0?'true':'false');
+  b.addEventListener('click',function(){cur=HORM[+this.dataset.i];
+    [].forEach.call(hc.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    this.classList.add('on'); this.setAttribute('aria-pressed','true'); render();});
+  hc.appendChild(b);
+});
+var RECS=[{v:0.35,t:'Downregulated',s:'35% of receptors'},{v:1,t:'Normal',s:'100%'},{v:1.8,t:'Upregulated',s:'180% of receptors'}];
+var rc=document.getElementById('rchips');
+RECS.forEach(function(r,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===1?' on':''); b.dataset.v=r.v;
+  b.innerHTML=r.t+'<small>'+r.s+'</small>';
+  b.setAttribute('aria-pressed',i===1?'true':'false');
+  b.addEventListener('click',function(){rec=+this.dataset.v;
+    [].forEach.call(rc.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+    this.classList.add('on'); this.setAttribute('aria-pressed','true'); render();});
+  rc.appendChild(b);
+});
+document.getElementById('dose').addEventListener('input',function(){dose=+this.value/100;
+  document.getElementById('doseV').textContent=dose.toFixed(2)+' × normal'; render();});
+document.getElementById('steps').addEventListener('input',function(){steps=+this.value; renderAmp();});
+document.getElementById('gain').addEventListener('input',function(){gainIx=+this.value; renderAmp();});
+
+/* ---------- simulation ---------- */
+function sim(h,d,r){
+  var W=Math.max(7*h.t12,6*h.tau), N=700, dt=W/N, E=0, o={W:W,t:[],c:[],e:[]};
+  for(var i=0;i<=N;i++){
+    var t=i*dt, C=d*Math.pow(0.5,t/h.t12), occ=C/(C+0.4);
+    E+=(occ-E)*dt/h.tau;
+    o.t.push(t); o.c.push(C); o.e.push(E*r);
+  }
+  return o;
+}
+function refPeak(h){var s=sim(h,1,1),m=0;for(var i=0;i<s.e.length;i++)if(s.e[i]>m)m=s.e[i];return m;}
+
+function tfmt(m){
+  if(m<1) return (m*60).toFixed(m*60<10?1:0)+' s';
+  if(m<120) return (m<10?m.toFixed(1):Math.round(m))+' min';
+  if(m<2880) return (m/60).toFixed(1)+' h';
+  return (m/1440).toFixed(m/1440<10?1:0)+' d';
+}
+function axisUnit(W){
+  if(W<=90) return {d:1,l:'minutes'};
+  if(W<=2880) return {d:60,l:'hours'};
+  return {d:1440,l:'days'};
+}
+
+/* ---------- canvas ---------- */
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+(function(){var d=Math.min(2,window.devicePixelRatio||1);cv.width=700*d;cv.height=330*d;ctx.setTransform(d,0,0,d,0,0);})();
+
+function drawTrace(s,rp){
+  var W=700,H=330,L=52,R=14,T=16,B=40;
+  ctx.clearRect(0,0,W,H);
+  var pw=W-L-R, ph=H-T-B, u=axisUnit(s.W);
+  var mx=0;
+  for(var q=0;q<s.c.length;q++){ if(s.c[q]>mx)mx=s.c[q]; if(s.e[q]/rp>mx)mx=s.e[q]/rp; }
+  var ymax=Math.max(1.05,Math.ceil(mx*4)/4);
+  ctx.strokeStyle=C_LINE; ctx.lineWidth=1; ctx.fillStyle=C_MUTED;
+  ctx.font='600 10.5px Inter,system-ui,sans-serif';
+  for(var g=0;g<=5;g++){
+    var y=T+ph*g/5;
+    ctx.beginPath(); ctx.moveTo(L,y); ctx.lineTo(L+pw,y); ctx.stroke();
+    ctx.textAlign='right'; ctx.fillText(Math.round(ymax*100*(1-g/5))+'%',L-7,y+3.5);
+  }
+  var ticks=6;
+  for(var i=0;i<=ticks;i++){
+    var x=L+pw*i/ticks, tv=s.W*i/ticks/u.d;
+    ctx.textAlign='center';
+    ctx.fillText(tv<10?tv.toFixed(1):Math.round(tv),x,H-B+16);
+  }
+  ctx.fillText('time after the burst ('+u.l+')',L+pw/2,H-B+31);
+  /* half-life markers */
+  ctx.setLineDash([3,4]); ctx.strokeStyle=C_MUTED;
+  for(var k=1;k<=6;k++){
+    var tt=k*cur.t12; if(tt>s.W) break;
+    var xx=L+pw*tt/s.W;
+    ctx.beginPath(); ctx.moveTo(xx,T); ctx.lineTo(xx,T+ph); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  function line(arr,scale,col,wd){
+    ctx.beginPath(); ctx.strokeStyle=col; ctx.lineWidth=wd; ctx.lineJoin='round';
+    for(var i=0;i<arr.length;i++){
+      var x=L+pw*s.t[i]/s.W, y=T+ph*(1-Math.min(1,arr[i]*scale/ymax));
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    }
+    ctx.stroke();
+  }
+  /* plasma level: normalize so dose 1 peaks at 100% */
+  line(s.c,1,C_TEAL,2.6);
+  line(s.e,1/rp,C_CORAL,3);
+  ctx.strokeStyle=C_LINE; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(L,T); ctx.lineTo(L,T+ph); ctx.lineTo(L+pw,T+ph); ctx.stroke();
+  ctx.fillStyle=C_SOFT; ctx.font='700 11px Inter,system-ui,sans-serif'; ctx.textAlign='left';
+  ctx.fillText('dashed lines mark successive half-lives',L+7,T+13);
+}
+
+/* ---------- cell diagram ---------- */
+function drawCell(){
+  var lipo=cur.lipo, s='';
+  s+='<defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+C_TEALD+'"/></marker></defs>';
+  s+='<rect x="0" y="0" width="700" height="250" fill="#fff"/>';
+  s+='<text x="12" y="18" font-family="Inter" font-size="11" font-weight="800" fill="'+C_MUTED+'">OUTSIDE THE CELL &middot; capillary</text>';
+  s+='<rect x="0" y="62" width="700" height="9" fill="'+C_GOLD+'" opacity=".55"/>';
+  s+='<rect x="0" y="71" width="700" height="9" fill="'+C_GOLD+'" opacity=".28"/>';
+  s+='<text x="688" y="58" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="'+C_MUTED+'">PLASMA MEMBRANE</text>';
+  s+='<text x="12" y="100" font-family="Inter" font-size="11" font-weight="800" fill="'+C_MUTED+'">CYTOSOL</text>';
+  for(var i=0;i<7;i++){
+    s+='<circle cx="'+(60+i*38)+'" cy="'+(30+(i%3)*11)+'" r="6" fill="'+(lipo?C_PURPLE:C_BLUE)+'"/>';
+  }
+  if(!lipo){
+    s+='<rect x="300" y="52" width="46" height="38" rx="8" fill="'+C_TEAL+'"/>';
+    s+='<text x="323" y="46" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="'+C_TEALD+'">receptor</text>';
+    s+='<circle cx="323" cy="40" r="7" fill="'+C_BLUE+'"/>';
+    s+='<path d="M323 92 L323 116" stroke="'+C_TEALD+'" stroke-width="2.5" marker-end="url(#ar)"/>';
+    s+='<text x="335" y="112" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_SOFT+'">second messenger made inside</text>';
+    var lbl=(cur.id==='ins')?['receptor autophosphorylates','docking proteins','GLUT4 into the membrane']:['G protein activated','adenylyl cyclase makes cyclic AMP','protein kinase A phosphorylates enzymes'];
+    for(var j=0;j<3;j++){
+      var y=134+j*32, n=Math.pow(6,j+1);
+      s+='<rect x="60" y="'+y+'" width="'+(120+j*150)+'" height="22" rx="11" fill="'+C_TEAL+'" opacity="'+(0.24+j*0.22)+'"/>';
+      s+='<text x="70" y="'+(y+15)+'" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_TEALD+'">'+lbl[j]+'</text>';
+      s+='<text x="'+(190+j*150)+'" y="'+(y+15)+'" font-family="Inter" font-size="11" font-weight="800" fill="'+C_MUTED+'">&times;'+n+'</text>';
+    }
+    s+='<text x="60" y="240" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_CORAL+'">Response appears in seconds to minutes and stops when the hormone is cleared.</text>';
+  } else {
+    s+='<path d="M120 42 L120 130" stroke="'+C_PURPLE+'" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#ar)"/>';
+    s+='<text x="130" y="112" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_SOFT+'">lipid-soluble: crosses the membrane freely</text>';
+    s+='<ellipse cx="330" cy="172" rx="130" ry="58" fill="'+C_PURPLE+'" opacity=".13"/>';
+    s+='<ellipse cx="330" cy="172" rx="130" ry="58" fill="none" stroke="'+C_PURPLE+'" stroke-width="2"/>';
+    s+='<text x="330" y="128" text-anchor="middle" font-family="Inter" font-size="11" font-weight="800" fill="'+C_MUTED+'">NUCLEUS</text>';
+    s+='<path d="M240 178 Q270 158 300 178 Q330 198 360 178 Q390 158 420 178" fill="none" stroke="'+C_TEALD+'" stroke-width="2.5"/>';
+    s+='<circle cx="300" cy="178" r="7" fill="'+C_PURPLE+'"/>';
+    s+='<text x="330" y="204" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="'+C_TEALD+'">hormone response element</text>';
+    s+='<path d="M462 172 L520 172" stroke="'+C_TEALD+'" stroke-width="2.5" marker-end="url(#ar)"/>';
+    s+='<text x="528" y="166" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_SOFT+'">new mRNA</text>';
+    s+='<text x="528" y="184" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_SOFT+'">new protein</text>';
+    s+='<text x="60" y="242" font-family="Inter" font-size="11.5" font-weight="700" fill="'+C_CORAL+'">Transcription and translation take 30 minutes to hours &mdash; and the protein outlasts the hormone.</text>';
+  }
+  document.getElementById('cell').innerHTML=s;
+}
+
+/* ---------- amplification ---------- */
+function fmtBig(n){
+  if(n>=1e12) return (n/1e12).toFixed(n/1e12<10?1:0)+' trillion';
+  if(n>=1e9) return (n/1e9).toFixed(n/1e9<10?1:0)+' billion';
+  if(n>=1e6) return (n/1e6).toFixed(n/1e6<10?1:0)+' million';
+  if(n>=1e3) return Math.round(n).toLocaleString();
+  return Math.round(n).toString();
+}
+function renderAmp(){
+  var g=GAINS[gainIx], amp=Math.pow(g,steps);
+  document.getElementById('stepsV').textContent=steps+(steps===1?' step':' steps');
+  document.getElementById('gainV').textContent='×'+g;
+  document.getElementById('ampBig').textContent=fmtBig(amp)+'×';
+  var s='<rect x="0" y="0" width="700" height="120" fill="#fff"/>';
+  var maxL=660;
+  for(var i=0;i<=steps;i++){
+    var n=Math.pow(g,i);
+    var frac=Math.log(n+1)/Math.log(amp+1);
+    var w=Math.max(24,maxL*frac);
+    var y=8+i*Math.min(26,104/(steps+1));
+    var hgt=Math.min(20,100/(steps+1)-4);
+    s+='<rect x="20" y="'+y+'" width="'+w+'" height="'+hgt+'" rx="'+(hgt/2)+'" fill="'+C_TEAL+'" opacity="'+(0.3+0.6*i/Math.max(1,steps))+'"/>';
+    s+='<text x="'+(28+w)+'" y="'+(y+hgt-5)+'" font-family="Inter" font-size="10.5" font-weight="800" fill="'+C_MUTED+'">'+fmtBig(n)+'</text>';
+  }
+  document.getElementById('casc').setAttribute('viewBox','0 0 700 '+(16+steps*Math.min(26,104/(steps+1))+24));
+  document.getElementById('casc').innerHTML=s;
+  var note='';
+  if(steps===3 && g===100){
+    note='<b>This is the module’s benchmark.</b> Three steps with a gain of 100 at each step amplify a single binding event roughly a <b>millionfold</b> &mdash; which is how a plasma concentration of 10<sup>&minus;12</sup> molar produces a whole-body metabolic response.';
+  } else {
+    note='<b>Compare with the benchmark.</b> Three steps at a gain of 100 each give roughly a millionfold amplification. You are currently at '+steps+(steps===1?' step':' steps')+' with a gain of '+g+', which is '+fmtBig(amp)+'-fold. Notice how quickly adding <i>one</i> step beats raising the gain &mdash; the exponent does the work, not the base.';
+  }
+  document.getElementById('ampNote').innerHTML=note;
+}
+
+/* ---------- main render ---------- */
+function render(){
+  var rp=refPeak(cur), s=sim(cur,dose,rec), pk=0, pkI=0;
+  for(var i=0;i<s.e.length;i++) if(s.e[i]>pk){pk=s.e[i];pkI=i;}
+  var half=pk/2, onset=null, up=null, down=null;
+  for(var i=0;i<s.e.length;i++){
+    if(onset===null && s.e[i]>=half) onset=s.t[i];
+    if(up===null && s.e[i]>=half) up=s.t[i];
+    if(up!==null && down===null && i>pkI && s.e[i]<half) down=s.t[i];
+  }
+  if(down===null) down=s.W;
+  drawTrace(s,rp);
+  drawCell();
+  document.getElementById('sHalf').textContent=tfmt(cur.t12);
+  document.getElementById('sHalfU').innerHTML=cur.t12txt;
+  document.getElementById('sOnset').textContent=onset===null?'—':tfmt(onset);
+  document.getElementById('sDur').textContent=tfmt(down-(up||0));
+
+  var vd=document.getElementById('verd');
+  vd.className='verdict '+(cur.lipo?'slow':'fast');
+  var peakPct=Math.round(pk/rp*100);
+  vd.innerHTML=(cur.lipo?'Lipophilic &mdash; intracellular receptor':'Hydrophilic &mdash; surface receptor')+
+    ': peak response reaches <b>'+peakPct+'%</b> of the normal maximum.'+
+    '<small>'+(rec<1?'With only 35 percent of receptors left, the same plasma level buys a much smaller answer &mdash; the hormone did not change, the cell did. ':(rec>1?'With 180 percent of normal receptors the same plasma level produces a larger answer, which is why a long-suppressed tissue can overshoot when stimulation returns. ':''))+
+    (cur.lipo?'The response is still climbing while the hormone is already falling, and it outlives the molecule that started it.':'The response tracks the plasma level almost exactly, because nothing has to be transcribed.')+'</small>';
+
+  var inf=document.getElementById('info');
+  inf.innerHTML='<span class="n">'+cur.nm+'</span>'+
+    '<b>Receptor:</b> '+cur.rec+'<br>'+
+    '<b>Transport:</b> '+cur.bound+'<br>'+
+    '<b>Half-life:</b> '+cur.t12txt+'<br>'+
+    '<b>Path:</b> '+cur.casc+
+    '<div style="margin-top:9px;">'+cur.why+'</div>';
+  renderAmp();
+}
+render();
+})();
+</script>
+</body>
+</html>

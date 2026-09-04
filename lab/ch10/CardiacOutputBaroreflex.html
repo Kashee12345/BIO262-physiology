@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cardiac Output and the Baroreflex: Break the Loop and Watch Pressure Run Away</title>
+<meta name="description" content="Set preload, afterload, contractility and rate, then disturb arterial pressure and cut the sensor, the integrator or an effector to see which parts of the negative feedback loop are doing the work.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.chip.dang.on{background:var(--coral);border-color:var(--coral);}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+svg text{font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch10.html">&larr; Module 10</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 10</div>
+  <h1>Cardiac Output and the Loop That Defends It</h1>
+  <div class="intro">Cardiac output has exactly two terms, CO = HR &times; SV, and stroke volume has exactly three determinants: preload, afterload and contractility. Set them below and the model recalculates the whole beat. Then disturb the circulation &mdash; stand up, bleed, squeeze a carotid sinus &mdash; and <b>cut the sensor, the integrator or an effector</b> to find out which part of the baroreceptor reflex was holding mean arterial pressure steady.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The three determinants of stroke volume, plus rate</h2>
+      <div class="sl"><label for="sHR">Baseline heart rate <span class="v" id="vHR">75/min</span></label>
+        <input type="range" id="sHR" min="40" max="200" value="75" step="1" aria-label="Baseline heart rate in beats per minute, before any reflex adjustment"></div>
+      <div class="sl"><label for="sEDV">Preload &mdash; end-diastolic volume <span class="v" id="vEDV">120 mL</span></label>
+        <input type="range" id="sEDV" min="50" max="200" value="120" step="1" aria-label="Preload, expressed as end-diastolic volume in milliliters"></div>
+      <div class="sl"><label for="sEes">Contractility &mdash; slope of the end-systolic relation <span class="v" id="vEes">2.30</span></label>
+        <input type="range" id="sEes" min="0.6" max="5" value="2.3" step="0.05" aria-label="Contractility, the slope of the end-systolic pressure volume relationship, in millimeters of mercury per milliliter"></div>
+      <div class="sl"><label for="sSVR">Afterload &mdash; systemic vascular resistance <span class="v" id="vSVR">18.0</span></label>
+        <input type="range" id="sSVR" min="3" max="40" value="18" step="0.1" aria-label="Systemic vascular resistance in millimeters of mercury per liter per minute"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Stroke volume</div><div class="v" id="oSV">69</div><div class="u">mL &middot; about 70 at rest</div></div>
+        <div class="lab"><div class="k">End-systolic volume</div><div class="v" id="oESV">51</div><div class="u">mL &middot; about 50</div></div>
+        <div class="lab"><div class="k">Ejection fraction</div><div class="v" id="oEF">58</div><div class="u">% &middot; normal 55&ndash;70</div></div>
+        <div class="lab"><div class="k">Cardiac output</div><div class="v" id="oCO">5.2</div><div class="u">L/min &middot; HR &times; SV</div></div>
+        <div class="lab"><div class="k">Mean arterial pressure</div><div class="v" id="oMAP">94</div><div class="u">mmHg &middot; 70&ndash;100</div></div>
+        <div class="lab"><div class="k">Mixed venous O&#8322;</div><div class="v" id="oCv">152</div><div class="u">mL/L &middot; arterial 200</div></div>
+      </div>
+      <div class="eq" id="eqOut"></div>
+    </div>
+    <div class="card">
+      <h2>Frank&ndash;Starling: along the curve, or a new curve</h2>
+      <canvas id="cvFS" width="440" height="316" aria-label="Frank-Starling curves plotting stroke volume against end-diastolic volume, with a reference curve, a failing curve and the curve produced by the contractility you have set, and the current operating point marked"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--teal-dk)"></i>Your contractility</span>
+        <span><i style="background:var(--muted)"></i>Normal reference</span>
+        <span><i style="background:var(--coral)"></i>Failing myocardium</span>
+      </div>
+      <div class="hint">Increasing <b>preload</b> moves the operating point rightward and upward <em>along</em> its curve. Increasing <b>contractility</b> lifts the whole curve, giving more stroke volume at any given preload. A failing ventricle sits on a flattened, depressed curve &mdash; which is why it responds so poorly to extra fluid and so well to reducing the load it faces.</div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2>The baroreceptor reflex, and where to cut it</h2>
+      <svg viewBox="0 0 420 320" role="img" aria-label="The baroreceptor reflex drawn as a closed loop: regulated variable, sensor, integrator, effectors and response, with a red cross over any component you have disabled" id="loop">
+        <defs>
+          <marker id="la" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--teal)"></path>
+          </marker>
+        </defs>
+        <path d="M300 52 L332 84" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#la)"></path>
+        <path d="M348 156 L338 208" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#la)"></path>
+        <path d="M226 245 L200 245" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#la)"></path>
+        <path d="M84 212 L82 158" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#la)"></path>
+        <path d="M100 84 L136 54" fill="none" stroke="var(--teal)" stroke-width="2.4" marker-end="url(#la)"></path>
+
+        <rect x="110" y="6" width="200" height="48" rx="11" fill="var(--teal)" opacity=".14"></rect>
+        <rect x="110" y="6" width="200" height="48" rx="11" fill="none" stroke="var(--teal)" stroke-width="1.6"></rect>
+        <text x="210" y="24" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal-dk)">REGULATED VARIABLE</text>
+        <text x="210" y="40" text-anchor="middle" font-size="11.5" fill="var(--soft)">mean arterial pressure, 70&ndash;100 mmHg</text>
+
+        <rect id="bxS" x="266" y="86" width="150" height="70" rx="11" fill="var(--blue)" opacity=".14"></rect>
+        <rect x="266" y="86" width="150" height="70" rx="11" fill="none" stroke="var(--blue)" stroke-width="1.6"></rect>
+        <text x="341" y="104" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal-dk)">SENSOR</text>
+        <text x="341" y="120" text-anchor="middle" font-size="10.5" fill="var(--soft)">baroreceptors</text>
+        <text x="341" y="134" text-anchor="middle" font-size="10.5" fill="var(--soft)">carotid sinus (CN IX)</text>
+        <text x="341" y="148" text-anchor="middle" font-size="10.5" fill="var(--soft)">aortic arch (CN X)</text>
+
+        <rect id="bxI" x="230" y="210" width="176" height="70" rx="11" fill="var(--purple)" opacity=".14"></rect>
+        <rect x="230" y="210" width="176" height="70" rx="11" fill="none" stroke="var(--purple)" stroke-width="1.6"></rect>
+        <text x="318" y="230" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal-dk)">INTEGRATOR</text>
+        <text x="318" y="246" text-anchor="middle" font-size="10.5" fill="var(--soft)">cardiovascular center</text>
+        <text x="318" y="260" text-anchor="middle" font-size="10.5" fill="var(--soft)">of the medulla oblongata</text>
+
+        <rect id="bxE" x="16" y="210" width="180" height="70" rx="11" fill="var(--coral)" opacity=".14"></rect>
+        <rect x="16" y="210" width="180" height="70" rx="11" fill="none" stroke="var(--coral)" stroke-width="1.6"></rect>
+        <text x="106" y="230" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal-dk)">EFFECTORS</text>
+        <text x="106" y="246" text-anchor="middle" font-size="10.5" fill="var(--soft)">SA node, AV node,</text>
+        <text x="106" y="260" text-anchor="middle" font-size="10.5" fill="var(--soft)">myocardium, vessels</text>
+
+        <rect x="6" y="86" width="150" height="70" rx="11" fill="var(--green)" opacity=".14"></rect>
+        <rect x="6" y="86" width="150" height="70" rx="11" fill="none" stroke="var(--green)" stroke-width="1.6"></rect>
+        <text x="81" y="104" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal-dk)">RESPONSE</text>
+        <text x="81" y="120" text-anchor="middle" font-size="10.5" fill="var(--soft)" id="rTxt1">rate and contractility</text>
+        <text x="81" y="134" text-anchor="middle" font-size="10.5" fill="var(--soft)" id="rTxt2">venous tone, resistance</text>
+        <text x="81" y="149" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--green)" id="rTxt3">opposes the disturbance</text>
+
+        <g id="xS" style="display:none"><line x1="316" y1="96" x2="366" y2="146" stroke="var(--coral)" stroke-width="5"></line><line x1="366" y1="96" x2="316" y2="146" stroke="var(--coral)" stroke-width="5"></line></g>
+        <g id="xI" style="display:none"><line x1="293" y1="220" x2="343" y2="270" stroke="var(--coral)" stroke-width="5"></line><line x1="343" y1="220" x2="293" y2="270" stroke="var(--coral)" stroke-width="5"></line></g>
+        <g id="xE" style="display:none"><line x1="81" y1="220" x2="131" y2="270" stroke="var(--coral)" stroke-width="5"></line><line x1="131" y1="220" x2="81" y2="270" stroke="var(--coral)" stroke-width="5"></line></g>
+      </svg>
+      <div class="lbl">Disturb the circulation</div>
+      <div class="chips" id="dist"></div>
+      <div class="lbl">Break part of the loop</div>
+      <div class="chips">
+        <button type="button" class="chip dang" id="kS" aria-pressed="false">Cut the baroreceptor afferents</button>
+        <button type="button" class="chip dang" id="kI" aria-pressed="false">Lesion the medullary center</button>
+        <button type="button" class="chip dang" id="kC" aria-pressed="false">Block the cardiac effectors (&beta;-blocker)</button>
+        <button type="button" class="chip dang" id="kV" aria-pressed="false">Block the vascular effectors</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Mean arterial pressure over the last 30 seconds</h2>
+      <canvas id="cvT" width="660" height="248" aria-label="Live plot of mean arterial pressure and heart rate over the last thirty seconds, with the normal pressure band shaded"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--teal-dk)"></i>Mean arterial pressure (mmHg)</span>
+        <span><i style="background:var(--coral)"></i>Heart rate (per minute)</span>
+        <span><i style="background:var(--green)"></i>Normal band, 70&ndash;100</span>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Live heart rate</div><div class="v" id="oHRl">75</div><div class="u">per minute</div></div>
+        <div class="lab"><div class="k">Live MAP</div><div class="v" id="oMAPl">94</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Autonomic drive</div><div class="v" id="oDrive">0</div><div class="u">&minus;100 vagal &hellip; +100 sympathetic</div></div>
+      </div>
+      <div class="verdict" id="vLoop"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#000').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), GREEN = C('green'), MUTED = C('muted');
+  function id(s){ return document.getElementById(s); }
+  function f(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+  function clamp(x, a, b){ return x < a ? a : (x > b ? b : x); }
+
+  var sHR = id('sHR'), sEDV = id('sEDV'), sEes = id('sEes'), sSVR = id('sSVR');
+  var V0 = 10, SETPOINT = 93, VO2 = 250, CaO2 = 200;
+  var R = 0, dEDV = 0, sensorOffset = 0, offsetTimer = 0, distName = '', buf = [], simT = 0;
+  var brokenS = false, brokenI = false, brokenC = false, brokenV = false;
+
+  var BASE = { hr:75, edv:120, ees:2.3, svr:18 };
+  var DIST = [
+    {n:'Reset to resting', edv:0, off:0, dur:0, set:BASE, note:'Back to baseline. Mean arterial pressure sits near 93 mmHg, the reflex is quiet, and heart rate rests on continuous vagal tone.'},
+    {n:'Stand up quickly', edv:-24, off:0, dur:0, set:BASE, note:'Standing pools 500 to 800 mL in the legs, so venous return and end-diastolic volume fall at once. Arterial stretch falls, baroreceptor firing falls, and the medulla reads reduced afferent traffic as low pressure. It withdraws vagal tone and raises sympathetic outflow within one or two heartbeats. When that loop is sluggish &mdash; autonomic neuropathy, or after prolonged bed rest &mdash; the person is light-headed on standing: orthostatic hypotension.'},
+    {n:'Hemorrhage, 1 liter', edv:-36, off:0, dur:0, set:BASE, note:'A liter gone from the venous side takes preload with it. Stroke volume falls by Frank&ndash;Starling before anything else happens, and the reflex answers with tachycardia, greater contractility, venoconstriction and arteriolar constriction. Since MAP = CO × SVR and CO = HR × SV, every one of those responses pushes pressure back up. Now cut the sensor and watch the same bleed go uncorrected.'},
+    {n:'Infuse 1 liter of fluid', edv:28, off:0, dur:0, set:BASE, note:'More venous return, more end-diastolic stretch, better filament overlap and greater troponin C calcium sensitivity &mdash; a bigger stroke volume, with no nerve and no hormone involved. This intrinsic mechanism is what keeps the two ventricles matched beat to beat, and it is why a transplanted, denervated heart still raises its output during exercise.'},
+    {n:'Carotid sinus massage', edv:0, off:30, dur:7, set:BASE, note:'Pressing the carotid sinus stretches it mechanically, so it fires as though pressure were high. The medulla increases vagal output and withdraws sympathetic tone: the heart slows and the vessels dilate, and pressure actually falls. That is why the maneuver can break a supraventricular tachycardia &mdash; and why a tight collar can make a susceptible person faint. The effect here lasts seven seconds; watch the trace recover afterwards.'},
+    {n:'Trained athlete at maximum', edv:0, off:0, dur:0, set:{hr:190, edv:200, ees:5.0, svr:3.3}, note:'Exercise moves every lever the same way: sympathetic drive with vagal withdrawal raises rate, the muscle pump and venoconstriction raise preload, &beta;<sub>1</sub> stimulation raises contractility, and local metabolic vasodilation drops resistance in the working beds. Roughly 190 per minute × 160 mL is more than 30 L/min &mdash; a sixfold rise on rest, from a 2.5-fold rise in rate and a 2.3-fold rise in stroke volume.'}
+  ];
+
+  var host = id('dist');
+  DIST.forEach(function(d, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (i === 0 ? ' on' : '');
+    b.textContent = d.n; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(host.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed','false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed','true');
+      dEDV = d.edv; sensorOffset = d.off; offsetTimer = d.dur; distName = d.note;
+      if(d.set){ sHR.value = d.set.hr; sEDV.value = d.set.edv; sEes.value = d.set.ees; sSVR.value = d.set.svr; }
+      if(i === 0){ R = 0; buf = []; }
+    });
+    host.appendChild(b);
+  });
+
+  function marks(){
+    id('xS').style.display = brokenS ? '' : 'none';
+    id('xI').style.display = brokenI ? '' : 'none';
+    id('xE').style.display = (brokenC || brokenV) ? '' : 'none';
+  }
+  function toggle(btn, get, set){
+    id(btn).addEventListener('click', function(){
+      set(!get()); this.classList.toggle('on', get()); this.setAttribute('aria-pressed', get() ? 'true' : 'false');
+      marks();
+    });
+  }
+  toggle('kS', function(){ return brokenS; }, function(v){ brokenS = v; });
+  toggle('kI', function(){ return brokenI; }, function(v){ brokenI = v; });
+  toggle('kC', function(){ return brokenC; }, function(v){ brokenC = v; });
+  toggle('kV', function(){ return brokenV; }, function(v){ brokenV = v; });
+
+  function beat(HR, EDV, Ees, SVRl){
+    var Ea = SVRl / 1000 * HR;
+    var SVlin = Ees * Math.max(0, EDV - V0) / (Ees + Ea);
+    var sat = 1 / (1 + Math.pow(Math.max(0, EDV - 170) / 140, 2));
+    var SV = SVlin * sat;
+    var CO = SV * HR / 1000;
+    var MAP = Ea * SV;
+    return { Ea:Ea, SV:SV, CO:CO, MAP:MAP, ESV:EDV - SV, EF: EDV > 0 ? SV / EDV * 100 : 0 };
+  }
+
+  function live(){
+    var HR0 = +sHR.value, EDV0 = +sEDV.value, Ees0 = +sEes.value, SVR0 = +sSVR.value;
+    var Rc = brokenC ? 0 : R, Rv = brokenV ? 0 : R;
+    var HR = HR0 + (Rc > 0 ? 90 * Rc : 40 * Rc);
+    var Ees = Ees0 * (1 + (Rc > 0 ? 0.9 * Rc : 0.35 * Rc));
+    var EDV = EDV0 + dEDV + (Rv > 0 ? 18 * Rv : 6 * Rv);
+    var SVRl = SVR0 * (1 + (Rv > 0 ? 0.7 * Rv : 0.35 * Rv));
+    HR = clamp(HR, 30, 205); Ees = Math.max(0.3, Ees); EDV = Math.max(25, EDV); SVRl = Math.max(2.2, SVRl);
+    var b = beat(HR, EDV, Ees, SVRl);
+    b.HR = HR; b.EDV = EDV; b.Ees = Ees; b.SVR = SVRl;
+    b.CvO2 = CaO2 - (b.CO > 0.2 ? VO2 / b.CO : 999);
+    return b;
+  }
+
+  function step(dt){
+    var b = live();
+    var sensed = brokenS ? SETPOINT : b.MAP + sensorOffset;
+    var target = brokenI || brokenS ? 0 : clamp((SETPOINT - sensed) / 40, -1, 1);
+    R += (target - R) * (1 - Math.exp(-dt / 1.5));
+    if(offsetTimer > 0){ offsetTimer -= dt; if(offsetTimer <= 0){ sensorOffset = 0; offsetTimer = 0; } }
+    simT += dt;
+    buf.push({ t:simT, map:b.MAP, hr:b.HR });
+    while(buf.length && buf[0].t < simT - 30) buf.shift();
+    return b;
+  }
+
+  function drawFS(b){
+    var cv = id('cvFS'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 440, h = 316, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 44, Rm = 12, T = 14, B = 34, pw = w - L - Rm, ph = h - T - B;
+    function X(v){ return L + (v - 40) / 180 * pw; }
+    function Y(s){ return T + ph - clamp(s, 0, 150) / 150 * ph; }
+
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '700 9.5px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.45)';
+    [0, 50, 100, 150].forEach(function(s){
+      ctx.beginPath(); ctx.moveTo(L, Y(s)); ctx.lineTo(L + pw, Y(s)); ctx.stroke();
+      ctx.textAlign = 'right'; ctx.fillText(s, L - 5, Y(s) + 3);
+    });
+    [40, 80, 120, 160, 200].forEach(function(v){
+      ctx.beginPath(); ctx.moveTo(X(v), T); ctx.lineTo(X(v), T + ph); ctx.stroke();
+      ctx.textAlign = 'center'; ctx.fillText(v, X(v), h - 18);
+    });
+    ctx.fillStyle = MUTED; ctx.font = '800 9.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('end-diastolic volume, i.e. preload (mL)', L + pw / 2, h - 4);
+    ctx.save(); ctx.translate(12, T + ph / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = 'center';
+    ctx.fillText('stroke volume (mL)', 0, 0); ctx.restore();
+
+    function curve(Ees, col, wd, dash){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      if(dash) ctx.setLineDash(dash);
+      for(var v = 40; v <= 220; v += 2){
+        var y = Y(beat(b.HR, v, Ees, b.SVR).SV);
+        if(v === 40) ctx.moveTo(X(v), y); else ctx.lineTo(X(v), y);
+      }
+      ctx.stroke(); ctx.setLineDash([]);
+    }
+    curve(2.3, MUTED, 1.6, [5, 4]);
+    curve(0.9, CORAL, 1.8);
+    curve(b.Ees, TEALDK, 2.8);
+
+    ctx.fillStyle = TEAL;
+    ctx.beginPath(); ctx.arc(X(b.EDV), Y(b.SV), 6, 0, 6.2832); ctx.fill();
+    ctx.strokeStyle = TEAL; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(X(b.EDV), Y(0)); ctx.lineTo(X(b.EDV), Y(b.SV)); ctx.lineTo(L, Y(b.SV)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = TEALDK; ctx.font = '800 10px Inter, system-ui, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText(Math.round(b.EDV) + ' mL → ' + Math.round(b.SV) + ' mL', Math.min(X(b.EDV) + 8, w - 120), Y(b.SV) - 8);
+  }
+
+  function drawT(){
+    var cv = id('cvT'), ctx = cv.getContext('2d');
+    var w = cv.clientWidth || 660, h = 248, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+    var L = 40, Rm = 40, T = 12, B = 26, pw = w - L - Rm, ph = h - T - B;
+    var t1 = Math.max(30, simT), t0 = t1 - 30;
+    function X(t){ return L + (t - t0) / 30 * pw; }
+    function Ym(m){ return T + ph - clamp(m, 0, 170) / 170 * ph; }
+    function Yh(x){ return T + ph - clamp(x, 0, 210) / 210 * ph; }
+
+    ctx.globalAlpha = 0.12; ctx.fillStyle = GREEN;
+    ctx.fillRect(L, Ym(100), pw, Ym(70) - Ym(100));
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    [0, 50, 100, 150].forEach(function(m){
+      ctx.beginPath(); ctx.moveTo(L, Ym(m)); ctx.lineTo(L + pw, Ym(m)); ctx.stroke();
+      ctx.fillStyle = TEALDK; ctx.textAlign = 'right'; ctx.fillText(m, L - 5, Ym(m) + 3);
+    });
+    [0, 100, 200].forEach(function(x){
+      ctx.fillStyle = CORAL; ctx.textAlign = 'left'; ctx.fillText(x, L + pw + 5, Yh(x) + 3);
+    });
+    ctx.setLineDash([4, 4]); ctx.globalAlpha = 0.5; ctx.strokeStyle = TEAL;
+    ctx.beginPath(); ctx.moveTo(L, Ym(SETPOINT)); ctx.lineTo(L + pw, Ym(SETPOINT)); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+
+    function line(key, Yf, col, wd){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      buf.forEach(function(p, i){
+        var y = Yf(p[key]);
+        if(i === 0) ctx.moveTo(X(p.t), y); else ctx.lineTo(X(p.t), y);
+      });
+      ctx.stroke();
+    }
+    line('hr', Yh, CORAL, 1.9);
+    line('map', Ym, TEALDK, 2.6);
+
+    ctx.fillStyle = MUTED; ctx.textAlign = 'center'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    for(var g = 0; g <= 30; g += 5) ctx.fillText('−' + (30 - g) + 's', X(t0 + g), h - 6);
+  }
+
+  function verdict(b){
+    var v = id('vLoop'), cls = 'verdict', head, sub;
+    var broken = brokenS || brokenI || brokenC || brokenV;
+    if(brokenS){
+      cls += ' bad'; head = 'Sensor cut: the loop is open';
+      sub = 'With the afferents severed the medulla receives no information about arterial stretch, so no error signal is generated no matter how far pressure drifts. MAP is now wherever the mechanics leave it: ' + Math.round(b.MAP) + ' mmHg. Try standing up now &mdash; nothing corrects it. A feedback loop without a sensor is not a feedback loop.';
+    } else if(brokenI){
+      cls += ' bad'; head = 'Integrator lesioned: signal in, nothing out';
+      sub = 'The baroreceptors are still firing faithfully, but the medullary cardiovascular center is not comparing that signal to a set point or commanding anything. Sensing without integration corrects nothing. MAP is ' + Math.round(b.MAP) + ' mmHg.';
+    } else if(brokenC && brokenV){
+      cls += ' bad'; head = 'Both effector limbs blocked';
+      sub = 'The error is detected and the command is issued, but nothing can execute it. Heart rate is stuck at ' + Math.round(b.HR) + ' and vascular tone cannot change, so MAP settles at ' + Math.round(b.MAP) + ' mmHg. The loop is intact on paper and useless in practice.';
+    } else if(brokenC){
+      cls += ' warn'; head = 'Cardiac effectors blocked';
+      sub = 'Rate and contractility cannot respond, so the whole correction falls on the vessels: venoconstriction to raise preload and arteriolar constriction to raise resistance. Because MAP = CO × SVR, that limb alone can still do a great deal &mdash; MAP is ' + Math.round(b.MAP) + ' mmHg &mdash; but heart rate is pinned near ' + Math.round(b.HR) + ', which is exactly why a &beta;-blocked patient tolerates blood loss badly.';
+    } else if(brokenV){
+      cls += ' warn'; head = 'Vascular effectors blocked';
+      sub = 'The vessels cannot constrict, so preload and resistance are fixed and the heart has to do all the work through rate and contractility. Heart rate is ' + Math.round(b.HR) + ' and MAP is ' + Math.round(b.MAP) + ' mmHg.';
+    } else if(Math.abs(b.MAP - SETPOINT) < 6 && Math.abs(R) < 0.12){
+      cls += ' ok'; head = 'Loop closed, pressure defended';
+      sub = 'MAP ' + Math.round(b.MAP) + ' mmHg, heart rate ' + Math.round(b.HR) + ', cardiac output ' + f(b.CO, 1) + ' L/min. The reflex is quiet because there is nothing to correct. Note what it is defending: not output, not stroke volume, but arterial pressure &mdash; the variable that determines whether the brain and the coronaries stay perfused.';
+    } else if(R > 0.12){
+      cls += ' cool'; head = 'Sympathetic correction in progress';
+      sub = 'Pressure fell, baroreceptor firing fell, vagal tone was withdrawn and sympathetic outflow rose. Heart rate is now ' + Math.round(b.HR) + ', contractility ' + f(b.Ees, 2) + ', resistance ' + f(b.SVR) + ', and MAP has been pulled back to ' + Math.round(b.MAP) + ' mmHg. The response opposes the disturbance &mdash; that is the definition of negative feedback, and the whole loop operates within one or two heartbeats.';
+    } else if(R < -0.12){
+      cls += ' cool'; head = 'Vagal correction in progress';
+      sub = 'The receptors are stretched more than usual, so they fire faster, the medulla increases vagal output and withdraws sympathetic tone. Heart rate falls to ' + Math.round(b.HR) + ', contractility and vascular tone fall with it, and MAP is ' + Math.round(b.MAP) + ' mmHg. The reflex runs in both directions.';
+    } else {
+      cls += ''; head = 'MAP ' + Math.round(b.MAP) + ' mmHg';
+      sub = 'Heart rate ' + Math.round(b.HR) + ', stroke volume ' + Math.round(b.SV) + ' mL, output ' + f(b.CO, 1) + ' L/min, resistance ' + f(b.SVR) + '.';
+    }
+    if(!broken && distName){ sub = distName + '<br><br>' + sub; }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function render(b){
+    id('vHR').textContent = sHR.value + '/min';
+    id('vEDV').textContent = sEDV.value + ' mL';
+    id('vEes').textContent = f(+sEes.value, 2) + ' mmHg/mL';
+    id('vSVR').textContent = f(+sSVR.value) + ' mmHg per L/min';
+
+    id('oSV').textContent = Math.round(b.SV);
+    id('oESV').textContent = Math.round(b.ESV);
+    id('oEF').textContent = Math.round(b.EF);
+    id('oCO').textContent = f(b.CO, 1);
+    id('oMAP').textContent = Math.round(b.MAP);
+    id('oCv').textContent = Math.round(clamp(b.CvO2, 0, 200));
+    id('oHRl').textContent = Math.round(b.HR);
+    id('oMAPl').textContent = Math.round(b.MAP);
+    id('oDrive').textContent = Math.round(R * 100);
+    id('rTxt3').textContent = R > 0.05 ? 'raising rate, tone, pressure' : (R < -0.05 ? 'lowering rate, tone, pressure' : 'opposes the disturbance');
+
+    id('eqOut').innerHTML =
+      'SV = E<sub>es</sub>(EDV &minus; V<sub>0</sub>) / (E<sub>es</sub> + E<sub>a</sub>) = <b class="num">' + f(b.Ees, 2) + '</b>(' + Math.round(b.EDV) + ' &minus; 10) / (' + f(b.Ees, 2) + ' + ' + f(b.Ea, 2) + ') = <b class="num">' + Math.round(b.SV) + ' mL</b><br>' +
+      'CO = HR &times; SV = ' + Math.round(b.HR) + ' &times; ' + Math.round(b.SV) + ' = <b class="num">' + f(b.CO, 1) + ' L/min</b> &nbsp;·&nbsp; MAP = CO &times; SVR = <b class="num">' + Math.round(b.MAP) + ' mmHg</b><br>' +
+      'Fick check: CO = VO<sub>2</sub> / (CaO<sub>2</sub> &minus; CvO<sub>2</sub>) = 250 / (200 &minus; <b class="num">' + Math.round(clamp(b.CvO2, 0, 200)) + '</b>) = ' + f(b.CO, 1) + ' L/min. A widened arteriovenous oxygen difference means tissues are extracting more because flow is inadequate &mdash; a low output state announces itself in the venous saturation.';
+
+    drawFS(b); drawT(); verdict(b);
+  }
+
+  function tick(){ render(step(0.1)); }
+
+  [sHR, sEDV, sEes, sSVR].forEach(function(el){ el.addEventListener('input', function(){ render(live()); }); });
+  window.addEventListener('resize', function(){ render(live()); });
+  setInterval(tick, 100);
+  tick();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Q = &Delta;P / R: The Fourth-Power Bench</title>
+<meta name="description" content="Change arteriolar radius by a few percent and watch resistance move by the fourth power, redrawing the whole pressure profile, the velocity of blood at every level and the shape of the arterial pulse.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.modeseg{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:12px;}
+.modeseg button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:12.6px;padding:11px 6px;cursor:pointer;font-family:var(--sans);line-height:1.2;}
+.modeseg button.on{background:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.6;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.pane{display:none;} .pane.on{display:block;}
+.pipe{display:block;margin:12px auto 0;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch09.html">&larr; Module 9</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 9</div>
+  <h1>Q = &Delta;P / R: The Fourth-Power Bench</h1>
+  <div class="intro">Resistance is R = 8&eta;L / &pi;r<sup>4</sup>. Viscosity and length are fixed in the short term; radius is not, and it is raised to the <b>fourth power</b>. Halve a vessel&rsquo;s radius and resistance rises sixteen-fold. Move the radius slider a few percent and watch flow, the pressure profile down the whole tree, capillary pressure and the arterial pulse all rearrange themselves.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button type="button" id="m1" class="on" role="tab" aria-selected="true">Radius &amp; resistance</button>
+        <button type="button" id="m2" role="tab" aria-selected="false">Velocity &amp; area</button>
+        <button type="button" id="m3" role="tab" aria-selected="false">Compliance &amp; pulse</button>
+      </div>
+
+      <div class="pane on" id="p1">
+        <div class="lbl">What does the heart hold constant?</div>
+        <div class="chips" id="modeChips">
+          <button type="button" class="chip on" id="cP" aria-pressed="true">Driving pressure fixed &rarr; flow changes</button>
+          <button type="button" class="chip" id="cQ" aria-pressed="false">Cardiac output fixed &rarr; pressure changes</button>
+        </div>
+        <div class="sl"><label for="sR">Arteriolar radius <span class="v" id="vR">1.00 &times; normal</span></label>
+          <input type="range" id="sR" min="40" max="200" value="100" step="1" aria-label="Arteriolar radius as a percentage of normal"></div>
+        <div class="sl"><label for="sHct">Hematocrit &rarr; blood viscosity <span class="v" id="vHct">45%</span></label>
+          <input type="range" id="sHct" min="15" max="70" value="45" step="1" aria-label="Hematocrit, which sets blood viscosity"></div>
+        <div class="sl"><label for="sLen">Vessel length <span class="v" id="vLen">1.00 &times; normal</span></label>
+          <input type="range" id="sLen" min="50" max="200" value="100" step="1" aria-label="Total vessel length as a multiple of normal"></div>
+        <div class="lbl">Try these</div>
+        <div class="chips" id="rChips"></div>
+        <div class="eq" id="eq1"></div>
+      </div>
+
+      <div class="pane" id="p2">
+        <div class="sl"><label for="sCO">Cardiac output <span class="v" id="vCO">5.0 L/min</span></label>
+          <input type="range" id="sCO" min="20" max="250" value="50" step="1" aria-label="Cardiac output in tenths of a liter per minute"></div>
+        <div class="sl"><label for="sHct2">Hematocrit &rarr; viscosity <span class="v" id="vHct2">45%</span></label>
+          <input type="range" id="sHct2" min="15" max="70" value="45" step="1" aria-label="Hematocrit, which sets blood viscosity, for the turbulence calculation"></div>
+        <div class="sl"><label for="sCap">Capillary cross-sectional area <span class="v" id="vCap">2,750 cm&sup2;</span></label>
+          <input type="range" id="sCap" min="1000" max="6000" value="2750" step="50" aria-label="Total capillary cross-sectional area in square centimeters"></div>
+        <div class="hint">Q = v &times; A. The same cardiac output passes every level of the tree, so velocity must vary <b>inversely</b> with total cross-sectional area. Recruiting more capillaries raises A and slows the blood further, which is how exercising muscle protects its own exchange time.</div>
+        <div class="eq" id="eq2"></div>
+      </div>
+
+      <div class="pane" id="p3">
+        <div class="lbl">Try these</div>
+        <div class="chips" id="wChips"></div>
+        <div class="sl"><label for="sSV">Stroke volume <span class="v" id="vSV">70 mL</span></label>
+          <input type="range" id="sSV" min="20" max="150" value="70" step="1" aria-label="Stroke volume in milliliters"></div>
+        <div class="sl"><label for="sHR">Heart rate <span class="v" id="vHR">72 /min</span></label>
+          <input type="range" id="sHR" min="35" max="190" value="72" step="1" aria-label="Heart rate in beats per minute"></div>
+        <div class="sl"><label for="sC">Arterial compliance C = &Delta;V/&Delta;P <span class="v" id="vC">1.75 mL/mmHg</span></label>
+          <input type="range" id="sC" min="30" max="280" value="175" step="1" aria-label="Arterial compliance in hundredths of a milliliter per millimeter of mercury"></div>
+        <div class="sl"><label for="sTPR">Total peripheral resistance <span class="v" id="vTPR">17.9</span></label>
+          <input type="range" id="sTPR" min="40" max="400" value="179" step="1" aria-label="Total peripheral resistance in tenths of a millimeter of mercury per liter per minute"></div>
+        <div class="eq" id="eq3"></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2 id="rightHead">Pressure down the tree</h2>
+      <canvas id="cv" width="640" height="300" aria-label="Chart that changes with the selected bench: pressure profile, velocity and area, or the arterial pressure waveform"></canvas>
+      <div class="legend" id="leg"></div>
+      <div class="labs" id="labs"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card" id="extra">
+      <h2>Where the resistance lives</h2>
+      <svg class="pipe" viewBox="0 0 520 96" role="img" aria-label="Schematic of the vascular tree from aorta to vena cava with the arteriolar segment changing calibre" id="tree"></svg>
+      <div class="hint">Mean pressure falls only about 3 mmHg from the aorta to the small arteries, then plunges roughly 55 mmHg across the arterioles. The largest pressure drop marks the largest resistance &mdash; which is why a vessel 10 to 100 &micro;m across, with a disproportionately thick ring of smooth muscle, is the control point of the entire circulation.</div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#333').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), PURPLE = C('purple'), GOLD = C('gold'), LINE = C('line'), MUTED = C('muted');
+
+  var RAP = 3, CO0 = 5, MAP0 = 93, DP0 = 90, TPR0 = 18;
+  var FRAC = { la: 0.0333, ar: 0.6111, cap: 0.2222, ven: 0.1333 };
+  var SEG = [
+    { k:'Aorta',        p:93,  a:2.5 },
+    { k:'Arteries',     p:90,  a:20 },
+    { k:'Arterioles',   p:35,  a:40 },
+    { k:'Capillaries',  p:15,  a:2750 },
+    { k:'Venules',      p:12,  a:250 },
+    { k:'Veins',        p:8,   a:80 },
+    { k:'Venae cavae',  p:3,   a:8 }
+  ];
+
+  function eta(h){ return 1.3 * Math.exp(2.2 * h / 100); }
+  var ETA45 = eta(45);
+  function fmt(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+
+  var mode = 1, pressureFixed = true;
+  var cv = document.getElementById('cv'), ctx = cv.getContext('2d');
+
+  function el(id){ return document.getElementById(id); }
+  function canvasSetup(hh){
+    var w = cv.clientWidth || 640, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = hh * dpr; cv.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, hh);
+    return w;
+  }
+
+  /* ---------- bench 1 ---------- */
+  var R_PRESETS = [
+    { n:'Normal', r:100, h:45, l:100 },
+    { n:'Halve the radius', r:50, h:45, l:100 },
+    { n:'+19% radius', r:119, h:45, l:100 },
+    { n:'Maximal dilation (exercising muscle)', r:150, h:45, l:100 },
+    { n:'Sympathetic constriction', r:82, h:45, l:100 },
+    { n:'Polycythemia (thicker blood)', r:100, h:63, l:100 },
+    { n:'Anemia (thinner blood)', r:100, h:24, l:100 }
+  ];
+
+  function bench1(){
+    var m = parseFloat(el('sR').value) / 100, h = parseFloat(el('sHct').value), L = parseFloat(el('sLen').value) / 100;
+    var vis = eta(h) / ETA45;
+    var Rla = TPR0 * FRAC.la * vis * L,
+        Rar = TPR0 * FRAC.ar * vis * L / Math.pow(m, 4),
+        Rcap = TPR0 * FRAC.cap * vis * L,
+        Rven = TPR0 * FRAC.ven * vis * L;
+    var R = Rla + Rar + Rcap + Rven;
+    var Q, MAP;
+    if(pressureFixed){ Q = DP0 / R; MAP = MAP0; }
+    else { Q = CO0; MAP = CO0 * R + RAP; }
+    var pAo = MAP;
+    var pArt = pAo - Q * Rla;
+    var pCapIn = pArt - Q * Rar;
+    var pCapOut = pCapIn - Q * Rcap;
+
+    el('vR').textContent = fmt(m, 2) + ' × normal';
+    el('vHct').textContent = Math.round(h) + '%';
+    el('vLen').textContent = fmt(L, 2) + ' × normal';
+
+    el('eq1').innerHTML =
+      'R &prop; &eta;L / r<sup>4</sup> &nbsp;&rarr;&nbsp; arteriolar resistance is <b class="num">' + fmt(1 / Math.pow(m, 4), 2) + '&times;</b> normal from radius alone (' + fmt(m, 2) + '<sup>4</sup> = ' + fmt(Math.pow(m, 4), 3) + '), ' +
+      'times <b class="num">' + fmt(vis, 2) + '&times;</b> from viscosity and <b class="num">' + fmt(L, 2) + '&times;</b> from length.<br>' +
+      'Total peripheral resistance <b class="num">' + fmt(R, 1) + '</b> mmHg&middot;min/L (normal 18). ' +
+      (pressureFixed
+        ? 'Holding &Delta;P at 90 mmHg: Q = &Delta;P / R = 90 / ' + fmt(R, 1) + ' = <b class="num">' + fmt(Q, 2) + ' L/min</b>.'
+        : 'Holding cardiac output at 5 L/min: MAP = CO &times; TPR + right atrial pressure = 5 &times; ' + fmt(R, 1) + ' + 3 = <b class="num">' + Math.round(MAP) + ' mmHg</b>.');
+
+    el('labs').innerHTML =
+      tile('Arteriolar radius', fmt(m, 2), '× normal') +
+      tile('Arteriolar resistance', fmt(1 / Math.pow(m, 4), 2), '× normal (1/r⁴)') +
+      tile('Total resistance', fmt(R, 1), 'mmHg·min/L') +
+      tile('Flow Q', fmt(Q, 2), 'L/min') +
+      tile('Mean arterial pressure', String(Math.round(MAP)), 'mmHg') +
+      tile('Capillary pressure P<sub>c</sub>', Math.round(pCapIn) + ' → ' + Math.round(pCapOut), 'mmHg, in → out');
+
+    plotProfile(pAo, pArt, pCapIn, pCapOut, MAP, Q);
+    drawTree(m);
+    el('rightHead').textContent = 'Pressure down the tree';
+    el('leg').innerHTML = '<span><i style="background:' + TEAL + '"></i>Mean pressure now</span><span><i style="background:' + LINE + '"></i>Normal profile</span>';
+
+    var v = el('verd'), cls = 'verdict', head, sub;
+    var rr = 1 / Math.pow(m, 4);
+    if(Math.abs(m - 0.5) < 0.011){
+      cls += ' bad'; head = 'Halved radius, sixteen-fold resistance';
+      sub = '0.5⁴ = 0.0625, so 1/r⁴ = 16. That single change takes total peripheral resistance from 18 to ' + fmt(R, 1) + ' mmHg·min/L. ' + (pressureFixed ? 'Flow through this bed collapses to ' + fmt(Q, 2) + ' L/min.' : 'To keep 5 L/min moving the heart would have to generate ' + Math.round(MAP) + ' mmHg &mdash; which no heart can do. That impossible number is the point: the body never constricts every arteriole at once, because a 10 to 20 percent change is already enormous.');
+    } else if(Math.abs(m - 1.19) < 0.011){
+      cls += ' ok'; head = 'Nineteen percent wider, twice the flow';
+      sub = '1.19⁴ = ' + fmt(Math.pow(1.19, 4), 3) + ', almost exactly 2 &mdash; so arteriolar resistance has halved and flow through that segment doubles for the same pressure drop. Across the whole tree, where capillaries and veins still resist, total flow rises from 5.00 to ' + fmt(Q, 2) + ' L/min. A change too small to see under a microscope, and no other variable in physiology gives the body this much leverage for so little effort.';
+    } else if(pCapIn > 45){
+      cls += ' warn'; head = 'Dilated arterioles push capillary pressure up';
+      sub = 'Less resistance upstream means less of the arterial pressure is spent before the capillary, so P<sub>c</sub> has risen to ' + Math.round(pCapIn) + ' mmHg at the inlet instead of 35. Hold that number &mdash; in the Starling bench it is the term that decides whether fluid filters or is reabsorbed.';
+    } else if(pCapIn < 24){
+      cls += ' cool'; head = 'Constricted arterioles starve the capillary of pressure';
+      sub = 'P<sub>c</sub> has fallen to ' + Math.round(pCapIn) + ' mmHg at the inlet. Filtration stops and the whole capillary reabsorbs &mdash; which is exactly how a hemorrhaging patient autotransfuses interstitial fluid back into the vessels within minutes.';
+    } else if(rr > 1.4){
+      cls += ' warn'; head = 'Constricted';
+      sub = 'Arteriolar resistance is ' + fmt(rr, 2) + ' times normal. ' + (pressureFixed ? 'Flow is down to ' + fmt(Q, 2) + ' L/min.' : 'Mean arterial pressure has risen to ' + Math.round(MAP) + ' mmHg.') + ' Constrict everywhere and you raise pressure; constrict selectively and you redirect flow between organs without changing total output much at all.';
+    } else {
+      cls += ' ok'; head = 'Near normal';
+      sub = 'TPR ' + fmt(R, 1) + ' mmHg·min/L, flow ' + fmt(Q, 2) + ' L/min, MAP ' + Math.round(MAP) + ' mmHg, capillary inlet pressure ' + Math.round(pCapIn) + ' mmHg. Nudge the radius slider a few percent at a time and watch how fast the numbers move.';
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function tile(k, val, u){
+    return '<div class="lab"><div class="k">' + k + '</div><div class="v">' + val + '</div><div class="u">' + u + '</div></div>';
+  }
+
+  function plotProfile(pAo, pArt, pCapIn, pCapOut, MAP, Q){
+    var w = canvasSetup(300);
+    var L = 40, R = 12, T = 14, B = 40, pw = w - L - R, ph = 300 - T - B;
+    var ymax = 200;
+    function Y(v){ return T + ph - Math.max(0, Math.min(ymax, v)) / ymax * ph; }
+    var xs = [0, 0.14, 0.34, 0.55, 0.70, 0.84, 1.0];
+    function X(i){ return L + xs[i] * pw; }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.42)'; ctx.textAlign = 'right';
+    for(var g = 0; g <= 200; g += 50){
+      ctx.beginPath(); ctx.moveTo(L, Y(g)); ctx.lineTo(L + pw, Y(g)); ctx.stroke();
+      ctx.fillText(String(g), L - 5, Y(g) + 3);
+    }
+    var norm = [93, 90, 35, 15, 12, 8, 3];
+    ctx.beginPath(); ctx.strokeStyle = LINE; ctx.lineWidth = 4;
+    norm.forEach(function(p, i){ if(i === 0) ctx.moveTo(X(i), Y(p)); else ctx.lineTo(X(i), Y(p)); });
+    ctx.stroke();
+    var now = [pAo, pArt, pCapIn, pCapOut, pCapOut - (pCapOut - RAP) * 0.28, pCapOut - (pCapOut - RAP) * 0.62, RAP];
+    ctx.beginPath(); ctx.strokeStyle = TEAL; ctx.lineWidth = 3;
+    now.forEach(function(p, i){ if(i === 0) ctx.moveTo(X(i), Y(p)); else ctx.lineTo(X(i), Y(p)); });
+    ctx.stroke();
+    now.forEach(function(p, i){
+      ctx.beginPath(); ctx.arc(X(i), Y(p), 4, 0, 6.2832); ctx.fillStyle = TEALDK; ctx.fill();
+    });
+    ctx.textAlign = 'center'; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+    SEG.forEach(function(s, i){
+      ctx.fillStyle = MUTED;
+      ctx.fillText(s.k, X(i), 300 - 22);
+      ctx.fillStyle = TEALDK;
+      ctx.fillText(Math.round(now[i]) + '', X(i), 300 - 10);
+    });
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.font = '700 10px Inter, system-ui, sans-serif';
+    ctx.fillText('mmHg — gray is the normal profile', L + 5, T + 11);
+  }
+
+  function drawTree(m){
+    var t = el('tree'), h = '';
+    var segs = [
+      { x:4,   w:78,  r:20, c:CORAL,  n:'aorta' },
+      { x:86,  w:80,  r:15, c:CORAL,  n:'arteries' },
+      { x:170, w:86,  r:Math.max(1.6, 8 * m), c:GOLD, n:'arterioles' },
+      { x:260, w:86,  r:5,  c:PURPLE, n:'capillaries' },
+      { x:350, w:80,  r:11, c:BLUE,   n:'venules' },
+      { x:434, w:82,  r:18, c:TEAL,   n:'venae cavae' }
+    ];
+    segs.forEach(function(s){
+      h += '<rect x="' + s.x + '" y="' + (44 - s.r) + '" width="' + s.w + '" height="' + (s.r * 2) + '" rx="' + Math.min(8, s.r) + '" fill="' + s.c + '" opacity="0.55"></rect>';
+      h += '<text x="' + (s.x + s.w / 2) + '" y="86" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10" font-weight="800" fill="' + MUTED + '">' + s.n + '</text>';
+    });
+    h += '<text x="213" y="14" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="10.5" font-weight="800" fill="' + GOLD + '">radius ' + fmt(m, 2) + '× &rarr; resistance ' + fmt(1 / Math.pow(m, 4), 2) + '×</text>';
+    t.innerHTML = h;
+  }
+
+  /* ---------- bench 2 ---------- */
+  function bench2(){
+    var Q = parseFloat(el('sCO').value) / 10, h = parseFloat(el('sHct2').value), capA = parseFloat(el('sCap').value);
+    el('vCO').textContent = fmt(Q) + ' L/min';
+    el('vHct2').textContent = Math.round(h) + '%';
+    el('vCap').textContent = capA.toLocaleString() + ' cm²';
+    var qcm = Q * 1000 / 60;
+    var areas = SEG.map(function(s){ return s.k === 'Capillaries' ? capA : s.a; });
+    var vel = areas.map(function(a){ return qcm / a; });
+    var etaP = 0.035 * eta(h) / ETA45;
+    var dAo = 2 * Math.sqrt(2.5 / Math.PI);
+    var Re = 1.06 * vel[0] * dAo / etaP;
+    var transit = 0.05 / vel[3];
+
+    el('eq2').innerHTML =
+      'Q = ' + fmt(Q) + ' L/min = <b class="num">' + fmt(qcm) + ' cm&sup3;/s</b>. In the aorta, A = 2.5 cm&sup2; so v = Q/A = <b class="num">' + fmt(vel[0]) + ' cm/s</b>. ' +
+      'In the capillaries, A = ' + capA.toLocaleString() + ' cm&sup2; so v = <b class="num">' + fmt(vel[3], 3) + ' cm/s</b> &mdash; about <b class="num">' + Math.round(vel[0] / vel[3]) + '&times;</b> slower.<br>' +
+      'A capillary is roughly 0.05 cm long, so a red cell dwells there <b class="num">' + fmt(transit, 2) + ' s</b>. Gas equilibration needs about a quarter of a second.<br>' +
+      'Reynolds number in the aorta = &rho;vd/&eta; = (1.06 &times; ' + fmt(vel[0]) + ' &times; ' + fmt(dAo, 2) + ') / ' + fmt(etaP, 4) + ' = <b class="num">' + Math.round(Re) + '</b>. Above about 2,000 flow becomes turbulent, and turbulent flow is audible.';
+
+    el('labs').innerHTML =
+      tile('Aortic velocity', fmt(vel[0]), 'cm/s (normal 30–40)') +
+      tile('Capillary velocity', fmt(vel[3], 3), 'cm/s (normal 0.03)') +
+      tile('Vena cava velocity', fmt(vel[6]), 'cm/s (normal 10–15)') +
+      tile('Capillary transit', fmt(transit, 2), 's (normal 1–2)') +
+      tile('Reynolds number', String(Math.round(Re)), 'aorta') +
+      tile('Blood viscosity', fmt(etaP, 4), 'poise (normal 0.035)');
+
+    plotVelocity(areas, vel);
+    el('rightHead').textContent = 'Velocity is the mirror image of area';
+    el('leg').innerHTML = '<span><i style="background:' + PURPLE + '"></i>Total cross-sectional area (cm²)</span><span><i style="background:' + TEAL + '"></i>Velocity (cm/s)</span>';
+
+    var v = el('verd'), cls = 'verdict', head, sub;
+    if(Re > 2000 && h < 35){
+      cls += ' warn'; head = 'Turbulent &mdash; and the blood is thin';
+      sub = 'Reynolds number ' + Math.round(Re) + '. Anemia lowers viscosity and raises cardiac output, and both push Re up. Laminar flow is silent; turbulent flow is not, which is why a flow murmur appears in anemia with a structurally normal heart.';
+    } else if(Re > 2000){
+      cls += ' warn'; head = 'Turbulent flow &mdash; now it is audible';
+      sub = 'Reynolds number ' + Math.round(Re) + ', above the threshold near 2,000. The same physics gives Korotkoff sounds under a blood-pressure cuff, a bruit over a narrowed carotid, and endothelial damage at bifurcations and curves &mdash; which is where atherosclerotic plaques cluster.';
+    } else if(transit < 0.5){
+      cls += ' cool'; head = 'The blood is moving through the capillary quickly';
+      sub = 'Transit time is only ' + fmt(transit, 2) + ' s. At rest a red cell spends 1 to 2 seconds in a capillary, which is precisely the time needed for gases to equilibrate. Raise the capillary area slider &mdash; that is capillary recruitment, and it is how exercising muscle buys its transit time back.';
+    } else {
+      cls += ' ok'; head = 'Laminar and unhurried';
+      sub = 'Reynolds number ' + Math.round(Re) + ', comfortably laminar and therefore silent. The blood crawls at ' + fmt(vel[3], 3) + ' cm/s through the capillaries because ' + capA.toLocaleString() + ' cm&sup2; of them lie in parallel, then speeds back up to ' + fmt(vel[6]) + ' cm/s as the veins reconverge.';
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function plotVelocity(areas, vel){
+    var w = canvasSetup(300);
+    var L = 44, R = 12, T = 16, B = 42, pw = w - L - R, ph = 300 - T - B;
+    var n = SEG.length, bw = pw / n;
+    function ly(v, lo, hi){ return (Math.log10(Math.max(v, lo)) - Math.log10(lo)) / (Math.log10(hi) - Math.log10(lo)); }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.textAlign = 'right';
+    for(var i = 0; i <= 4; i++){
+      var y = T + ph - i / 4 * ph;
+      ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+      ctx.fillStyle = 'rgba(0,0,0,.42)';
+      ctx.fillText(['0.01', '0.1', '1', '10', '100'][i], L - 5, y + 3);
+    }
+    for(var j = 0; j < n; j++){
+      var x = L + j * bw;
+      var ha = ly(areas[j], 1, 10000) * ph, hv = ly(vel[j], 0.01, 100) * ph;
+      ctx.fillStyle = PURPLE; ctx.globalAlpha = 0.42;
+      ctx.fillRect(x + bw * 0.10, T + ph - ha, bw * 0.36, ha);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = TEAL;
+      ctx.fillRect(x + bw * 0.52, T + ph - hv, bw * 0.36, hv);
+      ctx.save();
+      ctx.translate(x + bw / 2, 300 - 30); ctx.rotate(-0.38);
+      ctx.textAlign = 'right'; ctx.fillStyle = MUTED; ctx.font = '700 9.5px Inter, system-ui, sans-serif';
+      ctx.fillText(SEG[j].k, 0, 0);
+      ctx.restore();
+    }
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.font = '700 10px Inter, system-ui, sans-serif';
+    ctx.fillText('numbered axis = velocity in cm/s (log). Area bars share the plot on their own log decades, 1 to 10,000 cm².', L + 5, T + 11);
+  }
+
+  /* ---------- bench 3 ---------- */
+  var W_PRESETS = [
+    { n:'Young adult at rest', sv:70, hr:72, c:175, t:179 },
+    { n:'Stiff aorta at 80', sv:70, hr:72, c:75, t:198 },
+    { n:'Exercise', sv:120, hr:150, c:175, t:50 },
+    { n:'Class II hemorrhage', sv:40, hr:120, c:175, t:150 },
+    { n:'Severe hypertension', sv:80, hr:75, c:95, t:212 }
+  ];
+
+  function bench3(){
+    var SV = parseFloat(el('sSV').value), HR = parseFloat(el('sHR').value),
+        Cc = parseFloat(el('sC').value) / 100, TPR = parseFloat(el('sTPR').value) / 10;
+    var CO = SV * HR / 1000;
+    var MAP = CO * TPR + RAP;
+    var PP = SV / Cc;
+    var DBP = MAP - PP / 3, SBP = DBP + PP;
+    var tSys = Math.min(0.40, 0.35 * Math.sqrt(60 / HR));
+    var stored = Math.max(0, SV - (CO * 1000 / 60) * tSys);
+    el('vSV').textContent = Math.round(SV) + ' mL';
+    el('vHR').textContent = Math.round(HR) + ' /min';
+    el('vC').textContent = fmt(Cc, 2) + ' mL/mmHg';
+    el('vTPR').textContent = fmt(TPR, 1);
+
+    el('eq3').innerHTML =
+      'CO = SV &times; HR = ' + Math.round(SV) + ' &times; ' + Math.round(HR) + ' = <b class="num">' + fmt(CO, 2) + ' L/min</b>.<br>' +
+      'MAP = CO &times; TPR + right atrial pressure = ' + fmt(CO, 2) + ' &times; ' + fmt(TPR, 1) + ' + 3 = <b class="num">' + Math.round(MAP) + ' mmHg</b>.<br>' +
+      'Pulse pressure &asymp; SV / C = ' + Math.round(SV) + ' / ' + fmt(Cc, 2) + ' = <b class="num">' + Math.round(PP) + ' mmHg</b>. ' +
+      'MAP &asymp; DBP + (1/3 &times; PP), so DBP = <b class="num">' + Math.round(DBP) + '</b> and SBP = <b class="num">' + Math.round(SBP) + '</b>.';
+
+    el('labs').innerHTML =
+      tile('Blood pressure', Math.round(SBP) + '/' + Math.round(DBP), 'mmHg') +
+      tile('Pulse pressure', String(Math.round(PP)), 'mmHg (normal ≈ 40)') +
+      tile('Mean arterial pressure', String(Math.round(MAP)), 'mmHg (normal ≈ 93)') +
+      tile('Cardiac output', fmt(CO, 2), 'L/min') +
+      tile('Arterial compliance', fmt(Cc, 2), 'mL/mmHg') +
+      tile('Stored in systole', String(Math.round(stored)), 'mL — ' + Math.round(stored / SV * 100) + '% of the stroke volume');
+
+    plotWave(SBP, DBP, HR);
+    el('rightHead').textContent = 'The arterial pulse';
+    el('leg').innerHTML = '<span><i style="background:' + CORAL + '"></i>Aortic pressure</span><span><i style="background:' + TEAL + '"></i>Mean arterial pressure</span><span><i style="background:' + LINE + '"></i>Normal 120/80</span>';
+
+    var v = el('verd'), cls = 'verdict', head, sub;
+    if(PP > 70 && Cc < 1.1){
+      cls += ' bad'; head = 'Isolated systolic hypertension &mdash; a compliance problem, not a resistance problem';
+      sub = 'Pulse pressure ' + Math.round(PP) + ' mmHg against a normal 40. With elastin replaced by collagen, the aorta cannot buffer the stroke volume: systole spikes to ' + Math.round(SBP) + ' and diastolic recoil is weak, so diastole sits at ' + Math.round(DBP) + '. It still parks about ' + Math.round(stored) + ' mL in the aortic wall each beat &mdash; but at ' + fmt(Cc, 2) + ' mL/mmHg of compliance the pressure cost of storing it is ' + Math.round(PP) + ' mmHg instead of 40. Compliance, not resistance, is the primary defect.';
+    } else if(PP < 28){
+      cls += ' warn'; head = 'Narrow pulse pressure';
+      sub = 'Pulse pressure is only ' + Math.round(PP) + ' mmHg. A small stroke volume into a normally compliant aorta gives exactly this, and it is one of the earliest and most reliable signs in hemorrhage &mdash; earlier and more reliable than the hematocrit, which has not moved yet.';
+    } else if(MAP < 60){
+      cls += ' bad'; head = 'Below the autoregulatory floor';
+      sub = 'MAP ' + Math.round(MAP) + ' mmHg. Below about 60 mmHg renal and cerebral autoregulation fail and tissue injury begins. MAP, not systolic pressure, is what perfuses organs.';
+    } else if(MAP > 115){
+      cls += ' bad'; head = 'Mean arterial pressure is high';
+      sub = 'MAP ' + Math.round(MAP) + ' mmHg from CO ' + fmt(CO, 2) + ' L/min and TPR ' + fmt(TPR, 1) + '. Every blood-pressure drug acts on one of those two terms, or on both &mdash; that is the entire pharmacology of hypertension in one equation.';
+    } else {
+      cls += ' ok'; head = Math.round(SBP) + '/' + Math.round(DBP) + ', mean ' + Math.round(MAP);
+      sub = 'The aorta accepts ' + Math.round(SV) + ' mL each beat and stretches. Only part of it runs off to the periphery during systole; roughly ' + Math.round(stored) + ' mL &mdash; about ' + Math.round(stored / SV * 100) + ' percent &mdash; is held as elastic potential energy and pushed forward when the wall recoils in diastole. That windkessel conversion is why diastolic pressure never falls to zero and why capillary flow is nearly continuous from an intermittent pump.';
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function plotWave(SBP, DBP, HR){
+    var w = canvasSetup(300);
+    var L = 40, R = 12, T = 14, B = 30, pw = w - L - R, ph = 300 - T - B;
+    var ymax = 220;
+    function Y(v){ return T + ph - Math.max(0, Math.min(ymax, v)) / ymax * ph; }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.fillStyle = 'rgba(0,0,0,.42)'; ctx.textAlign = 'right';
+    for(var g = 0; g <= 200; g += 50){
+      ctx.beginPath(); ctx.moveTo(L, Y(g)); ctx.lineTo(L + pw, Y(g)); ctx.stroke();
+      ctx.fillText(String(g), L - 5, Y(g) + 3);
+    }
+    var secs = 4, T0 = 60 / HR;
+    function wave(t, s, d){
+      var ph2 = (t % T0) / T0, sysF = 0.34;
+      if(ph2 < sysF){
+        var u = ph2 / sysF;
+        return d + (s - d) * Math.pow(Math.sin(Math.PI * Math.min(1, u * 0.92)), 1.1);
+      }
+      var u2 = (ph2 - sysF) / (1 - sysF);
+      var base = d + (s - d) * 0.30 * Math.exp(-3.1 * u2);
+      var dic = 0.045 * (s - d) * Math.exp(-Math.pow((u2 - 0.06) / 0.055, 2));
+      return base + dic;
+    }
+    ctx.beginPath(); ctx.strokeStyle = LINE; ctx.lineWidth = 2;
+    for(var t2 = 0; t2 <= secs; t2 += 0.006){
+      var y = Y(wave(t2, 120, 80));
+      if(t2 === 0) ctx.moveTo(L, y); else ctx.lineTo(L + t2 / secs * pw, y);
+    }
+    ctx.stroke();
+    ctx.beginPath(); ctx.strokeStyle = CORAL; ctx.lineWidth = 2.6;
+    for(var t3 = 0; t3 <= secs; t3 += 0.006){
+      var y3 = Y(wave(t3, SBP, DBP));
+      if(t3 === 0) ctx.moveTo(L, y3); else ctx.lineTo(L + t3 / secs * pw, y3);
+    }
+    ctx.stroke();
+    var MAPv = DBP + (SBP - DBP) / 3;
+    ctx.setLineDash([6, 4]); ctx.strokeStyle = TEAL; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(L, Y(MAPv)); ctx.lineTo(L + pw, Y(MAPv)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.textAlign = 'left'; ctx.fillStyle = TEAL; ctx.font = '800 10.5px Inter, system-ui, sans-serif';
+    ctx.fillText('MAP ' + Math.round(MAPv), L + 6, Y(MAPv) - 5);
+    ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.font = '700 10px Inter, system-ui, sans-serif';
+    ctx.fillText('4 seconds of aortic pressure — gray is a normal 120/80', L + 5, T + 11);
+  }
+
+  /* ---------- wiring ---------- */
+  function refresh(){
+    if(mode === 1) bench1(); else if(mode === 2) bench2(); else bench3();
+    el('extra').style.display = mode === 1 ? '' : 'none';
+  }
+
+  ['m1', 'm2', 'm3'].forEach(function(id, i){
+    el(id).addEventListener('click', function(){
+      mode = i + 1;
+      ['m1', 'm2', 'm3'].forEach(function(j, k){
+        el(j).classList.toggle('on', k === i);
+        el(j).setAttribute('aria-selected', k === i ? 'true' : 'false');
+      });
+      ['p1', 'p2', 'p3'].forEach(function(j, k){ el(j).classList.toggle('on', k === i); });
+      refresh();
+    });
+  });
+
+  el('cP').addEventListener('click', function(){
+    pressureFixed = true;
+    el('cP').classList.add('on'); el('cP').setAttribute('aria-pressed', 'true');
+    el('cQ').classList.remove('on'); el('cQ').setAttribute('aria-pressed', 'false');
+    refresh();
+  });
+  el('cQ').addEventListener('click', function(){
+    pressureFixed = false;
+    el('cQ').classList.add('on'); el('cQ').setAttribute('aria-pressed', 'true');
+    el('cP').classList.remove('on'); el('cP').setAttribute('aria-pressed', 'false');
+    refresh();
+  });
+
+  var rc = el('rChips');
+  R_PRESETS.forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = p.n;
+    b.addEventListener('click', function(){
+      el('sR').value = p.r; el('sHct').value = p.h; el('sLen').value = p.l; refresh();
+    });
+    rc.appendChild(b);
+  });
+  var wc = el('wChips');
+  W_PRESETS.forEach(function(p){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = p.n;
+    b.addEventListener('click', function(){
+      el('sSV').value = p.sv; el('sHR').value = p.hr; el('sC').value = p.c; el('sTPR').value = p.t; refresh();
+    });
+    wc.appendChild(b);
+  });
+
+  ['sR', 'sHct', 'sLen', 'sCO', 'sHct2', 'sCap', 'sSV', 'sHR', 'sC', 'sTPR'].forEach(function(id){
+    el(id).addEventListener('input', refresh);
+  });
+  window.addEventListener('resize', refresh);
+  refresh();
+})();
+</script>
+</body>
+</html>

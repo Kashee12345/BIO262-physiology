@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Growth Plate Conveyor &mdash; how a bone gets longer and wider</title>
+<meta name="description" content="Drive a live epiphyseal plate with growth hormone, thyroid hormone, glucocorticoid and estrogen, run a whole childhood of growth, then widen a shaft by modeling and watch bending strength survive.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);} .btn:disabled{opacity:.42;cursor:default;}
+.srow{display:grid;grid-template-columns:158px 1fr 80px;gap:8px;align-items:center;margin:6px 0;font-size:11.5px;}
+.srow .nm{color:var(--soft);font-weight:700;line-height:1.2;}
+.srow .nm small{display:block;font-weight:500;color:var(--muted);font-size:10px;}
+.srow .tr{height:13px;border-radius:7px;background:rgba(0,0,0,.055);overflow:hidden;}
+.srow .fl{height:100%;border-radius:7px;transition:width .3s;background:var(--blue);}
+.srow .tv{text-align:right;font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.eq{font-family:var(--disp);font-size:15px;color:var(--teal-dk);background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;text-align:center;line-height:1.9;font-variant-numeric:tabular-nums;}
+.eq .t{color:var(--coral);font-weight:700;}
+.eq .r{display:block;font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch04.html">&larr; Module 4</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 4 &middot; Section 2</div>
+  <h1>The Growth Plate Conveyor</h1>
+  <div class="intro">Mineralized matrix cannot expand from within, so a bone lengthens in exactly one place: the <b>epiphyseal plate</b>, where cartilage is manufactured at the top and replaced by bone at the bottom. Drive the conveyor with growth hormone, thyroid hormone, glucocorticoid and estrogen; then run a whole childhood and find out which hormone <i>closes</i> the plate. Finally, widen a shaft by modeling and see why a thinner bone can stay just as hard to bend.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Conveyor</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Growth run</button>
+        <button id="m3" type="button" role="tab" aria-selected="false">Modeling</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Hormonal drive on the plate</div>
+        <div class="sl"><label for="gh">Growth hormone &rarr; IGF-1 <span class="v" id="ghV">100%</span></label>
+          <input type="range" id="gh" min="0" max="200" value="100" aria-label="Growth hormone and IGF-1 level, percent of normal"></div>
+        <div class="sl"><label for="thy">Thyroid hormone <span class="v" id="thyV">100%</span></label>
+          <input type="range" id="thy" min="0" max="160" value="100" aria-label="Thyroid hormone level, percent of normal"></div>
+        <div class="sl"><label for="glu">Glucocorticoid <span class="v" id="gluV">100%</span></label>
+          <input type="range" id="glu" min="0" max="400" value="100" aria-label="Glucocorticoid level, percent of normal"></div>
+        <div class="sl"><label for="oes">Estrogen <span class="v" id="oesV">100%</span></label>
+          <input type="range" id="oes" min="0" max="220" value="100" aria-label="Estrogen level, percent of normal"></div>
+
+        <div class="lbl">Try a case</div>
+        <div class="chips" id="cases1"></div>
+
+        <div class="row"><button class="btn solid" id="runC" type="button">Pause the conveyor</button></div>
+        <div class="hint"><b>Watch the plate thickness.</b> Cartilage is added at the top at the same rate bone replaces it at the bottom, so the plate does <i>not</i> thin as growth proceeds. What moves is the epiphysis, carried steadily further from the mid-shaft.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">Whose childhood are we running?</div>
+        <div class="chips" id="cases2"></div>
+
+        <div class="sl"><label for="gh2">Growth hormone &rarr; IGF-1 <span class="v" id="gh2V">100%</span></label>
+          <input type="range" id="gh2" min="0" max="200" value="100" aria-label="Growth hormone level for the growth run, percent of normal"></div>
+        <div class="sl"><label for="thy2">Thyroid hormone <span class="v" id="thy2V">100%</span></label>
+          <input type="range" id="thy2" min="0" max="160" value="100" aria-label="Thyroid hormone level for the growth run, percent of normal"></div>
+        <div class="sl"><label for="glu2">Glucocorticoid <span class="v" id="glu2V">100%</span></label>
+          <input type="range" id="glu2" min="0" max="400" value="100" aria-label="Glucocorticoid level for the growth run, percent of normal"></div>
+        <div class="sl"><label for="oes2">Estrogen (or aromatized testosterone) <span class="v" id="oes2V">100%</span></label>
+          <input type="range" id="oes2" min="0" max="220" value="100" aria-label="Estrogen level for the growth run, percent of normal"></div>
+        <div class="sl"><label for="tp">Age at peak height velocity <span class="v" id="tpV">12.0 y</span></label>
+          <input type="range" id="tp" min="90" max="170" value="120" aria-label="Age at peak height velocity, years"></div>
+        <div class="hint">Set estrogen to <b>0%</b> and the plate never closes &mdash; that is aromatase deficiency or a defective estrogen receptor. Then press the button below to give estrogen at a chosen age and watch the plates fuse.</div>
+        <div class="sl"><label for="rx">Give estrogen from age <span class="v" id="rxV">off</span></label>
+          <input type="range" id="rx" min="90" max="260" value="90" aria-label="Age at which estrogen treatment is started, years; lowest setting means no treatment"></div>
+      </div>
+
+      <div id="p3" class="hide">
+        <div class="lbl">Modeling: two surfaces, two independent cell teams</div>
+        <div class="hint" style="margin-top:0"><b>Modeling</b> is osteoblasts and osteoclasts acting on <i>different</i> surfaces to change a bone&rsquo;s shape. The periosteum adds bone to the outside while the endosteum removes it from the inside, so the shaft widens and the marrow cavity enlarges. Contrast <b>remodeling</b>, where the two are coupled on the <i>same</i> surface and the purpose is renewal, not reshaping.</div>
+        <div class="sl"><label for="age3">Age <span class="v" id="age3V">20 y</span></label>
+          <input type="range" id="age3" min="20" max="85" value="20" aria-label="Age in years for the modeling simulation"></div>
+        <div class="sl"><label for="peri">Periosteal apposition <span class="v" id="periV">12 &micro;m/yr</span></label>
+          <input type="range" id="peri" min="0" max="40" value="12" aria-label="Periosteal apposition rate in micrometers per year"></div>
+        <div class="sl"><label for="endo">Endosteal resorption <span class="v" id="endoV">22 &micro;m/yr</span></label>
+          <input type="range" id="endo" min="0" max="60" value="22" aria-label="Endosteal resorption rate in micrometers per year"></div>
+        <div class="lbl">Presets</div>
+        <div class="chips" id="cases3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>The plate, zone by zone</h2>
+      <canvas id="cv1" width="1040" height="600" aria-label="Animated epiphyseal growth plate showing chondrocytes passing through the resting, proliferation, hypertrophy, calcification and ossification zones"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>A whole childhood, integrated</h2>
+      <canvas id="cv2" width="1040" height="620" aria-label="Two stacked plots: standing height against age, and growth velocity in centimeters per year against age, with the age of growth plate fusion marked"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+    <div class="card hide" id="r3">
+      <h2>The shaft in cross-section</h2>
+      <canvas id="cv3" width="1040" height="470" aria-label="Cross-section of a long bone shaft at age twenty compared with the current age, showing outer radius, marrow cavity and cortical thickness"></canvas>
+      <div class="stats" id="s3"></div>
+      <div id="bars3"></div>
+      <div class="verdict" id="v3">&nbsp;</div>
+      <div class="infobox" id="i3"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+var m1=$('m1'),m2=$('m2'),m3=$('m3');
+function setMode(n){
+  [[m1,1],[m2,2],[m3,3]].forEach(function(p){p[0].classList.toggle('on',p[1]===n);p[0].setAttribute('aria-selected',p[1]===n?'true':'false');});
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2); $('p3').classList.toggle('hide',n!==3);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2); $('r3').classList.toggle('hide',n!==3);
+  if(n===2) runGrowth(); if(n===3) render3();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);}; m3.onclick=function(){setMode(3);};
+
+/* =====================================================
+   BENCH 1 - the conveyor
+   ===================================================== */
+var gh=$('gh'),thy=$('thy'),glu=$('glu'),oes=$('oes');
+var running=true, cells=[], lastT=0, mmGrown=0;
+
+var CASES1=[
+ {n:'Healthy 8-year-old',g:100,t:100,c:100,o:100},
+ {n:'GH deficiency',g:30,t:100,c:100,o:100},
+ {n:'Untreated congenital hypothyroidism',g:100,t:15,c:100,o:100},
+ {n:'Chronic steroid therapy',g:100,t:100,c:330,o:100},
+ {n:'Aromatase deficiency',g:100,t:100,c:100,o:0},
+ {n:'Mid-puberty surge',g:165,t:105,c:100,o:150}
+];
+var cb=$('cases1');
+CASES1.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){gh.value=K.g;thy.value=K.t;glu.value=K.c;oes.value=K.o;render1();};
+  cb.appendChild(b);
+});
+[gh,thy,glu,oes].forEach(function(s){s.addEventListener('input',render1);});
+$('runC').onclick=function(){ running=!running; this.textContent=running?'Pause the conveyor':'Resume the conveyor'; if(running){lastT=0;requestAnimationFrame(tick1);} };
+
+function plateModel(){
+  var G=+gh.value/100, T=+thy.value/100, K=+glu.value/100, O=+oes.value/100;
+  var gluPen=1/(1+1.4*Math.max(0,K-1));
+  var prolif=G*(0.25+0.75*Math.min(T,1.3))*gluPen*(0.85+0.25*Math.min(O,1.4));
+  var hyp=(4+6*Math.min(T,1.25))*gluPen;          /* fold volume increase, normal ~10 */
+  var elong=9.5*prolif*(hyp/10);                  /* mm/yr at the distal femoral plate */
+  return {G:G,T:T,K:K,O:O,prolif:prolif,hyp:hyp,elong:elong,gluPen:gluPen};
+}
+function seedCells(){
+  cells=[]; var col,i;
+  for(col=0;col<7;col++){ for(i=0;i<9;i++){ cells.push({c:col,y:0.02+ (i/9)*0.98*Math.random()+i*0.10, s:Math.random()}); } }
+  cells.forEach(function(c){ if(c.y>1)c.y-=1; });
+}
+seedCells();
+
+function tick1(ts){
+  if(!running) return;
+  if(!lastT) lastT=ts;
+  var dt=Math.min(0.06,(ts-lastT)/1000); lastT=ts;
+  var M=plateModel();
+  var v=0.10*M.prolif;
+  cells.forEach(function(c){
+    c.y+=v*dt;
+    if(c.y>1.0){ c.y-=1.0; c.s=Math.random(); }
+  });
+  mmGrown+=M.elong*dt*0.35;
+  draw1(M);
+  requestAnimationFrame(tick1);
+}
+function render1(){
+  $('ghV').textContent=gh.value+'%'; $('thyV').textContent=thy.value+'%';
+  $('gluV').textContent=glu.value+'%'; $('oesV').textContent=oes.value+'%';
+  var M=plateModel();
+  $('s1').innerHTML=
+    tile('Proliferation rate',(M.prolif*100).toFixed(0),'% of normal &middot; sets cell supply')+
+    tile('Hypertrophic swelling',M.hyp.toFixed(1)+'&times;','cell volume &middot; normal 5&ndash;10 fold')+
+    tile('Plate output',M.elong.toFixed(1),'mm/yr &middot; distal femur, normal 9&ndash;10')+
+    tile('Plate thickness','constant','cartilage added on top as fast as bone replaces below')+
+    tile('Estrogen drive',(M.O*100).toFixed(0),'% &middot; accelerates now, closes later')+
+    tile('Steroid penalty',((1-M.gluPen)*100).toFixed(0),'% of drive removed');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(M.T<0.4){
+    cls='verdict bad';
+    txt='The conveyor has almost stopped &mdash; and the cells are not maturing<small>Thyroid hormone is required for chondrocyte maturation <i>and</i> for normal ossification. Untreated congenital hypothyroidism therefore causes profound short stature, with a plate that is disorganized as well as slow.</small>';
+    inf='<span class="n">Thyroid hormone works on two zones at once</span>It permits the proliferative chondrocyte to become a <b>hypertrophic</b> chondrocyte, and it permits the ossification zone to convert cartilage spicules into bone. Slow the maturation step and cells pile up without lengthening anything.';
+  } else if(M.K>2.2){
+    cls='verdict bad';
+    txt='Glucocorticoid excess is suppressing the plate<small>Chronic steroid therapy stunts growth by suppressing proliferation and hypertrophy directly, on top of suppressing IGF-1 action. This is one of the reasons growth is monitored so carefully in children on long-term steroids.</small>';
+    inf='<span class="n">Where steroids hit</span>Excess glucocorticoid acts on the plate itself, blunts the GH&ndash;IGF-1 axis and, in Section 3, raises the RANKL/OPG ratio while pushing osteoblasts into apoptosis. It is the commonest cause of drug-induced bone loss in adults and of growth arrest in children.';
+  } else if(M.G<0.5){
+    cls='verdict warn';
+    txt='Cell supply is the bottleneck<small>Growth hormone drives the <b>proliferative</b> zone, chiefly through hepatic and locally produced IGF-1. With fewer new chondrocytes entering the column each day, the plate keeps its structure but delivers far fewer millimeters per year.</small>';
+    inf='<span class="n">Two different rate terms</span>Elongation per day is the number of cells produced multiplied by how tall each becomes. Growth hormone sets the first term; thyroid hormone sets the second. That is why GH deficiency and hypothyroidism both cause short stature but the plate looks different on histology.';
+  } else if(M.O<0.15){
+    cls='verdict warn';
+    txt='Growing steadily &mdash; and this plate will never close<small>Without estrogen the proliferative pool is never exhausted. Men with aromatase deficiency or a defective estrogen receptor keep growing into adulthood, reach extreme height, and still have open plates on radiograph in their twenties.</small>';
+    inf='<span class="n">The counterintuitive controller</span>Estrogen first <b>accelerates</b> growth at puberty and then <b>closes</b> the plate by exhausting the proliferative pool. Testosterone alone does not do it &mdash; testosterone aromatized to estradiol does. The clinical proof is that giving such a man estrogen closes the plates.';
+  } else if(M.O>1.35&&M.G>1.3){
+    cls='verdict info';
+    txt='Peak height velocity &mdash; and the clock is running<small>Rising estrogen accelerates the plate now while spending the proliferative reserve that keeps it open. Peak height velocity is roughly 9 cm/yr in girls at about age 12 and 10 cm/yr in boys at about 14.</small>';
+    inf='<span class="n">Accelerate and terminate with the same signal</span>This is why an early puberty produces a tall child and a short adult: the spurt is brought forward, but so is fusion, and the years of ordinary growth that were skipped are never recovered.';
+  } else {
+    cls='verdict';
+    txt='A healthy plate running at normal speed<small>Five zones, one cell type, five successive states. The distal femoral plate alone contributes on the order of 9&ndash;10 mm per year in mid-childhood.</small>';
+    inf='<span class="n">A conveyor, not a stretching rod</span>Mineralized matrix cannot expand from within, so interstitial growth is impossible in bone. All longitudinal growth is <b>interstitial growth of cartilage</b> at the plate, immediately converted to bone; all width growth is <b>appositional</b>, added on the outer surface. Damage the plate in a child &mdash; a Salter&ndash;Harris fracture &mdash; and that limb may stop growing or grow crooked.';
+  }
+  v.className=cls; v.innerHTML=txt; $('i1').innerHTML=inf;
+  if(!running) draw1(M);
+}
+
+var ZONES=[
+ {a:0.00,b:0.16,n:'RESTING (RESERVE)',d:'Quiescent chondrocytes · stem cell reservoir, anchors the plate'},
+ {a:0.16,b:0.46,n:'PROLIFERATION',d:'Rapid mitosis, cells stack in columns · target of GH via IGF-1'},
+ {a:0.46,b:0.71,n:'HYPERTROPHY',d:'Cell volume up 5–10 fold · most of the elongation per day'},
+ {a:0.71,b:0.86,n:'CALCIFICATION',d:'Matrix mineralizes, diffusion stops, chondrocytes die'},
+ {a:0.86,b:1.00,n:'OSSIFICATION',d:'Vessels invade, osteoblasts lay bone on cartilage spicules'}
+];
+function draw1(M){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var PL=270, PR=W-32, PT=88, PB=H-96;
+  var PH=PB-PT;
+  /* epiphysis above */
+  g.fillStyle=LINE; g.fillRect(PL,26,PR-PL,PT-26);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('EPIPHYSIS', PL+14, 54);
+  /* zone bands */
+  ZONES.forEach(function(Z,i){
+    var y0=PT+Z.a*PH, y1=PT+Z.b*PH;
+    g.fillStyle=[BLUE,TEAL,PURP,GOLD,CORAL][i];
+    g.globalAlpha=0.10; g.fillRect(PL,y0,PR-PL,y1-y0); g.globalAlpha=1;
+    g.strokeStyle=LINE; g.lineWidth=1; g.beginPath(); g.moveTo(PL,y1); g.lineTo(PR,y1); g.stroke();
+    g.fillStyle=[BLUE,TEAL,PURP,GOLD,CORAL][i];
+    g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(Z.n, PL-14, y0+21);
+    g.fillStyle=MUT; g.font='600 12.5px Inter, system-ui, sans-serif';
+    wrapR(g,Z.d,PL-14,y0+39,238,15);
+  });
+  /* metaphysis below */
+  g.fillStyle=LINE; g.fillRect(PL,PB,PR-PL,H-PB);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('METAPHYSIS → DIAPHYSIS  (new trabecular bone)', PL+14, PB+34);
+  g.fillStyle=MUT; g.font='700 13px Inter, system-ui, sans-serif';
+  g.fillText('lengthened by '+mmGrown.toFixed(1)+' mm of simulated growth', PL+14, PB+58);
+
+  /* cells */
+  var nCol=7, colW=(PR-PL)/nCol;
+  cells.forEach(function(c){
+    var cx=PL+colW*(c.c+0.5)+ (c.s-0.5)*colW*0.34;
+    var y=PT+c.y*PH;
+    var r,col,alpha=1;
+    if(c.y<0.16){ r=6.5; col=BLUE; }
+    else if(c.y<0.46){ r=6.0; col=TEAL; }
+    else if(c.y<0.71){ var f=(c.y-0.46)/0.25; r=6.0+ (Math.pow(M.hyp,1/3)*7.4-6.0)*f; col=PURP; }
+    else if(c.y<0.86){ var f2=(c.y-0.71)/0.15; r=Math.pow(M.hyp,1/3)*7.4*(1-0.55*f2); col=GOLD; alpha=1-0.55*f2; }
+    else { r=4.5; col=CORAL; alpha=0.9; }
+    g.globalAlpha=alpha*0.75; g.fillStyle=col;
+    g.beginPath(); g.arc(cx,y,Math.max(2,r),0,6.284); g.fill();
+    g.globalAlpha=alpha; g.strokeStyle=col; g.lineWidth=1.6; g.stroke();
+    g.globalAlpha=1;
+  });
+  /* bone spicules in ossification zone */
+  g.fillStyle=CORAL; g.globalAlpha=0.30;
+  for(var k=0;k<nCol;k++){
+    var sx=PL+colW*(k+0.5)-7;
+    g.fillRect(sx,PT+0.88*PH,14,0.12*PH+8);
+  }
+  g.globalAlpha=1;
+  /* direction arrow */
+  g.strokeStyle=TDK; g.lineWidth=2.5; g.beginPath();
+  g.moveTo(PR-26,PT+16); g.lineTo(PR-26,PB-16); g.stroke();
+  g.beginPath(); g.moveTo(PR-33,PB-30); g.lineTo(PR-26,PB-14); g.lineTo(PR-19,PB-30); g.closePath(); g.fillStyle=TDK; g.fill();
+  g.save(); g.translate(PR-40,(PT+PB)/2); g.rotate(-Math.PI/2);
+  g.fillStyle=MUT; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('ONE CELL, FIVE SUCCESSIVE STATES',0,0); g.restore();
+}
+function wrapR(g,text,x,y,maxW,lh){
+  var words=text.split(' '),line='',lines=[],i;
+  for(i=0;i<words.length;i++){
+    var t=line?line+' '+words[i]:words[i];
+    if(g.measureText(t).width>maxW&&line){lines.push(line);line=words[i];} else line=t;
+  }
+  if(line)lines.push(line);
+  lines.forEach(function(L,k){g.fillText(L,x,y+k*lh);});
+}
+
+/* =====================================================
+   BENCH 2 - the growth run
+   ===================================================== */
+var gh2=$('gh2'),thy2=$('thy2'),glu2=$('glu2'),oes2=$('oes2'),tp=$('tp'),rx=$('rx');
+var CASES2=[
+ {n:'Typical girl',g:100,t:100,c:100,o:100,tp:120,rx:90,ph:9.0,h0:94},
+ {n:'Typical boy',g:100,t:100,c:100,o:100,tp:140,rx:90,ph:10.0,h0:97},
+ {n:'GH deficiency',g:32,t:100,c:100,o:100,tp:140,rx:90,ph:10.0,h0:97},
+ {n:'Untreated congenital hypothyroidism',g:100,t:18,c:100,o:100,tp:130,rx:90,ph:9.5,h0:95},
+ {n:'Chronic steroid therapy',g:100,t:100,c:330,o:100,tp:140,rx:90,ph:10.0,h0:97},
+ {n:'Aromatase deficiency',g:100,t:100,c:100,o:0,tp:140,rx:90,ph:10.0,h0:97},
+ {n:'Precocious puberty',g:100,t:100,c:100,o:170,tp:95,rx:90,ph:9.0,h0:94}
+];
+var PHV=9.0, H0=94;
+var cb2=$('cases2');
+CASES2.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){gh2.value=K.g;thy2.value=K.t;glu2.value=K.c;oes2.value=K.o;tp.value=K.tp;rx.value=K.rx;PHV=K.ph;H0=K.h0;runGrowth();};
+  cb2.appendChild(b);
+});
+[gh2,thy2,glu2,oes2,tp,rx].forEach(function(s){s.addEventListener('input',runGrowth);});
+
+function baseVel(a){ return 2.21+7.0*Math.exp(-0.20*(a-3)); }
+function runGrowth(){
+  var G=+gh2.value/100,T=+thy2.value/100,K=+glu2.value/100,O=+oes2.value/100;
+  var Tp=+tp.value/10, RX=+rx.value/10, rxOn=(+rx.value>90);
+  $('gh2V').textContent=gh2.value+'%'; $('thy2V').textContent=thy2.value+'%';
+  $('glu2V').textContent=glu2.value+'%'; $('oes2V').textContent=oes2.value+'%';
+  $('tpV').textContent=Tp.toFixed(1)+' y';
+  $('rxV').textContent=rxOn?RX.toFixed(1)+' y':'off';
+
+  var gluPen=1/(1+1.4*Math.max(0,K-1));
+  var drive=G*(0.25+0.75*Math.min(T,1.3))*gluPen;
+  var A=Math.max(0,(PHV-baseVel(Tp)));
+  var pool=100, dt=0.02, h=H0, fused=null, peakV=0, peakA=Tp;
+  var pts=[],vel=[];
+  for(var a=3;a<=26.0001;a+=dt){
+    var Oeff=O; if(rxOn&&a>=RX) Oeff=Math.max(O,1.0);
+    var S=1/(1+Math.exp(-(a-(Tp-1.5))/0.75));
+    var E=Oeff*S;
+    var v=0;
+    if(pool>0){
+      v=(baseVel(a)+A*Math.exp(-Math.pow(a-Tp,2)/(2*0.85*0.85))*Math.min(1,Oeff))*drive*(1+0.10*Math.min(E,1.5));
+      pool-=28*E*dt;
+      if(pool<=0){ fused=a; }
+    }
+    if(v>peakV){peakV=v;peakA=a;}
+    h+=v*dt;
+    pts.push([a,h]); vel.push([a,v]);
+  }
+  drawGrowth(pts,vel,fused,peakV,peakA);
+
+  var finalH=pts[pts.length-1][1];
+  $('s2').innerHTML=
+    tile('Peak height velocity',peakV.toFixed(1),'cm/yr at age '+peakA.toFixed(1))+
+    tile('Plate fusion',fused?fused.toFixed(1)+' y':'never','girls 14&ndash;16 &middot; boys 16&ndash;18')+
+    tile('Height at 26 y',finalH.toFixed(0),'cm &middot; started '+H0+' cm at age 3')+
+    tile('Total gained',(finalH-H0).toFixed(0),'cm since age 3')+
+    tile('Hormonal drive',(drive*100).toFixed(0),'% of normal on the plate')+
+    tile('Estrogen setting',(O*100).toFixed(0),'% &middot; accelerates then closes');
+
+  var v2=$('v2'),cls='verdict',txt='',inf='';
+  if(!fused){
+    cls='verdict bad';
+    txt='The plate never closed &mdash; and growth has not stopped<small>At age 26 this skeleton is still adding height at about '+vel[vel.length-1][1].toFixed(1)+' cm per year, and radiographs would still show open plates. This is the phenotype of aromatase deficiency or an inactivating estrogen receptor mutation.</small>';
+    inf='<span class="n">Estrogen closes the plate in both sexes</span>Rising estrogen at puberty first accelerates growth and then <b>exhausts the proliferative pool</b>, with fusion typically at 14&ndash;16 years in girls and 16&ndash;18 in boys. Testosterone alone does not do it &mdash; testosterone <i>aromatized to estradiol</i> does. Move the treatment slider and give this patient estrogen: the plates close within a few years.';
+  } else if(K>2.2){
+    cls='verdict bad';
+    txt='Growth was suppressed throughout, and the plate still closed on time<small>Glucocorticoid excess removes drive without removing the estrogen clock, so the years available for growth are unchanged but the rate during them is low. Height lost this way is not recovered after fusion.</small>';
+    inf='<span class="n">Rate and time are separate variables</span>Adult height is the integral of velocity over the years the plate stays open. Anything that lowers <b>velocity</b> (steroid excess, hypothyroidism, GH deficiency, chronic illness, malnutrition) or shortens the <b>time</b> (precocious puberty) reduces the integral.';
+  } else if(T<0.4){
+    cls='verdict bad';
+    txt='Profound short stature<small>Thyroid hormone is needed for chondrocyte maturation and for ossification, so the conveyor runs slowly at every zone. Untreated congenital hypothyroidism is one of the classic causes of severe growth failure, and treatment is time-critical.</small>';
+    inf='<span class="n">Why the newborn screen exists</span>The plate is only one of the tissues affected; the same hormone is required for central nervous system development. Detecting and treating congenital hypothyroidism in the first weeks of life prevents both consequences.';
+  } else if(Tp<10.5&&O>1.3){
+    cls='verdict warn';
+    txt='A tall child who becomes a short adult<small>The spurt arrived early and fusion followed it, so several years of ordinary growth were skipped. Peak velocity looks impressive; final height does not.</small>';
+    inf='<span class="n">Accelerate and terminate with one signal</span>Because estrogen both drives the spurt and spends the proliferative reserve, bringing puberty forward brings fusion forward with it. This is the physiologic argument for suppressing precocious puberty and letting the plate stay open longer.';
+  } else {
+    cls='verdict';
+    txt='A normal growth curve<small>Peak height velocity '+peakV.toFixed(1)+' cm/yr at age '+peakA.toFixed(1)+', plate fusion at '+fused.toFixed(1)+' years. Roughly 90 percent of peak bone mass is accrued by age 18.</small>';
+    inf='<span class="n">Read the velocity curve, not just the height curve</span>Height is an integral and moves slowly; velocity is the derivative and moves at once. A child falling off a growth channel shows it in <b>velocity</b> months before the height percentile visibly crosses lines. The prepubertal dip and then the spurt are both normal features of the lower curve.';
+  }
+  v2.className=cls; v2.innerHTML=txt; $('i2').innerHTML=inf;
+}
+function drawGrowth(pts,vel,fused,peakV,peakA){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=76,R=W-24, T1=28,B1=310, T2=368,B2=H-52;
+  var a0=3,a1=26;
+  function X(a){return L+((a-a0)/(a1-a0))*(R-L);}
+  function Y1(h){return B1-((h-80)/(120))*(B1-T1);}      /* 80 to 200 cm */
+  function Y2(v){return B2-(v/12)*(B2-T2);}
+  var i;
+  g.font='600 14px Inter, system-ui, sans-serif';
+  /* grids */
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(i=80;i<=200;i+=20){ g.beginPath(); g.moveTo(L,Y1(i)); g.lineTo(R,Y1(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-8,Y1(i)+5); }
+  for(i=0;i<=12;i+=2){ g.beginPath(); g.moveTo(L,Y2(i)); g.lineTo(R,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-8,Y2(i)+5); }
+  for(i=4;i<=26;i+=2){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),T1); g.lineTo(X(i),B1); g.moveTo(X(i),T2); g.lineTo(X(i),B2); g.stroke();
+    g.fillStyle=MUT; g.textAlign='center'; g.fillText(i,X(i),B2+22); }
+  g.fillStyle=MUT; g.textAlign='center'; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('AGE  (years)',(L+R)/2,B2+44);
+  g.textAlign='left'; g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif';
+  g.fillText('Standing height  (cm)',L,T1-8);
+  g.fillText('Growth velocity  (cm per year)',L,T2-8);
+
+  /* fusion band */
+  if(fused&&fused<26){
+    g.fillStyle=CORAL; g.globalAlpha=0.09; g.fillRect(X(fused),T1,R-X(fused),B1-T1); g.fillRect(X(fused),T2,R-X(fused),B2-T2); g.globalAlpha=1;
+    g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([6,5]);
+    g.beginPath(); g.moveTo(X(fused),T1); g.lineTo(X(fused),B1); g.moveTo(X(fused),T2); g.lineTo(X(fused),B2); g.stroke(); g.setLineDash([]);
+    g.fillStyle=CORAL; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('plate fused  '+fused.toFixed(1)+' y', X(fused)+8, T1+20);
+  } else {
+    g.fillStyle=CORAL; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('plate still open at 26 y', R-6, T1+20);
+  }
+  /* curves */
+  g.strokeStyle=TEAL; g.lineWidth=4; g.beginPath();
+  pts.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y1(p[1])); else g.lineTo(X(p[0]),Y1(p[1])); }); g.stroke();
+  g.strokeStyle=PURP; g.lineWidth=4; g.beginPath();
+  vel.forEach(function(p,k){ if(k===0)g.moveTo(X(p[0]),Y2(p[1])); else g.lineTo(X(p[0]),Y2(p[1])); }); g.stroke();
+  /* peak marker */
+  g.fillStyle=GOLD; g.beginPath(); g.arc(X(peakA),Y2(peakV),7,0,6.284); g.fill();
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('peak '+peakV.toFixed(1)+' cm/yr', X(peakA), Y2(peakV)-14);
+}
+
+/* =====================================================
+   BENCH 3 - modeling
+   ===================================================== */
+var age3=$('age3'),peri=$('peri'),endo=$('endo');
+var CASES3=[
+ {n:'Typical man',p:14,e:20},
+ {n:'Typical woman',p:6,e:26},
+ {n:'No periosteal apposition',p:0,e:26},
+ {n:'Prolonged immobility',p:0,e:52},
+ {n:'Balanced surfaces',p:22,e:22}
+];
+var cb3=$('cases3');
+CASES3.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=K.n;
+  b.onclick=function(){peri.value=K.p;endo.value=K.e;render3();};
+  cb3.appendChild(b);
+});
+[age3,peri,endo].forEach(function(s){s.addEventListener('input',render3);});
+
+function render3(){
+  var A=+age3.value, P=+peri.value, E=+endo.value;
+  $('age3V').textContent=A+' y'; $('periV').textContent=P+' &micro;m/yr'; $('endoV').textContent=E+' &micro;m/yr';
+  var yrs=A-20;
+  var ro0=13.0, ri0=6.5;
+  var ro=ro0+P*yrs/1000, ri=Math.min(ro-0.4, ri0+E*yrs/1000);
+  var area0=Math.PI*(ro0*ro0-ri0*ri0), area=Math.PI*(ro*ro-ri*ri);
+  var I0=Math.PI*(Math.pow(ro0,4)-Math.pow(ri0,4))/4, I=Math.PI*(Math.pow(ro,4)-Math.pow(ri,4))/4;
+  var th0=ro0-ri0, th=ro-ri;
+
+  $('s3').innerHTML=
+    tile('Cortical thickness',th.toFixed(2),'mm &middot; was '+th0.toFixed(2)+' at age 20')+
+    tile('Outer radius',ro.toFixed(2),'mm &middot; was '+ro0.toFixed(2))+
+    tile('Marrow cavity radius',ri.toFixed(2),'mm &middot; was '+ri0.toFixed(2))+
+    tile('Cortical area',(area/area0*100).toFixed(0),'% of age 20 &mdash; the &ldquo;mass&rdquo; term')+
+    tile('Bending resistance',(I/I0*100).toFixed(0),'% of age 20 &mdash; scales with r&#8308;')+
+    tile('Years modelled',yrs,'from age 20');
+
+  var pa=Math.max(2,Math.min(100,area/area0*100));
+  var pi=Math.max(2,Math.min(100,I/I0*100));
+  $('bars3').innerHTML=
+    '<div class="lbl" style="margin-top:14px">Mass versus bending strength</div>'+
+    '<div class="srow"><div class="nm">Cortical area<small>roughly what densitometry sees</small></div><div class="tr"><div class="fl" style="width:'+pa+'%;background:'+BLUE+'"></div></div><div class="tv">'+(area/area0*100).toFixed(0)+'%</div></div>'+
+    '<div class="srow"><div class="nm">Second moment of area<small>resistance to bending, &#8733; r&#8308;</small></div><div class="tr"><div class="fl" style="width:'+pi+'%;background:'+CORAL+'"></div></div><div class="tv">'+(I/I0*100).toFixed(0)+'%</div></div>';
+
+  var v=$('v3'),cls='verdict',txt='',inf='';
+  if(I/I0>=0.98&&area/area0<0.96){
+    cls='verdict';
+    txt='Less bone, and almost no loss of bending strength<small>The cortex is thinner but the whole tube is wider, and bending resistance depends on the <b>fourth power</b> of the outer radius. Periosteal apposition has bought back nearly everything the endosteum removed.</small>';
+  } else if(P<3&&E>20){
+    cls='verdict bad';
+    txt='Resorbing from inside with nothing added outside<small>Cortical area and bending resistance fall together. Men expand periosteally more than women, which is part of why male bones stay mechanically more forgiving with age even when densitometry looks similar.</small>';
+  } else if(I/I0>=1.0){
+    cls='verdict info';
+    txt='Net gain in bending strength<small>Apposition is outrunning endosteal resorption, so the tube is getting both wider and no thinner. This is the childhood pattern, where modeling widens the shaft while the marrow cavity enlarges behind it.</small>';
+  } else {
+    cls='verdict warn';
+    txt='Bending strength is falling, but more slowly than mass<small>Losing bone from the inner surface costs less mechanically than losing the same amount from the outer surface, because the material nearest the axis contributes least to resisting bending.</small>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i3').innerHTML='<span class="n">Why hollow is not lazy design</span>Bending stiffness scales with the fourth power of radius, so putting cortical bone at the <b>periphery</b> and leaving the middle for marrow is a structural optimization. Modeling exploits that: the periosteum adds while the endosteum removes, so the shaft can grow wider without the cortex becoming absurdly thick, and the metaphyseal flare is narrowed from outside as the shaft grows. Periosteal apposition never entirely stops &mdash; adults keep slowly adding bone to the outer cortical surface while losing it from the inner one.';
+
+  drawX(ro0,ri0,ro,ri,A);
+}
+function drawX(ro0,ri0,ro,ri,A){
+  var cv=$('cv3'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var sc=13.0, cy=H/2-8;
+  var c1=W*0.27, c2=W*0.72;
+  function ring(cx,Ro,Ri,col,alpha,label,sub){
+    g.globalAlpha=alpha; g.fillStyle=col;
+    g.beginPath(); g.arc(cx,cy,Ro*sc,0,6.284); g.fill();
+    g.globalAlpha=1; g.fillStyle='#fff';
+    g.beginPath(); g.arc(cx,cy,Ri*sc,0,6.284); g.fill();
+    g.strokeStyle=col; g.lineWidth=2.5;
+    g.beginPath(); g.arc(cx,cy,Ro*sc,0,6.284); g.stroke();
+    g.beginPath(); g.arc(cx,cy,Ri*sc,0,6.284); g.stroke();
+    g.fillStyle=TDK; g.font='800 16px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(label,cx,cy+Ro*sc+38);
+    g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText(sub,cx,cy+Ro*sc+58);
+    g.fillStyle=MUT; g.font='700 13px Inter, system-ui, sans-serif';
+    g.fillText('marrow',cx,cy+4);
+  }
+  ring(c1,ro0,ri0,MUT,0.22,'AGE 20','r'+String.fromCharCode(8320)+' = '+ro0.toFixed(2)+' mm, cortex '+(ro0-ri0).toFixed(2)+' mm');
+  ring(c2,ro,ri,TEAL,0.30,'AGE '+A,'r'+String.fromCharCode(8320)+' = '+ro.toFixed(2)+' mm, cortex '+(ro-ri).toFixed(2)+' mm');
+  /* arrows */
+  g.strokeStyle=GREEN; g.lineWidth=3;
+  g.beginPath(); g.arc(c2,cy,ro*sc+13,-0.5,0.5); g.stroke();
+  g.fillStyle=GREEN; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('periosteum adds', c2+ro*sc+20, cy-10);
+  g.strokeStyle=CORAL;
+  g.beginPath(); g.arc(c2,cy,ri*sc-6,Math.PI-0.5,Math.PI+0.5); g.stroke();
+  g.textAlign='right'; g.fillStyle=CORAL;
+  g.fillText('endosteum removes', c2-ri*sc-12, cy+26);
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('Bending resistance   I = pi (ro^4 - ri^4) / 4', W/2, 34);
+}
+
+/* boot */
+render1();
+requestAnimationFrame(tick1);
+runGrowth();
+render3();
+setMode(1);
+})();
+</script>
+</body>
+</html>

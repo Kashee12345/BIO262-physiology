@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Control of Breathing: a Loop You Can Break</title>
+<meta name="description" content="Run the central chemoreceptor negative feedback loop in real time, break the sensor, integrator or effector, and watch PaCO2 either return to 40 mmHg or run away.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:24px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+.rowbtn{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.rowbtn .btn{flex:1 1 30%;}
+.brk{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px;}
+.brk button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 10px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;text-align:left;line-height:1.25;}
+.brk button small{display:block;font-weight:500;font-size:10.3px;color:var(--muted);margin-top:2px;}
+.brk button.broken{background:var(--coral);border-color:var(--coral);color:#fff;}
+.brk button.broken small{color:rgba(255,255,255,.9);}
+svg text{font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch12.html">&larr; Module 12</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 12</div>
+  <h1>The Control of Breathing</h1>
+  <div class="intro">The regulated variable is <b>arterial PCO2</b>, held near 40 mmHg. The sensor is the central chemoreceptor reading H<sup>+</sup> in cerebrospinal fluid; the integrator is the medulla; the effector is the diaphragm. Oxygen is only a backup, and it does not engage until PaO2 falls below about 60 mmHg. Run the loop below, disturb it, then break the sensor, the integrator or the effector and watch what a variable does when nothing is watching it.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Disturb the system</h2>
+      <div class="chips" id="chips"></div>
+      <div class="rowbtn">
+        <button type="button" class="btn solid" id="bPlay" aria-pressed="true">Pause</button>
+        <button type="button" class="btn" id="bHold">Hold breath 30 s</button>
+        <button type="button" class="btn" id="bReset">Reset to 40 mmHg</button>
+      </div>
+
+      <div class="lbl">The environment</div>
+      <div class="sl"><label for="sPb">Barometric pressure <span class="v" id="vPb">760 mmHg &middot; sea level</span></label>
+        <input type="range" id="sPb" min="350" max="760" value="760" step="5" aria-label="Barometric pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sFiO2">Inspired oxygen FiO2 <span class="v" id="vFiO2">21%</span></label>
+        <input type="range" id="sFiO2" min="21" max="100" value="21" step="1" aria-label="Inspired oxygen fraction as a percentage"></div>
+      <div class="sl"><label for="sAa">A&ndash;a gradient of the lung <span class="v" id="vAa">5 mmHg</span></label>
+        <input type="range" id="sAa" min="5" max="60" value="5" step="1" aria-label="Alveolar to arterial oxygen gradient in millimeters of mercury"></div>
+
+      <div class="lbl">The body</div>
+      <div class="sl"><label for="sVCO2">CO2 production <span class="v" id="vVCO2">200 mL/min</span></label>
+        <input type="range" id="sVCO2" min="150" max="2500" value="200" step="10" aria-label="Carbon dioxide production in milliliters per minute"></div>
+      <div class="sl"><label for="sHCO3">Plasma bicarbonate <span class="v" id="vHCO3">24 mEq/L</span></label>
+        <input type="range" id="sHCO3" min="6" max="40" value="24" step="1" aria-label="Plasma bicarbonate in milliequivalents per liter"></div>
+      <div class="sl"><label for="sCSF">CSF bicarbonate (sets the central threshold) <span class="v" id="vCSF">24 mEq/L</span></label>
+        <input type="range" id="sCSF" min="14" max="36" value="24" step="1" aria-label="Cerebrospinal fluid bicarbonate in milliequivalents per liter"></div>
+      <div class="sl"><label for="sOp">Opioid or sedative dose <span class="v" id="vOp">none</span></label>
+        <input type="range" id="sOp" min="0" max="100" value="0" step="1" aria-label="Opioid or sedative dose as a percentage of maximal depression"></div>
+      <div class="sl"><label for="sMus">Respiratory muscle capacity <span class="v" id="vMus">100%</span></label>
+        <input type="range" id="sMus" min="0" max="100" value="100" step="1" aria-label="Respiratory muscle capacity as a percentage of normal"></div>
+      <div class="sl"><label for="sFF">Feed-forward command from motor cortex <span class="v" id="vFF">0 L/min</span></label>
+        <input type="range" id="sFF" min="0" max="70" value="0" step="1" aria-label="Feed-forward ventilatory command in liters per minute"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The loop, running</h2>
+      <canvas id="cvTrace" width="640" height="360" role="img" aria-label="Live traces of arterial carbon dioxide tension, arterial oxygen tension and minute ventilation over simulated time"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">PaCO2</div><div class="v" id="oCO2">40</div><div class="u">mmHg &middot; setpoint 40</div></div>
+        <div class="lab"><div class="k">PaO2</div><div class="v" id="oO2">95</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Arterial pH</div><div class="v" id="oPH">7.40</div><div class="u">7.35&ndash;7.45</div></div>
+        <div class="lab"><div class="k">Minute ventilation</div><div class="v" id="oVE">6.1</div><div class="u">L / min</div></div>
+        <div class="lab"><div class="k">Alveolar ventilation</div><div class="v" id="oVA">4.3</div><div class="u">L / min</div></div>
+        <div class="lab"><div class="k">SaO2</div><div class="v" id="oSat">97</div><div class="u">%</div></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Break the loop</h2>
+      <svg id="loop" viewBox="0 0 340 250" role="img" aria-label="Negative feedback loop diagram: the regulated variable arterial PCO2 feeds the central and peripheral chemoreceptors, which feed the medullary integrator, which drives the diaphragm, which changes alveolar ventilation and returns PaCO2 toward forty">
+        <rect x="0" y="0" width="340" height="250" rx="12" fill="#fff"></rect>
+        <path id="ring" d="M170 34 C 286 34 306 90 306 125 C 306 178 250 216 170 216 C 90 216 34 178 34 125 C 34 90 54 34 170 34" fill="none" stroke-width="2.5" stroke-dasharray="6 5"></path>
+        <g id="gVar"><rect x="98" y="16" width="144" height="34" rx="10"></rect>
+          <text x="170" y="31" text-anchor="middle" font-size="9.4" font-weight="800" fill="#fff">REGULATED VARIABLE</text>
+          <text x="170" y="44" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff" id="tVar">PaCO2 40 mmHg</text></g>
+        <g id="gSensC"><rect x="240" y="70" width="94" height="42" rx="10"></rect>
+          <text x="287" y="86" text-anchor="middle" font-size="9" font-weight="800">SENSOR · central</text>
+          <text x="287" y="98" text-anchor="middle" font-size="8.4" font-weight="600">ventral medulla</text>
+          <text x="287" y="108" text-anchor="middle" font-size="8.4" font-weight="600">CSF H+ · 70%</text></g>
+        <g id="gSensP"><rect x="240" y="122" width="94" height="42" rx="10"></rect>
+          <text x="287" y="138" text-anchor="middle" font-size="9" font-weight="800">SENSOR · peripheral</text>
+          <text x="287" y="150" text-anchor="middle" font-size="8.4" font-weight="600">carotid + aortic</text>
+          <text x="287" y="160" text-anchor="middle" font-size="8.4" font-weight="600">O2, CO2, pH · 30%</text></g>
+        <g id="gInt"><rect x="112" y="180" width="116" height="46" rx="10"></rect>
+          <text x="170" y="196" text-anchor="middle" font-size="9" font-weight="800">INTEGRATOR</text>
+          <text x="170" y="208" text-anchor="middle" font-size="8.4" font-weight="600">pre-Bötzinger, DRG, VRG</text>
+          <text x="170" y="219" text-anchor="middle" font-size="8.4" font-weight="600">pontine modulation</text></g>
+        <g id="gEff"><rect x="6" y="96" width="94" height="46" rx="10"></rect>
+          <text x="53" y="112" text-anchor="middle" font-size="9" font-weight="800">EFFECTOR</text>
+          <text x="53" y="124" text-anchor="middle" font-size="8.4" font-weight="600">diaphragm, phrenic</text>
+          <text x="53" y="135" text-anchor="middle" font-size="8.4" font-weight="600">C3, C4, C5</text></g>
+        <text x="170" y="130" text-anchor="middle" font-size="10" font-weight="800" id="tResp">response</text>
+        <text x="170" y="146" text-anchor="middle" font-size="9.4" font-weight="600" id="tResp2">&nbsp;</text>
+        <text x="170" y="162" text-anchor="middle" font-size="9.4" font-weight="700" id="tLoopState">negative feedback intact</text>
+      </svg>
+      <div class="brk">
+        <button type="button" id="kSensC" aria-pressed="false">Break central chemoreceptors<small>removes 70% of the CO2 response</small></button>
+        <button type="button" id="kSensP" aria-pressed="false">Break peripheral chemoreceptors<small>removes all oxygen and pH sensing</small></button>
+        <button type="button" id="kInt" aria-pressed="false">Break the medullary integrator<small>brainstem lesion above the rhythm generator</small></button>
+        <button type="button" id="kEff" aria-pressed="false">Cut the phrenic output<small>cord injury above C3</small></button>
+      </div>
+      <div class="hint">Click a box to lesion it and watch what the trace does. Note which break is survivable: without central chemoreceptors the peripheral ones still hold PaCO2 somewhere, badly. Without the effector, no amount of sensing helps at all &mdash; which is exactly why a cervical cord injury above C3 abolishes spontaneous breathing while a lesion at C6 leaves a patient who breathes but cannot cough forcefully.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The two response curves</h2>
+      <canvas id="cvResp" width="640" height="300" role="img" aria-label="Ventilation plotted against arterial carbon dioxide tension and against arterial oxygen tension, with the current operating point marked on each"></canvas>
+      <div class="eq" id="eqDrive"></div>
+      <div class="hint"><b>Why CO2 and not O2.</b> Hydrogen ions and bicarbonate cross the blood&ndash;brain barrier poorly; dissolved CO2 crosses freely, meets carbonic anhydrase in cerebrospinal fluid and generates H<sup>+</sup> there. Because CSF has almost no protein buffer, its pH swings far more per unit of CO2 than blood pH does &mdash; so a rise of only 1 to 2 mmHg in PaCO2 measurably increases ventilation. Raise CSF bicarbonate and the whole CO2 curve slides to the right: that is adaptation in a chronic retainer, not repair.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'), LINE=cvar('--line'),
+    MUTED=cvar('--muted'), SOFT=cvar('--soft');
+
+function sizeCanvas(cvs,ratio,minH){
+  var r=cvs.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=Math.max(300,Math.round(r.width)), h=Math.max(minH||0,Math.round(w*ratio));
+  if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr); cvs.height=Math.round(h*dpr);}
+  cvs.style.height=h+'px';
+  var g=cvs.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  return {g:g,w:w,h:h};
+}
+function clearChips(){var b=$('chips').querySelectorAll('.chip');for(var i=0;i<b.length;i++)b[i].classList.remove('on');}
+
+/* ---------------- model ---------------- */
+var P={pb:760, fio2:0.21, aa:5, vco2:200, hco3:24, csf:24, opioid:0, muscle:1.0, ff:0, vdv:1.8};
+var brk={sc:false, sp:false, integ:false, eff:false};
+var paco2=40.0, simT=0, holdUntil=-1, playing=true;
+var G=2.26, KO2=0.012, KPH=0.6, STORE=45, SPEED=6;
+var hist=[];
+
+function pHof(pc){ return 6.1 + Math.log(P.hco3/(0.03*Math.max(4,pc)))/Math.LN10; }
+function pao2Of(pc){
+  var pao = P.fio2*(P.pb-47) - pc/0.8;
+  return Math.max(4, pao - P.aa);
+}
+function satOf(po){ var a=Math.pow(Math.max(1,po),2.7); return a/(a+Math.pow(26.6,2.7)); }
+function threshold(){ return 37.3*(P.csf/24); }
+/* Opioids shift the CO2 response curve to the right as well as flattening it. */
+function effThreshold(){ return threshold() + 25*P.opioid; }
+
+function drive(pc){
+  var po=pao2Of(pc), ph=pHof(pc), th=effThreshold();
+  var co2err=Math.max(0, pc-th);
+  var central = brk.sc ? 0 : 0.70*G*co2err;
+  var perCO2  = brk.sp ? 0 : 0.30*G*co2err;
+  var perO2   = brk.sp ? 0 : KO2*Math.pow(Math.max(0,60-po),2);
+  var perPH   = brk.sp ? 0 : KPH*(7.40-ph)*100;
+  var raw = central + perCO2 + perO2 + perPH + P.ff;
+  if(brk.integ) raw = 0;
+  raw *= (1-P.opioid);
+  var cap = brk.eff ? 0 : 120*P.muscle;
+  var ve = Math.max(0, Math.min(cap, raw));
+  if(simT < holdUntil) ve = 0;
+  return {ve:ve, central:central, perCO2:perCO2, perO2:perO2, perPH:perPH,
+          va:Math.max(0, ve-P.vdv), po:po, ph:ph, th:th, capped:(raw>cap)};
+}
+function step(dtSim){
+  var d=drive(paco2);
+  var elim = d.va*paco2/0.863;                       /* mL CO2 per min */
+  var dPdt = (P.vco2 - elim)/STORE;                  /* mmHg per min */
+  paco2 += dPdt*(dtSim/60);
+  paco2 = Math.max(5, Math.min(150, paco2));
+  simT += dtSim;
+  hist.push({t:simT, c:paco2, o:d.po, v:d.ve});
+  while(hist.length && hist[0].t < simT-240) hist.shift();
+  return d;
+}
+
+/* ---------------- presets ---------------- */
+var PRE=[
+ {n:'Normal, awake at rest',s:{pb:760,fio2:0.21,aa:5,vco2:200,hco3:24,csf:24,opioid:0,muscle:1,ff:0,vdv:1.8},b:{}},
+ {n:'Opioid overdose',s:{pb:760,fio2:0.21,aa:5,vco2:200,hco3:24,csf:24,opioid:0.70,muscle:1,ff:0,vdv:1.8},b:{}},
+ {n:'Heavy exercise',s:{pb:760,fio2:0.21,aa:8,vco2:1800,hco3:24,csf:24,opioid:0,muscle:1,ff:52,vdv:2.6},b:{}},
+ {n:'Diabetic ketoacidosis',s:{pb:760,fio2:0.21,aa:5,vco2:200,hco3:11,csf:24,opioid:0,muscle:1,ff:0,vdv:1.8},b:{}},
+ {n:'Arrival at 5500 m',s:{pb:380,fio2:0.21,aa:5,vco2:200,hco3:24,csf:24,opioid:0,muscle:1,ff:0,vdv:1.8},b:{}},
+ {n:'Acclimatized at 5500 m',s:{pb:380,fio2:0.21,aa:5,vco2:200,hco3:16,csf:18,opioid:0,muscle:1,ff:0,vdv:1.8},b:{}},
+ {n:'Chronic CO2 retainer',s:{pb:760,fio2:0.21,aa:45,vco2:200,hco3:30,csf:32,opioid:0,muscle:0.30,ff:0,vdv:4.0},b:{}},
+ {n:'Retainer given 40% oxygen',s:{pb:760,fio2:0.40,aa:45,vco2:200,hco3:30,csf:32,opioid:0,muscle:0.30,ff:0,vdv:4.0},b:{}},
+ {n:'Severe neuromuscular weakness',s:{pb:760,fio2:0.21,aa:5,vco2:200,hco3:24,csf:24,opioid:0,muscle:0.04,ff:0,vdv:1.8},b:{}}
+];
+function applyPreset(p){
+  for(var k in p.s) if(p.s.hasOwnProperty(k)) P[k]=p.s[k];
+  brk.sc=false; brk.sp=false; brk.integ=false; brk.eff=false;
+  syncSliders(); syncBreaks();
+}
+function syncSliders(){
+  $('sPb').value=P.pb; $('sFiO2').value=Math.round(P.fio2*100); $('sAa').value=P.aa;
+  $('sVCO2').value=P.vco2; $('sHCO3').value=P.hco3; $('sCSF').value=P.csf;
+  $('sOp').value=Math.round(P.opioid*100); $('sMus').value=Math.round(P.muscle*100); $('sFF').value=P.ff;
+  labels();
+}
+function labels(){
+  var altM = Math.round(44330*(1-Math.pow(P.pb/760,0.190295)));
+  $('vPb').textContent=P.pb+' mmHg · '+(altM<80?'sea level':(altM+' m'));
+  $('vFiO2').textContent=Math.round(P.fio2*100)+'%';
+  $('vAa').textContent=P.aa+' mmHg';
+  $('vVCO2').textContent=P.vco2+' mL/min';
+  $('vHCO3').textContent=P.hco3+' mEq/L';
+  $('vCSF').textContent=P.csf+' mEq/L';
+  $('vOp').textContent=P.opioid===0?'none':Math.round(P.opioid*100)+'%';
+  $('vMus').textContent=Math.round(P.muscle*100)+'%';
+  $('vFF').textContent=P.ff+' L/min';
+}
+
+/* ---------------- rendering ---------------- */
+function render(d){
+  $('oCO2').textContent=paco2.toFixed(0);
+  $('oO2').textContent=d.po.toFixed(0);
+  $('oPH').textContent=d.ph.toFixed(2);
+  $('oVE').textContent=d.ve.toFixed(1);
+  $('oVA').textContent=d.va.toFixed(1);
+  $('oSat').textContent=(satOf(d.po)*100).toFixed(0);
+
+  $('tVar').textContent='PaCO2 '+paco2.toFixed(0)+' mmHg';
+  $('tResp').textContent='ventilation '+d.ve.toFixed(1)+' L/min';
+  $('tResp2').textContent='alveolar '+d.va.toFixed(1)+' L/min · threshold '+d.th.toFixed(0)+' mmHg';
+  $('tResp').setAttribute('fill',TEALD); $('tResp2').setAttribute('fill',MUTED);
+  var broken = brk.sc||brk.sp||brk.integ||brk.eff;
+  $('tLoopState').textContent = brk.eff?'loop open at the effector — nothing can respond'
+    : (brk.integ?'loop open at the integrator — no output'
+    : (broken?'loop degraded — partial feedback only':'negative feedback intact'));
+  $('tLoopState').setAttribute('fill', broken?CORAL:GREEN);
+  $('ring').setAttribute('stroke', broken?CORAL:TEAL);
+  paintBox('gVar',TEAL,false);
+  paintBox('gSensC',BLUE,brk.sc);
+  paintBox('gSensP',BLUE,brk.sp);
+  paintBox('gInt',PURPLE,brk.integ);
+  paintBox('gEff',GOLD,brk.eff);
+
+  $('eqDrive').innerHTML='<b>Ventilatory drive right now</b><br>'+
+    'Central chemoreceptors (CSF H+): <b class="num">'+d.central.toFixed(1)+'</b> L/min &nbsp;·&nbsp; '+
+    'peripheral, CO2 limb: <b class="num">'+d.perCO2.toFixed(1)+'</b> &nbsp;·&nbsp; '+
+    'peripheral, O2 limb: <b class="num">'+d.perO2.toFixed(1)+'</b> &nbsp;·&nbsp; '+
+    'peripheral, pH limb: <b class="num">'+d.perPH.toFixed(1)+'</b> &nbsp;·&nbsp; '+
+    'feed-forward: <b class="num">'+P.ff.toFixed(0)+'</b><br>'+
+    'Central chemoreceptors normally supply about <b>70 percent</b> of the ventilatory response to CO2. The apneic threshold sits at <b class="num">'+d.th.toFixed(1)+' mmHg</b> &mdash; set by CSF bicarbonate, and pushed further right by opioids.';
+
+  var v=$('verdict'), cls='verdict', m='';
+  if(brk.eff){
+    cls+=' bad';
+    m='Effector cut &mdash; PaCO2 '+paco2.toFixed(0)+' mmHg and climbing about '+(P.vco2/STORE).toFixed(1)+' mmHg per minute.<small>The sensors are firing, the medulla is commanding, and nothing moves. A cervical cord injury above C3 abolishes spontaneous breathing entirely. This is the one break where a perfect loop is worthless without a working muscle.</small>';
+  } else if(brk.integ){
+    cls+=' bad';
+    m='Integrator lesioned &mdash; no rhythm, PaCO2 '+paco2.toFixed(0)+' mmHg.<small>The pre-Bötzinger complex in the ventrolateral medulla is where the rhythm is generated, so a lesion here is apneic. Note the corollary: because the rhythm lives in the brainstem, cortical injury can abolish consciousness and leave breathing entirely intact.</small>';
+  } else if(simT<holdUntil){
+    cls+=' warn';
+    m='Breath-hold in progress &mdash; PaCO2 '+paco2.toFixed(0)+' mmHg.<small>Voluntary override travels by a separate corticospinal path, which is why you can hold your breath but cannot hold it to the point of death: the rising PaCO2 eventually overwhelms the cortical command. Watch the ventilation trace overshoot when the hold releases &mdash; that is the accumulated error signal being paid off.</small>';
+  } else if(paco2>=60){
+    cls+=' bad';
+    m='PaCO2 '+paco2.toFixed(0)+' mmHg, pH '+d.ph.toFixed(2)+' &mdash; the loop is losing.<small>'+
+      (P.opioid>0.3?'Opioids depress the medullary response to CO2, so the same error signal produces far less ventilation. '
+       :(brk.sc?'With central chemoreceptors gone, only the peripheral 30 percent remains, and they tolerate a much higher PaCO2 before firing hard. '
+       :(P.muscle<0.4?'The effector cannot deliver what the integrator is asking for &mdash; drive is high and ventilation is capped. '
+       :'Alveolar ventilation is not keeping pace with CO2 production. ')))+
+      'Because CO2 is an acid, a respiratory acidosis follows within minutes.</small>';
+  } else if(paco2<=32){
+    cls+=' cool';
+    m='PaCO2 '+paco2.toFixed(0)+' mmHg, pH '+d.ph.toFixed(2)+' &mdash; ventilating above metabolic need.<small>'+
+      (P.hco3<20?'This is respiratory compensation for a metabolic acidosis, and it is the fastest visible compensation in clinical medicine. Winter&rsquo;s formula predicts an expected PaCO2 of (1.5 × '+P.hco3+') + 8 = '+(1.5*P.hco3+8).toFixed(1)+' ± 2 &mdash; compare it with the '+paco2.toFixed(0)+' mmHg the loop actually settled on.'
+       :'Hypoxia is driving it: peripheral chemoreceptor firing climbs steeply once PaO2 drops below 60 mmHg, and the resulting hyperventilation blows off CO2 and creates a respiratory alkalosis that then restrains breathing again.')+'</small>';
+  } else if(d.po<60){
+    cls+=' warn';
+    m='PaO2 '+d.po.toFixed(0)+' mmHg &mdash; below the threshold where oxygen finally matters.<small>Carotid and aortic body firing barely changes until PaO2 falls under about 60 mmHg, which is precisely the shoulder of the oxyhemoglobin dissociation curve, where content at last starts to fall steeply. Above that point there is no sense spending ventilatory work; below it, firing climbs sharply. Oxygen is a backup controller, not the primary one.</small>';
+  } else {
+    cls+=' ok';
+    m='PaCO2 '+paco2.toFixed(0)+' mmHg, PaO2 '+d.po.toFixed(0)+', pH '+d.ph.toFixed(2)+' &mdash; the loop is holding.<small>Every element is doing its job: CO2 rises, CSF H+ rises, the medulla increases rate and depth, alveolar ventilation rises, CO2 is blown off and the stimulus is removed. The response opposes the change &mdash; that is the definition of negative feedback.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+  drawTrace();
+  drawResp(d);
+}
+function paintBox(gid,col,broken){
+  var g=$(gid), rect=g.querySelector('rect'), txt=g.querySelectorAll('text');
+  rect.setAttribute('fill', broken?'#fff':col);
+  rect.setAttribute('stroke', broken?CORAL:col);
+  rect.setAttribute('stroke-width', broken?'2.5':'1');
+  if(broken) rect.setAttribute('stroke-dasharray','5 4'); else rect.removeAttribute('stroke-dasharray');
+  for(var i=0;i<txt.length;i++) txt[i].setAttribute('fill', broken?CORAL:'#fff');
+  g.style.cursor='pointer';
+}
+function drawTrace(){
+  var s=sizeCanvas($('cvTrace'),360/640,306), g=s.g, W=s.w, H=s.h;
+  var padL=44,padR=10,padT=12,gap=10;
+  var ph=(H-padT-20-2*gap)/3, pw=W-padL-padR;
+  var t1=Math.max(0,simT-240), t2=Math.max(240,simT);
+  var panes=[
+    {lab:'PaCO2 (mmHg)',key:'c',lo:10,hi:100,col:TEAL,band:[35,45]},
+    {lab:'PaO2 (mmHg)',key:'o',lo:0,hi:220,col:CORAL,line:60},
+    {lab:'Minute ventilation (L/min)',key:'v',lo:0,hi:Math.max(20,maxOf('v')*1.15),col:PURPLE}
+  ];
+  for(var p=0;p<3;p++){
+    var pn=panes[p], y0=padT+p*(ph+gap);
+    g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.rect(padL,y0,pw,ph); g.fill(); g.stroke();
+    var Y=(function(pane,top){return function(val){ return top+ph-(val-pane.lo)/(pane.hi-pane.lo)*ph; };})(pn,y0);
+    if(pn.band){ g.fillStyle=GREEN; g.globalAlpha=0.16; g.fillRect(padL,Y(pn.band[1]),pw,Y(pn.band[0])-Y(pn.band[1])); g.globalAlpha=1; }
+    if(pn.line){ g.strokeStyle=GOLD; g.setLineDash([4,4]); g.beginPath(); g.moveTo(padL,Y(pn.line)); g.lineTo(padL+pw,Y(pn.line)); g.stroke(); g.setLineDash([]);
+      g.fillStyle=GOLD; g.font='800 9px Inter,sans-serif'; g.textAlign='left'; g.fillText('60 — hypoxic threshold',padL+5,Y(pn.line)-4); }
+    g.strokeStyle=pn.col; g.lineWidth=2.2; g.beginPath();
+    var started=false;
+    for(var i=0;i<hist.length;i++){
+      var h=hist[i];
+      var x=padL+(h.t-t1)/(t2-t1)*pw;
+      var y=Y(Math.max(pn.lo,Math.min(pn.hi,h[pn.key])));
+      if(!started){g.moveTo(x,y);started=true;} else g.lineTo(x,y);
+    }
+    g.stroke();
+    if(hist.length){
+      var last=hist[hist.length-1];
+      var xl=padL+(last.t-t1)/(t2-t1)*pw, yl=Y(Math.max(pn.lo,Math.min(pn.hi,last[pn.key])));
+      g.fillStyle=pn.col; g.beginPath(); g.arc(xl,yl,4,0,6.2832); g.fill();
+      g.font='800 10px Inter,sans-serif'; g.textAlign='right';
+      g.fillText(last[pn.key].toFixed(pn.key==='v'?1:0),Math.min(padL+pw-4,xl+34),yl-7);
+    }
+    g.fillStyle=MUTED; g.font='9px Inter,sans-serif'; g.textAlign='right';
+    g.fillText(pn.hi.toFixed(0),padL-4,y0+8);
+    g.fillText(pn.lo.toFixed(0),padL-4,y0+ph-1);
+    g.textAlign='left'; g.fillStyle=SOFT; g.font='700 10px Inter,sans-serif';
+    g.fillText(pn.lab,padL+6,y0+11);
+  }
+  g.fillStyle=MUTED; g.font='9.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('simulated time · '+Math.floor(simT/60)+' min '+Math.floor(simT%60)+' s elapsed (running at '+SPEED+'× real time)',padL,H-4);
+}
+function maxOf(k){ var m=0; for(var i=0;i<hist.length;i++) if(hist[i][k]>m) m=hist[i][k]; return m; }
+function drawResp(d){
+  var s=sizeCanvas($('cvResp'),300/640,224), g=s.g, W=s.w, H=s.h;
+  var gapx=18, pw=(W-gapx-8)/2, ph=H-46, x0=4, y0=12;
+  /* --- left: VE vs PaCO2 --- */
+  function panel(px,title,xlab,xlo,xhi,fn,opx,opy,marker){
+    g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+    g.beginPath(); g.rect(px,y0,pw,ph); g.fill(); g.stroke();
+    var vmax=Math.max(25,d.ve*1.4);
+    g.strokeStyle=LINE; g.font='9px Inter,sans-serif'; g.fillStyle=MUTED; g.textAlign='center';
+    for(var i=1;i<5;i++){ var xx=px+i/5*pw; g.beginPath(); g.moveTo(xx,y0); g.lineTo(xx,y0+ph); g.stroke();
+      g.fillText(Math.round(xlo+(xhi-xlo)*i/5),xx,y0+ph+12); }
+    for(var j=1;j<4;j++){ var yy=y0+ph-j/4*ph; g.beginPath(); g.moveTo(px,yy); g.lineTo(px+pw,yy); g.stroke();
+      g.textAlign='left'; g.fillText(Math.round(vmax*j/4),px+3,yy-2); g.textAlign='center'; }
+    if(marker!==null){
+      var mx=px+(marker-xlo)/(xhi-xlo)*pw;
+      g.strokeStyle=GOLD; g.setLineDash([4,4]); g.beginPath(); g.moveTo(mx,y0); g.lineTo(mx,y0+ph); g.stroke(); g.setLineDash([]);
+    }
+    g.strokeStyle=TEAL; g.lineWidth=2.6; g.beginPath();
+    for(var k=0;k<=140;k++){
+      var xv=xlo+(xhi-xlo)*k/140, yv=Math.max(0,Math.min(vmax,fn(xv)));
+      var X=px+(xv-xlo)/(xhi-xlo)*pw, Y=y0+ph-yv/vmax*ph;
+      if(k===0) g.moveTo(X,Y); else g.lineTo(X,Y);
+    }
+    g.stroke();
+    var oX=px+(opx-xlo)/(xhi-xlo)*pw, oY=y0+ph-Math.max(0,Math.min(vmax,opy))/vmax*ph;
+    g.fillStyle=CORAL; g.beginPath(); g.arc(Math.max(px+3,Math.min(px+pw-3,oX)),oY,5,0,6.2832); g.fill();
+    g.fillStyle=SOFT; g.font='700 10px Inter,sans-serif'; g.textAlign='left';
+    g.fillText(title,px+5,y0+12);
+    g.fillStyle=MUTED; g.font='9.4px Inter,sans-serif'; g.textAlign='center';
+    g.fillText(xlab,px+pw/2,H-6);
+  }
+  panel(x0,'ventilation vs PaCO2','PaCO2 (mmHg)',20,90,function(pc){
+    var th=effThreshold(), err=Math.max(0,pc-th);
+    var c=(brk.sc?0:0.70*G*err)+(brk.sp?0:0.30*G*err);
+    var o=brk.sp?0:KO2*Math.pow(Math.max(0,60-d.po),2);
+    var h=brk.sp?0:KPH*(7.40-(6.1+Math.log(P.hco3/(0.03*Math.max(4,pc)))/Math.LN10))*100;
+    var raw=(brk.integ?0:(c+o+h+P.ff))*(1-P.opioid);
+    return Math.max(0,Math.min(brk.eff?0:120*P.muscle,raw));
+  }, paco2, d.ve, effThreshold());
+  panel(x0+pw+gapx,'ventilation vs PaO2','PaO2 (mmHg)',20,140,function(po){
+    var th=effThreshold(), err=Math.max(0,paco2-th);
+    var c=(brk.sc?0:0.70*G*err)+(brk.sp?0:0.30*G*err);
+    var o=brk.sp?0:KO2*Math.pow(Math.max(0,60-po),2);
+    var h=brk.sp?0:KPH*(7.40-d.ph)*100;
+    var raw=(brk.integ?0:(c+o+h+P.ff))*(1-P.opioid);
+    return Math.max(0,Math.min(brk.eff?0:120*P.muscle,raw));
+  }, d.po, d.ve, 60);
+  g.fillStyle=GOLD; g.font='800 9px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('CO2 threshold '+effThreshold().toFixed(0),x0+6,y0+ph-4);
+  g.fillText('PaO2 60',x0+pw+gapx+6,y0+ph-4);
+}
+
+/* ---------------- wiring ---------------- */
+function buildChips(){
+  var h='';
+  for(var i=0;i<PRE.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+PRE[i].n+'</button>';
+  $('chips').innerHTML=h;
+  var bs=$('chips').querySelectorAll('.chip');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    applyPreset(PRE[+this.getAttribute('data-i')]);
+    clearChips(); this.classList.add('on');
+  });
+  bs[0].classList.add('on');
+}
+function bind(id,fn){ $(id).addEventListener('input',function(){ fn(this.value); clearChips(); labels(); }); }
+bind('sPb',function(v){P.pb=parseInt(v,10);});
+bind('sFiO2',function(v){P.fio2=parseInt(v,10)/100;});
+bind('sAa',function(v){P.aa=parseInt(v,10);});
+bind('sVCO2',function(v){P.vco2=parseInt(v,10);});
+bind('sHCO3',function(v){P.hco3=parseInt(v,10);});
+bind('sCSF',function(v){P.csf=parseInt(v,10);});
+bind('sOp',function(v){P.opioid=parseInt(v,10)/100;});
+bind('sMus',function(v){P.muscle=parseInt(v,10)/100;});
+bind('sFF',function(v){P.ff=parseInt(v,10);});
+
+function syncBreaks(){
+  var map=[['kSensC','sc'],['kSensP','sp'],['kInt','integ'],['kEff','eff']];
+  for(var i=0;i<map.length;i++){
+    $(map[i][0]).classList.toggle('broken',brk[map[i][1]]);
+    $(map[i][0]).setAttribute('aria-pressed',brk[map[i][1]]?'true':'false');
+  }
+}
+function toggle(key){ brk[key]=!brk[key]; syncBreaks(); }
+$('kSensC').addEventListener('click',function(){toggle('sc');});
+$('kSensP').addEventListener('click',function(){toggle('sp');});
+$('kInt').addEventListener('click',function(){toggle('integ');});
+$('kEff').addEventListener('click',function(){toggle('eff');});
+$('gSensC').addEventListener('click',function(){toggle('sc');});
+$('gSensP').addEventListener('click',function(){toggle('sp');});
+$('gInt').addEventListener('click',function(){toggle('integ');});
+$('gEff').addEventListener('click',function(){toggle('eff');});
+
+$('bPlay').addEventListener('click',function(){
+  playing=!playing; this.textContent=playing?'Pause':'Play';
+  this.setAttribute('aria-pressed',playing?'true':'false');
+});
+$('bHold').addEventListener('click',function(){ holdUntil=simT+30; });
+$('bReset').addEventListener('click',function(){ paco2=40; hist=[]; simT=0; holdUntil=-1; });
+window.addEventListener('resize',function(){ render(drive(paco2)); });
+
+buildChips(); syncSliders(); syncBreaks();
+
+var last=performance.now();
+function loop(now){
+  var dt=(now-last)/1000; last=now;
+  if(dt>0.5) dt=0.5;
+  var d;
+  if(playing){
+    var sub=6, dtSim=dt*SPEED/sub;
+    for(var i=0;i<sub;i++) d=step(dtSim);
+  } else { d=drive(paco2); }
+  render(d);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(function(n){ last=n; loop(n); });
+})();
+</script>
+</body>
+</html>

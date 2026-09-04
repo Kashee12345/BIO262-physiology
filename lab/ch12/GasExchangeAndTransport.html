@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Diffusion, V/Q Matching and Oxygen Transport</title>
+<meta name="description" content="Shift the oxyhemoglobin curve with pH, CO2, temperature and 2,3-BPG, set a lung region's ventilation-perfusion ratio and watch shunt refuse to correct with oxygen, then race a red cell across the respiratory membrane.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.65;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.seg2{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin:6px 0;}
+.seg2 button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:11px 6px;cursor:pointer;font-family:var(--sans);}
+.seg2 button.on{background:var(--teal);color:#fff;}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+svg text{font-family:var(--sans);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch12.html">&larr; Module 12</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 12</div>
+  <h1>Diffusion, V/Q Matching and Gas Transport</h1>
+  <div class="intro">Three separate machines have to work for oxygen to reach a mitochondrion: a curve that loads and unloads it, a lung that puts air and blood in the same place, and a membrane half a micrometer thick. Shift the curve, break the matching, and thicken the membrane below &mdash; and watch which failure supplemental oxygen can fix and which one it cannot.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Shift the oxyhemoglobin curve</h2>
+      <div class="sl"><label for="sPH">Arterial pH <span class="v" id="vPH">7.40</span></label>
+        <input type="range" id="sPH" min="690" max="770" value="740" step="1" aria-label="Arterial pH"></div>
+      <div class="sl"><label for="sPCO">PCO2 <span class="v" id="vPCO">40 mmHg</span></label>
+        <input type="range" id="sPCO" min="15" max="90" value="40" step="1" aria-label="Carbon dioxide partial pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sT">Temperature <span class="v" id="vT">37.0 &deg;C</span></label>
+        <input type="range" id="sT" min="290" max="420" value="370" step="1" aria-label="Blood temperature in degrees Celsius"></div>
+      <div class="sl"><label for="sBPG">2,3-bisphosphoglycerate <span class="v" id="vBPG">5.0 mmol/L</span></label>
+        <input type="range" id="sBPG" min="0" max="90" value="50" step="1" aria-label="Red cell 2,3-bisphosphoglycerate in millimoles per liter"></div>
+      <div class="sl"><label for="sHB">Hemoglobin <span class="v" id="vHB">15.0 g/dL</span></label>
+        <input type="range" id="sHB" min="40" max="200" value="150" step="1" aria-label="Hemoglobin concentration in grams per deciliter"></div>
+      <div class="sl"><label for="sCO">Carboxyhemoglobin <span class="v" id="vCO">0%</span></label>
+        <input type="range" id="sCO" min="0" max="60" value="0" step="1" aria-label="Percentage of hemoglobin bound to carbon monoxide"></div>
+
+      <div class="lbl">Load a blood sample</div>
+      <div class="chips" id="chipsHb"></div>
+      <div class="eq" id="eqP50"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Saturation is not content</h2>
+      <canvas id="cvHb" width="640" height="380" role="img" aria-label="Oxyhemoglobin dissociation curve of saturation against oxygen partial pressure, with the healthy reference curve, the P50 marker, and a second curve showing oxygen content on a right hand axis"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">P50</div><div class="v" id="oP50">26.6</div><div class="u">mmHg &middot; normal 26.6</div></div>
+        <div class="lab"><div class="k">Saturation at arterial PO2</div><div class="v" id="oSa">97</div><div class="u">% at <span id="oPaLab">95</span> mmHg</div></div>
+        <div class="lab"><div class="k">Saturation at tissue PO2 40</div><div class="v" id="oSv">75</div><div class="u">%</div></div>
+        <div class="lab"><div class="k">Arterial O2 content</div><div class="v" id="oCa">19.5</div><div class="u">mL / dL</div></div>
+        <div class="lab"><div class="k">Unloaded to tissue</div><div class="v" id="oDel">4.5</div><div class="u">mL / dL per pass</div></div>
+        <div class="lab"><div class="k">Delivery at 5 L/min</div><div class="v" id="oDO2">975</div><div class="u">mL O2 / min</div></div>
+      </div>
+      <div class="verdict" id="verdictHb"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Put air and blood in the same place</h2>
+      <div class="sl"><label for="sVQ">V/Q of the abnormal region <span class="v" id="vVQ">0.80</span></label>
+        <input type="range" id="sVQ" min="-200" max="200" value="-10" step="2" aria-label="Ventilation perfusion ratio of the abnormal lung region, logarithmic"></div>
+      <div class="sl"><label for="sFrac">Share of the lung in that state <span class="v" id="vFrac">0%</span></label>
+        <input type="range" id="sFrac" min="0" max="100" value="0" step="1" aria-label="Percentage of the lung in the abnormal ventilation perfusion state"></div>
+      <div class="seg2" role="group" aria-label="Inspired oxygen fraction">
+        <button type="button" id="bAir" class="on" aria-pressed="true">Room air &middot; FiO2 21%</button>
+        <button type="button" id="bO2" aria-pressed="false">100% oxygen</button>
+      </div>
+      <div class="lbl">Load a V/Q scenario</div>
+      <div class="chips" id="chipsVQ"></div>
+      <div class="eq" id="eqVQ"></div>
+      <div class="hint">The rest of the lung is held at a normal V/Q of 0.80, and a fixed <b>3.5 percent physiological shunt</b> is always present &mdash; bronchial and thebesian blood that bypasses alveoli even in health. That small shunt is why a healthy arterial PO2 is 95 mmHg rather than the alveolar 104, and why the normal A&ndash;a gradient is not zero.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>What comes out of the pulmonary vein</h2>
+      <svg id="vqSvg" viewBox="0 0 340 210" role="img" aria-label="Two lung units, one normal and one abnormal, each with an alveolus and a capillary colored by its oxygen tension, mixing into a pulmonary vein">
+        <rect x="0" y="0" width="340" height="210" rx="12" fill="#fff"></rect>
+        <circle id="alvA" cx="62" cy="52" r="30"></circle>
+        <circle id="alvB" cx="62" cy="140" r="30"></circle>
+        <rect id="capA" x="96" y="44" width="118" height="17" rx="8"></rect>
+        <rect id="capB" x="96" y="132" width="118" height="17" rx="8"></rect>
+        <path id="mixA" d="M214 52 Q252 52 262 96" fill="none" stroke-width="15" stroke-linecap="round"></path>
+        <path id="mixB" d="M214 140 Q252 140 262 100" fill="none" stroke-width="15" stroke-linecap="round"></path>
+        <rect id="vein" x="256" y="88" width="70" height="24" rx="12"></rect>
+        <text x="62" y="56" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" id="tAlvA">104</text>
+        <text x="62" y="144" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" id="tAlvB">104</text>
+        <text x="62" y="16" text-anchor="middle" font-size="10" font-weight="800" id="labA">normal units</text>
+        <text x="62" y="192" text-anchor="middle" font-size="10" font-weight="800" id="labB">abnormal units</text>
+        <text x="155" y="57" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" id="tCapA">95</text>
+        <text x="155" y="145" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff" id="tCapB">95</text>
+        <text x="291" y="105" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" id="tVein">95</text>
+        <text x="291" y="130" text-anchor="middle" font-size="9.5" font-weight="700" id="labVein">arterial PO2</text>
+      </svg>
+      <div class="labs">
+        <div class="lab"><div class="k">Ideal alveolar PO2</div><div class="v" id="oPAO2">100</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Arterial PaO2</div><div class="v" id="oPaO2">95</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">A&ndash;a gradient</div><div class="v" id="oAa">5</div><div class="u">mmHg &middot; normal 5&ndash;15</div></div>
+        <div class="lab"><div class="k">Arterial SaO2</div><div class="v" id="oSaO2">97</div><div class="u">%</div></div>
+        <div class="lab"><div class="k">Arterial PaCO2</div><div class="v" id="oPaCO2">40</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">PaO2 on 100% O2</div><div class="v" id="oO2test">660</div><div class="u">mmHg if you switch</div></div>
+      </div>
+      <div class="verdict" id="verdictVQ"></div>
+      <div class="hint"><b>The lung defends its own matching.</b> When alveolar PO2 falls below about 70 mmHg, pulmonary arterioles <i>constrict</i> &mdash; the opposite of every systemic bed &mdash; and divert blood toward better-ventilated lung. Elegant regionally, disastrous globally: at altitude or in diffuse chronic lung disease the whole pulmonary bed constricts, pulmonary artery pressure climbs and the right ventricle eventually fails as cor pulmonale.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Race a red cell across the membrane</h2>
+      <div class="hint" style="margin-top:2px"><b>Fick&rsquo;s law:</b> transfer rate is proportional to surface area &times; the partial pressure difference, divided by membrane thickness. A normal membrane is about <b>0.5 &micro;m</b> thick across roughly <b>70 m&sup2;</b>, and a red cell spends about <b>0.75 s</b> in a pulmonary capillary at rest. Take that safety margin away and see when hypoxemia appears.</div>
+      <div class="sl" style="margin-top:14px"><label for="sTrans">Capillary transit time <span class="v" id="vTrans">0.75 s</span></label>
+        <input type="range" id="sTrans" min="20" max="90" value="75" step="1" aria-label="Red cell transit time through a pulmonary capillary in seconds"></div>
+      <div class="sl"><label for="sThick">Membrane thickness <span class="v" id="vThick">0.5 &micro;m</span></label>
+        <input type="range" id="sThick" min="10" max="100" value="10" step="1" aria-label="Respiratory membrane thickness in tenths of a micrometer"></div>
+      <div class="sl"><label for="sArea">Surface area available <span class="v" id="vArea">70 m&sup2;</span></label>
+        <input type="range" id="sArea" min="14" max="70" value="70" step="1" aria-label="Alveolar surface area in square meters"></div>
+      <div class="lbl">Load a membrane</div>
+      <div class="chips" id="chipsDiff"></div>
+      <div class="eq" id="eqDiff"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Equilibration along the capillary</h2>
+      <canvas id="cvDiff" width="640" height="300" role="img" aria-label="Capillary oxygen and carbon dioxide partial pressures plotted against time spent in the pulmonary capillary, with the transit time marked"></canvas>
+      <div class="verdict" id="verdictDiff"></div>
+      <div class="hint"><b>Carbon dioxide is the control experiment.</b> Its gradient is tiny &mdash; 45 mmHg venous to 40 mmHg alveolar &mdash; yet it transfers just as completely, because CO2 is about twenty times more soluble in the membrane and so diffuses roughly twenty times faster. That is why diffusion and V/Q problems cause hypoxemia long before they cause hypercapnia, and why a rising PaCO2 nearly always means a ventilation problem rather than an exchange problem.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'), LINE=cvar('--line'),
+    MUTED=cvar('--muted'), SOFT=cvar('--soft');
+
+function hex2rgb(h){h=h.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+var RGB_BLUE=hex2rgb(BLUE), RGB_CORAL=hex2rgb(CORAL);
+function oxyColor(po2){
+  var t=Math.max(0,Math.min(1,(po2-35)/65));
+  var r=Math.round(RGB_BLUE[0]+(RGB_CORAL[0]-RGB_BLUE[0])*t);
+  var g=Math.round(RGB_BLUE[1]+(RGB_CORAL[1]-RGB_BLUE[1])*t);
+  var b=Math.round(RGB_BLUE[2]+(RGB_CORAL[2]-RGB_BLUE[2])*t);
+  return 'rgb('+r+','+g+','+b+')';
+}
+function sizeCanvas(cvs,ratio,minH){
+  var r=cvs.getBoundingClientRect(), dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=Math.max(300,Math.round(r.width)), h=Math.max(minH||0,Math.round(w*ratio));
+  if(cvs.width!==Math.round(w*dpr)||cvs.height!==Math.round(h*dpr)){cvs.width=Math.round(w*dpr); cvs.height=Math.round(h*dpr);}
+  cvs.style.height=h+'px';
+  var g=cvs.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,w,h);
+  return {g:g,w:w,h:h};
+}
+function clearChips(box){var b=$(box).querySelectorAll('.chip');for(var i=0;i<b.length;i++)b[i].classList.remove('on');}
+function buildChips(box,arr,apply){
+  var h='';
+  for(var i=0;i<arr.length;i++) h+='<button type="button" class="chip" data-i="'+i+'">'+arr[i].n+'</button>';
+  $(box).innerHTML=h;
+  var bs=$(box).querySelectorAll('.chip');
+  for(var j=0;j<bs.length;j++) bs[j].addEventListener('click',function(){
+    apply(arr[+this.getAttribute('data-i')]);
+    for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+    this.classList.add('on');
+  });
+  bs[0].classList.add('on');
+}
+
+/* =========================================================
+   Oxygen chemistry
+   ========================================================= */
+var hb={ph:7.40,pco2:40,T:37,bpg:5.0,hb:15.0,co:0};
+var NHILL=2.7;
+function p50(){
+  var p = 26.6*Math.pow(10, 0.024*(hb.T-37) + 0.40*(7.4-hb.ph) + 0.06*(Math.log(hb.pco2/40)/Math.LN10));
+  p += 1.5*(hb.bpg-5.0);
+  p *= (1 - 0.7*(hb.co/100));
+  return Math.max(6,Math.min(70,p));
+}
+function satAt(po2,P50){
+  if(po2<=0) return 0;
+  var a=Math.pow(po2,NHILL);
+  return a/(a+Math.pow(P50,NHILL));
+}
+function contentAt(po2,P50){
+  return hb.hb*1.34*(1-hb.co/100)*satAt(po2,P50) + 0.003*po2;
+}
+function po2FromContent(c,P50){
+  var lo=1, hi=700;
+  for(var i=0;i<50;i++){
+    var mid=(lo+hi)/2;
+    if(contentAt(mid,P50)<c) lo=mid; else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+
+/* =========================================================
+   V/Q model
+   ========================================================= */
+var vq={logvq:-0.10, frac:0, fio2:0.21};
+var ANCH=[
+ [0.01,42,45],[0.05,46,44.5],[0.1,50,44],[0.3,63,43.5],[0.63,89,42],
+ [0.8,104,40],[1.0,110,38.5],[2.0,123,32],[3.3,130,28],[10,142,15],[30,147,6],[100,149,2]
+];
+function alveolarFromVQ(r){
+  if(r<=ANCH[0][0]) return {o2:ANCH[0][1],co2:ANCH[0][2]};
+  if(r>=ANCH[ANCH.length-1][0]) return {o2:ANCH[ANCH.length-1][1],co2:ANCH[ANCH.length-1][2]};
+  for(var i=0;i<ANCH.length-1;i++){
+    if(r>=ANCH[i][0]&&r<=ANCH[i+1][0]){
+      var t=(Math.log(r)-Math.log(ANCH[i][0]))/(Math.log(ANCH[i+1][0])-Math.log(ANCH[i][0]));
+      return {o2:ANCH[i][1]+t*(ANCH[i+1][1]-ANCH[i][1]), co2:ANCH[i][2]+t*(ANCH[i+1][2]-ANCH[i][2])};
+    }
+  }
+  return {o2:104,co2:40};
+}
+var PB=760, PH2O=47, MVO2=40, MVCO2=45, BASE_SHUNT=0.035;
+function unitGas(ratio,fio2){
+  var air=alveolarFromVQ(ratio);
+  if(fio2<=0.25) return air;
+  /* On enriched oxygen a ventilated unit fills with oxygen; a true shunt cannot.
+     Weight the response by how far above a true shunt the ratio is. */
+  var w=Math.max(0,Math.min(1,(Math.log(Math.max(ratio,0.001)/0.01)/Math.LN10)/1.0));
+  var full=fio2*(PB-PH2O)-air.co2/0.8;
+  return {o2: MVO2 + (full-MVO2)*w, co2: air.co2};
+}
+function vqSolve(fio2){
+  var P50=p50();
+  var ratio=Math.pow(10,vq.logvq), f=vq.frac/100;
+  var gN=unitGas(0.8,fio2), gA=unitGas(ratio,fio2);
+  var cN=contentAt(gN.o2,P50), cA=contentAt(gA.o2,P50), cMV=contentAt(MVO2,P50);
+  var cMix=BASE_SHUNT*cMV + (1-BASE_SHUNT)*(f*cA+(1-f)*cN);
+  var paO2=po2FromContent(cMix,P50);
+  var paCO2=BASE_SHUNT*MVCO2 + (1-BASE_SHUNT)*(f*gA.co2+(1-f)*gN.co2);
+  var idealPAO2=fio2*(PB-PH2O)-paCO2/0.8;
+  return {ratio:ratio,f:f,gN:gN,gA:gA,paO2:paO2,paCO2:paCO2,
+          sa:satAt(paO2,P50)*100, ca:cMix, PAO2:idealPAO2, aa:idealPAO2-paO2, P50:P50};
+}
+
+/* =========================================================
+   Diffusion model
+   ========================================================= */
+var df={transit:0.75, thick:1.0, area:1.0};
+function diffTau(){ return 0.08*df.thick/df.area; }
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+var arterialPO2=95;
+
+function renderAll(){
+  var P50=p50();
+  var res=vqSolve(vq.fio2);
+  arterialPO2=res.paO2;
+  renderVQ(res,P50);
+  renderHb(P50,res);
+  renderDiff();
+}
+
+/* ---- panel 1 & 2 ---- */
+var HBPRE=[
+ {n:'Resting arterial blood',ph:7.40,pco2:40,T:37,bpg:5.0,h:15,co:0},
+ {n:'Exercising muscle capillary',ph:7.20,pco2:60,T:39,bpg:5.5,h:15,co:0},
+ {n:'Stored bank blood',ph:7.35,pco2:40,T:37,bpg:1.0,h:15,co:0},
+ {n:'Fetal blood',ph:7.42,pco2:40,T:37,bpg:0.0,h:17,co:0},
+ {n:'Acclimatized at 5500 m',ph:7.45,pco2:28,T:37,bpg:7.0,h:18,co:0},
+ {n:'Carbon monoxide poisoning',ph:7.40,pco2:40,T:37,bpg:5.0,h:15,co:40},
+ {n:'Severe anemia',ph:7.40,pco2:40,T:37,bpg:6.0,h:7,co:0},
+ {n:'Hypothermia with alkalosis',ph:7.55,pco2:28,T:30,bpg:5.0,h:15,co:0}
+];
+function renderHb(P50,res){
+  $('vPH').textContent=hb.ph.toFixed(2);
+  $('vPCO').textContent=hb.pco2+' mmHg';
+  $('vT').textContent=hb.T.toFixed(1)+' °C';
+  $('vBPG').textContent=hb.bpg.toFixed(1)+' mmol/L';
+  $('vHB').textContent=hb.hb.toFixed(1)+' g/dL';
+  $('vCO').textContent=hb.co+'%';
+
+  var sa=satAt(arterialPO2,P50), sv=satAt(40,P50);
+  var ca=contentAt(arterialPO2,P50), cvv=contentAt(40,P50);
+  $('oP50').textContent=P50.toFixed(1);
+  $('oSa').textContent=(sa*100).toFixed(0);
+  $('oPaLab').textContent=arterialPO2.toFixed(0);
+  $('oSv').textContent=(sv*100).toFixed(0);
+  $('oCa').textContent=ca.toFixed(1);
+  $('oDel').textContent=(ca-cvv).toFixed(1);
+  $('oDO2').textContent=Math.round(ca*50);
+
+  var shift=P50-26.6;
+  $('eqP50').innerHTML='<b>P50 = '+P50.toFixed(1)+' mmHg</b> ('+(shift>=0?'+':'')+shift.toFixed(1)+' from the normal 26.6)<br>'+
+    'log P50 shifts by 0.024 &times; (T &minus; 37) + 0.40 &times; (7.4 &minus; pH) + 0.06 &times; log(PCO2/40), and 2,3-BPG adds about 1.5 mmHg per mmol/L.<br>'+
+    (shift>0.7?'<span style="color:'+CORAL+'"><b>Right shift</b> &mdash; lower affinity, easier unloading. Exactly the conditions inside a working muscle: more CO2 and H+ (the <b>Bohr effect</b>), warmer, more 2,3-BPG.</span>'
+     :(shift<-0.7?'<span style="color:'+BLUE+'"><b>Left shift</b> &mdash; higher affinity, oxygen held more tightly. Alkalosis, hypothermia, low 2,3-BPG, stored blood, fetal hemoglobin and carbon monoxide all do this.</span>'
+     :'<span style="color:'+GREEN+'">Curve in its normal position.</span>'));
+
+  var v=$('verdictHb'), cls='verdict', m='';
+  if(hb.co>=15){
+    cls+=' bad';
+    m='Carboxyhemoglobin '+hb.co+'% &mdash; PaO2 and pulse oximetry both look normal.<small>Carbon monoxide binds hemoglobin with roughly 210 times the affinity of oxygen, so '+hb.co+' percent of the carrying capacity is simply gone: content is '+ca.toFixed(1)+' mL/dL instead of about 20. It also left-shifts the remaining sites (P50 '+P50.toFixed(1)+'), so the little oxygen carried is released poorly. A standard oximeter cannot tell carboxyhemoglobin from oxyhemoglobin and reads falsely high. Diagnosis needs co-oximetry.</small>';
+  } else if(hb.hb<10){
+    cls+=' bad';
+    m='Hemoglobin '+hb.hb.toFixed(1)+' g/dL &mdash; saturation '+(sa*100).toFixed(0)+'%, content only '+ca.toFixed(1)+' mL/dL.<small>Content = (Hb &times; 1.34 &times; SaO2) + dissolved. Saturation is the percentage of seats that are filled; it says nothing about how many seats exist. The oximeter is normal, the PaO2 is normal, and the blood carries barely half the oxygen it should.</small>';
+  } else if(shift>2.5){
+    cls+=' cool';
+    m='Right-shifted, P50 '+P50.toFixed(1)+' mmHg &mdash; '+(ca-cvv).toFixed(1)+' mL/dL delivered per pass.<small>At a tissue PO2 of 40 mmHg saturation is now '+(sv*100).toFixed(0)+' percent instead of 75, so more oxygen comes off for the same blood flow and the same arterial saturation. This is why an exercising muscle extracts more without any change in perfusion.</small>';
+  } else if(shift<-2.5){
+    cls+=' warn';
+    m='Left-shifted, P50 '+P50.toFixed(1)+' mmHg &mdash; only '+(ca-cvv).toFixed(1)+' mL/dL delivered per pass.<small>Loading in the lung is easy; unloading in tissue is not. Saturation at a tissue PO2 of 40 is '+(sv*100).toFixed(0)+' percent instead of 75. Fetal hemoglobin uses this deliberately &mdash; the left shift is what lets a fetus strip oxygen from maternal blood across the placenta.</small>';
+  } else {
+    cls+=' ok';
+    m='Normal curve: '+(sa*100).toFixed(0)+'% saturated arterial, 75% at a tissue PO2 of 40.<small>The flat plateau above 60 mmHg is a loading safety margin &mdash; PaO2 can fall from 100 to 60 and saturation drops only from about 98 to 90 percent. The steep segment below 60 is the unloading zone, where a small further fall in tissue PO2 releases a great deal of oxygen. Cooperative binding between the four hem groups is what makes the curve sigmoid.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+  drawHbCurve(P50);
+}
+function drawHbCurve(P50){
+  var s=sizeCanvas($('cvHb'),380/640,310), g=s.g, W=s.w, H=s.h;
+  var padL=40,padR=44,padT=14,padB=34;
+  var pw=W-padL-padR, ph=H-padT-padB;
+  var XMAX=120, CMAX=24;
+  function X(p){return padL+p/XMAX*pw;}
+  function Ys(sat){return padT+ph-sat*ph;}
+  function Yc(c){return padT+ph-c/CMAX*ph;}
+  g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.rect(padL,padT,pw,ph); g.fill(); g.stroke();
+  g.strokeStyle=LINE; g.font='9.5px Inter,sans-serif'; g.fillStyle=MUTED;
+  for(var p=20;p<XMAX;p+=20){ g.beginPath(); g.moveTo(X(p),padT); g.lineTo(X(p),padT+ph); g.stroke(); g.textAlign='center'; g.fillText(p,X(p),padT+ph+14); }
+  g.textAlign='center'; g.fillText('0',padL,padT+ph+14); g.fillText(XMAX,padL+pw,padT+ph+14);
+  for(var q=0;q<=100;q+=25){ g.beginPath(); g.moveTo(padL,Ys(q/100)); g.lineTo(padL+pw,Ys(q/100)); g.stroke(); g.textAlign='right'; g.fillText(q+'%',padL-5,Ys(q/100)+3); }
+  g.textAlign='left'; g.fillStyle=PURPLE;
+  for(var c=6;c<=24;c+=6){ g.fillText(c,padL+pw+5,Yc(c)+3); }
+  g.fillStyle=MUTED; g.textAlign='center'; g.font='700 9.6px Inter,sans-serif';
+  g.fillText('PO2 (mmHg)',padL+pw/2,H-4);
+
+  /* reference curve */
+  g.strokeStyle=MUTED; g.lineWidth=1.5; g.setLineDash([5,4]); g.beginPath();
+  for(var i=0;i<=200;i++){ var pp=i/200*XMAX, yy=Ys(satAt(pp,26.6)); if(i===0)g.moveTo(X(pp),yy); else g.lineTo(X(pp),yy); }
+  g.stroke(); g.setLineDash([]);
+  /* content curve */
+  g.strokeStyle=PURPLE; g.lineWidth=1.8; g.globalAlpha=0.75; g.beginPath();
+  for(var j=0;j<=200;j++){ var p2=j/200*XMAX, y2=Yc(contentAt(p2,P50)); if(j===0)g.moveTo(X(p2),y2); else g.lineTo(X(p2),y2); }
+  g.stroke(); g.globalAlpha=1;
+  /* current saturation curve */
+  g.strokeStyle=TEAL; g.lineWidth=2.8; g.beginPath();
+  for(var k=0;k<=200;k++){ var p3=k/200*XMAX, y3=Ys(satAt(p3,P50)); if(k===0)g.moveTo(X(p3),y3); else g.lineTo(X(p3),y3); }
+  g.stroke();
+  /* P50 marker */
+  g.strokeStyle=GOLD; g.lineWidth=1.6; g.setLineDash([3,3]);
+  g.beginPath(); g.moveTo(X(P50),Ys(0)); g.lineTo(X(P50),Ys(0.5)); g.lineTo(padL,Ys(0.5)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.beginPath(); g.arc(X(P50),Ys(0.5),4,0,6.2832); g.fill();
+  g.font='800 9.6px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('P50 '+P50.toFixed(1),X(P50),Ys(0.5)-9);
+  /* arterial + venous points */
+  function mark(po2,col,lab){
+    var yy=Ys(satAt(po2,P50));
+    g.fillStyle=col; g.beginPath(); g.arc(X(po2),yy,5,0,6.2832); g.fill();
+    g.fillStyle=col; g.font='800 9.6px Inter,sans-serif'; g.textAlign='center';
+    g.fillText(lab,Math.min(padL+pw-30,X(po2)),yy-10);
+  }
+  mark(40,BLUE,'tissue 40');
+  mark(Math.min(XMAX-2,arterialPO2),CORAL,'arterial '+arterialPO2.toFixed(0));
+  /* legend */
+  g.font='9.4px Inter,sans-serif'; g.textAlign='left';
+  g.fillStyle=TEAL; g.fillText('— saturation, this blood',padL+8,padT+14);
+  g.fillStyle=MUTED; g.fillText('- - normal curve (P50 26.6)',padL+8,padT+28);
+  g.fillStyle=PURPLE; g.fillText('— O2 content, mL/dL (right axis)',padL+8,padT+42);
+}
+
+/* ---- panel 3 & 4 ---- */
+var VQPRE=[
+ {n:'Whole lung, healthy',l:-0.10,f:0},
+ {n:'Apex upright · V/Q 3.3',l:0.519,f:35},
+ {n:'Base upright · V/Q 0.63',l:-0.201,f:45},
+ {n:'Lobar pneumonia · shunt',l:-2.0,f:45},
+ {n:'Atelectasis · shunt',l:-2.0,f:25},
+ {n:'Pulmonary embolism · dead space',l:2.0,f:35},
+ {n:'Asthma · low V/Q scatter',l:-0.82,f:45}
+];
+function renderVQ(res,P50){
+  var ratio=res.ratio;
+  $('vVQ').textContent = ratio<0.02?'0.01 — true shunt' : (ratio>60?'>60 — alveolar dead space' : ratio.toFixed(2));
+  $('vFrac').textContent=vq.frac+'%';
+  $('oPAO2').textContent=res.PAO2.toFixed(0);
+  $('oPaO2').textContent=res.paO2.toFixed(0);
+  $('oAa').textContent=res.aa.toFixed(0);
+  $('oSaO2').textContent=res.sa.toFixed(0);
+  $('oPaCO2').textContent=res.paCO2.toFixed(0);
+  var alt=vqSolve(vq.fio2>0.5?0.21:1.0);
+  $('oO2test').textContent=alt.paO2.toFixed(0);
+  $('oO2test').parentNode.querySelector('.u').textContent = vq.fio2>0.5?'mmHg on room air':'mmHg if you switch';
+  $('oO2test').parentNode.querySelector('.k').textContent = vq.fio2>0.5?'PaO2 back on room air':'PaO2 on 100% O2';
+
+  /* figure */
+  $('alvA').setAttribute('fill',oxyColor(res.gN.o2));
+  $('alvB').setAttribute('fill',oxyColor(res.gA.o2));
+  $('capA').setAttribute('fill',oxyColor(res.gN.o2));
+  $('capB').setAttribute('fill',oxyColor(res.gA.o2));
+  $('mixA').setAttribute('stroke',oxyColor(res.gN.o2));
+  $('mixB').setAttribute('stroke',oxyColor(res.gA.o2));
+  $('vein').setAttribute('fill',oxyColor(res.paO2));
+  $('tAlvA').textContent=res.gN.o2.toFixed(0);
+  $('tAlvB').textContent=res.gA.o2.toFixed(0);
+  $('tCapA').textContent=res.gN.o2.toFixed(0);
+  $('tCapB').textContent=res.gA.o2.toFixed(0);
+  $('tVein').textContent=res.paO2.toFixed(0);
+  $('labA').textContent=(100-vq.frac)+'% of flow · V/Q 0.80';
+  $('labB').textContent=vq.frac+'% of flow · V/Q '+(ratio<0.02?'≈0':(ratio>60?'≈∞':ratio.toFixed(2)));
+  $('labA').setAttribute('fill',SOFT); $('labB').setAttribute('fill',SOFT); $('labVein').setAttribute('fill',SOFT);
+  var wA=Math.max(6,(100-vq.frac)/100*17+4), wB=Math.max(6,vq.frac/100*17+4);
+  $('mixA').setAttribute('stroke-width',wA.toFixed(1));
+  $('mixB').setAttribute('stroke-width',wB.toFixed(1));
+
+  $('eqVQ').innerHTML='<b>V/Q = alveolar ventilation &divide; perfusion</b><br>'+
+    'Whole lung: about 4.2 L/min of alveolar ventilation over 5.0 L/min of cardiac output = <b>0.8</b>. '+
+    'Upright, gravity raises both toward the base &mdash; but perfusion far more steeply &mdash; so the apex sits near <b>3.3</b> and the base near <b>0.63</b>.<br>'+
+    'This region: alveolar PO2 <b class="num">'+res.gA.o2.toFixed(0)+'</b> mmHg, alveolar PCO2 <b class="num">'+res.gA.co2.toFixed(0)+'</b> mmHg.';
+
+  var v=$('verdictVQ'), cls='verdict', m='';
+  var alt100 = vq.fio2>0.5 ? res : vqSolve(1.0);
+  if(vq.frac===0 || Math.abs(res.ratio-0.8)<0.06){
+    cls+=' ok';
+    m='Matched lung: PaO2 '+res.paO2.toFixed(0)+' mmHg, A&ndash;a gradient '+res.aa.toFixed(0)+' mmHg.<small>Arterial PO2 sits just below the alveolar value because of the 3 percent physiological shunt. Diffusion has nothing to do with this gap &mdash; the membrane finished its work long ago.</small>';
+  } else if(res.ratio<0.05){
+    cls+=' bad';
+    m='True shunt over '+vq.frac+'% of the lung &mdash; PaO2 '+res.paO2.toFixed(0)+' mmHg, A&ndash;a gradient '+res.aa.toFixed(0)+' mmHg.<small>These alveoli are perfused but not ventilated (V/Q of zero): pneumonia, atelectasis, pulmonary edema. Switching to 100 percent oxygen moves PaO2 only to '+alt100.paO2.toFixed(0)+' mmHg, and that small gain is nothing but extra dissolved oxygen in the units that were already working. You cannot enrich gas that the blood never meets. <b>Failure to correct with oxygen is the clinical signature of shunt.</b></small>';
+  } else if(res.ratio<0.7){
+    cls+=' warn';
+    m='Low V/Q over '+vq.frac+'% of the lung &mdash; PaO2 '+res.paO2.toFixed(0)+' mmHg, A&ndash;a gradient '+res.aa.toFixed(0)+' mmHg.<small>These alveoli are underventilated relative to their blood flow, but they are still ventilated. On 100 percent oxygen PaO2 rises to about '+alt100.paO2.toFixed(0)+' mmHg &mdash; simple V/Q mismatch corrects readily, and that is what separates it from shunt at the bedside.</small>';
+  } else if(res.ratio>3.5){
+    cls+=' cool';
+    m='High V/Q over '+vq.frac+'% of the lung &mdash; ventilation wasted on unperfused alveoli.<small>This is alveolar dead space: pulmonary embolism at the extreme. PaO2 is '+res.paO2.toFixed(0)+' mmHg and PaCO2 '+res.paCO2.toFixed(0)+' mmHg. Notice how little the oxygen falls &mdash; the remaining lung is well ventilated, so the main cost is wasted ventilation and a rising ratio of dead space to tidal volume, which the patient pays for by breathing harder.</small>';
+  } else {
+    cls+=' cool';
+    m='Mild V/Q inequality &mdash; PaO2 '+res.paO2.toFixed(0)+' mmHg, A&ndash;a gradient '+res.aa.toFixed(0)+' mmHg.<small>Even the healthy upright lung is not uniform: the apex is relatively overventilated at a V/Q near 3.3 and the base relatively overperfused at 0.63. Because more blood drains from the base, mixed arterial PO2 is dragged toward the base value &mdash; one reason arterial PO2 sits below alveolar PO2.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+}
+
+/* ---- panel 5 & 6 ---- */
+var DFPRE=[
+ {n:'Healthy lung at rest',t:0.75,th:1.0,a:1.0},
+ {n:'Healthy lung, heavy exercise',t:0.25,th:1.0,a:1.0},
+ {n:'Early interstitial disease, at rest',t:0.75,th:3.0,a:0.70},
+ {n:'Early interstitial disease, exercising',t:0.25,th:3.0,a:0.70},
+ {n:'Advanced fibrosis',t:0.60,th:6.0,a:0.40},
+ {n:'Emphysema · surface area lost',t:0.50,th:1.0,a:0.25}
+];
+function renderDiff(){
+  $('vTrans').textContent=df.transit.toFixed(2)+' s';
+  $('vThick').textContent=(0.5*df.thick).toFixed(1)+' µm';
+  $('vArea').textContent=Math.round(70*df.area)+' m²';
+  var tau=diffTau();
+  /* this panel always runs on room air against a normal alveolus: 104 and 40 mmHg */
+  var PA=104, PACO2=40;
+  var endO2=PA-(PA-MVO2)*Math.exp(-df.transit/tau);
+  var tauC=tau/20;
+  var endCO2=PACO2+(MVCO2-PACO2)*Math.exp(-df.transit/tauC);
+  var t95 = tau*Math.log((PA-MVO2)/Math.max(0.1,(PA-MVO2)*0.05));
+
+  $('eqDiff').innerHTML='<b>Rate &prop; (area &times; &Delta;P) / thickness</b><br>'+
+    'Equilibration time constant here is <b class="num">'+tau.toFixed(3)+' s</b> for oxygen '+
+    '(normal 0.080 s) and <b class="num">'+tauC.toFixed(4)+' s</b> for CO2, twenty times faster.<br>'+
+    'Oxygen needs about <b class="num">'+t95.toFixed(2)+' s</b> to close 95 percent of the gap; the red cell is in the capillary for <b class="num">'+df.transit.toFixed(2)+' s</b>.';
+
+  var v=$('verdictDiff'), cls='verdict', m='';
+  if(endO2>PA-3){
+    cls+=' ok';
+    m='End-capillary PO2 '+endO2.toFixed(0)+' mmHg &mdash; fully equilibrated with '+PA.toFixed(0)+' mmHg alveolar gas.<small>A red cell needs only about a third of its available transit time. That threefold safety margin is why pure diffusion impairment is a rare cause of resting hypoxemia &mdash; the membrane is almost never the limiting step.</small>';
+  } else if(endO2>PA-15){
+    cls+=' warn';
+    m='End-capillary PO2 '+endO2.toFixed(0)+' mmHg against '+PA.toFixed(0)+' mmHg alveolar &mdash; the margin is gone.<small>Equilibration is now only just finishing inside the transit time. Shorten the transit (exercise raises cardiac output and cuts capillary time toward 0.25 s) and this becomes frank hypoxemia. Diffusion limitation classically shows itself on exertion first.</small>';
+  } else {
+    cls+=' bad';
+    m='Diffusion limitation: blood leaves at '+endO2.toFixed(0)+' mmHg while the alveolus holds '+PA.toFixed(0)+' mmHg.<small>Thickening the membrane and destroying surface area both attack Fick&rsquo;s law directly. Note what CO2 did: it left at '+endCO2.toFixed(0)+' mmHg, essentially complete, because it is about twenty times more soluble in the membrane. Hypoxemia arrives long before hypercapnia.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+  drawDiff(PA,PACO2,tau,tauC);
+}
+function drawDiff(PA,PACO2,tau,tauC){
+  var s=sizeCanvas($('cvDiff'),300/640,240), g=s.g, W=s.w, H=s.h;
+  var padL=42,padR=14,padT=14,padB=30;
+  var pw=W-padL-padR, ph=H-padT-padB;
+  var TMAX=0.9, PMAX=Math.max(120,PA*1.1);
+  function X(t){return padL+t/TMAX*pw;}
+  function Y(p){return padT+ph-p/PMAX*ph;}
+  g.fillStyle='#fff'; g.strokeStyle=LINE; g.lineWidth=1;
+  g.beginPath(); g.rect(padL,padT,pw,ph); g.fill(); g.stroke();
+  g.strokeStyle=LINE; g.font='9.5px Inter,sans-serif'; g.fillStyle=MUTED;
+  for(var t=0.15;t<TMAX;t+=0.15){ g.beginPath(); g.moveTo(X(t),padT); g.lineTo(X(t),padT+ph); g.stroke(); g.textAlign='center'; g.fillText(t.toFixed(2)+'s',X(t),padT+ph+13); }
+  for(var p=20;p<PMAX;p+=20){ g.beginPath(); g.moveTo(padL,Y(p)); g.lineTo(padL+pw,Y(p)); g.stroke(); g.textAlign='right'; g.fillText(p,padL-5,Y(p)+3); }
+  /* alveolar levels */
+  g.strokeStyle=CORAL; g.setLineDash([5,4]); g.lineWidth=1.4;
+  g.beginPath(); g.moveTo(padL,Y(PA)); g.lineTo(padL+pw,Y(PA)); g.stroke();
+  g.strokeStyle=BLUE; g.beginPath(); g.moveTo(padL,Y(PACO2)); g.lineTo(padL+pw,Y(PACO2)); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 9.4px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('alveolar PO2 '+PA.toFixed(0),padL+6,Y(PA)-5);
+  g.fillStyle=BLUE; g.fillText('alveolar PCO2 '+PACO2.toFixed(0),padL+6,Y(PACO2)-5);
+  /* O2 curve */
+  g.strokeStyle=CORAL; g.lineWidth=2.8; g.beginPath();
+  for(var i=0;i<=200;i++){ var tt=i/200*TMAX, pp=PA-(PA-MVO2)*Math.exp(-tt/tau); if(i===0)g.moveTo(X(tt),Y(pp)); else g.lineTo(X(tt),Y(pp)); }
+  g.stroke();
+  /* CO2 curve */
+  g.strokeStyle=BLUE; g.lineWidth=2.4; g.beginPath();
+  for(var j=0;j<=200;j++){ var t2=j/200*TMAX, p2=PACO2+(MVCO2-PACO2)*Math.exp(-t2/tauC); if(j===0)g.moveTo(X(t2),Y(p2)); else g.lineTo(X(t2),Y(p2)); }
+  g.stroke();
+  /* transit marker */
+  var xt=X(df.transit);
+  g.fillStyle=MUTED; g.globalAlpha=0.10; g.fillRect(xt,padT,padL+pw-xt,ph); g.globalAlpha=1;
+  g.strokeStyle=TEALD; g.lineWidth=2; g.beginPath(); g.moveTo(xt,padT); g.lineTo(xt,padT+ph); g.stroke();
+  var endO2=PA-(PA-MVO2)*Math.exp(-df.transit/tau);
+  g.fillStyle=TEALD; g.beginPath(); g.arc(xt,Y(endO2),5,0,6.2832); g.fill();
+  g.font='800 10px Inter,sans-serif'; g.textAlign='right';
+  g.fillText('leaves at '+endO2.toFixed(0)+' mmHg',xt-7,Y(endO2)-8);
+  g.fillStyle=MUTED; g.font='9.4px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('capillary exit at '+df.transit.toFixed(2)+' s',Math.min(xt+6,padL+pw-120),padT+12);
+  g.textAlign='center'; g.font='700 9.6px Inter,sans-serif';
+  g.fillText('time in the pulmonary capillary',padL+pw/2,H-3);
+}
+
+/* =========================================================
+   wiring
+   ========================================================= */
+buildChips('chipsHb',HBPRE,function(p){
+  hb.ph=p.ph; hb.pco2=p.pco2; hb.T=p.T; hb.bpg=p.bpg; hb.hb=p.h; hb.co=p.co;
+  $('sPH').value=Math.round(p.ph*100); $('sPCO').value=p.pco2; $('sT').value=Math.round(p.T*10);
+  $('sBPG').value=Math.round(p.bpg*10); $('sHB').value=Math.round(p.h*10); $('sCO').value=p.co;
+  renderAll();
+});
+buildChips('chipsVQ',VQPRE,function(p){
+  vq.logvq=p.l; vq.frac=p.f;
+  $('sVQ').value=Math.round(p.l*100); $('sFrac').value=p.f;
+  renderAll();
+});
+buildChips('chipsDiff',DFPRE,function(p){
+  df.transit=p.t; df.thick=p.th; df.area=p.a;
+  $('sTrans').value=Math.round(p.t*100); $('sThick').value=Math.round(p.th*10); $('sArea').value=Math.round(p.a*70);
+  renderAll();
+});
+function on(id,fn,box){ $(id).addEventListener('input',function(){ fn(this.value); if(box) clearChips(box); renderAll(); }); }
+on('sPH',function(v){hb.ph=parseInt(v,10)/100;},'chipsHb');
+on('sPCO',function(v){hb.pco2=parseInt(v,10);},'chipsHb');
+on('sT',function(v){hb.T=parseInt(v,10)/10;},'chipsHb');
+on('sBPG',function(v){hb.bpg=parseInt(v,10)/10;},'chipsHb');
+on('sHB',function(v){hb.hb=parseInt(v,10)/10;},'chipsHb');
+on('sCO',function(v){hb.co=parseInt(v,10);},'chipsHb');
+on('sVQ',function(v){vq.logvq=parseInt(v,10)/100;},'chipsVQ');
+on('sFrac',function(v){vq.frac=parseInt(v,10);},'chipsVQ');
+on('sTrans',function(v){df.transit=parseInt(v,10)/100;},'chipsDiff');
+on('sThick',function(v){df.thick=parseInt(v,10)/10;},'chipsDiff');
+on('sArea',function(v){df.area=parseInt(v,10)/70;},'chipsDiff');
+function syncFiO2(){
+  var on100=vq.fio2>0.5;
+  $('bO2').classList.toggle('on',on100); $('bAir').classList.toggle('on',!on100);
+  $('bO2').setAttribute('aria-pressed',on100?'true':'false');
+  $('bAir').setAttribute('aria-pressed',on100?'false':'true');
+}
+$('bAir').addEventListener('click',function(){ vq.fio2=0.21; syncFiO2(); renderAll(); });
+$('bO2').addEventListener('click',function(){ vq.fio2=1.0; syncFiO2(); renderAll(); });
+window.addEventListener('resize',renderAll);
+syncFiO2(); renderAll();
+})();
+</script>
+</body>
+</html>

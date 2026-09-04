@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Charged Membrane &mdash; Building &minus;70 mV</title>
+<meta name="description" content="Set the ion concentrations and the potassium-to-sodium permeability ratio, read Nernst and Goldman live, then poison the pump and watch the voltage fade rather than collapse.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.35;cursor:default;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:8px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);line-height:1.3;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);} .verdict.cool{background:var(--blue);}
+.hint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5;} .hint b{color:var(--soft);}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.hide{display:none;}
+.eqn{font-family:var(--disp);font-size:14.5px;color:var(--teal-dk);background:#fff;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-top:10px;text-align:center;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch06.html">&larr; Module 6</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 6</div>
+  <h1>The Charged Membrane: Building &minus;70 mV</h1>
+  <div class="intro">A resting neuron is a charged capacitor, and the voltage exists only because two conditions hold at once: <b>unequal ion distribution</b> maintained by the Na<sup>+</sup>/K<sup>+</sup> ATPase, and a membrane that is <b>25&ndash;100 times more permeable to K<sup>+</sup> than to Na<sup>+</sup></b>. Move the concentrations and the permeability ratio and watch Nernst and Goldman answer live &mdash; then stop the pump and see why the voltage fades over minutes instead of vanishing the instant the pump dies.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">Set the ions</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Stop the pump</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Try a real membrane</div>
+        <div class="chips" id="presets"></div>
+
+        <div class="lbl">Permeability &mdash; the weighting in the Goldman equation</div>
+        <div class="sl"><label for="pk">P<sub>K</sub> : P<sub>Na</sub> <span class="v" id="pkV">25 : 1</span></label>
+          <input type="range" id="pk" min="-100" max="200" value="140" step="2" aria-label="Ratio of potassium permeability to sodium permeability, logarithmic"></div>
+
+        <div class="lbl">Potassium &mdash; the ion the resting membrane listens to</div>
+        <div class="sl"><label for="ko">K<sup>+</sup> outside <span class="v" id="koV">4.5 mM</span></label>
+          <input type="range" id="ko" min="15" max="120" value="45" step="1" aria-label="Extracellular potassium concentration in tenths of a millimolar"></div>
+        <div class="sl"><label for="ki">K<sup>+</sup> inside <span class="v" id="kiV">140 mM</span></label>
+          <input type="range" id="ki" min="100" max="160" value="140" step="1" aria-label="Intracellular potassium concentration in millimolar"></div>
+
+        <div class="lbl">Sodium &mdash; the ion the action potential listens to</div>
+        <div class="sl"><label for="nao">Na<sup>+</sup> outside <span class="v" id="naoV">145 mM</span></label>
+          <input type="range" id="nao" min="100" max="170" value="145" step="1" aria-label="Extracellular sodium concentration in millimolar"></div>
+        <div class="sl"><label for="nai">Na<sup>+</sup> inside <span class="v" id="naiV">14 mM</span></label>
+          <input type="range" id="nai" min="5" max="40" value="14" step="1" aria-label="Intracellular sodium concentration in millimolar"></div>
+
+        <div class="eqn">V<sub>m</sub> = 61 &times; log<sub>10</sub> &nbsp;<span style="border-bottom:1px solid currentColor;padding:0 4px;">P&middot;[K<sup>+</sup>]<sub>out</sub> + [Na<sup>+</sup>]<sub>out</sub></span> / <span style="border-bottom:1px solid currentColor;padding:0 4px;">P&middot;[K<sup>+</sup>]<sub>in</sub> + [Na<sup>+</sup>]<sub>in</sub></span></div>
+        <div class="hint"><b>Two experiments worth doing.</b> First hold the permeability at 25:1 and swing Na<sup>+</sup> outside from 100 to 170 mM &mdash; the resting voltage barely moves. Then press <i>Peak of the action potential</i> and swing it again. That is the module&rsquo;s rule in one gesture: <b>extracellular K<sup>+</sup> sets the resting potential, extracellular Na<sup>+</sup> sets the height of the spike.</b></div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="lbl">The Na<sup>+</sup>/K<sup>+</sup> ATPase</div>
+        <button class="tog" id="tPump" type="button" aria-pressed="true"><span class="dot"></span><span>Pump running &mdash; 3 Na<sup>+</sup> out, 2 K<sup>+</sup> in, one ATP <small>Switch it off to apply ouabain. Watch what happens immediately, and then what happens over the next two hours.</small></span></button>
+
+        <div class="lbl">Time since the pump stopped</div>
+        <div class="sl"><label for="tm">Minutes <span class="v" id="tmV">0 min</span></label>
+          <input type="range" id="tm" min="0" max="120" value="0" step="1" aria-label="Minutes elapsed since the sodium potassium pump was blocked"></div>
+        <div class="row">
+          <button class="btn solid" id="bRun" type="button">Run the clock</button>
+          <button class="btn" id="bReset" type="button">Back to time zero</button>
+        </div>
+
+        <div class="hint"><b>What the model does.</b> Blocking the pump removes its <b>direct electrogenic contribution of about &minus;4 mV</b> the instant it stops &mdash; three positive charges out for every two in is a small outward current, and it disappears at once. Everything after that is the slow part: with no pump to reload them, K<sup>+</sup> leaks out and Na<sup>+</sup> leaks in and the gradients decay with a time constant of roughly <b>45 minutes</b>. The permeability ratio stays at 25:1 throughout; only the concentrations change.</div>
+        <div class="hint"><b>The energy bill this represents.</b> The brain is about <b>2% of body mass</b> and consumes near <b>20% of resting oxygen uptake</b>, and the majority of a neuron&rsquo;s ATP goes to running this one pump. That is what you are switching off.</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>Where every ion is pulling, and where the membrane actually sits</h2>
+      <canvas id="cv1" width="1040" height="580" aria-label="Voltage ladder showing the equilibrium potentials for calcium, sodium, chloride and potassium alongside threshold and the current membrane potential, with a membrane cartoon showing leak channels and the sodium potassium pump"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Two hours without a pump</h2>
+      <canvas id="cv2" width="1040" height="500" aria-label="Graph of membrane potential and intracellular sodium and potassium concentrations over 120 minutes after the sodium potassium pump is blocked"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'#333';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple'),INK=C('--ink');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+
+/* ---------- physiology ---------- */
+var CLO=108, CLI=7, CAO=1.2, CAI=0.0001;   /* module table values */
+var PUMP_MV=4;                              /* electrogenic share, module says 3 to 5 */
+function nernst(z,out,inn){ return (61/z)*Math.log(out/inn)/Math.LN10; }
+function ghk(P,Ko,Ki,Nao,Nai){ return 61*Math.log((P*Ko+Nao)/(P*Ki+Nai))/Math.LN10; }
+function avail(V){ return 1/(1+Math.exp((V+55)/7)); }   /* fraction of Na+ channels not inactivated */
+
+/* ---------- mode switching ---------- */
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =========================================================
+   BENCH 1 -- Nernst and Goldman
+   ========================================================= */
+var PRESETS=[
+ {n:'Resting neuron',    ko:45,  ki:140, nao:145, nai:14, p:140},
+ {n:'Skeletal muscle &middot; &minus;90 mV', ko:40, ki:150, nao:145, nai:12, p:200},
+ {n:'Smooth muscle &middot; &minus;55 mV',   ko:45, ki:140, nao:145, nai:14, p:104},
+ {n:'Hypokalemia 2.5',  ko:25,  ki:140, nao:145, nai:14, p:140},
+ {n:'Hyperkalemia 7.0', ko:70,  ki:140, nao:145, nai:14, p:140},
+ {n:'Hyperkalemia 9.5', ko:95,  ki:140, nao:145, nai:14, p:140},
+ {n:'Peak of the action potential', ko:45, ki:140, nao:145, nai:14, p:-78}
+];
+(function(){
+  var box=$('presets');
+  PRESETS.forEach(function(P){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=P.n;
+    b.onclick=function(){ $('ko').value=P.ko; $('ki').value=P.ki; $('nao').value=P.nao; $('nai').value=P.nai; $('pk').value=P.p; render1(); };
+    box.appendChild(b);
+  });
+})();
+['pk','ko','ki','nao','nai'].forEach(function(id){ $(id).addEventListener('input',render1); });
+
+function readState(){
+  var P=Math.pow(10,(+$('pk').value)/100);
+  return {P:P, Ko:(+$('ko').value)/10, Ki:+$('ki').value, Nao:+$('nao').value, Nai:+$('nai').value};
+}
+function pText(P){ return P>=1 ? (P<10?P.toFixed(1):Math.round(P))+' : 1' : '1 : '+(1/P).toFixed(1); }
+
+function render1(){
+  var S=readState();
+  $('pkV').textContent=pText(S.P);
+  $('koV').textContent=S.Ko.toFixed(1)+' mM';
+  $('kiV').textContent=S.Ki+' mM';
+  $('naoV').textContent=S.Nao+' mM';
+  $('naiV').textContent=S.Nai+' mM';
+
+  var EK=nernst(1,S.Ko,S.Ki), ENA=nernst(1,S.Nao,S.Nai), ECL=nernst(-1,CLO,CLI), ECA=nernst(2,CAO,CAI);
+  var Vm=ghk(S.P,S.Ko,S.Ki,S.Nao,S.Nai);
+  var dist=Vm-(-55), h=avail(Vm);
+
+  $('s1').innerHTML=
+    tile('Membrane potential','<span style="color:'+(Vm>0?CORAL:TDK)+'">'+(Vm>0?'+':'')+Vm.toFixed(1)+'</span>','mV &middot; Goldman, all ions weighted')+
+    tile('E<sub>K</sub>',EK.toFixed(1),'mV &middot; module value about &minus;90')+
+    tile('E<sub>Na</sub>','+'+ENA.toFixed(1),'mV &middot; module value about +60')+
+    tile('E<sub>Cl</sub>',ECL.toFixed(1),'mV &middot; 108 out, 7 in')+
+    tile('E<sub>Ca</sub>','+'+ECA.toFixed(0),'mV &middot; 1.2 mM out, 100 nM in')+
+    tile('Distance to threshold',(dist>0?'past it':Math.abs(dist).toFixed(1)),(dist>0?'threshold is &minus;55 mV':'mV of depolarization still needed'))+
+    tile('Na<sup>+</sup> channels available',(h*100).toFixed(0)+'%','not held in the inactivated state')+
+    tile('Electrogenic pump share','&minus;'+PUMP_MV,'mV of the total, from 3 out vs 2 in')+
+    tile('Ions that must actually move','&lt; 1 in 100,000','of the cell&rsquo;s K<sup>+</sup>, to charge a 5 nm capacitor');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  if(Vm>0){
+    cls='verdict bad';
+    txt='Sodium now dominates &mdash; the membrane has swung toward E<sub>Na</sub><small>This is not a resting state. With P<sub>Na</sub> exceeding P<sub>K</sub>, Goldman weights the sodium terms and the voltage is dragged up toward '+ENA.toFixed(0)+' mV.</small>';
+    inf='<span class="n">Why the real peak stops at +30 to +40 mV</span>At the true peak of an action potential, Na<sup>+</sup> permeability transiently exceeds K<sup>+</sup> permeability several hundredfold &mdash; which by this equation alone would put the membrane essentially at E<sub>Na</sub>. It never gets there. Voltage-gated Na<sup>+</sup> channels begin <b>inactivating</b> while voltage-gated K<sup>+</sup> channels are still <b>opening</b>, so outward K<sup>+</sup> current opposes inward Na<sup>+</sup> current before the membrane can equilibrate. The peak is simply the highest voltage reached before the two currents cross.<div class="dd">Now drag <b>Na<sup>+</sup> outside</b> from 100 to 170 mM and watch the peak move by more than 13 mV. Go back to the resting preset and drag it again &mdash; the resting voltage moves by less than 8 mV, and most of that comes from the tiny leak. <b>Extracellular sodium sets the height of the spike; extracellular potassium sets the baseline.</b></div>';
+  } else if(S.Ko<3.5){
+    cls='verdict cool';
+    txt='Hypokalemia &mdash; the cell is hyperpolarized and further from threshold<small>E<sub>K</sub> is now '+EK.toFixed(0)+' mV, so the potassium-dominated membrane is pulled down to '+Vm.toFixed(1)+' mV. It needs '+Math.abs(dist).toFixed(1)+' mV of depolarization to fire, against about 15 mV normally.</small>';
+    inf='<span class="n">Less excitable, but not safer</span>Lowering extracellular K<sup>+</sup> makes E<sub>K</sub> more negative and drags the resting potential with it, because the membrane is 25&ndash;100 times more permeable to K<sup>+</sup> than to Na<sup>+</sup>. Cells become harder to excite &mdash; and in cardiac tissue that shows up as flattened T waves, U waves, weakness and a rising risk of dangerous arrhythmia. Serum potassium is held between <b>3.5 and 5.0 mEq/L</b> precisely because the entire excitable body is calibrated to it.';
+  } else if(S.Ko<=5.0){
+    cls='verdict';
+    txt='Normal serum potassium &mdash; the membrane sits where it should<small>V<sub>m</sub> = '+Vm.toFixed(1)+' mV, about '+Math.abs(dist).toFixed(0)+' mV below the &minus;55 mV threshold, with '+(h*100).toFixed(0)+'% of voltage-gated Na<sup>+</sup> channels available to fire.</small>';
+    inf='<span class="n">Near E<sub>K</sub>, but deliberately not at it</span>If the membrane were permeable to K<sup>+</sup> alone the cell would sit at E<sub>K</sub>, about &minus;90 mV. The small resting Na<sup>+</sup> leak drags it up to roughly &minus;70 mV, and that gap is functional: it places the cell about 15 mV from threshold, close enough that a few thousand synaptic inputs can reach it, far enough that noise cannot.<div class="dd">Push the permeability slider toward 100:1 and watch V<sub>m</sub> slide down toward E<sub>K</sub>. Pull it toward 5:1 and the sodium leak takes over. Goldman is nothing more than a weighted average, and the weights are the permeabilities.</div>';
+  } else if(S.Ko<=6.5){
+    cls='verdict warn';
+    txt='Mild hyperkalemia &mdash; depolarized and closer to threshold<small>The cell now needs only '+Math.abs(dist).toFixed(1)+' mV to reach &minus;55 mV. At this stage it is <b>more</b> excitable, not less.</small>';
+    inf='<span class="n">Phase one of a two-phase story</span>Raising extracellular K<sup>+</sup> makes E<sub>K</sub> less negative, the K<sup>+</sup>-dominated membrane follows, and the cell sits nearer threshold. On the electrocardiogram this is the stage of <b>peaked T waves</b>. Keep pushing the slider and watch the second phase arrive.';
+  } else if(h>0.55){
+    cls='verdict warn';
+    txt='Moderate hyperkalemia &mdash; excitability is peaking and about to reverse<small>Only '+Math.abs(dist).toFixed(1)+' mV from threshold, but Na<sup>+</sup> channel availability has already fallen to '+(h*100).toFixed(0)+'%.</small>';
+    inf='<span class="n">The turn</span>Sustained depolarization does something a brief depolarization does not: it holds voltage-gated Na<sup>+</sup> channels in the <b>inactivated</b> state, from which only repolarization can release them. The cell is simultaneously nearer threshold and less able to respond to reaching it. The availability figure above is the one to watch now, not the distance to threshold.';
+  } else {
+    cls='verdict bad';
+    txt='Severe hyperkalemia &mdash; the cell is depolarized into inexcitability<small>Only '+(h*100).toFixed(0)+'% of voltage-gated Na<sup>+</sup> channels remain available. Distance to threshold is nearly irrelevant when there are no channels left to open.</small>';
+    inf='<span class="n">Why hyperkalemia kills by arrest, not by hyperactivity</span>This is exactly the sequence behind the electrocardiogram of severe hyperkalemia: peaked T waves as the cell first approaches threshold, then a <b>widening QRS</b> as conduction slows through half-inactivated channels, then a <b>sine wave</b> pattern as atrial and ventricular signals blur together, then arrest. The cell has not run out of energy or of potassium; it has been held depolarized long enough that its sodium channels can no longer reset.<div class="dd">The therapeutic logic follows directly. Calcium raises the threshold away from the resting potential without touching serum K<sup>+</sup>. Insulin with glucose, and beta-2 agonists, drive K<sup>+</sup> back into cells. Only dialysis and binders actually remove it.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  $('cv1').setAttribute('aria-label','Membrane potential '+Vm.toFixed(1)+' millivolts. Equilibrium potentials: potassium '+EK.toFixed(0)+', sodium plus '+ENA.toFixed(0)+', chloride '+ECL.toFixed(0)+', calcium plus '+ECA.toFixed(0)+' millivolts.');
+  draw1(S,Vm,EK,ENA,ECL,ECA,h);
+}
+
+function draw1(S,Vm,EK,ENA,ECL,ECA,h){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+
+  /* ---- voltage ladder, left ---- */
+  var TOP=46, BOT=H-58, VHI=135, VLO=-100, AX=150;
+  function Y(v){ return TOP+(VHI-v)*(BOT-TOP)/(VHI-VLO); }
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var v=-100;v<=120;v+=20){
+    g.beginPath(); g.moveTo(AX-7,Y(v)); g.lineTo(430,Y(v)); g.stroke();
+    g.fillStyle=MUT; g.font='600 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText((v>0?'+':'')+v, AX-12, Y(v)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=2;
+  g.beginPath(); g.moveTo(AX,TOP-6); g.lineTo(AX,BOT+6); g.stroke();
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('millivolts', AX-58, TOP-18);
+
+  function mark(val,col,label,dash){
+    g.strokeStyle=col; g.lineWidth=2.4; if(dash) g.setLineDash([6,5]);
+    g.beginPath(); g.moveTo(AX,Y(val)); g.lineTo(418,Y(val)); g.stroke(); g.setLineDash([]);
+    g.fillStyle=col; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(label, 414, Y(val)-6);
+  }
+  mark(ECA,PURP,'E Ca  '+(ECA>0?'+':'')+ECA.toFixed(0),true);
+  mark(ENA,CORAL,'E Na  '+(ENA>0?'+':'')+ENA.toFixed(0),true);
+  mark(-55,GOLD,'threshold  −55',false);
+  mark(ECL,BLUE,'E Cl  '+ECL.toFixed(0),true);
+  mark(EK,TEAL,'E K  '+EK.toFixed(0),true);
+
+  /* current Vm bar */
+  var yv=Y(Vm);
+  g.fillStyle=Vm>0?CORAL:TDK;
+  g.beginPath(); g.moveTo(AX,yv); g.lineTo(AX-18,yv-11); g.lineTo(AX-18,yv+11); g.closePath(); g.fill();
+  g.strokeStyle=Vm>0?CORAL:TDK; g.lineWidth=5;
+  g.beginPath(); g.moveTo(AX,yv); g.lineTo(418,yv); g.stroke();
+  g.fillStyle='#fff'; g.fillRect(AX+22,yv-16,150,32);
+  g.strokeStyle=Vm>0?CORAL:TDK; g.lineWidth=2; g.strokeRect(AX+22,yv-16,150,32);
+  g.fillStyle=Vm>0?CORAL:TDK; g.font='800 18px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText((Vm>0?'+':'')+Vm.toFixed(1)+' mV', AX+97, yv+6);
+
+  /* band between EK and ENA */
+  g.fillStyle=TEAL; g.globalAlpha=0.05;
+  g.fillRect(AX,Y(ENA),418-AX,Y(EK)-Y(ENA)); g.globalAlpha=1;
+  g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('no neuronal voltage ever leaves this band', AX+8, BOT+22);
+
+  /* ---- membrane cartoon, right ---- */
+  var L=478, R=W-24, oy=196, iy=250;
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('OUTSIDE', L, 44);
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('K⁺ '+S.Ko.toFixed(1)+' mM     Na⁺ '+S.Nao+' mM', L, 64);
+  g.fillStyle=TDK; g.font='800 14px Inter, system-ui, sans-serif';
+  g.fillText('INSIDE', L, H-52);
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif';
+  g.fillText('K⁺ '+S.Ki+' mM     Na⁺ '+S.Nai+' mM', L, H-32);
+
+  /* bilayer */
+  g.fillStyle=GOLD; g.globalAlpha=0.18; g.fillRect(L,oy,R-L,iy-oy); g.globalAlpha=1;
+  g.strokeStyle=GOLD; g.lineWidth=2;
+  g.beginPath(); g.moveTo(L,oy); g.lineTo(R,oy); g.moveTo(L,iy); g.lineTo(R,iy); g.stroke();
+  g.fillStyle=MUT; g.font='600 11px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText('5 nm bilayer', R, oy-8);
+
+  /* charge separation, proportional to |Vm| */
+  var nq=Math.max(1,Math.round(Math.abs(Vm)/5)), q;
+  var neg=Vm<0;
+  for(q=0;q<nq;q++){
+    var qx=L+22+q*((R-L-44)/Math.max(1,nq-1||1));
+    if(qx>R-14) break;
+    g.fillStyle=neg?CORAL:TEAL; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(neg?'+':'−', qx, oy-6);
+    g.fillStyle=neg?TEAL:CORAL;
+    g.fillText(neg?'−':'+', qx, iy+16);
+  }
+
+  /* channels: arrow width scaled by permeability */
+  function pore(cx,col,label,wid,dirUp,sub){
+    g.fillStyle='#fff'; g.strokeStyle=col; g.lineWidth=3;
+    g.beginPath(); g.roundRect?g.roundRect(cx-17,oy-4,34,iy-oy+8,7):g.rect(cx-17,oy-4,34,iy-oy+8);
+    g.fill(); g.stroke();
+    g.strokeStyle=col; g.lineWidth=Math.max(1.6,wid);
+    var y0=dirUp?iy+52:oy-52, y1=dirUp?oy-46:iy+46;
+    g.beginPath(); g.moveTo(cx,y0); g.lineTo(cx,y1); g.stroke();
+    var d=dirUp?1:-1;
+    g.beginPath(); g.moveTo(cx,y1); g.lineTo(cx-7,y1+d*11); g.lineTo(cx+7,y1+d*11); g.closePath();
+    g.fillStyle=col; g.fill();
+    g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center'; g.fillStyle=col;
+    g.fillText(label, cx, dirUp?oy-62:iy+70);
+    g.fillStyle=MUT; g.font='600 10.8px Inter, system-ui, sans-serif';
+    g.fillText(sub, cx, dirUp?oy-48:iy+84);
+  }
+  var totP=S.P+1;
+  pore(L+62, TEAL, 'K⁺ leak', 2+14*(S.P/totP), true, 'weight '+(100*S.P/totP).toFixed(0)+'%');
+  pore(L+188, CORAL, 'Na⁺ leak', 2+14*(1/totP), false, 'weight '+(100/totP).toFixed(0)+'%');
+
+  /* pump */
+  var px=L+330;
+  g.fillStyle='#fff'; g.strokeStyle=PURP; g.lineWidth=3;
+  g.beginPath(); g.roundRect?g.roundRect(px-34,oy-6,68,iy-oy+12,9):g.rect(px-34,oy-6,68,iy-oy+12);
+  g.fill(); g.stroke();
+  g.fillStyle=PURP; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('Na⁺/K⁺ ATPase', px, iy+70);
+  g.fillStyle=MUT; g.font='600 10.8px Inter, system-ui, sans-serif';
+  g.fillText('one ATP per cycle', px, iy+84);
+  g.strokeStyle=CORAL; g.lineWidth=4;
+  g.beginPath(); g.moveTo(px-16,iy+40); g.lineTo(px-16,oy-40); g.stroke();
+  g.beginPath(); g.moveTo(px-16,oy-40); g.lineTo(px-23,oy-29); g.lineTo(px-9,oy-29); g.closePath(); g.fillStyle=CORAL; g.fill();
+  g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('3 Na⁺ out', px-16, oy-50);
+  g.strokeStyle=TEAL; g.lineWidth=4;
+  g.beginPath(); g.moveTo(px+16,oy-40); g.lineTo(px+16,iy+40); g.stroke();
+  g.beginPath(); g.moveTo(px+16,iy+40); g.lineTo(px+9,iy+29); g.lineTo(px+23,iy+29); g.closePath(); g.fillStyle=TEAL; g.fill();
+  g.fillStyle=TEAL; g.font='800 13px Inter, system-ui, sans-serif';
+  g.fillText('2 K⁺ in', px+16, iy+56);
+
+  /* availability bar */
+  var bx=L, bw=R-L, by=H-104;
+  g.fillStyle=MUT; g.font='800 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('VOLTAGE-GATED Na⁺ CHANNELS AVAILABLE TO FIRE', bx, by-8);
+  g.strokeStyle=LINE; g.lineWidth=1; g.strokeRect(bx,by,bw,16);
+  g.fillStyle=h>0.6?GREEN:(h>0.35?GOLD:CORAL);
+  g.fillRect(bx,by,bw*h,16);
+  g.fillStyle=TDK; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='right';
+  g.fillText((h*100).toFixed(0)+'%', bx+bw, by+30);
+}
+
+/* =========================================================
+   BENCH 2 -- ouabain and gradient run-down
+   ========================================================= */
+var TAU=45, P2=25;
+var K0=140, NA0=14, KO2=4.5, NAO2=145;
+function stateAt(t,pumpOn){
+  if(pumpOn) return {Ki:K0, Nai:NA0, Vm:ghk(P2,KO2,K0,NAO2,NA0)};
+  var f=Math.exp(-t/TAU);
+  var Ki=KO2+(K0-KO2)*f, Nai=NAO2-(NAO2-NA0)*f;
+  return {Ki:Ki, Nai:Nai, Vm:ghk(P2,KO2,Ki,NAO2,Nai)+PUMP_MV};
+}
+var pumpOn=true, raf=null, running=false;
+$('tPump').onclick=function(){
+  pumpOn=!pumpOn; this.setAttribute('aria-pressed',pumpOn?'true':'false');
+  if(pumpOn){ $('tm').value=0; stop(); }
+  render2();
+};
+$('bReset').onclick=function(){ $('tm').value=0; stop(); render2(); };
+$('tm').addEventListener('input',function(){ if(pumpOn){ pumpOn=false; $('tPump').setAttribute('aria-pressed','false'); } stop(); render2(); });
+function stop(){ running=false; if(raf){cancelAnimationFrame(raf); raf=null;} $('bRun').textContent='Run the clock'; }
+$('bRun').onclick=function(){
+  if(running){ stop(); render2(); return; }
+  if(pumpOn){ pumpOn=false; $('tPump').setAttribute('aria-pressed','false'); }
+  if(+$('tm').value>=120) $('tm').value=0;
+  running=true; this.textContent='Pause'; last=0; raf=requestAnimationFrame(loop);
+};
+var last=0;
+function loop(ts){
+  if(!running){ raf=null; return; }
+  if(!last) last=ts;
+  var dt=ts-last; last=ts;
+  var t=+$('tm').value+dt*0.012;
+  if(t>=120){ t=120; $('tm').value=120; render2(); stop(); return; }
+  $('tm').value=Math.round(t); render2();
+  raf=requestAnimationFrame(loop);
+}
+
+function render2(){
+  var t=+$('tm').value;
+  $('tmV').textContent=pumpOn?'pump is running':t+' min';
+  $('tm').disabled=false;
+  var base=ghk(P2,KO2,K0,NAO2,NA0);
+  var S=stateAt(t,pumpOn);
+  var h=avail(S.Vm);
+  var pct=Math.max(0,S.Vm/base*100);
+
+  $('s2').innerHTML=
+    tile('Membrane potential',S.Vm.toFixed(1),'mV &middot; started at '+base.toFixed(1))+
+    tile('Fraction of the battery left',pct.toFixed(0)+'%','of the original resting voltage')+
+    tile('K<sup>+</sup> inside',S.Ki.toFixed(0),'mM &middot; started at 140')+
+    tile('Na<sup>+</sup> inside',S.Nai.toFixed(0),'mM &middot; started at 14')+
+    tile('E<sub>K</sub> now',nernst(1,KO2,S.Ki).toFixed(1),'mV &middot; the target the membrane chases')+
+    tile('Na<sup>+</sup> channels available',(h*100).toFixed(0)+'%','not held inactivated');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(pumpOn){
+    cls='verdict';
+    txt='Pump running &mdash; the gradients are being defended<small>Three Na<sup>+</sup> out and two K<sup>+</sup> in per ATP, continuously, for as long as the cell lives. The membrane sits at '+base.toFixed(1)+' mV.</small>';
+    inf='<span class="n">Most of the pump&rsquo;s work is indirect</span>Its direct electrogenic contribution is only about <b>&minus;4 mV</b>, because moving three positive charges out for every two in is a small net outward current. Its far larger job is to <b>build and hold the gradients</b> that the K<sup>+</sup> leak channels then convert into voltage. Switch it off and you will see those two contributions separate in time.';
+  } else if(t<2){
+    cls='verdict warn';
+    txt='Ouabain applied &mdash; and the membrane has moved by only about 4 mV<small>V<sub>m</sub> went from '+base.toFixed(1)+' to '+S.Vm.toFixed(1)+' mV the instant the pump stopped. The gradients have not changed at all yet.</small>';
+    inf='<span class="n">This is the answer to the classic question</span>Why does the potential <b>decay over minutes</b> rather than collapse instantly? Because the pump&rsquo;s immediate contribution to the voltage is tiny. Everything else you are measuring is stored in the concentration gradients, and those gradients are still exactly where the pump left them. Advance the clock and watch the real decay begin.';
+  } else if(t<20){
+    cls='verdict warn';
+    txt='Gradients beginning to run down<small>K<sup>+</sup> inside has fallen to '+S.Ki.toFixed(0)+' mM and Na<sup>+</sup> inside has climbed to '+S.Nai.toFixed(0)+' mM. E<sub>K</sub> is drifting up, and the membrane follows it.</small>';
+    inf='<span class="n">The membrane follows E<sub>K</sub></span>Because permeability to K<sup>+</sup> dominates by 25 to 1, Goldman keeps the membrane near whatever E<sub>K</sub> currently is. As intracellular K<sup>+</sup> leaks away, E<sub>K</sub> becomes less negative, and V<sub>m</sub> tracks it up. Nothing about the channels has changed &mdash; only the numbers you are putting into the log.';
+  } else if(S.Vm<-55){
+    cls='verdict bad';
+    txt='Half the battery is gone and the cell is nearly at threshold<small>V<sub>m</sub> = '+S.Vm.toFixed(1)+' mV against a threshold of &minus;55 mV, with '+(h*100).toFixed(0)+'% of Na<sup>+</sup> channels still available.</small>';
+    inf='<span class="n">A brief window of hyperexcitability</span>On the way down, the cell passes through voltages that are <i>closer</i> to threshold than normal, so for a while it is easier to fire. That is the same two-phase behavior hyperkalemia produces, and for the same reason &mdash; because both are simply ways of moving E<sub>K</sub>.<div class="dd">Cell swelling is the other consequence. With Na<sup>+</sup> accumulating inside and no pump to remove it, water follows osmotically. This is the mechanism of cytotoxic edema in ischemic tissue, where the pump fails not from poison but from a lack of ATP.</div>';
+  } else {
+    cls='verdict bad';
+    txt='Inexcitable &mdash; the cell is depolarized and its Na<sup>+</sup> channels are inactivated<small>V<sub>m</sub> = '+S.Vm.toFixed(1)+' mV, past threshold, with only '+(h*100).toFixed(0)+'% of voltage-gated Na<sup>+</sup> channels available. There is no action potential to be had here at any stimulus strength.</small>';
+    inf='<span class="n">Depolarized does not mean excited</span>A cell held above threshold cannot fire, because reaching threshold is not enough &mdash; Na<sup>+</sup> channels must also be <b>reset</b>, and only repolarization resets the inactivation gate. This is the same physiology behind depolarizing neuromuscular blockade with succinylcholine: the drug holds the end plate depolarized, so after an initial burst of fasciculation the muscle simply stops responding.<div class="dd">It is also why <b>digoxin</b>, which partially inhibits this pump on purpose, is a narrow-therapeutic-index drug, and why hypokalemia potentiates its toxicity &mdash; potassium and digoxin compete for the same site on the ATPase.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  $('cv2').setAttribute('aria-label','At '+(pumpOn?'time zero with the pump running':t+' minutes after the pump stopped')+', membrane potential is '+S.Vm.toFixed(1)+' millivolts, intracellular potassium '+S.Ki.toFixed(0)+' and intracellular sodium '+S.Nai.toFixed(0)+' millimolar.');
+  draw2(t,pumpOn,base);
+}
+
+function draw2(t,on,base){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=76,R=W-140,T=46,B=H-64;
+  function X(m){ return L+(m/120)*(R-L); }
+  function Yv(v){ return B-((v+90)/100)*(B-T); }      /* -90 .. +10 mV */
+  function Yc(c){ return B-(c/160)*(B-T); }           /* 0 .. 160 mM */
+
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(var v=-90;v<=10;v+=20){
+    g.beginPath(); g.moveTo(L,Yv(v)); g.lineTo(R,Yv(v)); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText(v+' mV', L-8, Yv(v)+4);
+  }
+  for(var c=0;c<=160;c+=40){
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText(c+' mM', R+8, Yc(c)+4);
+  }
+  g.strokeStyle=MUT; g.lineWidth=1.6;
+  g.beginPath(); g.moveTo(L,T); g.lineTo(L,B); g.lineTo(R,B); g.stroke();
+  for(var m=0;m<=120;m+=20){
+    g.beginPath(); g.moveTo(X(m),B); g.lineTo(X(m),B+5); g.stroke();
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(m, X(m), B+20);
+  }
+  g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('minutes after the pump stops', (L+R)/2, B+40);
+
+  /* threshold line */
+  g.strokeStyle=GOLD; g.lineWidth=2; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(L,Yv(-55)); g.lineTo(R,Yv(-55)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 12px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('threshold −55 mV', L+8, Yv(-55)-6);
+
+  function curve(fn,col,wid,dash){
+    g.strokeStyle=col; g.lineWidth=wid; if(dash) g.setLineDash(dash);
+    g.beginPath();
+    for(var i=0;i<=240;i++){
+      var mm=i/2, s=stateAt(mm,false), yy=fn(s);
+      if(i===0) g.moveTo(X(mm),yy); else g.lineTo(X(mm),yy);
+    }
+    g.stroke(); g.setLineDash([]);
+  }
+  curve(function(s){return Yc(s.Ki);},TEAL,2.2,[7,5]);
+  curve(function(s){return Yc(s.Nai);},CORAL,2.2,[7,5]);
+  curve(function(s){return Yv(s.Vm);},TDK,3.6,null);
+
+  /* legend */
+  g.textAlign='left'; g.font='800 12px Inter, system-ui, sans-serif';
+  g.fillStyle=TDK; g.fillText('—  membrane potential (left axis)', L+8, T+4);
+  g.fillStyle=TEAL; g.fillText('- -  K⁺ inside (right axis)', L+8, T+22);
+  g.fillStyle=CORAL; g.fillText('- -  Na⁺ inside (right axis)', L+8, T+40);
+
+  /* marker */
+  var S=stateAt(t,on);
+  var mx=on?X(0):X(t);
+  g.strokeStyle=on?GREEN:PURP; g.lineWidth=2;
+  g.beginPath(); g.moveTo(mx,T); g.lineTo(mx,B); g.stroke();
+  g.fillStyle=on?GREEN:TDK;
+  g.beginPath(); g.arc(mx,Yv(S.Vm),7,0,6.3); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2.4; g.stroke();
+  g.fillStyle='#fff'; g.strokeStyle=on?GREEN:PURP; g.lineWidth=2;
+  var bw2=142, bx2=Math.min(R-bw2, Math.max(L, mx-bw2/2));
+  g.fillRect(bx2,T-34,bw2,26); g.strokeRect(bx2,T-34,bw2,26);
+  g.fillStyle=on?GREEN:TDK; g.font='800 14px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText(S.Vm.toFixed(1)+' mV'+(on?'  · pumping':''), bx2+bw2/2, T-15);
+}
+
+/* boot */
+render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

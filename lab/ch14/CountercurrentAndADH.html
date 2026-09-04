@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Medullary Gradient and the ADH Loop</title>
+<meta name="description" content="Build the 300 to 1200 mOsm/kg medullary gradient with NKCC2 and urea, then drive plasma osmolality and blood volume and watch ADH decide how much of that gradient the collecting duct is allowed to use.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+.loop{margin-top:4px;}
+.step{display:grid;grid-template-columns:74px 1fr;gap:10px;align-items:start;padding:9px 0;border-bottom:1px dashed var(--line);}
+.step:last-child{border-bottom:none;}
+.step .role{font-size:9.6px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:#fff;background:var(--teal);border-radius:20px;padding:4px 0;text-align:center;line-height:1.2;}
+.step .role.eff{background:var(--purple);} .step .role.out{background:var(--gold);} .step .role.res{background:var(--green);} .step .role.brk{background:var(--coral);}
+.step .body{font-size:12.5px;color:var(--soft);line-height:1.45;}
+.step .body b{color:var(--teal-dk);}
+.step .body .val{display:inline-block;font-family:var(--disp);font-weight:700;font-size:15px;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.meter{height:11px;border-radius:6px;background:var(--line);border:1px solid var(--line);overflow:hidden;margin-top:5px;}
+.meter i{display:block;height:100%;background:var(--teal);transition:width .2s;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch14.html">&larr; Module 14</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 14</div>
+  <h1>The Medullary Gradient and the ADH Loop</h1>
+  <div class="intro">The loop of Henle multiplies a <b>200 mOsm/kg single effect</b> into a corticomedullary gradient running from 300 to about <b>1200 mOsm/kg</b>; the vasa recta preserve it passively and urea tops it up. ADH then decides how much of that gradient the collecting duct is allowed to use. Move plasma osmolality and blood volume below, break NKCC2 or the urea supply, and watch the tubular fluid profile, urine osmolality and daily urine volume follow.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Drive the loop</h2>
+      <div class="sl"><label for="sOsm">Plasma osmolality <span class="v" id="vOsm">287 mOsm/kg</span></label>
+        <input type="range" id="sOsm" min="255" max="330" value="287" step="1" aria-label="Plasma osmolality in milliosmoles per kilogram"></div>
+      <div class="sl"><label for="sVol">Blood volume change <span class="v" id="vVol">0%</span></label>
+        <input type="range" id="sVol" min="-30" max="15" value="0" step="1" aria-label="Percentage change in blood volume from normal"></div>
+      <div class="sl"><label for="sSol">Daily solute load to excrete <span class="v" id="vSol">600 mOsm/day</span></label>
+        <input type="range" id="sSol" min="200" max="1400" value="600" step="10" aria-label="Daily osmolar load presented to the kidney in milliosmoles per day"></div>
+
+      <div class="lbl">Build (or break) the gradient</div>
+      <div class="sl"><label for="sNK">NKCC2 activity in the thick ascending limb <span class="v" id="vNK">100%</span></label>
+        <input type="range" id="sNK" min="0" max="100" value="100" step="1" aria-label="Percentage activity of the sodium potassium two chloride cotransporter"></div>
+      <div class="sl"><label for="sUr">Urea available for recycling <span class="v" id="vUr">100%</span></label>
+        <input type="range" id="sUr" min="0" max="130" value="100" step="1" aria-label="Percentage of the normal urea supply available for medullary recycling"></div>
+      <div class="sl"><label for="sVR">Vasa recta blood flow <span class="v" id="vVR">100%</span></label>
+        <input type="range" id="sVR" min="60" max="400" value="100" step="5" aria-label="Medullary blood flow through the vasa recta as a percentage of normal"></div>
+
+      <div class="lbl">Break the ADH loop</div>
+      <div class="chips" id="chips"></div>
+      <div class="hint"><b>Read the two halves separately.</b> The gradient sliders build the <i>opportunity</i> to concentrate; osmolality and volume decide whether ADH takes it. A patient can fail to concentrate because the hormone is missing, because the receptor cannot answer it, or because the medulla has no gradient left to use &mdash; three different lesions with the same dilute urine.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Osmolality along the nephron</h2>
+      <canvas id="cv" width="640" height="350" role="img" aria-label="Tubular fluid osmolality plotted along the nephron from proximal tubule through the descending and ascending limbs to the collecting duct, shown against the shaded corticomedullary interstitial gradient"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Medullary tip</div><div class="v" id="oTip">1200</div><div class="u">mOsm/kg</div></div>
+        <div class="lab"><div class="k">Urine osmolality</div><div class="v" id="oU">732</div><div class="u">mOsm/kg</div></div>
+        <div class="lab"><div class="k">Urine volume</div><div class="v" id="oV">0.8</div><div class="u">L/day</div></div>
+        <div class="lab"><div class="k">Plasma ADH</div><div class="v" id="oA">3.1</div><div class="u">pg/mL</div></div>
+        <div class="lab"><div class="k">AQP2 in membrane</div><div class="v" id="oQ">59</div><div class="u">% of maximum</div></div>
+        <div class="lab"><div class="k">End of loop</div><div class="v" id="oL">100</div><div class="u">mOsm/kg</div></div>
+      </div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="card">
+      <h2>The loop, written out</h2>
+      <div class="loop" id="loop"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'),
+    LINE=cvar('--line'), MUTED=cvar('--muted'), SOFT=cvar('--soft');
+function $(id){return document.getElementById(id);}
+/* turn a theme color into a translucent fill without hard-coding any brand value */
+function tint(hex,a){
+  var h=hex.replace('#','');
+  if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  var n=parseInt(h.slice(0,6),16);
+  return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+}
+
+var S={osm:287,vol:0,sol:600,nk:1,ur:1,vr:1,lesion:'none'};
+
+/* ---- ADH release ---- */
+function adhFrom(st){
+  var osmDrive=Math.max(0,0.45*(st.osm-280));           /* threshold 280 mOsm/kg */
+  var deficit=-st.vol;
+  var volDrive=deficit>8?Math.pow(deficit-8,1.55)*0.55:0;
+  var a=Math.min(24,osmDrive+volDrive);
+  if(st.vol>10) a=Math.max(0,a-2.5);                    /* volume expansion suppresses */
+  if(st.lesion==='cdi') a=0.1;
+  if(st.lesion==='ndi') a=Math.min(24,a+9);             /* no feedback shut-off, so ADH stays high */
+  if(st.lesion==='siadh') a=Math.max(a,8);
+  return a;
+}
+/* ---- medullary gradient ---- */
+function tipOsm(st){
+  var wash=1/(1+0.55*Math.max(0,st.vr-1));              /* fast vasa recta flow washes it out */
+  var above=(360+540*Math.min(1.3,st.ur))*st.nk*wash;   /* NaCl part + urea part */
+  return 300+above;
+}
+function model(st){
+  var adh=adhFrom(st);
+  var recept=(st.lesion==='ndi')?0.05:1;
+  var resp=(1-Math.exp(-adh/3.5))*recept;
+  var tip=tipOsm(st);
+  var loopEnd=100;                                      /* thick ascending limb dilutes to ~100 */
+  if(st.nk<1) loopEnd=100+(300-100)*(1-st.nk);          /* block NKCC2 and dilution fails too */
+  var floor=Math.min(50+ (loopEnd-100)*0.5, loopEnd);
+  var uosm=floor+(Math.max(tip,floor)-floor)*resp;
+  var vol=st.sol/uosm;                                  /* L/day = mOsm/day / (mOsm/kg) */
+  return {adh:adh,resp:resp,tip:tip,loopEnd:loopEnd,uosm:uosm,vol:vol,floor:floor};
+}
+
+var PRE=[
+ {n:'Healthy, normally hydrated',s:{osm:287,vol:0,sol:600,nk:1,ur:1,vr:1,lesion:'none'}},
+ {n:'Water loading',s:{osm:270,vol:6,sol:600,nk:1,ur:1,vr:1,lesion:'none'}},
+ {n:'Dehydration &middot; 12 h in the sun',s:{osm:300,vol:-9,sol:700,nk:1,ur:1,vr:1,lesion:'none'}},
+ {n:'Central diabetes insipidus',s:{osm:300,vol:0,sol:600,nk:1,ur:1,vr:1,lesion:'cdi'}},
+ {n:'Nephrogenic diabetes insipidus',s:{osm:300,vol:0,sol:600,nk:1,ur:1,vr:1,lesion:'ndi'}},
+ {n:'SIADH',s:{osm:266,vol:4,sol:600,nk:1,ur:1,vr:1,lesion:'siadh'}},
+ {n:'Loop diuretic &middot; NKCC2 blocked',s:{osm:290,vol:-5,sol:900,nk:0.15,ur:1,vr:1,lesion:'none'}},
+ {n:'Very low protein diet',s:{osm:290,vol:0,sol:400,nk:1,ur:0.3,vr:1,lesion:'none'}},
+ {n:'Hemorrhage &middot; volume beats osmolality',s:{osm:276,vol:-18,sol:600,nk:1,ur:1,vr:1,lesion:'none'}},
+ {n:'Medullary washout',s:{osm:290,vol:0,sol:600,nk:1,ur:1,vr:3.2,lesion:'none'}}
+];
+
+function buildChips(){
+  var box=$('chips'); box.innerHTML='';
+  PRE.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=p.n;
+    b.addEventListener('click',function(){ for(var k in p.s) S[k]=p.s[k]; sync(); mark(i); render(); });
+    box.appendChild(b);
+  });
+}
+function mark(i){ var cs=$('chips').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i); }
+function sync(){
+  $('sOsm').value=S.osm; $('sVol').value=S.vol; $('sSol').value=S.sol;
+  $('sNK').value=Math.round(S.nk*100); $('sUr').value=Math.round(S.ur*100); $('sVR').value=Math.round(S.vr*100);
+}
+
+function render(){
+  var m=model(S);
+  $('vOsm').textContent=S.osm+' mOsm/kg';
+  $('vVol').textContent=(S.vol>0?'+':'')+S.vol+'%';
+  $('vSol').textContent=S.sol+' mOsm/day';
+  $('vNK').textContent=Math.round(S.nk*100)+'%';
+  $('vUr').textContent=Math.round(S.ur*100)+'%';
+  $('vVR').textContent=Math.round(S.vr*100)+'%';
+  $('oTip').textContent=m.tip.toFixed(0);
+  $('oU').textContent=m.uosm.toFixed(0);
+  $('oV').textContent=m.vol<10?m.vol.toFixed(1):m.vol.toFixed(0);
+  $('oA').textContent=m.adh.toFixed(1);
+  $('oQ').textContent=(m.resp*100).toFixed(0);
+  $('oL').textContent=m.loopEnd.toFixed(0);
+  verdict(m); draw(m); loopText(m);
+}
+
+function verdict(m){
+  var v=$('verdict'), cls='ok', t, s;
+  if(S.lesion==='cdi'){
+    cls='bad'; t='Central diabetes insipidus &mdash; the signal is missing.';
+    s='Osmoreceptors are firing and the medullary gradient is intact at '+m.tip.toFixed(0)+' mOsm/kg, but the magnocellular neurons cannot deliver ADH, so no aquaporin-2 reaches the apical membrane. Urine osmolality '+m.uosm.toFixed(0)+' mOsm/kg and volume '+m.vol.toFixed(1)+' L/day. Give desmopressin and the urine concentrates immediately, because the collecting duct itself is healthy.';
+  }else if(S.lesion==='ndi'){
+    cls='bad'; t='Nephrogenic diabetes insipidus &mdash; the message arrives and is ignored.';
+    s='Plasma ADH is high at '+m.adh.toFixed(1)+' pg/mL precisely because the loop never closes: the V2 receptor or aquaporin-2 cannot answer, so osmolality never falls and the sensor keeps shouting. Urine stays at '+m.uosm.toFixed(0)+' mOsm/kg. Desmopressin changes nothing &mdash; that is the bedside test.';
+  }else if(S.lesion==='siadh'){
+    cls='cool'; t='SIADH &mdash; a water problem wearing a sodium costume.';
+    s='ADH is '+m.adh.toFixed(1)+' pg/mL despite a plasma osmolality of only '+S.osm+' mOsm/kg, so water is retained and urine stays inappropriately concentrated at '+m.uosm.toFixed(0)+' mOsm/kg. Serum sodium falls by <b>dilution</b>. Sodium was never lost, which is why loading with salt alone misses the mechanism &mdash; the excess is water.';
+  }else if(S.nk<0.6){
+    cls='warn'; t='NKCC2 blocked &mdash; the single effect is gone.';
+    s='With the thick ascending limb unable to pump sodium chloride out, the medullary tip has collapsed to '+m.tip.toFixed(0)+' mOsm/kg, so even maximal ADH cannot concentrate. The same block removes the diluting segment, so fluid leaves the loop at '+m.loopEnd.toFixed(0)+' rather than 100 mOsm/kg. About a quarter of the filtered sodium load escapes reabsorption &mdash; the diuresis is large, and the extra distal flow drives potassium secretion through ROMK.';
+  }else if(S.ur<0.5){
+    cls='warn'; t='Not enough urea to finish the gradient.';
+    s='Urea normally supplies 40 to 50 percent of inner medullary osmolality, entering the interstitium through ADH-sensitive UT-A1 and UT-A3 and cycling back into the thin limbs. On a very low protein intake there is less of it, so the tip reaches only '+m.tip.toFixed(0)+' mOsm/kg and maximal concentrating ability falls, even with a perfect loop and a perfect hormone.';
+  }else if(S.vr>2){
+    cls='warn'; t='Medullary washout.';
+    s='The vasa recta preserve the gradient only because they are hairpins <i>and</i> because medullary flow is deliberately low, under 10 percent of renal blood flow. Speed that flow up and countercurrent exchange can no longer trap solute: the tip falls to '+m.tip.toFixed(0)+' mOsm/kg and concentrating ability goes with it.';
+  }else if(m.uosm<200){
+    cls='cool'; t='Maximal dilution.';
+    s='ADH is '+m.adh.toFixed(1)+' pg/mL, so almost no aquaporin-2 sits in the apical membrane and the collecting duct stays water-tight. The fluid the loop already diluted to '+m.loopEnd.toFixed(0)+' mOsm/kg leaves nearly unchanged at '+m.uosm.toFixed(0)+', carrying '+m.vol.toFixed(1)+' L a day. This is how a healthy person clears a water load.';
+  }else if(m.uosm>900){
+    cls='ok'; t='Maximal concentration.';
+    s='ADH '+m.adh.toFixed(1)+' pg/mL has driven '+(m.resp*100).toFixed(0)+' percent of the available aquaporin-2 into the membrane, so water follows the gradient out until the tubular fluid equilibrates with the medulla at '+m.uosm.toFixed(0)+' mOsm/kg. Volume is down to '+m.vol.toFixed(2)+' L/day. The floor is set by arithmetic: the solute load of '+S.sol+' mOsm/day divided by the highest osmolality the medulla can offer.';
+  }else{
+    cls='ok'; t='Ordinary daytime handling.';
+    s='At a plasma osmolality of '+S.osm+' mOsm/kg, ADH sits at '+m.adh.toFixed(1)+' pg/mL and about '+(m.resp*100).toFixed(0)+' percent of maximal aquaporin-2 insertion is in place. Urine leaves at '+m.uosm.toFixed(0)+' mOsm/kg, '+m.vol.toFixed(1)+' L/day. A rise of only 1 to 2 percent in osmolality, about 3 mOsm/kg, measurably moves this hormone &mdash; thirst does not switch on until roughly 293.';
+  }
+  if(S.vol<-8 && S.lesion==='none' && S.osm<285){
+    cls='cool'; t='Volume is overriding osmolality.';
+    s='Plasma osmolality is only '+S.osm+' mOsm/kg, which by itself would switch ADH off. But blood volume has fallen '+Math.abs(S.vol)+' percent, and past about 8 to 10 percent the baroreceptor input drives ADH regardless: ADH is '+m.adh.toFixed(1)+' pg/mL and urine is concentrated to '+m.uosm.toFixed(0)+' mOsm/kg. The body defends perfusion before it defends concentration &mdash; and accepts a falling serum sodium as the price.';
+  }
+  v.className='verdict '+cls;
+  v.innerHTML=t+'<small>'+s+'</small>';
+}
+
+function loopText(m){
+  var brokenSensor=false, brokenInt=(S.lesion==='cdi'), brokenEff=(S.lesion==='ndi');
+  var rows=[
+    ['Variable','var','<b>Plasma osmolality</b>, normally defended between 275 and 295 mOsm/kg. Right now <span class="val">'+S.osm+'</span> mOsm/kg.'],
+    ['Sensor','',(brokenSensor?'':'')+'<b>Osmoreceptor neurons</b> of the organum vasculosum of the lamina terminalis and the subfornical organ. They shrink when plasma osmolality rises and fire faster. Firing is '+(S.osm<=280?'at baseline &mdash; below the 280 mOsm/kg threshold':'raised, '+(S.osm-280)+' mOsm/kg above threshold')+'.'],
+    ['Integrator',brokenInt?'brk':'','<b>Magnocellular neurons</b> of the supraoptic and paraventricular nuclei. '+(brokenInt?'<b>Broken here.</b> No ADH is synthesized or released, so the loop is cut between sensing and signaling.':'They convert osmoreceptor input into hormone output.')],
+    ['Signal','out','<b>ADH (vasopressin)</b>, released from axon terminals in the posterior pituitary. Plasma level <span class="val">'+m.adh.toFixed(1)+'</span> pg/mL.'],
+    ['Effector',brokenEff?'brk':'eff','<b>Collecting duct principal cell</b>: ADH binds V2, cyclic AMP rises, aquaporin-2 vesicles traffic into the apical membrane. '+(brokenEff?'<b>Broken here.</b> The receptor or the channel cannot answer, so the hormone is shouted into a void.':'Insertion is at <span class="val">'+(m.resp*100).toFixed(0)+'</span> percent of maximum.')],
+    ['Response','res','Water leaves the duct down the osmotic gradient into a medulla of <span class="val">'+m.tip.toFixed(0)+'</span> mOsm/kg. Urine osmolality <span class="val">'+m.uosm.toFixed(0)+'</span> mOsm/kg, volume <span class="val">'+m.vol.toFixed(m.vol<10?2:0)+'</span> L/day. '+(brokenInt||brokenEff?'Plasma osmolality therefore does <b>not</b> fall, so the sensor keeps firing &mdash; an open loop.':'Plasma osmolality falls back toward set point and osmoreceptor firing subsides. The loop closes.')]
+  ];
+  $('loop').innerHTML=rows.map(function(r){
+    return '<div class="step"><span class="role '+r[1]+'">'+r[0]+'</span><span class="body">'+r[2]+'</span></div>';
+  }).join('');
+}
+
+function draw(m){
+  var cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=52,padR=14,padT=14,padB=48, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var ymax=1300;
+  function Y(v){return padT+ph-Math.max(0,Math.min(1,v/ymax))*ph;}
+  function X(f){return padL+f*pw;}
+
+  /* interstitial gradient: cortex on the left and right, medulla deepest in the middle
+     of the hairpin, so shade a band whose height follows the interstitial osmolality */
+  function interstitial(f){
+    /* f: 0 = start of proximal tubule, 0.30 = start of descending limb,
+       0.50 = hairpin tip, 0.70 = end of ascending limb, 1.0 = papillary tip of duct */
+    var tip=m.tip;
+    if(f<0.30) return 300;
+    if(f<0.50) return 300+(tip-300)*((f-0.30)/0.20);
+    if(f<0.70) return tip-(tip-300)*((f-0.50)/0.20);
+    return 300+(tip-300)*((f-0.70)/0.30);
+  }
+  var grd=g.createLinearGradient(0,Y(0),0,Y(ymax));
+  grd.addColorStop(0,tint(TEAL,0.16)); grd.addColorStop(1,tint(TEAL,0.03));
+  g.beginPath(); g.moveTo(X(0),Y(0));
+  for(var f=0;f<=1.0001;f+=0.01) g.lineTo(X(f),Y(interstitial(f)));
+  g.lineTo(X(1),Y(0)); g.closePath(); g.fillStyle=grd; g.fill();
+  g.beginPath();
+  for(var f2=0;f2<=1.0001;f2+=0.01){ var y=Y(interstitial(f2)); if(f2===0) g.moveTo(X(f2),y); else g.lineTo(X(f2),y); }
+  g.strokeStyle=TEAL; g.lineWidth=1.4; g.setLineDash([5,4]); g.stroke(); g.setLineDash([]);
+
+  /* axes */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 10px Inter,sans-serif';
+  for(var v=0;v<=ymax;v+=200){
+    g.beginPath(); g.moveTo(padL,Y(v)); g.lineTo(padL+pw,Y(v)); g.stroke();
+    g.fillStyle=MUTED; g.textAlign='right'; g.fillText(v,padL-7,Y(v)+3);
+  }
+  var marks=[[0.00,'PCT'],[0.30,'Descending'],[0.50,'Hairpin'],[0.70,'TAL end'],[0.85,'Collecting duct'],[1.00,'Papilla']];
+  g.textAlign='center';
+  marks.forEach(function(mk){
+    g.beginPath(); g.moveTo(X(mk[0]),padT); g.lineTo(X(mk[0]),padT+ph); g.strokeStyle=LINE; g.stroke();
+  });
+  g.fillStyle=MUTED; g.font='700 9.6px Inter,sans-serif';
+  [[0.15,'proximal'],[0.40,'thin descending'],[0.60,'thick ascending'],[0.85,'collecting duct']].forEach(function(mk){
+    g.fillText(mk[1],X(mk[0]),padT+ph+16);
+  });
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif';
+  g.fillText('cortex → medulla → cortex → medulla, along the tubule',padL+pw/2,padT+ph+34);
+  g.save(); g.translate(13,padT+ph/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('mOsm/kg',0,0); g.restore();
+
+  /* tubular fluid trace */
+  function tubular(f){
+    if(f<0.30) return 300;                                       /* isosmotic proximal reabsorption */
+    if(f<0.50) return 300+(m.tip-300)*((f-0.30)/0.20);           /* water leaves; fluid equilibrates */
+    if(f<0.70) return m.tip-(m.tip-m.loopEnd)*((f-0.50)/0.20);   /* solute leaves without water */
+    if(f<0.78) return m.loopEnd;                                 /* distal convoluted tubule */
+    var t=(f-0.78)/0.22;
+    return m.loopEnd+(m.uosm-m.loopEnd)*t;
+  }
+  g.beginPath(); g.strokeStyle=CORAL; g.lineWidth=3;
+  for(var f3=0;f3<=1.0001;f3+=0.005){ var yy=Y(tubular(f3)); if(f3===0) g.moveTo(X(f3),yy); else g.lineTo(X(f3),yy); }
+  g.stroke();
+
+  g.fillStyle=CORAL; g.beginPath(); g.arc(X(1),Y(m.uosm),5,0,6.2832); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2; g.stroke();
+
+  g.font='800 10.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillStyle=CORAL; g.fillText('tubular fluid',padL+7,padT+13);
+  g.fillStyle=TEAL; g.fillText('interstitium',padL+7,padT+27);
+  g.textAlign='right'; g.fillStyle=TEALD; g.font='800 11px Inter,sans-serif';
+  g.fillText('urine '+m.uosm.toFixed(0)+' mOsm/kg',padL+pw-6,Y(m.uosm)-9);
+  g.fillStyle=PURPLE; g.font='800 10px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('loop out '+m.loopEnd.toFixed(0),X(0.71),Y(m.loopEnd)-8);
+}
+
+function bindRange(id,fn){ $(id).addEventListener('input',function(){ fn(parseFloat(this.value)); mark(-1); render(); }); }
+bindRange('sOsm',function(v){S.osm=v;});
+bindRange('sVol',function(v){S.vol=v;});
+bindRange('sSol',function(v){S.sol=v;});
+bindRange('sNK',function(v){S.nk=v/100;});
+bindRange('sUr',function(v){S.ur=v/100;});
+bindRange('sVR',function(v){S.vr=v/100;});
+window.addEventListener('resize',function(){ draw(model(S)); });
+
+buildChips(); sync(); render();
+})();
+</script>
+</body>
+</html>

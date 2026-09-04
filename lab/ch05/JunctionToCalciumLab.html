@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>From Nerve to Calcium &mdash; the safety factor and E&ndash;C coupling</title>
+<meta name="description" content="Shrink the end-plate potential toward the 35 millivolts threshold needs, run a repetitive stimulation train to produce the decrement of myasthenia and the increment of Lambert-Eaton, then fire an action potential down a T tubule and watch cytosolic calcium rise a hundredfold.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.tog{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;width:100%;font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;margin-top:7px;}
+.tog .dot{width:34px;height:19px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s;}
+.tog .dot::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+.tog[aria-pressed="true"] .dot{background:var(--teal);}
+.tog[aria-pressed="true"] .dot::after{transform:translateX(15px);}
+.tog small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:1px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px;}
+.stat{border:1px solid var(--line);border-radius:10px;padding:8px 9px;background:#fff;}
+.stat .k{font-size:9.6px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.stat .v{font-family:var(--disp);font-size:17px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.stat .u{font-size:10.5px;color:var(--muted);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.infobox{border:1px solid var(--line);border-left:5px solid var(--teal);background:#fff;border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;color:var(--soft);line-height:1.55;}
+.infobox b{color:var(--ink);} .infobox i{font-style:italic;}
+.infobox .n{font-family:var(--disp);font-weight:600;font-size:16px;color:var(--teal-dk);display:block;margin-bottom:3px;}
+.infobox .dd{margin-top:9px;}
+.verdict{border-radius:11px;padding:11px 13px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--green);}
+.verdict small{display:block;font-weight:500;font-size:12px;opacity:.95;margin-top:3px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.info{background:var(--teal);}
+.hint{font-size:12px;color:var(--muted);margin-top:9px;line-height:1.5;} .hint b{color:var(--soft);}
+.hide{display:none;}
+.row{display:flex;gap:9px;margin-top:11px;align-items:center;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);} .btn:hover{filter:brightness(1.05);}
+.seq{display:flex;flex-direction:column;gap:5px;margin-top:11px;}
+.sq{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#fff;font-size:12.3px;color:var(--soft);line-height:1.4;}
+.sq .t{flex:none;font-variant-numeric:tabular-nums;font-weight:800;color:var(--teal-dk);width:56px;font-size:12px;}
+.sq b{color:var(--ink);}
+.sq.dim{opacity:.42;}
+.sq.hot{border-color:var(--teal);box-shadow:inset 3px 0 0 var(--teal);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch05.html">&larr; Module 5</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 5</div>
+  <h1>From Nerve to Calcium</h1>
+  <div class="intro">A healthy junction produces an end-plate potential of about <b>70 mV</b> when only about <b>35 mV</b> is needed to carry the membrane from &minus;90 to &minus;55 mV. That roughly twofold margin is the <b>safety factor</b>. Shrink it here &mdash; at the receptor, at the presynaptic calcium channel, at the SNARE, at the esterase &mdash; then run a stimulation train and read the pattern. Then fire the impulse down a T tubule and watch cytosolic calcium rise a hundredfold.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button id="m1" type="button" role="tab" aria-selected="true" class="on">The safety factor</button>
+        <button id="m2" type="button" role="tab" aria-selected="false">Excitation&ndash;contraction coupling</button>
+      </div>
+
+      <div id="p1">
+        <div class="lbl">Pick a junction</div>
+        <div class="chips" id="cases"></div>
+        <div class="sl"><label for="rec">Functional nicotinic receptor capacity <span class="v" id="recV">100%</span></label>
+          <input type="range" id="rec" min="5" max="120" value="100" aria-label="Functional nicotinic receptor capacity as a percent of normal end-plate current"></div>
+        <div class="sl"><label for="cac">Presynaptic voltage-gated calcium channels <span class="v" id="cacV">100%</span></label>
+          <input type="range" id="cac" min="20" max="120" value="100" aria-label="Presynaptic voltage-gated calcium channel availability, percent of normal"></div>
+        <div class="sl"><label for="snr">SNARE-dependent vesicle fusion <span class="v" id="snrV">100%</span></label>
+          <input type="range" id="snr" min="0" max="100" value="100" aria-label="SNARE-dependent vesicle fusion capacity, percent of normal"></div>
+        <div class="sl"><label for="ach">Acetylcholinesterase activity <span class="v" id="achV">100%</span></label>
+          <input type="range" id="ach" min="0" max="100" value="100" aria-label="Acetylcholinesterase activity in the basal lamina, percent of normal"></div>
+        <div class="lbl">Repetitive nerve stimulation</div>
+        <div class="chips" id="freqs"></div>
+        <div class="hint"><b>The numbers behind the model.</b> One nerve impulse releases about <b>100 to 200 vesicles</b>, each carrying <b>5,000 to 10,000</b> acetylcholine molecules, across a cleft only <b>20 to 50 nm</b> wide. Release depends on the <i>fourth power</i> of calcium entry, which is why a modest loss of presynaptic calcium channels is devastating. Acetylcholinesterase clears the cleft in about <b>1 ms</b>.</div>
+      </div>
+
+      <div id="p2" class="hide">
+        <div class="row"><button class="btn solid" id="bFire" type="button">Fire one action potential</button>
+          <button class="btn" id="bReset2" type="button">Reset</button></div>
+        <div class="lbl">Break something along the path</div>
+        <button class="tog" id="tExtCa" type="button" aria-pressed="true"><span class="dot"></span><span>Extracellular calcium present <small>Switch it off. Skeletal muscle keeps contracting for a while; cardiac muscle would stop within a few beats. Ask yourself why.</small></span></button>
+        <button class="tog" id="tLeak" type="button" aria-pressed="false"><span class="dot"></span><span>RyR1 leaks &mdash; malignant hyperthermia susceptibility <small>A defective release channel plus a triggering anesthetic: uncontrolled calcium release, rigidity and runaway ATP consumption.</small></span></button>
+        <button class="tog" id="tDan" type="button" aria-pressed="false"><span class="dot"></span><span>Dantrolene given <small>Blocks RyR1 directly. A drug whose mechanism you can now state from first principles.</small></span></button>
+        <div class="sl"><label for="serca">SERCA pump activity <span class="v" id="sercaV">100%</span></label>
+          <input type="range" id="serca" min="0" max="140" value="100" aria-label="Sarcoplasmic reticulum calcium ATPase activity, percent of normal"></div>
+        <div class="seq" id="seq"></div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" id="r1">
+      <h2>End-plate potential against the 35 mV that threshold requires</h2>
+      <canvas id="cv1" width="1040" height="620" aria-label="Bar chart of end-plate potential amplitude across ten stimuli with the 35 millivolt threshold line, and below it the percentage of muscle fibers that reached threshold on each stimulus"></canvas>
+      <div class="stats" id="s1"></div>
+      <div class="verdict" id="v1">&nbsp;</div>
+      <div class="infobox" id="i1"></div>
+    </div>
+    <div class="card hide" id="r2">
+      <h2>Voltage in, calcium out</h2>
+      <canvas id="cv2" width="1040" height="660" aria-label="A triad of T tubule and two sarcoplasmic reticulum cisternae, above traces of cytosolic calcium concentration and muscle tension against time in milliseconds"></canvas>
+      <div class="stats" id="s2"></div>
+      <div class="verdict" id="v2">&nbsp;</div>
+      <div class="infobox" id="i2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){var v=(CS.getPropertyValue(n)||'').trim();return v||'gray';}
+var TEAL=C('--teal'),TDK=C('--teal-dk'),CORAL=C('--coral'),GOLD=C('--gold'),GREEN=C('--green'),BLUE=C('--blue'),MUT=C('--muted'),LINE=C('--line'),PURP=C('--purple');
+function $(i){return document.getElementById(i);}
+function tile(k,v,u){return '<div class="stat"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function clamp(x,a,b){return x<a?a:(x>b?b:x);}
+
+var m1=$('m1'),m2=$('m2');
+function setMode(n){
+  m1.classList.toggle('on',n===1); m2.classList.toggle('on',n===2);
+  m1.setAttribute('aria-selected',n===1?'true':'false'); m2.setAttribute('aria-selected',n===2?'true':'false');
+  $('p1').classList.toggle('hide',n!==1); $('p2').classList.toggle('hide',n!==2);
+  $('r1').classList.toggle('hide',n!==1); $('r2').classList.toggle('hide',n!==2);
+  if(n===2) render2();
+}
+m1.onclick=function(){setMode(1);}; m2.onclick=function(){setMode(2);};
+
+/* =====================================================
+   BENCH 1 - the safety factor and the stimulation train
+   ===================================================== */
+var NEED=35;          /* mV of depolarization needed: -90 to -55 */
+var EPP_NORMAL=70;    /* mV end-plate potential at a healthy junction */
+var VMAX=88;          /* the end plate cannot depolarize past its reversal potential */
+
+var CASES=[
+ {k:'well',n:'Healthy junction',r:100,c:100,s:100,a:100,f:3},
+ {k:'mg',n:'Myasthenia gravis',r:60,c:100,s:100,a:100,f:3},
+ {k:'lems',n:'Lambert&ndash;Eaton, at rest',r:100,c:80,s:100,a:100,f:3},
+ {k:'lemsx',n:'Lambert&ndash;Eaton, after fast firing',r:100,c:80,s:100,a:100,f:50},
+ {k:'botox',n:'Botulinum toxin',r:100,c:100,s:6,a:100,f:3},
+ {k:'op',n:'Organophosphate poisoning',r:100,c:100,s:100,a:8,f:3},
+ {k:'curare',n:'Non-depolarizing blocker (curare)',r:32,c:100,s:100,a:100,f:3}
+];
+var freq=3;
+var FREQS=[{n:'3 Hz &mdash; routine',v:3},{n:'20 Hz',v:20},{n:'50 Hz &mdash; high frequency',v:50}];
+var cbox=$('cases');
+CASES.forEach(function(K){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=K.n;
+  b.onclick=function(){ $('rec').value=K.r; $('cac').value=K.c; $('snr').value=K.s; $('ach').value=K.a; freq=K.f; paintFreq(); render1(); };
+  cbox.appendChild(b);
+});
+var fbox=$('freqs');
+FREQS.forEach(function(F){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=F.n;
+  b.onclick=function(){ freq=F.v; paintFreq(); render1(); };
+  fbox.appendChild(b);
+});
+function paintFreq(){ [].forEach.call(fbox.children,function(c,i){c.classList.toggle('on',FREQS[i].v===freq);}); }
+['rec','cac','snr','ach'].forEach(function(id){ $(id).addEventListener('input',render1); });
+
+function train(){
+  var r=+$('rec').value/100, c=+$('cac').value/100, s=+$('snr').value/100, a=+$('ach').value/100;
+  var out=[], i;
+  var depMax=0.30+0.14*Math.min(1,freq/50);
+  var facMax=Math.min(1,freq/40)*5.0*Math.max(0,1-c);
+  var release0=Math.pow(c,4)*s;              /* fourth-power dependence on calcium entry */
+  for(i=0;i<10;i++){
+    var dep=1-depMax*release0*(1-Math.exp(-i/1.8));
+    var fac=1+facMax*(1-Math.exp(-i/1.4));
+    var m=150*release0*dep*fac;              /* vesicles released on this impulse */
+    var amp=Math.min(VMAX,EPP_NORMAL*(m/150)*r*(1+0.45*(1-a)));
+    /* an inhibited esterase leaves transmitter in the cleft: the end plate stops repolarizing */
+    var base=55*(1-a)*(1-Math.exp(-i/2.5))*Math.min(1,0.30+freq/12);
+    var naAvail=1/(1+Math.exp((base-28)/5));
+    /* fibers are not identical: spread the end-plate potential across the muscle */
+    var lo=amp*0.75, hi=amp*1.30, frac;
+    if(hi<=NEED) frac=0; else if(lo>=NEED) frac=1; else frac=(hi-NEED)/(hi-lo);
+    out.push({m:m,amp:amp,base:base,frac:clamp(frac*naAvail,0,1),na:naAvail});
+  }
+  return out;
+}
+function render1(){
+  $('recV').textContent=$('rec').value+'%';
+  $('cacV').textContent=$('cac').value+'%';
+  $('snrV').textContent=$('snr').value+'%';
+  $('achV').textContent=$('ach').value+'%';
+  paintFreq();
+  var T=train(), first=T[0], last=T[9];
+  var decr=first.frac>0.02?((first.frac-last.frac)/first.frac*100):0;
+  var sf=first.amp/NEED;
+
+  $('s1').innerHTML=
+    tile('End-plate potential, 1st',first.amp.toFixed(0),'mV &middot; healthy junction 70')+
+    tile('Needed for threshold',NEED,'mV &middot; from −90 to −55')+
+    tile('Safety factor',sf.toFixed(2)+'×','end-plate potential ÷ 35 mV')+
+    tile('Vesicles released, 1st',Math.round(first.m),'of about 150 normally')+
+    tile('Fibers reaching threshold',(first.frac*100).toFixed(0)+'%','on the first impulse')+
+    tile('Change over 10 impulses',(decr>=0?'−':'+')+Math.abs(decr).toFixed(0)+'%','at '+freq+' Hz');
+
+  var v=$('v1'),cls='verdict',txt='',inf='';
+  var r=+$('rec').value/100, c=+$('cac').value/100, s=+$('snr').value/100, a=+$('ach').value/100;
+  if(a<0.35&&last.na<0.5){
+    cls='verdict bad';
+    txt='Depolarizing blockade &mdash; the end plate can no longer repolarize<small>With the esterase inhibited, acetylcholine is not cleared between impulses. The end plate stays depolarized, voltage-gated sodium channels inactivate, and transmission fails even though the end-plate potentials are enormous.</small>';
+    inf='<span class="n">Too much transmitter is a way to fail</span><b>Organophosphates</b> inhibit acetylcholinesterase in the basal lamina. Normally that enzyme hydrolyzes acetylcholine within about <b>1 millisecond</b> so the end plate can repolarize and be ready for the next impulse. Block it and you get first excess &mdash; fasciculations, cramps, and the muscarinic flood of salivation, lacrimation, bronchorrhea and bradycardia &mdash; and then paralysis by depolarizing blockade.';
+  } else if(s<0.2){
+    cls='verdict bad';
+    txt='Nothing is being released &mdash; the junction is silent<small>The action potential still arrives, calcium still enters, but the vesicles cannot fuse with the membrane, so no acetylcholine crosses the cleft.</small>';
+    inf='<span class="n">Botulinum toxin cleaves the SNARE proteins</span>Vesicle fusion depends on SNARE proteins zipping the vesicle membrane against the terminal membrane. Cleave them and release stops altogether. Note where in the chain this acts: <b>upstream</b> of the cleft, so no amount of anticholinesterase will help &mdash; there is no transmitter to preserve.';
+  } else if(c<0.95&&freq>=40&&last.frac>first.frac*1.4){
+    cls='verdict info';
+    txt='Increment &mdash; the junction gets stronger with fast repeated firing<small>Release rose from '+Math.round(first.m)+' to '+Math.round(last.m)+' vesicles over ten impulses. Calcium from earlier impulses has not yet been cleared from the terminal, and because release depends on the fourth power of calcium, that residue is worth a great deal when the channels are few.</small>';
+    inf='<span class="n">Lambert&ndash;Eaton syndrome</span>Autoantibodies attack the <b>presynaptic voltage-gated calcium channels</b>, so each impulse admits too little calcium and too few vesicles fuse. The patient is weak at rest, and briefly <i>stronger</i> after sustained effort. Compare that with myasthenia gravis, where the lesion is postsynaptic and strength gets <b>worse</b> with use. The two diseases move in opposite directions on this same chart.';
+  } else if(r<0.85&&decr>15){
+    cls='verdict bad';
+    txt='Decrement &mdash; transmission fails as the junction is used<small>The first impulse just clears threshold in '+(first.frac*100).toFixed(0)+'% of fibers. By the tenth only '+(last.frac*100).toFixed(0)+'% do. Nothing has changed presynaptically except the normal, harmless run-down of vesicle release that a healthy junction never notices.</small>';
+    inf='<span class="n">Myasthenia gravis eats the margin, not the mechanism</span>Autoantibodies destroy roughly <b>70 to 80 percent</b> of nicotinic receptors and flatten the junctional folds. Because the terminal releases several times more acetylcholine than the minimum required, the end-plate potential does not fall in proportion &mdash; it falls to about the level you see here, which sits right on the margin. That is why the weakness <b>worsens with use and improves with rest</b>, and why it is worst in the muscles used most continuously: the eyelids and the extraocular muscles.';
+  } else if(first.frac<0.5){
+    cls='verdict warn';
+    txt='The end-plate potential is below what threshold requires in most fibers<small>'+first.amp.toFixed(0)+' mV produced, '+NEED+' mV needed. Weakness here is not a failure of muscle, of calcium or of myosin &mdash; the signal simply never becomes a muscle action potential.</small>';
+    inf='<span class="n">Where in the chain is the lesion?</span>Read the sliders as a map. <b>Receptors</b> down &rarr; postsynaptic, worsens with use. <b>Calcium channels</b> down &rarr; presynaptic, improves briefly with use. <b>SNARE</b> down &rarr; release abolished. <b>Esterase</b> down &rarr; too much transmitter, then blockade. Four lesions, four completely different bedside stories, one junction.';
+  } else {
+    cls='verdict';
+    txt='Transmission is one-to-one &mdash; every nerve impulse makes a muscle impulse<small>The end-plate potential is '+first.amp.toFixed(0)+' mV where '+NEED+' mV is needed: a safety factor of '+sf.toFixed(2)+'. Release falls by '+((1-last.m/first.m)*100).toFixed(0)+'% over ten impulses and it does not matter in the least, because there is margin to spare.</small>';
+    inf='<span class="n">Why the neuromuscular junction is not like a central synapse</span>A typical central synapse produces a postsynaptic potential of only <b>0.5 to a few millivolts</b> and must summate with hundreds of others to do anything. The neuromuscular junction is built the opposite way: one presynaptic impulse, one guaranteed postsynaptic impulse. The whole design &mdash; a huge folded end plate, receptors packed at the crests, several times more transmitter than needed &mdash; exists to make that guarantee.<div class="dd">The relevant current relationship is <b>I = g &times; (Vm &minus; Eion)</b>. The nicotinic receptor is a ligand-gated channel that passes both sodium and potassium, but at a resting Vm of about &minus;90 mV sodium is <b>150 mV</b> from its equilibrium potential while potassium sits almost at rest. Sodium therefore wins, the net current is inward, and the end plate depolarizes.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i1').innerHTML=inf;
+  draw1(T);
+}
+function draw1(T){
+  var cv=$('cv1'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var L=90,R=W-26,A1=[34,330],A2=[400,H-56];
+  var n=T.length, bw=(R-L)/n*0.66, gap=(R-L)/n;
+  function Y1(v){return A1[1]-(v/95)*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-(v/100)*(A2[1]-A2[0]);}
+  var i;
+  /* panel 1 */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 14px Inter, system-ui, sans-serif';
+  for(i=0;i<=90;i+=15){ g.beginPath(); g.moveTo(L,Y1(i)); g.lineTo(R,Y1(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i,L-9,Y1(i)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('End-plate potential  (mV of depolarization)', L, A1[0]-10);
+  for(i=0;i<n;i++){
+    var x=L+gap*i+(gap-bw)/2;
+    var base=T[i].base, amp=T[i].amp;
+    if(base>1){ g.fillStyle=GOLD; g.globalAlpha=0.5; g.fillRect(x,Y1(base),bw,A1[1]-Y1(base)); g.globalAlpha=1; }
+    g.fillStyle=(amp>=35)?TEAL:CORAL;
+    g.fillRect(x,Y1(amp),bw,A1[1]-Y1(amp));
+    g.fillStyle=TDK; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText(amp.toFixed(0),x+bw/2,Y1(amp)-6);
+  }
+  g.strokeStyle=CORAL; g.lineWidth=2.5; g.setLineDash([7,5]);
+  g.beginPath(); g.moveTo(L,Y1(35)); g.lineTo(R,Y1(35)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('35 mV needed to reach threshold  (−90 → −55 mV)', L+8, Y1(35)-8);
+  g.strokeStyle=GREEN; g.lineWidth=2; g.setLineDash([4,4]);
+  g.beginPath(); g.moveTo(L,Y1(70)); g.lineTo(R,Y1(70)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GREEN; g.font='700 13px Inter, system-ui, sans-serif';
+  g.fillText('70 mV — a healthy junction', L+8, Y1(70)-8);
+  if(T[9].base>4){
+    g.fillStyle=GOLD; g.font='700 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('gold = end plate that never repolarized', R-6, A1[1]-8);
+  }
+
+  /* panel 2 : fraction of fibers transmitting */
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 14px Inter, system-ui, sans-serif';
+  for(i=0;i<=100;i+=25){ g.beginPath(); g.moveTo(L,Y2(i)); g.lineTo(R,Y2(i)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(i+'%',L-9,Y2(i)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Muscle fibers that actually fired  —  what a recorded response would show', L, A2[0]-10);
+  for(i=0;i<n;i++){
+    var x2=L+gap*i+(gap-bw)/2, f=T[i].frac*100;
+    g.fillStyle=f>=60?GREEN:(f>=25?GOLD:CORAL);
+    g.fillRect(x2,Y2(f),bw,A2[1]-Y2(f));
+    g.fillStyle=MUT; g.font='700 12px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText((i+1),x2+bw/2,A2[1]+20);
+  }
+  g.strokeStyle=TDK; g.lineWidth=2.5; g.beginPath();
+  for(i=0;i<n;i++){ var xx=L+gap*i+gap/2, yy=Y2(T[i].frac*100); if(i===0)g.moveTo(xx,yy); else g.lineTo(xx,yy); }
+  g.stroke();
+  g.fillStyle=MUT; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('stimulus number  ·  '+freq+' Hz train',(L+R)/2,A2[1]+42);
+}
+
+/* =====================================================
+   BENCH 2 - excitation-contraction coupling
+   ===================================================== */
+var extCa=true, leak=false, dan=false, fired=false, t0=0, raf2=null;
+$('tExtCa').onclick=function(){extCa=!extCa;this.setAttribute('aria-pressed',extCa?'true':'false');render2();};
+$('tLeak').onclick=function(){leak=!leak;this.setAttribute('aria-pressed',leak?'true':'false');render2();};
+$('tDan').onclick=function(){dan=!dan;this.setAttribute('aria-pressed',dan?'true':'false');render2();};
+$('serca').addEventListener('input',render2);
+$('bFire').onclick=function(){ fired=true; t0=performance.now(); if(!raf2) raf2=requestAnimationFrame(tick2); render2(); };
+$('bReset2').onclick=function(){ fired=false; if(raf2){cancelAnimationFrame(raf2);raf2=null;} render2(); };
+function tick2(){ if(!fired){raf2=null;return;} draw2(); raf2=requestAnimationFrame(tick2); }
+
+var SEQ=[
+ {t:'0 ms',b:'Action potential arrives',d:'It sweeps along the sarcolemma at <b>3 to 5 m/s</b> &mdash; far too slow for surface depolarization to reach the core of a 50 &micro;m fiber by diffusion.'},
+ {t:'0.5 ms',b:'Into the T tubule',d:'The sarcolemma dives into the fiber as <b>transverse tubules</b>, carrying the voltage change to every myofibril at the A&ndash;I junctions. A T tubule flanked by two SR terminal cisternae is a <b>triad</b>.'},
+ {t:'1 ms',b:'DHP receptor changes shape',d:'The <b>dihydropyridine receptor</b> is a voltage sensor in the T-tubule membrane, mechanically linked to <b>RyR1</b> in the SR membrane directly facing it. It physically pulls the release channel open.'},
+ {t:'1.5 ms',b:'Calcium pours out of the SR',d:'Free cytosolic calcium jumps roughly <b>100-fold</b>, from about <b>0.1 &micro;M</b> to about <b>10 &micro;M</b>. No calcium from outside the cell is required.'},
+ {t:'2 ms',b:'Latent period ends &mdash; tension begins',d:'Calcium binds <b>troponin C</b>, troponin drags <b>tropomyosin</b> off the binding sites on actin, and cross-bridge cycling starts. Muscle is switched on by <b>unblocking actin</b>.'},
+ {t:'from 5 ms',b:'SERCA is already pumping it back',d:'The SR calcium ATPase moves calcium back against a gradient of about <b>10,000 to 1</b>, spending one ATP for every two calcium ions. Inside the SR, <b>calsequestrin</b> binds calcium loosely so huge amounts can be stored without stalling the pump.'},
+ {t:'relaxation',b:'Relaxation is not passive',d:'As cytosolic calcium falls below about 0.1 &micro;M, troponin lets go, tropomyosin slides back, and the elastic recoil of titin and the connective-tissue framework returns the sarcomere toward resting length.'}
+];
+/* the release-and-reuptake shape, normalized so an intact transient peaks at exactly 10 uM */
+var SHP=(function(){var m=0,s;for(s=0;s<=80;s+=0.02){var v=(1-Math.exp(-s/1.2))*Math.exp(-s/14);if(v>m)m=v;}return m;})();
+function ecSim(){
+  var sv=+$('serca').value/100;
+  var pts=[], t;
+  for(t=0;t<=260;t+=1){
+    var ca=0.1;
+    if(t>=1.5){
+      var rel=(dan?0.18:1)*(1-Math.exp(-(t-1.5)/1.2));
+      var tau=(sv<=0.02)?100000:(14/Math.max(0.05,sv));
+      ca=0.1+(9.9/SHP)*rel*Math.exp(-(t-1.5)/tau);
+      if(leak&&!dan) ca=Math.max(ca,0.1+7.4*(1-Math.exp(-(t-1.5)/8)));
+    }
+    var act=Math.pow(ca,4)/(Math.pow(ca,4)+Math.pow(2.2,4));
+    pts.push({t:t,ca:ca,act:act});
+  }
+  /* tension follows activation through two first-order mechanical lags */
+  var y1=0,y2=0,tm=26,i;
+  for(i=0;i<pts.length;i++){
+    y1+=(pts[i].act-y1)/tm; y2+=(y1-y2)/tm; pts[i].T=y2;
+  }
+  return pts;
+}
+function render2(){
+  $('sercaV').textContent=$('serca').value+'%';
+  var P=ecSim(), sv=+$('serca').value/100;
+  var peak=0,peakT=0,i;
+  for(i=0;i<P.length;i++){ if(P[i].ca>peak){peak=P[i].ca;} if(P[i].T>peakT)peakT=P[i].T; }
+  var half=260; for(i=P.length-1;i>=0;i--){ if(P[i].ca>0.1+ (peak-0.1)/2) { half=P[i].t; break; } }
+  var end=P[P.length-1];
+
+  $('s2').innerHTML=
+    tile('Resting cytosolic Ca',(0.1).toFixed(1),'&micro;M &middot; 0.0001 mM')+
+    tile('Peak cytosolic Ca',peak.toFixed(1),'&micro;M &middot; about 0.01 mM')+
+    tile('Fold rise',(peak/0.1).toFixed(0)+'×','roughly 100-fold when intact')+
+    tile('Latent period','2','ms from impulse to visible tension')+
+    tile('Calcium half-cleared',(half>250?'not cleared':half+' ms'),'SERCA at '+$('serca').value+'%')+
+    tile('Ca still elevated at 260 ms',end.ca.toFixed(2),'&micro;M &middot; rest is 0.1');
+
+  var v=$('v2'),cls='verdict',txt='',inf='';
+  if(leak&&!dan){
+    cls='verdict bad';
+    txt='Uncontrolled calcium release &mdash; this is malignant hyperthermia<small>Cytosolic calcium is not coming back down. Cross-bridges cannot stop cycling, SERCA pumps furiously and futilely, and every one of those cycles is an ATP hydrolyzed into heat.</small>';
+    inf='<span class="n">Rigidity, then a temperature that runs away</span>An inherited RyR1 defect plus a triggering anesthetic gives a channel that leaks. Calcium stays high, so the muscle stays contracted; the ATP cost is enormous and almost all of it appears as heat. Body temperature can rise <b>1 degree Celsius every 5 minutes</b>. The antidote, <b>dantrolene</b>, blocks RyR1 directly &mdash; switch it on above and watch the calcium transient collapse.';
+  } else if(dan){
+    cls='verdict info';
+    txt='RyR1 blocked &mdash; the release channel barely opens<small>Peak calcium reaches only '+peak.toFixed(1)+' &micro;M instead of 10, so troponin is never saturated and tension is a fraction of normal. That is the point of the drug in a crisis, and also why it causes weakness.</small>';
+    inf='<span class="n">One channel, the whole coupling step</span>RyR1 is the calcium-release channel of the sarcoplasmic reticulum, and it is the direct mechanical partner of the DHP receptor. Block it and excitation is intact, the T tubule depolarizes normally, the voltage sensor moves &mdash; and no calcium comes out. Excitation and contraction have been <i>uncoupled</i>, which is exactly what the name of this step promises.';
+  } else if(sv<0.25){
+    cls='verdict bad';
+    txt='The pump is failing &mdash; and relaxation is failing with it<small>Calcium is still '+end.ca.toFixed(2)+' &micro;M at 260 ms. Cross-bridges keep re-forming because tropomyosin cannot slide back while troponin is still occupied.</small>';
+    inf='<span class="n">Relaxation costs energy</span>SERCA pumps calcium back into the SR against a gradient of about <b>10,000 to 1</b>, spending one ATP for every two calcium ions, and it accounts for roughly <b>a quarter to a third</b> of the muscle&rsquo;s whole ATP consumption. That is part of why shivering generates heat so effectively: the pumping is expensive whether or not any external work is done.';
+  } else if(!extCa){
+    cls='verdict info';
+    txt='No extracellular calcium &mdash; and skeletal muscle carries on regardless<small>Peak cytosolic calcium is unchanged at '+peak.toFixed(1)+' &micro;M. Every calcium ion in this transient came out of the sarcoplasmic reticulum.</small>';
+    inf='<span class="n">The distinctive feature of skeletal coupling</span>In skeletal muscle the DHP receptor and RyR1 are <b>mechanically linked</b>: depolarization changes the shape of the voltage sensor and it physically pulls the release channel open. No calcium needs to cross the sarcolemma at all. <b>Cardiac muscle is different</b> &mdash; a small calcium influx through L-type channels must arrive first and bind RyR2 to trigger release, so a cardiac cell in a calcium-free bath stops within a few beats while this one keeps going.';
+  } else if(!fired){
+    cls='verdict info';
+    txt='Resting: cytosolic calcium 0.1 &micro;M, tropomyosin covering the binding sites<small>Press &ldquo;Fire one action potential&rdquo; and watch the 2 ms latent period, the hundredfold calcium spike and the tension that follows it.</small>';
+    inf='<span class="n">Why the fiber needs tubes at all</span>A muscle fiber is <b>10 to 100 &micro;m</b> across. A surface depolarization would take far too long to reach the middle by diffusion, and the center of the fiber would contract late or not at all. The T tubules solve it structurally: they carry the action potential itself into the core, so every myofibril is triggered at essentially the same instant.';
+  } else {
+    cls='verdict';
+    txt='Coupled &mdash; a voltage change has become a hundredfold rise in calcium<small>Peak '+peak.toFixed(1)+' &micro;M from a resting 0.1 &micro;M, tension beginning about 2 ms after the impulse, and SERCA already clearing the cytosol before the tension has peaked.</small>';
+    inf='<span class="n">Read the order of events</span>Depolarization &rarr; T tubule &rarr; DHP receptor shape change &rarr; RyR1 pulled open &rarr; SR calcium into the cytosol &rarr; calcium onto <b>troponin C</b> &rarr; tropomyosin off the binding sites &rarr; cross-bridges cycle. Notice that calcium works by <b>removing a block</b>, not by activating myosin. Myosin was always willing.<div class="dd">Notice also how much of the trace is downhill: the calcium spike is over long before the tension is, which is the mismatch that makes wave summation and tetanus possible.</div>';
+  }
+  v.className=cls; v.innerHTML=txt;
+  $('i2').innerHTML=inf;
+  var h='';
+  SEQ.forEach(function(S,k){
+    var on=fired;
+    h+='<div class="sq'+(on?'':' dim')+'"><div class="t">'+S.t+'</div><div><b>'+S.b+'</b> &mdash; '+S.d+'</div></div>';
+  });
+  $('seq').innerHTML=h;
+  draw2();
+}
+function draw2(){
+  var cv=$('cv2'),g=cv.getContext('2d'),W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+  var P=ecSim();
+  var elapsed=fired?Math.min(260,(performance.now()-t0)*0.30):0;
+
+  /* ---- triad diagram ---- */
+  var ty=30, th=190;
+  g.fillStyle=TEAL; g.globalAlpha=0.07; g.fillRect(60,ty,W-120,th); g.globalAlpha=1;
+  g.strokeStyle=LINE; g.strokeRect(60,ty,W-120,th);
+  /* sarcolemma */
+  g.strokeStyle=(fired&&elapsed<40)?GOLD:TDK; g.lineWidth=6;
+  g.beginPath(); g.moveTo(60,ty+22); g.lineTo(W-60,ty+22); g.stroke();
+  g.fillStyle=TDK; g.font='800 13.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('sarcolemma — action potential travels at 3–5 m/s', 70, ty+16);
+  /* T tubule */
+  var tx=W/2;
+  g.strokeStyle=(fired&&elapsed>0.4)?GOLD:TDK; g.lineWidth=5;
+  g.beginPath(); g.moveTo(tx-13,ty+22); g.lineTo(tx-13,ty+th-14);
+  g.moveTo(tx+13,ty+22); g.lineTo(tx+13,ty+th-14); g.stroke();
+  g.fillStyle=MUT; g.font='700 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('T tubule', tx, ty+th-2);
+  /* SR cisternae */
+  [-1,1].forEach(function(s){
+    var x=tx+s*84;
+    g.fillStyle=BLUE; g.globalAlpha=0.22; g.fillRect(x-46,ty+46,92,108); g.globalAlpha=1;
+    g.strokeStyle=BLUE; g.lineWidth=2.5; g.strokeRect(x-46,ty+46,92,108);
+    g.fillStyle=BLUE; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+    g.fillText('SR cisterna', x, ty+40);
+    g.fillStyle=MUT; g.font='600 11.5px Inter, system-ui, sans-serif';
+    g.fillText('calsequestrin', x, ty+150);
+    /* DHP - RyR1 mechanical link */
+    g.strokeStyle=(fired&&elapsed>1)?CORAL:MUT; g.lineWidth=3;
+    g.beginPath(); g.moveTo(tx+s*13,ty+92); g.lineTo(x-s*46,ty+92); g.stroke();
+    g.fillStyle=(fired&&elapsed>1)?CORAL:MUT;
+    g.beginPath(); g.arc(tx+s*13,ty+92,7,0,6.3); g.fill();
+    g.beginPath(); g.arc(x-s*46,ty+92,7,0,6.3); g.fill();
+  });
+  g.fillStyle=(fired&&elapsed>1)?CORAL:MUT; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  g.fillText('DHP receptor ⟷ RyR1  (mechanically linked)', tx, ty+82);
+  /* released calcium dots */
+  if(fired&&elapsed>1.5){
+    var nd=Math.min(28,Math.round((elapsed-1.5)*1.4));
+    var d;
+    g.fillStyle=GOLD;
+    for(d=0;d<nd;d++){
+      var s2=(d%2===0)?-1:1, prog=Math.min(1,(elapsed-1.5)/16+d*0.012);
+      var px=tx+s2*(84-46*prog)+ (d*37%61)-30;
+      var py=ty+60+((d*29)%86);
+      g.globalAlpha=0.85;
+      g.beginPath(); g.arc(px,py,3.6,0,6.3); g.fill();
+    }
+    g.globalAlpha=1;
+    g.fillStyle=GOLD; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='right';
+    g.fillText('Ca²⁺ out of the SR', W-72, ty+176);
+  }
+  if(!extCa){
+    g.fillStyle=CORAL; g.font='800 13px Inter, system-ui, sans-serif'; g.textAlign='left';
+    g.fillText('extracellular calcium removed — skeletal coupling does not need it', 70, ty+176);
+  }
+
+  /* ---- traces ---- */
+  var L=94,R=W-26;
+  var A1=[268,442],A2=[490,H-46];
+  function X(t){return L+(t/260)*(R-L);}
+  function Y1(v){return A1[1]-(Math.log10(Math.max(0.05,v))-Math.log10(0.05))/(Math.log10(20)-Math.log10(0.05))*(A1[1]-A1[0]);}
+  function Y2(v){return A2[1]-v*(A2[1]-A2[0]);}
+  var i;
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 13.5px Inter, system-ui, sans-serif';
+  [0.1,1,10].forEach(function(vv){
+    g.beginPath(); g.moveTo(L,Y1(vv)); g.lineTo(R,Y1(vv)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.fillText(vv+' µM',L-9,Y1(vv)+5);
+  });
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Cytosolic free calcium  (log scale)   rest 0.1 µM → peak about 10 µM', L, A1[0]-10);
+  g.strokeStyle=GOLD; g.lineWidth=4; g.beginPath();
+  if(!fired){ g.moveTo(L,Y1(0.1)); g.lineTo(R,Y1(0.1)); }
+  else {
+    g.moveTo(X(0),Y1(0.1));
+    for(i=0;i<P.length;i++){ if(P[i].t>elapsed) break; g.lineTo(X(P[i].t),Y1(P[i].ca)); }
+  }
+  g.stroke();
+
+  g.strokeStyle=LINE; g.lineWidth=1;
+  for(i=0;i<=4;i++){ g.beginPath(); g.moveTo(L,Y2(i/4)); g.lineTo(R,Y2(i/4)); g.stroke();
+    g.fillStyle=MUT; g.textAlign='right'; g.font='600 13.5px Inter, system-ui, sans-serif';
+    g.fillText((i*25)+'%',L-9,Y2(i/4)+5); }
+  g.fillStyle=TDK; g.font='800 15px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('Tension  (percent of maximum)   latent period about 2 ms', L, A2[0]-10);
+  g.strokeStyle=TEAL; g.lineWidth=4; g.beginPath();
+  if(!fired){ g.moveTo(L,Y2(0)); g.lineTo(R,Y2(0)); }
+  else {
+    g.moveTo(X(0),Y2(0));
+    for(i=0;i<P.length;i++){ if(P[i].t>elapsed) break; g.lineTo(X(P[i].t),Y2(P[i].T)); }
+  }
+  g.stroke();
+
+  /* time axis */
+  g.fillStyle=MUT; g.font='600 13.5px Inter, system-ui, sans-serif'; g.textAlign='center';
+  for(i=0;i<=260;i+=40){ g.strokeStyle=LINE; g.beginPath(); g.moveTo(X(i),A2[1]); g.lineTo(X(i),A2[1]+6); g.stroke();
+    g.fillText(i,X(i),A2[1]+22); }
+  g.font='800 13px Inter, system-ui, sans-serif'; g.fillText('MILLISECONDS',(L+R)/2,A2[1]+40);
+  /* markers */
+  g.strokeStyle=CORAL; g.lineWidth=2; g.setLineDash([6,4]);
+  g.beginPath(); g.moveTo(X(2),A1[0]); g.lineTo(X(2),A1[1]); g.moveTo(X(2),A2[0]); g.lineTo(X(2),A2[1]); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle=CORAL; g.font='800 12.5px Inter, system-ui, sans-serif'; g.textAlign='left';
+  g.fillText('2 ms', X(2)+6, A2[0]+16);
+}
+
+/* boot */
+paintFreq(); render1(); render2(); setMode(1);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 12 — The Respiratory System | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 12 — The Respiratory System</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit5">
+
+<h2>Module 12 &nbsp;•&nbsp; The Respiratory System &nbsp;<span class="chip">Exam 5</span></h2>
+<div class="box obj"><ol><li>Describe the physiology of ventilation, perfusion and diffusion.</li><li>Describe gas exchange and transport.</li><li>Identify the roles of the different alveolar cell types.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Inhalation: diaphragm contracts → thoracic volume ↑ → pressure ↓ → air in (Boyle's law).</li><li>Surfactant (<b>Type II cells</b>) lowers surface tension and prevents alveolar collapse.</li><li>O₂ ~98% on hemoglobin; CO₂ ~70% as <b>bicarbonate</b>.</li><li>Retained CO₂ → respiratory <b>acidosis</b>; blown off CO₂ → respiratory <b>alkalosis</b>.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">Breathing is a pressure problem</h4><div class="read">Air moves down a pressure gradient, and your diaphragm creates that gradient. On <b>inhalation</b> the
+diaphragm contracts and flattens, the thoracic cavity gets bigger, and by Boyle's law a bigger space means
+lower pressure — so pressure inside the lungs falls below atmospheric and air flows in. On quiet
+<b>exhalation</b> the diaphragm relaxes, the cavity shrinks, pressure rises above atmospheric, and air flows
+out. Quiet exhalation is <b>passive</b>; it costs nothing but elastic recoil.<br><br>
+<b>Surfactant</b>, made by Type II alveolar cells, lowers surface tension so alveoli do not collapse on
+themselves. A premature infant without it has to fight to reinflate the lungs with every breath.</div>
+<h4 class="topic">Ventilation, perfusion, diffusion</h4><div class="read">Three separate requirements, and all three must work. <b>Ventilation</b> is air reaching the alveoli.
+<b>Perfusion</b> is blood reaching the capillaries around them. <b>Diffusion</b> is gas actually crossing
+the membrane, driven by the partial pressure gradient.<br><br>
+A pulmonary embolism ventilates fine but does not perfuse. Pulmonary edema perfuses fine but the membrane
+is too thick to diffuse across. Naming which of the three has failed is usually the whole question.</div>
+<h4 class="topic">How the gases travel</h4><div class="read">Oxygen is barely soluble, so about <b>98%</b> rides on <b>hemoglobin</b> and only a couple of percent
+dissolves. Carbon dioxide is different: roughly <b>70% travels as bicarbonate</b> in the plasma, about 23%
+on hemoglobin, and the rest dissolved.<br><br>
+That bicarbonate route is why respiration and pH are inseparable. CO₂ plus water makes carbonic acid, which
+releases H⁺. Retain CO₂ and you become acidotic; blow it off and you become alkalotic. The lungs are a pH
+organ as much as a gas organ.</div>
+<h4 class="topic">Lung volumes, and why some air never leaves</h4><div class="read">A normal quiet breath is <b>tidal volume</b>, roughly 500 mL. You can inhale a lot more on top of it and
+exhale a lot more beyond it, and together with tidal volume that maximum sweep is <b>vital capacity</b>.<br><br>
+But no matter how hard you blow out, some air stays — <b>residual volume</b>. That is not a flaw. It keeps
+alveoli open between breaths so they do not have to be reinflated from collapsed each time, and it means gas
+exchange continues even while you are exhaling.</div>
+<h4 class="topic">Compliance: how easily lungs inflate</h4><div class="read"><b>Compliance</b> is how readily the lungs expand for a given effort. Surfactant raises it by cutting
+surface tension. Scarring lowers it — in pulmonary fibrosis the lungs are stiff, and every breath costs more
+work.<br><br>
+Compliance and airway obstruction are different problems and it is worth keeping them apart. Fibrosis makes
+lungs hard to <i>inflate</i>. COPD makes air hard to get <i>out</i>, because narrowed airways and lost
+elastic recoil trap it on exhalation. Restrictive versus obstructive, in one sentence each.</div>
+<h4 class="topic">Which muscles do the work of breathing</h4><div class="read">Quiet inspiration is the only part of normal breathing that costs muscular energy. The <b>diaphragm</b> flattens and the <b>external intercostals</b> lift the ribs outward, the thorax enlarges, and air follows the pressure drop inward. The diaphragm alone does about 70 percent of that work.<br><br>
+Quiet <b>expiration</b> is passive. You simply stop contracting and the stretched elastic tissue of the lungs and chest wall recoils — no muscle needed. Only <b>forced expiration</b> recruits the <b>internal intercostals</b> and <b>abdominal muscles</b>, and only forced inspiration calls in the <b>scalenes</b>, <b>sternocleidomastoid</b> and <b>pectoralis minor</b>.<br><br>
+Which is why a patient using neck muscles to pull air in, or belly muscles to push it out, is telling you the effortless version of breathing has already failed.</div>
+<h4 class="topic">The three cells lining an alveolus</h4><div class="read">An alveolus has three cell types, and only one of them exchanges gas.<br><br>
+<b>Type I alveolar cells</b> are flat squamous cells covering about 95 percent of the surface. Being thin is the entire point — oxygen and carbon dioxide cross them almost instantly. <b>Type II cells</b> are cuboidal, occupy the rest, and secrete <b>surfactant</b>, the detergent-like film that lowers surface tension so an alveolus does not collapse on itself. They also serve as the repair stem cell after lung injury. <b>Alveolar macrophages</b>, or dust cells, patrol the surface and engulf whatever was inhaled past the airways.<br><br>
+Surfactant does not reach adequate levels until roughly week 34 of gestation, which is why a premature infant's alveoli collapse at every breath out and must be reopened from nothing — <b>neonatal respiratory distress syndrome</b>.</div>
+<h4 class="topic">How hemoglobin decides when to let go</h4><div class="read">Each hemoglobin molecule carries four oxygen molecules, and binding the first makes the next easier — <b>cooperative binding</b>. That is why the <b>oxygen-hemoglobin dissociation curve</b> is S-shaped: in the lungs saturation holds near 98 percent even as the partial pressure dips, while in the tissues the curve falls steeply, so a small pressure drop unloads a lot of oxygen.<br><br>
+Four things shift the curve <b>right</b>, so hemoglobin releases oxygen more readily: rising carbon dioxide, falling pH, rising temperature and rising <b>2,3-BPG</b>. The carbon dioxide and pH half of that is the <b>Bohr effect</b>. The opposite conditions shift it left and hold oxygen on.<br><br>
+Which is why working muscle — hot, acidic and loaded with carbon dioxide — strips far more oxygen from the same arterial blood than resting tissue does.</div>
+<h4 class="topic">Carbon dioxide travels as bicarbonate</h4><div class="read">Oxygen and carbon dioxide do not travel the same way. About 70 percent of carbon dioxide is carried as <b>bicarbonate</b>, 20 percent rides on the globin part of hemoglobin as <b>carbaminohemoglobin</b>, and only 7 to 10 percent dissolves in plasma.<br><br>
+That bicarbonate is made inside the red cell: <b>carbonic anhydrase</b> joins carbon dioxide to water, forming carbonic acid, which splits into a hydrogen ion and bicarbonate. The bicarbonate leaves for the plasma and a chloride ion moves in to balance the charge — the <b>chloride shift</b>. In the lung the reaction reverses and the gas is blown off.<br><br>
+Because that reaction makes acid, ventilation sets pH — hypoventilating traps carbon dioxide and drops the pH, while hyperventilating blows it off, which is why a panicking patient who over-breathes goes alkalotic and tingles.</div>
+<h4 class="topic">When ventilation and perfusion do not match</h4><div class="read">Air and blood must arrive at the same alveolus for exchange to happen, and the ventilation to perfusion ratio is about 0.8. There are two ways to break it.<br><br>
+A <b>shunt</b> is perfusion without ventilation — blood flows past an alveolus with no air, as in pneumonia, atelectasis or pulmonary edema. That blood reaches the left heart still deoxygenated, and extra oxygen helps little because air cannot reach it. <b>Dead space</b> is the mirror image: ventilation without perfusion, classically a pulmonary embolism blocking flow to an alveolus that is perfectly well ventilated.<br><br>
+The lung defends itself with <b>hypoxic pulmonary vasoconstriction</b>: vessels serving poorly ventilated regions narrow, pushing blood toward alveoli that actually have air. Which is why a small mismatch stays invisible while a large one drops saturation fast.</div>
+<h3>Reference tables</h3>
+<h4>Ventilation mechanics</h4><table><tr><th>Phase</th><th>Diaphragm</th><th>Volume</th><th>Pressure</th><th>Airflow</th></tr><tr><td>Inhalation</td><td>Contracts and flattens</td><td>Increases</td><td>Falls below atmospheric</td><td>In</td></tr><tr><td>Quiet exhalation</td><td>Relaxes (passive recoil)</td><td>Decreases</td><td>Rises above atmospheric</td><td>Out</td></tr></table>
+<h4>Gas transport</h4><table><tr><th>Gas</th><th>Main form</th><th>Proportion</th></tr><tr><td>Oxygen</td><td>Bound to hemoglobin</td><td>~98%</td></tr><tr><td>Oxygen</td><td>Dissolved in plasma</td><td>~2%</td></tr><tr><td>Carbon dioxide</td><td>As bicarbonate in plasma</td><td>~70%</td></tr><tr><td>Carbon dioxide</td><td>Bound to hemoglobin</td><td>~23%</td></tr><tr><td>Carbon dioxide</td><td>Dissolved</td><td>~7%</td></tr></table>
+<h4>The three alveolar cells</h4><table><tr><th>Cell</th><th>Function</th><th>If damaged</th></tr><tr><td>Type I</td><td>Thin squamous — the gas exchange surface</td><td>Diffusion distance rises; exchange fails</td></tr><tr><td>Type II</td><td>Produces surfactant; progenitor for Type I</td><td>Alveoli collapse (RDS)</td></tr><tr><td>Alveolar macrophage</td><td>Engulfs debris and pathogens</td><td>Infection and particulate build-up</td></tr></table>
+<h4>Factors affecting gas exchange</h4><table><tr><th>Factor</th><th>Effect</th></tr><tr><td>Surface area</td><td>More area = faster exchange (emphysema reduces it)</td></tr><tr><td>Membrane thickness</td><td>Thicker = slower (fibrosis, edema)</td></tr><tr><td>Partial pressure gradient</td><td>Steeper = faster</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Exhalation is active."</b> Quiet exhalation is passive elastic recoil.</li><li><b>"CO₂ travels mostly on hemoglobin."</b> ~70% travels as bicarbonate in plasma.</li><li><b>"Type II cells perform gas exchange."</b> Type I exchange gas; Type II make surfactant.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 12 — p.140 · Module 12 respiratory deck, slide 10 · Module 12 respiratory deck, slide 2 · Module 12 respiratory deck, slide 4 · Module 12 respiratory deck, slide 6 · Module 12 respiratory deck, slide 7 · Module 12 respiratory deck, slide 8 · Module 12 respiratory deck, slide 9</p>
+<h3>Practice questions <span class="small">(42)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> During inhalation, the diaphragm ____ and intrapulmonary pressure ____.</summary><ol class="opts" type="A"><li>relaxes and domes upward; rises above atmospheric</li><li>contracts and flattens; rises above atmospheric</li><li>relaxes while the ribs drop; falls below atmospheric</li><li>remains motionless; stays equal to atmospheric</li><li class="key">contracts and flattens; falls below atmospheric</li></ol><div class="ans show"><b>Answer: E.</b> Boyle's law: increasing thoracic volume lowers pressure, so air flows in.<span class="ref">Module 12 respiratory deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q2.</b> During quiet exhalation, the diaphragm ____ and air ____.</summary><ol class="opts" type="A"><li class="key">relaxes and rises, raising pressure; leaves</li><li>contracts and flattens, lowering pressure; enters</li><li>contracts and pulls downward; leaves</li><li>relaxes and rises, raising pressure; enters</li><li>stays fixed in position; airflow stops entirely</li></ol><div class="ans show"><b>Answer: A.</b> Quiet exhalation is passive — elastic recoil does the work.<span class="ref">Module 12 respiratory deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q3.</b> Air and gases always move:</summary><ol class="opts" type="A"><li>From low to high pressure, up their gradient</li><li class="key">From high to low pressure, down their gradient</li><li>Only by active transport using ATP-driven pumps</li><li>Against their gradient whenever oxygen is needed</li><li>Only when the diaphragm relaxes during exhalation</li></ol><div class="ans show"><b>Answer: B.</b> Every step of ventilation and gas exchange is gradient-driven and passive.<span class="ref">Module 12 respiratory deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q4.</b> Surfactant is produced by ____ and functions to ____.</summary><ol class="opts" type="A"><li>Type I alveolar cells; form the thin barrier across which oxygen diffuses into blood</li><li>alveolar macrophages; engulf inhaled bacteria, dust and other debris in the alveoli</li><li class="key">Type II alveolar cells; reduce surface tension and prevent alveolar collapse</li><li>goblet cells; secrete the mucus that traps debris in the conducting airways</li><li>capillary endothelium; line the vessels carrying blood past the alveolar wall</li></ol><div class="ans show"><b>Answer: C.</b> Without surfactant, surface tension would collapse small alveoli — the problem in neonatal RDS.<span class="ref">Module 12 respiratory deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q5.</b> Lung compliance refers to:</summary><ol class="opts" type="A"><li>The rate of diffusion of gases</li><li>Blood flow through the lungs</li><li>Oxygen-carrying capacity of blood</li><li class="key">How easily the lungs expand</li><li>Resistance in the airways only</li></ol><div class="ans show"><b>Answer: D.</b> Surfactant increases compliance; fibrosis decreases it.<span class="ref">Module 12 respiratory deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q6.</b> A patient with pulmonary fibrosis has stiff, scarred lungs. Compliance is:</summary><ol class="opts" type="A"><li>Increased, so the scarred lungs inflate far more easily than healthy ones</li><li>Unchanged, since fibrous scar tissue does not alter how the lung expands</li><li>Infinite, because stiff tissue stretches without limit</li><li>Irrelevant, since compliance affects only gas exchange</li><li class="key">Decreased, so more effort is required to inflate the lungs</li></ol><div class="ans show"><b>Answer: E.</b> Scarred tissue resists expansion, increasing the work of breathing.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q7.</b> Perfusion refers to:</summary><ol class="opts" type="A"><li class="key">Blood flow to the pulmonary capillaries</li><li>Movement of air into and out of the alveoli</li><li>Diffusion of gas across the respiratory membrane</li><li>Oxygen binding to hemoglobin in red cells</li><li>Surfactant production by Type II cells</li></ol><div class="ans show"><b>Answer: A.</b> Ventilation delivers air; perfusion delivers blood. Both must be adequate and matched.<span class="ref">Module 12 respiratory deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q8.</b> A pulmonary embolism blocks blood flow to a lung region. The primary problem is:</summary><ol class="opts" type="A"><li>Inadequate ventilation, so the well-perfused alveoli receive no fresh air</li><li class="key">Inadequate perfusion, so ventilated alveoli cannot exchange gas</li><li>Excess surfactant release, which overinflates the alveoli beyond the clot</li><li>Airway obstruction that traps air in the affected lobe</li><li>Reduced compliance alone, making the lung stiff to inflate</li></ol><div class="ans show"><b>Answer: B.</b> The alveoli receive air but no blood, creating dead space and impairing oxygenation.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q9.</b> Gas exchange occurs at the:</summary><ol class="opts" type="A"><li>Nasopharynx</li><li>Diaphragm</li><li class="key">Alveoli</li><li>Pleura</li><li>Larynx</li></ol><div class="ans show"><b>Answer: C.</b> Only the alveoli have the thin walls and capillary contact required for diffusion.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q10.</b> Which three factors most influence the rate of gas exchange?</summary><ol class="opts" type="A"><li>Body temperature, arterial blood pH and total lung capacity</li><li>Heart rate, respiratory rate and the resting tidal volume of a breath</li><li>Blood color, plasma viscosity and the density of the alveolar gas mixture</li><li class="key">Surface area, membrane thickness and partial pressure gradient</li><li>Airway diameter, mucus thickness and ciliary beating</li></ol><div class="ans show"><b>Answer: D.</b> Greater area and steeper gradient speed exchange; a thicker membrane slows it.<span class="ref">Module 12 respiratory deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q11.</b> Oxygen moves from alveoli into blood because:</summary><ol class="opts" type="A"><li>It is actively pumped across the alveolar wall by ATP</li><li>Plasma proteins chemically attract oxygen out of the alveoli</li><li>The alveoli contract and squeeze oxygen into the capillary</li><li>Surfactant pushes oxygen through the respiratory membrane</li><li class="key">Alveolar oxygen partial pressure exceeds that in the blood</li></ol><div class="ans show"><b>Answer: E.</b> Diffusion always follows the partial pressure gradient.<span class="ref">Module 12 respiratory deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q12.</b> Carbon dioxide moves from blood into alveoli because:</summary><ol class="opts" type="A"><li class="key">Blood CO2 partial pressure exceeds alveolar CO2 partial pressure</li><li>Hemoglobin actively pumps it out of the plasma into the alveolar air</li><li>It is lighter than oxygen and simply rises into the alveoli</li><li>Alveolar CO2 partial pressure exceeds the CO2 partial pressure of blood</li><li>Type II alveolar cells actively transport it out of blood</li></ol><div class="ans show"><b>Answer: A.</b> CO2 also follows its own gradient, in the opposite direction to oxygen.<span class="ref">Module 12 respiratory deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q13.</b> Oxygen is transported in blood primarily:</summary><ol class="opts" type="A"><li>Dissolved directly in the plasma as free gas</li><li class="key">Bound to hemoglobin in red blood cells</li><li>As bicarbonate ions dissolved in plasma</li><li>Bound to albumin carried in the plasma</li><li>As carbonic acid formed inside red cells</li></ol><div class="ans show"><b>Answer: B.</b> About 98% of oxygen is carried on hemoglobin; only a small fraction dissolves in plasma.<span class="ref">Module 12 respiratory deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q14.</b> Carbon dioxide is transported in blood primarily:</summary><ol class="opts" type="A"><li>Bound directly to hemoglobin</li><li>Dissolved as free gas bubbles</li><li class="key">As bicarbonate ion in plasma</li><li>Bound to plasma albumin</li><li>As carbon monoxide in plasma</li></ol><div class="ans show"><b>Answer: C.</b> Roughly 70% travels as bicarbonate, with smaller amounts on hemoglobin and dissolved.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q15.</b> Hemoglobin's role is to:</summary><ol class="opts" type="A"><li>Produce the surfactant that lowers surface tension and keeps small alveoli open</li><li>Digest the inhaled pathogens that reach the alveolar air spaces</li><li>Clot blood by forming a fibrin mesh across an injured vessel wall</li><li class="key">Bind and transport oxygen, releasing it where tissue partial pressure is low</li><li>Filter dust and airborne debris out of inhaled air long before it reaches the alveoli</li></ol><div class="ans show"><b>Answer: D.</b> Each hemoglobin molecule can carry up to four oxygen molecules.<span class="ref">Module 12 respiratory deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q16.</b> Carbon dioxide affects blood pH by the reaction CO2 + H2O forming:</summary><ol class="opts" type="A"><li>Bicarbonate only, with no accompanying change in hydrogen ion concentration</li><li>Oxygen and water vapor, which the lungs then exhale together</li><li>Lactic acid, which then combines with bicarbonate and raises the blood pH</li><li>Ammonia, which the kidneys must then excrete in the urine</li><li class="key">Carbonic acid, which dissociates to release hydrogen ions and lower pH</li></ol><div class="ans show"><b>Answer: E.</b> This links respiration directly to acid-base balance.<span class="ref">Module 12 respiratory deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q17.</b> A patient who retains carbon dioxide will develop:</summary><ol class="opts" type="A"><li class="key">Respiratory acidosis</li><li>Respiratory alkalosis</li><li>Metabolic alkalosis</li><li>No acid-base change</li><li>Increased blood pH</li></ol><div class="ans show"><b>Answer: A.</b> Retained CO2 generates H+, lowering pH.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q18.</b> A patient hyperventilating blows off excess CO2, producing:</summary><ol class="opts" type="A"><li>Respiratory acidosis</li><li class="key">Respiratory alkalosis</li><li>Metabolic acidosis</li><li>Unchanged blood pH</li><li>Hypercapnia with acidosis</li></ol><div class="ans show"><b>Answer: B.</b> Losing CO2 removes acid, raising pH.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q19.</b> Carbon monoxide is dangerous chiefly because it:</summary><ol class="opts" type="A"><li>Physically blocks the upper airway so that inhaled air never reaches the alveoli</li><li>Destroys surfactant so that the alveoli collapse on every expiration</li><li class="key">Binds hemoglobin far more tightly than oxygen, preventing oxygen transport</li><li>Collapses the alveoli by raising alveolar surface tension</li><li>Raises the blood pH sharply, producing a severe and rapid respiratory alkalosis</li></ol><div class="ans show"><b>Answer: C.</b> CO occupies the oxygen binding sites with roughly 200 times the affinity.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q20.</b> Type I alveolar cells are:</summary><ol class="opts" type="A"><li>Cuboidal cells that synthesize and secrete pulmonary surfactant</li><li>Phagocytic cells that engulf inhaled debris</li><li>Mucus-producing cells that line the larger conducting airways</li><li class="key">Thin squamous cells forming the gas exchange surface</li><li>Ciliated cells that sweep mucus toward the pharynx</li></ol><div class="ans show"><b>Answer: D.</b> Their extreme thinness minimizes the diffusion distance.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q21.</b> Type II alveolar cells function to:</summary><ol class="opts" type="A"><li>Perform gas exchange</li><li>Engulf inhaled debris</li><li>Line the bronchi</li><li>Produce airway mucus</li><li class="key">Produce surfactant</li></ol><div class="ans show"><b>Answer: E.</b> They also serve as progenitors that can replace damaged Type I cells.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q22.</b> Alveolar macrophages ('dust cells') function to:</summary><ol class="opts" type="A"><li class="key">Engulf inhaled pathogens and particulate debris</li><li>Produce the surfactant that lowers alveolar surface tension</li><li>Exchange gases across the alveolar membrane</li><li>Secrete mucus onto the alveolar surface</li><li>Constrict the smooth muscle encircling the bronchioles</li></ol><div class="ans show"><b>Answer: A.</b> They are the last line of defense in the alveolus, where there are no cilia.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q23.</b> Damage to Type I alveolar cells would most directly cause:</summary><ol class="opts" type="A"><li>Excess surfactant production and abnormally compliant alveoli</li><li class="key">Reduced gas exchange efficiency due to a thickened or disrupted membrane</li><li>Complete airway obstruction caused by thick mucus plugging the small bronchioles</li><li>Increased lung compliance, making the alveoli far easier to inflate than normal</li><li>Reduced perfusion through the pulmonary capillary network</li></ol><div class="ans show"><b>Answer: B.</b> The exchange surface itself is compromised.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q24.</b> A premature infant lacking surfactant will have alveoli that:</summary><ol class="opts" type="A"><li>Overinflate steadily, because alveolar surface tension has been abolished</li><li>Fill with mucus secreted by the airway goblet cells</li><li class="key">Tend to collapse, greatly increasing the work of breathing</li><li>Lose their capillary blood supply and become dead space</li><li>Enlarge and merge into a few oversized air sacs, as they do in emphysema</li></ol><div class="ans show"><b>Answer: C.</b> High surface tension collapses alveoli at end-expiration — neonatal respiratory distress syndrome.<span class="ref">Module 12 respiratory deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q25.</b> Emphysema destroys alveolar walls. The main consequence is:</summary><ol class="opts" type="A"><li>Increased surface area available for gas exchange</li><li>Excess surfactant flooding the enlarged air sacs</li><li>Increased perfusion of the remaining alveoli</li><li class="key">Decreased surface area, impairing gas exchange</li><li>Improved compliance with completely normal gas exchange</li></ol><div class="ans show"><b>Answer: D.</b> Merging alveoli into larger sacs drastically reduces total exchange surface.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q26.</b> Which pairing correctly matches structure to function?</summary><ol class="opts" type="A"><li>Type I cell — surfactant production and secretion</li><li>Type II cell — gas exchange across a thin wall</li><li>Type I cell — phagocytosis of inhaled dust</li><li>Type II cell — ciliary clearance of mucus</li><li class="key">Alveolar macrophage — phagocytosis of debris</li></ol><div class="ans show"><b>Answer: E.</b> Type I exchanges gas, Type II makes surfactant, macrophages clean up.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q27.</b> Cilia in the conducting airways function to:</summary><ol class="opts" type="A"><li class="key">Sweep mucus and trapped debris upward and out of the airway</li><li>Exchange oxygen and carbon dioxide between air and the pulmonary blood</li><li>Produce the surfactant that keeps the alveoli open</li><li>Regulate the perfusion of blood through the pulmonary capillary beds</li><li>Contract the diaphragm so that air is drawn inward</li></ol><div class="ans show"><b>Answer: A.</b> This mucociliary escalator is why smoking, which paralyzes cilia, causes chronic cough.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q28.</b> The conducting zone of the airway functions to:</summary><ol class="opts" type="A"><li>Exchange oxygen and carbon dioxide between air and blood</li><li class="key">Warm, humidify and filter air while conducting it</li><li>Produce the surfactant that reduces alveolar surface tension</li><li>Absorb oxygen directly into the bloodstream</li><li>Regulate arterial blood pH and nothing else</li></ol><div class="ans show"><b>Answer: B.</b> No exchange occurs here; it is anatomical dead space.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q29.</b> Which muscle is the primary driver of quiet inspiration?</summary><ol class="opts" type="A"><li>Internal intercostals</li><li>Abdominals</li><li class="key">Diaphragm</li><li>Sternocleidomastoid</li><li>Scalenes</li></ol><div class="ans show"><b>Answer: C.</b> Diaphragmatic contraction accounts for most resting tidal volume.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q30.</b> Intrapleural pressure is normally:</summary><ol class="opts" type="A"><li>Exactly equal to atmospheric pressure at rest</li><li>Strongly positive throughout the breathing cycle</li><li>Zero, the same as alveolar pressure at rest</li><li class="key">Slightly negative relative to atmospheric</li><li>Higher than alveolar pressure during inspiration</li></ol><div class="ans show"><b>Answer: D.</b> Negative pleural pressure keeps the lungs inflated against their recoil.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q31.</b> A pneumothorax causes lung collapse because:</summary><ol class="opts" type="A"><li>Surfactant is washed away and surface tension pulls every alveolus shut</li><li>The alveoli fill with fluid that blocks gas diffusion</li><li>The diaphragm is paralyzed and can no longer contract during inspiration</li><li>Blood flow through the pulmonary capillaries stops</li><li class="key">Air enters the pleural space and destroys the negative pressure</li></ol><div class="ans show"><b>Answer: E.</b> Losing the pressure gradient allows elastic recoil to collapse the lung.<span class="ref">Module 12 respiratory deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q32.</b> Tidal volume is defined as:</summary><ol class="opts" type="A"><li class="key">Air moved in a normal quiet breath</li><li>Maximum air inhaled after a full breath in</li><li>Air remaining after maximal exhalation</li><li>Total lung capacity after full inflation</li><li>Vital capacity, the largest breath possible</li></ol><div class="ans show"><b>Answer: A.</b> Roughly 500 mL in a typical adult at rest.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q33.</b> Residual volume is important because it:</summary><ol class="opts" type="A"><li>Is completely exhaled from the lungs during each quiet expiration</li><li class="key">Keeps alveoli open and permits continuous gas exchange</li><li>Equals the tidal volume during quiet breathing</li><li>Is driven out of the lungs completely by a single forceful cough</li><li>Contains only carbon dioxide and no oxygen at all</li></ol><div class="ans show"><b>Answer: B.</b> Air that cannot be exhaled prevents alveolar collapse between breaths.<span class="ref">Module 12 respiratory deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q34.</b> The primary chemical stimulus driving normal respiration is:</summary><ol class="opts" type="A"><li>Falling oxygen sensed by the medullary chemoreceptors</li><li>Rising arterial oxygen sensed by the carotid bodies</li><li class="key">Rising carbon dioxide and the resulting fall in pH</li><li>Falling plasma potassium sensed by the kidneys</li><li>Rising blood glucose after a large carbohydrate meal</li></ol><div class="ans show"><b>Answer: C.</b> Central chemoreceptors respond mainly to CO2-driven pH change in CSF.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q35.</b> Central chemoreceptors are located in the:</summary><ol class="opts" type="A"><li>Carotid bodies</li><li>Aortic arch bodies</li><li>Alveolar walls</li><li class="key">Medulla oblongata</li><li>Adrenal medulla</li></ol><div class="ans show"><b>Answer: D.</b> They sense pH change in cerebrospinal fluid.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q36.</b> The Bohr effect describes how:</summary><ol class="opts" type="A"><li>Rising oxygen levels increase carbon dioxide binding</li><li>Temperature has no measurable effect on oxygen binding by hemoglobin</li><li>Hemoglobin never releases oxygen once it has bound it</li><li>Rising CO2 and falling blood pH raise hemoglobin's affinity for oxygen</li><li class="key">Increased CO2 and lower pH reduce hemoglobin's oxygen affinity</li></ol><div class="ans show"><b>Answer: E.</b> Active tissue unloads more oxygen exactly where it is needed.<span class="ref">Module 12 respiratory deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q37.</b> A rightward shift of the oxygen-hemoglobin curve means:</summary><ol class="opts" type="A"><li class="key">Decreased affinity, so oxygen is released more readily</li><li>Increased affinity, so oxygen is held more tightly at the tissues</li><li>No change in affinity, only in the total oxygen the blood carries</li><li>Total oxygen-carrying capacity falls substantially</li><li>Hemoglobin denatures and can no longer bind oxygen</li></ol><div class="ans show"><b>Answer: A.</b> Heat, acidity and high CO2 shift it right, favoring unloading.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q38.</b> The chloride shift occurs to:</summary><ol class="opts" type="A"><li>Store extra oxygen inside the red blood cell by binding it to chloride ions</li><li class="key">Maintain electrical balance as bicarbonate leaves the red cell</li><li>Generate the ATP that powers the ion pumps of the red cell membrane</li><li>Buffer the alveolar air against sudden changes in pH</li><li>Transport glucose into the red cell to fuel glycolysis</li></ol><div class="ans show"><b>Answer: B.</b> Chloride enters as bicarbonate exits, preserving neutrality.<span class="ref">Module 12 respiratory deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q39.</b> Ventilation-perfusion mismatch means:</summary><ol class="opts" type="A"><li>Airflow and blood flow are matched perfectly in every alveolus of both lungs</li><li>The diaphragm fails to contract strongly enough during inspiration</li><li class="key">Ventilated alveoli are underperfused or perfused alveoli underventilated</li><li>Surfactant is absent, so the alveoli collapse at end-expiration</li><li>Pleural pressure becomes positive throughout inspiration and expiration alike</li></ol><div class="ans show"><b>Answer: C.</b> Either component alone is insufficient for gas exchange.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q40.</b> In COPD, the primary problem is:</summary><ol class="opts" type="A"><li>Restricted lung expansion from stiff, scarred tissue</li><li>Absent surfactant causing widespread alveolar collapse</li><li>A pulmonary embolism blocking capillary blood flow</li><li class="key">Obstructed airflow, especially on expiration</li><li>Pneumothorax with air trapped in the pleural space</li></ol><div class="ans show"><b>Answer: D.</b> Airway narrowing and loss of recoil trap air on exhalation.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+<details class="q"><summary><b>Q41.</b> Which finding suggests chronic CO2 retention?</summary><ol class="opts" type="A"><li>Respiratory alkalosis with a low bicarbonate</li><li>Metabolic alkalosis with a normal carbon dioxide</li><li>Normal pH with a low arterial carbon dioxide</li><li>Hyperventilation with rapid, deep breathing</li><li class="key">Respiratory acidosis with elevated bicarbonate</li></ol><div class="ans show"><b>Answer: E.</b> The kidneys retain bicarbonate to compensate for chronic acidosis.<span class="ref">Module 12 respiratory deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q42.</b> Cheyne-Stokes respiration is characterized by:</summary><ol class="opts" type="A"><li class="key">Cycles of increasing then decreasing depth separated by apnea</li><li>Constant deep, labored breathing at a fast but perfectly steady rate</li><li>Rapid shallow breaths at an unvarying rate and depth</li><li>Complete apnea with no respiratory effort at all</li><li>Normal quiet breathing at a steady twelve to sixteen breaths per minute</li></ol><div class="ans show"><b>Answer: A.</b> A crescendo-decrescendo pattern with pauses, seen in heart failure and CNS injury.<span class="ref">Lecture Outline, Module 12 — p.140</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

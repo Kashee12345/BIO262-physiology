@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 11 &middot; Lymphatic &amp; Immune Systems &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 11 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Lymphatic &amp; Immune Systems</h1>
+    <p class="sub">A drainage network that doubles as a security network, and a defense that learns.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Say what lymph vessels return, and what happens when they are blocked</li>
+      <li>Tell innate defense from adaptive defense on speed, aim, and memory</li>
+      <li>Explain each sign of inflammation by what the vessels are doing</li>
+      <li>Describe what B cells, helper T cells, and killer T cells do</li>
+      <li>Explain why a second exposure is faster and bigger, and how vaccines use that</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>The drainage problem nobody mentions</h2>
+  <p class="lead">Capillaries leak on purpose, and a little more fluid leaves than comes back.</p>
+  <p>That extra is a few liters a day. It would swell the tissues within hours if it stayed.</p>
+  <p>Lymph vessels collect it, filter it through lymph nodes, and empty it back into the big veins near the heart. There is no pump. Lymph moves by muscle squeezing and valves, just like blood in the veins.</p>
+  <p>Block the drainage and the fluid has nowhere to go. That is why removing or irradiating lymph nodes during cancer treatment can leave an arm or leg permanently swollen. The swelling is mechanical, not an infection.</p>
+  <div class="note"><p><b>Nodes are checkpoints, not just filters.</b> Fluid from the tissues passes through crowds of immune cells before it rejoins the blood, so anything picked up in the tissue gets inspected on the way. That is why nodes near an infection swell and get sore, and why nodes are the first place doctors look for spreading cancer.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Two defense systems, working together</h2>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th></th><th>Innate</th><th>Adaptive</th></tr>
+    <tr><td><b>Speed</b></td><td>Immediate</td><td>Days, the first time</td></tr>
+    <tr><td><b>Aim</b></td><td>Same response to anything</td><td>Aimed at one specific target</td></tr>
+    <tr><td><b>Memory</b></td><td>None</td><td>Yes, and that is the point</td></tr>
+    <tr><td><b>Players</b></td><td>Skin, mucus, eating cells, inflammation, fever</td><td>B cells, antibodies, helper and killer T cells</td></tr>
+  </table>
+  </div>
+  <p>Innate defense buys time. Adaptive defense wins the fight and remembers how. Neither works well alone, and a vaccine is a rehearsal of the handover between them.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>Inflammation, explained by the vessels</h2>
+  <p class="lead">The four classic signs are not a list to memorize. They are one change in the vessels, seen four ways.</p>
+  <ol class="steps">
+    <li><b>Vessels widen.</b> More blood arrives, so the area is <b>red</b> and <b>warm</b>.</li>
+    <li><b>Vessels get leakier.</b> Fluid and protein enter the tissue, so it <b>swells</b>.</li>
+    <li><b>Swelling and chemicals irritate nerve endings.</b> So it <b>hurts</b>.</li>
+    <li><b>Eating cells squeeze out</b> through those leaky walls and start clearing up debris and germs.</li>
+  </ol>
+  <p>Every part of that is useful. More blood brings more cells and more clotting protein. The leak lets them out where they are needed. The pain forces rest.</p>
+  <p>Inflammation is only a problem when there is too much of it, or when it is aimed at the wrong thing.</p>
+  <p><b>Fever</b> belongs here too, and it is a Module 1 idea. Chemicals from immune cells raise the set point in the brain. The body is not overheating. It is defending a new, higher target, which is why the patient shivers and feels cold while the temperature climbs.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>The adaptive cast</h2>
+  <ul>
+    <li><b>Helper T cells</b> are the coordinators. They spot the threat and switch on nearly everything else. Lose them, as in untreated HIV, and the whole adaptive system fails even though its other parts are fine.</li>
+    <li><b>Killer T cells</b> destroy the body's own cells once those cells are infected or cancerous.</li>
+    <li><b>B cells</b> are the factories. Once switched on, they pour out <b>antibodies</b> that travel in blood and lymph.</li>
+    <li><b>Memory cells</b> are why any of this matters a second time. Both B and T lines leave memory behind.</li>
+  </ul>
+  <p>Antibodies do not kill anything themselves. They tag, clump, and block. Marking a target for destruction is the whole job.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Why the second exposure is different</h2>
+  <p class="lead">Press the buttons and compare the two responses.</p>
+  <div class="demo">
+    <div class="dh">Primary and secondary antibody response</div>
+    <div class="stage" style="padding:8px;">
+      <svg viewBox="0 0 520 210" style="width:100%;height:auto;display:block;">
+        <line x1="46" y1="180" x2="500" y2="180" stroke="#c2a978" stroke-width="2"></line>
+        <line x1="46" y1="14" x2="46" y2="180" stroke="#c2a978" stroke-width="2"></line>
+        <text x="6" y="20" font-size="10.5" fill="#7a6f63" font-weight="700">Antibody</text>
+        <text x="452" y="198" font-size="10.5" fill="#7a6f63" font-weight="700">Time</text>
+        <line id="e1" x1="90" y1="14" x2="90" y2="180" stroke="#c99a2e" stroke-width="2" stroke-dasharray="4 4" opacity="0"></line>
+        <text id="e1t" x="94" y="26" font-size="10.5" fill="#8a6a1c" font-weight="700" opacity="0">1st exposure</text>
+        <line id="e2" x1="290" y1="14" x2="290" y2="180" stroke="#c99a2e" stroke-width="2" stroke-dasharray="4 4" opacity="0"></line>
+        <text id="e2t" x="294" y="26" font-size="10.5" fill="#8a6a1c" font-weight="700" opacity="0">2nd exposure</text>
+        <polyline id="p1" points="" fill="none" stroke="#3a7aa8" stroke-width="3.5"></polyline>
+        <polyline id="p2" points="" fill="none" stroke="#8a2f36" stroke-width="3.5"></polyline>
+      </svg>
+    </div>
+    <div class="ctrls">
+      <button class="btn" id="go">Expose to the antigen</button>
+      <button class="btn" id="reset" style="background:#7a6f63;">Reset</button>
+      <span class="readout" id="iout">No exposure yet</span>
+    </div>
+    <p id="inote" style="margin:12px 0 0;font-size:15px;color:#7a6f63;"></p>
+  </div>
+  <p>The first response is slow and small. The few cells that happen to recognize this target must be found, switched on, and multiplied.</p>
+  <p>The second is fast and huge, because memory cells are already there in numbers and skip the whole start-up.</p>
+  <p>That gap is what a vaccine buys you. It gives the body a harmless version of the target, so the slow, risky first response happens on a day when it does not matter. The memory is then in place for the day it does.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p><b>Active</b> immunity means the patient's own system responded, either to an infection or to a vaccine. It is slow to arrive but it lasts. <b>Passive</b> immunity means ready-made antibodies were given, as in an antibody treatment or those a newborn gets from its mother. It works immediately but fades, because no memory is made.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on inflammation and on antibody responses &mdash; <a href="../labs.html">Immune benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "Lymph nodes are removed from a patient's armpit during surgery, and the arm later swells. Why?",
+    "a": ["The arm is infected","Extra tissue fluid can no longer drain back to the blood","Blood flow to the arm stopped","The arm lost its vein valves"],
+    "c": 1,
+    "fb": [
+      "Infection is possible, but the usual cause here is mechanical.",
+      "Correct. Capillaries leak more fluid than they take back, and lymph vessels are the way back.",
+      "Artery supply is not affected by removing nodes.",
+      "Vein valves are not removed with lymph nodes."
+    ]
+  },
+  {
+    "q": "Which belongs to adaptive defense but not innate defense?",
+    "a": ["Eating bacteria","Memory of one specific target","Skin as a barrier","An immediate response"],
+    "c": 1,
+    "fb": [
+      "Eating cells are a mainstay of innate defense.",
+      "Correct. Specific memory is what makes the second exposure different.",
+      "Barriers are innate.",
+      "Speed is the innate system's advantage. Adaptive defense is slow the first time."
+    ]
+  },
+  {
+    "q": "An inflamed area is red, warm, and swollen. What causes that directly?",
+    "a": ["Vessels widen and get leakier","White cells make heat as they divide","Nerve endings release fluid","Lymph vessels close"],
+    "c": 0,
+    "fb": [
+      "Correct. More blood arriving gives red and warm. Leakier walls give swelling.",
+      "Cell division is not a real heat source here.",
+      "Nerve endings report pain. They do not make the fluid.",
+      "Lymph vessels stay open and actually work harder."
+    ]
+  },
+  {
+    "q": "A patient shivers and feels cold while their temperature climbs to 39&deg;C. Why?",
+    "a": ["The thermostat broke and cannot read temperature","The set point was raised, so the body is warming up to the new target","Shivering has nothing to do with temperature control","Vessels widened to lose heat"],
+    "c": 1,
+    "fb": [
+      "The control center is working fine. It is aiming higher.",
+      "Correct. Below the new set point, the body acts as though it is cold, because it now is.",
+      "Shivering makes heat. It is an effector response.",
+      "Vessels narrow on the way up, to hold heat in."
+    ]
+  },
+  {
+    "q": "How does a vaccine protect against a disease the patient has never had?",
+    "a": ["It gives ready-made antibodies that last for life","It triggers a first response, so memory cells are ready before the real exposure","It kills the germ on contact","It permanently boosts innate defense"],
+    "c": 1,
+    "fb": [
+      "That describes passive immunity, which works right away but fades.",
+      "Correct. The slow, risky first response happens on a harmless day.",
+      "A vaccine acts on the immune system, not on a germ the patient has not met.",
+      "The benefit is adaptive and specific, not a general boost."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var go=document.getElementById("go"), rs=document.getElementById("reset"),
+    out=document.getElementById("iout"), note=document.getElementById("inote"),
+    p1=document.getElementById("p1"), p2=document.getElementById("p2"),
+    e1=document.getElementById("e1"), e1t=document.getElementById("e1t"),
+    e2=document.getElementById("e2"), e2t=document.getElementById("e2t");
+var stage=0, timer=null;
+function curve(x0,peakX,peakY,endX){
+  var pts=[], base=180;
+  for(var x=x0; x<=endX; x+=4){
+    var y;
+    if(x<peakX){ var f=(x-x0)/(peakX-x0); y=base-(base-peakY)*Math.pow(f,2.2); }
+    else { var g=(x-peakX)/(endX-peakX); y=peakY+(base-peakY)*Math.pow(g,1.1)*0.72; }
+    pts.push(x.toFixed(0)+","+y.toFixed(1));
+  }
+  return pts;
+}
+function animate(el,pts,done){
+  var i=0; clearInterval(timer);
+  timer=setInterval(function(){
+    i+=2;
+    el.setAttribute("points", pts.slice(0,i).join(" "));
+    if(i>=pts.length){ clearInterval(timer); if(done) done(); }
+  },18);
+}
+function reset(){
+  clearInterval(timer);
+  stage=0; p1.setAttribute("points",""); p2.setAttribute("points","");
+  [e1,e1t,e2,e2t].forEach(function(n){ n.setAttribute("opacity","0"); });
+  go.textContent="Expose to the antigen"; go.disabled=false;
+  out.innerHTML="No exposure yet";
+  note.innerHTML="Press the button to meet this antigen for the first time, then press it again to meet it a second time and compare.";
+}
+go.addEventListener("click",function(){
+  if(stage===0){
+    stage=1; e1.setAttribute("opacity","1"); e1t.setAttribute("opacity","1");
+    out.innerHTML="<span style='color:#3a7aa8'>Primary response</span>";
+    note.innerHTML="Nothing happens for several days &mdash; the lag while the few cells that recognize this antigen are found, activated and multiplied. Antibody then rises to a modest level and fades. The patient is unprotected for the whole of that lag, which is when the illness happens.";
+    animate(p1, curve(90,190,86,290), function(){ go.textContent="Expose a second time"; });
+  } else if(stage===1){
+    stage=2; e2.setAttribute("opacity","1"); e2t.setAttribute("opacity","1");
+    out.innerHTML="<span style='color:#8a2f36'>Secondary response</span>";
+    note.innerHTML="Memory cells are already present and already specific, so there is almost no lag. Antibody climbs within a day or two, reaches a far higher level, and stays up for longer. Most people never notice the second exposure at all &mdash; the response finishes it before symptoms start.";
+    animate(p2, curve(290,336,26,500), function(){ go.disabled=true; go.textContent="Compare the two curves"; });
+  }
+});
+rs.addEventListener("click",reset);
+reset();
+
+})();
+</script>
+</body>
+</html>

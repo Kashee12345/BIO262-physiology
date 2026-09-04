@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Four Pressures and One Reflex</title>
+<meta name="description" content="Set the four Starling forces and watch a capillary filter or reabsorb along its length, then stand a patient up and watch the baroreflex defend arterial pressure in one or two heartbeats.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.modeseg{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin-bottom:12px;}
+.modeseg button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:12.8px;padding:11px 6px;cursor:pointer;font-family:var(--sans);line-height:1.2;}
+.modeseg button.on{background:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:21px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.6;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:15px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+.pane{display:none;} .pane.on{display:block;}
+.row{display:flex;gap:9px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.06);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch09.html">&larr; Module 9</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 9</div>
+  <h1>Four Pressures and One Reflex</h1>
+  <div class="intro">Where fluid sits is decided by four numbers at the capillary wall: NFP = (P<sub>c</sub> &minus; P<sub>if</sub>) &minus; (&pi;<sub>c</sub> &minus; &pi;<sub>if</sub>). How hard the blood is pushed is defended in seconds by the baroreflex. Move a Starling force and watch the capillary switch from filtering to reabsorbing along its length &mdash; then stand a patient up, blunt the reflex, and watch the pressure fail to come back.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="modeseg" role="tablist" aria-label="Choose a bench">
+        <button type="button" id="m1" class="on" role="tab" aria-selected="true">Starling forces &amp; edema</button>
+        <button type="button" id="m2" role="tab" aria-selected="false">Baroreflex stand test</button>
+      </div>
+
+      <div class="pane on" id="p1">
+        <div class="lbl">Pick a capillary bed</div>
+        <div class="chips" id="sChips"></div>
+        <div class="sl"><label for="sPa">P<sub>c</sub> at the arterial end <span class="v" id="vPa">35 mmHg</span></label>
+          <input type="range" id="sPa" min="5" max="95" value="35" step="1" aria-label="Capillary hydrostatic pressure at the arterial end, millimeters of mercury"></div>
+        <div class="sl"><label for="sPv">P<sub>c</sub> at the venous end <span class="v" id="vPv">15 mmHg</span></label>
+          <input type="range" id="sPv" min="2" max="80" value="15" step="1" aria-label="Capillary hydrostatic pressure at the venous end, millimeters of mercury"></div>
+        <div class="sl"><label for="sPi">P<sub>if</sub> interstitial hydrostatic <span class="v" id="vPi">0 mmHg</span></label>
+          <input type="range" id="sPi" min="-6" max="20" value="0" step="1" aria-label="Interstitial hydrostatic pressure, millimeters of mercury"></div>
+        <div class="sl"><label for="sOc">&pi;<sub>c</sub> plasma colloid osmotic <span class="v" id="vOc">25 mmHg</span></label>
+          <input type="range" id="sOc" min="4" max="36" value="25" step="1" aria-label="Plasma colloid osmotic pressure, millimeters of mercury"></div>
+        <div class="sl"><label for="sOi">&pi;<sub>if</sub> interstitial colloid osmotic <span class="v" id="vOi">3 mmHg</span></label>
+          <input type="range" id="sOi" min="0" max="20" value="3" step="1" aria-label="Interstitial colloid osmotic pressure, millimeters of mercury"></div>
+        <div class="sl"><label for="sLy">Lymphatic drainage capacity <span class="v" id="vLy">100%</span></label>
+          <input type="range" id="sLy" min="0" max="150" value="100" step="1" aria-label="Lymphatic drainage capacity, percent of normal"></div>
+        <div class="hint" id="h1"></div>
+      </div>
+
+      <div class="pane" id="p2">
+        <div class="lbl">Pick a subject</div>
+        <div class="chips" id="bChips"></div>
+        <div class="sl"><label for="sPool">Blood pooling in the legs on standing <span class="v" id="vPool">650 mL</span></label>
+          <input type="range" id="sPool" min="200" max="1000" value="650" step="10" aria-label="Volume of blood pooling in the legs on standing, milliliters"></div>
+        <div class="sl"><label for="sGain">Baroreflex gain <span class="v" id="vGain">100%</span></label>
+          <input type="range" id="sGain" min="0" max="130" value="100" step="1" aria-label="Baroreflex gain, percent of normal"></div>
+        <div class="sl"><label for="sVol">Circulating volume <span class="v" id="vVol">100%</span></label>
+          <input type="range" id="sVol" min="55" max="115" value="100" step="1" aria-label="Circulating blood volume, percent of normal"></div>
+        <div class="row">
+          <button type="button" class="btn solid" id="bStand">&#8593; Stand up</button>
+          <button type="button" class="btn" id="bMassage">Carotid sinus massage</button>
+          <button type="button" class="btn" id="bReset2">Reset</button>
+        </div>
+        <div class="hint" id="h2"></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h2 id="rightHead">Along one capillary</h2>
+      <canvas id="cv" width="640" height="300" aria-label="Chart of net filtration pressure along a capillary, or of arterial pressure and heart rate during a stand test"></canvas>
+      <div class="legend" id="leg"></div>
+      <div class="labs" id="labs"></div>
+      <div class="verdict" id="verd"></div>
+      <div class="eq" id="eq"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var CS = getComputedStyle(document.documentElement);
+  function C(n){ return (CS.getPropertyValue('--' + n) || '#333').trim(); }
+  var TEAL = C('teal'), TEALDK = C('teal-dk'), CORAL = C('coral'), BLUE = C('blue'),
+      GREEN = C('green'), PURPLE = C('purple'), GOLD = C('gold'), LINE = C('line'), MUTED = C('muted');
+
+  function el(id){ return document.getElementById(id); }
+  function fmt(x, d){ return x.toFixed(d === undefined ? 1 : d); }
+  var cv = el('cv'), ctx = cv.getContext('2d'), mode = 1;
+
+  function canvasSetup(hh){
+    var w = cv.clientWidth || 640, dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = w * dpr; cv.height = hh * dpr; cv.style.height = hh + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, hh);
+    return w;
+  }
+  function tile(k, val, u){
+    return '<div class="lab"><div class="k">' + k + '</div><div class="v">' + val + '</div><div class="u">' + u + '</div></div>';
+  }
+
+  /* ================= bench 1 : Starling ================= */
+  var KF = 1.0;            /* L per day per mmHg of mean net filtration pressure */
+  var LYMPH_MAX = 15;      /* L per day at 100 percent capacity */
+  var SAFETY = 14;         /* mmHg of combined safety factor before edema is visible */
+
+  var S_PRESETS = [
+    { n:'Normal capillary', pa:35, pv:15, pi:0, oc:25, oi:3, ly:100,
+      h:'The module&rsquo;s reference bed. Only one term changes along the length &mdash; hydrostatic pressure, and it changes because of resistance along the capillary itself.' },
+    { n:'Glomerulus', pa:60, pv:58, pi:15, oc:28, oi:0, ly:100,
+      h:'Here &pi;<sub>c</sub> never wins, so filtration continues the whole length. The high &ldquo;interstitial&rdquo; pressure is Bowman&rsquo;s capsule pushing back, and a protein-free filtrate means &pi;<sub>if</sub> is zero. One honest caveat: in a real glomerulus &pi;<sub>c</sub> <em>rises</em> along the capillary as protein is concentrated, which this two-point model holds flat.' },
+    { n:'Intestinal villus', pa:20, pv:12, pi:2, oc:25, oi:4, ly:100,
+      h:'Reabsorption dominates the entire length, which is how the gut recovers the liters it secretes into itself every day.' },
+    { n:'Heart failure', pa:50, pv:30, pi:0, oc:25, oi:3, ly:100,
+      h:'Raised P<sub>c</sub>: the venous side is backed up, so hydrostatic pressure never falls far enough for reabsorption to begin. One term is abnormal, and it is the first one.' },
+    { n:'Nephrotic syndrome / liver failure', pa:35, pv:15, pi:0, oc:10, oi:3, ly:100,
+      h:'Reduced &pi;<sub>c</sub>: albumin is lost in the urine or never synthesized, so the standing inward pull collapses. Albumin infusion is rational here &mdash; and useless in lymphedema.' },
+    { n:'Burns / sepsis / histamine', pa:38, pv:18, pi:0, oc:16, oi:12, ly:100,
+      h:'Increased permeability: protein leaks out, so &pi;<sub>c</sub> falls and &pi;<sub>if</sub> rises at the same time. Two terms move together, which is why this form of edema is so brisk.' },
+    { n:'Lymphatic obstruction', pa:35, pv:15, pi:0, oc:25, oi:3, ly:0,
+      h:'All four Starling forces are normal. The return path is gone. Roughly 3 L a day of filtrate, plus any escaped protein, has nowhere to go &mdash; which is why blocking lymph alone produces swelling.' },
+    { n:'Standing still for an hour', pa:75, pv:55, pi:3, oc:25, oi:3, ly:100,
+      h:'Gravity adds a column of blood to the capillary pressure in the foot. This is the physics of swollen ankles on a long flight, and of why the skeletal-muscle pump matters so much.' }
+  ];
+
+  function starling(){
+    var pa = +el('sPa').value, pv = +el('sPv').value, pi = +el('sPi').value,
+        oc = +el('sOc').value, oi = +el('sOi').value, ly = +el('sLy').value / 100;
+    el('vPa').textContent = pa + ' mmHg'; el('vPv').textContent = pv + ' mmHg';
+    el('vPi').textContent = pi + ' mmHg'; el('vOc').textContent = oc + ' mmHg';
+    el('vOi').textContent = oi + ' mmHg'; el('vLy').textContent = Math.round(ly * 100) + '%';
+
+    var onc = oc - oi;
+    var nfpA = (pa - pi) - onc, nfpV = (pv - pi) - onc;
+    var mean = (nfpA + nfpV) / 2;
+    var net = KF * mean;
+    var cap = LYMPH_MAX * ly;
+    var accum = Math.max(0, net - cap);
+    var xSwitch = (nfpA === nfpV) ? -1 : (nfpA / (nfpA - nfpV));
+
+    el('labs').innerHTML =
+      tile('NFP arterial end', (nfpA >= 0 ? '+' : '') + Math.round(nfpA), 'mmHg (normal +13)') +
+      tile('NFP venous end', (nfpV >= 0 ? '+' : '') + Math.round(nfpV), 'mmHg (normal −7)') +
+      tile('Net oncotic pull', Math.round(onc), 'mmHg = π_c − π_if') +
+      tile('Mean net pressure', (mean >= 0 ? '+' : '') + fmt(mean), 'mmHg (normal +3)') +
+      tile('Net fluid leaving', fmt(net), 'L/day (normal 3)') +
+      tile('Lymph ceiling', fmt(cap), 'L/day (normal 15)');
+
+    el('eq').innerHTML =
+      'Arterial end: NFP = (' + pa + ' &minus; ' + pi + ') &minus; (' + oc + ' &minus; ' + oi + ') = ' + (pa - pi) + ' &minus; ' + onc + ' = <b class="num">' + (nfpA >= 0 ? '+' : '') + Math.round(nfpA) + ' mmHg</b> &mdash; ' + (nfpA > 0 ? 'net filtration.' : 'net reabsorption.') + '<br>' +
+      'Venous end: NFP = (' + pv + ' &minus; ' + pi + ') &minus; (' + oc + ' &minus; ' + oi + ') = ' + (pv - pi) + ' &minus; ' + onc + ' = <b class="num">' + (nfpV >= 0 ? '+' : '') + Math.round(nfpV) + ' mmHg</b> &mdash; ' + (nfpV > 0 ? 'still filtering.' : 'net reabsorption.') + '<br>' +
+      'Only <b>hydrostatic pressure</b> changed along the length. &pi;<sub>c</sub> does not change, because protein does not leave.<br>' +
+      '<span style="color:var(--muted)">Volumes are scaled so that the reference capillary &mdash; mean net pressure +3 mmHg &mdash; filters the textbook 3 L a day net, the amount the lymphatics return to the subclavian veins. Rising interstitial pressure, protein washout and recruitable lymph flow together give roughly 14 mmHg of safety factor before swelling becomes visible.</span>';
+
+    plotStarling(pa, pv, pi, onc, nfpA, nfpV, xSwitch);
+    el('rightHead').textContent = 'Along one capillary';
+    el('leg').innerHTML =
+      '<span><i style="background:' + CORAL + '"></i>P<sub>c</sub> hydrostatic push out</span>' +
+      '<span><i style="background:' + BLUE + '"></i>Net oncotic pull in</span>' +
+      '<span><i style="background:' + TEAL + '"></i>Net filtration pressure</span>';
+
+    var v = el('verd'), cls = 'verdict', head, sub;
+    var excess = mean - 3;
+    var lowOnc = oc < 20, highPc = (pa + pv) / 2 > 30, leaky = oi > 8, noLymph = ly < 0.35;
+    if(noLymph && excess < SAFETY){
+      cls += ' bad'; head = 'Lymphedema: the forces are normal, the return path is not';
+      sub = 'Every Starling term is where it should be and the capillary is still filtering only ' + fmt(net) + ' L a day. But the lymph ceiling is ' + fmt(cap) + ' L a day, so ' + fmt(accum) + ' L accumulates daily, along with the protein that escaped. Albumin infusion cannot help here, because &pi;<sub>c</sub> is not the problem.';
+    } else if(excess >= SAFETY && lowOnc && leaky){
+      cls += ' bad'; head = 'Increased permeability &mdash; two terms moved at once';
+      sub = 'Protein has leaked into the interstitium, so &pi;<sub>c</sub> fell to ' + oc + ' and &pi;<sub>if</sub> rose to ' + oi + '. The net inward pull is only ' + Math.round(onc) + ' mmHg instead of 22, and the capillary filters ' + fmt(net) + ' L a day. Burns, sepsis and histamine-driven inflammation all take this route, and it is the fastest of the four.';
+    } else if(excess >= SAFETY && lowOnc){
+      cls += ' bad'; head = 'Reduced &pi;<sub>c</sub> &mdash; a hypoalbuminemic edema';
+      sub = 'The inward pull is ' + Math.round(onc) + ' mmHg instead of 22, so reabsorption ' + (nfpV > 0 ? 'never begins at all' : 'barely begins') + ' and ' + fmt(net) + ' L a day leaves the vessels. Note what this patient looks like: edematous and simultaneously intravascularly depleted. Total body water high, effective circulating volume low.';
+    } else if(excess >= SAFETY && highPc){
+      cls += ' bad'; head = 'Raised P<sub>c</sub> &mdash; a hydrostatic edema';
+      sub = 'Hydrostatic pressure never falls below the ' + Math.round(onc) + ' mmHg oncotic pull, so the capillary filters along its whole length &mdash; ' + fmt(net) + ' L a day against a lymph ceiling of ' + fmt(cap) + '. Heart failure, venous obstruction, deep vein thrombosis and prolonged standing all sit here.';
+    } else if(excess >= SAFETY){
+      cls += ' bad'; head = 'Filtration has outrun the safety factors';
+      sub = 'Mean net pressure is ' + fmt(mean) + ' mmHg against a normal +3, so ' + fmt(net) + ' L a day is leaving the capillary and ' + fmt(accum) + ' L is accumulating. Name the term that moved and you know what will help.';
+    } else if(nfpV > 0 && nfpA > 0){
+      cls += ' cool'; head = 'Filtering along the entire length';
+      sub = 'NFP is positive at both ends, so this bed never reabsorbs. That is exactly right for a glomerulus &mdash; and exactly wrong for a systemic capillary, where the lymphatics would have to carry everything.';
+    } else if(nfpA < 0){
+      cls += ' cool'; head = 'Reabsorbing along the entire length';
+      sub = 'NFP is negative even at the arterial end, so fluid moves inward the whole way. The intestinal villus works like this, and so does every capillary in a patient who has just lost a liter of blood &mdash; capillary pressure falls, the balance tips toward reabsorption, and interstitial fluid autotransfuses into the vessels within minutes.';
+    } else {
+      cls += ' ok'; head = 'Filter, then reabsorb';
+      sub = 'Filtration for the first ' + Math.round(xSwitch * 100) + ' percent of the length, reabsorption for the rest. Net ' + fmt(net) + ' L a day leaves the capillary; the lymphatic system returns it to the subclavian veins, along with any protein that escaped. Lymph is not an accessory service &mdash; it is a required term in the balance.';
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function plotStarling(pa, pv, pi, onc, nfpA, nfpV, xs){
+    var w = canvasSetup(300);
+    var L = 44, R = 14, T = 16, B = 34, pw = w - L - R, ph = 300 - T - B;
+    var lo = -40, hi = 100;
+    function Y(v){ return T + ph - (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * ph; }
+    function X(f){ return L + f * pw; }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(0,0,0,.42)';
+    for(var g = -40; g <= 100; g += 20){
+      ctx.beginPath(); ctx.moveTo(L, Y(g)); ctx.lineTo(L + pw, Y(g)); ctx.stroke();
+      ctx.fillText(String(g), L - 5, Y(g) + 3);
+    }
+    ctx.strokeStyle = 'rgba(0,0,0,.30)'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(L, Y(0)); ctx.lineTo(L + pw, Y(0)); ctx.stroke();
+
+    if(xs > 0 && xs < 1){
+      ctx.fillStyle = CORAL; ctx.globalAlpha = 0.10; ctx.fillRect(L, T, X(xs) - L, ph);
+      ctx.fillStyle = BLUE; ctx.globalAlpha = 0.10; ctx.fillRect(X(xs), T, L + pw - X(xs), ph);
+      ctx.globalAlpha = 1;
+    } else {
+      ctx.fillStyle = (nfpA > 0 ? CORAL : BLUE); ctx.globalAlpha = 0.10; ctx.fillRect(L, T, pw, ph); ctx.globalAlpha = 1;
+    }
+
+    function seg(y1, y2, col, wd, dash){
+      ctx.save(); ctx.setLineDash(dash || []);
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      ctx.moveTo(L, Y(y1)); ctx.lineTo(L + pw, Y(y2)); ctx.stroke(); ctx.restore();
+    }
+    seg(pa, pv, CORAL, 2.6);
+    seg(onc, onc, BLUE, 2.6);
+    seg(pi, pi, MUTED, 1.6, [5, 4]);
+    seg(nfpA, nfpV, TEAL, 3.4);
+
+    ctx.font = '800 10.5px Inter, system-ui, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillStyle = CORAL; ctx.fillText('P_c ' + pa, L + 6, Y(pa) - 6);
+    ctx.fillStyle = BLUE; ctx.fillText('π_c − π_if = ' + Math.round(onc), L + 6, Y(onc) - 6);
+    ctx.fillStyle = TEALDK;
+    ctx.fillText('NFP ' + (nfpA >= 0 ? '+' : '') + Math.round(nfpA), L + 6, Y(nfpA) + 15);
+    ctx.textAlign = 'right';
+    ctx.fillText('NFP ' + (nfpV >= 0 ? '+' : '') + Math.round(nfpV), L + pw - 6, Y(nfpV) + 15);
+    if(xs > 0 && xs < 1){
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = TEALDK; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(X(xs), T); ctx.lineTo(X(xs), T + ph); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.textAlign = 'center'; ctx.font = '700 10px Inter, system-ui, sans-serif'; ctx.fillStyle = MUTED;
+    ctx.fillText('arterial end', L + 42, 300 - 12);
+    ctx.fillText('venous end', L + pw - 40, 300 - 12);
+    ctx.fillStyle = CORAL; ctx.fillText('FILTRATION', X(Math.max(0.02, Math.min(0.98, (xs > 0 && xs < 1 ? xs : 1) / 2))), T + 16);
+    if(xs > 0 && xs < 1){ ctx.fillStyle = BLUE; ctx.fillText('REABSORPTION', X(xs + (1 - xs) / 2), T + 16); }
+  }
+
+  /* ================= bench 2 : baroreflex ================= */
+  var B_PRESETS = [
+    { n:'Healthy 25-year-old', pool:650, gain:100, vol:100,
+      h:'Roughly 500 to 800 mL leaves the central circulation the moment you stand. Venous return falls, stroke volume falls, pressure dips &mdash; and the correction happens within one or two heartbeats.' },
+    { n:'Healthy 80-year-old', pool:750, gain:40, vol:96,
+      h:'Baroreceptor sensitivity falls with age as the carotid sinus wall stiffens, and venous compliance rises so more blood pools. The same standing challenge now produces a deeper and longer dip.' },
+    { n:'Dehydrated', pool:700, gain:95, vol:78,
+      h:'The reflex is intact but there is less volume for it to redistribute. Venoconstriction can only squeeze a reservoir that has something in it &mdash; watch the resting heart rate, which is already up before the patient moves.' },
+    { n:'On an alpha blocker', pool:650, gain:25, vol:100,
+      h:'Removing the &alpha;<sub>1</sub>-mediated constriction of arterioles is exactly how the drug lowers pressure &mdash; and exactly why the effector arm of the reflex cannot answer when the patient stands.' },
+    { n:'Autonomic failure', pool:650, gain:5, vol:100,
+      h:'The sensor may work and the integrator may work, but the outflow does not. Watch the pressure fall and simply stay down.' }
+  ];
+
+  var SV0 = 70, HR0 = 72, TPR0 = 17.9, CBV0 = 1400, CARC = 1.75, RAP = 3;
+  var bst = null, btimer = null;
+
+  function freshB(){
+    return { t: 0, pooled: 0, S: 1, hist: [], stood: false, massage: 0, base: null };
+  }
+
+  function bStep(dt){
+    var pool = +el('sPool').value, gain = +el('sGain').value / 100, vol = +el('sVol').value / 100;
+    var target = bst.stood ? pool : 0;
+    bst.pooled += (target - bst.pooled) * (1 - Math.exp(-dt / 1.1));
+    var up = Math.max(0, bst.S - 1), dn = Math.min(0, bst.S - 1);
+    var recovered = bst.pooled * 0.42 * up;
+    var CBV = CBV0 * vol - bst.pooled + recovered;
+    var SV = SV0 * Math.pow(Math.max(0.15, CBV / CBV0), 0.75) * (1 + 0.22 * up);
+    var HR = HR0 * (1 + 0.95 * up + 0.55 * dn);
+    HR = Math.max(38, Math.min(185, HR));
+    var TPR = TPR0 * (1 + 0.60 * up + 0.35 * dn);
+    var CO = SV * HR / 1000;
+    var MAP = CO * TPR + RAP;
+    var PP = SV / CARC, DBP = MAP - PP / 3, SBP = DBP + PP;
+    var f = 1 / (1 + Math.exp(-(MAP + bst.massage - 93) / 18));
+    var f0 = 0.5;
+    var Starget = 1 + gain * 2.5 * (f0 - f);
+    Starget = Math.max(0.45, Math.min(3.0, Starget));
+    bst.S += (Starget - bst.S) * (1 - Math.exp(-dt / 1.5));
+    bst.massage *= Math.exp(-dt / 4);
+    bst.t += dt;
+    if(!bst.base && bst.t > 4) bst.base = { SBP: SBP, DBP: DBP, MAP: MAP, HR: HR };
+    if(bst.hist.length === 0 || bst.t - bst.hist[bst.hist.length - 1].t >= 0.25){
+      bst.hist.push({ t: bst.t, MAP: MAP, SBP: SBP, DBP: DBP, HR: HR, TPR: TPR, SV: SV, f: f, S: bst.S });
+    }
+    return { MAP: MAP, SBP: SBP, DBP: DBP, HR: HR, TPR: TPR, SV: SV, CO: CO, f: f, S: bst.S, CBV: CBV };
+  }
+
+  function baro(){
+    el('vPool').textContent = el('sPool').value + ' mL';
+    el('vGain').textContent = el('sGain').value + '%';
+    el('vVol').textContent = el('sVol').value + '%';
+    var s = bst.hist.length ? bst.hist[bst.hist.length - 1] : null;
+    if(!s){ plotBaro(); return; }
+    var CO = s.SV * s.HR / 1000;
+    el('labs').innerHTML =
+      tile('Blood pressure', Math.round(s.SBP) + '/' + Math.round(s.DBP), 'mmHg') +
+      tile('Mean arterial pressure', String(Math.round(s.MAP)), 'mmHg (set point 93)') +
+      tile('Heart rate', String(Math.round(s.HR)), 'per minute') +
+      tile('Stroke volume', String(Math.round(s.SV)), 'mL') +
+      tile('Cardiac output', fmt(CO, 2), 'L/min') +
+      tile('Total peripheral resistance', fmt(s.TPR, 1), 'mmHg·min/L') +
+      tile('Baroreceptor firing', String(Math.round(s.f * 100)), '% of maximum') +
+      tile('Sympathetic drive', fmt(s.S, 2), '× baseline') +
+      tile('Time since standing', bst.stood ? fmt(Math.max(0, bst.t - bst.standT)) : '—', 'seconds');
+
+    el('eq').innerHTML =
+      'MAP = CO &times; TPR + right atrial pressure = ' + fmt(CO, 2) + ' &times; ' + fmt(s.TPR, 1) + ' + 3 = <b class="num">' + Math.round(s.MAP) + ' mmHg</b>. ' +
+      'Baroreceptors in the carotid sinus and aortic arch fire faster as the wall is stretched, over roughly 60 to 180 mmHg; their signals run on the glossopharyngeal (IX) and vagus (X) nerves to the nucleus of the solitary tract and the medullary cardiovascular centers, and the outflow is sympathetic and parasympathetic. The response opposes the change.';
+
+    plotBaro();
+    el('rightHead').textContent = 'Three minutes of standing';
+    el('leg').innerHTML =
+      '<span><i style="background:' + CORAL + '"></i>Systolic / diastolic</span>' +
+      '<span><i style="background:' + TEAL + '"></i>Mean arterial pressure</span>' +
+      '<span><i style="background:' + PURPLE + '"></i>Heart rate</span>' +
+      '<span><i style="background:' + GREEN + '"></i>Baroreceptor firing</span>';
+
+    var v = el('verd'), cls = 'verdict', head, sub;
+    if(!bst.stood && bst.massaged){
+      var loHR = 999, loTPR = 99;
+      bst.hist.forEach(function(p){ if(p.HR < loHR){ loHR = p.HR; loTPR = p.TPR; } });
+      cls += ' cool'; head = 'Pushed the other way &mdash; carotid sinus massage';
+      sub = 'External pressure on the carotid sinus stretches the wall, so the baroreceptors fire as though pressure had risen. The medulla answers by raising vagal tone and withdrawing sympathetic outflow: heart rate fell to ' + Math.round(loHR) + ' and TPR to ' + fmt(loTPR, 1) + ' before the stimulus wore off. The reflex is bidirectional &mdash; which is exactly why massage can terminate a supraventricular tachycardia.';
+    } else if(!bst.stood){
+      cls += ''; head = 'Supine and steady';
+      sub = 'Press <b>Stand up</b> and about ' + el('sPool').value + ' mL will leave the central circulation. Or press <b>Carotid sinus massage</b> to push the reflex the other way &mdash; the loop is bidirectional, which is why massage can terminate a supraventricular tachycardia.';
+    } else {
+      var nadir = null, base = bst.base || { SBP: 120, DBP: 80, MAP: 93, HR: 72 };
+      bst.hist.forEach(function(p){ if(p.t > bst.standT && (nadir === null || p.MAP < nadir.MAP)) nadir = p; });
+      var last = s;
+      var dS = base.SBP - last.SBP, dD = base.DBP - last.DBP;
+      var settled = bst.t - bst.standT > 175;
+      if(settled && (dS >= 20 || dD >= 10)){
+        cls += ' bad'; head = 'Orthostatic hypotension';
+        sub = 'At three minutes the systolic pressure is still ' + Math.round(dS) + ' mmHg below baseline and the diastolic ' + Math.round(dD) + ' mmHg below &mdash; a drop of at least 20 systolic or 10 diastolic within three minutes of standing meets the definition. Sympathetic drive only reached ' + fmt(last.S, 2) + ' times baseline, so heart rate, contractility, arteriolar tone and venoconstriction all under-responded. This is dizziness and fall risk.';
+      } else if(settled && last.HR - base.HR > 18){
+        cls += ' warn'; head = 'Pressure held, but at a price';
+        sub = 'Systolic pressure is only ' + Math.round(dS) + ' mmHg below baseline, so this does not meet the definition of orthostatic hypotension &mdash; but heart rate had to climb from ' + Math.round(base.HR) + ' to ' + Math.round(last.HR) + ' to get there, with sympathetic drive at ' + fmt(last.S, 2) + ' times baseline. The reflex is intact; what is missing is volume for it to redistribute.';
+      } else if(settled){
+        cls += ' ok'; head = 'Pressure defended';
+        sub = 'The dip bottomed at a mean of ' + Math.round(nadir ? nadir.MAP : last.MAP) + ' mmHg and was corrected within a beat or two. Baroreceptor firing fell, the medulla withdrew vagal tone and raised sympathetic outflow, so heart rate rose to ' + Math.round(last.HR) + ', contractility rose, arterioles constricted through &alpha;<sub>1</sub> receptors and TPR rose to ' + fmt(last.TPR, 1) + ', and veins constricted to restore preload. Systolic pressure ended ' + Math.round(dS) + ' mmHg below baseline, well inside the 20 mmHg threshold.';
+      } else {
+        cls += ' warn'; head = 'Correcting';
+        sub = 'Mean pressure ' + Math.round(last.MAP) + ' mmHg, heart rate ' + Math.round(last.HR) + ', sympathetic drive ' + fmt(last.S, 2) + ' times baseline. Let it run to three minutes for the orthostatic reading.';
+      }
+      v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+      return;
+    }
+    v.className = cls; v.innerHTML = head + '<small>' + sub + '</small>';
+  }
+
+  function plotBaro(){
+    var w = canvasSetup(300);
+    var L = 40, R = 12, T = 14, B = 28, pw = w - L - R, ph = 300 - T - B, TM = 190;
+    function X(t){ return L + Math.min(t, TM) / TM * pw; }
+    function Y(v){ return T + ph - Math.max(0, Math.min(200, v)) / 200 * ph; }
+    ctx.strokeStyle = 'rgba(0,0,0,.09)'; ctx.lineWidth = 1;
+    ctx.font = '600 10px Inter, system-ui, sans-serif'; ctx.textAlign = 'right'; ctx.fillStyle = 'rgba(0,0,0,.42)';
+    for(var g = 0; g <= 200; g += 50){
+      ctx.beginPath(); ctx.moveTo(L, Y(g)); ctx.lineTo(L + pw, Y(g)); ctx.stroke();
+      ctx.fillText(String(g), L - 5, Y(g) + 3);
+    }
+    ctx.textAlign = 'center';
+    for(var t2 = 0; t2 <= 180; t2 += 30){ ctx.fillText(t2 + 's', X(t2), 300 - 9); }
+    if(bst.stood){
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = GOLD; ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.moveTo(X(bst.standT), T); ctx.lineTo(X(bst.standT), T + ph); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = GOLD; ctx.textAlign = 'left'; ctx.font = '800 10px Inter, system-ui, sans-serif';
+      ctx.fillText('stands', X(bst.standT) + 4, T + 11);
+    }
+    if(bst.hist.length < 2) return;
+    function line(fn, col, wd){
+      ctx.beginPath(); ctx.strokeStyle = col; ctx.lineWidth = wd;
+      bst.hist.forEach(function(p, i){
+        var y = Y(fn(p));
+        if(i === 0) ctx.moveTo(X(p.t), y); else ctx.lineTo(X(p.t), y);
+      });
+      ctx.stroke();
+    }
+    line(function(p){ return p.f * 200; }, GREEN, 1.5);
+    line(function(p){ return p.HR; }, PURPLE, 1.9);
+    line(function(p){ return p.SBP; }, CORAL, 2.2);
+    line(function(p){ return p.DBP; }, CORAL, 2.2);
+    line(function(p){ return p.MAP; }, TEAL, 3);
+    ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.font = '700 10px Inter, system-ui, sans-serif';
+    ctx.fillText('mmHg, and beats per minute on the same axis', L + 5, T + 11);
+  }
+
+  function runBaro(){
+    if(btimer) cancelAnimationFrame(btimer);
+    (function tick(){
+      for(var i = 0; i < 4; i++){ if(bst.t < 195) bStep(0.25); }
+      baro();
+      if(bst.t < 195) btimer = requestAnimationFrame(tick); else btimer = null;
+    })();
+  }
+
+  function resetBaro(auto){
+    if(btimer){ cancelAnimationFrame(btimer); btimer = null; }
+    bst = freshB(); bst.standT = 6;
+    for(var i = 0; i < 24; i++) bStep(0.25);
+    bst.base = { SBP: bst.hist[bst.hist.length - 1].SBP, DBP: bst.hist[bst.hist.length - 1].DBP,
+                 MAP: bst.hist[bst.hist.length - 1].MAP, HR: bst.hist[bst.hist.length - 1].HR };
+    if(auto !== false) baro();
+  }
+
+  /* ================= wiring ================= */
+  function refresh(){ if(mode === 1) starling(); else baro(); }
+
+  ['m1', 'm2'].forEach(function(id, i){
+    el(id).addEventListener('click', function(){
+      mode = i + 1;
+      ['m1', 'm2'].forEach(function(j, k){ el(j).classList.toggle('on', k === i); el(j).setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+      ['p1', 'p2'].forEach(function(j, k){ el(j).classList.toggle('on', k === i); });
+      if(mode === 2 && !bst) resetBaro(false);
+      refresh();
+    });
+  });
+
+  var sc = el('sChips');
+  S_PRESETS.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (i === 0 ? ' on' : ''); b.textContent = p.n;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(sc.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      el('sPa').value = p.pa; el('sPv').value = p.pv; el('sPi').value = p.pi;
+      el('sOc').value = p.oc; el('sOi').value = p.oi; el('sLy').value = p.ly;
+      el('h1').innerHTML = p.h; starling();
+    });
+    sc.appendChild(b);
+  });
+  el('h1').innerHTML = S_PRESETS[0].h;
+
+  var bc = el('bChips');
+  B_PRESETS.forEach(function(p, i){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip' + (i === 0 ? ' on' : ''); b.textContent = p.n;
+    b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      [].forEach.call(bc.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      b.classList.add('on'); b.setAttribute('aria-pressed', 'true');
+      el('sPool').value = p.pool; el('sGain').value = p.gain; el('sVol').value = p.vol;
+      el('h2').innerHTML = p.h; resetBaro();
+    });
+    bc.appendChild(b);
+  });
+  el('h2').innerHTML = B_PRESETS[0].h;
+
+  ['sPa', 'sPv', 'sPi', 'sOc', 'sOi', 'sLy'].forEach(function(id){
+    el(id).addEventListener('input', function(){
+      [].forEach.call(sc.children, function(c){ c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      starling();
+    });
+  });
+  ['sPool', 'sGain', 'sVol'].forEach(function(id){
+    el(id).addEventListener('input', function(){
+      el('vPool').textContent = el('sPool').value + ' mL';
+      el('vGain').textContent = el('sGain').value + '%';
+      el('vVol').textContent = el('sVol').value + '%';
+    });
+  });
+  ['sPool', 'sGain', 'sVol'].forEach(function(id){ el(id).addEventListener('change', function(){ resetBaro(); }); });
+
+  el('bStand').addEventListener('click', function(){
+    resetBaro(false); bst.stood = true; bst.standT = bst.t; runBaro();
+  });
+  el('bMassage').addEventListener('click', function(){
+    resetBaro(false); bst.massaged = true; bst.massage = 28; runBaro();
+  });
+  el('bReset2').addEventListener('click', function(){ resetBaro(); });
+  window.addEventListener('resize', refresh);
+
+  resetBaro(false);
+  starling();
+})();
+</script>
+</body>
+</html>

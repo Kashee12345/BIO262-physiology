@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Beta Cell and the Defense of Blood Glucose</title>
+<meta name="description" content="Feed a meal, take insulin away, or fast for two days, then scrub through the trace and watch the insulin-to-glucagon ratio decide whether the liver stores fuel or exports it.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 6px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;white-space:nowrap;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.modeseg{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden;gap:1px;background:var(--line);margin:10px 0 0;}
+.modeseg button{flex:1;border:none;background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;cursor:pointer;font-family:var(--sans);}
+.modeseg button.on{background:var(--teal);color:#fff;}
+svg{display:block;width:100%;height:auto;}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff;}
+canvas + canvas{margin-top:12px;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:11px;padding:9px 10px;background:#fff;}
+.lab .k{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10px;color:var(--muted);line-height:1.3;}
+.ladder{margin-top:12px;}
+.lr{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:8px 11px;margin:6px 0;background:#fff;}
+.lr .th{font-family:var(--disp);font-size:14px;font-weight:700;color:var(--muted);width:78px;flex:none;font-variant-numeric:tabular-nums;}
+.lr .tx{font-size:12px;color:var(--muted);line-height:1.45;font-weight:600;}
+.lr.on{border-color:var(--coral);background:#fff;}
+.lr.on .th{color:var(--coral);} .lr.on .tx{color:var(--ink);font-weight:700;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:9px;font-size:11.5px;font-weight:700;color:var(--soft);}
+.legend i{display:inline-block;width:16px;height:4px;border-radius:2px;margin-right:5px;vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch08.html">&larr; Module 8</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 8</div>
+  <h1>The Beta Cell and the Defense of Blood Glucose</h1>
+  <div class="intro">A meal can deliver <b>100 grams</b> of carbohydrate into a plasma pool that holds only about <b>4 grams</b> of glucose &mdash; and yet fasting glucose stays between about 70 and 99 mg/dL and rarely passes 140 even after eating. Feed this patient, take the insulin away, or fast them for two days, then drag the scrubber through the trace and watch the <b>insulin-to-glucagon ratio</b> decide whether the liver stores fuel or exports it.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <div class="lbl">Who is the patient</div>
+      <div class="chips" id="scen"></div>
+
+      <div class="lbl">What are we doing to them</div>
+      <div class="chips" id="tests"></div>
+
+      <div class="sl"><label for="sCarb">Carbohydrate in the meal <span class="v" id="vCarb">75 g</span></label>
+        <input type="range" id="sCarb" min="0" max="150" value="75" step="5" aria-label="Grams of carbohydrate in the meal"></div>
+      <div class="modeseg" role="tablist" aria-label="Route of the glucose load">
+        <button type="button" id="rOral" class="on" role="tab" aria-selected="true">By mouth &mdash; incretins fire</button>
+        <button type="button" id="rIV" role="tab" aria-selected="false">Matched infusion &mdash; no incretins</button>
+      </div>
+      <div class="hint" style="margin-top:8px;">Both routes deliver the <b>same glucose at the same rate</b>; the only difference is that the gut is bypassed, so no GLP-1 or GIP is released. That is exactly how the incretin effect is demonstrated experimentally &mdash; and it is the basis of an entire modern drug class.</div>
+
+      <div class="sl"><label for="sBeta">Beta-cell function <span class="v" id="vBeta">100%</span></label>
+        <input type="range" id="sBeta" min="0" max="130" value="100" step="1" aria-label="Beta cell secretory function, percent of normal"></div>
+      <div class="sl"><label for="sSens">Insulin sensitivity of muscle and fat <span class="v" id="vSens">100%</span></label>
+        <input type="range" id="sSens" min="10" max="160" value="100" step="1" aria-label="Insulin sensitivity of skeletal muscle and adipose tissue, percent of normal"></div>
+      <div class="sl"><label for="sExo">Injected insulin <span class="v" id="vExo">none</span></label>
+        <input type="range" id="sExo" min="0" max="600" value="0" step="10" aria-label="Injected insulin, percent of the basal secretion rate"></div>
+      <div class="chips" id="fpChip" style="margin-top:12px;"></div>
+      <div class="hint"><b>First-phase release is the canary.</b> Insulin comes out in two waves: a sharp burst from granules already docked at the membrane within 2&ndash;5 minutes, then a sustained second phase from newly recruited granules. Loss of that first phase is the earliest measurable beta-cell defect in type 2 diabetes &mdash; switch it off and watch the peak glucose climb even though total insulin output barely changes.</div>
+    </div>
+
+    <div class="card">
+      <h2>How the beta cell measures glucose</h2>
+      <svg id="beta" viewBox="0 0 700 250" role="img" aria-label="Six step diagram of glucose sensing in the beta cell, from GLUT2 entry through glucokinase, the ATP to ADP ratio, closure of the potassium channel, depolarization and calcium entry, to insulin exocytosis, shaded by how hard each step is working"></svg>
+      <div class="hint"><b>This is Module 5 physiology wearing an endocrine hat.</b> GLUT2 lets intracellular glucose track the plasma level. <b>Glucokinase</b>, with a high Michaelis constant near 10 mmol/L, phosphorylates it at a rate proportional to concentration &mdash; that enzyme is the true glucose sensor. Metabolism raises the ATP-to-ADP ratio, ATP closes the ATP-sensitive potassium channel, the loss of potassium efflux <b>depolarizes</b> the cell, voltage-gated calcium channels open, and calcium entry triggers exocytosis.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Plasma glucose</h2>
+      <canvas id="cvG" width="700" height="300" aria-label="Plasma glucose against time with the normal fasting band, the post-meal ceiling, the renal threshold and the counterregulatory thresholds marked"></canvas>
+      <canvas id="cvI" width="700" height="210" aria-label="Insulin and glucagon secretion against time on the same time axis"></canvas>
+      <div class="legend"><span><i style="background:var(--teal)"></i>Glucose</span><span><i style="background:var(--coral)"></i>Plasma insulin</span><span><i style="background:var(--purple)"></i>Glucagon</span><span><i style="background:var(--gold)"></i>Ketones</span></div>
+      <div class="sl"><label for="sTime">Scrub through the trace <span class="v" id="vTime">0 min</span></label>
+        <input type="range" id="sTime" min="0" max="1000" value="0" step="1" aria-label="Move through the simulated time course"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">Glucose now</div><div class="v" id="oG">90</div><div class="u">mg/dL</div></div>
+        <div class="lab"><div class="k">Insulin : glucagon</div><div class="v" id="oRatio">1.0</div><div class="u">&times; the fasting ratio</div></div>
+        <div class="lab"><div class="k">Liver is</div><div class="v" id="oLiver" style="font-size:14px;">balanced</div><div class="u">storing or exporting</div></div>
+      </div>
+      <div class="labs">
+        <div class="lab"><div class="k">Peak glucose</div><div class="v" id="oPeak">&mdash;</div><div class="u">mg/dL</div></div>
+        <div class="lab"><div class="k">Lowest glucose</div><div class="v" id="oNadir">&mdash;</div><div class="u">mg/dL</div></div>
+        <div class="lab"><div class="k">Ketones / arterial pH</div><div class="v" id="oKet" style="font-size:15px;">0.1 / 7.40</div><div class="u">mmol/L &middot; pH</div></div>
+      </div>
+      <div class="verdict" id="verd">&nbsp;</div>
+    </div>
+
+    <div class="card">
+      <h2>The counterregulatory ladder</h2>
+      <p style="font-size:13px;color:var(--soft);line-height:1.55;">There is exactly <b>one</b> hormone that lowers glucose and at least <b>four</b> that raise it. That redundancy exists because the brain stores no fuel and dies faster from hypoglycemia than from almost any other metabolic insult. Scrub the trace down into the low numbers and watch the rungs light up in order.</p>
+      <div class="ladder" id="ladder"></div>
+      <div class="hint"><b>Insulin is a permission slip, not a pump.</b> Its signature action is inserting <b>GLUT4</b> into the membranes of skeletal muscle and adipose cells; the gradient does the rest, since plasma glucose after a meal exceeds intracellular glucose and glucose then diffuses in at no ATP cost. Liver, brain, kidney and red cells use insulin-independent transporters, which is why the brain keeps eating glucose even when insulin is absent.</div>
+      <div class="hint"><b>Chronic exposure is reported separately.</b> Glycated hemoglobin reflects the preceding 8&ndash;12 weeks, because the red cell lives about 120 days &mdash; a different question from anything a single trace can answer.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function V(n){return CS.getPropertyValue(n).trim();}
+var C_TEAL=V('--teal'),C_TEALD=V('--teal-dk'),C_CORAL=V('--coral'),C_LINE=V('--line'),C_MUTED=V('--muted'),
+    C_GOLD=V('--gold'),C_BLUE=V('--blue'),C_PURPLE=V('--purple'),C_GREEN=V('--green'),C_SOFT=V('--soft');
+
+var SCEN=[
+ {id:'well',t:'Healthy',beta:100,sens:100,fp:true,exo:0},
+ {id:'t1',t:'Type 1, no insulin given',beta:2,sens:100,fp:false,exo:0},
+ {id:'t1tx',t:'Type 1 with basal insulin',beta:2,sens:100,fp:false,exo:100},
+ {id:'t2c',t:'Type 2, beta cell still compensating',beta:120,sens:32,fp:false,exo:0},
+ {id:'t2',t:'Type 2 diabetes',beta:55,sens:32,fp:false,exo:0},
+ {id:'t2d',t:'Type 2, decompensating',beta:15,sens:15,fp:false,exo:0},
+ {id:'over',t:'Too much insulin injected',beta:100,sens:100,fp:true,exo:260}
+];
+var TESTS=[
+ {id:'meal',t:'Meal test, 5 hours',win:300},
+ {id:'fast',t:'Fast for 48 hours',win:2880},
+ {id:'dec',t:'24 hours without treatment',win:1440}
+];
+var scen=SCEN[0], test=TESTS[0], carb=75, oral=true, beta=1, sens=1, exo=0, fp=true, tIdx=0, R=null;
+
+function mkChips(host,arr,onPick,initial){
+  arr.forEach(function(o,i){
+    var b=document.createElement('button');
+    b.type='button'; b.className='chip'+(i===initial?' on':''); b.textContent=o.t;
+    b.setAttribute('aria-pressed',i===initial?'true':'false');
+    b.addEventListener('click',function(){
+      [].forEach.call(host.children,function(c){c.classList.remove('on');c.setAttribute('aria-pressed','false');});
+      this.classList.add('on'); this.setAttribute('aria-pressed','true'); onPick(o);
+    });
+    host.appendChild(b);
+  });
+}
+mkChips(document.getElementById('scen'),SCEN,function(o){
+  scen=o; beta=o.beta/100; sens=o.sens/100; fp=o.fp; exo=o.exo/100;
+  document.getElementById('sBeta').value=o.beta; document.getElementById('vBeta').textContent=o.beta+'%';
+  document.getElementById('sSens').value=o.sens; document.getElementById('vSens').textContent=o.sens+'%';
+  document.getElementById('sExo').value=o.exo; document.getElementById('vExo').textContent=o.exo?o.exo+'% of basal':'none';
+  fpBtn.classList.toggle('on',fp); fpBtn.setAttribute('aria-pressed',fp?'true':'false');
+  run();
+},0);
+mkChips(document.getElementById('tests'),TESTS,function(o){test=o;run();},0);
+
+var fpBtn=document.createElement('button');
+fpBtn.type='button'; fpBtn.className='chip on'; fpBtn.textContent='First-phase release present';
+fpBtn.setAttribute('aria-pressed','true');
+fpBtn.addEventListener('click',function(){fp=!fp;this.classList.toggle('on',fp);
+  this.setAttribute('aria-pressed',fp?'true':'false');
+  this.textContent=fp?'First-phase release present':'First-phase release lost'; run();});
+document.getElementById('fpChip').appendChild(fpBtn);
+
+document.getElementById('sCarb').addEventListener('input',function(){carb=+this.value;document.getElementById('vCarb').textContent=carb+' g';run();});
+document.getElementById('sBeta').addEventListener('input',function(){beta=+this.value/100;document.getElementById('vBeta').textContent=this.value+'%';run();});
+document.getElementById('sSens').addEventListener('input',function(){sens=+this.value/100;document.getElementById('vSens').textContent=this.value+'%';run();});
+document.getElementById('sExo').addEventListener('input',function(){exo=+this.value/100;
+  document.getElementById('vExo').textContent=(+this.value)?this.value+'% of basal':'none';run();});
+document.getElementById('rOral').addEventListener('click',function(){setRoute(true);});
+document.getElementById('rIV').addEventListener('click',function(){setRoute(false);});
+function setRoute(o){
+  oral=o;
+  document.getElementById('rOral').classList.toggle('on',o);
+  document.getElementById('rIV').classList.toggle('on',!o);
+  document.getElementById('rOral').setAttribute('aria-selected',o?'true':'false');
+  document.getElementById('rIV').setAttribute('aria-selected',o?'false':'true');
+  run();
+}
+document.getElementById('sTime').addEventListener('input',function(){tIdx=+this.value;paint();});
+
+/* ================= the simulation ================= */
+function simulate(){
+  var win=test.win, dt=win>600?1:0.5, N=Math.round(win/dt);
+  var mealG=(test.id==='meal')?carb:0;
+  var carbMg=mealG*1000*0.90, tau=55;
+  var G=90, I=1, Ieff=1, IeffL=1, Gcg=1, docked=1, ket=0.1, gly=88000, prevG=90;
+  var rec=1/(1+Math.exp(-(90-125)/20)), burst=0, fired=false, cumRen=0;
+  var kel=Math.LN2/5.5;   /* insulin half-life 5-6 minutes */
+  var out={t:[],G:[],I:[],Gcg:[],ket:[],win:win,dt:dt};
+  for(var i=0;i<=N;i++){
+    var t=i*dt;
+    /* the two routes deliver the SAME appearance curve; only the incretins differ */
+    var Ra=(mealG>0)?carbMg*(t/(tau*tau))*Math.exp(-t/tau):0;
+    var RaMax=(carbMg>0)?carbMg/(tau*Math.E):0;
+    var mealFrac=RaMax>0?Math.min(1,Ra/RaMax):0;
+    /* --- secretion --- */
+    var sig=1/(1+Math.exp(-(G-125)/20));
+    rec += (sig-rec)/9*dt;                       /* second phase: granules must be recruited */
+    var incr=oral?(1+1.25*mealFrac):1;           /* GLP-1 and GIP */
+    var cephalic=(oral&&mealG>0&&t<8)?0.5:0;     /* vagal priming before absorption */
+    var stopMul=Math.max(0,Math.min(1,(G-68)/12));
+    var dGdt=(G-prevG)/dt;
+    if(fp && !fired && G>102 && dGdt>0.12){fired=true;burst=5;}
+    if(G<95) fired=false;
+    var first=0;
+    if(burst>0){first=20*beta*docked; burst-=dt;}   /* docked granules, 2-5 minutes */
+    var S=beta*incr*(0.07+6.3*rec)*stopMul + first + cephalic*beta;
+    docked += (-first*0.008 + 0.0016*(1-docked))*dt;
+    docked=Math.max(0,Math.min(1,docked));
+    I += kel*(S+exo-I)*dt;  I=Math.max(0.001,I);
+    Ieff  += (I-Ieff)/10*dt;    /* GLUT4 in muscle and fat */
+    IeffL += (I-IeffL)/4*dt;    /* the liver sees portal insulin first */
+    /* --- glucagon --- */
+    var gTar=(1+2.5*Math.max(0,(70-G)/22))*Math.min(2.2,Math.max(0.45,1.6-0.6*Ieff));
+    gTar=Math.max(0.25,Math.min(4,gTar));
+    Gcg += (gTar-Gcg)/6*dt;
+    /* --- hepatic glucose output --- */
+    var hgpCap=gly>0?1:(0.62+0.5*Math.max(0,0.8-Ieff));
+    var hgpIns=Math.max(0.25,Math.min(1.8,1.45-0.45*IeffL));
+    var hgpGlu=Math.min(2.5,0.55+0.45*Gcg);
+    var HGP=140*hgpCap*hgpIns*hgpGlu;
+    if(gly>0) gly-=HGP*0.5*dt;                    /* liver glycogen runs out near 20 hours */
+    /* --- disposal --- */
+    var dehyd=Math.max(0.30,1-cumRen/150000);      /* osmotic diuresis dries the patient out */
+    var Uind=106*(ket>2.5?0.72:1);                 /* brain, red cells: insulin-independent */
+    var Udep=34*Ieff*sens*Math.max(0.15,G/90);     /* muscle and fat, via GLUT4 */
+    var Ren=1.1*Math.max(0,G-180)*dehyd;           /* renal threshold near 180 mg/dL */
+    cumRen+=Ren*dt;
+    prevG=G;
+    G += ((Ra+HGP-Uind-Udep-Ren)/120)*dt;
+    G=Math.max(20,Math.min(1100,G));
+    /* --- ketones: lipolysis is restrained by even a little insulin --- */
+    var kd=Math.max(0,(1-Ieff))*(gly>0?0.16:1.0);
+    ket += (0.026*kd-0.0042*ket)*dt;
+    ket=Math.max(0.05,ket);
+    out.t.push(t); out.G.push(G); out.I.push(I); out.Gcg.push(Gcg); out.ket.push(ket);
+  }
+  return out;
+}
+function pHof(k){return Math.max(6.85,7.40-0.024*k);}
+function run(){
+  R=simulate();
+  var sl=document.getElementById('sTime');
+  sl.max=R.G.length-1;
+  if(tIdx>R.G.length-1) tIdx=R.G.length-1;
+  sl.value=tIdx;
+  paint();
+}
+
+/* ================= drawing ================= */
+var cvG=document.getElementById('cvG'), ctxG=cvG.getContext('2d');
+var cvI=document.getElementById('cvI'), ctxI=cvI.getContext('2d');
+(function(){var d=Math.min(2,window.devicePixelRatio||1);
+  cvG.width=700*d;cvG.height=300*d;ctxG.setTransform(d,0,0,d,0,0);
+  cvI.width=700*d;cvI.height=210*d;ctxI.setTransform(d,0,0,d,0,0);})();
+
+function tlabel(m){ return R.win>600 ? (m/60).toFixed(0)+' h' : Math.round(m)+' min'; }
+function drawG(){
+  var W=700,H=300,L=50,Rr=14,T=14,B=36,pw=W-L-Rr,ph=H-T-B;
+  var gmax=0; for(var i=0;i<R.G.length;i++) if(R.G[i]>gmax) gmax=R.G[i];
+  var ymax=Math.max(220,Math.ceil((gmax*1.12)/100)*100);
+  ctxG.clearRect(0,0,W,H);
+  ctxG.strokeStyle=C_LINE;ctxG.lineWidth=1;ctxG.fillStyle=C_MUTED;ctxG.font='600 10.5px Inter,system-ui,sans-serif';
+  for(var g=0;g<=5;g++){var y=T+ph*g/5;ctxG.beginPath();ctxG.moveTo(L,y);ctxG.lineTo(L+pw,y);ctxG.stroke();
+    ctxG.textAlign='right';ctxG.fillText(Math.round(ymax*(1-g/5)),L-7,y+3.5);}
+  for(var i2=0;i2<=6;i2++){var x=L+pw*i2/6;ctxG.textAlign='center';ctxG.fillText(tlabel(R.win*i2/6),x,H-B+15);}
+  ctxG.fillText('time',L+pw/2,H-B+29);
+  ctxG.save();ctxG.translate(13,T+ph/2);ctxG.rotate(-Math.PI/2);ctxG.textAlign='center';ctxG.fillText('glucose (mg/dL)',0,0);ctxG.restore();
+  function yy(v){return T+ph*(1-Math.min(1,v/ymax));}
+  /* fasting normal band 70-99 */
+  ctxG.fillStyle=C_GREEN;ctxG.globalAlpha=.14;ctxG.fillRect(L,yy(99),pw,yy(70)-yy(99));ctxG.globalAlpha=1;
+  ctxG.fillStyle=C_GREEN;ctxG.font='700 9.5px Inter,system-ui,sans-serif';ctxG.textAlign='left';
+  ctxG.fillText('fasting 70–99',L+5,yy(99)-3);
+  var marks=[{v:140,c:C_GOLD,t:'rarely above 140 after a meal'},{v:180,c:C_CORAL,t:'renal threshold 180 — glucose spills into urine'},
+             {v:70,c:C_BLUE,t:'65–70: glucagon and epinephrine'},{v:50,c:C_PURPLE,t:'below 50: confusion, seizure'}];
+  marks.forEach(function(m){
+    if(m.v>ymax) return;
+    ctxG.strokeStyle=m.c;ctxG.setLineDash([4,4]);ctxG.lineWidth=1.4;
+    ctxG.beginPath();ctxG.moveTo(L,yy(m.v));ctxG.lineTo(L+pw,yy(m.v));ctxG.stroke();ctxG.setLineDash([]);
+    ctxG.fillStyle=m.c;ctxG.textAlign='right';ctxG.fillText(m.t,L+pw-4,yy(m.v)-3);
+  });
+  ctxG.beginPath();ctxG.strokeStyle=C_TEAL;ctxG.lineWidth=3;ctxG.lineJoin='round';
+  for(var i3=0;i3<R.G.length;i3++){
+    var x=L+pw*i3/(R.G.length-1), y=yy(R.G[i3]);
+    i3?ctxG.lineTo(x,y):ctxG.moveTo(x,y);
+  }
+  ctxG.stroke();
+  var mx=L+pw*tIdx/(R.G.length-1);
+  ctxG.strokeStyle=C_TEALD;ctxG.lineWidth=1.5;ctxG.beginPath();ctxG.moveTo(mx,T);ctxG.lineTo(mx,T+ph);ctxG.stroke();
+  ctxG.beginPath();ctxG.arc(mx,yy(R.G[tIdx]),6,0,6.2832);ctxG.fillStyle=C_TEALD;ctxG.fill();
+  ctxG.strokeStyle='#fff';ctxG.lineWidth=2.2;ctxG.stroke();
+  ctxG.strokeStyle=C_LINE;ctxG.lineWidth=1;ctxG.beginPath();ctxG.moveTo(L,T);ctxG.lineTo(L,T+ph);ctxG.lineTo(L+pw,T+ph);ctxG.stroke();
+}
+function drawI(){
+  var W=700,H=210,L=50,Rr=14,T=14,B=34,pw=W-L-Rr,ph=H-T-B;
+  var imax=1; for(var i=0;i<R.I.length;i++) if(R.I[i]>imax) imax=R.I[i];
+  imax=Math.max(4,imax*1.15);
+  ctxI.clearRect(0,0,W,H);
+  ctxI.strokeStyle=C_LINE;ctxI.lineWidth=1;ctxI.fillStyle=C_MUTED;ctxI.font='600 10.5px Inter,system-ui,sans-serif';
+  for(var g=0;g<=4;g++){var y=T+ph*g/4;ctxI.beginPath();ctxI.moveTo(L,y);ctxI.lineTo(L+pw,y);ctxI.stroke();
+    ctxI.textAlign='right';ctxI.fillText((imax*(1-g/4)).toFixed(1),L-7,y+3.5);}
+  for(var i2=0;i2<=6;i2++){var x=L+pw*i2/6;ctxI.textAlign='center';ctxI.fillText(tlabel(R.win*i2/6),x,H-B+15);}
+  ctxI.save();ctxI.translate(13,T+ph/2);ctxI.rotate(-Math.PI/2);ctxI.textAlign='center';
+  ctxI.fillText('× the fasting level',0,0);ctxI.restore();
+  function ln(arr,mx,col,wd){
+    ctxI.beginPath();ctxI.strokeStyle=col;ctxI.lineWidth=wd;ctxI.lineJoin='round';
+    for(var i=0;i<arr.length;i++){
+      var x=L+pw*i/(arr.length-1), y=T+ph*(1-Math.min(1,arr[i]/mx));
+      i?ctxI.lineTo(x,y):ctxI.moveTo(x,y);
+    }
+    ctxI.stroke();
+  }
+  ln(R.I,imax,C_CORAL,2.8);
+  ln(R.Gcg,imax,C_PURPLE,2.4);
+  ln(R.ket,imax,C_GOLD,2.2);
+  var mx2=L+pw*tIdx/(R.I.length-1);
+  ctxI.strokeStyle=C_TEALD;ctxI.lineWidth=1.5;ctxI.beginPath();ctxI.moveTo(mx2,T);ctxI.lineTo(mx2,T+ph);ctxI.stroke();
+  ctxI.strokeStyle=C_LINE;ctxI.lineWidth=1;ctxI.beginPath();ctxI.moveTo(L,T);ctxI.lineTo(L,T+ph);ctxI.lineTo(L+pw,T+ph);ctxI.stroke();
+  ctxI.fillStyle=C_MUTED;ctxI.font='700 10px Inter,system-ui,sans-serif';ctxI.textAlign='left';
+  ctxI.fillText('insulin (coral) · glucagon (purple) · ketones in mmol/L (gold)',L+5,T+12);
+}
+function drawBeta(G,I){
+  var drive=Math.min(1,Math.max(0,(G-60)/140));
+  var steps=[
+   {t:'1 · GLUT2',d:'high-capacity transporter: intracellular glucose tracks the plasma level',f:Math.min(1,G/200)},
+   {t:'2 · Glucokinase',d:'Km near 10 mmol/L, so it phosphorylates in proportion to concentration — the real sensor',f:drive},
+   {t:'3 · ATP / ADP ratio rises',d:'metabolism of the phosphorylated glucose',f:drive},
+   {t:'4 · K⁺ channel closes',d:'ATP shuts the ATP-sensitive potassium channel',f:drive},
+   {t:'5 · Depolarization, Ca²⁺ in',d:'loss of potassium efflux depolarizes; voltage-gated calcium channels open',f:drive},
+   {t:'6 · Exocytosis',d:'calcium triggers release of insulin granules',f:Math.min(1,I/6)}
+  ];
+  var s='<rect x="0" y="0" width="700" height="250" fill="#fff"/>';
+  steps.forEach(function(st,i){
+    var y=6+i*40, col=st.f>0.55?C_TEAL:(st.f>0.2?C_GOLD:C_BLUE);
+    s+='<rect x="12" y="'+y+'" width="676" height="34" rx="10" fill="'+col+'" opacity="'+(0.07+0.22*st.f)+'"/>';
+    s+='<rect x="12" y="'+y+'" width="'+Math.max(6,676*st.f)+'" height="34" rx="10" fill="'+col+'" opacity=".16"/>';
+    s+='<text x="24" y="'+(y+15)+'" font-family="Inter" font-size="11.5" font-weight="800" fill="'+C_TEALD+'">'+st.t+'</text>';
+    s+='<text x="24" y="'+(y+29)+'" font-family="Inter" font-size="10.4" font-weight="600" fill="'+C_SOFT+'">'+st.d+'</text>';
+    s+='<text x="676" y="'+(y+22)+'" text-anchor="end" font-family="Inter" font-size="11" font-weight="800" fill="'+col+'">'+Math.round(st.f*100)+'%</text>';
+  });
+  document.getElementById('beta').innerHTML=s;
+}
+
+var LADDER=[
+ {th:'80',t:'Insulin secretion stops — the very first defense, and it costs nothing',trig:function(g){return g<=80;}},
+ {th:'65–70',t:'Glucagon and epinephrine are released: hepatic glycogenolysis within minutes',trig:function(g){return g<=70;}},
+ {th:'below',t:'Cortisol and growth hormone follow, on a slower timescale',trig:function(g){return g<=62;}},
+ {th:'50',t:'Neuroglycopenic symptoms — confusion, then seizure',trig:function(g){return g<50;}}
+];
+function drawLadder(g){
+  var s='';
+  LADDER.forEach(function(r){
+    s+='<div class="lr'+(r.trig(g)?' on':'')+'"><span class="th">'+r.th+'</span><span class="tx">'+r.t+'</span></div>';
+  });
+  document.getElementById('ladder').innerHTML=s;
+}
+
+/* ================= paint ================= */
+function paint(){
+  drawG(); drawI();
+  var g=R.G[tIdx], ins=R.I[tIdx], gc=R.Gcg[tIdx], k=R.ket[tIdx];
+  var ratio=ins/Math.max(0.05,gc);
+  document.getElementById('vTime').textContent=(R.win>600?(R.t[tIdx]/60).toFixed(1)+' h':Math.round(R.t[tIdx])+' min');
+  document.getElementById('oG').textContent=Math.round(g);
+  document.getElementById('oRatio').textContent=ratio.toFixed(2);
+  document.getElementById('oLiver').textContent=ratio>1.6?'storing':(ratio<0.7?'exporting':'balanced');
+  var pk=0,nd=1e9;
+  for(var i=0;i<R.G.length;i++){if(R.G[i]>pk)pk=R.G[i];if(R.G[i]<nd)nd=R.G[i];}
+  document.getElementById('oPeak').textContent=Math.round(pk);
+  document.getElementById('oNadir').textContent=Math.round(nd);
+  var pH=pHof(k);
+  document.getElementById('oKet').textContent=k.toFixed(1)+' / '+pH.toFixed(2);
+  drawBeta(g,ins); drawLadder(g);
+
+  var v=document.getElementById('verd'), cls='ok', head='', sub='';
+  var endG=R.G[R.G.length-1], endK=R.ket[R.ket.length-1], endPH=pHof(endK);
+  if(test.id==='dec' && endK<2.5 && endG>170){
+    cls='bad'; head='Glucose '+Math.round(endG)+' mg/dL and climbing, but the ketones never came &mdash; this is the hyperosmolar path.';
+    sub='A little insulin persists, so hormone-sensitive lipase stays partly suppressed, free fatty acids never flood the liver, and ketoacidosis does not develop. What harms the patient here is water: once glucose passes the renal reabsorptive threshold near 180 mg/dL, osmotic diuresis strips out liters and glucose excretion itself falls as the patient dries out. The decompensated form of type 2 diabetes is a hyperosmolar state with glucose above 600 mg/dL and profound dehydration. Now switch to the type 1 patient and watch the same 24 hours produce a completely different chemistry.';
+  } else if(test.id==='dec' && endK>=2.5){
+    cls='bad'; head='Ketones '+endK.toFixed(1)+' mmol/L, arterial pH '+endPH.toFixed(2)+', glucose '+Math.round(endG)+' mg/dL &mdash; diabetic ketoacidosis.';
+    sub='With insulin absent, glucose cannot enter muscle and fat, lipolysis runs completely unopposed, and the liver converts the fatty-acid flood into ketoacids. Glucose typically sits at 300&ndash;600 mg/dL, the pH drops under 7.30, an anion gap opens, and the respiratory system answers with Kussmaul breathing. Osmotic diuresis is running on top of it. This is how type 1 diabetes decompensates.';
+  } else if(nd<50){
+    cls='bad'; head='Glucose reached '+Math.round(nd)+' mg/dL &mdash; neuroglycopenia.';
+    sub='Below about 50 mg/dL the brain cannot get what it needs and confusion and seizure follow. Look at the ladder: insulin secretion should have stopped at about 80 and glucagon and epinephrine should have fired at 65 to 70. Injected insulin does not read the glucose, which is why it can drive straight through every rung.';
+  } else if(nd<70){
+    cls='warn'; head='Glucose dipped to '+Math.round(nd)+' mg/dL &mdash; the counterregulatory system is engaged.';
+    sub='Glucagon reaches the liver first and triggers glycogenolysis within minutes through cyclic AMP, then gluconeogenesis from lactate, glycerol and amino acids. Epinephrine arrives at the same time. The redundancy is deliberate.';
+  } else if(pk>200){
+    cls='warn'; head='Peak glucose '+Math.round(pk)+' mg/dL &mdash; well past the normal ceiling of about 140.';
+    sub='Either the beta cell cannot answer or the tissues cannot hear it. Type 2 diabetes starts with receptor and post-receptor <b>insulin resistance</b>; the beta cell compensates with hyperinsulinemia for years before it fails. Drop the sensitivity slider and raise beta-cell function to see hyperinsulinemia holding a nearly normal curve &mdash; and then let the beta cell fail.';
+  } else if(test.id==='fast'){
+    cls='cool'; head='Two days without food and glucose only fell from 90 to '+Math.round(endG)+' mg/dL.';
+    sub='Watch the order of events on the lower trace. Insulin falls, glucagon rises, and the liver runs glycogenolysis for roughly the first day; when the glycogen is gone it switches to gluconeogenesis from lactate, glycerol and amino acids and hepatic output drops. Ketones then climb &mdash; they rise after 12 to 24 hours and are fuelling the brain by day three, which is what allows glucose to be defended at this level for so long. Ketones are now '+endK.toFixed(1)+' mmol/L with a pH of '+endPH.toFixed(2)+': ketosis, not ketoacidosis.';
+  } else if(pk>140){
+    cls='cool'; head='Peak glucose '+Math.round(pk)+' mg/dL &mdash; just above the usual post-meal ceiling of about 140.';
+    sub='Compare the two routes. The same glucose delivered at the same rate provokes far more insulin by mouth than by infusion, because the gut releases <b>incretins</b> &mdash; GLP-1 and GIP &mdash; that potentiate glucose-stimulated secretion. Switch the route and watch the peak climb without the load changing at all.';
+  } else if(test.id!=='meal' || carb===0){
+    cls='ok'; head='Glucose held between '+Math.round(nd)+' and '+Math.round(pk)+' mg/dL with no food at all.';
+    sub='Nothing is arriving from the gut, so every milligram of glucose in the blood is being made by the liver &mdash; glycogenolysis first, then gluconeogenesis from lactate, glycerol and amino acids &mdash; and the insulin-to-glucagon ratio is what tells it to do that. Ketones are '+endK.toFixed(1)+' mmol/L. Try dropping beta-cell function to nothing and watch how quickly the same liver runs away with no insulin to restrain it.';
+  } else {
+    cls='ok'; head='Glucose held between '+Math.round(nd)+' and '+Math.round(pk)+' mg/dL.';
+    sub='Note what that means: '+(carb||0)+' grams of carbohydrate arrived in a plasma pool holding about 4 grams of glucose, and the excursion was a few tens of mg/dL. Insulin activated glycogen synthase, inhibited glycogen phosphorylase, shut down hepatic output and opened GLUT4 in muscle and fat &mdash; the insulin-to-glucagon ratio, not either hormone alone, decided the direction.';
+  }
+  v.className='verdict '+cls; v.innerHTML=head+'<small>'+sub+'</small>';
+}
+run();
+})();
+</script>
+</body>
+</html>

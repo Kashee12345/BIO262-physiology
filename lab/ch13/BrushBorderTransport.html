@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Brush Border: Sodium Gradients, Surface Area and Oral Rehydration</title>
+<meta name="description" content="Set the sodium and glucose in the lumen, poison the sodium pump, flatten the villi, and watch SGLT1 flux, water movement and daily stool volume respond.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;text-align:left;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.3px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.eq{font-size:12.5px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;line-height:1.7;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;font-weight:800;color:var(--teal-dk);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);}
+.tog{display:flex;gap:9px;margin-top:11px;}
+.tog button{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 8px;border-radius:10px;cursor:pointer;font-family:var(--sans);line-height:1.25;}
+.tog button.on{background:var(--coral);border-color:var(--coral);color:#fff;}
+.ledger{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.ledger div{display:flex;justify-content:space-between;gap:10px;padding:7px 12px;font-size:12.4px;background:#fff;border-bottom:1px solid var(--line);color:var(--soft);}
+.ledger div:last-child{border-bottom:none;}
+.ledger b{color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.ledger div.tot{background:#fff;font-weight:800;color:var(--teal-dk);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch13.html">&larr; Module 13</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 13</div>
+  <h1>The Brush Border: Sodium Gradients, Surface Area and Oral Rehydration</h1>
+  <div class="intro">Nearly every uptake step in the small intestine is paid for by one pump: the basolateral Na+/K+-ATPase, which holds intracellular sodium near 12 mM against 140 mM outside. Set what is in the lumen, poison the pump, flatten the villi &mdash; and watch SGLT1 flux, the water that follows it, and the daily stool volume all move together. Water never leads.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>1 &middot; What is in the lumen</h2>
+      <div class="chips" id="chipsSol"></div>
+      <div class="sl"><label for="sG">Luminal glucose <span class="v" id="vG">75 mM</span></label>
+        <input type="range" id="sG" min="0" max="140" value="75" step="1" aria-label="Luminal glucose concentration in millimoles per liter"></div>
+      <div class="sl"><label for="sNa">Luminal sodium <span class="v" id="vNa">75 mM</span></label>
+        <input type="range" id="sNa" min="0" max="140" value="75" step="1" aria-label="Luminal sodium concentration in millimoles per liter"></div>
+      <div class="tog">
+        <button type="button" id="bLac" aria-pressed="false">Lactase deficiency</button>
+        <button type="button" id="bChol" aria-pressed="false">Cholera toxin on the crypts</button>
+      </div>
+      <div class="eq" id="eqSol"></div>
+    </div>
+
+    <div class="card">
+      <h2>2 &middot; The epithelium</h2>
+      <div class="sl"><label for="sPump">Na+/K+-ATPase activity <span class="v" id="vPump">100%</span></label>
+        <input type="range" id="sPump" min="0" max="100" value="100" step="1" aria-label="Basolateral sodium potassium ATPase activity, percent"></div>
+      <div class="sl"><label for="sVil">Villus height <span class="v" id="vVil">100%</span></label>
+        <input type="range" id="sVil" min="0" max="100" value="100" step="1" aria-label="Villus height as a percentage of normal"></div>
+      <div class="sl"><label for="sDrink">Fluid drunk <span class="v" id="vDrink">2.0 L/day</span></label>
+        <input type="range" id="sDrink" min="0" max="120" value="20" step="1" aria-label="Volume of the chosen solution drunk each day, in liters"></div>
+      <div class="sl"><label for="sSec">Crypt secretion added by toxin <span class="v" id="vSec">0 L/day</span></label>
+        <input type="range" id="sSec" min="0" max="20" value="0" step="1" aria-label="Extra crypt chloride and water secretion driven by toxin, liters per day"></div>
+
+      <div class="lbl">Follow a different nutrient across</div>
+      <div class="chips" id="chipsRoute"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>The enterocyte, live</h2>
+      <canvas id="cvCell" width="660" height="340" role="img" aria-label="Diagram of an enterocyte with microvilli facing the lumen, an apical transporter, the basolateral sodium potassium pump, a capillary and a lacteal beneath, with animated particles crossing by the selected route"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Intracellular Na+</div><div class="v" id="oNai">12</div><div class="u">mM &middot; lumen <span id="oNao">75</span></div></div>
+        <div class="lab"><div class="k">SGLT1 activation</div><div class="v" id="oAct">58</div><div class="u">% of maximum</div></div>
+        <div class="lab"><div class="k">Glucose absorbed</div><div class="v" id="oGlu">41</div><div class="u">mmol/h</div></div>
+        <div class="lab"><div class="k">Water following</div><div class="v" id="oH2O">707</div><div class="u">mL/h &middot; osmotic only</div></div>
+        <div class="lab"><div class="k">Absorptive area</div><div class="v" id="oArea">198</div><div class="u">m2 &middot; amplification <span id="oAmp">600</span>&times;</div></div>
+      </div>
+      <div class="eq" id="eqRoute"></div>
+    </div>
+
+    <div class="card">
+      <h2>The day's fluid ledger</h2>
+      <div class="ledger" id="ledger"></div>
+      <div class="verdict" id="vOut"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+"use strict";
+var CS=getComputedStyle(document.documentElement);
+function C(n){return CS.getPropertyValue('--'+n).trim();}
+var TEAL=C('teal'),TDK=C('teal-dk'),CORAL=C('coral'),GOLD=C('gold'),GREEN=C('green'),BLUE=C('blue'),PURPLE=C('purple'),LINE=C('line'),MUTED=C('muted'),SOFT=C('soft'),CARD=C('card');
+
+var SOLS=[
+ {n:'Plain water',                 g:0,   na:0,  lac:false},
+ {n:'Salt solution (Na 90)',       g:0,   na:90, lac:false},
+ {n:'Sugar solution (glucose 110)',g:110, na:0,  lac:false},
+ {n:'WHO oral rehydration solution',g:75, na:75, lac:false},
+ {n:'Milk (lactose)',              g:110, na:25, lac:true},
+ {n:'Ordinary mixed meal',         g:50,  na:140,lac:false}
+];
+var ROUTES=[
+ {id:'glu', n:'Glucose &amp; galactose', ap:'SGLT1 · 2 Na+ with each sugar', bl:'GLUT2 to the portal vein', exit:'cap',
+  txt:'Only monosaccharides are absorbed. Amylase leaves maltose, maltotriose and alpha-limit dextrins; brush-border maltase-glucoamylase and sucrase-isomaltase finish the job in the last few nanometers, so the product appears right at the transporter. <b>SGLT1</b> then moves two Na+ <i>down</i> their electrochemical gradient for each sugar moved <i>up</i> its concentration gradient. The energy comes indirectly from the basolateral Na+/K+-ATPase, which holds intracellular Na+ near 10–15 mM against 140 mM outside.'},
+ {id:'fru', n:'Fructose', ap:'GLUT5 · facilitated, no sodium', bl:'GLUT2 to the portal vein', exit:'cap',
+  txt:'Fructose is the exception that proves the rule: it enters on <b>GLUT5</b> by facilitated diffusion, needs no sodium and costs no ATP, so it cannot be absorbed against a gradient and its uptake is much more easily saturated. It still leaves the cell basolaterally on GLUT2 into the portal blood.'},
+ {id:'pep', n:'Peptides &amp; amino acids', ap:'PepT1 · H+-coupled; Na+-coupled carriers', bl:'Basolateral carriers to portal vein', exit:'cap',
+  txt:'Pepsin starts protein digestion, pancreatic trypsin, chymotrypsin, elastase and the carboxypeptidases continue it. Amino acids cross on a family of sodium-coupled carriers. Di- and tripeptides use a different trick: <b>PepT1</b> is <i>proton</i>-coupled, driven by an acidic microclimate that a brush-border Na+/H+ exchanger maintains. Peptides are absorbed faster than the equivalent free amino acids, which is why elemental formulas use peptides. Cytoplasmic peptidases then release free amino acids for basolateral export.'},
+ {id:'fat', n:'Long-chain fat', ap:'Micellar delivery, mostly diffusion', bl:'Chylomicron into the lacteal', exit:'lac',
+  txt:'Lipase with colipase cleaves triglyceride at positions 1 and 3, leaving two fatty acids and a 2-monoglyceride which micelles ferry across the unstirred water layer. Inside the cell they are immediately re-esterified in the smooth endoplasmic reticulum, which keeps the free intracellular concentration near zero and preserves the inward gradient. The triglyceride is packaged with apolipoprotein B-48 into a <b>chylomicron</b> 75 to 1200 nm across — far too large for a capillary fenestration, but easily admitted between the loose endothelium of the <b>lacteal</b>. Dietary fat therefore reaches the blood at the thoracic duct and escapes hepatic first-pass metabolism entirely.'},
+ {id:'b12', n:'Vitamin B12', ap:'Cubilin receptor endocytosis', bl:'Transcobalamin to the portal vein', exit:'cap',
+  txt:'The most convoluted path of any nutrient, and every step is a place it can fail. Salivary <b>haptocorrin</b> binds B12 in the stomach and protects it from acid; pancreatic proteases strip haptocorrin off in the duodenum; only then does parietal-cell <b>intrinsic factor</b> bind it; and the complex is taken up by the cubilin receptor in the <b>terminal ileum</b>. Loss of parietal cells, pancreatic insufficiency or ileal disease each break the chain — and hepatic stores last two to five years, so the deficiency appears late.'},
+ {id:'fe', n:'Iron', ap:'DMT1 for Fe2+; separate hem carrier', bl:'Ferroportin, gated by hepcidin', exit:'cap',
+  txt:'Because there is no meaningful excretory route for iron, <b>absorption is the regulatory point</b>. Ferric iron is reduced to ferrous at the duodenal brush border (vitamin C helps) and imported on <b>DMT1</b>; hem iron enters separately and more efficiently. Export into blood is through <b>ferroportin</b>, and the hepatic hormone <b>hepcidin</b> degrades ferroportin when stores are high or inflammation is present — a negative feedback loop that also explains the anemia of chronic disease.'},
+ {id:'ca', n:'Calcium', ap:'TRPV6, calcitriol-driven; paracellular', bl:'Basolateral Ca2+-ATPase', exit:'cap',
+  txt:'Calcium crosses transcellularly through <b>TRPV6</b> with intracellular <b>calbindin</b> shuttling it across so free cytoplasmic calcium never rises, and it leaves on a basolateral Ca2+-ATPase. That pathway is upregulated by calcitriol. When luminal calcium is high a second, unregulated <b>paracellular</b> route carries the bulk of it — which is why absorption efficiency falls as intake rises.'}
+];
+var route='glu';
+
+var E={};
+['sG','sNa','sPump','sVil','sDrink','sSec','vG','vNa','vPump','vVil','vDrink','vSec'].forEach(function(i){E[i]=document.getElementById(i);});
+var bLac=document.getElementById('bLac'), bChol=document.getElementById('bChol');
+var lac=false, chol=false;
+
+var chipsSol=document.getElementById('chipsSol');
+SOLS.forEach(function(s,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===3?' on':'');
+  b.textContent=s.n; b.setAttribute('aria-pressed',i===3?'true':'false');
+  b.addEventListener('click',function(){
+    E.sG.value=s.g; E.sNa.value=s.na;
+    [].forEach.call(chipsSol.children,function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+    b.classList.add('on'); b.setAttribute('aria-pressed','true');
+    curSol=s; read();
+  });
+  chipsSol.appendChild(b);
+});
+var curSol=SOLS[3];
+
+var chipsRoute=document.getElementById('chipsRoute');
+ROUTES.forEach(function(r){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(r.id===route?' on':'');
+  b.innerHTML=r.n; b.setAttribute('aria-pressed',r.id===route?'true':'false');
+  b.addEventListener('click',function(){
+    route=r.id;
+    [].forEach.call(chipsRoute.children,function(x){x.classList.remove('on');x.setAttribute('aria-pressed','false');});
+    b.classList.add('on'); b.setAttribute('aria-pressed','true'); read();
+  });
+  chipsRoute.appendChild(b);
+});
+
+['sG','sNa','sPump','sVil','sDrink','sSec'].forEach(function(i){ E[i].addEventListener('input',read); });
+bLac.addEventListener('click',function(){ lac=!lac; bLac.classList.toggle('on',lac); bLac.setAttribute('aria-pressed',lac?'true':'false'); read(); });
+bChol.addEventListener('click',function(){
+  chol=!chol; bChol.classList.toggle('on',chol); bChol.setAttribute('aria-pressed',chol?'true':'false');
+  if(chol && +E.sSec.value<6) E.sSec.value=14; if(!chol) E.sSec.value=0; read();
+});
+
+var M={};
+function read(){
+  var G=+E.sG.value, Na=+E.sNa.value, pump=+E.sPump.value/100, vil=+E.sVil.value/100;
+  var drink=+E.sDrink.value/10, sec=+E.sSec.value;
+  E.vG.textContent=G+' mM'; E.vNa.textContent=Na+' mM';
+  E.vPump.textContent=E.sPump.value+'%'; E.vVil.textContent=E.sVil.value+'%';
+  E.vDrink.textContent=drink.toFixed(1)+' L/day'; E.vSec.textContent=sec+' L/day';
+
+  /* lactose is a disaccharide: without lactase no monosaccharide is generated */
+  var Geff = (curSol.lac && lac) ? 0 : G;
+  var osmoticLoad = (curSol.lac && lac) ? Math.min(1.1, 0.32*drink) : 0;   /* L held in the lumen */
+
+  var Nai=12+128*Math.pow(1-pump,1.6);
+  var Naeff=Na+15;                                  /* endogenous secretions always supply some sodium */
+  var driveNa=Math.max(0,1-Nai/Naeff);
+  var act=(Geff/(Geff+0.5))*(Naeff/(Naeff+25))*driveNa*driveNa;
+  var amp=3*(1+9*vil)*20, area=0.33*amp, areaF=amp/600;
+  var flux=70*act*areaF;                            /* mmol glucose per hour */
+  var water=5*flux/0.29;                            /* mL per hour, isotonic drag */
+
+  /* ---- daily ledger ---- */
+  var secretions=7.0;
+  var presented=drink+secretions+sec;
+  var fracEff=Math.min(0.87,0.32+0.55*(act/0.70));
+  var siCap=20*areaF;
+  var siAbs=Math.min(siCap,presented*fracEff);
+  siAbs=Math.min(siAbs,Math.max(0,presented-osmoticLoad-0.1));
+  var colonIn=presented-siAbs;
+  var colonCap=4.5;
+  var colonAbs=Math.max(0,Math.min(colonCap,colonIn-osmoticLoad-0.1));
+  var stool=Math.max(0.1,colonIn-colonAbs);
+  var net=drink-stool;
+
+  M={G:G,Geff:Geff,Na:Na,Naeff:Naeff,Nai:Nai,pump:pump,vil:vil,act:act,amp:amp,area:area,areaF:areaF,
+     flux:flux,water:water,drink:drink,sec:sec,presented:presented,siAbs:siAbs,colonIn:colonIn,
+     colonAbs:colonAbs,stool:stool,net:net,osmoticLoad:osmoticLoad};
+  render();
+}
+
+function render(){
+  document.getElementById('oNai').textContent=M.Nai.toFixed(0);
+  document.getElementById('oNao').textContent=M.Na;
+  document.getElementById('oAct').textContent=Math.round(M.act*100);
+  document.getElementById('oGlu').textContent=M.flux.toFixed(0);
+  document.getElementById('oH2O').textContent=Math.round(M.water);
+  document.getElementById('oArea').textContent=M.area.toFixed(0);
+  document.getElementById('oAmp').textContent=Math.round(M.amp);
+
+  var r=null; ROUTES.forEach(function(x){ if(x.id===route) r=x; });
+  document.getElementById('eqRoute').innerHTML='<b>'+r.n+'.</b> Apical step: '+r.ap+'. Basolateral exit: '+r.bl+'.<br>'+r.txt;
+
+  document.getElementById('eqSol').innerHTML=
+    'Surface area is the whole strategy: circular folds &times;3, villi &times;10, microvilli &times;20 &mdash; an amplification of about <span class="num">600&times;</span> and an absorptive surface near <span class="num">200 m2</span>. '+
+    'A tube three centimeters wide behaves like a sheet the size of a room. Enterocytes are born in the crypts, climb the villus and are shed from the tip after 3 to 5 days, which is why chemotherapy and radiation strip the villi and cause diarrhea.';
+
+  var L=document.getElementById('ledger');
+  function row(k,v,cls){ return '<div'+(cls?' class="'+cls+'"':'')+'><span>'+k+'</span><b>'+v+'</b></div>'; }
+  L.innerHTML=
+    row('Drunk','+'+M.drink.toFixed(1)+' L')+
+    row('Secreted &mdash; saliva, gastric, bile, pancreatic, intestinal','+7.0 L')+
+    row('Added by toxin-driven crypt secretion','+'+M.sec.toFixed(1)+' L')+
+    row('Presented to the small intestine',M.presented.toFixed(1)+' L','tot')+
+    row('Small intestine absorbs','&minus;'+M.siAbs.toFixed(1)+' L')+
+    row('Reaching the colon',M.colonIn.toFixed(1)+' L','tot')+
+    row('Colon absorbs (reserve about 4–5 L/day)','&minus;'+M.colonAbs.toFixed(1)+' L')+
+    row('Lost in stool',M.stool.toFixed(2)+' L','tot')+
+    row('Net fluid balance',(M.net>=0?'+':'')+M.net.toFixed(1)+' L/day','tot');
+
+  var v=document.getElementById('vOut'), cls='verdict', m='';
+  if(M.pump<0.25){
+    cls+=' bad';
+    m='The pump is off, so every sodium-coupled route stops.'+
+      '<small>Intracellular sodium has risen to '+M.Nai.toFixed(0)+' mM, the inward gradient has collapsed, and SGLT1 activation has fallen to '+Math.round(M.act*100)+' percent. The transporter itself is untouched — it simply has no gradient left to ride. This is why the basolateral Na+/K+-ATPase is described as paying for nearly every uptake step in the intestine, including amino acids, bile acids and B12.</small>';
+  } else if(M.vil<0.4){
+    cls+=' bad';
+    m='Villi flattened: absorptive area down to '+M.area.toFixed(0)+' m2.'+
+      '<small>Flux across an epithelium is proportional to area. Losing villus height cuts the amplification from about 600-fold to '+Math.round(M.amp)+'-fold, and the brush-border enzymes go with the villi, so hydrolysis fails as well as transport. In <b>celiac disease</b> an immune response to gluten does exactly this, and malabsorption follows even though the pancreas is normal.</small>';
+  } else if(M.osmoticLoad>0.1){
+    cls+=' warn';
+    m='Osmotic diarrhea: the solute cannot be absorbed, so the water cannot leave.'+
+      '<small>Lactose is a disaccharide and nothing absorbs it. Without brush-border lactase it stays in the lumen as an osmotically active solute holding about '+M.osmoticLoad.toFixed(1)+' L of water, then reaches the colon where bacteria ferment it to short-chain fatty acids, hydrogen, carbon dioxide and methane — hence the gas, distension and cramping. Because the driving solute is dietary, this diarrhea stops with fasting.</small>';
+  } else if(M.sec>=6 && M.act<0.25){
+    cls+=' bad';
+    m='Secretory diarrhea, and nothing here is absorbing: stool '+M.stool.toFixed(1)+' L/day.'+
+      '<small>Cholera toxin locks the stimulatory G protein in its active state, so cyclic AMP stays high and crypt cells pump chloride out through CFTR with water following. The person dies of hypovolemia and acidosis, not of the organism. Sodium alone will not rescue them and glucose alone will not either — SGLT1 needs both together. Net balance is '+M.net.toFixed(1)+' L/day.</small>';
+  } else if(M.sec>=6 && M.act>=0.35){
+    cls+=' ok';
+    m='Oral rehydration is working while the secretion continues: net '+(M.net>=0?'+':'')+M.net.toFixed(1)+' L/day.'+
+      '<small>The toxin has not damaged the villus enterocyte and has not touched SGLT1, so the absorptive pathway is still available. Sodium and glucose enter together, water follows osmotically, and absorption is set against the secretion. That is the entire logic of oral rehydration therapy, and it is the reason a solution costing a few cents saves more lives than most drugs.</small>';
+  } else if(M.act<0.15){
+    cls+=' warn';
+    m='SGLT1 is idle at '+Math.round(M.act*100)+' percent.'+
+      '<small>The co-transporter is obligatory: it needs glucose <b>and</b> sodium at the same time. Give one without the other and nothing crosses. Luminal glucose is '+M.Geff+' mM and luminal sodium '+M.Na+' mM.</small>';
+  } else {
+    cls+=' ok';
+    m='Absorbing '+M.flux.toFixed(0)+' mmol of glucose per hour, and '+Math.round(M.water)+' mL of water an hour follows it.'+
+      '<small>There are no water pumps anywhere in the gut. Water moves through aquaporins and between cells down an osmotic gradient that solute transport creates — principally sodium. Move the solute and the water follows; fail to move the solute and the water stays. Of the nine liters presented each day the small intestine reclaims 7.5 to 8 L and the colon nearly all of the rest, leaving about 150 mL in stool.</small>';
+  }
+  v.className=cls; v.innerHTML=m;
+}
+
+/* ---------------- cell canvas ---------------- */
+var cv=document.getElementById('cvCell'), g=cv.getContext('2d');
+function rr(x,y,w,h,r){ g.beginPath(); g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
+function draw(now){
+  var W=cv.width,H=cv.height;
+  g.clearRect(0,0,W,H); g.fillStyle=CARD; g.fillRect(0,0,W,H);
+  var yLum=0, yApex=104, yBase=250;
+  g.fillStyle='rgba(0,0,0,0.035)'; g.fillRect(0,0,W,yApex);
+  g.fillStyle='rgba(0,0,0,0.015)'; g.fillRect(0,yApex,W,yBase-yApex);
+
+  /* microvilli, height scaled by the villus slider */
+  var mvh=6+18*M.vil;
+  g.strokeStyle=TEAL; g.lineWidth=2.4;
+  for(var x=14;x<W-10;x+=11){
+    g.beginPath(); g.moveTo(x,yApex); g.lineTo(x,yApex-mvh); g.stroke();
+  }
+  g.strokeStyle=TEAL; g.lineWidth=3;
+  g.beginPath(); g.moveTo(0,yApex); g.lineTo(W,yApex); g.stroke();
+  g.beginPath(); g.moveTo(0,yBase); g.lineTo(W,yBase); g.stroke();
+
+  g.font='700 11px Inter, sans-serif'; g.textAlign='left'; g.textBaseline='middle';
+  g.fillStyle=MUTED; g.fillText('LUMEN — unstirred water layer over the brush border',12,18);
+  g.fillStyle=MUTED; g.fillText('ENTEROCYTE',12,yApex+22);
+  g.fillStyle=TDK; g.font='700 12px Inter, sans-serif';
+  g.fillText('intracellular Na+ '+M.Nai.toFixed(0)+' mM',12,yApex+42);
+
+  var r=null; ROUTES.forEach(function(x2){ if(x2.id===route) r=x2; });
+
+  /* capillary and lacteal */
+  g.fillStyle='rgba(0,0,0,0.03)';
+  rr(20,266,300,58,12); g.fill(); g.strokeStyle=CORAL; g.lineWidth=2; g.stroke();
+  rr(345,266,295,58,12); g.fillStyle='rgba(0,0,0,0.03)'; g.fill(); g.strokeStyle=GOLD; g.lineWidth=2; g.stroke();
+  g.fillStyle=CORAL; g.font='700 11.5px Inter, sans-serif'; g.textAlign='center';
+  g.fillText('CAPILLARY  →  portal vein  →  liver (first pass)',170,295);
+  g.fillStyle=GOLD; g.fillText('LACTEAL  →  thoracic duct  →  left subclavian vein',492,295);
+
+  /* apical transporter */
+  var ax=200, aw=260;
+  g.fillStyle='#fff'; rr(ax,yApex-13,aw,26,9); g.fill();
+  g.strokeStyle=TEAL; g.lineWidth=2.2; g.stroke();
+  g.fillStyle=TDK; g.font='700 11px Inter, sans-serif'; g.textAlign='center';
+  g.fillText(r.ap,ax+aw/2,yApex);
+
+  /* basolateral exit */
+  var ex = (r.exit==='lac') ? 400 : 120;
+  g.fillStyle='#fff'; rr(ex-110,yBase-13,220,26,9); g.fill();
+  g.strokeStyle=(r.exit==='lac')?GOLD:CORAL; g.lineWidth=2.2; g.stroke();
+  g.fillStyle=TDK; g.font='700 11px Inter, sans-serif';
+  g.fillText(r.bl,ex,yBase);
+
+  /* the pump that pays for it all */
+  g.fillStyle='#fff'; rr(470,yBase-13,170,26,9); g.fill();
+  g.strokeStyle=PURPLE; g.lineWidth=2.2; g.stroke();
+  g.fillStyle=PURPLE; g.font='700 11px Inter, sans-serif';
+  g.fillText('Na+/K+-ATPase '+Math.round(M.pump*100)+'%',555,yBase);
+
+  /* animated streams */
+  var speed=0.28+1.5*M.act;
+  function stream(x,y1,y2,col,n,sp,label){
+    for(var i=0;i<n;i++){
+      var u=((now*sp+i/n)%1);
+      var y=y1+(y2-y1)*u;
+      g.beginPath(); g.arc(x,y,4.2,0,6.2832); g.fillStyle=col; g.globalAlpha=0.9; g.fill(); g.globalAlpha=1;
+    }
+    if(label){ g.fillStyle=col; g.font='700 10.5px Inter, sans-serif'; g.textAlign='center';
+      g.fillText(label,x,(y1+y2)/2-14); }
+  }
+  var nsp=Math.max(0.06,speed*0.35);
+  if(route==='glu'){
+    stream(250,26,yApex-16,BLUE,4,nsp,'Na+'); stream(250,yApex+16,yBase-16,BLUE,3,nsp*0.6,'');
+    stream(330,26,yApex-16,GREEN,3,nsp,'glucose'); stream(330,yApex+16,yBase-16,GREEN,3,nsp,'');
+    stream(120,yBase+14,320,GREEN,3,nsp,'');
+    stream(555,yApex+16,yBase+40,PURPLE,3,0.35,'3 Na+ out');
+    stream(410,26,320,BLUE,3,nsp*0.8,'water follows');
+  } else if(route==='fru'){
+    stream(330,26,yApex-16,GREEN,3,0.32,'fructose'); stream(330,yApex+16,yBase-16,GREEN,3,0.32,'');
+    stream(120,yBase+14,320,GREEN,3,0.32,'');
+  } else if(route==='pep'){
+    stream(250,26,yApex-16,GOLD,4,0.4,'H+'); stream(330,26,yApex-16,GREEN,3,0.4,'di/tripeptide');
+    stream(330,yApex+16,yBase-16,GREEN,3,0.4,'amino acids'); stream(120,yBase+14,320,GREEN,3,0.4,'');
+    stream(555,yApex+16,yBase+40,PURPLE,3,0.35,'3 Na+ out');
+  } else if(route==='fat'){
+    stream(330,26,yApex-16,GOLD,4,0.3,'micelle → FA + 2-MG');
+    stream(400,yApex+16,yBase-16,GOLD,3,0.3,'chylomicron');
+    stream(492,yBase+14,320,GOLD,3,0.3,'');
+  } else if(route==='b12'){
+    stream(330,26,yApex-16,PURPLE,3,0.26,'IF–B12 complex');
+    stream(330,yApex+16,yBase-16,PURPLE,3,0.26,''); stream(120,yBase+14,320,PURPLE,3,0.26,'');
+  } else if(route==='fe'){
+    stream(330,26,yApex-16,CORAL,3,0.3,'Fe2+'); stream(330,yApex+16,yBase-16,CORAL,3,0.3,'');
+    stream(120,yBase+14,320,CORAL,3,0.3,'');
+  } else {
+    stream(330,26,yApex-16,BLUE,3,0.3,'Ca2+'); stream(330,yApex+16,yBase-16,BLUE,3,0.3,'calbindin shuttle');
+    stream(120,yBase+14,320,BLUE,3,0.3,'');
+    stream(560,26,320,BLUE,3,0.2,'paracellular');
+  }
+  if(M.act<0.06 && route==='glu'){
+    g.fillStyle=CORAL; g.font='700 13px Inter, sans-serif'; g.textAlign='center';
+    g.fillText('SGLT1 needs sodium AND glucose together — nothing is crossing',W/2,yApex+72);
+  }
+}
+function loop(){ draw(performance.now()/1000); requestAnimationFrame(loop); }
+read(); loop();
+})();
+</script>
+</body>
+</html>

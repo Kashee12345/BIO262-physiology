@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Special Senses &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Every special sense solves the same engineering problem: some form of physical energy out in the world &mdash; photons, pressure waves, head acceleration, dissolved molecules &mdash; has to be converted into the only currency the ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 7 &middot; Special Senses</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#transduction">1 &middot; How a stimulus becomes a signal</a>
+        <a href="#optics">2 &middot; The eye as an optical instrument</a>
+        <a href="#phototransduction">3 &middot; Phototransduction and retinal processing</a>
+        <a href="#audition">4 &middot; Hearing: from pressure waves to firing rates</a>
+        <a href="#equilibrium-chemoreception">5 &middot; Balance and the chemical senses</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 7</div>
+<h1>The Special Senses</h1>
+<p class="lede">Every special sense solves the same problem. Energy out in the world has to become a nerve signal. That energy may be light, pressure waves, head movement, or dissolved molecules. The nervous system spends only one currency. It is a change in membrane potential, followed by a train of action potentials. Module 6 gave you the action potential and the synapse. This module shows you where those signals are born. You will see that a rod hyperpolarizes in the light instead of depolarizing. You will see why the middle ear exists. Air and fluid do not move with the same ease, and that gap has to be fixed. You will see that the cochlea sorts frequency by stiffness alone, before a single neuron fires. You will see that the semicircular canals are accelerometers. They only report when your head speeds up or slows down. Along the way you meet three clean negative feedback loops. They are the pupillary light reflex, the acoustic reflex and the vestibulo-ocular reflex. Each one has a named sensor, integrator and effector.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain <b>sensory transduction</b>. Use the <b>adequate stimulus</b>, the graded <b>receptor potential</b>, and frequency coding along a <b>labeled line</b>.</li>
+<li>Tell <b>tonic</b> receptors from <b>phasic</b> ones. Say which type explains a given everyday sensation.</li>
+<li>Work out refractive power in <b>diopters</b> and say what it means. Explain why the eye totals about 60 D, with the <b>cornea</b> supplying roughly two-thirds of it.</li>
+<li>Describe <b>accommodation</b> and the <b>pupillary light reflex</b> as negative feedback loops. Name the variable, sensor, integrator, effector and response.</li>
+<li>Trace <b>aqueous humor</b> from the ciliary epithelium to Schlemm canal. Use Q = &Delta;P / R to predict how a rise in outflow resistance changes <b>intraocular pressure</b>.</li>
+<li>Explain the <b>dark current</b>. Say why closing <b>cGMP-gated channels</b> makes light hyperpolarize the cell and reduce glutamate release.</li>
+<li>Account for <b>impedance matching</b> by the ossicles in mechanical terms. Do the same for <b>tonotopy</b> along the basilar membrane.</li>
+<li>Explain how a <b>hair cell</b> turns motion into a signal, using the <b>endocochlear potential</b> and tip-link gating. Contrast the roles of inner and outer hair cells.</li>
+<li>Compare transduction in the <b>semicircular canals</b>, the <b>otolith organs</b>, the <b>taste bud</b> and the <b>olfactory epithelium</b>. State what failure of each one does to a patient.</li>
+</ul></div>
+
+<h2 id="transduction"><span class="num">Section 1</span>How a stimulus becomes a signal</h2>
+<figure class="bref"><div class="fr"><img src="img/ch07_s1.jpg" alt="Diagram of a sensory receptor showing a stimulus producing a graded receptor potential that, once it reaches threshold, generates a train of action potentials in the afferent axon" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A graded receptor potential reaches the trigger zone. There it becomes a train of action potentials whose rate carries the message. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The adequate stimulus and the labeled line</h3>
+<p>A sensory receptor is a converter with a favorite. Each receptor type has an <b>adequate stimulus</b>. That is the form of energy it converts at the lowest threshold. A rod will answer to a single photon. It takes enormous mechanical force to make that same rod answer to pressure. A cochlear hair cell answers to a 1-nanometer bend of its stereocilia. It ignores light entirely. That bias is not absolute. Press firmly on your closed eyelid. You see a glowing ring called a phosphene. You have delivered mechanical energy strong enough to switch on a photoreceptor pathway. Notice what the brain did with it. It did not feel pressure. It saw light.</p>
+<p>That is the <b>labeled line</b> principle. It is the single most important idea in sensory physiology. What you experience depends on which central pathway the action potentials arrive on. It does not depend on the spikes themselves. An action potential in the optic nerve and one in the cochlear nerve cannot be told apart electrically. Both are swings of roughly 100 mV. Both last about 1 ms. Both run on the same voltage-gated sodium and potassium channels you met in Module 6. Vision is what the visual cortex does with its input. This is why a vestibular schwannoma pressing on cranial nerve VIII makes ringing in the ear rather than a tickle. It is also why phantom limb pain feels like it comes from a hand that is no longer there.</p>
+<p>Four things about a stimulus have to be encoded. They are <i>modality</i>, <i>location</i>, <i>intensity</i> and <i>duration</i>. Wiring handles modality and location. That means which line carries the signal, and which part of the sensory map that line reaches. The pattern of firing has to handle intensity and duration. The action potential is all-or-none. You cannot make it bigger.</p>
+
+<h3>Receptor potentials and frequency coding</h3>
+<p>Transduction always produces a <b>receptor potential</b>. That is a graded, local change in membrane potential. It grows in step with stimulus strength. Ion channels open or close to make it. In most receptors those channels let any positive ion through, so the receptor potential depolarizes the cell. In photoreceptors, as you will see, the channels close and the receptor potential hyperpolarizes the cell. Either way the receptor potential is graded. It can be 2 mV or 20 mV. It also fades over a few hundred micrometers, because it spreads passively with no boost.</p>
+<p>Some receptors are sensory neurons themselves. In those, the receptor potential spreads to a trigger zone packed with voltage-gated sodium channels. There it takes a new name, the <b>generator potential</b>. The axon fires once that potential crosses threshold. Threshold is usually a depolarization of about 15 mV from a resting potential near -70 mV. A stronger stimulus makes a larger generator potential. A larger one reaches threshold sooner after each refractory period. So the axon fires faster. Mammalian sensory fibers run from a few spikes per second at threshold to about 300-1,000 spikes per second at saturation. Turning amplitude into frequency is the central trick of the nervous system.</p>
+<p>Intensity coding uses one more tool, <b>recruitment</b>. As a stimulus grows, receptors with higher thresholds join in. More lines are then active at once. What you feel does not rise in step with the physical size of the stimulus. The <b>Weber-Fechner</b> relationship says the smallest change you can notice is a roughly constant fraction of the baseline. That fraction, &Delta;I / I, is about 0.02 for brightness and about 0.1 for loudness. In plain terms, you can detect a 1-candle change against 50 candles. You cannot detect it against 5,000. A huge physical range has to be squeezed into a manageable neural range. That is exactly why acoustics uses a logarithmic unit, the decibel: dB SPL = 20 &times; log(P / 20 &mu;Pa).</p>
+
+<h3>Adaptation: tonic and phasic receptors</h3>
+<p>Hold a stimulus steady and most receptors reduce their firing. <b>Tonic</b> receptors barely reduce it at all. They are the slowly adapting kind. They keep reporting for as long as the stimulus lasts. Nociceptors, muscle spindles, the carotid baroreceptors and the otolith organs are tonic. Each one guards a value that has to be watched without a break. <b>Phasic</b> receptors are the rapidly adapting kind. They fire a burst when the stimulus starts. They fall silent within milliseconds to seconds. They often fire again when it ends. Pacinian corpuscles, olfactory receptor neurons and the semicircular canals are phasic. They report <i>change</i>. In math terms, change is the derivative of the stimulus.</p>
+<p>Adaptation is built in at several levels. The Pacinian corpuscle has onion-like layers around the nerve ending. They spread a sustained force out, so the nerve ending is no longer deformed. In olfactory neurons, calcium enters through the transduction channel. It binds calmodulin, and the channel then holds cAMP less tightly. In photoreceptors, calcium falls in the light. That stimulates guanylyl cyclase and resets sensitivity. The bedside version is easy to see. You stop noticing your own perfume within minutes. You stop feeling your watchband within seconds. You never stop feeling a kidney stone. Nociceptors are tonic and adapt very little.</p>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Stimulus attribute</th><th>How it is encoded</th><th>Worked example</th></tr></thead>
+<tbody>
+<tr><td>Modality</td><td>Labeled line. Which pathway carries it, and which cortical target it reaches</td><td>Pressure on the globe is perceived as light</td></tr>
+<tr><td>Location</td><td>Receptive field size plus a topographic map. Lateral inhibition sharpens edges</td><td>Two points feel separate at 2-4 mm on a fingertip, 40-50 mm on the back</td></tr>
+<tr><td>Intensity</td><td>Action potential frequency, plus recruitment of higher-threshold units</td><td>Firing climbs from about 5 to about 300 spikes/s</td></tr>
+<tr><td>Duration</td><td>Tonic receptors keep firing. Phasic receptors signal onset and offset</td><td>A nociceptor persists. A Pacinian corpuscle falls silent in under 1 s</td></tr>
+</tbody>
+</table></div>
+<div class="pearl"><b>Common misconception.</b> Students often say a strong stimulus produces a &ldquo;bigger&rdquo; action potential. It cannot. The action potential is all-or-none. Its amplitude is set by the sodium and potassium equilibrium potentials. The stimulus does not set it. Only the <i>receptor potential</i> is graded. Strength lives in firing frequency and in how many fibers are recruited. It never lives in spike height.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Every special sense runs the same three-step machine. An adequate stimulus opens or closes ion channels. That produces a graded receptor potential. The trigger zone then converts amplitude into firing <a href="../lab/ch07/SensoryTransductionBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch07/SensoryTransductionBench.html" loading="lazy" title="From Stimulus to Spike Train &mdash; Transduction, Adaptation and Frequency Coding interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Every special sense turns its own adequate stimulus into a graded receptor potential. The nervous system then reads stimulus strength as firing frequency. It reads stimulus identity as the line the firing arrives on.</p></div>
+
+<h2 id="optics"><span class="num">Section 2</span>The eye as an optical instrument</h2>
+<figure class="bref"><div class="fr"><img src="img/ch07_s2.jpg" alt="Cross-section of the human eye showing cornea, aqueous humor, iris, lens, zonular fibers, ciliary body, vitreous chamber, retina, fovea and optic nerve" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Most of the bending happens where air meets the cornea. The lens then fine-tunes it. The light reaches the retina about 24 mm behind the cornea. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Refraction, diopters and the 60-diopter eye</h3>
+<p>Light bends when it crosses from one clear material into another. The two materials must differ in refractive index. That index is a number for how much a material slows light down. How much the light bends depends on that index difference and on the curvature of the surface. Refractive power is measured in <b>diopters</b>, where D = 1 / f and f is the focal length in meters. A lens that focuses parallel light 0.5 m behind itself has a power of 2 D. A lens that focuses at 10 cm has a power of 10 D.</p>
+<p>The relaxed human eye totals about <b>60 D</b>. Roughly 40-43 D of that comes from the <b>cornea</b>. Only about 15-20 D comes from the lens. That surprises most students, since the lens is the part we call adjustable. The reason is the size of the index step. Air has a refractive index of 1.00 and the cornea about 1.376. That is an enormous jump. The lens is about 1.40, and it sits between aqueous and vitreous humor. Both of those are about 1.336. So the lens faces only a small step. This also explains blurry vision underwater. Water and cornea have nearly the same index. The cornea loses almost all of its refractive power until you restore an air interface. A diving mask does exactly that, and vision turns sharp again. The eyeball is about 24 mm long. Let axial length and focal length miss each other by just 1 mm. That is worth roughly 2.5-3 D of refractive error.</p>
+<p>Sometimes the eye focuses light in front of the retina. That condition is <b>myopia</b>. The globe is usually too long. A diverging lens, the minus lens, moves the image back. Sometimes light would focus behind the retina. That condition is <b>hyperopia</b>. The globe is usually too short. A converging lens, the plus lens, moves the image forward. The cornea can also curve unequally in different directions. That gives <b>astigmatism</b>, which a cylindrical lens corrects. Notice the physiology under the optics here. None of these is a disease of the retina. The photoreceptors work perfectly. The image simply arrives at the wrong plane.</p>
+
+<h3>Accommodation: the muscle that focuses by relaxing the suspension</h3>
+<p>The eye has to add power to focus on something near. The <b>ciliary muscle</b> is a ring of smooth muscle. Parasympathetic fibers traveling with cranial nerve III control it. When it contracts, the ring&rsquo;s diameter <i>decreases</i>, like a purse-string pulling shut. That slackens the <b>zonular fibers</b>, which normally hold the lens under outward tension. Released from that tension, the elastic lens capsule lets the lens become more spherical. Its anterior surface steepens and its refractive power rises. Here is the part worth memorizing, because it feels backward: <i>ciliary muscle contraction relaxes the zonules and rounds the lens</i>.</p>
+<p><b>Accommodative amplitude</b> is the maximum power the lens can add. It is about 14 D at age 10. It is about 7 D at 30, about 2 D at 45, and under 1 D by 60. Near point in centimeters is roughly 100 divided by amplitude in diopters. So a 10-year-old focuses at 7 cm. A 45-year-old cannot get closer than about 50 cm. The lens protein matrix stiffens steadily with age. That stiffening is <b>presbyopia</b>. It is why reading glasses arrive on schedule in the mid-forties. Good distance vision does not spare anyone. Accommodation is one limb of the <b>near triad</b>. The lens rounds. The pupil constricts, which increases depth of field by shrinking the blur circle. Both eyes converge.</p>
+<p>The control here is a genuine feedback loop. It is an unusual one, because the sensed variable is image quality. The <i>variable</i> is retinal blur. The <i>sensor</i> is the retina, plus the blur-detecting circuitry of the visual cortex. The <i>integrator</i> is the visual association cortex, which projects to the Edinger-Westphal nucleus. The <i>effector</i> is the ciliary muscle. The <i>response</i> is a change in lens power that reduces the blur. Blur drives its own correction. That is the signature of negative feedback.</p>
+
+<h3>The pupillary light reflex</h3>
+<p>Pupil diameter runs from about 8 mm dilated to about 1.5 mm constricted. Area scales with the square of the radius. So that range changes retinal illuminance roughly 30-fold. That is about 1.5 log units. That is useful. It is still far smaller than the 10-billion-fold range of natural light. Rods and cones handle most of that range, not the iris.</p>
+<p>Map the loop piece by piece. <i>Variable</i>: light flux striking the retina. <i>Sensor</i>: rods, cones, and intrinsically photosensitive retinal ganglion cells containing melanopsin. Those melanopsin cells are the dominant driver of the sustained reflex. <i>Afferent</i>: cranial nerve II to the pretectal olivary nucleus in the midbrain. <i>Integrator</i>: the pretectal nucleus, which projects <b>bilaterally</b> to both Edinger-Westphal nuclei. <i>Efferent</i>: preganglionic parasympathetic fibers in cranial nerve III to the ciliary ganglion, then the short ciliary nerves. <i>Effector</i>: the circular sphincter pupillae. <i>Response</i>: constriction within 200-300 ms, which reduces the very stimulus that triggered it. The bilateral projection explains the <b>consensual response</b>. Shine light in one eye and both pupils constrict. It is also why comparing the direct with the consensual response localizes a lesion. A problem on the way in points to the optic nerve, the afferent limb. A problem on the way out points to the third nerve, the efferent limb. Dilation is the sympathetic mirror image. It acts on the radial dilator pupillae through alpha-1 receptors.</p>
+
+<h3>Aqueous humor and intraocular pressure</h3>
+<p>The anterior segment is a pressurized hydraulic system. The same flow equation used for blood applies here: Q = &Delta;P / R. The <b>ciliary epithelium</b> secretes aqueous humor actively, using Na+/K+-ATPase and carbonic anhydrase. It works at about 2-2.5 &mu;L/min. The anterior chamber holds roughly 250 &mu;L. The posterior chamber holds roughly 50-60 &mu;L. So the combined aqueous volume is about 300 &mu;L. That secretion rate replaces close to 1% of the anterior chamber volume each minute. The fluid runs from the posterior chamber through the pupil into the anterior chamber. Most of it, about 80-90%, drains through the trabecular meshwork into Schlemm canal. The rest leaves by the uveoscleral route.</p>
+<p>Normal <b>intraocular pressure</b> is 10-21 mmHg, averaging about 15-16 mmHg. Rearrange the Goldmann relationship and it says something simple. Pressure is inflow times outflow resistance, plus episcleral venous pressure. Production barely changes with pressure. So a rise in outflow resistance raises pressure directly. That is open-angle glaucoma. The trabecular meshwork clogs and pressure climbs gradually. The optic nerve head is then damaged both mechanically and through poor blood supply. That head is the place where the axons exit the eye. Acute angle-closure glaucoma is the plumbing version. The iris root blocks the drainage angle. Pressure can exceed 50 mmHg within hours, and the eye turns red, rock-hard and painful. Pressure matters for a specific reason, and it is not that pressure hurts. There are 1.2 million ganglion cell axons, and each one ships material along its length. That axoplasmic transport fails when the axons are compressed at the lamina cribrosa.</p>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Condition</th><th>Mechanism</th><th>Where light focuses</th><th>Correction</th></tr></thead>
+<tbody>
+<tr><td>Myopia</td><td>Globe too long, or cornea too steep</td><td>In front of the retina</td><td>Concave (minus) lens</td></tr>
+<tr><td>Hyperopia</td><td>Globe too short, or cornea too flat</td><td>Behind the retina</td><td>Convex (plus) lens</td></tr>
+<tr><td>Astigmatism</td><td>Cornea curves unequally in different directions</td><td>Two focal lines, never one clear point</td><td>Cylindrical lens</td></tr>
+<tr><td>Presbyopia</td><td>The lens hardens. Accommodative amplitude falls under 2 D</td><td>Near targets focus behind the retina</td><td>Reading add, bifocal</td></tr>
+</tbody>
+</table></div>
+<div class="pearl"><b>Common misconception.</b> &ldquo;The lens does the focusing.&rdquo; The lens does the <i>adjusting</i>. The cornea does about two-thirds of the focusing. That is precisely why refractive surgery reshapes the cornea rather than the lens. A change of 1 D at the corneal surface is cheap to make, and it is permanent.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The relaxed eye totals about 60 diopters. Roughly two-thirds of that comes from the cornea, not the lens. Move the axial length by a single millimeter below and watch the focal point walk off the <a href="../lab/ch07/OpticsOfTheEye.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch07/OpticsOfTheEye.html" loading="lazy" title="The Sixty-Diopter Eye &mdash; Refraction, Accommodation and Intraocular Pressure interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The eye is a fixed 60-diopter optical system with a small variable component. Two reflex loops defend it. Accommodation defends against blur. The pupillary reflex defends against excess light. A flow of aqueous keeps it pressurized, and that flow obeys Q = &Delta;P / R.</p></div>
+
+<h2 id="phototransduction"><span class="num">Section 3</span>Phototransduction and retinal processing</h2>
+<figure class="bref"><div class="fr"><img src="img/ch07_s3.jpg" alt="Diagram of retinal cell layers showing photoreceptors, horizontal cells, bipolar cells, amacrine cells and ganglion cells with light entering from the vitreous side" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Light passes through the neural retina before it reaches the photoreceptors. Their signal then travels back out through bipolar cells to ganglion cells. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The dark current, and why light hyperpolarizes</h3>
+<p>Photoreceptors break the rule that stimuli depolarize. In darkness the outer segment holds a lot of <b>cyclic GMP</b>. That molecule binds cyclic-nucleotide-gated channels and holds them open. Sodium and calcium flow in nonstop. That steady flow is the <b>dark current</b>, tens of picoamps per cell. It holds the membrane potential at about -40 mV, which is unusually depolarized for a neuron. At that potential the synaptic terminal releases glutamate nonstop. Darkness, in other words, is not the absence of a signal. It is the maximum signal.</p>
+<p>A photon changes 11-cis-retinal into all-trans-retinal inside <b>rhodopsin</b>. The switched-on pigment makes the G protein <b>transducin</b> swap GDP for GTP. Transducin&rsquo;s alpha subunit then switches on <b>phosphodiesterase 6</b>. That enzyme breaks down cGMP. cGMP falls, the channels close, and the dark current stops. The cell <b>hyperpolarizes</b> toward -70 mV and releases less glutamate. The cascade is amplified at every step. One switched-on rhodopsin turns on hundreds of transducins. Each PDE molecule destroys on the order of a thousand cGMP molecules per second. So a single photon closes several hundred channels. It makes a response of about 1 mV, big enough to measure. That is why a fully dark-adapted human can reliably report a flash of only a handful of photons.</p>
+<p>Recovery matters as much as activation. Rhodopsin kinase phosphorylates the active pigment, and arrestin caps it. The transducin alpha subunit hydrolyzes its own GTP. Meanwhile the closed channels no longer let calcium in. Calcium inside the cell falls. Falling calcium frees the guanylyl cyclase activating proteins. Those proteins switch on guanylyl cyclase, which rebuilds cGMP. That calcium-dependent step is <b>light adaptation</b>. The receptor resets its own gain. It is why stepping outdoors is blinding for a few seconds and then simply bright.</p>
+
+<h3>Rods, cones and dark adaptation</h3>
+<p>The retina carries roughly 90-120 million <b>rods</b> and 5-6 million <b>cones</b>. All of them converge onto about 1.2 million ganglion cells. That convergence ratio is the whole story of the rod-cone trade-off. Many rods feed one bipolar cell, which sums their weak signals. That buys sensitivity and gives up spatial resolution. In the <b>fovea</b> the wiring is different. Cones connect nearly one-to-one to midget bipolar and ganglion cells. The overlying retinal layers are swept aside into a pit. That buys acuity and gives up sensitivity. This is why a faint star vanishes when you look straight at it and reappears in peripheral vision. You have moved its image off the rod-free fovea and back onto rods.</p>
+<p>Rods use rhodopsin. Its peak absorbance is near 498 nm, and it saturates in daylight. Cones come in three types. Their peaks sit near 420 nm (S, blue), 534 nm (M, green) and 564 nm (L, red). No single cone carries color. Color is computed from the <i>ratio</i> of activity across the three. That is why two very different spectra can look identical. Red-green color deficiency is common in males, around 8%. The L and M opsin genes sit next to each other on the X chromosome. Neighbors like that recombine easily.</p>
+<p><b>Dark adaptation</b> is measurable, and it happens in two stages. Walk into a dark room. Cone sensitivity improves over about 5-7 minutes and then plateaus. The curve then breaks, and rod sensitivity keeps improving for another 20-30 minutes. In the end threshold sensitivity rises by a factor of roughly 100,000. The limiting step is regeneration of 11-cis-retinal by the retinal pigment epithelium. That job needs vitamin A. So vitamin A deficiency produces night blindness long before it produces any daytime symptom.</p>
+
+<h3>Center-surround, lateral inhibition and the pathway to cortex</h3>
+<p>Bipolar cells split the signal into two channels. <b>ON bipolar cells</b> express the metabotropic glutamate receptor mGluR6, which is inhibitory. Glutamate hyperpolarizes them. So when light reduces glutamate, they depolarize. This sign-inverting synapse restores &ldquo;light equals more signal&rdquo; after the photoreceptor inverted it. <b>OFF bipolar cells</b> use ordinary ionotropic glutamate receptors and do the opposite. From here the retina reports increments and decrements side by side.</p>
+<p><b>Horizontal cells</b> spread laterally. They feed inhibition back onto neighboring photoreceptors. That produces the classic <b>center-surround</b> receptive field. A ganglion cell fires hardest not to even light. It fires hardest to light in its center with darkness around it. The payoff is sharper edges and steady contrast. The retina throws away flat, even light and sends on the boundaries. That saves space as much as it aids seeing. It also explains illusions such as Mach bands. You see a bright line at a luminance edge that does not physically exist.</p>
+<p><b>Ganglion cells</b> are the first cells in the visual pathway to fire action potentials. Everything upstream talks in graded potentials over short distances. Their axons form the optic nerve. At the <b>optic chiasm</b>, fibers from the nasal half of each retina cross. Temporal fibers stay on their own side. So each optic tract carries the <i>contralateral visual field</i> from both eyes. The tract synapses in the lateral geniculate nucleus of the thalamus. Its magnocellular layers handle motion and coarse form. Its parvocellular layers handle color and detail. From there the optic radiations run to primary visual cortex in the occipital lobe. The anatomy has direct diagnostic power. A lesion before the chiasm blinds one eye. A lesion at the chiasm, classically a pituitary tumor, produces bitemporal hemianopsia. That means the outer half of the visual field is lost in both eyes. A lesion behind the chiasm produces a homonymous field cut. That knocks out the same side of the visual world in both eyes.</p>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Feature</th><th>Rods</th><th>Cones</th></tr></thead>
+<tbody>
+<tr><td>Number</td><td>About 90-120 million</td><td>About 5-6 million</td></tr>
+<tr><td>Pigment</td><td>Rhodopsin, peak about 498 nm</td><td>Three opsins, peaks about 420 / 534 / 564 nm</td></tr>
+<tr><td>Convergence</td><td>High. Many rods feed one bipolar cell</td><td>Low. Near 1:1 at the fovea</td></tr>
+<tr><td>Sensitivity vs acuity</td><td>Catches a single photon. Poor acuity</td><td>Needs bright light. High acuity</td></tr>
+<tr><td>Distribution</td><td>Out at the edge of the retina. None in the fovea</td><td>Packed into the fovea</td></tr>
+<tr><td>Adaptation time</td><td>20-30 min to full dark adaptation</td><td>Levels off in about 5-7 min</td></tr>
+</tbody>
+</table></div>
+<div class="pearl"><b>Common misconception.</b> &ldquo;Light excites the photoreceptor.&rdquo; It does the opposite. Light closes channels and stops the dark current. The cell <i>hyperpolarizes</i> and releases less transmitter. The sign gets flipped back at the ON bipolar synapse. So any description of &ldquo;increased glutamate release from a rod&rdquo; is really describing darkness.</div>
+<div class="pearl"><b>Why it matters clinically.</b> Retinitis pigmentosa attacks rods first. So patients lose night vision and peripheral field years before central acuity. Macular degeneration attacks the fovea, which is rich in cones. So patients lose central detail and keep navigating by peripheral vision. Know which photoreceptor population lives where and you can predict the pattern of loss. You do not have to memorize it.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Photoreceptors break the rule that stimuli depolarize. In darkness cGMP holds the channels open. Na+ and Ca2+ pour in. The rod sits at about &minus;40 mV and releases glutamate nonstop. So darkn <a href="../lab/ch07/PhototransductionLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch07/PhototransductionLab.html" loading="lazy" title="The Dark Current &mdash; Phototransduction, Adaptation and Center-Surround interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Photoreceptors run a cGMP-gated dark current, and light shuts it off. The retina then re-inverts the signal, splits it, and sharpens it into ON and OFF center-surround channels. All of that happens before a single action potential is fired.</p></div>
+
+<h2 id="audition"><span class="num">Section 4</span>Hearing: from pressure waves to firing rates</h2>
+<figure class="bref"><div class="fr"><img src="img/ch07_s4.jpg" alt="Shearing between the basilar and tectorial membranes deflects stereocilia, opening mechanotransduction channels in the hair cells of the organ of Corti." loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The basilar and tectorial membranes shear against each other. That deflects the stereocilia and opens the mechanotransduction channels in the hair cells of the organ of Corti. <span class="cred">Zha D, Chen F, Ramamoorthy S, Fridberger A, Choudhury N, Jacques SL, et, CC BY 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Impedance matching and the acoustic reflex</h3>
+<p>Sound reaching the ear is a pressure wave traveling in air. The cochlea, though, is filled with fluid. Fluid is far harder to move than air. Send airborne sound straight at a water surface and about 99.9% of the energy reflects. That is a loss of roughly 30 dB. The middle ear exists to solve this <b>impedance mismatch</b>, the mismatch between how easily air and fluid move. It does so with simple physics, using pressure = force / area.</p>
+<p>Two multipliers operate. The first is area. The tympanic membrane has an effective vibrating area of about 55 mm&sup2;. The stapes footplate covers only about 3.2 mm&sup2;. That is an area ratio near 17:1. The same total force concentrated onto a smaller area produces 17 times the pressure. The second is leverage. The malleus-incus arrangement acts as a lever and adds about 1.3. Together they give roughly a 22-fold pressure gain, about 25-27 dB. That very nearly cancels the mismatch loss. Destroy this system and hearing drops by the predicted amount. A perforated drum will do it. So will a stapes fixed in place by otosclerosis, or fluid in the middle ear. The result is a <b>conductive hearing loss</b>, with an intact cochlea sitting uselessly behind it.</p>
+<p>The middle ear also protects itself with a negative feedback loop. It is the <b>acoustic reflex</b>, also called the stapedial reflex. The <i>variable</i> is sound intensity delivered to the cochlea. The <i>sensor</i> is the cochlea itself. The <i>afferent</i> is cranial nerve VIII to the ventral cochlear nucleus. The <i>integrator</i> is the superior olivary complex, which drives the facial and trigeminal motor nuclei on both sides. The <i>effectors</i> are two tiny muscles, the stapedius (cranial nerve VII) and the tensor tympani (cranial nerve V). They stiffen the ossicular chain. The <i>response</i> attenuates transmission by about 10-15 dB, chiefly below 1-2 kHz. The reflex triggers at roughly 70-90 dB above threshold, with a latency of 50-100 ms. That is fast enough for your own voice and for sustained noise. It is far too slow for a gunshot. That is exactly why impulse noise is so damaging.</p>
+
+<h3>The traveling wave and tonotopy</h3>
+<p>The stapes pistons on the oval window. That sends a pressure wave through the perilymph of the scala vestibuli. At the other end the round window bulges outward to accommodate it. Fluid cannot be compressed, so without that compliant relief it could not move at all. The wave displaces the <b>basilar membrane</b>. That structure is roughly 32-35 mm long, and it does not stay the same along its length. At the base it is narrow, about 0.1 mm, and stiff. At the apex it is wide, about 0.5 mm, and floppy. Stiffness varies about a hundredfold from end to end.</p>
+<p>Georg von B&eacute;k&eacute;sy showed what that gradient does. It produces a <b>traveling wave</b> whose amplitude peaks at a position set by frequency. High frequencies, up to about 20,000 Hz in a young ear, peak near the stiff base. Low frequencies, down to about 20 Hz, travel all the way to the compliant apex. So frequency analysis is <i>mechanical</i>. It happens before any neuron is involved. The cochlea is a bank of tuned filters made of collagen and geometry. This spatial map is called <b>tonotopy</b>. It is preserved faithfully all the way to the auditory cortex. That is what lets a cochlear implant work. It fires electrode contacts at the right place along the spiral.</p>
+<p>Place coding is the only cue available at high frequencies. Below roughly 4-5 kHz the nerve adds a second cue. Auditory nerve fibers can <b>phase lock</b>. They fire at a consistent point in the sound cycle, so timing carries frequency too. Phase locking is tightest under about 1,000 Hz. It has faded out completely by 4-5 kHz. Above that, place coding stands alone. Timing also tells you where a sound came from. The brain uses gaps between the two ears as small as 10 microseconds to place a sound left or right. The superior olivary complex does that math. It is the first place in the auditory pathway where input from the two ears converges.</p>
+
+<h3>Hair cells, the endocochlear potential and the cochlear amplifier</h3>
+<p>Basilar membrane motion shears the stereocilia of hair cells against the overlying tectorial membrane. Adjacent stereocilia are joined at their tips by protein <b>tip links</b>, built from cadherin-23 and protocadherin-15. Deflection toward the tallest stereocilium stretches the tip links. They pull the mechanotransduction channels open within microseconds. There is no second messenger and no delay. Deflection the other way slackens them. The channels then close below the resting rate. So the hair cell reports in both directions.</p>
+<p>What flows through those channels is unusual. The scala media is filled with <b>endolymph</b>. That fluid contains about 150 mM K+ and only about 1 mM Na+, and the stria vascularis secretes it. The stria also holds it at an <b>endocochlear potential</b> of about +80 mV, a real battery. The hair cell interior sits near -45 mV. So the driving force on potassium entering from the apex is about 125-140 mV. Potassium is normally an exit ion. Here it rushes <i>in</i> and depolarizes the cell. That battery is costly to keep charged. It is one reason the cochlea is so vulnerable to ischemia. It is also why ototoxic drugs matter, since they poison the stria and the hair cells. Aminoglycosides and high-dose loop diuretics are the usual offenders.</p>
+<p>The two hair cell populations do different jobs. The roughly 3,500 <b>inner hair cells</b> are the true sensors. They receive about 95% of the afferent fibers in cranial nerve VIII. They release glutamate onto those fibers, and that firing becomes hearing. The roughly 12,000 <b>outer hair cells</b> are mostly motors. Their lateral membranes contain the protein <b>prestin</b>. It makes them change length in step with the sound. Each cycle they push energy back into the basilar membrane. This <b>cochlear amplifier</b> adds 40-50 dB of gain. It also sharpens tuning a lot. It is what makes normal hearing possible near threshold. It also leaks. The ear emits faint sounds of its own, called <b>otoacoustic emissions</b>. That leak is how newborn hearing screening works without asking the newborn anything.</p>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Compartment</th><th>Fluid</th><th>Key ions</th><th>Potential</th><th>Functional role</th></tr></thead>
+<tbody>
+<tr><td>Scala vestibuli and scala tympani</td><td>Perilymph</td><td>High Na+, low K+ (like CSF)</td><td>About 0 mV</td><td>Carries the pressure wave</td></tr>
+<tr><td>Scala media</td><td>Endolymph</td><td>About 150 mM K+, about 1 mM Na+</td><td>About +80 mV</td><td>Supplies the driving force for transduction</td></tr>
+<tr><td>Hair cell cytoplasm</td><td>Intracellular</td><td>High K+</td><td>About -45 mV</td><td>K+ enters, the cell depolarizes and releases glutamate</td></tr>
+</tbody>
+</table></div>
+<div class="pearl"><b>Why it matters clinically.</b> Noise-induced and age-related hearing loss kill outer hair cells first, and mammals cannot regenerate them. Losing the cochlear amplifier costs 40-50 dB of gain. It <i>also</i> broadens tuning. That is why the classic complaint is not &ldquo;everything is quiet.&rdquo; It is &ldquo;I can hear you, I just cannot understand you in a restaurant.&rdquo; Simply turning up the volume does not restore frequency selectivity.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Airborne sound striking a fluid-filled cochlea would lose about 30 dB at the boundary. The middle ear buys it back with an area ratio and a lever. Inside, frequency is sorted before an <a href="../lab/ch07/CochlearMechanicsLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch07/CochlearMechanicsLab.html" loading="lazy" title="From Pressure Wave to Firing Rate &mdash; Impedance, Tonotopy and the Hair Cell interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The middle ear recovers the 30 dB that would be lost at the air-fluid boundary. The basilar membrane sorts frequency on its own, using a stiffness gradient. Hair cells convert nanometer deflections into receptor potentials, using a +80 mV potassium battery.</p></div>
+
+<h2 id="equilibrium-chemoreception"><span class="num">Section 5</span>Balance and the chemical senses</h2>
+<figure class="bref"><div class="fr"><img src="img/ch07_s5.jpg" alt="Diagram of the vestibular apparatus showing three semicircular canals with ampullae and cupulae, plus the utricle and saccule with otolithic membranes and otoconia" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The semicircular canals detect angular acceleration when the cupula is deflected. The otolith organs detect linear acceleration and head tilt using dense otoconia. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Semicircular canals: accelerometers with a resting rate</h3>
+<p>The three semicircular canals on each side lie in roughly perpendicular planes. Together they span every axis of head rotation. Each one ends in a swelling called an ampulla. Inside sits a crista topped by the <b>cupula</b>, a gelatinous flap that spans the duct. The cupula has the <i>same density as the endolymph around it</i>. That equal density is the design feature. Gravity cannot displace the cupula. Only relative fluid motion can bend it.</p>
+<p>When the head starts to rotate, the canal wall moves with the skull. The endolymph lags behind by inertia. That relative flow bends the cupula, which deflects the embedded stereocilia, and the firing rate changes. Now rotate at a truly steady speed. Within 20-30 seconds the endolymph catches up. The cupula springs back and firing returns to baseline. The canals are <b>phasic</b> receptors. They report <i>angular acceleration</i>, not steady speed. Stop suddenly and the still-moving fluid bends the cupula the other way. That is exactly the spinning sensation you feel after a carnival ride stops.</p>
+<p>Vestibular afferents fire tonically at about 90-100 spikes per second at rest. That resting rate is what allows coding in both directions. Firing can rise, and it can also fall. The two ears work in push-pull. Rightward rotation excites the right horizontal canal and inhibits the left. The brainstem reads the <i>difference</i> between them. So acute failure of one vestibular side mimics violent rotation even when the head is still. That is the severe vertigo and nausea of vestibular neuritis.</p>
+<p>The most important output is the <b>vestibulo-ocular reflex</b>. <i>Variable</i>: image stability on the retina during head movement. <i>Sensor</i>: the semicircular canals. <i>Integrator</i>: the vestibular nuclei in the medulla, through a three-neuron arc. <i>Effector</i>: the extraocular muscles, driven by cranial nerves III, IV and VI. <i>Response</i>: the eyes counter-rotate at nearly equal and opposite speed. The gain is close to 1.0. The latency is only 7-15 ms, far faster than any visually guided correction. Shake your head while reading this sentence and the text stays legible. Shake this page at the same speed and it blurs. That difference is the VOR.</p>
+
+<h3>Otolith organs: gravity and linear acceleration</h3>
+<p>The <b>utricle</b> and <b>saccule</b> use a different mechanical trick. Their hair cells poke into a jelly layer studded with calcium carbonate crystals. Those crystals are the <b>otoconia</b>, and their density is near 2.7 g/cm&sup3;. That is far heavier than the surrounding fluid. Tilt the head, or speed it up in a straight line. Inertia drags this heavy mass. The mass then shears the stereocilia beneath it. The utricular macula is oriented roughly horizontally. It responds best to horizontal acceleration and head tilt. The saccular macula is oriented vertically. It responds to vertical acceleration, including the lurch of an elevator. Unlike the canals, the otolith organs are <b>tonic</b>. Gravity never stops, so head tilt produces a maintained signal.</p>
+<p>Displaced otoconia are also the commonest cause of dizziness seen in practice. In benign paroxysmal positional vertigo, crystals break loose from the utricle. They settle into a semicircular canal, usually the posterior one. That canal now becomes gravity-sensitive, which it never should be. Rolling over in bed then produces a burst of vertigo lasting under a minute. The eyes make a telltale jerking movement called nystagmus. The fault is purely mechanical, and so is the cure. A repositioning maneuver rolls the crystals back out. Balance overall takes three inputs. The inputs are vestibular, visual and proprioceptive. Motion sickness is what happens when those three disagree. That is why reading in a moving car is worse than looking at the horizon.</p>
+
+<h3>Taste: five modalities, two transduction logics</h3>
+<p>Taste begins in <b>taste buds</b>. There are about 5,000 of them. They sit on the tongue papillae, the palate, the pharynx and the epiglottis. Each bud contains 50-100 receptor cells, and those cells turn over roughly every 10 days. Five qualities are transduced, and they divide neatly into two mechanisms. <b>Salty</b> and <b>sour</b> use ion channels directly. Sodium enters through epithelial sodium channels. Protons act through the proton channel OTOP1. Both depolarize the cell without any second messenger. <b>Sweet</b>, <b>umami</b> and <b>bitter</b> use G-protein-coupled receptors instead. Sweet uses T1R2 plus T1R3. Umami uses T1R1 plus T1R3, and it detects glutamate and nucleotides. Bitter uses about 25 different T2R receptors. These signal through gustducin and phospholipase C-beta-2 to release calcium from stores inside the cell. That calcium opens TRPM5, and ATP is then released through CALHM1/3 channels onto the afferent nerve.</p>
+<p>The functional logic follows the chemistry. Sweet and umami detect calories and protein. They draw us in even in small amounts. Bitter detects a chemically diverse universe of plant alkaloids, and it repels us at amounts a thousand-fold lower. The reason is simple. A false alarm is cheap. A missed poison is not. Three cranial nerves carry taste. Nerve VII covers the anterior two-thirds of the tongue. Nerve IX covers the posterior third. Nerve X covers the epiglottis. All three converge on the nucleus of the solitary tract, then the ventral posteromedial thalamus, then the insular cortex. Three nerves share the job, so losing taste completely is rare. Loss of <i>flavor</i> is common, and it is almost always an olfactory problem.</p>
+
+<h3>Smell: combinatorial coding and rapid adaptation</h3>
+<p>Olfactory receptor neurons are true bipolar neurons. They sit in the epithelium at the roof of the nasal cavity, with cilia bathed in mucus. An odorant must dissolve before it can bind. Humans express about 400 functional olfactory receptor genes. Each neuron expresses essentially <i>one</i> of them. Binding switches on the G protein Golf, then adenylyl cyclase III. cAMP rises. cAMP opens a cyclic-nucleotide-gated channel. Calcium comes in through that channel. It then opens a calcium-activated chloride channel. These neurons hold unusually high chloride inside. So chloride flows <i>out</i> and amplifies the depolarization. Chloride usually plays an inhibitory role. Here it does the opposite.</p>
+<p>We can tell apart far more odors than we have receptors. The reason is that the coding is <b>combinatorial</b>. Any odorant turns on a set of receptor types, each to a different degree. The pattern is the code, not any single line. All neurons expressing the same receptor project to the same one or two <b>glomeruli</b> in the olfactory bulb. There are roughly 1,000-2,000 glomeruli, and each one collects thousands of axons. So a chemical becomes a spatial map on the bulb surface. Adaptation here is fast and calcium-dependent. That is why an odor disappears within a minute or two of continuous exposure.</p>
+<p>Two features make olfaction unique. It is the only sense that reaches cortex without stopping at the thalamus first. It goes straight to piriform cortex, amygdala and entorhinal cortex. That shortcut is why a familiar smell hits you with feeling and memory at once. Second, its receptor neurons regenerate. Basal stem cells replace them every 30-60 days. Very few neuronal populations anywhere can do that. The catch is the route in. The axons pass through the tiny holes of the cribriform plate. A shearing head injury can cut them. That causes anosmia, the permanent loss of smell. Progressive smell loss is also an early feature of both Parkinson and Alzheimer disease.</p>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Taste quality</th><th>Stimulus</th><th>Transduction</th><th>Biological logic</th></tr></thead>
+<tbody>
+<tr><td>Salty</td><td>Na+</td><td>Epithelial Na+ channel. Depolarizes the cell directly</td><td>Guards electrolyte and volume balance</td></tr>
+<tr><td>Sour</td><td>H+</td><td>OTOP1 proton channel</td><td>Detects acid, spoilage and unripe fruit</td></tr>
+<tr><td>Sweet</td><td>Sugars</td><td>T1R2 + T1R3 GPCR, gustducin, TRPM5</td><td>Finds energy from carbohydrate</td></tr>
+<tr><td>Umami</td><td>Glutamate, nucleotides</td><td>T1R1 + T1R3 GPCR</td><td>Finds protein</td></tr>
+<tr><td>Bitter</td><td>Alkaloids, many structures</td><td>About 25 T2R GPCRs</td><td>Avoids poison, and warns at a very low threshold</td></tr>
+</tbody>
+</table></div>
+<div class="pearl"><b>Common misconception.</b> The &ldquo;tongue map&rdquo; puts sweet at the tip and bitter at the back. It comes from a century-old mistranslation, and it is simply wrong. Every taste bud region responds to all five qualities, with only modest threshold differences. Here is a second one. Most of what people call taste is really smell reaching the nose from the mouth, which is retronasal <b>olfaction</b>. That is why food is bland with a head cold even though the taste buds are perfectly intact.</div>
+<div class="pearl"><b>Why it matters clinically.</b> When a patient says &ldquo;dizzy,&rdquo; the physiology tells you what to ask next. A true spinning sensation lasting seconds and triggered by rolling over points to displaced otoconia. Days of severe constant vertigo with nausea point to failure of one vestibular side. Lightheadedness on standing is a blood pressure problem. It is not a vestibular one at all.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The vestibular apparatus splits inertia in two. The semicircular canals are phasic and report angular acceleration. That is why a steady spin stops feeling like anything. The otolith organs are tonic <a href="../lab/ch07/VestibularAndChemicalSenses.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch07/VestibularAndChemicalSenses.html" loading="lazy" title="Accelerometers and Chemical Codes &mdash; Balance, Taste and Smell interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The vestibular apparatus splits inertia in two. Phasic canals with an equal-density cupula report angular acceleration. Tonic otolith organs with dense otoconia report linear acceleration and gravity. Taste and smell read chemistry a different way, through ion channels and combinatorial G-protein receptor codes.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Each special sense is a converter. Each one is tuned to a single form of energy. It converts that energy into a graded receptor potential. The nervous system reads that as firing frequency on a labeled line. The eye is a fixed 60-diopter system. Two-thirds of that comes from the cornea. The ciliary muscle drives the one part that changes, the lens. It focuses by <i>relaxing</i> the zonules. Two negative feedback loops defend the image. Accommodation defends against blur. The pupillary light reflex defends against excess luminance. Aqueous humor is made at about 2.5 &mu;L/min. It drains against resistance. So intraocular pressure follows Q = &Delta;P / R, and it rises when the trabecular meshwork clogs. Inside the retina, photoreceptors run a cGMP-gated dark current. Light closes those channels. The cell hyperpolarizes and releases less glutamate. ON bipolar cells flip the sign back. Horizontal cells build center-surround contrast. In the ear, the ossicles recover about 25 dB lost to impedance mismatch. The basilar membrane sorts frequency on its own along a stiffness gradient. Hair cells read nanometer bends using a +80 mV endolymph battery. Outer hair cells add 40-50 dB of gain. The vestibular canals report angular acceleration. They drive the 10-millisecond vestibulo-ocular reflex. The otolith organs report gravity tonically. Taste and smell read molecules with ion channels and combinatorial receptor codes.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Adequate stimulus</td><td>The form of energy a receptor converts at the lowest threshold</td></tr>
+<tr><td>Labeled line</td><td>The rule that perceived modality depends on which pathway carries the signal, not on the spike itself</td></tr>
+<tr><td>Receptor potential</td><td>A graded, local change in membrane potential produced by transduction</td></tr>
+<tr><td>Tonic vs phasic</td><td>Slowly adapting receptors report sustained levels. Rapidly adapting ones report change</td></tr>
+<tr><td>Diopter</td><td>The unit of refractive power. It equals 1 divided by the focal length in meters</td></tr>
+<tr><td>Accommodation</td><td>The rise in lens power when ciliary contraction slackens the zonules and the lens rounds</td></tr>
+<tr><td>Presbyopia</td><td>Age-related loss of accommodative amplitude as the lens stiffens. It usually shows up in the mid-forties</td></tr>
+<tr><td>Consensual response</td><td>The opposite pupil constricts when one eye is lit, because pretectal fibers project to both sides</td></tr>
+<tr><td>Intraocular pressure</td><td>Aqueous pressure of 10-21 mmHg, set by production rate and outflow resistance</td></tr>
+<tr><td>Dark current</td><td>The steady Na+ and Ca2+ influx through cGMP-gated channels that keeps photoreceptors depolarized in darkness</td></tr>
+<tr><td>Transducin</td><td>The G protein that links switched-on rhodopsin to phosphodiesterase 6 in phototransduction</td></tr>
+<tr><td>Center-surround</td><td>A receptive field built by horizontal cell lateral inhibition. It enhances edges</td></tr>
+<tr><td>Impedance matching</td><td>The middle ear pressure gain of about 22-fold that offsets the air-to-fluid energy loss</td></tr>
+<tr><td>Tonotopy</td><td>The orderly frequency map along the basilar membrane, high at the base and low at the apex</td></tr>
+<tr><td>Endocochlear potential</td><td>The +80 mV endolymph potential that supplies the driving force for K+ entry into hair cells</td></tr>
+<tr><td>Prestin</td><td>The motor protein of outer hair cells that produces the 40-50 dB cochlear amplifier</td></tr>
+<tr><td>Cupula</td><td>The gelatinous ampullary flap. It matches endolymph density, so only relative fluid motion bends it</td></tr>
+<tr><td>Otoconia</td><td>Dense calcium carbonate crystals that make otolith organs sensitive to gravity and linear acceleration</td></tr>
+<tr><td>Vestibulo-ocular reflex</td><td>A three-neuron arc that counter-rotates the eyes within 7-15 ms to stabilize gaze</td></tr>
+<tr><td>Combinatorial coding</td><td>Odor identity coded as a pattern of activity across many receptor types, rather than one line</td></tr>
+</tbody>
+</table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">Press on a closed eyelid and you see a glowing spot. Which principle does this illustrate? Why is the sensation light rather than pressure?</div><div class="ans">The labeled line principle. Mechanical energy has switched on the visual pathway. What you experience is set by which central pathway carries the action potentials. It is not set by the stimulus that produced them. The visual cortex interprets any input arriving on its line as light.</div></div>
+<div class="qq"><div class="q">A student claims a louder sound produces larger action potentials in the cochlear nerve. Correct that statement. Give the real mechanism.</div><div class="ans">Action potentials are all-or-none. Their amplitude is set by the sodium and potassium equilibrium potentials. A louder sound produces a larger graded receptor potential in the hair cell. That releases more glutamate. So the firing frequency rises, and higher-threshold fibers are recruited. Intensity lives in frequency and fiber number. It never lives in spike height.</div></div>
+<div class="qq"><div class="q">Why does vision blur underwater but turn sharp again behind a diving mask?</div><div class="ans">The cornea supplies about 40-43 of the eye&rsquo;s roughly 60 D. It can do that because of the large index step from air (1.00) to cornea (1.376). Water has an index near 1.33, which almost matches the cornea. So the corneal power collapses and the eye becomes very hyperopic. A mask restores an air interface at the cornea, and that restores the power.</div></div>
+<div class="qq"><div class="q">The ciliary muscle contracts so that the lens can become more powerful. Explain why that is not a contradiction.</div><div class="ans">The ciliary muscle is a ring. Contraction narrows the ring diameter, like a purse-string pulling shut. That reduces tension in the zonular fibers attached to the lens capsule. Released from that outward tension, the elastic lens rounds up. Its surfaces steepen and its refractive power rises, so near objects come into focus.</div></div>
+<div class="qq"><div class="q">A 47-year-old has excellent distance vision but now holds the phone at arm&rsquo;s length. Name the mechanism. Predict the accommodative amplitude.</div><div class="ans">Presbyopia, from progressive stiffening of the lens. Amplitude falls from about 14 D in childhood to roughly 2 D by the mid-forties. Near point in centimeters is approximately 100 divided by amplitude. So the closest clear focus moves out to about 50 cm. A plus reading add substitutes for the lost power.</div></div>
+<div class="qq"><div class="q">Aqueous outflow resistance at the trabecular meshwork doubles. Production stays at 2.5 &mu;L/min. What happens to intraocular pressure, and why?</div><div class="ans">Pressure rises. Apply Q = &Delta;P / R. Driving the same flow through double the resistance needs double the pressure gradient. Aqueous production also barely changes with pressure. So the system cannot compensate by making less. Sustained pressure above the normal 10-21 mmHg compresses ganglion cell axons at the optic nerve head.</div></div>
+<div class="qq"><div class="q">A light is switched on. What happens to a rod&rsquo;s membrane potential and its glutamate release? Name the second messenger.</div><div class="ans">cGMP is the messenger. Light switches on rhodopsin, then transducin, then phosphodiesterase 6. That enzyme hydrolyzes cGMP. The cGMP-gated channels close and the dark current stops. The cell hyperpolarizes from about -40 mV toward -70 mV, and glutamate release <i>falls</i>. ON bipolar cells use inhibitory mGluR6 receptors, so they depolarize in response.</div></div>
+<div class="qq"><div class="q">Why does a faint star disappear when you look directly at it?</div><div class="ans">Direct gaze places the image on the fovea, which is cone-only and rod-free. Cones need far more photons. They also connect nearly one-to-one to ganglion cells, so there is little spatial summation. Rods out at the edges converge onto shared bipolar cells, which sum their weak signals. So the star reappears when the image falls off the fovea.</div></div>
+<div class="qq"><div class="q">A patient has a bitemporal visual field defect, meaning the outer half of each eye&rsquo;s field is gone. Where is the lesion? Why does the loss take that shape?</div><div class="ans">At the optic chiasm, classically a pituitary lesion compressing from below. Fibers from the nasal hemiretina of each eye cross at the chiasm. Those nasal retinas view the temporal half of each visual field. Interrupting the crossing fibers therefore removes both temporal fields. The uncrossed temporal-retinal fibers are spared.</div></div>
+<div class="qq"><div class="q">Why does the middle ear exist? Put numbers on what it accomplishes.</div><div class="ans">It corrects the impedance mismatch between air and cochlear fluid. Without it, about 99.9% of the sound energy would reflect, a loss near 30 dB. The tympanic-to-stapes area ratio is about 17:1. The ossicular lever adds about 1.3. Together they give roughly a 22-fold pressure gain, about 25-27 dB. That restores most of the loss.</div></div>
+<div class="qq"><div class="q">How does the cochlea separate a 200 Hz tone from a 10,000 Hz tone before any neuron fires?</div><div class="ans">Mechanically, through the basilar membrane stiffness gradient. The base is narrow and stiff, so the traveling wave for high frequencies peaks there. The apex is wide and compliant, so low frequencies travel to the far end before peaking. The position of peak displacement encodes frequency. That is tonotopy, and the map is preserved all the way to auditory cortex.</div></div>
+<div class="qq"><div class="q">A rider spins on a merry-go-round at constant speed and stops feeling the rotation. The moment it stops, she feels violent spinning. Explain both observations.</div><div class="ans">Semicircular canals detect angular <i>acceleration</i>, not steady speed. At constant speed the endolymph catches up with the canal wall within 20-30 s. The cupula returns to neutral and firing goes back to baseline. On stopping, the still-moving fluid deflects the cupula the opposite way. That generates a signal of rotation in the reverse direction while the head is actually still.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch06.html"><span class="k">Previous</span>&larr; Brain, Action Potentials</a>
+        <a class="next" href="ch08.html"><span class="k">Next</span>Endocrine System &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

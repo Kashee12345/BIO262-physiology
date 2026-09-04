@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Starling Forces and the 180 Liters</title>
+<meta name="description" content="Move the four glomerular Starling forces and the two arterioles, and watch net filtration pressure, GFR, renal blood flow and filtration fraction respond in real time.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+.sl.off label{opacity:.5;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+input[type=range]:disabled{opacity:.4;cursor:not-allowed;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.toggles{display:flex;flex-direction:column;gap:7px;}
+.tg{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 11px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--soft);line-height:1.35;}
+.tg input{margin-top:2px;width:16px;height:16px;accent-color:var(--teal);cursor:pointer;flex:none;}
+.tg small{display:block;font-weight:500;font-size:11.4px;color:var(--muted);margin-top:2px;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.bars{margin-top:6px;}
+.br{display:grid;grid-template-columns:118px 1fr 58px;align-items:center;gap:8px;margin:6px 0;font-size:11.6px;font-weight:700;color:var(--soft);}
+.br .track{height:15px;background:var(--line);border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+.br .fill{height:100%;border-radius:7px;transition:width .18s;}
+.br .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--teal-dk);font-weight:800;}
+.br.net{border-top:1px dashed var(--line);padding-top:7px;margin-top:9px;}
+.eq{font-size:12.6px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:11px;line-height:1.7;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch14.html">&larr; Module 14</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 14</div>
+  <h1>Starling Forces and the 180 Liters</h1>
+  <div class="intro">Filtration is not a search for waste. It is a <b>physical event</b> driven by a net Starling pressure of only about <b>10 mmHg</b> across a barrier so permeable that 10 mmHg yields 125 mL/min. Move the four pressures, the filtration coefficient and the two arterioles below, and watch NFP, GFR, renal blood flow and filtration fraction respond. Then switch autoregulation off and see how far GFR drifts as mean arterial pressure swings.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>The two arterioles</h2>
+      <div class="sl"><label for="sMAP">Mean arterial pressure <span class="v" id="vMAP">100 mmHg</span></label>
+        <input type="range" id="sMAP" min="40" max="200" value="100" step="1" aria-label="Mean arterial pressure in millimeters of mercury"></div>
+      <div class="sl" id="wrapAff"><label for="sAff">Afferent arteriolar tone <span class="v" id="vAff">normal</span></label>
+        <input type="range" id="sAff" min="45" max="260" value="100" step="1" aria-label="Afferent arteriolar tone as a percentage of normal resistance"></div>
+      <div class="sl"><label for="sEff">Efferent arteriolar tone <span class="v" id="vEff">normal</span></label>
+        <input type="range" id="sEff" min="45" max="260" value="100" step="1" aria-label="Efferent arteriolar tone as a percentage of normal resistance"></div>
+      <div class="toggles" style="margin-top:12px;">
+        <label class="tg"><input type="checkbox" id="cAuto" checked><span>Autoregulation on <small>The myogenic response and tubuloglomerular feedback move the afferent dial for you, holding flow steady from about 80 to 180 mmHg. Switch it off to drive the afferent arteriole yourself.</small></span></label>
+        <label class="tg"><input type="checkbox" id="cEquil"><span>Let &pi;<sub>GC</sub> rise along the capillary <small>Filtering plasma concentrates the protein left behind, so oncotic pressure climbs from the afferent to the efferent end. This is why efferent constriction raises GFR only up to a point.</small></span></label>
+      </div>
+      <div class="lbl">The four Starling forces</div>
+      <div class="sl"><label for="sPbs">P<sub>BS</sub> &middot; Bowman&rsquo;s space hydrostatic <span class="v" id="vPbs">15 mmHg</span></label>
+        <input type="range" id="sPbs" min="5" max="45" value="15" step="1" aria-label="Bowman's space hydrostatic pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sPig">&pi;<sub>GC</sub> &middot; capillary oncotic <span class="v" id="vPig">30 mmHg</span></label>
+        <input type="range" id="sPig" min="15" max="48" value="30" step="1" aria-label="Glomerular capillary oncotic pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sPib">&pi;<sub>BS</sub> &middot; Bowman&rsquo;s space oncotic <span class="v" id="vPib">0 mmHg</span></label>
+        <input type="range" id="sPib" min="0" max="14" value="0" step="1" aria-label="Bowman's space oncotic pressure in millimeters of mercury"></div>
+      <div class="sl"><label for="sKf">K<sub>f</sub> &middot; filtration coefficient <span class="v" id="vKf">12.5</span></label>
+        <input type="range" id="sKf" min="20" max="200" value="125" step="1" aria-label="Filtration coefficient in milliliters per minute per millimeter of mercury"></div>
+      <div class="lbl">Load a case</div>
+      <div class="chips" id="chips"></div>
+      <div class="hint"><b>P<sub>GC</sub> is not a slider.</b> It is the pressure between two resistance vessels, so it is computed from mean arterial pressure and the two arteriolar tones. Constrict upstream and it falls; constrict downstream and it rises. That is the whole reason the glomerulus behaves differently from every other capillary bed.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Net filtration pressure</h2>
+      <div class="bars" id="bars"></div>
+      <div class="eq" id="eq"></div>
+      <div class="labs">
+        <div class="lab"><div class="k">GFR</div><div class="v" id="oGFR">125</div><div class="u">mL/min</div></div>
+        <div class="lab"><div class="k">Filtrate per day</div><div class="v" id="oDay">180</div><div class="u">liters</div></div>
+        <div class="lab"><div class="k">Filtration fraction</div><div class="v" id="oFF">0.20</div><div class="u">GFR / RPF</div></div>
+        <div class="lab"><div class="k">P<sub>GC</sub></div><div class="v" id="oPgc">55</div><div class="u">mmHg</div></div>
+        <div class="lab"><div class="k">Renal blood flow</div><div class="v" id="oRBF">1100</div><div class="u">mL/min</div></div>
+        <div class="lab"><div class="k">Renal plasma flow</div><div class="v" id="oRPF">616</div><div class="u">mL/min</div></div>
+      </div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite"></div>
+    </div>
+    <div class="card">
+      <h2>Autoregulation: GFR against arterial pressure</h2>
+      <canvas id="cv" width="640" height="330" role="img" aria-label="Graph of glomerular filtration rate and renal blood flow against mean arterial pressure, showing the autoregulatory plateau between 80 and 180 millimeters of mercury"></canvas>
+      <div class="hint" id="curveNote"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'),
+    LINE=cvar('--line'), MUTED=cvar('--muted'), SOFT=cvar('--soft');
+function $(id){return document.getElementById(id);}
+
+/* baseline network: MAP 100, renal vein 4 mmHg, RBF 1100 mL/min, P_GC 55 mmHg */
+var PV=4, RA0=45/1100, RE0=(96-45)/1100, HCT=0.44, QT=1100;
+var AUTO_LO=RA0*0.45, AUTO_HI=RA0*2.6;
+
+var S={map:100,aff:1.00,eff:1.00,pbs:15,pig:30,pib:0,kf:12.5,auto:true,equil:false};
+
+function network(map,aff,eff,auto){
+  var Ra=RA0*aff, Re=RE0*eff, autoUsed=false;
+  if(auto){
+    var need=(map-PV)/QT - Re;
+    Ra=Math.min(AUTO_HI,Math.max(AUTO_LO,need));
+    autoUsed=true;
+  }
+  var Q=(map-PV)/(Ra+Re); if(Q<0)Q=0;
+  var pgc=map-Q*Ra;
+  return {rbf:Q, rpf:Q*(1-HCT), pgc:pgc, ra:Ra, re:Re, autoUsed:autoUsed};
+}
+/* pi at the afferent end, back-calculated so that the mean equals the slider at FF 0.20 */
+function piAfferent(piMean){ return piMean*2/(1+1/(1-0.20)); }
+
+function model(st){
+  var n=network(st.map,st.aff,st.eff,st.auto);
+  var pi=st.pig, gfr=0, ff=0;
+  if(!st.equil){
+    var nfp=(n.pgc-st.pbs)-(pi-st.pib);
+    gfr=Math.max(0,st.kf*nfp);
+    if(n.rpf>0) ff=gfr/n.rpf;
+  }else{
+    var piA=piAfferent(st.pig);
+    pi=st.pig;
+    for(var i=0;i<60;i++){
+      var f=(n.pgc-st.pbs)-(pi-st.pib);
+      var g=Math.max(0,st.kf*f);
+      var fr=n.rpf>0?Math.min(0.92,g/n.rpf):0;
+      var target=piA*(1+1/(1-fr))/2;
+      pi=pi*0.6+target*0.4;
+    }
+    var nfp2=(n.pgc-st.pbs)-(pi-st.pib);
+    gfr=Math.max(0,st.kf*nfp2);
+    if(n.rpf>0) ff=Math.min(0.92,gfr/n.rpf);
+    gfr=Math.min(gfr,n.rpf*0.92);
+  }
+  var nfpF=(n.pgc-st.pbs)-(pi-st.pib);
+  return {pgc:n.pgc,rbf:n.rbf,rpf:n.rpf,pi:pi,nfp:nfpF,gfr:gfr,ff:ff,ra:n.ra};
+}
+
+var PRE=[
+ {n:'Normal',s:{map:100,aff:1,eff:1,pbs:15,pig:30,pib:0,kf:12.5,auto:true}},
+ {n:'Hemorrhage &middot; MAP 60',s:{map:60,aff:1,eff:1,pbs:15,pig:30,pib:0,kf:12.5,auto:true}},
+ {n:'Angiotensin II defends GFR',s:{map:70,aff:1,eff:1.9,pbs:15,pig:30,pib:0,kf:12.5,auto:true}},
+ {n:'ACE inhibitor, volume depleted',s:{map:70,aff:1,eff:0.55,pbs:15,pig:30,pib:0,kf:12.5,auto:true}},
+ {n:'Ureteric stone',s:{map:100,aff:1,eff:1,pbs:35,pig:30,pib:0,kf:12.5,auto:true}},
+ {n:'Severe dehydration',s:{map:100,aff:1,eff:1,pbs:15,pig:41,pib:0,kf:12.5,auto:true}},
+ {n:'Glomerulonephritis &middot; low K<sub>f</sub>',s:{map:100,aff:1,eff:1,pbs:15,pig:30,pib:0,kf:5,auto:true}},
+ {n:'Heavy proteinuria',s:{map:100,aff:1,eff:1,pbs:15,pig:26,pib:8,kf:12.5,auto:true}},
+ {n:'Sympathetic afferent squeeze',s:{map:100,aff:2.2,eff:1,pbs:15,pig:30,pib:0,kf:12.5,auto:false}},
+ {n:'Hypertensive surge &middot; MAP 170',s:{map:170,aff:1,eff:1,pbs:15,pig:30,pib:0,kf:12.5,auto:true}}
+];
+
+function buildChips(){
+  var box=$('chips'); box.innerHTML='';
+  PRE.forEach(function(p,i){
+    var b=document.createElement('button');
+    b.type='button'; b.className='chip'; b.innerHTML=p.n;
+    b.addEventListener('click',function(){
+      for(var k in p.s){ S[k]=p.s[k]; }
+      syncInputs(); markChip(i); render();
+    });
+    box.appendChild(b);
+  });
+}
+function markChip(i){
+  var cs=$('chips').children;
+  for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i);
+}
+function clearChips(){ markChip(-1); }
+
+function syncInputs(){
+  $('sMAP').value=S.map; $('sAff').value=Math.round(S.aff*100); $('sEff').value=Math.round(S.eff*100);
+  $('sPbs').value=S.pbs; $('sPig').value=S.pig; $('sPib').value=S.pib; $('sKf').value=Math.round(S.kf*10);
+  $('cAuto').checked=S.auto; $('cEquil').checked=S.equil;
+}
+
+function toneWord(x){
+  if(x<0.75) return 'dilated '+Math.round(x*100)+'%';
+  if(x>1.3) return 'constricted '+Math.round(x*100)+'%';
+  return 'normal '+Math.round(x*100)+'%';
+}
+
+function bar(name,val,color,max){
+  var w=Math.max(0,Math.min(100,Math.abs(val)/max*100));
+  return '<div class="br"><span>'+name+'</span><span class="track"><span class="fill" style="width:'+w.toFixed(1)+'%;background:'+color+'"></span></span><span class="num">'+val.toFixed(1)+'</span></div>';
+}
+
+function render(){
+  var m=model(S);
+  $('vMAP').textContent=S.map+' mmHg';
+  $('vAff').textContent=S.auto?'set by autoregulation':toneWord(S.aff);
+  $('vEff').textContent=toneWord(S.eff);
+  $('vPbs').textContent=S.pbs+' mmHg';
+  $('vPig').textContent=S.pig+' mmHg'+(S.equil?' at the afferent end':'');
+  $('vPib').textContent=S.pib+' mmHg';
+  $('vKf').textContent=S.kf.toFixed(1)+' mL/min/mmHg';
+  $('sAff').disabled=S.auto;
+  $('wrapAff').classList.toggle('off',S.auto);
+
+  $('bars').innerHTML=
+    bar('P<sub>GC</sub> pushes out',m.pgc,TEAL,70)+
+    bar('P<sub>BS</sub> pushes back',-S.pbs,CORAL,70)+
+    bar('&pi;<sub>GC</sub> pulls back',-m.pi,GOLD,70)+
+    bar('&pi;<sub>BS</sub> pulls out',S.pib,BLUE,70)+
+    '<div class="br net"><span>Net filtration pressure</span><span class="track"><span class="fill" style="width:'+Math.max(0,Math.min(100,m.nfp/30*100)).toFixed(1)+'%;background:'+(m.nfp>0?GREEN:CORAL)+'"></span></span><span class="num">'+m.nfp.toFixed(1)+'</span></div>';
+
+  $('eq').innerHTML='<b>NFP = (P<sub>GC</sub> &minus; P<sub>BS</sub>) &minus; (&pi;<sub>GC</sub> &minus; &pi;<sub>BS</sub>)</b><br>'+
+    '<span class="num">= ('+m.pgc.toFixed(1)+' &minus; '+S.pbs+') &minus; ('+m.pi.toFixed(1)+' &minus; '+S.pib+') = '+m.nfp.toFixed(1)+' mmHg</span><br>'+
+    '<b>GFR = K<sub>f</sub> &times; NFP</b> <span class="num">= '+S.kf.toFixed(1)+' &times; '+m.nfp.toFixed(1)+' = '+m.gfr.toFixed(0)+' mL/min</span>';
+
+  $('oGFR').textContent=m.gfr.toFixed(0);
+  $('oDay').textContent=(m.gfr*1440/1000).toFixed(0);
+  $('oFF').textContent=m.ff.toFixed(2);
+  $('oPgc').textContent=m.pgc.toFixed(0);
+  $('oRBF').textContent=m.rbf.toFixed(0);
+  $('oRPF').textContent=m.rpf.toFixed(0);
+
+  verdict(m);
+  draw(m);
+}
+
+function verdict(m){
+  var v=$('verdict'), cls='ok', t='', s='';
+  var dev=[];
+  if(m.pgc<48) dev.push({k:'pgc-low',mag:48-m.pgc});
+  if(m.pgc>62) dev.push({k:'pgc-high',mag:m.pgc-62});
+  if(S.pbs>20) dev.push({k:'pbs',mag:(S.pbs-15)*1.4});
+  if(m.pi>34) dev.push({k:'pi',mag:(m.pi-30)*1.4});
+  if(S.pib>2) dev.push({k:'pib',mag:S.pib*1.2});
+  if(S.kf<10) dev.push({k:'kf',mag:(12.5-S.kf)*2.2});
+  dev.sort(function(a,b){return b.mag-a.mag;});
+  var lead=dev.length?dev[0].k:'none';
+
+  if(m.gfr<=0){ cls='bad'; t='Filtration has stopped.';
+    s='The opposing pressures now equal or exceed P<sub>GC</sub>. NFP is '+m.nfp.toFixed(1)+' mmHg, so nothing crosses into Bowman&rsquo;s space. Anuria of this kind is a pressure problem, not a tubular one.'; }
+  else if(m.gfr<75){ cls='bad'; t='GFR is markedly low at '+m.gfr.toFixed(0)+' mL/min.'; }
+  else if(m.gfr<105){ cls='warn'; t='GFR is reduced at '+m.gfr.toFixed(0)+' mL/min.'; }
+  else if(m.gfr>160){ cls='cool'; t='GFR is high at '+m.gfr.toFixed(0)+' mL/min — hyperfiltration.'; }
+  else { cls='ok'; t='GFR is in the normal range at '+m.gfr.toFixed(0)+' mL/min.'; }
+
+  if(!s){
+    var why={
+      'pgc-low':'The term that moved is <b>P<sub>GC</sub></b>, now '+m.pgc.toFixed(0)+' mmHg. Either perfusion pressure fell or the afferent arteriole constricted, so less pressure reaches the capillary.',
+      'pgc-high':'The term that moved is <b>P<sub>GC</sub></b>, now '+m.pgc.toFixed(0)+' mmHg. Efferent constriction dams blood inside the glomerulus, or perfusion pressure has outrun autoregulation.',
+      'pbs':'The term that moved is <b>P<sub>BS</sub></b>, now '+S.pbs+' mmHg. Something downstream is obstructing outflow &mdash; a stone, a clot, tubular casts &mdash; and back pressure subtracts directly from NFP.',
+      'pi':'The term that moved is <b>&pi;<sub>GC</sub></b>, now '+m.pi.toFixed(0)+' mmHg. Concentrated plasma protein pulls harder against filtration.',
+      'pib':'The term that moved is <b>&pi;<sub>BS</sub></b>, now '+S.pib+' mmHg. Protein has crossed into the filtrate, which means the charge or size barrier has failed &mdash; and that protein now pulls water out with it.',
+      'kf':'The term that moved is <b>K<sub>f</sub></b>, now '+S.kf.toFixed(1)+' mL/min/mmHg. Surface area or permeability has been lost; the pressures are intact but the filter itself is smaller.',
+      'none':'All four Starling terms and K<sub>f</sub> sit near their usual values, so the 10 mmHg net push is producing its usual 125 mL/min.'
+    }[lead];
+    s=why;
+    if(S.equil && m.ff>0.30) s+=' Filtration fraction has reached '+m.ff.toFixed(2)+', so &pi;<sub>GC</sub> has climbed to '+m.pi.toFixed(0)+' mmHg along the capillary and GFR is plateauing — this is filtration equilibrium.';
+    if(m.rbf<820) s+=' Note that renal blood flow has fallen to '+m.rbf.toFixed(0)+' mL/min: efferent constriction protects GFR at the cost of total flow.';
+  }
+  v.className='verdict '+cls;
+  v.innerHTML=t+'<small>'+s+'</small>';
+}
+
+function draw(m){
+  var cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=54,padR=16,padT=16,padB=42, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var x0=40,x1=200, ymaxG=260, ymaxF=2000;
+  function X(v){return padL+(v-x0)/(x1-x0)*pw;}
+  function YG(v){return padT+ph-Math.max(0,Math.min(1,v/ymaxG))*ph;}
+  function YF(v){return padT+ph-Math.max(0,Math.min(1,v/ymaxF))*ph;}
+
+  g.strokeStyle=LINE; g.lineWidth=1; g.font='600 10px Inter,sans-serif'; g.fillStyle=MUTED;
+  for(var v=0;v<=ymaxG;v+=65){
+    g.beginPath(); g.moveTo(padL,YG(v)); g.lineTo(padL+pw,YG(v)); g.stroke();
+    g.textAlign='right'; g.fillText(v.toFixed(0),padL-7,YG(v)+3);
+  }
+  g.textAlign='center';
+  for(var p=40;p<=200;p+=20){
+    g.beginPath(); g.moveTo(X(p),padT); g.lineTo(X(p),padT+ph); g.strokeStyle=(p===80||p===180)?GOLD:LINE; g.stroke();
+    g.fillStyle=MUTED; g.fillText(p,X(p),padT+ph+15);
+  }
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif';
+  g.fillText('Mean arterial pressure (mmHg)',padL+pw/2,padT+ph+32);
+  g.save(); g.translate(13,padT+ph/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('GFR (mL/min)',0,0); g.restore();
+
+  function trace(auto,aff,color,dash,which){
+    g.beginPath(); g.setLineDash(dash); g.strokeStyle=color; g.lineWidth=2.4;
+    var first=true;
+    for(var p=x0;p<=x1;p+=2){
+      var st={map:p,aff:aff,eff:S.eff,pbs:S.pbs,pig:S.pig,pib:S.pib,kf:S.kf,auto:auto,equil:S.equil};
+      var r=model(st);
+      var y=which==='gfr'?YG(r.gfr):YF(r.rbf);
+      if(first){g.moveTo(X(p),y);first=false;} else g.lineTo(X(p),y);
+    }
+    g.stroke(); g.setLineDash([]);
+  }
+  trace(true,1,BLUE,[5,4],'rbf');
+  trace(false,S.auto?1:S.aff,CORAL,[6,5],'gfr');
+  trace(true,1,TEAL,[],'gfr');
+
+  var mm=model(S);
+  g.fillStyle=S.auto?TEALD:CORAL;
+  g.beginPath(); g.arc(X(S.map),YG(mm.gfr),5.5,0,6.2832); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2; g.stroke();
+
+  g.font='800 10.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillStyle=TEAL; g.fillText('GFR with autoregulation',padL+8,padT+14);
+  g.fillStyle=CORAL; g.fillText('GFR without autoregulation',padL+8,padT+28);
+  g.fillStyle=BLUE; g.fillText('Renal blood flow (scaled)',padL+8,padT+42);
+  g.fillStyle=GOLD; g.textAlign='center';
+  g.fillText('80',X(80),padT+ph+15); g.fillText('180',X(180),padT+ph+15);
+
+  $('curveNote').innerHTML='<b>Read the plateau.</b> Between 80 and 180 mmHg the afferent arteriole is doing the work: stretch opens cation channels and the vessel constricts within a second or two (myogenic), while the macula densa reads the sodium chloride arriving at the end of the thick ascending limb and releases adenosine to tighten the same vessel over 30 to 60 seconds (tubuloglomerular feedback). Turn autoregulation off and GFR simply follows pressure — the red line. Right now GFR is <b>'+mm.gfr.toFixed(0)+' mL/min</b> at a MAP of <b>'+S.map+' mmHg</b>.';
+}
+
+function bindRange(id,fn){
+  $(id).addEventListener('input',function(){ fn(parseFloat(this.value)); clearChips(); render(); });
+}
+bindRange('sMAP',function(v){S.map=v;});
+bindRange('sAff',function(v){S.aff=v/100;});
+bindRange('sEff',function(v){S.eff=v/100;});
+bindRange('sPbs',function(v){S.pbs=v;});
+bindRange('sPig',function(v){S.pig=v;});
+bindRange('sPib',function(v){S.pib=v;});
+bindRange('sKf',function(v){S.kf=v/10;});
+$('cAuto').addEventListener('change',function(){S.auto=this.checked; clearChips(); render();});
+$('cEquil').addEventListener('change',function(){S.equil=this.checked; clearChips(); render();});
+
+buildChips(); syncInputs(); render();
+})();
+</script>
+</body>
+</html>

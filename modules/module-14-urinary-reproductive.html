@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>Module 14 &middot; Urinary &amp; Reproductive Systems &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+    --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+    --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+    --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+    --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 90px;}
+
+  .backbar{background:var(--card);border-bottom:1px solid var(--line);}
+  .backbar .bi{max-width:760px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);}
+  .backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+
+  header.hero{padding:38px 0 18px;}
+  .kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+  header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;color:var(--maroon-dk);line-height:1.15;}
+  header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+  .goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+         border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+  .goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+  .goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+  h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);
+     margin:42px 0 4px;line-height:1.25;}
+  h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+          font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+          border-radius:50%;margin-right:10px;vertical-align:middle;}
+  p{font-size:16.5px;}
+  p.lead{color:var(--muted);}
+  .hr{height:1px;background:var(--line);margin:34px 0 0;}
+
+  .analogy{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+           padding:15px 20px;margin:18px 0;}
+  .analogy b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--teal);margin-bottom:5px;}
+  .analogy p{margin:0;font-size:15.5px;color:#2c4a5e;}
+
+  .keyword{background:var(--gold-lt);border-radius:4px;padding:1px 5px;font-weight:600;color:#6d5518;
+           border-bottom:2px solid var(--gold);cursor:help;}
+
+  .demo{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+        padding:20px;margin:22px 0;box-shadow:var(--shadow);}
+  .demo .dh{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);
+            font-weight:700;margin-bottom:12px;}
+  .axon{position:relative;height:96px;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .axonline{position:absolute;top:46px;left:22px;right:22px;height:14px;background:#e9dcc4;border-radius:7px;}
+  .myelin{position:absolute;top:40px;height:26px;background:#d9c49a;border:1px solid #c2a978;border-radius:5px;}
+  .pulse{position:absolute;top:38px;width:30px;height:30px;border-radius:50%;
+         background:radial-gradient(circle,#ffd76a 0%,#e8a41f 60%,rgba(232,164,31,0) 72%);
+         opacity:0;pointer-events:none;}
+  .ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+  .ctrls label{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .ctrls input[type=range]{width:170px;accent-color:var(--maroon);}
+  .btn{font:inherit;font-weight:700;font-size:14px;background:var(--maroon);color:#fff;border:none;
+       border-radius:8px;padding:9px 18px;cursor:pointer;}
+  .btn:hover{background:var(--maroon-dk);}
+  .readout{font-size:14px;color:var(--ink);font-weight:700;}
+  .readout span{color:var(--maroon);}
+
+  .steps{counter-reset:s;margin:20px 0;padding:0;list-style:none;}
+  .steps li{position:relative;padding-left:46px;margin-bottom:16px;font-size:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+    width:30px;height:30px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{color:var(--maroon-dk);}
+
+  .check{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+         padding:20px 22px;margin:20px 0;box-shadow:var(--shadow);}
+  .check .q{font-size:16px;font-weight:600;margin-bottom:12px;}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:15px;background:#fff;
+       border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;cursor:pointer;
+       transition:border-color .15s,background .15s;}
+  .opt:hover{border-color:var(--maroon);}
+  .opt.right{border-color:var(--green);background:var(--green-lt);}
+  .opt.wrong{border-color:var(--maroon);background:var(--maroon-lt);}
+  .fb{display:none;font-size:14.5px;line-height:1.6;border-radius:9px;padding:12px 15px;margin-top:4px;}
+  .fb.show{display:block;}
+  .fb.ok{background:var(--green-lt);color:#2d4f39;border-left:3px solid var(--green);}
+  .fb.no{background:var(--maroon-lt);color:#6d2830;border-left:3px solid var(--maroon);}
+
+  .deeper{background:#f2ece1;border:1px dashed var(--line);border-radius:var(--r);padding:16px 20px;margin:26px 0 0;}
+  .deeper b{font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--faint);}
+  .deeper p{margin:6px 0 0;font-size:14.5px;color:var(--muted);}
+  .deeper a{color:var(--maroon);font-weight:700;}
+
+  footer{text-align:center;padding:40px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+  footer b{color:var(--muted);}
+
+  .note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);
+        border-radius:0 10px 10px 0;padding:14px 20px;margin:18px 0;}
+  .note p{margin:0;font-size:15.5px;color:var(--muted);}
+  .note b{color:var(--maroon-dk);}
+  .clin{background:var(--maroon-lt);border-left:4px solid var(--maroon);border-radius:0 10px 10px 0;
+        padding:15px 20px;margin:18px 0;}
+  .clin b{display:block;font-size:11.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--maroon);margin-bottom:5px;}
+  .clin p{margin:0;font-size:15.5px;color:#5d2a2f;}
+  table.tbl{width:100%;border-collapse:collapse;margin:18px 0;font-size:15px;background:var(--card);
+            border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+  table.tbl th{background:var(--maroon);color:#fff;text-align:left;padding:10px 13px;font-size:13px;
+               letter-spacing:.6px;text-transform:uppercase;font-weight:700;}
+  table.tbl td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink);}
+  table.tbl tr:nth-child(even) td{background:#fbf7ef;}
+  .tblwrap{overflow-x:auto;}
+  .stage{position:relative;background:#fbf7ef;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .swatchrow{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
+  .pill{font-size:13px;font-weight:700;padding:6px 12px;border-radius:20px;background:var(--gold-lt);
+        color:#6d5518;border:1px solid #e6d5aa;}
+  .printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+            border-radius:7px;padding:6px 14px;cursor:pointer;float:right;margin-top:-3px;}
+  .printbtn:hover{background:var(--maroon-dk);}
+  .answerkey{display:none;}
+
+  @media print{
+    @page{margin:14mm;}
+    html,body{background:#fff;}
+    body{font-size:11.5pt;line-height:1.5;}
+    .wrap{max-width:100%;padding:0;}
+    .backbar,.printbtn,.deeper,.ctrls,.fb{display:none !important;}
+    .check{counter-reset:optn;}
+    .opt{display:block;border:none;background:none;box-shadow:none;padding:2px 0 2px 4px;
+         margin:0;font-size:11pt;color:#241f1b;cursor:default;}
+    .opt::before{counter-increment:optn;content:counter(optn,lower-alpha) ") ";font-weight:700;color:#7a6f63;}
+    .opt.right,.opt.wrong{border:none;background:none;}
+    .demo{break-inside:avoid;page-break-inside:avoid;}
+    h2{break-after:avoid;page-break-after:avoid;margin-top:22px;}
+    .goals,.analogy,.note,.clin,.check,table.tbl{break-inside:avoid;page-break-inside:avoid;}
+    .check{border:1px solid #ccc;box-shadow:none;}
+    .check .q{margin-bottom:0;}
+    .answerkey{display:block;break-before:page;page-break-before:always;}
+    .answerkey h2{margin-top:0;}
+    .answerkey ol{padding-left:20px;}
+    .answerkey li{margin-bottom:10px;font-size:11pt;}
+    .answerkey .ans{font-weight:700;color:#5e1f24;}
+    footer{border-top:1px solid #ddd;margin-top:24px;}
+    a{text-decoration:none;color:inherit;}
+  }
+</style>
+</head><body>
+<div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">Module 14 &nbsp;&middot;&nbsp; BIO 262 Human Physiology</div>
+    <h1>Urinary &amp; Reproductive Systems</h1>
+    <p class="sub">The kidney does not make urine. It filters everything, then decides what to keep.</p>
+  </header>
+
+  <div class="goals">
+    <b>By the end of this page you should be able to</b>
+    <ul>
+      <li>Name the kidney's jobs beyond making urine</li>
+      <li>Describe filtering, reabsorbing, and secreting, and say where each happens</li>
+      <li>Explain how ADH and aldosterone change urine and blood pressure</li>
+      <li>Explain why kidney failure upsets so many unrelated systems</li>
+      <li>Follow the hormones that control the reproductive cycle</li>
+    </ul>
+  </div>
+
+  <h2><span class="num">1</span>A filter that keeps almost everything</h2>
+  <p class="lead">Your kidneys filter about 180 liters a day, and you make one or two liters of urine.</p>
+  <p>That is the design in one sentence. Instead of picking out what to remove, the kidney removes nearly everything small enough to pass, then <b>takes back what it wants</b>.</p>
+  <p>It sounds wasteful until you see the advantage. Anything unfamiliar, like a drug or a toxin the body has never met, gets filtered out by default and is left behind unless there is a transporter to save it.</p>
+  <p>Beyond removing waste, the kidney also controls <b>fluid volume and blood pressure</b>, <b>salt balance</b>, and <b>acid balance</b>. It also releases hormones that drive red cell production and activate vitamin D.</p>
+  <div class="analogy">
+    <b>Think of it this way</b>
+    <p>Not a strainer that catches trash. A warehouse that dumps everything onto a belt and puts back only the items on its list. Anything not on the list leaves.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">2</span>Three steps, in order</h2>
+  <ol class="steps">
+    <li><b>Filtering.</b> Blood pressure forces water and small particles out of the capillary. Cells and large proteins stay behind, so finding either in urine means the filter is damaged.</li>
+    <li><b>Reabsorbing.</b> Sugar, amino acids, most sodium, and most water are taken back. Normally <em>all</em> the sugar is recovered, which is why sugar in urine means the blood level was high enough to overwhelm the transporters.</li>
+    <li><b>Secreting.</b> Extra hydrogen ions, potassium, and many drugs are added into the tube. This is a second chance to remove things that were not filtered well.</li>
+  </ol>
+  <p>Urine is what is left after all three. Filtering is blind. The intelligence is in reabsorbing and secreting.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">3</span>The two hormones that change the answer</h2>
+  <p class="lead">Switch them on and off and watch the urine change.</p>
+  <div class="demo">
+    <div class="dh">ADH, aldosterone and the urine they produce</div>
+    <div class="stage" style="padding:16px 18px;">
+      <div id="rows" style="display:grid;grid-template-columns:1fr auto;gap:8px 14px;font-size:14.5px;"></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn" id="adh">ADH: normal</button>
+      <button class="btn" id="ald">Aldosterone: normal</button>
+      <span class="readout" id="uout"></span>
+    </div>
+    <p id="unote" style="margin:12px 0 0;font-size:15px;color:#7a6f63;"></p>
+  </div>
+  <ul>
+    <li><b>ADH</b> lets the last part of the tube take back <b>water</b>, so urine gets small and concentrated. It is released when you are dehydrated.</li>
+    <li><b>Aldosterone</b> makes the tube take back <b>sodium</b>, and water follows the sodium. It also pushes potassium out into the urine. It is released when blood pressure or volume falls.</li>
+  </ul>
+  <p>Both raise blood volume, but by different routes. ADH saves water alone. Aldosterone saves salt and takes water with it. That is why one dilutes the blood and the other does not.</p>
+  <div class="clin">
+    <b>Why the nurse cares</b>
+    <p>Water pills work by blocking sodium reabsorption. Sodium stays in the tube, water stays with it, and volume and blood pressure fall. Because sodium handling is tied to potassium, checking potassium is part of using them safely.</p>
+  </div>
+  <div class="hr"></div>
+
+  <h2><span class="num">4</span>Why kidney failure touches everything</h2>
+  <p class="lead">Six jobs in one organ means six problems when it fails.</p>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr><th>Lost job</th><th>What the patient gets</th></tr>
+    <tr><td>Removing waste</td><td>Waste builds up: nausea, confusion, exhaustion</td></tr>
+    <tr><td>Fluid control</td><td>Fluid overload, swelling, breathlessness, high blood pressure</td></tr>
+    <tr><td>Potassium handling</td><td>Rising potassium, which threatens the heart rhythm</td></tr>
+    <tr><td>Acid balance</td><td>The blood becomes acidic</td></tr>
+    <tr><td>Red cell hormone</td><td>Anemia, even with normal marrow and normal iron</td></tr>
+    <tr><td>Activating vitamin D</td><td>Low calcium and weakening bone, the loop from Module 7</td></tr>
+  </table>
+  </div>
+  <p>None of those look like a urine problem at the bedside. They make sense only once you see the kidney as a hormone and balance organ that happens to produce urine.</p>
+  <div class="hr"></div>
+
+  <h2><span class="num">5</span>Reproductive control &mdash; the same chain again</h2>
+  <p class="lead">Hypothalamus, pituitary, target gland. You already know the shape of this.</p>
+  <p>The hypothalamus releases a starter hormone. The pituitary answers with <b>FSH</b> and <b>LH</b>. The gonads respond by making sex cells and sex hormones, which feed back on the first two steps.</p>
+  <ul>
+    <li><b>In the male</b>, FSH supports sperm production and LH drives testosterone. Testosterone keeps sperm production, muscle, and bone going, and it feeds back to quiet the chain. That is why taking testosterone from outside shuts down the body's own production and can reduce fertility.</li>
+    <li><b>In the female</b>, the same two hormones drive a monthly cycle. FSH ripens a follicle, which makes estrogen. Estrogen rebuilds the uterine lining and, once it is high enough for long enough, triggers a surge of LH. That surge causes <b>ovulation</b>. What is left of the follicle then makes progesterone, which keeps the lining ready.</li>
+  </ul>
+  <p>With no pregnancy, progesterone falls, the lining is shed, and the cycle starts again. With a pregnancy, the embryo makes a hormone that keeps progesterone up. That hormone is exactly what a pregnancy test looks for.</p>
+  <div class="note"><p><b>Notice the exception.</b> The LH surge is a rare case of <b>positive feedback</b>. Rising estrogen calls for more LH, not less, until ovulation ends it. Like clotting and labor, it is used where the body wants an event finished, not a value held steady.</p></div>
+  <div class="hr"></div>
+
+  <h2><span class="num">6</span>Check yourself</h2>
+  <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
+  <div id="quiz"></div>
+
+  <div class="deeper">
+    <b>Want to go further?</b>
+    <p>When this feels comfortable, the Lab Library has benches on the kidney tubule and on the reproductive cycle &mdash; <a href="../labs.html">Renal &amp; Reproductive benches</a>. They go past what the exam asks. Open them once this page feels solid.</p>
+  </div>
+  <div class="answerkey" id="answerkey"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+<script>
+var QUESTIONS = [
+  {
+    "q": "Why does the kidney filter about 180 liters a day only to take almost all of it back?",
+    "a": ["It is wasteful, and the body tolerates it","Filtering everything means anything unfamiliar leaves unless it is deliberately saved","It is the only way to control blood pressure","Reabsorption needs a large starting volume"],
+    "c": 1,
+    "fb": [
+      "It is expensive, but it is deliberate rather than wasteful.",
+      "Correct. Drugs and new toxins have no transporter to save them, so they leave.",
+      "Pressure control is one job among several, and it does not require this design.",
+      "The transporters do not need a large volume to work."
+    ]
+  },
+  {
+    "q": "Sugar shows up in a patient's urine. What does that suggest?",
+    "a": ["The filter is damaged","Blood sugar was high enough to overwhelm the transporters","The kidney stopped filtering sugar","Aldosterone is low"],
+    "c": 1,
+    "fb": [
+      "A damaged filter shows up as protein or blood cells, not sugar.",
+      "Correct. All filtered sugar is normally taken back, so its appearance means the transporters were swamped.",
+      "Sugar is always filtered. It is normally recovered.",
+      "Aldosterone works on sodium, not sugar."
+    ]
+  },
+  {
+    "q": "A dehydrated patient passes a small amount of dark urine. Which hormone is responsible?",
+    "a": ["Aldosterone","ADH","Parathyroid hormone","Insulin"],
+    "c": 1,
+    "fb": [
+      "Aldosterone saves sodium, and water follows, but the direct water-saving hormone is another one.",
+      "Correct. ADH lets the tube take water back, so urine gets small and concentrated.",
+      "Parathyroid hormone controls calcium.",
+      "Insulin controls blood sugar."
+    ]
+  },
+  {
+    "q": "A patient in kidney failure is anemic even though iron and bone marrow are normal. Why?",
+    "a": ["The kidney filters out red cells","The kidney normally makes the hormone that tells the marrow to build red cells","Urine destroys red cells","Anemia has nothing to do with the kidney"],
+    "c": 1,
+    "fb": [
+      "A healthy filter keeps red cells in, and losing them is not the mechanism.",
+      "Correct. Marrow and iron are fine, but the signal to produce is missing.",
+      "Urine never touches circulating red cells.",
+      "Anemia is a direct result of kidney failure."
+    ]
+  },
+  {
+    "q": "What directly triggers ovulation?",
+    "a": ["A drop in progesterone","A surge of LH, caused by estrogen staying high","A rise in FSH alone","The lining being shed"],
+    "c": 1,
+    "fb": [
+      "Progesterone falls at the end of the cycle, well after ovulation.",
+      "Correct, and it is a rare case of positive feedback: rising estrogen calls for more LH, not less.",
+      "FSH ripens the follicle but does not release the egg.",
+      "Shedding happens at the start of the next cycle."
+    ]
+  }
+];
+</script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("quiz");
+  QUESTIONS.forEach(function(item, qi){
+    var box = document.createElement("div");
+    box.className = "check";
+    var opts = item.a.map(function(txt, oi){
+      return '<button class="opt" data-q="' + qi + '" data-o="' + oi + '">' + txt + '</button>';
+    }).join("");
+    box.innerHTML = '<div class="q">' + (qi+1) + '. ' + item.q + '</div>' + opts +
+                    '<div class="fb" id="fb' + qi + '"></div>';
+    host.appendChild(box);
+  });
+  host.addEventListener("click", function(ev){
+    var b = ev.target.closest ? ev.target.closest(".opt") : null;
+    if(!b) return;
+    var qi = +b.dataset.q, oi = +b.dataset.o, item = QUESTIONS[qi];
+    var bs = b.parentNode.querySelectorAll(".opt");
+    for(var i=0;i<bs.length;i++) bs[i].classList.remove("right","wrong");
+    b.classList.add(oi === item.c ? "right" : "wrong");
+    var fb = document.getElementById("fb"+qi);
+    fb.innerHTML = item.fb[oi];
+    fb.className = "fb show " + (oi === item.c ? "ok" : "no");
+  });
+  var key = document.getElementById("answerkey");
+  if(key){
+    key.innerHTML = '<h2>Answer key</h2><ol>' + QUESTIONS.map(function(item){
+      return '<li><span class="ans">' + item.a[item.c] + '</span><br>' + item.fb[item.c] + '</li>';
+    }).join('') + '</ol>';
+  }
+})();
+</script>
+<script>
+(function(){"use strict";
+var adhB=document.getElementById("adh"), aldB=document.getElementById("ald"),
+    rows=document.getElementById("rows"), out=document.getElementById("uout"), note=document.getElementById("unote");
+var adh=1, ald=1;  // 0 low, 1 normal, 2 high
+var NAME=["low","normal","high"];
+function row(l,v,c){
+  return '<div style="font-weight:600;color:#241f1b;">'+l+'</div>'+
+         '<div style="text-align:right;font-weight:700;color:'+c+';">'+v+'</div>';
+}
+function draw(){
+  adhB.textContent="ADH: "+NAME[adh];
+  aldB.textContent="Aldosterone: "+NAME[ald];
+  var vol = 1.5 * Math.pow(2.6, 1-adh) * (ald===2?0.85:(ald===0?1.25:1));
+  var conc = 600 * Math.pow(2.4, adh-1);
+  var na = ald===2 ? "strongly retained" : (ald===0 ? "lost in urine" : "balanced");
+  var k  = ald===2 ? "excreted &mdash; blood potassium falls" : (ald===0 ? "retained &mdash; blood potassium rises" : "balanced");
+  var bp = (adh===2||ald===2) ? "supported / rising" : ((adh===0||ald===0) ? "falling" : "steady");
+  var col = (adh===1&&ald===1) ? "#3f6b4e" : ((adh===2||ald===2) ? "#8a2f36" : "#3a7aa8");
+  rows.innerHTML =
+    row("Urine volume",       vol.toFixed(1)+" L/day", col) +
+    row("Urine concentration", Math.round(conc)+" mOsm/kg", col) +
+    row("Sodium",             na, col) +
+    row("Potassium",          k,  col) +
+    row("Blood volume &amp; pressure", bp, col);
+  var t;
+  if(adh===0) t="Without ADH the collecting duct is waterproof, so filtered water simply leaves. The patient passes liters of pale, dilute urine and is constantly thirsty &mdash; the body is losing water it cannot hold on to.";
+  else if(adh===2 && ald===2) t="Both hormones high: the picture of a dehydrated or bleeding patient. Water is reclaimed, sodium is reclaimed, urine falls to a trickle and is highly concentrated, and blood volume is defended at the expense of everything else.";
+  else if(adh===2) t="High ADH concentrates the urine sharply by reclaiming water alone. Volume falls, blood is diluted slightly, and the kidney is doing exactly what it does when you have not drunk all day.";
+  else if(ald===2) t="High aldosterone reclaims sodium, and water follows it &mdash; so blood volume and pressure rise while potassium is pushed out into the urine. This is the axis that diuretics are designed to interrupt.";
+  else if(ald===0) t="Without aldosterone, sodium is lost in the urine and water goes with it. Blood volume and pressure fall, and potassium accumulates in the blood &mdash; a direct threat to the heart rhythm.";
+  else t="Normal hormone levels give a moderate volume of moderately concentrated urine, with sodium and potassium in balance. Press either button to see what changes when the kidney is told to conserve or to let go.";
+  out.innerHTML="<span style='color:"+col+"'>"+(adh===1&&ald===1?"Baseline":"Adjusted")+"</span>";
+  note.innerHTML=t;
+}
+adhB.addEventListener("click",function(){ adh=(adh+1)%3; draw(); });
+aldB.addEventListener("click",function(){ ald=(ald+1)%3; draw(); });
+draw();
+
+})();
+</script>
+</body>
+</html>

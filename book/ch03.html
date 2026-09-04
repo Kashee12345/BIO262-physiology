@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>Tissues and the Integumentary System &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="A single cell settles its business by diffusion, because nothing inside it is more than a few micrometers from the outside world. Scale that cell up and diffusion fails: the time for a molecule to diffuse rises with the square of ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 3 &middot; Tissues</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#tissue-logic">1 &middot; Why Tissues Exist: Diffusion Limits, Junctions and Compartments</a>
+        <a href="#epithelia">2 &middot; Epithelia: Barriers That Move Things</a>
+        <a href="#connective">3 &middot; Connective Tissue, the Matrix, and the Interstitial Fluid Compartment</a>
+        <a href="#skin-barrier">4 &middot; The Skin as a Barrier Organ</a>
+        <a href="#thermoregulation">5 &middot; Skin as a Control Organ: Heat, Blood Flow, Sensation and Repair</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 3</div>
+<h1>Tissues and the Integumentary System</h1>
+
+<p class="lede">A single cell handles everything by diffusion. Nothing inside it sits more than a few micrometers from the outside world. Now scale that cell up. Diffusion fails. The time a molecule needs to diffuse rises with the <i>square</i> of the distance. So a body built as one giant cell would starve at its center. Tissues are the answer evolution found. Cells specialize. They stick together in set patterns and hand off jobs. Epithelium separates compartments and moves solutes across them. Connective tissue carries load and holds the fluid that bathes it all. Muscle turns chemical energy into force. Nervous tissue carries information fast. Skin is where you can watch all four work together in one organ. It keeps water in and germs out. It keeps vitamin D coming. It holds core temperature near 37 &deg;C. This module treats tissues and skin the way physiology demands. They are machines with gradients, pressures, flows and feedback loops.</p>
+
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain why <b>diffusion distance</b> limits cell size. Show how the four main tissue types solve that limit.</li>
+<li>Match <b>tight junctions</b>, <b>desmosomes</b> and <b>gap junctions</b> to three jobs. Those jobs are transepithelial resistance, mechanical strength and electrical coupling.</li>
+<li>Find the <b>Na+/K+-ATPase</b> and predict which way a polarized epithelium moves solutes. Use Fick&rsquo;s relationship, J = D &times; A &times; &Delta;C / T, to explain flux.</li>
+<li>Use the <b>Starling forces</b> to explain how much fluid sits between cells. Name four mechanisms that produce <b>edema</b>.</li>
+<li>Describe how <b>keratinocyte</b> ripening and the <b>stratum corneum</b> lipid lamellae build a water barrier. Give the normal figure for <b>transepidermal water loss</b>.</li>
+<li>Diagram the <b>thermoregulatory negative feedback loop</b>. Name its variable, sensor, integrator, effectors and response.</li>
+<li>Calculate evaporative heat loss from a sweat rate. Explain why <b>sweat is hypotonic</b>, meaning dilute, by the time it reaches the surface.</li>
+<li>Put the four phases of <b>wound healing</b> in order. Give realistic time courses and tensile-strength values.</li>
+<li>Explain why extensive <b>burns</b> cause hypovolemia, hypothermia and infection. All three come from one failed barrier.</li>
+</ul></div>
+
+<h2 id="tissue-logic"><span class="num">Section 1</span>Why Tissues Exist: Diffusion Limits, Junctions and Compartments</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch03_s1.jpg" alt="Comparative micrographs of the four primary tissue types &mdash; epithelium, connective tissue, muscle and nervous tissue &mdash; showing differences in cell packing and extracellular matrix" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The four main tissue types differ mainly in one thing. That is how much extracellular matrix sits between the cells. <span class="cred">Servier Medical Art by Servier, adapted for Alexandro Rocha, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Diffusion sets the size limit</h3>
+
+<p>Diffusion is not slow. Over short distances it is very fast. A small solute crosses 1 &micro;m of cytosol in roughly 0.5 ms. But diffusion time rises with the square of the distance. Cross 10 &micro;m and it takes about 50 ms. Cross 1 mm and it takes on the order of 500 seconds. Cross 10 mm and you wait close to 14 hours. That one squared relationship explains three things. No cell in the human body sits more than about 100&ndash;200 &micro;m from a capillary. Alveolar walls are only 0.2&ndash;0.6 &micro;m thick. And an organism larger than a millimeter needs a circulatory system, not patience.</p>
+
+<p>The full statement is Fick&rsquo;s law of diffusion. For our purposes it reads J = D &times; A &times; &Delta;C / T. Flux (J) is the amount that crosses. It rises with the diffusion coefficient of the substance (D). It rises with the surface area on offer (A). It rises with the concentration difference driving it (&Delta;C). And it falls as the barrier gets thicker (T). Each exchange surface in the body is built to make A large and T small. The small intestine folds itself to roughly 200 m<sup>2</sup>. The lung reaches about 70 m<sup>2</sup>. The glomerular filtration barrier is under 0.5 &micro;m thick. Whenever you meet a new exchange organ later in this course, ask one question. Which term of that equation is its anatomy working on?</p>
+
+<p>Tissues are the structural answer to that limit. One cell cannot do it all well. So groups of cells specialize. Then they arrange themselves in shapes that keep diffusion distances short. Sheets separate compartments. Gels hold fluid. Cables carry signals. Fibers make force. In a physiology course, histology is not a naming exercise. It is a map of where gradients may exist, and where they may not.</p>
+
+<h3>Four tissue types, four functional jobs</h3>
+
+<p><b>Epithelium</b> is defined by what it does to gradients. It creates them and holds on to them. Epithelial cells are packed tightly with almost no matrix between them. They always rest on a <b>basement membrane</b>, a thin sheet of matrix below. They are avascular, meaning they hold no blood vessels of their own. Oxygen and nutrients diffuse up from the capillaries beneath. And they are polarized. The <b>apical</b> membrane faces a lumen or the outside world. The <b>basolateral</b> membrane faces the internal environment. That polarity is what turns a sheet of cells into a pump.</p>
+
+<p><b>Connective tissue</b> is built the opposite way. It has few cells and plenty of <b>extracellular matrix</b>, the material that sits between cells. Its physiology is mechanics and fluid. Collagen resists tension. Elastin gives energy back after a stretch. The ground substance holds water in a gel. That gel becomes the fluid between cells. Its glycosaminoglycans carry a negative charge, and charge pulls water in. <b>Muscle tissue</b> turns chemical energy into mechanical work, and it is excitable. <b>Nervous tissue</b> trades chemical gradients for information. It sends signals at 0.5&ndash;120 m/s. That is roughly a million times faster than diffusion over the same distance. Muscle and nervous tissue get their own module in this course. Their excitability is the reason.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Tissue</th><th>Cells vs. matrix</th><th>What it does</th><th>Where you find it</th></tr></thead>
+<tbody>
+<tr><td>Epithelial</td><td>Almost all cells</td><td>Barrier, regulated transport, secretion</td><td>Gut lining, nephron, epidermis, alveoli</td></tr>
+<tr><td>Connective</td><td>Mostly matrix</td><td>Load bearing, fluid reservoir, transport medium</td><td>Dermis, tendon, bone, blood</td></tr>
+<tr><td>Muscle</td><td>Almost all cells</td><td>Force and shortening, excitable</td><td>Skeletal, cardiac, smooth muscle</td></tr>
+<tr><td>Nervous</td><td>Cells plus glia, little matrix</td><td>Fast electrical and chemical signaling</td><td>Brain, cord, peripheral nerves</td></tr>
+</tbody></table></div>
+
+<h3>Junctions decide what a sheet can do</h3>
+
+<p>Three junction families give an epithelial sheet three separate jobs. Each job can be measured. <b>Tight junctions</b> (zonulae occludentes) form a continuous belt near the apical surface. Claudin and occludin proteins from neighboring cells meet there and seal the space between cells. They set the <b>paracellular</b> resistance, the resistance of the route between cells. The range is huge. Take a &ldquo;leaky&rdquo; epithelium such as the renal proximal tubule. Its transepithelial resistance is roughly 5&ndash;10 ohm&middot;cm<sup>2</sup>. A &ldquo;tight&rdquo; one such as the collecting duct or urinary bladder can top 2,000 ohm&middot;cm<sup>2</sup>. Leaky epithelia move huge volumes with small gradients. Tight epithelia move small volumes against steep gradients. Neither is better. Each one matches its job.</p>
+
+<p><b>Anchoring junctions</b> handle mechanical load. Desmosomes link the keratin filaments of neighboring cells through cadherin proteins. That makes the epidermis behave like a riveted sheet rather than a pile of cells. Hemidesmosomes staple the basal cells to the basement membrane. Two autoimmune diseases prove it. Antibodies against desmoglein cause pemphigus vulgaris. They split the epidermis inside itself and produce fragile, painful erosions. Antibodies against hemidesmosome antigens cause bullous pemphigoid. They split the epidermis away from the dermis and produce tense blisters. Same skin. Two different rivets. Two very different diseases.</p>
+
+<p><b>Gap junctions</b> do the opposite of sealing. They connect. Six connexin subunits form a connexon. Two connexons line up across the space between cells. They make a pore roughly 1.5 nm wide. Anything under about 1 kDa passes straight from one cytoplasm into the next. That includes ions, glucose, cyclic AMP and IP<sub>3</sub>. In practice this means electrical coupling. Cardiac muscle, single-unit smooth muscle and the pregnant uterus all contract as syncytia. That means they act as one joined sheet. Current flows through gap junctions instead of across membranes. In the epidermis, gap junctions coordinate the calcium waves that control how keratinocytes ripen.</p>
+
+<div class="pearl"><b>Misconception.</b> Students often say tight junctions &ldquo;hold cells together.&rdquo; They do not, at least not mechanically. Tight junctions seal the route between cells. Desmosomes and hemidesmosomes carry the mechanical load. If tight junctions were the glue, blistering diseases would target claudin. They target cadherins instead.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Diffusion time rises with the square of the distance. That one fact is why a body cannot be built as a single giant cell. Drag the distance below and watch arrival time explode, then switc <a href="../lab/ch03/DiffusionAndJunctionsLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch03/DiffusionAndJunctionsLab.html" loading="lazy" title="The Diffusion Limit &mdash; why tissues exist, and what junctions do interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Diffusion time rises with the square of the distance. That is why large organisms must build tissues. The junctions between cells then decide what a tissue sheet can do. A sheet can seal a gradient, bear a load, or share an electrical signal.</p></div>
+
+<h2 id="epithelia"><span class="num">Section 2</span>Epithelia: Barriers That Move Things</h2>
+
+<figure class="bref nofig"><figcaption><b>Note.</b> Epithelial polarity in one line. The basolateral Na+/K+-ATPase builds the sodium gradient, and each apical transporter spends it.</figcaption></figure>
+
+<h3>Polarity is the whole trick</h3>
+
+<p>An epithelial cell is not the same on both sides. That is the source of directional transport. The <b>Na+/K+-ATPase</b> is confined to the basolateral membrane. There it pumps 3 Na+ out of the cell. It pumps 2 K+ in for each ATP it splits. So sodium inside the cell sits at only about 10&ndash;15 mmol/L. Outside it is roughly 140 mmol/L. There is also a membrane potential near &minus;70 mV. That electrochemical gradient is a battery. Almost all apical transporters spend it. SGLT1 drags glucose in against its own gradient by letting two Na+ come along. NHE3 exchanges Na+ in for H+ out. ENaC simply lets Na+ fall through a channel. Move the pump to the apical membrane instead, as the choroid plexus does. The same parts then run backwards, and absorption becomes secretion. Polarity sets direction, not the list of transporters.</p>
+
+<p>Solute movement pulls water with it. There is no primary water pump anywhere in the body. Water always moves osmotically. It travels through aquaporins, or through the route between cells. It follows the solute that transport has just moved. When the intestine absorbs sodium and glucose, water follows. That is why oral rehydration solution contains both salt and sugar. It is why the solution works even in severe cholera, when intravenous fluid is unavailable. The absorbing parts are intact. It just needs sodium and a co-substrate to drive it.</p>
+
+<p>Two routes cross an epithelium. The <b>transcellular</b> route goes through the cell, across two membranes. So it is selective, and the transporters the cell makes regulate it. The <b>paracellular</b> route goes between cells through the tight junction. Which claudins are expressed regulates that one. Take claudin-16 and claudin-19 in the thick ascending limb of the nephron. They form a pore that lets positive ions through, and it reabsorbs magnesium and calcium. Mutations there make the kidney waste magnesium. Tight junctions are not passive cement. They are tunable filters.</p>
+
+<h3>Reading epithelial architecture as function</h3>
+
+<p>Shape and layering are functional statements. <b>Simple squamous</b> epithelium is one cell thick. It is flattened to almost nothing, because its job is diffusion. Add up the alveolar type I cell, the fused basement membrane and the capillary endothelium. The total is about 0.2&ndash;0.6 &micro;m. That keeps T small in Fick&rsquo;s equation. <b>Simple cuboidal</b> and <b>simple columnar</b> epithelia are tall enough to hold mitochondria and transport machinery. They line the nephron and the gut, where active transport is the job. Microvilli on the small-intestinal brush border multiply apical area roughly twentyfold. That raises A in the same equation.</p>
+
+<p><b>Stratified squamous</b> epithelium gives up transport for protection. It has many layers and is replaced nonstop from below. In the epidermis the surface layer is dead and keratinized. <b>Pseudostratified ciliated columnar</b> epithelium of the airway does mucociliary clearance. Its cilia beat at 8&ndash;20 Hz. They move the mucus blanket 5&ndash;10 mm per minute toward the pharynx. <b>Transitional</b> epithelium (urothelium) has apical umbrella cells. Those carry a plaque-covered membrane plus reserve vesicles of spare membrane. So the bladder can stretch from about 50 mL to 500 mL. It still leaks nothing. The urine inside may be four times more concentrated than plasma.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Epithelium</th><th>Design feature</th><th>What that buys</th><th>Where you find it</th></tr></thead>
+<tbody>
+<tr><td>Simple squamous</td><td>Thinnest possible barrier (T)</td><td>Maximal diffusive flux, but fragile</td><td>Alveolus, capillary endothelium</td></tr>
+<tr><td>Simple columnar with microvilli</td><td>Largest possible area (A)</td><td>Absorbs large amounts</td><td>Small intestine, proximal tubule</td></tr>
+<tr><td>Stratified squamous keratinized</td><td>Many layers, dead surface</td><td>Abrasion and water barrier, no transport</td><td>Epidermis</td></tr>
+<tr><td>Pseudostratified ciliated</td><td>Cilia plus mucus</td><td>Moves particles in one direction</td><td>Trachea, bronchi</td></tr>
+<tr><td>Transitional</td><td>Umbrella cells, spare membrane in reserve</td><td>Stretches without leaking</td><td>Bladder, ureter</td></tr>
+</tbody></table></div>
+
+<h3>Glands: epithelium that leaves home</h3>
+
+<p>Glands are epithelia that folded inward as the body formed. They kept on secreting. <b>Endocrine</b> glands lost their duct. They release product into the interstitium and then into the blood. So their signal is slow, taking seconds to hours. It is broadcast widely, and metabolism ends it. <b>Exocrine</b> glands kept the duct and deliver product to a surface. So their output is local, fast and often large in volume. The salivary glands produce 1&ndash;1.5 L/day. The pancreas produces 1&ndash;1.5 L/day of bicarbonate-rich juice.</p>
+
+<p>Exocrine secretion has three mechanisms, and the difference matters clinically. <b>Merocrine</b> (eccrine) secretion is exocytosis with the cell left fully intact. Eccrine sweat glands and the pancreatic acinus work that way. <b>Apocrine</b> secretion pinches off an apical fragment of cytoplasm along with the product. The axillary apocrine glands do this. So does the mammary gland with its lipid droplets. <b>Holocrine</b> secretion destroys the whole cell. The sebaceous gland cell fills with lipid and falls apart. Its own membrane debris becomes the sebum. That is why sebaceous glands must keep rebuilding from a basal population. It is also why blocking their duct produces the comedo of acne.</p>
+
+<p>Most exocrine glands modify their secretion in the duct. The duct is a second epithelium with its own controls. Sweat is the classic example, and Section 5 discusses it. The coil secretes a precursor that is isotonic, meaning as concentrated as plasma. The duct then reclaims sodium and chloride. So what reaches the skin is dilute. Secretion and modification are two steps, each with its own controls. You will see that design again in saliva, bile and urine.</p>
+
+<div class="pearl"><b>Pearl.</b> There is no such thing as &ldquo;active transport of water.&rdquo; When you read that a segment &ldquo;absorbs water,&rdquo; translate it right away. Ask which solute was moved. Then ask where the osmotic gradient it created points. This habit will save you in the renal and gastrointestinal modules.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> An epithelial cell is a machine, and its two-sided build is the motor. The Na&#8314;/K&#8314;-ATPase sits basolateral and builds a sodium battery. Every apical transporter spends it. Poison the pump, move <a href="../lab/ch03/PolarisedEpitheliumLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch03/PolarisedEpitheliumLab.html" loading="lazy" title="The Polarized Epithelium &mdash; move the pump, reverse the transport interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>A polarized epithelium is a machine. The basolateral Na+/K+-ATPase builds the sodium gradient. Apical transporters spend it to move specific solutes. Water then follows osmotically. So the architecture predicts both direction and capacity.</p></div>
+
+<h2 id="connective"><span class="num">Section 3</span>Connective Tissue, the Matrix, and the Interstitial Fluid Compartment</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch03_s3.jpg" alt="Micrograph of dense irregular connective tissue showing interwoven collagen bundles, elastic fibers and scattered fibroblasts within ground substance" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Collagen bundles, elastic fibers and hydrated ground substance do two jobs at once. They give connective tissue tensile strength, and they make it a fluid reservoir. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Fibers are the mechanical vocabulary</h3>
+
+<p>How connective tissue behaves follows straight from its two fiber proteins. <b>Collagen</b> is a triple helix. Hydroxyproline and hydroxylysine cross-links hold it steady. Type I collagen makes up roughly 70&ndash;80% of the dry weight of the dermis. It gives a tensile strength on the order of 50&ndash;100 MPa. Per unit of cross-section that is roughly a quarter that of mild steel. It is far beyond any other protein the body makes. Collagen is stiff and barely stretches past a few percent strain. So it works like a safety rope. It hangs slack at rest and bears load at the limit. Making it needs vitamin C as a cofactor for prolyl hydroxylase. That is why scurvy causes bleeding gums, poor wound healing, and old scars that reopen. Existing collagen turns over and cannot be replaced.</p>
+
+<p><b>Elastin</b> is the opposite. It is a cross-linked, coiled protein. It stretches to 150% of resting length and recoils with roughly 90% energy return. Arteries, lung tissue and skin all depend on it. Elastin is made almost all before age 20, and its half-life runs into decades. So in practice it cannot be replaced. Ultraviolet damage builds up over the years. It breaks down dermal elastin and disorganizes collagen. The result is solar elastosis, the clumped, yellowed, inelastic dermis of photoaged skin. Mechanically, a wrinkle is lost elastic recoil.</p>
+
+<p>Between the fibers lies <b>ground substance</b>. These are proteoglycans built on glycosaminoglycans such as hyaluronan, chondroitin sulfate and dermatan sulfate. These molecules carry dense negative charge, and charge attracts water. One gram of hyaluronan can hold several liters of water in a hydrated gel. That gel is the interstitial compartment, the space between cells. It resists compression, which is why cartilage works. It slows the spread of bacteria. And it holds most of the interstitial fluid as a gel, not as free liquid. That is why you do not slosh.</p>
+
+<h3>Starling forces set interstitial volume</h3>
+
+<p>The volume of that interstitial compartment is not arbitrary. It is the steady-state result of four pressures acting across the capillary wall. The Starling equation states it: net filtration pressure = (P<sub>c</sub> &minus; P<sub>if</sub>) &minus; &sigma;(&pi;<sub>c</sub> &minus; &pi;<sub>if</sub>). Here are the typical values. Capillary hydrostatic pressure P<sub>c</sub> is about 35 mmHg at the arteriolar end. It falls to about 15 mmHg at the venular end. Interstitial hydrostatic pressure P<sub>if</sub> is near zero or slightly negative. In loose tissue it is about &minus;2 mmHg. Plasma colloid osmotic pressure &pi;<sub>c</sub> is about 25&ndash;28 mmHg. Albumin makes almost all of it. Interstitial colloid osmotic pressure &pi;<sub>if</sub> runs about 5&ndash;8 mmHg. The reflection coefficient &sigma; describes how impermeable the wall is to protein. It is near 1.0 in continuous capillaries and much lower in sinusoids.</p>
+
+<p>Run the numbers. At the arteriolar end net filtration pressure is substantial and positive. It is (35 &minus; (&minus;2)) &minus; (25 to 28 &minus; 5 to 8), which comes to roughly &#43;14 to &#43;20 mmHg. Further along it turns slightly negative. It runs about 0 to &minus;6 mmHg, once P<sub>c</sub> has fallen to 15 mmHg. Across the whole body that filters roughly 20 L/day and reabsorbs about 17 L/day. That leaves 2&ndash;4 L/day for the <b>lymphatics</b> to return. So the lymphatic system is not optional drainage. It is the third Starling term made anatomical. It also returns the 100&ndash;200 g of plasma protein that escapes each day. Block it with filariasis or an axillary node dissection and the limb swells. Every other pressure can be perfectly normal.</p>
+
+<p><b>Edema</b> is what happens when this balance shifts, and there are exactly four mechanisms. Raise P<sub>c</sub>, as heart failure, venous obstruction or a dependent limb does. Lower &pi;<sub>c</sub> by losing albumin, as in nephrotic syndrome, cirrhosis or protein-calorie malnutrition. Normal serum albumin is 3.5&ndash;5.0 g/dL. It becomes clinically evident once albumin falls below roughly 2.5 g/dL. Increase permeability, so &sigma; falls and protein leaks into the interstitium. Inflammation, burns and sepsis do that. Or obstruct lymphatic return. Naming the mechanism tells you the treatment. Guessing does not.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Mechanism</th><th>Starling term changed</th><th>Typical cause</th><th>Protein in the fluid</th></tr></thead>
+<tbody>
+<tr><td>Increased hydrostatic pressure</td><td>P<sub>c</sub> up</td><td>Heart failure, DVT, standing a long time</td><td>Low (transudate)</td></tr>
+<tr><td>Decreased oncotic pressure</td><td>&pi;<sub>c</sub> down</td><td>Nephrotic syndrome, cirrhosis, malnutrition</td><td>Low (transudate)</td></tr>
+<tr><td>Increased permeability</td><td>&sigma; down</td><td>Burns, sepsis, histamine release</td><td>High (exudate)</td></tr>
+<tr><td>Lymphatic obstruction</td><td>Return blocked</td><td>Node dissection, filariasis, tumor</td><td>High (protein-rich)</td></tr>
+</tbody></table></div>
+
+<h3>Cells of the connective tissue and the inflammatory response</h3>
+
+<p>The resident cell is the <b>fibroblast</b>. It makes collagen, elastin and ground substance. It also remodels them nonstop by secreting matrix metalloproteinases. Turnover is real. Dermal collagen has a half-life of years. But the balance between synthesis and degradation shifts with age, ultraviolet exposure, cortisol and nutrition. Chronic glucocorticoid therapy suppresses fibroblast collagen synthesis. That is why long-term steroid users get thin, fragile skin. It tears easily and heals poorly.</p>
+
+<p>Wandering cells make the connective tissue an immune surveillance space. <b>Mast cells</b> sit near vessels, loaded with histamine and heparin. When they degranulate, histamine acts at H<sub>1</sub> receptors. Venular endothelial cells then contract, gaps open between them, and &sigma; drops. That is the mechanism of the wheal. It is a localized, protein-rich edema produced by a permeability change within seconds. <b>Macrophages</b> engulf debris and present antigen. <b>Plasma cells</b> secrete antibody. Neutrophils flood in during acute inflammation.</p>
+
+<p>Adipose tissue deserves its own mention, because it is not inert packing. White adipocytes store triglyceride in a single droplet. They insulate as well. Subcutaneous fat has a thermal conductivity roughly one-third that of muscle. They also work as an endocrine organ. They secrete leptin in proportion to fat mass, and adiponectin in inverse proportion to it. Brown adipose tissue is abundant in newborns. It is packed with mitochondria carrying uncoupling protein 1. That protein short-circuits the proton gradient, so oxidation produces heat instead of ATP. That is non-shivering thermogenesis, and it warms an infant who cannot yet shiver effectively.</p>
+
+<div class="pearl"><b>Misconception.</b> Pitting edema is not simply &ldquo;water in the tissue.&rdquo; The interstitial fluid volume has grown past what the gel can hold. Free fluid then appears, and a thumb can push it aside. Interstitial pressure must climb from about &minus;2 mmHg to slightly positive before pitting shows at all. That is why 2&ndash;3 L can pile up before any edema is visible.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The interstitium is not a puddle. Its volume is the steady-state answer to four pressures and a reflection coefficient. The lymphatics are the third term made anatomical. Set the forces bel <a href="../lab/ch03/StarlingForcesBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch03/StarlingForcesBench.html" loading="lazy" title="Starling Forces and the Interstitial Compartment interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Connective tissue is mechanics plus fluid. Collagen and elastin set how the material behaves. The four Starling forces and lymphatic drainage set the volume of the interstitial compartment. That compartment is the fluid each cell in the body actually lives in.</p></div>
+
+<h2 id="skin-barrier"><span class="num">Section 4</span>The Skin as a Barrier Organ</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch03_s4.jpg" alt="Cross-sectional diagram of skin showing epidermal layers from stratum basale to stratum corneum, dermal papillae, hair follicle, sebaceous and sweat glands, and subcutaneous fat" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Skin is built in layers. The epidermis supplies the barrier. The dermis supplies strength, blood flow and sensation. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Building a waterproof layer out of dying cells</h3>
+
+<p>Skin is the largest organ by surface area. It covers about 1.5&ndash;2.0 m<sup>2</sup> in an adult. Epidermis plus dermis weighs about 4&ndash;5 kg, roughly 6&ndash;7% of body mass. The 16% figure you often see counts the subcutaneous layer as well. The epidermis is very thin. It runs about 0.05&ndash;0.1 mm over most of the body. On palms and soles it rises to 0.8&ndash;1.5 mm. All that keeps you from drying out happens in the outer 10&ndash;20 &micro;m.</p>
+
+<p>The epidermis is a conveyor belt. Keratinocytes divide in the <b>stratum basale</b>. They are pushed upward, and they mature as they go. In the <b>stratum spinosum</b> they build up keratin filaments and desmosomes. In the <b>stratum granulosum</b> two decisive things happen. Keratohyalin granules produce profilaggrin, which is cut into <b>filaggrin</b>, and filaggrin packs keratin into dense bundles. At the same time <b>lamellar bodies</b> discharge their lipid contents into the space between cells. Then the cell carries out a controlled death. The nucleus and organelles are broken down. A cross-linked cornified envelope of involucrin and loricrin replaces the plasma membrane. The trip from basal division to shedding takes about 40&ndash;56 days. In psoriasis it collapses to 4&ndash;7 days. Cells reach the surface before they can finish that program. That is why the scale is thick, poorly stuck down, and still holding nuclei.</p>
+
+<p>The finished <b>stratum corneum</b> is 15&ndash;20 layers of flattened corneocytes set in a lipid matrix. Picture bricks and mortar. The mortar is the barrier. It is roughly equal parts ceramides, cholesterol and free fatty acids, stacked in mostly crystalline lamellae. Water has to wind its way through that lipid. The path it actually travels is 10&ndash;50 times longer than the layer is thick. Measured <b>transepidermal water loss</b> is only about 4&ndash;8 g/m<sup>2</sup> per hour. Spread that over 1.5&ndash;2.0 m<sup>2</sup> for 24 hours. You get roughly 200&ndash;400 mL/day of insensible loss through skin. Another 250&ndash;350 mL/day leaves through the airway. Strip the stratum corneum off with tape and that figure rises more than tenfold within minutes.</p>
+
+<h3>The barrier repairs itself by negative feedback</h3>
+
+<p>Barrier maintenance is a genuine control loop. It is worth naming its parts the way you would for any other loop. The <b>controlled variable</b> is barrier integrity, read out as water flux. The <b>sensor</b> is the epidermal calcium gradient. Calcium is normally low in the basal layers and high in the stratum granulosum. That gradient holds only because water is <i>not</i> flowing outward. The <b>integrator</b> is the granular keratinocyte. High calcium outside it steadily holds back its lamellar body secretion. Breach the barrier and water flux washes the gradient away. Calcium falls, the brake comes off, and the <b>effector</b> response begins. Preformed lamellar bodies are released at once. Within hours the cell also steps up its production of cholesterol, ceramides and fatty acids. The <b>response</b> rebuilds the lipid lamellae. Water flux falls, calcium builds back up, and secretion switches off. Roughly 50&ndash;60% of barrier function returns within 6 hours of an acute disruption. Full recovery takes 3&ndash;5 days.</p>
+
+<p>This loop explains a great deal of clinical dermatology. Loss-of-function mutations in the filaggrin gene are the strongest known genetic risk factor for atopic dermatitis. Without filaggrin, keratin is bundled poorly. Natural moisturizing factor drops too. It is made mostly of filaggrin breakdown products, such as urocanic acid and pyrrolidone carboxylic acid. Transepidermal water loss rises. Allergens then reach the immune system below. The barrier defect comes first and the allergy follows. That reframes emollient therapy. It treats the mechanism rather than just relieving a symptom.</p>
+
+<p>Two chemical features complete the barrier. The surface pH is 4.5&ndash;5.5. That is the <b>acid mantle</b>. Sweat lactate, sebum fatty acids and the sodium&ndash;hydrogen exchanger of the granular layer produce it. The acidity does real work. It favors the enzymes that make ceramides. It restrains the serine proteases that dissolve desmosomes. And it suppresses <i>Staphylococcus aureus</i> while tolerating commensal flora. Alkaline soaps briefly raise pH to 6&ndash;7, and barrier recovery measurably slows. Sebum is the second feature. It is secreted holocrine at 1&ndash;2 mg per 10 cm<sup>2</sup> per 3 hours. Androgens drive it strongly. It adds triglycerides, wax esters and squalene. Those lubricate hair and supply antimicrobial free fatty acids.</p>
+
+<h3>Ultraviolet radiation: damage, defense and a hormone</h3>
+
+<p>Melanocytes sit in the stratum basale. There is roughly one melanocyte for every 4&ndash;10 keratinocytes. This surprises students. That density is almost the same in all human populations. Differences in skin color come from somewhere else. They come from melanosome size and number. They come from how fast melanosomes are broken down. And they come from the ratio of brown-black eumelanin to red-yellow pheomelanin. They do not come from melanocyte counts. Each melanocyte reaches 30&ndash;40 keratinocytes with its dendrites. That group is an epidermal melanin unit. The melanosomes it hands over are arranged as a cap over the nucleus. It is a physical parasol, placed exactly where the DNA is.</p>
+
+<p>Ultraviolet B (280&ndash;315 nm) is absorbed directly by DNA, and it makes cyclobutane pyrimidine dimers. Ultraviolet A (315&ndash;400 nm) reaches deeper into the dermis. It works mostly through reactive oxygen species, damaging collagen and elastin. Melanin absorbs both and quenches those radicals. The tanning response is delayed by 48&ndash;72 hours. It has to wait for tyrosinase to make new melanin after p53-mediated signaling. The darkening you see within minutes is only oxidation of melanin that was already there. It gives little protection.</p>
+
+<p>The same ultraviolet B that damages DNA also does something essential. It converts 7-dehydrocholesterol in the plasma membranes of basal and spinous keratinocytes into previtamin D<sub>3</sub>. Heat then rearranges that into cholecalciferol. The liver adds a hydroxyl at position 25. The kidney adds another at position 1, under parathyroid hormone control. The product is 1,25-dihydroxyvitamin D, the active hormone that drives intestinal calcium absorption. Ten to thirty minutes of midday sun on face and arms is enough for most lightly pigmented adults. They need that several times a week. Deeply pigmented skin may need three to six times that exposure for the same yield. Glass, sunscreen, latitude above about 37&deg; in winter, and age all cut skin synthesis substantially. In this respect the skin is an endocrine organ.</p>
+
+<div class="pearl"><b>Misconception.</b> Skin is often called &ldquo;impermeable.&rdquo; It is not. It is <i>selectively</i> permeable. Small lipophilic molecules cross the lipid lamellae readily. That is just how nicotine, fentanyl, estradiol and nitroglycerin patches work. Here is the rule of thumb. Lipid-soluble and low molecular weight gets through. Water-soluble and large does not.</div>
+
+<div class="pearl"><b>Pearl.</b> Chemical burns from strong alkali are worse than acid burns of equal strength. Acid causes coagulative necrosis, and the coagulum itself limits how deep the acid gets. Alkali causes liquefactive necrosis. It saponifies membrane lipids and dissolves its own path inward. Irrigation time, not neutralization, is the treatment.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The barrier is not the cells. It is the lipid mortar between dead corneocytes. A genuine negative feedback loop defends it, with a calcium gradient as its sensor. Strip it, watch tran <a href="../lab/ch03/SkinBarrierLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch03/SkinBarrierLab.html" loading="lazy" title="The Skin Barrier and Its Repair Loop interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The barrier is the lipid mortar between dead corneocytes. A negative feedback loop that senses calcium resupplies that lipid on demand. And the same layer that keeps water in lets ultraviolet B in. That is how vitamin D gets made.</p></div>
+
+<h2 id="thermoregulation"><span class="num">Section 5</span>Skin as a Control Organ: Heat, Blood Flow, Sensation and Repair</h2>
+
+<figure class="bref"><div class="fr"><img src="img/ch03_s5.jpg" alt="Diagram of cutaneous thermoregulation showing hypothalamic control, skin arterioles, arteriovenous anastomoses and eccrine sweat glands during heat and cold responses" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The hypothalamus has two effectors in the skin. They are cutaneous blood flow and sweating, and together they hold core temperature near 37 &deg;C. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The thermoregulatory loop, named part by part</h3>
+
+<p>Core temperature is held at 37.0 &deg;C. The normal range is about 36.5&ndash;37.5 &deg;C. It swings roughly 0.5&ndash;1.0 &deg;C across the day. It is lowest around 04:00 and highest in the late afternoon. That stability is negative feedback, and you can name each part. The <b>controlled variable</b> is core temperature, meaning the temperature of the hypothalamus and the central blood. The <b>sensors</b> are warm- and cold-sensitive neurons in the preoptic and anterior hypothalamus. They change firing rate steeply for a change of only 0.1 &deg;C. Peripheral thermoreceptors in the skin add their own report. They use TRPM8 for cool and TRPV3 and TRPV4 for innocuous warmth. TRPV1 is reserved for noxious heat above about 43 &deg;C. Skin input gives feed-forward warning. Central input gives the error signal. The <b>integrator</b> is the preoptic area. It compares incoming traffic against the set point and sends out a matching command. The <b>effectors</b> are cutaneous arterioles, eccrine sweat glands, skeletal muscle and behavior. The <b>response</b> restores temperature and abolishes the error. That is the defining signature of negative feedback.</p>
+
+<p>Heat leaves the body by four physical routes. <b>Radiation</b> accounts for about 60% of loss at rest in a comfortable room. <b>Conduction and convection</b> account for about 15&ndash;20%. <b>Evaporation</b> accounts for about 20&ndash;25%. Radiation, conduction and convection all depend on the gradient between skin and environment. So all three fail once the air is as warm as the skin. That happens at roughly 33&ndash;35 &deg;C. Above that point evaporation is the only avenue left. And evaporation depends on the water vapor pressure gradient. So 35 &deg;C with 90% humidity is far more dangerous than 40 &deg;C in dry desert air.</p>
+
+<p>The cheap effector is blood flow. Skin receives about 250&ndash;500 mL/min at thermoneutrality. That is roughly 5&ndash;10% of a resting cardiac output of 5 L/min. But it can fall below 50 mL/min in the cold. It can rise to 6&ndash;8 L/min in maximal heat stress. That is a more than hundredfold range. Cardiac output itself climbs toward 12&ndash;13 L/min in severe heat. So at the extreme the skin is taking more than half of it. Two mechanisms do this. Glabrous skin means hairless skin, such as palms, soles, lips and ears. There, <b>arteriovenous anastomoses</b> shunt blood straight from arteriole to venule and bypass the capillaries. Sympathetic noradrenergic vasoconstrictor tone controls almost all of it. Release that tone and you open a radiator. In non-glabrous skin, active vasodilation takes over. Sympathetic cholinergic fibers drive it. They release acetylcholine plus a co-transmitter. They account for about 80&ndash;90% of the rise in skin blood flow during heat stress. This is the rare place where increased sympathetic firing causes vasodilation.</p>
+
+<h3>Sweat: an isotonic secretion made hypotonic on the way out</h3>
+
+<p>Two to four million eccrine glands cover the body. They are densest on palms, soles and forehead. Each one is a coiled secretory tubule plus a straight duct. Sympathetic <i>cholinergic</i> fibers supply them, acting on muscarinic receptors. That is another anatomical exception. It is also the reason anticholinergic drugs cause dry, hot skin and impair heat tolerance. The clear cells of the coil secrete a precursor fluid. It is almost isotonic with plasma, near 140 mmol/L sodium. The NKCC1 cotransporter drives it, chloride follows, and water is dragged along osmotically.</p>
+
+<p>The duct then reabsorbs sodium through ENaC and chloride through <b>CFTR</b>. But the duct is fairly water-impermeable. So salt leaves and water stays behind. Final sweat sodium ranges from 10 to 60 mmol/L. It depends on sweat rate, since a high flow leaves less time for reabsorption. It also depends on aldosterone-driven acclimatization. That can halve sweat sodium over 10&ndash;14 days of heat exposure. In cystic fibrosis, CFTR is non-functional. Chloride cannot be reclaimed. A sweat chloride of 60 mmol/L or more is then diagnostic. The sweat test is a direct readout of duct physiology.</p>
+
+<p>The numbers matter for practice. Evaporating 1 mL of sweat removes about 0.58 kcal (2.43 kJ). So 1 L of evaporated sweat removes roughly 580 kcal. An unacclimatized adult sustains about 1.0&ndash;1.5 L/h. An acclimatized athlete can reach 2&ndash;3 L/h briefly. Note the word <i>evaporated</i>. Sweat that drips off the chin cools nothing. The phase change never happened at the skin. In heat exhaustion, sweating continues. But volume and salt losses outstrip replacement, and cardiac output fails. In heat stroke, thermoregulation itself fails. Core temperature exceeds 40 &deg;C, mental status changes, and the skin is often hot and dry. That is a genuine emergency. Cold defense runs the loop in reverse. Cutaneous vasoconstriction comes first. Then shivering, which can raise metabolic heat production three- to fivefold. In neonates, non-shivering thermogenesis in brown fat adds more.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Route</th><th>Driving gradient</th><th>Share at rest</th><th>Fails when</th></tr></thead>
+<tbody>
+<tr><td>Radiation</td><td>Skin versus surroundings temperature</td><td>~60%</td><td>Air gets as warm as the skin</td></tr>
+<tr><td>Conduction</td><td>Skin versus the object you touch</td><td>~3%</td><td>The surface you touch is warm</td></tr>
+<tr><td>Convection</td><td>Air moving over the skin</td><td>~12&ndash;15%</td><td>Still, hot air</td></tr>
+<tr><td>Evaporation</td><td>Water vapor pressure difference</td><td>~20&ndash;25%</td><td>Humidity is high, or sweat drips off</td></tr>
+</tbody></table></div>
+
+<h3>Sensation and repair</h3>
+
+<p>The dermis is a sensory sheet. What a receptor encodes depends on how it is built. <b>Meissner corpuscles</b> sit in the dermal papillae. They adapt rapidly and are tuned to flutter at 10&ndash;50 Hz. <b>Pacinian corpuscles</b> sit deep in the dermis. Their onion-layer capsule filters out steady pressure. That leaves them very sensitive to vibration at 200&ndash;300 Hz. <b>Merkel discs</b> adapt slowly and encode form and texture. <b>Ruffini endings</b> adapt slowly and encode skin stretch and finger position. Spatial acuity follows receptor density and cortical representation. Two-point discrimination is 2&ndash;3 mm on the fingertip but 40&ndash;50 mm on the back. Free nerve endings serve pain and temperature. TRPV1 opens above about 43 &deg;C, and capsaicin opens it too. TRPM8 responds to cooling below about 26 &deg;C, and so does menthol. That is why chili feels hot and mint feels cold with no temperature change at all.</p>
+
+<p>Repair proceeds in four overlapping phases. <b>Hemostasis</b> begins within seconds. There is vasoconstriction, a platelet plug, and a clotting cascade. That cascade is one of the body&rsquo;s few true positive feedback loops. Thrombin activates factors V, VIII and XI, and those generate more thrombin. Positive feedback is used here because the goal is a rapid, all-or-none event that stops itself. It is safe for two reasons. It ends when the substrate runs out. And antithrombin and protein C stand ready to brake it. <b>Inflammation</b> runs from hours to about day 3. Neutrophils arrive first. Macrophages take over by 48&ndash;72 hours. They direct debridement and growth factor release. <b>Proliferation</b> spans roughly days 3&ndash;21. Fibroblasts lay down type III collagen. Angiogenesis builds granulation tissue. Myofibroblasts contract the wound edges. Keratinocytes migrate in from the margins and from follicular stem cells to re-epithelialize. <b>Remodeling</b> lasts 3 weeks to 1&ndash;2 years. It replaces type III collagen with stronger type I. It also lines the fibers up along the lines of stress.</p>
+
+<p>Tensile strength lags badly behind skin that looks closed, and this is worth memorizing. Strength is about 5% of the original at 1 week. It is 20% at 3 weeks. It is 60% at 3 months. It then plateaus near 70&ndash;80% and is never fully recovered. That gap explains why a wound can dehisce, meaning split open, after the sutures come out. It is why patients are restricted from heavy lifting for weeks. Healing slows with poor perfusion, because fibroblasts and collagen cross-linking require oxygen. It also slows with diabetes, smoking and glucocorticoids. It slows with a protein or vitamin C deficiency, and with infection.</p>
+
+<p>Burns make the argument of this whole module in a single lesion. Destroy the epidermis over a wide area and you lose all three barrier functions at once. Water evaporates unchecked. Losses can exceed 200 mL/m<sup>2</sup> per hour, against a normal 4&ndash;8 g/m<sup>2</sup> per hour. So intravascular volume falls. Capillary permeability rises, so &sigma; collapses and protein-rich fluid pours into the interstitium. That compounds the hypovolemia. Evaporative cooling becomes uncontrolled, and the patient becomes hypothermic in a warm room. And the microbial barrier is gone. Resuscitation formulas such as Parkland simply do the math on Starling forces and evaporative loss. Parkland gives 4 mL of lactated Ringer&rsquo;s per kilogram, per percent of total body surface area burned. That covers the first 24 hours, with half of it in the first 8.</p>
+
+<div class="pearl"><b>Misconception.</b> Fever is not a failure of thermoregulation. It is thermoregulation working at a raised set point. Pyrogens such as interleukin-1 and tumor necrosis factor act on the preoptic area. They drive prostaglandin E<sub>2</sub> production there, and that resets the target upward. That is why the patient shivers and feels cold while the thermometer reads 39 &deg;C. The loop is defending a new set point. Antipyretics lower the set point. The shivering stops and sweating begins. Heat stroke, by contrast, is the loop genuinely failing.</div>
+
+<div class="pearl"><b>Pearl.</b> Full-thickness (third-degree) burns are painless in the center. The nociceptors in the dermis have been destroyed. Surrounding partial-thickness burns are excruciating. So absence of pain in a burn is a sign of greater depth, not lesser injury. It is one of the more counterintuitive assessment findings in all of clinical practice.</div>
+
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Core temperature is held near 37 &deg;C by a negative feedback loop. Its two main effectors are both in the skin. One is cutaneous blood flow, which varies more than a hundredfold. The other is hypotonic eccrine sweat. <a href="../lab/ch03/ThermoregulationLoop.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch03/ThermoregulationLoop.html" loading="lazy" title="Skin as a Control Organ &mdash; the thermoregulatory loop interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The skin is the hypothalamus&rsquo;s main effector organ. It varies blood flow up to a hundredfold. It can evaporate up to 2 L of hypotonic sweat per hour. Together those defend core temperature within about 1 &deg;C. Destroy that barrier and its vasculature, and fluid, heat and infection control fail together.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Diffusion time rises with the square of the distance. So any organism larger than a millimeter must divide the labor among tissues. Epithelium builds and defends gradients. It is polarized, so the basolateral Na+/K+-ATPase creates a sodium battery that apical transporters spend. Water always follows solute. It is never pumped itself. Tight junctions set paracellular resistance across a range of 5 to more than 2,000 ohm&middot;cm<sup>2</sup>. Desmosomes bear mechanical load. Gap junctions couple cells electrically. Connective tissue supplies mechanics and fluid. Collagen resists tension, elastin returns energy, and the charged ground substance holds the interstitial fluid. The Starling forces set the volume of that fluid. The balance filters about 20 L/day, reabsorbs 17 L, and hands 3 L to the lymphatics. Skin assembles all of this into one organ. Dead, lipid-mortared corneocytes hold transepidermal water loss to 4&ndash;8 g/m<sup>2</sup> per hour. A calcium-sensed feedback loop resupplies that lipid when it is breached. Melanin caps nuclei against ultraviolet, while the same wavelengths make vitamin D. And the hypothalamus works through two effectors in the skin. They are cutaneous blood flow and hypotonic eccrine sweat. That negative feedback loop holds core temperature near 37 &deg;C.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Basement membrane</td><td>A sheet of collagen IV, laminin and proteoglycan. Every epithelium sits on it. It anchors cells and filters what reaches them.</td></tr>
+<tr><td>Tight junction</td><td>A claudin-and-occludin belt that seals the space between epithelial cells. It sets paracellular resistance from about 5 to over 2,000 ohm&middot;cm<sup>2</sup>.</td></tr>
+<tr><td>Desmosome</td><td>A cadherin-based rivet that links the keratin filaments of neighboring cells. It carries the mechanical load in the epidermis.</td></tr>
+<tr><td>Gap junction</td><td>A connexon pore about 1.5 nm wide. Ions and molecules under 1 kDa pass straight through, so cells couple electrically.</td></tr>
+<tr><td>Epithelial polarity</td><td>Apical and basolateral membranes kept separate, with the Na+/K+-ATPase basolateral. It is the origin of directional transport.</td></tr>
+<tr><td>Transcellular vs paracellular</td><td>Transport through the cell versus between cells. Through the cell is selective and limited by transporters. Between cells is limited by junctions and tuned by claudins.</td></tr>
+<tr><td>Fick&rsquo;s relationship</td><td>J = D &times; A &times; &Delta;C / T. Flux rises with area and with the gradient. It falls as the barrier gets thicker.</td></tr>
+<tr><td>Merocrine, apocrine, holocrine</td><td>Three ways to secrete. Exocytosis with the cell left intact. Loss of an apical fragment. Total destruction of the cell, as in sebaceous glands.</td></tr>
+<tr><td>Ground substance</td><td>The watery proteoglycan gel of the matrix. Its fixed negative charge holds most of the interstitial water.</td></tr>
+<tr><td>Starling forces</td><td>NFP = (P<sub>c</sub> &minus; P<sub>if</sub>) &minus; &sigma;(&pi;<sub>c</sub> &minus; &pi;<sub>if</sub>). It sets filtration and interstitial volume.</td></tr>
+<tr><td>Edema</td><td>Too much fluid between cells. It comes from raised P<sub>c</sub>, low &pi;<sub>c</sub>, increased permeability, or blocked lymphatics.</td></tr>
+<tr><td>Stratum corneum</td><td>15&ndash;20 layers of corneocytes in ceramide-cholesterol-fatty acid lamellae. This is the actual water barrier.</td></tr>
+<tr><td>Filaggrin</td><td>A protein that bundles keratin and yields natural moisturizing factor. Losing it is the top genetic risk for atopic dermatitis.</td></tr>
+<tr><td>Transepidermal water loss</td><td>Water passing unseen through intact skin. Normally 4&ndash;8 g/m<sup>2</sup> per hour, or roughly 200&ndash;400 mL/day for a whole adult.</td></tr>
+<tr><td>Acid mantle</td><td>A surface pH of 4.5&ndash;5.5. It supports ceramide synthesis, restrains the enzymes that shed cells, and suppresses pathogens.</td></tr>
+<tr><td>Epidermal melanin unit</td><td>One melanocyte plus the 30&ndash;40 keratinocytes it supplies with melanosomes that cap the nucleus.</td></tr>
+<tr><td>Arteriovenous anastomosis</td><td>A direct arteriole-to-venule shunt in hairless skin, under sympathetic vasoconstrictor control. It works as a radiator switch.</td></tr>
+<tr><td>Evaporative heat loss</td><td>About 0.58 kcal removed per mL of sweat evaporated. It is the only route left once the air is warmer than the skin.</td></tr>
+<tr><td>Non-shivering thermogenesis</td><td>Heat made by UCP1 uncoupling in brown adipose tissue. It is the newborn&rsquo;s main defense against cold.</td></tr>
+<tr><td>Granulation tissue</td><td>New capillaries, fibroblasts and temporary type III collagen filling a wound during the proliferative phase.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+
+<div class="qq"><div class="q">Why can a bacterium live on diffusion alone when a human cannot?</div><div class="ans">Diffusion time rises with the square of the distance. Crossing 1 &micro;m takes about 0.5 ms. Crossing 1 mm takes hundreds of seconds. Crossing 1 cm takes many hours. A bacterium is only a micrometer or two across, so diffusion delivers it all instantly. In a human, no cell can sit more than about 100&ndash;200 &micro;m from a capillary. That is why bulk-flow circulation plus specialized exchange tissues are mandatory.</div></div>
+
+<div class="qq"><div class="q">A drug blocks the basolateral Na+/K+-ATPase in intestinal epithelium. What happens to glucose absorption? Explain the mechanism.</div><div class="ans">Absorption falls sharply. SGLT1 on the apical membrane is a secondary active transporter. It moves glucose uphill only by letting sodium move downhill. Block the pump and sodium inside the cell climbs toward the level outside. That collapses the electrochemical gradient SGLT1 spends. Water absorption falls too, because water follows the solute that is no longer being moved.</div></div>
+
+<div class="qq"><div class="q">What is the difference between a leaky and a tight epithelium? Give one example of each and say why it is built that way.</div><div class="ans">Take a leaky epithelium such as the renal proximal tubule. Its transepithelial resistance is roughly 5&ndash;10 ohm&middot;cm<sup>2</sup>. That permits massive flow between cells with only small gradients. It suits a segment that reabsorbs about two-thirds of the filtrate. A tight one such as the collecting duct or bladder urothelium tops 2,000 ohm&middot;cm<sup>2</sup>. That lets steep gradients be held. It is how urine can be concentrated to four times plasma osmolality without leaking back.</div></div>
+
+<div class="qq"><div class="q">A patient with nephrotic syndrome has a serum albumin of 1.8 g/dL and edema all over. Work through the Starling equation.</div><div class="ans">Albumin makes almost all of plasma colloid osmotic pressure. Normally that is 25&ndash;28 mmHg. Normal albumin is 3.5&ndash;5.0 g/dL. At 1.8 g/dL, &pi;<sub>c</sub> may fall to 10&ndash;15 mmHg. Now look at NFP = (P<sub>c</sub> &minus; P<sub>if</sub>) &minus; &sigma;(&pi;<sub>c</sub> &minus; &pi;<sub>if</sub>). The subtracted reabsorptive term shrinks. So net filtration stays positive along the entire capillary. Lymph flow rises to compensate, and it can climb well above its baseline 2&ndash;4 L/day. But once filtration outstrips even that reserve, fluid piles up between the cells. The fluid is a low-protein transudate.</div></div>
+
+<div class="qq"><div class="q">Protein synthesis takes hours. So why does histamine release produce a wheal within seconds?</div><div class="ans">No synthesis is required. Histamine acts at H<sub>1</sub> receptors and makes venular endothelial cells contract. That physically opens gaps between them. The reflection coefficient &sigma; falls. Protein escapes into the interstitium, so interstitial oncotic pressure rises. The opposing oncotic gradient mostly disappears. Filtration surges at once. The resulting edema is a protein-rich exudate rather than a transudate.</div></div>
+
+<div class="qq"><div class="q">Why does psoriasis produce thick, silvery scale that flakes off easily?</div><div class="ans">Normal keratinocyte transit from basal division to shedding takes 40&ndash;56 days. That is enough time to make filaggrin and discharge lamellar bodies. It is enough time to build a cornified envelope and break down the nucleus. In psoriasis, transit collapses to 4&ndash;7 days. Cells arrive at the surface with that program unfinished. Nuclei are still there, which is called parakeratosis. Lipid mortar is scarce. Desmosomes are not fully broken down. So the corneum is thick, disorganized, and it sheds in flakes.</div></div>
+
+<div class="qq"><div class="q">Name all five parts of the barrier-repair feedback loop.</div><div class="ans">Variable: barrier integrity, sensed as outward water flux. Sensor: the epidermal calcium gradient, which holds only while water flux is low. Integrator: the granular keratinocyte, whose lamellar body secretion is held back by high calcium outside it. Effector: preformed lamellar bodies released within minutes. The cell also makes extra ceramide, cholesterol and fatty acid over hours. Response: lipid lamellae reform, water flux falls, calcium builds back up, and secretion switches off. That is negative feedback. About 50&ndash;60% of function returns at 6 hours, and full recovery takes 3&ndash;5 days.</div></div>
+
+<div class="qq"><div class="q">Two people with very different skin color have about the same number of melanocytes. So why does their pigmentation differ?</div><div class="ans">Melanocyte density is roughly one per 4&ndash;10 basal keratinocytes in all populations. Color differences come from four other things. They come from melanosome size and number. They come from how fast melanosomes are broken down inside keratinocytes. They come from whether the melanosomes stay spread out or clump together. And they come from the ratio of eumelanin to pheomelanin. Function follows. More eumelanin gives greater ultraviolet protection. It also means less vitamin D made in the skin for a given exposure.</div></div>
+
+<div class="qq"><div class="q">Why is 35 &deg;C at 90% humidity more dangerous than 40 &deg;C in dry desert air?</div><div class="ans">The air reaches skin temperature at 33&ndash;35 &deg;C. At that point radiation, conduction and convection lose their driving gradient. They can even reverse and deliver heat to the body. Evaporation is then the only avenue left. Its driving force is the water vapor pressure difference between skin and air. At 90% humidity that gradient is nearly abolished. So sweat drips instead of evaporating, and it removes almost no heat. In dry air, evaporating 1 L removes about 580 kcal and stays highly effective.</div></div>
+
+<div class="qq"><div class="q">Why is sweat hypotonic at the surface? And why is sweat chloride diagnostic in cystic fibrosis?</div><div class="ans">The secretory coil produces a precursor that is almost isotonic, near 140 mmol/L sodium. The duct then reabsorbs sodium through ENaC and chloride through CFTR. The duct stays fairly water-impermeable, so salt leaves and water stays. Final sodium is 10&ndash;60 mmol/L. In cystic fibrosis, CFTR is non-functional. Chloride cannot be reclaimed. Sweat chloride then reaches 60 mmol/L or more. That is a direct readout of duct transport.</div></div>
+
+<div class="qq"><div class="q">A patient with a fever of 39 &deg;C is shivering and asking for blankets. Is thermoregulation failing?</div><div class="ans">No. It is working correctly toward a raised target. Pyrogens such as interleukin-1 and tumor necrosis factor act on the preoptic area. They drive prostaglandin E<sub>2</sub> synthesis there. That raises the set point. The loop then reads 39 &deg;C as too cold. So it deploys cold-defense effectors, meaning cutaneous vasoconstriction and shivering. Antipyretics lower the set point. The same loop then reverses into vasodilation and sweating. Heat stroke is the loop truly failing. Core temperature goes above 40 &deg;C. Mental status is altered, and the skin is often hot and dry.</div></div>
+
+<div class="qq"><div class="q">A wound looks fully closed at 3 weeks. Why restrict heavy lifting?</div><div class="ans">Closing the surface and building strength are different processes on different timelines. At 3 weeks, tensile strength is only about 20% of intact skin. It reaches roughly 60% at 3 months. It plateaus near 70&ndash;80% and is never fully restored. The remodeling phase swaps type III collagen for type I. It also lines the fibers up along the lines of stress. It runs from 3 weeks out to 1&ndash;2 years. Load the wound early and it can dehisce, meaning split open. The surface can look intact the whole time.</div></div>
+
+</div>
+      <div class="chapnav">
+        <a href="ch02.html"><span class="k">Previous</span>&larr; CELLULAR LEVEL OF ORGANIZATION</a>
+        <a class="next" href="ch04.html"><span class="k">Next</span>Bones and Skeletal Physiology &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Building an Antibody Response</title>
+<meta name="description" content="Place exposures on a 360-day timeline and watch IgM and IgG titers, affinity maturation and memory build a secondary response hundreds of times larger than the first.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;text-align:left;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:8px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.05);} .btn:disabled{opacity:.4;cursor:default;}
+.evs{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
+.ev{border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:10px;padding:9px 12px;background:#fff;font-size:12.4px;line-height:1.5;color:var(--soft);}
+.ev b{color:var(--teal-dk);} .ev .cls{font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:block;}
+.ev.pas{border-left-color:var(--purple);}
+.ev.weak{border-left-color:var(--coral);}
+canvas{display:block;width:100%;height:auto;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch11.html">&larr; Module 11</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 11</div>
+  <h1>Building an Antibody Response</h1>
+  <div class="intro">A first exposure lags <b>5 to 10 days</b>, peaks modestly and is IgM-dominated. A second begins in <b>1 to 3 days</b>, peaks roughly <b>100 to 1,000 times higher</b> and is high-affinity IgG. Nothing new is invented in between &mdash; there are simply more precursors, already class-switched and affinity-matured. Place exposures on the timeline below and build that difference yourself.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>Choose what you are giving</h2>
+      <div class="chips" id="types"></div>
+      <div class="sl" style="margin-top:14px"><label for="sDay">Give it on <span class="v" id="vDay">day 0</span></label>
+        <input type="range" id="sDay" min="0" max="330" step="5" value="0" aria-label="Day on which to place the next exposure"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bAdd">Add this exposure</button>
+        <button type="button" class="btn" id="bUndo">Remove last</button>
+        <button type="button" class="btn" id="bClear">Clear all</button>
+      </div>
+      <div class="chips" style="margin-top:13px">
+        <button type="button" class="chip" id="ageA">Adult or child over 2</button>
+        <button type="button" class="chip" id="ageB">Infant under 2 years</button>
+      </div>
+      <div class="hint">Age only matters for one antigen class. <b>Pure polysaccharide</b> antigens cannot be presented on MHC, so they are T-independent: they cross-link B-cell receptors directly, produce mostly IgM, generate little class switching and poor memory &mdash; and they work badly under 2 years. Try the same sugar as a <b>conjugate</b>.</div>
+    </div>
+    <div class="card">
+      <h2>Scenarios</h2>
+      <div class="chips" id="pre"></div>
+      <div class="sl" style="margin-top:14px"><label for="sCur">Read the chart on <span class="v" id="vCur">day 0</span></label>
+        <input type="range" id="sCur" min="0" max="360" step="1" value="0" aria-label="Day at which to read titers from the chart"></div>
+      <div class="hint">The dashed line is a notional <b>protective titer</b>. Watch how long each strategy keeps you above it, and note that a passive antibody &mdash; borrowed, not made &mdash; sits above the line immediately and then decays with IgG&rsquo;s <b>21-day half-life</b>, because no clone was ever selected.</div>
+    </div>
+    <div class="card">
+      <h2>What you have given</h2>
+      <div class="evs" id="evs"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Antibody titer across 360 days</h2>
+      <canvas id="ch" width="1040" height="500" role="img" aria-label="Logarithmic chart of IgM and IgG titers over three hundred and sixty days, with markers for each exposure"></canvas>
+      <div class="labs" id="labs"></div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <h2>Inside the germinal center</h2>
+      <canvas id="gc" width="1040" height="250" role="img" aria-label="Diagram of average antibody affinity rising with each T-dependent exposure through somatic hypermutation and selection"></canvas>
+      <div class="hint">A naive B cell binds native antigen, internalizes it and presents the peptides on <b>MHC class II</b>. A follicular helper T cell specific for the same antigen recognizes that display and delivers CD40 ligand and cytokines &mdash; <b>linked recognition</b>, a safety interlock ensuring the B cell is reacting to an antigen the T cell already vetted. Then <b>class switch recombination</b> swaps the heavy-chain constant region (interferon-gamma favors IgG, TGF-&beta; favors IgA, IL-4 favors IgE) while <b>somatic hypermutation</b> mutates the variable region about a million times faster than background, and the best binders win the limited antigen on follicular dendritic cells. A surviving plasma cell secretes up to about <b>2,000 antibody molecules per second</b>.</div>
+      <div class="sr" id="live" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var cs=getComputedStyle(document.documentElement);
+function CV(n){return cs.getPropertyValue('--'+n).trim();}
+
+var TYPES=[
+ {id:'inf', n:'Natural infection', cls:'Active natural', td:true},
+ {id:'pro', n:'Protein or toxoid vaccine', cls:'Active artificial', td:true},
+ {id:'pol', n:'Pure polysaccharide vaccine', cls:'Active artificial', td:false},
+ {id:'con', n:'Conjugate vaccine (sugar + carrier protein)', cls:'Active artificial', td:true},
+ {id:'ig',  n:'Immunoglobulin / antitoxin injection', cls:'Passive artificial', td:null},
+ {id:'mat', n:'Maternal IgG across the placenta', cls:'Passive natural', td:null}
+];
+var typeIdx=0, age='adult', cur=0, day=0;
+var events=[];
+var PROT=100, DET=3;
+
+function curve(peak,lag,tr,td,dt){
+  var x=dt-lag; if(x<=0) return 0;
+  var xs=Math.log(td/tr)/(1/tr-1/td);
+  var vm=Math.exp(-xs/td)-Math.exp(-xs/tr);
+  var v=Math.exp(-x/td)-Math.exp(-x/tr);
+  return peak*Math.max(0,v)/vm;
+}
+
+/* Build the parameter set for every event, in day order, tracking memory and affinity. */
+var _cache=null, _key='';
+function build(){
+  var key=age+'|'+events.map(function(e){return e.day+':'+e.t;}).join(',');
+  if(_cache && _key===key) return _cache;
+  var ev=events.slice().sort(function(a,b){return a.day-b.day;});
+  var nTd=0, aff=1, out=[];
+  ev.forEach(function(e){
+    var T=TYPES[e.t], o={day:e.day, t:e.t, name:T.n, cls:T.cls, m:[], g:[], note:'', flag:''};
+    if(T.id==='ig'){
+      o.g.push([400,0.2,0.4,30.3]); o.note='Preformed antibody. Protective immediately, no clone selected, no memory, decays with IgG&rsquo;s 21-day half-life.'; o.flag='pas';
+    } else if(T.id==='mat'){
+      o.g.push([1500,0,0.3,30.3]); o.note='Borrowed IgG. Only IgG crosses the placenta, so a newborn&rsquo;s own IgM in cord blood would mean intrauterine infection. Wanes over roughly 6 months &mdash; the gap childhood schedules are timed around.'; o.flag='pas';
+    } else if(!T.td){
+      var scale=(age==='infant')?0.15:1;
+      o.m.push([35*scale,6,1.5,8]); o.g.push([2*scale,10,3,25]);
+      o.note='T-independent: it cross-links B-cell receptors directly, so it makes mostly IgM, switches class poorly and leaves no useful memory.'+((age==='infant')?' In an infant under 2 the response is barely detectable.':'');
+      o.flag='weak';
+      o.order='primary-always';
+    } else {
+      var sec=nTd>0;
+      if(!sec){
+        o.m.push([60,6,1.2,7]); o.g.push([25,9,3,40]);
+        o.note='Primary response: 5&ndash;10 day lag while the rare specific clone is selected and expands, modest IgM-dominated peak, IgG appearing later at low affinity, declining within weeks.';
+        o.order='primary';
+      } else {
+        var boost = nTd===1 ? 250 : 250*Math.min(2.2, 1+0.6*(nTd-1));
+        o.m.push([55,1.5,1.0,6]); o.g.push([25*boost,2,1.0,120]);
+        o.note='Secondary response: begins in 1&ndash;3 days, peaks about '+Math.round(boost)+'&times; the primary, high-affinity IgG, persisting for months to years. Nothing new was invented &mdash; there are simply far more precursors, already class-switched and affinity-matured.';
+        o.order='secondary';
+      }
+      aff = sec ? Math.min(100, aff*(nTd===1?15:(nTd===2?3:1.5))) : aff;
+      nTd++;
+    }
+    o.affAfter=aff;
+    out.push(o);
+  });
+  _cache=out; _key=key;
+  return out;
+}
+function titers(t){
+  var ev=build(), m=0,g=0;
+  ev.forEach(function(e){
+    e.m.forEach(function(p){ m+=curve(p[0],p[1],p[2],p[3],t-e.day); });
+    e.g.forEach(function(p){ g+=curve(p[0],p[1],p[2],p[3],t-e.day); });
+  });
+  return {m:m,g:g,tot:m+g};
+}
+function affAt(t){
+  var ev=build(), a=1;
+  ev.forEach(function(e){ if(e.day<=t && e.affAfter) a=e.affAfter; });
+  return a;
+}
+
+/* ---------- ui ---------- */
+var tb=document.getElementById('types');
+TYPES.forEach(function(T,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'+(i===0?' on':''); b.textContent=T.n;
+  b.addEventListener('click',function(){
+    typeIdx=i; [].forEach.call(tb.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+  });
+  tb.appendChild(b);
+});
+document.getElementById('sDay').addEventListener('input',function(){day=+this.value;document.getElementById('vDay').textContent='day '+day;});
+document.getElementById('sCur').addEventListener('input',function(){cur=+this.value;draw();});
+document.getElementById('bAdd').addEventListener('click',function(){
+  if(events.length>=8) return;
+  events.push({day:day,t:typeIdx}); clearPre(); draw();
+});
+document.getElementById('bUndo').addEventListener('click',function(){ events.pop(); clearPre(); draw(); });
+document.getElementById('bClear').addEventListener('click',function(){ events=[]; clearPre(); draw(); });
+function setAge(a){
+  age=a;
+  document.getElementById('ageA').classList.toggle('on',a==='adult');
+  document.getElementById('ageB').classList.toggle('on',a==='infant');
+  draw();
+}
+document.getElementById('ageA').addEventListener('click',function(){setAge('adult');});
+document.getElementById('ageB').addEventListener('click',function(){setAge('infant');});
+
+var PRE=[
+ {n:'Primary alone',e:[{day:0,t:0}],a:'adult'},
+ {n:'Prime, then booster at day 30',e:[{day:0,t:1},{day:30,t:1}],a:'adult'},
+ {n:'Two doses, then a 6-month booster',e:[{day:0,t:1},{day:30,t:1},{day:210,t:1}],a:'adult'},
+ {n:'Polysaccharide vaccine in an infant',e:[{day:0,t:2},{day:60,t:2}],a:'infant'},
+ {n:'Same sugar as a conjugate vaccine',e:[{day:0,t:3},{day:60,t:3}],a:'infant'},
+ {n:'Tetanus exposure: immunoglobulin + vaccine',e:[{day:0,t:4},{day:0,t:1},{day:30,t:1}],a:'adult'},
+ {n:'Newborn: maternal IgG, first vaccine at 2 months',e:[{day:0,t:5},{day:60,t:1},{day:120,t:1}],a:'infant'},
+ {n:'Immunoglobulin alone &mdash; no memory made',e:[{day:0,t:4}],a:'adult'}
+];
+var preBox=document.getElementById('pre');
+PRE.forEach(function(p,i){
+  var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    events=p.e.map(function(x){return {day:x.day,t:x.t};});
+    age=p.a; setAge(p.a);
+    [].forEach.call(preBox.children,function(c){c.classList.remove('on');}); b.classList.add('on');
+    draw();
+  });
+  preBox.appendChild(b);
+});
+function clearPre(){[].forEach.call(preBox.children,function(c){c.classList.remove('on');});}
+
+/* ---------- drawing ---------- */
+var cv=document.getElementById('ch'), cx=cv.getContext('2d');
+var gc=document.getElementById('gc'), gx=gc.getContext('2d');
+var TMAX=360, HI=5;
+function drawChart(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=78,R=W-24,Tp=44,B=H-40;
+  function X(d){return L+(d/TMAX)*(R-L);}
+  function Y(v){ return B-(Math.log(Math.max(v,1))/Math.LN10/HI)*(B-Tp); }
+  cx.strokeStyle=CV('line'); cx.lineWidth=1.4; cx.font='600 15px Inter, sans-serif';
+  for(var e=0;e<=HI;e++){
+    var y=B-(e/HI)*(B-Tp);
+    cx.beginPath();cx.moveTo(L,y);cx.lineTo(R,y);cx.stroke();
+    cx.fillStyle=CV('muted');cx.textAlign='right';cx.fillText(['1','10','100','1k','10k','100k'][e],L-8,y+5);
+  }
+  for(var d=0;d<=TMAX;d+=60){cx.fillStyle=CV('muted');cx.textAlign='center';cx.fillText('d'+d,X(d),B+22);}
+  cx.setLineDash([8,6]); cx.beginPath(); cx.moveTo(L,Y(PROT)); cx.lineTo(R,Y(PROT));
+  cx.strokeStyle=CV('gold'); cx.lineWidth=2.4; cx.stroke(); cx.setLineDash([]);
+  cx.fillStyle=CV('gold'); cx.textAlign='right'; cx.font='800 14px Inter, sans-serif';
+  cx.fillText('protective titer',R-6,Y(PROT)-8);
+
+  var pts=[];
+  for(var t=0;t<=TMAX;t+=1) pts.push(titers(t));
+  function line(key,col,wd){
+    cx.beginPath();
+    for(var i=0;i<pts.length;i++){ var x=X(i), y=Y(pts[i][key]); if(i===0)cx.moveTo(x,y);else cx.lineTo(x,y); }
+    cx.strokeStyle=col; cx.lineWidth=wd; cx.lineJoin='round'; cx.stroke();
+  }
+  line('m',CV('blue'),2.8);
+  line('g',CV('coral'),3.6);
+
+  build().forEach(function(ev){
+    var x=X(ev.day);
+    cx.setLineDash([3,4]); cx.beginPath(); cx.moveTo(x,Tp-16); cx.lineTo(x,B);
+    cx.strokeStyle=CV('teal'); cx.lineWidth=1.8; cx.stroke(); cx.setLineDash([]);
+    cx.beginPath(); cx.arc(x,Tp-20,7,0,6.2832); cx.fillStyle=CV('teal'); cx.fill();
+  });
+  var cx2=X(cur);
+  cx.beginPath(); cx.moveTo(cx2,Tp-30); cx.lineTo(cx2,B); cx.strokeStyle=CV('teal-dk'); cx.lineWidth=2.2; cx.stroke();
+  cx.font='800 16px Inter, sans-serif'; cx.textAlign='left';
+  cx.fillStyle=CV('coral'); cx.fillText('IgG',L+8,Tp-8);
+  cx.fillStyle=CV('blue'); cx.fillText('IgM',L+56,Tp-8);
+  cx.fillStyle=CV('teal-dk'); cx.fillText('day '+cur,L+110,Tp-8);
+  cx.fillStyle=CV('muted'); cx.font='600 14px Inter, sans-serif';
+  cx.textAlign='left'; cx.fillText('titer, logarithmic',L-70,Tp-24);
+}
+
+function drawGC(){
+  var W=gc.width,H=gc.height; gx.clearRect(0,0,W,H);
+  var L=78,R=W-24,Tp=42,B=H-42;
+  function X(d){return L+(d/TMAX)*(R-L);}
+  function Y(a){ return B-(Math.log(Math.max(a,1))/Math.log(100))*(B-Tp); }
+  gx.strokeStyle=CV('line'); gx.lineWidth=1.4; gx.font='600 14px Inter, sans-serif';
+  [1,10,100].forEach(function(a){
+    var y=Y(a); gx.beginPath();gx.moveTo(L,y);gx.lineTo(R,y);gx.stroke();
+    gx.fillStyle=CV('muted');gx.textAlign='right';gx.fillText('×'+a,L-8,y+5);
+  });
+  gx.beginPath();
+  for(var t=0;t<=TMAX;t+=1){ var x=X(t), y=Y(affAt(t)); if(t===0)gx.moveTo(x,y); else gx.lineTo(x,y); }
+  gx.strokeStyle=CV('purple'); gx.lineWidth=3.4; gx.stroke();
+  gx.beginPath(); gx.arc(X(cur),Y(affAt(cur)),6,0,6.2832); gx.fillStyle=CV('gold'); gx.fill();
+  gx.fillStyle=CV('purple'); gx.font='800 15px Inter, sans-serif'; gx.textAlign='left';
+  gx.fillText('average antibody affinity, from somatic hypermutation and selection',L+8,Tp-14);
+  gx.fillStyle=CV('muted'); gx.font='600 14px Inter, sans-serif';
+  gx.fillText('affinity maturation raises average binding 10- to 100-fold over a few weeks',L+8,B+26);
+}
+
+function lab(k,v,u){return '<div class="lab"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="u">'+u+'</div></div>';}
+function fmt(v){ if(v<1) return '0'; if(v<1000) return v.toFixed(0); if(v<1e6) return (v/1000).toFixed(1)+'k'; return (v/1e6).toFixed(2)+'M'; }
+
+function draw(){
+  var ev=build(), T=titers(cur);
+  document.getElementById('vCur').textContent='day '+cur;
+  document.getElementById('vDay').textContent='day '+day;
+  drawChart(); drawGC();
+
+  var peak=0, peakDay=0, firstProt=-1, lastProt=-1;
+  for(var t=0;t<=TMAX;t++){
+    var v=titers(t); if(v.tot>peak){peak=v.tot;peakDay=t;}
+    if(v.tot>=PROT){ if(firstProt<0)firstProt=t; lastProt=t; }
+  }
+  var dom = T.g>T.m*1.3 ? 'IgG' : (T.m>T.g*1.3 ? 'IgM' : 'IgM + IgG');
+  document.getElementById('labs').innerHTML=
+    lab('IgG titer on day '+cur,fmt(T.g),'units')+
+    lab('IgM titer on day '+cur,fmt(T.m),'units')+
+    lab('Dominant class',dom,'right now')+
+    lab('Average affinity','×'+affAt(cur).toFixed(0),'vs first antibody')+
+    lab('Peak titer',fmt(peak),'on day '+peakDay)+
+    lab('Above protective',(firstProt<0?'never':'d'+firstProt+'–d'+lastProt),'window');
+
+  var box=document.getElementById('evs'); box.innerHTML='';
+  if(!ev.length){
+    box.innerHTML='<div class="ev">Nothing given yet. Pick an antigen above, choose a day, and press <b>Add this exposure</b> &mdash; or load a scenario.</div>';
+  }
+  ev.forEach(function(e,i){
+    var d=document.createElement('div'); d.className='ev'+(e.flag?' '+e.flag:'');
+    d.innerHTML='<span class="cls">'+e.cls+' &middot; day '+e.day+'</span><b>'+e.name+'</b><br>'+e.note;
+    box.appendChild(d);
+  });
+
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  var tdCount=0, passive=0, polyOnly=true;
+  ev.forEach(function(e){
+    var ty=TYPES[e.t];
+    if(ty.td===true){tdCount++;polyOnly=false;}
+    if(ty.td===null){passive++;polyOnly=false;}
+  });
+  if(!ev.length){
+    cls+='cool'; h='EMPTY TIMELINE<small>Start with a single natural infection on day 0 and read the shape of a primary response: a 5&ndash;10 day lag, a modest IgM-dominated peak, low-affinity IgG appearing later, and decline within weeks. Then add a second exposure and compare.</small>';
+  } else if(passive && tdCount===0){
+    cls+='warn'; h='PASSIVE ONLY &mdash; protection now, memory never<small>Preformed antibody neutralizes immediately, but no clone is selected, no germinal center forms, and affinity stays at &times;1. The borrowed IgG decays with a 21-day half-life and the recipient ends up exactly as susceptible as before. This is why a person exposed to tetanus or rabies receives <b>both</b> immunoglobulin and vaccine &mdash; they cover different halves of the time course.</small>';
+  } else if(polyOnly && tdCount===0){
+    cls+='bad'; h='T-INDEPENDENT ANTIGEN &mdash; IgM, and little else<small>A pure polysaccharide cannot be presented on MHC, so no follicular helper T cell can license the B cell. Without T help there is minimal class switching, no somatic hypermutation, no affinity maturation and no useful memory'+((age==='infant')?', and under 2 years of age the response is barely detectable at all':'')+'. Conjugating the sugar to a carrier protein recruits T help and converts this into a strong, memory-forming response &mdash; the reason the Hib conjugate vaccine nearly eliminated a once-common childhood meningitis.</small>';
+  } else if(tdCount>=2){
+    var pk1=0,pk2=0;
+    var first=ev.filter(function(e){return e.order==='primary';})[0];
+    var secs=ev.filter(function(e){return e.order==='secondary';});
+    if(first) pk1=first.g[0][0];
+    if(secs.length) pk2=secs[secs.length-1].g[0][0];
+    cls+='ok'; h='SECONDARY RESPONSE BUILT &mdash; about '+Math.round(pk2/Math.max(pk1,1))+'&times; the primary<small>Onset has fallen from about 9 days to about 2, the dominant class has switched from IgM to IgG, average affinity has risen to &times;'+affAt(TMAX).toFixed(0)+', and the titer now persists for months rather than weeks. <b>That difference is the entire physiologic basis of vaccination.</b> Herd immunity is its population-level extension: once the immune fraction exceeds 1 &minus; 1/R<sub>0</sub>, transmission chains break &mdash; about 92 to 95 percent for measles.</small>';
+  } else {
+    cls+='warn'; h='PRIMARY RESPONSE ONLY<small>Peak titer '+fmt(peak)+' on day '+peakDay+', dominated by IgM early with lower-affinity IgG following. Detecting IgM against a pathogen implies a current or very recent <i>first</i> infection; IgG alone implies past infection or vaccination. Add a second exposure and watch what memory does to the same curve.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+  document.getElementById('live').textContent='Day '+cur+'. IgG '+fmt(T.g)+', IgM '+fmt(T.m)+', average affinity times '+affAt(cur).toFixed(0)+'.';
+}
+setAge('adult');
+events=[{day:0,t:0}];
+draw();
+})();
+</script>
+</body>
+</html>

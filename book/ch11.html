@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>The Lymphatic and Immune Systems &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Every minute of every day your capillaries leak. Roughly 20 liters of plasma filtrate is pushed into the tissues each day and only about 17 liters is pulled back by oncotic pressure, so some 3 liters of protein-containing fluid is">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 11 &middot; Lymphatic and Immune Systems</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#lymph-flow">1 &middot; Lymph: the fluid the circulation cannot get back</a>
+        <a href="#innate">2 &middot; Innate defense: barriers, inflammation and fever</a>
+        <a href="#lymphocyte-development">3 &middot; Building a specific immune system: lymphocytes, antigen presentation and clonal selection</a>
+        <a href="#cell-mediated">4 &middot; Cell-mediated immunity: T cells and the killing of compromised cells</a>
+        <a href="#humoral">5 &middot; Humoral immunity: antibodies, memory and the basis of vaccination</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 11</div>
+<h1>The Lymphatic and Immune Systems</h1>
+<p class="lede">Every minute of every day your capillaries leak. About 20 liters of fluid is pushed out into the tissues each day. Only about 17 liters is pulled back in by oncotic pressure. Oncotic pressure is the inward pull made by plasma protein. That leaves about 3 liters behind, and it carries protein with it. If that fluid stayed there you would drown in it. That would take about a day. The space between cells is called the interstitium. The lymphatic system is the low-pressure drain that picks that fluid up. That drain samples fluid from every tissue in the body. So evolution built the immune system on top of it. Lymph nodes are the checkpoints. Drained antigen meets the lymphocytes that recognize it there. This module treats immunity as physiology, not as a list of names. We will ask what pushes lymph along and what holds it back. We will ask how a cell tells self from non-self. It uses nothing but how tightly a receptor binds. We will ask how inflammation is a controlled change in capillary pressure and leakiness. And we will find the feedback loops. They keep a defense from destroying the host.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Use the <b>Starling equation</b>. Show why capillaries filter more than they take back over 24 hours. Explain why <b>lymph</b> has to form. It is not optional.</li>
+<li>Name the pressures and valves that move lymph. Include <b>lymphangion</b> contraction, the skeletal muscle pump and the respiratory pump. Predict where <b>edema</b>, or swelling, appears when one of them fails.</li>
+<li>Tell <b>innate</b> immunity from <b>adaptive</b> immunity. Use speed, how picky each is, and whether it remembers. Then trace <b>inflammation</b> in order. It runs from <b>PAMP</b> recognition, to widened vessels, to leakier walls, to <b>chemotaxis</b> and <b>diapedesis</b>.</li>
+<li>Draw the <b>fever</b> control loop. It is a negative-feedback system with a reset set point. Name the variable, the sensor, the integrator, the effector and the response.</li>
+<li>Explain <b>clonal selection</b>. Explain <b>positive</b> and <b>negative selection</b> in the thymus. Say how <b>self-tolerance</b> is built rather than inherited.</li>
+<li>Compare <b>MHC class I</b> and <b>MHC class II</b> presentation. Predict which T-cell subset answers each one.</li>
+<li>Describe how a <b>cytotoxic T lymphocyte</b> kills using <b>perforin</b> and <b>granzyme</b>. Say how <b>helper T cells</b> turn the response up. Say how <b>regulatory T cells</b> turn it down.</li>
+<li>Compare the <b>primary</b> and <b>secondary antibody responses</b> using real numbers. Sort immunity as active or passive, and as natural or artificial.</li>
+<li>Explain <b>hypersensitivity</b>, <b>autoimmunity</b> and <b>immunodeficiency</b>. Each one is a named control step that failed. None of them is simply &ldquo;weak&rdquo; or &ldquo;strong&rdquo; immunity.</li>
+</ul></div>
+
+<h2 id="lymph-flow"><span class="num">Section 1</span>Lymph: the fluid the circulation cannot get back</h2>
+<figure class="bref"><div class="fr"><img src="img/ch11_s1.jpg" alt="Diagram of the lymphatic system. It shows lymphatic capillaries in tissue, collecting vessels with valves, lymph nodes, the thoracic duct draining into the left subclavian vein, and the right lymphatic duct" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Lymphatic capillaries pick up interstitial fluid. Valved collecting vessels and nodes then return it to the subclavian veins. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Why filtration always wins over 24 hours</h3>
+<p>Fluid crossing a capillary wall follows the Starling relationship. It is written Jv = Kf [(Pc &minus; Pi) &minus; &sigma;(&pi;c &minus; &pi;i)]. Jv is the net flow. Kf is the filtration coefficient. It says how leaky the wall is and how much surface it has. Pc and Pi are the hydrostatic pressures in the capillary and in the tissue. Hydrostatic means push. &pi;c and &pi;i are the matching colloid osmotic, or oncotic, pressures. &sigma; is the reflection coefficient. It runs from 0 to 1 and says how well the wall holds protein back. In a typical body capillary, Pc starts near 35 mmHg at the arteriolar end. It falls to about 15 to 18 mmHg at the venular end. Meanwhile &pi;c stays near 25 to 28 mmHg. That is because albumin does not cross freely. Normal plasma albumin runs 3.5 to 5.0 g/dL. Tissue pressure Pi sits a little below atmospheric in most tissues, around &minus;2 mmHg. And &pi;i is a small but real 3 to 8 mmHg. A little protein does escape.</p>
+<p>Run those numbers and a pattern appears. The arteriolar end filters fluid out. The venular end takes fluid back. The two do not cancel. Filtration beats reabsorption by roughly 15 percent. Across the whole body that is roughly 20 liters filtered and 17 liters reabsorbed per day. About 3 liters is left stranded in the interstitium. Values of 2 to 4 liters are commonly quoted. There is a worse problem. The albumin that escaped cannot diffuse back against its own concentration gradient. If it piled up, &pi;i would climb. The oncotic pull inward would weaken. Filtration would then speed up and feed on itself. The lymphatic system exists to break that spiral. It removes both the water and the protein. That holds &pi;i low and Pi negative.</p>
+<p>This is the most useful way to think about lymphatics in a physiology course. They are not a second circulation with a pump of their own. They are a pressure-relief drain on a leaky system. The system does other jobs too. It absorbs fat from food. It delivers antigen to nodes. It houses lymphocytes. All of that is extra use of plumbing that was built for fluid balance.</p>
+<div class="pearl"><b>Misconception check.</b> Students often say this. &ldquo;The lymphatic system returns fluid that the veins could not reabsorb because venous pressure is too high.&rdquo; That is not the real reason. The real reason is the escaped <i>protein</i>. No osmotic mechanism can pull protein back in. Water follows protein. So the lymphatics are really a protein-scavenging system. The 3 liters of water comes along for the ride.</div>
+
+<h3>Structure that follows from the job</h3>
+<p>A lymphatic capillary is built to be a one-way inlet at very low pressure. Its endothelial cells overlap like roof shingles. They do not form tight junctions. Each flap is tied to nearby collagen by anchoring filaments. When the volume of tissue fluid rises, the tissue swells. The filaments pull the flaps outward and the gaps open. So this is a physical valve. The fluid it removes is what opens it. When lymph inside the vessel presses out, the flaps shut. The result is a one-way gate. Fluid, protein, cell debris and whole cells get in easily. Bacteria, dendritic cells and cancer cells all ride in that way. None of them can leave the way they came.</p>
+<p>Lymphatic capillaries drain into collecting vessels. Those vessels have smooth muscle and half-moon valves. Lymph then passes through lymph nodes, into trunks, and finally into two end ducts. The right lymphatic duct drains the right upper quadrant of the body. That is the right head, neck, arm and thorax. It empties into the right subclavian vein. The thoracic duct drains everything else, roughly 75 to 80 percent of all lymph. It starts at the cisterna chyli. It empties where the left subclavian and internal jugular veins meet. Total flow is modest. The thoracic duct carries about 100 mL per hour at rest. Overall lymph flow is roughly 120 mL per hour, or some 2 to 4 liters per day. Exercise can raise that more than tenfold.</p>
+<p>Two tissue features are worth remembering. They explain patterns you will see in patients. Lacteals are the lymphatic capillaries inside the villi of the intestine. They absorb long-chain fatty acids packed into chylomicrons. Those packages are too large for blood capillaries. The milky lymph that results is called chyle. A torn thoracic duct spills it into the pleural space as a chylothorax. The central nervous system was long said to have no lymphatics. We now know it has meningeal lymphatic vessels. It also has a clearance route around its vessels called the glymphatic system. That is why poor clearance now comes up in talks about neurodegenerative disease.</p>
+
+<h3>What actually drives the flow</h3>
+<p>Humans have no lymphatic heart. Yet lymph must climb from the foot to the neck against gravity. Flow still follows the Ohm&rsquo;s-law analog Q = &Delta;P / R. So the question is where &Delta;P comes from. Three sources supply it. First comes the vessel&rsquo;s own squeeze. The piece of a collecting vessel between two valves is called a lymphangion. Its smooth muscle contracts on its own 6 to 10 times per minute at rest. Stretch it and the rate can reach about 30 per minute. Each beat generates 5 to 20 mmHg. So each lymphangion is a tiny heart, and they sit in a line. Stretch raises both rate and force. That is a length-tension relationship, much like Starling&rsquo;s law of the heart. It makes lymph output match lymph load on its own.</p>
+<p>Second comes compression from outside. Contracting skeletal muscle squeezes the vessels. The valves turn that squeeze into forward flow. The venous system works the same way. Third comes the respiratory pump. The thorax expands when you breathe in. Pressure inside the thorax drops to about &minus;6 to &minus;8 cmH2O. The diaphragm descends at the same time and raises pressure in the abdomen. Lymph moves up the thoracic duct down that pressure difference. Nothing is sucked. Flow always follows a pressure difference. Arterial pulsation against nearby lymphatics adds a smaller fourth push. All three major mechanisms need working valves. A failed valve turns a pump into a sloshing reservoir.</p>
+<p>Flow depends on movement. So staying still lowers it. That is why a limb that is still, hanging down and warm swells up. It is also why we treat that swelling with elevation, compression and active movement. Together they lower Pc, raise the driving pressure gradient and work the lymphangion pump. It explains lymphatic drainage massage too. Only stroking from the far end toward the trunk goes with the valves.</p>
+
+<h3>Edema as a Starling failure you can localize</h3>
+<p>You can feel edema once interstitial volume rises roughly 2.5 to 3 liters above normal. That is also about when body weight has gone up a few kilograms. Every cause of edema changes one Starling term or the lymphatic drain. Name the term and you have named the mechanism.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Mechanism</th><th>Starling term changed</th><th>Typical cause</th><th>Clue at the bedside</th></tr></thead><tbody>
+<tr><td>Push pressure in the capillary rises</td><td>Pc up</td><td>Heart failure, blocked veins, deep vein thrombosis, pregnancy</td><td>Pitting, worse in the lower parts, often on both sides. One side only if one vein is blocked</td></tr>
+<tr><td>Pull from plasma protein falls</td><td>&pi;c down</td><td>Liver failure, nephrotic syndrome, severe malnutrition (albumin below about 2.5 g/dL)</td><td>All over the body, often with ascites and puffy eyelids</td></tr>
+<tr><td>The wall gets leakier</td><td>Kf up, &sigma; down</td><td>Inflammation, burns, sepsis, anaphylaxis</td><td>Warm, red, protein-rich fluid. It comes on fast</td></tr>
+<tr><td>The lymphatic drain is blocked</td><td>Lymph flow down</td><td>Node dissection, radiation, filariasis, tumor invasion</td><td>Non-pitting later, thickened skin, in one region rather than all over</td></tr>
+</tbody></table></div>
+<p>Lymphedema is the case that teaches the most. Here the drain is the problem, not the leak. Protein builds up in the interstitium. &pi;i climbs. So the swelling keeps itself going, and it later turns fibrotic. That is why arm swelling after axillary node dissection does not simply resolve with elevation. Venous edema does. It is also why infection risk rises in that limb. Stagnant, protein-rich fluid that never reaches a node is fluid the immune system never checks.</p>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Across 24 hours a normal body filters about 20 liters of fluid out of its capillaries. It pulls only about 17 liters back. The albumin that escapes cannot diffuse home against its own gradient <a href="../lab/ch11/StarlingForcesAndLymphDrain.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch11/StarlingForcesAndLymphDrain.html" loading="lazy" title="Starling Forces and the Lymphatic Drain interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Capillaries filter about 3 liters more protein-containing fluid per day than they take back. The lymphatic circuit has valves and squeezes on its own. It is the only route back to the blood for that fluid and its albumin.</p></div>
+
+<h2 id="innate"><span class="num">Section 2</span>Innate defense: barriers, inflammation and fever</h2>
+<figure class="bref"><div class="fr"><img src="img/ch11_s2.jpg" alt="Diagram of the acute inflammatory response. It shows vessels widening, capillaries becoming more permeable, neutrophils lining up and squeezing through the wall, and chemotaxis toward bacteria in tissue" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Acute inflammation changes three things at once. Vessels widen, walls grow more permeable, and leukocytes stick. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The first two lines: surfaces and sentinels</h3>
+<p>Innate immunity is fast. It works in minutes to hours. It is non-specific. That means it answers broad classes of molecules, not one exact target. It also does not improve with repetition. Its first line is physical and chemical. The outer skin is keratinized stratified squamous epidermis. It is dry, shedding and mechanically tough. The skin surface sits at pH 4 to 6. Gastric contents sit at pH 1.5 to 3.5. Vaginal secretions sit near pH 4, thanks to lactobacilli. Mucous membranes trap particles in a thick, viscous layer. The mucociliary escalator sweeps that layer toward the pharynx at roughly 1 cm per minute. Lysozyme in tears and saliva cuts open bacterial cell walls. Defensins punch holes in membranes. The resident microbiota takes up binding sites and eats nutrients a pathogen would want. None of this involves lymphocytes at all. A very large share of infection prevention is mechanical and chemical.</p>
+<p>The second line starts when something crosses. Macrophages, dendritic cells, mast cells and epithelial cells carry pattern recognition receptors. Toll-like receptors are the best known ones. They bind pathogen-associated molecular patterns, or PAMPs. Examples are lipopolysaccharide from Gram-negative walls, peptidoglycan, flagellin, unmethylated CpG DNA and double-stranded RNA. Microbes need these molecules and host cells do not have them. That is why one fixed, germline-encoded receptor can be both broad and safe. Damaged host cells release damage-associated molecular patterns, or DAMPs. ATP and nuclear HMGB1 are two of them. They set off the same machinery. That is why a sterile crush injury looks exactly like an infected one.</p>
+
+<h3>Inflammation is a controlled change in Starling terms</h3>
+<p>The four classical signs are redness, heat, swelling and pain. In Latin they are rubor, calor, tumor and dolor. Loss of function is the fifth. Each one is a mechanical consequence you can predict. Sentinel cells act first. Mast cells release histamine within seconds. Prostaglandins, leukotrienes, bradykinin and cytokines follow over minutes to hours. Those cytokines include TNF-&alpha;, IL-1 and IL-6. Histamine and nitric oxide relax arteriolar smooth muscle. A wider arteriole means less resistance upstream of the capillary bed. By Q = &Delta;P / R, both flow and capillary hydrostatic pressure Pc rise. More warm arterial blood means redness and heat.</p>
+<p>At the same time the endothelial cells of postcapillary venules contract. They pull their junctions apart. In Starling terms Kf rises and &sigma; falls. Protein escapes, so &pi;i climbs while &pi;c falls in that spot. Pc is up and the oncotic gradient has collapsed. Filtration surges, and that surge is the swelling. Its fluid is a protein-rich exudate. Heart failure makes a protein-poor transudate instead. The exudate is not waste. It carries complement, antibody, fibrinogen and clotting factors into the tissue. It walls the area off with fibrin. It dilutes toxins. Pain comes from bradykinin and prostaglandins making nociceptors more sensitive, plus mechanical stretch. Pain makes you rest the injured part.</p>
+<p>Leukocytes arrive in four steps. Slowed flow lets neutrophils drift to the vessel margin, which is margination. Selectins on activated endothelium catch and release them, so they roll. Chemokines then switch on integrins and the cell adheres firmly. Last, the cell squeezes between endothelial cells to reach the tissue. That step is diapedesis, or emigration. It then crawls up a chemical gradient toward the source, and that crawl is chemotaxis. The gradient is made of chemokines, complement C5a and bacterial peptides. Neutrophils are normally 40 to 70 percent of a white count of 4,500 to 11,000 cells per &micro;L. They arrive within an hour and dominate for one to two days. Monocytes follow and mature into macrophages that clear debris and run repair. Pus is the residue. It is dead neutrophils, liquefied tissue and microbes.</p>
+<div class="pearl"><b>Clinical anchor.</b> NSAIDs inhibit cyclo-oxygenase, so they block prostaglandin synthesis. That is why one drug class does three things at once. It lowers fever, reduces swelling and relieves pain. All three signs run through prostaglandins. It also explains the cost. Gastric prostaglandins normally protect the stomach lining. Renal prostaglandins keep the afferent arteriole dilated. Block them and you can cause ulceration. In a volume-depleted patient you can cause acute kidney injury.</div>
+
+<h3>Complement, interferons and natural killer cells</h3>
+<p>Complement is about 30 plasma proteins. The liver makes most of them. They circulate switched off. Then they turn on in a cascade with genuine positive-feedback amplification. One activated molecule cleaves many downstream molecules. So a handful of triggering events yields a large response in seconds. Three pathways all converge on cleaving C3. The classical pathway starts with antibody, IgG or IgM, already bound to antigen. The lectin pathway starts with mannose-binding lectin on microbial sugars. The alternative pathway starts when C3 hydrolyzes on its own. It is then stabilized on a microbial surface. All three then do three jobs. C3b coats the microbe for phagocytosis, which is opsonization. C3a and C5a recruit and activate leukocytes. They also degranulate mast cells. That is inflammation and chemotaxis. C5b through C9 assemble the membrane attack complex. That is a pore. Water and ions rush in and the cell lyses.</p>
+<p>Amplifying cascades are dangerous. That is why host cells carry regulatory proteins. Decay-accelerating factor and CD59 are two of them. They dismantle complement on self surfaces. Complement makes a good point about positive feedback. Physiology uses it only where an explosive all-or-none response is wanted. It also needs a separate braking system. Clotting and the action potential upstroke are the other classic examples.</p>
+<p>Viruses need different tools. A virus inside a cell is invisible to antibody and complement. An infected cell detects viral nucleic acid and secretes type I interferons, IFN-&alpha; and IFN-&beta;. These bind neighboring cells. The neighbors then make enzymes that degrade RNA and block translation. The infected cell is warning its neighbors to become poor hosts. Interferon is antiviral in general rather than specific to one virus. It also causes much of the malaise, the awful feeling, of a viral illness. Natural killer cells patrol for cells that have lost their MHC class I molecules. Viruses and tumors drop class I to hide. NK cells kill those cells with perforin and granzymes. NK cells count as innate. They need no prior exposure and use no rearranged receptor. Even so, they kill by the same molecular route cytotoxic T cells use.</p>
+
+<h3>Fever: a negative-feedback loop with a moved set point</h3>
+<p>Fever is the clearest control-loop lesson in immunology. Core temperature normally sits near 37 &deg;C. The usual range is about 36.5 to 37.5 &deg;C. It swings roughly 0.5 &deg;C across the day and is lowest around 4 a.m. The regulated variable is core temperature. The sensors are central thermoreceptors. They sit in the preoptic area of the anterior hypothalamus. Peripheral skin thermoreceptors report in too. The integrator is the hypothalamic thermoregulatory center. It compares the sensed temperature with a set point. The effectors are cutaneous arterioles, sweat glands, skeletal muscle and brown adipose tissue.</p>
+<p>In fever, exogenous pyrogens start the process. Bacterial lipopolysaccharide is one. They drive macrophages to release endogenous pyrogens of our own. Those are IL-1, IL-6 and TNF-&alpha;. They act on the vascular organ of the lamina terminalis. That raises prostaglandin E2 in the hypothalamus. PGE2 raises the set point, say from 37.0 to 39.0 &deg;C. Nothing is broken. The loop now defends the new target with the same negative feedback. Actual temperature sits below the new set point. So the patient feels cold, vasoconstricts, gets goose bumps and shivers. That is the chill phase. It lasts until temperature rises to target. When the pyrogen clears, PGE2 falls and the set point drops below actual temperature. Now the patient feels hot, vasodilates and sweats profusely. That is the crisis, or defervescence. Moderate fever is useful. It speeds up enzyme and leukocyte activity. It hides plasma iron and zinc that bacteria need. It slows replication of some pathogens. Above roughly 40 to 41 &deg;C the cost wins. Proteins denature and seizures can happen.</p>
+<div class="pearl"><b>Misconception check.</b> Shivering with a fever does not mean the body is losing the fight. It does not mean the body is cold either. It means core temperature is currently <i>below</i> the elevated set point. The loop is actively generating heat. Hyperthermia is different. Heat stroke, malignant hyperthermia and some drug reactions are hyperthermia. There the set point is normal. Heat production or the environmental load simply overwhelms dissipation. That is why antipyretics work in fever and do nothing in heat stroke.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Core temperature normally sits near 37 &deg;C. In fever nothing about the control loop is broken. Prostaglandin E2 simply raises the target, and the same negative feedback then defends the new <a href="../lab/ch11/FeverSetPointLoop.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch11/FeverSetPointLoop.html" loading="lazy" title="Fever: A Negative-Feedback Loop With a Moved Set Point interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Innate defense is fast and needs no template. Inflammation is a deliberate local rise in Pc and Kf. That floods the tissue with plasma proteins and leukocytes. Fever is ordinary negative feedback. It defends a set point that was raised on purpose.</p></div>
+
+<h2 id="lymphocyte-development"><span class="num">Section 3</span>Building a specific immune system: lymphocytes, antigen presentation and clonal selection</h2>
+<figure class="bref"><div class="fr"><img src="img/ch11_s3.jpg" alt="Diagram of clonal selection. It shows a pool of lymphocytes with different receptors, antigen binding one clone, and that clone dividing into effector and memory cells" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Antigen does not instruct a lymphocyte what to make. It selects the clone whose receptor already fits. <span class="cred">Blausen Medical, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Diversity first, antigen second</h3>
+<p>The central idea of adaptive immunity is counterintuitive, so say it bluntly. Your lymphocytes are already specific for antigens you have never met. Some of them fit molecules that do not exist in nature. During development, each B cell and T cell cuts and rejoins its own receptor gene segments. It does that at random. Those segments are called V, D and J. The cell also adds or deletes a few nucleotides at each join. This is somatic recombination. It starts with a few hundred gene segments. From those it builds an estimated 10 to the 11th distinct receptor specificities. That is a combinatorial trick, not a library of stored blueprints. Each cell then commits to one specificity. It expresses thousands of identical copies of that one receptor.</p>
+<p>Clonal selection does the rest. When an antigen appears, it binds only the rare cells whose receptors already fit. That binding, plus the right co-stimulation, triggers those cells to proliferate. A single selected clone can expand roughly 1,000-fold in about a week. Some daughters become short-lived effectors. Others become long-lived memory cells. So antigen acts as a selective pressure on a population that already exists. It works exactly as natural selection does. It is a striking case of an evolutionary algorithm running inside one organism over days.</p>
+<p>The two lymphocyte lineages see different things. A B-cell receptor is a membrane-bound antibody. It binds free, native, three-dimensional antigen. That could be a whole toxin. It could be a surface protein on an intact bacterium. It could be a polysaccharide. A T-cell receptor cannot do that. It binds only a short peptide fragment. That fragment must sit in a groove on another cell&rsquo;s surface. The groove belongs to a major histocompatibility complex molecule, or MHC. That restriction forces T cells to deal with cells rather than with loose molecules. It is also the reason antigen presentation exists.</p>
+
+<h3>MHC class I and class II: two surveillance channels</h3>
+<p>MHC class I molecules sit on essentially every nucleated cell. They sample peptides made <i>inside</i> the cell. Cytosolic proteins are chopped up by the proteasome. The pieces are carried into the endoplasmic reticulum and loaded onto class I. Then they are displayed. A healthy cell shows self peptides and is ignored. A virus-infected cell shows foreign peptides and is flagged. So does a cell making a mutated tumor protein. CD8 T cells read class I. CD8 physically binds the invariant part of class I.</p>
+<p>MHC class II molecules sit only on professional antigen-presenting cells. Those are dendritic cells, macrophages and B cells. They sample peptides from <i>outside</i> the cell. Material is phagocytosed or endocytosed. It is degraded in the phagolysosome. It is loaded onto class II in that same vesicle. CD4 T cells read class II, because CD4 binds class II. The logic is elegant. An endogenous threat means a compromised cell. It is reported on class I to a killer. An exogenous threat means material collected from outside. It is reported on class II to a coordinator.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Feature</th><th>MHC class I</th><th>MHC class II</th></tr></thead><tbody>
+<tr><td>Where it is found</td><td>All nucleated cells (not mature red cells)</td><td>Dendritic cells, macrophages, B cells</td></tr>
+<tr><td>Where the peptide comes from</td><td>Endogenous proteins made in the cytosol</td><td>Exogenous material taken in from outside</td></tr>
+<tr><td>Where it is loaded</td><td>Endoplasmic reticulum, after the proteasome</td><td>Endosome or phagolysosome</td></tr>
+<tr><td>Read by</td><td>CD8 cytotoxic T cells</td><td>CD4 helper T cells</td></tr>
+<tr><td>Usual outcome</td><td>Kill the cell that is presenting</td><td>Activate and direct other cells</td></tr>
+<tr><td>Peptide length</td><td>About 8 to 10 amino acids</td><td>About 13 to 25 amino acids</td></tr>
+</tbody></table></div>
+<p>MHC molecules are the most polymorphic proteins in the human genome. There are thousands of alleles across the HLA loci. That diversity is insurance for the population. A pathogen may evolve peptides that one person&rsquo;s HLA set cannot display. A neighbor&rsquo;s set will still display them. It is also why transplant rejection happens. Foreign MHC is itself a powerful antigen. That is why solid organ grafts need tissue typing and immunosuppression.</p>
+
+<h3>Making tolerance: two selections in the thymus</h3>
+<p>A randomly generated receptor repertoire will always contain receptors that bind self. So tolerance has to be built. It is not inherited. Most of it is built in the thymus. The thymus is largest relative to body size in childhood and shrinks steadily after puberty. Thymocytes arrive from bone marrow. They face two tests in a row over a matter of days.</p>
+<p>Positive selection happens in the thymic cortex. It asks one question. Can this T-cell receptor bind self-MHC at all, even weakly? A receptor that cannot engage self-MHC is useless. Every antigen it will ever see is displayed on self-MHC. So those cells die by neglect. Negative selection happens mainly in the medulla. It asks the opposite question. Does the receptor bind self-MHC carrying self peptide too strongly? Medullary epithelial cells use the AIRE transcription factor. AIRE makes them express thousands of tissue-restricted proteins. Insulin, thyroglobulin and myelin are examples. So a developing T cell tours the whole body without leaving the thymus. Strong binders are deleted by apoptosis or diverted into the regulatory T-cell lineage. Only about 2 percent of thymocytes pass both tests. The window is narrow by design. Bind self-MHC weakly, and bind self peptide not at all.</p>
+<p>B cells run an analogous program in bone marrow. Strongly self-reactive B cells are deleted. Some get a second chance to rearrange a new light chain. That is called receptor editing. Neither system is perfect. So peripheral tolerance provides backup. A self-reactive cell that escapes is anergized if it meets antigen without co-stimulation. It can also be suppressed by regulatory T cells, or deleted. Autoimmune disease is what happens when these layers fail. AIRE can be defective. Regulatory T cells can be deficient, as in IPEX syndrome. Or a microbial epitope can look too much like a self epitope. Antibodies raised against the microbe then cross-react. Streptococcal antigens and cardiac valve tissue in rheumatic fever work that way.</p>
+<div class="pearl"><b>Misconception check.</b> People say &ldquo;the immune system attacks anything foreign.&rdquo; It does not. It attacks what it was never trained to ignore. Your gut is full of commensal bacteria. A fetus carries paternal MHC. The food you eat is foreign too. All of it is tolerated. Regulatory T cells, IgA, placental barriers and oral tolerance do that work. Tolerance is an active, ongoing process. It is not the absence of a response.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Your lymphocytes are already specific for antigens you have never met. Some fit molecules that do not exist in nature. Random recombination of V, D and J segments builds roughly 10<sup>11</sup> receptor specificities <a href="../lab/ch11/ClonalSelectionAndThymicTolerance.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch11/ClonalSelectionAndThymicTolerance.html" loading="lazy" title="Clonal Selection and Thymic Tolerance interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Adaptive specificity is generated before antigen ever arrives. Random receptor recombination makes it. Thymic positive and negative selection then curate it into tolerance. So antigen merely selects a clone that already exists and expands it.</p></div>
+
+<h2 id="cell-mediated"><span class="num">Section 4</span>Cell-mediated immunity: T cells and the killing of compromised cells</h2>
+<figure class="bref"><div class="fr"><img src="img/ch11_s4.jpg" alt="A cytotoxic T lymphocyte kills a target cell it recognized through MHC class I, by delivering perforin and granzymes into it" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A cytotoxic T lymphocyte recognizes a target through MHC class I. It then delivers perforin and granzymes into that cell. <span class="cred">The National Institutes of Health, Public domain (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Activation needs two signals, and the second one prevents autoimmunity</h3>
+<p>A naive T cell never stops traveling. It passes through blood, lymph node and lymph roughly one to two times per day. All the while it scans dendritic cells for a peptide it recognizes. Recognition alone is not enough. Signal 1 is the T-cell receptor binding peptide-MHC, with CD4 or CD8 as co-receptor. Signal 2 is co-stimulation. B7 molecules, CD80 and CD86, on the antigen-presenting cell bind CD28 on the T cell. B7 appears only once the presenting cell has itself detected a PAMP or DAMP. Signal 3 is the cytokine environment. It biases the T cell toward one functional program rather than another.</p>
+<p>The design point is that signal 2 encodes danger. A dendritic cell displaying self peptide in a quiet tissue does not express B7. So a self-reactive T cell gets signal 1 with no signal 2. It becomes anergic, meaning functionally silenced, or it dies. This two-key requirement is peripheral tolerance implemented as a logic gate. It is also why adjuvants are added to vaccines. The adjuvant supplies the innate danger signal that licenses co-stimulation. Drugs exploit the same gate. Abatacept blocks B7 to damp autoimmunity. Checkpoint inhibitors release the CTLA-4 and PD-1 brakes to unleash T cells against tumors. The cost is autoimmune side effects.</p>
+<p>Once activated, the T cell secretes IL-2. It also expresses high-affinity IL-2 receptors. So it drives its own proliferation in an autocrine loop. That is positive feedback used deliberately to build a clone quickly. Clonal expansion takes about 4 to 7 days. That is why a first infection makes you sick for several days. Adaptive control has not taken hold yet.</p>
+
+<h3>Division of labor among T-cell subsets</h3>
+<p>CD4 helper T cells are the conductors. The cytokine environment decides which subset they become. TH1 cells are driven by IL-12. They secrete interferon-gamma and supercharge macrophages against intracellular bacteria such as <i>Mycobacterium tuberculosis</i>. The granuloma is a TH1 product. TH2 cells are driven by IL-4. They secrete IL-4, IL-5 and IL-13. They drive IgE class switching and recruit eosinophils. They handle helminths. Misdirected, they produce allergy. TH17 cells recruit neutrophils to mucosal surfaces against extracellular bacteria and fungi. Follicular helper T cells stay in lymph node germinal centers. They give B cells the help needed to switch class and mature affinity. Regulatory T cells carry CD4 with CD25 and FoxP3. They secrete IL-10 and TGF-&beta; and actively suppress the others.</p>
+<p>CD8 cytotoxic T lymphocytes are the executioners. They scan class I on every nucleated cell. When the receptor engages a foreign peptide, the CTL forms an immunological synapse. It then releases granules into that narrow cleft. So neighboring healthy cells are spared. Perforin polymerizes in the target membrane and forms a pore. Granzymes are serine proteases. They enter through the pore and activate the caspase cascade. That drives the target into apoptosis. Apoptosis matters more than plain lysis. The cell shrinks. It fragments its DNA, viral genomes included. It packs the remains into membrane-bound bodies for phagocytosis. So viral particles are not spilled and inflammation is minimized. The CTL then detaches, reloads its granules and kills again, one target after another.</p>
+<p>Memory T cells persist for years to decades. Central memory cells recirculate through lymph nodes. Effector memory cells patrol tissues. Tissue-resident memory cells stay permanently in skin, gut and lung. Their advantage is threshold and speed, not different chemistry. They are more numerous than the original naive clone. They need less co-stimulation. They reach effector function in one to three days rather than seven.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Cell</th><th>Marker</th><th>Recognizes</th><th>Main action</th></tr></thead><tbody>
+<tr><td>Helper T (TH1, TH2, TH17, TFH)</td><td>CD4</td><td>Peptide on MHC II</td><td>Releases cytokines. Activates macrophages, B cells and CTLs</td></tr>
+<tr><td>Cytotoxic T</td><td>CD8</td><td>Peptide on MHC I</td><td>Uses perforin and granzyme to drive infected or tumor cells into apoptosis</td></tr>
+<tr><td>Regulatory T</td><td>CD4, CD25, FoxP3</td><td>Self and foreign peptide</td><td>Suppresses with IL-10 and TGF-&beta;. Keeps peripheral tolerance</td></tr>
+<tr><td>Memory T</td><td>CD4 or CD8</td><td>The original epitope</td><td>Fast recall response at a low threshold</td></tr>
+<tr><td>Natural killer (innate)</td><td>CD16, CD56</td><td>Absent MHC I, or a cell coated with antibody</td><td>Kills with no prior sensitization. Performs ADCC</td></tr>
+</tbody></table></div>
+
+<h3>Turning the response off, and what happens when it cannot be turned off</h3>
+<p>An immune response you could not stop would be as deadly as one that never started. Several negative-feedback brakes operate together. As antigen is cleared, signal 1 disappears. The stimulus for proliferation vanishes. That is the simplest and most important brake. It is a genuine negative-feedback loop, because the output, pathogen clearance, removes the input. Activated T cells then upregulate CTLA-4. CTLA-4 outcompetes CD28 for B7 and delivers an inhibitory signal. They also upregulate PD-1, which PD-L1 on tissue cells engages. Most of the expanded clone then dies by activation-induced cell death. Roughly 5 to 10 percent stays on as memory. Regulatory T cells suppress bystander activation throughout.</p>
+<p>Failure at these steps produces recognizable disease. Cytokine storm is unchecked positive feedback. It shows up in severe sepsis, in some viral infections and after certain CAR-T therapies. TNF-&alpha; and IL-6 drive systemic vasodilation, capillary leak and hypotension. That inflammation is appropriate locally and catastrophic globally. The opposite pole is HIV. It infects CD4 cells through the CD4 molecule plus a CCR5 or CXCR4 co-receptor. Step by step it destroys the conductor of the whole orchestra. A normal CD4 count is 500 to 1,500 cells per &micro;L. As it falls, cell-mediated immunity fails first. Below 200 cells per &micro;L the patient is defined as having AIDS. Now organisms that a healthy person clears without noticing become dangerous. <i>Pneumocystis jirovecii</i> is one. Losing this one cell type disables antibody responses too. Most B-cell class switching needs helper T-cell input.</p>
+<div class="pearl"><b>Clinical anchor.</b> The tuberculin skin test is cell-mediated immunity you can measure with a ruler. Dendritic cells pick up the injected antigen. They present it to memory TH1 cells. Then 48 to 72 hours later those cells recruit macrophages and raise a firm indurated papule. The delay is the point. An immediate IgE wheal appears in 15 minutes. A type IV response has to recruit and activate cells, and that takes days.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A T cell that recognizes antigen still does nothing on its own. A second signal must say the antigen matters. That signal depends on danger. Set the three signals below. Watch the logic gate resolve into activation or anergy. <a href="../lab/ch11/TCellSignalsAndTheKill.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch11/TCellSignalsAndTheKill.html" loading="lazy" title="Two Signals, Then the Kill interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>T cells need antigen plus a danger-dependent co-stimulatory signal. Then the work divides. CD4 cells direct the response. CD8 cells induce apoptosis in compromised cells. CTLA-4, PD-1, regulatory T cells and antigen clearance provide the off switch.</p></div>
+
+<h2 id="humoral"><span class="num">Section 5</span>Humoral immunity: antibodies, memory and the basis of vaccination</h2>
+<figure class="bref"><div class="fr"><img src="img/ch11_s5.jpg" alt="Diagram of an IgG antibody. It shows two heavy chains, two light chains, the variable antigen-binding arms, the constant Fc region, disulfide bonds and the hinge" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The Y-shaped immunoglobulin monomer keeps two jobs apart. The variable arms recognize. The constant Fc stem carries out effector function. <span class="cred">OpenStax College, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Antibody structure predicts antibody function</h3>
+<p>An immunoglobulin monomer is two identical heavy chains and two identical light chains. Disulfide bonds join them into a Y. The tips of the arms are the variable regions. Hypervariable loops from both chains form them. That gives two identical antigen-binding sites per monomer. The stem is the constant region, the Fc. The Fc is the part that talks to the rest of the immune system. It binds Fc receptors on phagocytes and NK cells. It also binds C1q and starts the classical complement pathway. So recognition and execution are separate modules. That is why class switching works. The same specificity can be re-issued with a different constant region.</p>
+<p>Antibodies do not kill anything by themselves. They work by five mechanisms. Every one of them is either marking or blocking. Neutralization covers the binding site of a toxin. It covers the attachment protein of a virus too, so it cannot dock. Opsonization coats a microbe so that phagocyte Fc receptors can grip it. That raises phagocytosis rates by orders of magnitude. Agglutination cross-links particles into clumps that phagocytes clear efficiently. Precipitation does the same for soluble antigen. Complement activation via bound IgG or IgM produces opsonins, chemoattractants and membrane attack complexes. Antibody-dependent cellular cytotoxicity lets NK cells recognize antibody-coated host cells through CD16 and kill them.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Class</th><th>Form</th><th>Share of serum antibody</th><th>Distinctive role</th></tr></thead><tbody>
+<tr><td>IgG</td><td>Monomer</td><td>About 75 to 80 percent</td><td>Main antibody of the secondary response. The only class that crosses the placenta. Half-life about 21 days</td></tr>
+<tr><td>IgM</td><td>Pentamer (10 binding sites)</td><td>About 5 to 10 percent</td><td>First one made in a primary response. Superb at activating complement and clumping antigen. Too large to cross the placenta</td></tr>
+<tr><td>IgA</td><td>Dimer in secretions</td><td>About 10 to 15 percent of serum, dominant in secretions</td><td>Guards mucosal surfaces and breast milk. Neutralizes without inflammation</td></tr>
+<tr><td>IgE</td><td>Monomer</td><td>Trace (less than 0.01 percent)</td><td>Binds Fc receptors on mast cells and basophils. Parasites and type I hypersensitivity</td></tr>
+<tr><td>IgD</td><td>Monomer</td><td>Trace</td><td>Sits on the naive B-cell surface as a receptor. Activation signaling</td></tr>
+</tbody></table></div>
+<p>Two diagnostic rules fall straight out of that table. Detecting IgM against a pathogen means a current or very recent first infection. Detecting IgG alone means past infection or vaccination. IgG crosses the placenta and IgM does not. So a newborn&rsquo;s own IgM in cord blood means infection happened in the womb. Its IgG is borrowed from the mother and wanes over roughly 6 months. Childhood vaccination schedules are timed around that immunity gap.</p>
+
+<h3>The germinal center: how antibodies get better during the response</h3>
+<p>A naive B cell binds native antigen with the immunoglobulin on its surface. It internalizes that antigen, degrades it, and presents the peptides on MHC class II. A follicular helper T cell specific for the same antigen recognizes that display. It binds CD40 on the B cell through CD40 ligand. Then it secretes cytokines. This is linked recognition, and it is a safety interlock. The B cell must be reacting to the same antigen the T cell already vetted. Only then does the B cell enter a germinal center. There it begins the two processes that define the humoral response.</p>
+<p>Class switch recombination swaps the heavy-chain constant region. The variable region stays intact. So the same specificity is re-issued as IgG, IgA or IgE. The T-cell cytokine environment chooses which. Interferon-gamma favors IgG. TGF-&beta; favors IgA. IL-4 favors IgE. Somatic hypermutation is the second process. It drops point mutations into the variable region. The rate is about a million times the normal background. B cells then compete for limited antigen held on follicular dendritic cells. Cells whose mutated receptors bind better get more survival signal. The rest die. That is affinity maturation. It is Darwinian selection running over days inside a lymph node. It is why average antibody affinity can rise 10- to 100-fold over a few weeks. Surviving cells become plasma cells or memory B cells. A plasma cell is an antibody factory. It secretes up to about 2,000 molecules per second.</p>
+<p>Some antigens are polysaccharides, such as bacterial capsules. Polysaccharides cannot be presented on MHC. So they are T-independent. They cross-link B-cell receptors directly. They produce mostly IgM. They generate little class switching and poor memory. They work badly in children under 2 years. Conjugate vaccines solve this. They chemically link the polysaccharide to a carrier protein. That recruits T-cell help and turns a weak response into a strong, memory-forming one. That is why the <i>Hemophilus influenzae</i> type b conjugate vaccine works. It nearly wiped out a once-common childhood meningitis.</p>
+
+<h3>Primary versus secondary responses, and the four kinds of immunity</h3>
+<p>The primary response follows a first exposure. It lags about 5 to 10 days while the rare specific clone is selected and expands. Antibody titer rises to a modest peak. IgM dominates it. Lower-affinity IgG appears later. It all declines within weeks. The secondary response follows re-exposure. It begins in 1 to 3 days. Its peak titer is roughly 100- to 1,000-fold higher. High-affinity IgG dominates it. It persists for months to years. Nothing new is invented. There are simply many more precursor cells. They are already class-switched and affinity-matured. They need less help. That difference is the entire physiologic basis of vaccination.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Type</th><th>How acquired</th><th>Memory?</th><th>Onset and duration</th></tr></thead><tbody>
+<tr><td>Active natural</td><td>Catching the infection</td><td>Yes</td><td>Slow to start, lasts a long time</td></tr>
+<tr><td>Active artificial</td><td>Vaccination</td><td>Yes</td><td>Slow to start (often needs boosters), lasts a long time</td></tr>
+<tr><td>Passive natural</td><td>Mother&rsquo;s IgG across the placenta, IgA in breast milk</td><td>No</td><td>Works at once, fades over about 6 months</td></tr>
+<tr><td>Passive artificial</td><td>A shot of immunoglobulin or antitoxin, or a monoclonal antibody</td><td>No</td><td>Works at once, lasts weeks</td></tr>
+</tbody></table></div>
+<p>Passive immunity buys time and nothing else. No clone is selected, so no memory is formed. The borrowed antibody decays with IgG&rsquo;s roughly 21-day half-life. That is why a person exposed to rabies or tetanus receives two things. They get immunoglobulin for immediate passive protection. They get vaccine for delayed active protection. The two cover different halves of the time course. Herd immunity is the same idea at the population level. Once the immune fraction exceeds 1 &minus; 1/R0, chains of transmission break. For a highly transmissible agent such as measles that threshold is high, about 92 to 95 percent.</p>
+
+<h3>When the system misfires</h3>
+<p>Hypersensitivity is an immune response with a normal mechanism. The target or the size is wrong. Type I is IgE-mediated. The first exposure sensitizes by loading mast cells with IgE against that allergen. Re-exposure cross-links that IgE. Mast cells then degranulate within minutes. They release histamine, leukotrienes and prostaglandins. Locally this is hay fever or hives. Systemically it is anaphylaxis. Widespread vasodilation and capillary leak crash the blood pressure. Bronchoconstriction and laryngeal edema obstruct the airway. Epinephrine is the antidote precisely because it reverses each mechanism. Alpha-1 vasoconstriction restores pressure and reduces edema. Beta-2 stimulation relaxes bronchi. Beta-1 stimulation supports the heart.</p>
+<p>Type II is antibody directed at fixed tissue antigen. A mismatched transfusion is one example. Hemolytic disease of the newborn is another. There an Rh-negative mother is sensitized to the D antigen. She makes IgG that crosses the placenta and destroys fetal red cells. Anti-D immunoglobulin prevents it. That is a deliberate use of passive antibody to block sensitization. Type III is immune complex deposition. Serum sickness and much of systemic lupus erythematosus work this way. Antigen-antibody complexes lodge in vessel walls, glomeruli and joints, and activate complement there. Type IV is the delayed, T-cell mediated reaction. Contact dermatitis, the tuberculin test and graft rejection are type IV. They take 48 to 72 hours because cells must be recruited. Immunodeficiencies are the mirror image. Primary ones include severe combined immunodeficiency. Secondary ones follow HIV, chemotherapy, corticosteroids, malnutrition or splenectomy. Losing the spleen specifically impairs clearance of encapsulated bacteria. The spleen is the filter for blood-borne opsonized organisms.</p>
+<div class="pearl"><b>Misconception check.</b> An allergic reaction is not caused by a &ldquo;weak&rdquo; immune system. Autoimmune disease is not caused by a &ldquo;strong&rdquo; one. Both are targeting errors. Name the step that failed instead. It may be IgE class switching against a harmless protein. It may be lost tolerance to a self peptide. That is far more useful than calling immunity strong or weak. It also explains why treatments for the two conditions overlap so heavily.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A first exposure lags 5 to 10 days, peaks modestly and is IgM-dominated. A second begins in 1 to 3 days. It peaks roughly 100 to 1,000 times higher and is high-affinity IgG. Nothing new is invented in between. <a href="../lab/ch11/AntibodyResponseSimulator.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch11/AntibodyResponseSimulator.html" loading="lazy" title="Building an Antibody Response interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Humoral immunity works by marking and blocking rather than killing. It improves its own antibodies in germinal centers, through class switching and affinity maturation. It turns a slow, low-affinity primary response into a fast, high-affinity secondary response. Vaccination exists to pre-load that second response.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Capillaries filter about 20 liters of fluid a day and reabsorb only about 17. The albumin that escapes can never be pulled back osmotically. So a valved lymphatic circuit must recover roughly 3 liters of protein-rich fluid daily. That circuit pumps on its own. It returns that fluid to the subclavian veins. That drainage passes through lymph nodes. So it doubles as an antigen-sampling network. Innate defense acts within minutes. Barriers and chemistry come first. Then pattern recognition receptors detect PAMPs and DAMPs. That triggers inflammation. Inflammation is a deliberate local rise in capillary hydrostatic pressure and permeability. It floods the tissue with complement, antibody and neutrophils. Interferons, natural killer cells and fever join in. Fever is ordinary negative feedback defending a set point that prostaglandin E2 raised. Adaptive immunity is slower, but it is specific and it remembers. Random receptor recombination builds diversity before antigen arrives. Thymic positive and negative selection curate that diversity into tolerance. Antigen then selects the fitting clone and expands it. CD8 cells kill compromised cells displaying foreign peptide on MHC class I. CD4 cells read MHC class II and direct everything else. That includes the germinal center reaction that class-switches and affinity-matures antibody. Regulatory T cells, checkpoint molecules and antigen clearance turn the response off. A failure at each defined step gives hypersensitivity, autoimmunity or immunodeficiency.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Term</th><th>What it means</th></tr></thead><tbody>
+<tr><td>Lymph</td><td>The roughly 3 liters per day of protein-containing interstitial fluid that enters lymphatic capillaries and is returned to the venous blood.</td></tr>
+<tr><td>Lymphangion</td><td>The piece of a collecting lymphatic vessel between two valves. Its smooth muscle contracts 6 to 10 times per minute and acts as a miniature pump.</td></tr>
+<tr><td>Starling forces</td><td>The hydrostatic and oncotic pressures on each side of a capillary wall. Together they set net filtration: Jv = Kf [(Pc &minus; Pi) &minus; &sigma;(&pi;c &minus; &pi;i)].</td></tr>
+<tr><td>Lymphedema</td><td>Swelling caused by a failed lymphatic drain. Protein builds up in the interstitium and raises &pi;i, so the swelling keeps itself going.</td></tr>
+<tr><td>PAMP / DAMP</td><td>Conserved microbial molecules, or host molecules released by damage. Pattern recognition receptors such as Toll-like receptors detect them.</td></tr>
+<tr><td>Diapedesis</td><td>A leukocyte squeezing between the endothelial cells of a postcapillary venule to reach the tissue.</td></tr>
+<tr><td>Chemotaxis</td><td>A cell moving up a chemical gradient. Neutrophils crawl toward complement C5a or bacterial peptides that way.</td></tr>
+<tr><td>Complement</td><td>A cascade of about 30 plasma proteins. They opsonize microbes, recruit leukocytes and build the membrane attack complex (C5b through C9).</td></tr>
+<tr><td>Pyrogen</td><td>Anything that causes fever. Exogenous ones such as lipopolysaccharide work by making the body release IL-1, IL-6 and TNF-&alpha;, which raise hypothalamic PGE2.</td></tr>
+<tr><td>Set point</td><td>The target value a control system defends. Fever is a raised temperature set point, not a failure of temperature regulation.</td></tr>
+<tr><td>Clonal selection</td><td>The principle that antigen binds and expands lymphocyte clones that already exist. It does not instruct a cell to build a new receptor.</td></tr>
+<tr><td>MHC class I / II</td><td>Display molecules. Class I shows endogenous peptides, sits on all nucleated cells and is read by CD8. Class II shows exogenous peptides, sits on antigen-presenting cells and is read by CD4.</td></tr>
+<tr><td>Positive and negative selection</td><td>The two thymic tests. They keep T cells that bind self-MHC weakly and delete those that bind self peptide strongly. About 2 percent survive.</td></tr>
+<tr><td>Co-stimulation</td><td>The second signal a T cell needs, B7 binding CD28. It appears only with danger. Without it the T cell becomes anergic.</td></tr>
+<tr><td>Perforin and granzyme</td><td>The pore-forming protein and the proteases a cytotoxic T cell or NK cell delivers into a target to induce apoptosis.</td></tr>
+<tr><td>Regulatory T cell</td><td>A CD4, CD25, FoxP3 lymphocyte. It secretes IL-10 and TGF-&beta; to suppress other lymphocytes and maintain peripheral tolerance.</td></tr>
+<tr><td>Opsonization</td><td>Coating a microbe with antibody or C3b so that phagocyte receptors can grip it. Phagocytosis then rises greatly.</td></tr>
+<tr><td>Class switching</td><td>Recombination that replaces the antibody heavy-chain constant region. The specificity stays the same, so IgM becomes IgG, IgA or IgE.</td></tr>
+<tr><td>Affinity maturation</td><td>Selection in germinal centers for B cells whose somatically hypermutated receptors bind antigen better. Average affinity rises 10- to 100-fold.</td></tr>
+<tr><td>Passive immunity</td><td>Transfer of preformed antibody, such as maternal IgG or an immunoglobulin injection. Protection is immediate but temporary, and it creates no memory.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">The arteriolar end of a capillary filters fluid out. Why can the venular end not simply take it all back?</div><div class="ans">Because a small amount of albumin escapes with the filtrate. It cannot diffuse back against its own concentration gradient. Its presence raises interstitial oncotic pressure, &pi;i. That weakens the inward oncotic pull. So reabsorption falls short by roughly 3 liters per day. Lymphatics remove that protein and water. They keep &pi;i low and Pi around &minus;2 mmHg.</div></div>
+<div class="qq"><div class="q">A patient has severe liver disease. Serum albumin is 1.9 g/dL. Which Starling term has changed? What does the edema look like?</div><div class="ans">Plasma oncotic pressure &pi;c has fallen from its usual 25 to 28 mmHg. So the inward force opposing filtration is weaker everywhere. The edema is therefore all over the body rather than in one region. It typically includes ascites and periorbital swelling. The defect is systemic. It is not a local drainage or pressure problem.</div></div>
+<div class="qq"><div class="q">After axillary lymph node dissection, why does arm swelling persist and turn firm? Why does elevation not fix it?</div><div class="ans">The problem is the drain, not the leak. Protein that normally leaves in the lymph builds up in the interstitium. That raises &pi;i, so filtration continues. Long-standing protein-rich stagnation then drives fibrosis and fat deposition. Elevation lowers Pc but cannot remove protein. So the swelling becomes non-pitting and permanent without compression and movement therapy.</div></div>
+<div class="qq"><div class="q">List, in order, the vascular events that make an inflamed area red, hot and swollen.</div><div class="ans">Sentinel cells release histamine, nitric oxide, prostaglandins and cytokines. Arterioles dilate, so resistance falls. By Q = &Delta;P / R, flow and capillary hydrostatic pressure Pc both rise. That gives redness and heat. Then the endothelial cells of postcapillary venules retract. Kf rises and &sigma; falls. Protein-rich exudate filters into the tissue. That is the swelling.</div></div>
+<div class="qq"><div class="q">A patient with a fever is shivering under three blankets at 38.6 &deg;C. Explain what is happening.</div><div class="ans">PGE2 has raised the hypothalamic set point above the current core temperature. The negative-feedback loop reads a deficit. So it switches on heat-generating and heat-conserving effectors. Cutaneous vasoconstriction, piloerection and shivering follow. The loop is working normally against a moved target. The shivering will stop once temperature reaches the new set point.</div></div>
+<div class="qq"><div class="q">Why does a CD8 cell, rather than an antibody, kill a virus-infected liver cell?</div><div class="ans">Antibody binds only extracellular antigen in its native shape. So it cannot reach viral proteins inside a cell. The infected cell instead degrades cytosolic viral protein in its proteasome. It displays the peptides on MHC class I. Every nucleated cell expresses class I. A CD8 cytotoxic T lymphocyte reads that display. It then induces apoptosis with perforin and granzymes.</div></div>
+<div class="qq"><div class="q">A cytotoxic T cell drives its target into apoptosis instead of lysing it. Why does that matter?</div><div class="ans">Apoptosis fragments the target&rsquo;s DNA, viral genomes included. It packages the remains in membrane-bound bodies that phagocytes clear. Nothing infectious spills into the interstitium. Little inflammatory content is released. So neighboring tissue is spared. Lysis would release intact virions and cytosolic contents. That would spread infection and inflammation.</div></div>
+<div class="qq"><div class="q">Why does a T cell that receives signal 1 without signal 2 become anergic? Why is that useful?</div><div class="ans">Co-stimulation is B7 binding CD28. It appears only after the presenting cell has detected a PAMP or DAMP. So signal 2 encodes danger. Antigen presented without danger is almost always self or harmless. Silencing the responding cell prevents autoimmunity. This is peripheral tolerance implemented as a two-key logic gate. It is also why vaccines need adjuvants.</div></div>
+<div class="qq"><div class="q">Only about 2 percent of thymocytes leave the thymus. Name the two tests. What does each one ask?</div><div class="ans">Positive selection happens in the cortex. It asks whether the T-cell receptor can bind self-MHC at all. Cells that cannot are useless and die by neglect. Negative selection happens in the medulla. AIRE drives expression of tissue-restricted self proteins there. This test asks whether the receptor binds self peptide too strongly. Those cells are deleted or diverted to the regulatory lineage.</div></div>
+<div class="qq"><div class="q">Compare the primary and secondary antibody responses using numbers. Then say why they differ.</div><div class="ans">The primary response lags 5 to 10 days. It peaks modestly and is IgM-dominated. The secondary response starts in 1 to 3 days. It peaks roughly 100- to 1,000-fold higher and is high-affinity IgG. Nothing new is invented. Memory cells far outnumber the original naive clone. They are already class-switched and affinity-matured. They also need less co-stimulation.</div></div>
+<div class="qq"><div class="q">A patient exposed to tetanus receives both immunoglobulin and the vaccine. Why both?</div><div class="ans">The immunoglobulin is passive artificial immunity. It is preformed antibody. It neutralizes toxin immediately, but it selects no clone and creates no memory. It decays with IgG&rsquo;s roughly 21-day half-life. The vaccine is active artificial immunity. It takes days to weeks to protect, but it produces memory cells. Together they cover the immediate and the long-term halves of the time course.</div></div>
+<div class="qq"><div class="q">Why is epinephrine, rather than an antihistamine, the first drug in anaphylaxis?</div><div class="ans">Anaphylaxis is mast cell degranulation. It causes systemic vasodilation, capillary leak, bronchoconstriction and laryngeal edema. Epinephrine reverses every one of those at once. Alpha-1 vasoconstriction restores blood pressure and reduces mucosal edema. Beta-2 stimulation relaxes bronchial smooth muscle. Beta-1 stimulation supports cardiac output. Antihistamines block only one mediator and act far too slowly.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch10.html"><span class="k">Previous</span>&larr; Heart</a>
+        <a class="next" href="ch12.html"><span class="k">Next</span>Respiratory System &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

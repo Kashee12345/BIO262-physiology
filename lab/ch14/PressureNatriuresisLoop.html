@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pressure Natriuresis: the Kidney Sets Blood Pressure</title>
+<meta name="description" content="Set sodium intake, shift the renal function curve with RAAS, ANP or lost nephron mass, then run the days and watch extracellular volume and arterial pressure settle wherever excretion finally equals intake.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:16px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:11px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.2;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+canvas{display:block;width:100%;height:auto;border-radius:10px;}
+.row{display:flex;gap:9px;margin-top:12px;align-items:center;}
+.casc{margin-top:4px;}
+.cr{display:grid;grid-template-columns:118px 1fr 56px;align-items:center;gap:9px;margin:7px 0;font-size:12px;font-weight:700;color:var(--soft);}
+.cr .track{height:15px;background:var(--line);border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+.cr .fill{height:100%;border-radius:7px;transition:width .25s;}
+.cr .num{text-align:right;font-variant-numeric:tabular-nums;color:var(--teal-dk);font-weight:800;font-size:12px;}
+.cr small{display:block;font-weight:500;font-size:10.4px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch14.html">&larr; Module 14</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 14</div>
+  <h1>Pressure Natriuresis: the Kidney Sets Blood Pressure</h1>
+  <div class="intro">Baroreceptors correct pressure in seconds and then adapt. The kidney corrects it over days and <b>never adapts</b>: as long as arterial pressure sits above set point it keeps excreting sodium and water, so volume falls until pressure comes back. That is what &ldquo;infinite gain&rdquo; means. Set sodium intake, shift the renal function curve with RAAS, ANP or lost nephron mass, then press <b>Run the days</b> and watch pressure settle wherever excretion finally equals intake.</div>
+</header>
+<div class="wrap">
+
+  <div>
+    <div class="card">
+      <h2>Set the balance</h2>
+      <div class="sl"><label for="sIn">Sodium intake <span class="v" id="vIn">150 mmol/day</span></label>
+        <input type="range" id="sIn" min="10" max="600" value="150" step="5" aria-label="Daily sodium intake in millimoles per day"></div>
+      <div class="sl"><label for="sShift">Renal function curve position <span class="v" id="vShift">normal</span></label>
+        <input type="range" id="sShift" min="-25" max="60" value="0" step="1" aria-label="Rightward or leftward shift of the renal function curve in millimeters of mercury"></div>
+      <div class="sl"><label for="sMass">Functioning nephron mass <span class="v" id="vMass">100%</span></label>
+        <input type="range" id="sMass" min="10" max="120" value="100" step="1" aria-label="Percentage of normal functioning nephron mass"></div>
+      <div class="lbl">Change the setting</div>
+      <div class="chips" id="chips"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bRun">Run the days</button>
+        <button type="button" class="btn" id="bReset">Reset to day 0</button>
+      </div>
+      <div class="hint"><b>What the curve means.</b> Each point answers one question: at <i>this</i> arterial pressure, how much sodium does the kidney put out in a day? Where the curve crosses the intake line, output equals input and volume stops changing &mdash; and that crossing, not the heart and not the arterioles, is where mean arterial pressure comes to rest. Notice how <b>steep</b> the normal curve is: that steepness is why a healthy person can eat wildly different amounts of salt and barely move their pressure.</div>
+    </div>
+
+    <div class="card">
+      <h2>The hormonal tug of war</h2>
+      <div class="casc" id="casc"></div>
+      <div class="hint" id="kNote"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>Renal function curve</h2>
+      <canvas id="cv1" width="640" height="330" role="img" aria-label="Daily sodium excretion plotted against mean arterial pressure, with the horizontal sodium intake line and the point where the two cross"></canvas>
+      <div class="labs">
+        <div class="lab"><div class="k">Mean arterial pressure</div><div class="v" id="oMAP">97</div><div class="u">mmHg &middot; day <span id="oDay">0</span></div></div>
+        <div class="lab"><div class="k">Extracellular volume</div><div class="v" id="oECF">14.0</div><div class="u">liters</div></div>
+        <div class="lab"><div class="k">Sodium excretion</div><div class="v" id="oEx">150</div><div class="u">mmol/day</div></div>
+      </div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="card">
+      <h2>Forty days of chasing balance</h2>
+      <canvas id="cv2" width="640" height="270" role="img" aria-label="Mean arterial pressure and daily sodium excretion plotted over forty days as the system approaches the point where excretion equals intake"></canvas>
+      <div class="hint">Sodium excretion (gold) climbs or falls toward the intake line while pressure (petrol) drifts to whatever value makes that happen. Nothing here is a set point being read by a sensor &mdash; pressure simply stops moving when the two flows match, and it will not stop before then.</div>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+var CS=getComputedStyle(document.documentElement);
+function cvar(n){return CS.getPropertyValue(n).trim();}
+var TEAL=cvar('--teal'), TEALD=cvar('--teal-dk'), CORAL=cvar('--coral'), BLUE=cvar('--blue'),
+    GOLD=cvar('--gold'), GREEN=cvar('--green'), PURPLE=cvar('--purple'),
+    LINE=cvar('--line'), MUTED=cvar('--muted'), SOFT=cvar('--soft');
+function $(id){return document.getElementById(id);}
+
+var ECF0=14.0, MAP0=97, NA=140, VGAIN=11, DT=0.05, PER_TICK=10, VDIST=0.20;
+function neutral(){ return {renin:1,ang2:1,aldo:1,anp:1,kblock:1}; }
+var S={intake:150,shift:0,mass:1.0,mods:neutral(),tag:''};
+var sim={ecf:ECF0,map:MAP0,t:0,hist:[]};
+var timer=null;
+
+/* Renal function curve. Excretion is zero below (85 + shift) mmHg and rises very
+   steeply, reaching the normal 150 mmol/day at (97 + shift) mmHg. */
+function excretion(map){
+  var base=85+S.shift, span=12;
+  var x=(map-base)/span;
+  if(x<0) x=0;
+  return 150*x*x*x*S.mass;
+}
+/* Angiotensin II also raises pressure directly by arteriolar constriction, so a
+   right-shifted kidney does not have to expand volume as far to reach its new pressure. */
+function pressor(){ return 0.6*S.shift; }
+function mapFrom(ecf){ return MAP0+VGAIN*(ecf-ECF0)+pressor(); }
+function equilibrium(){
+  var lo=40,hi=300;
+  for(var i=0;i<80;i++){ var mid=(lo+hi)/2; if(excretion(mid)<S.intake) lo=mid; else hi=mid; }
+  return (lo+hi)/2;
+}
+function sub(dt){
+  var gap=S.intake-excretion(sim.map);       /* mmol/day retained (+) or lost (-) */
+  /* Retained sodium holds isotonic water, but the pressure consequence of that water
+     builds over days rather than instantly, and the RAAS opposes it while it does.
+     VDIST damps the daily step so the system settles over roughly a week, as it does
+     in life; the resting point it settles at is unaffected by the damping. */
+  sim.ecf+=(gap/NA)*dt*VDIST;
+  if(sim.ecf<9.5) sim.ecf=9.5;
+  if(sim.ecf>24) sim.ecf=24;
+  sim.map=mapFrom(sim.ecf);
+  sim.t+=dt;
+}
+function tick(){
+  for(var i=0;i<PER_TICK;i++) sub(DT);
+  sim.hist.push({d:sim.t,map:sim.map,ex:excretion(sim.map)});
+  if(sim.hist.length>200) sim.hist.shift();
+}
+function reset(){
+  if(timer){clearInterval(timer);timer=null;$('bRun').textContent='Run the days';}
+  sim={ecf:ECF0,map:mapFrom(ECF0),t:0,hist:[]};
+  sim.hist.push({d:0,map:sim.map,ex:excretion(sim.map)});
+  render();
+}
+
+var PRE=[
+ {n:'Normal',s:{intake:150,shift:0,mass:1.0,tag:'normal'},m:{}},
+ {n:'Salt loading &middot; 400 mmol/day',s:{intake:400,shift:0,mass:1.0,tag:'salt'},m:{renin:0.35,anp:1.8}},
+ {n:'Low salt diet &middot; 30 mmol/day',s:{intake:30,shift:0,mass:1.0,tag:'lowsalt'},m:{renin:2.6}},
+ {n:'Renal artery stenosis',s:{intake:150,shift:28,mass:1.0,tag:'ras'},m:{renin:3.2}},
+ {n:'Primary aldosteronism',s:{intake:150,shift:22,mass:1.0,tag:'conn'},m:{renin:0.12,aldo:22}},
+ {n:'ACE inhibitor',s:{intake:150,shift:-14,mass:1.0,tag:'acei'},m:{renin:3.0,ang2:0.18,aldo:0.35}},
+ {n:'Aldosterone antagonist',s:{intake:150,shift:-10,mass:1.0,tag:'spiro'},m:{renin:2.2,kblock:0.12}},
+ {n:'ANP &middot; atria stretched',s:{intake:150,shift:-16,mass:1.0,tag:'anp'},m:{renin:0.25,anp:3.4}},
+ {n:'Sympathetic drive up',s:{intake:150,shift:16,mass:1.0,tag:'symp'},m:{renin:2.4}},
+ {n:'CKD &middot; 30% nephrons, salty diet',s:{intake:300,shift:12,mass:0.30,tag:'ckd'},m:{renin:1.4,kblock:0.35}}
+];
+function buildChips(){
+  var box=$('chips'); box.innerHTML='';
+  PRE.forEach(function(p,i){
+    var b=document.createElement('button'); b.type='button'; b.className='chip'; b.innerHTML=p.n;
+    b.addEventListener('click',function(){
+      for(var k in p.s) S[k]=p.s[k];
+      S.mods=neutral(); for(var q in p.m) S.mods[q]=p.m[q];
+      sync(); mark(i); reset();
+    });
+    box.appendChild(b);
+  });
+}
+function mark(i){ var cs=$('chips').children; for(var j=0;j<cs.length;j++) cs[j].classList.toggle('on',j===i); }
+function sync(){ $('sIn').value=S.intake; $('sShift').value=S.shift; $('sMass').value=Math.round(S.mass*100); }
+
+function hormones(){
+  var felt=sim.map-S.shift;                                  /* pressure the granular cells feel */
+  var renin=Math.max(0.05,Math.pow(97/Math.max(58,felt),3.2))*S.mods.renin;
+  var ang2=Math.min(9,renin*S.mods.ang2);
+  var anp=Math.max(0.05,Math.pow(Math.max(0.5,sim.ecf/ECF0),5))*S.mods.anp;
+  var aldo=Math.min(30,ang2*S.mods.aldo/(0.6+0.4*anp));
+  var flow=Math.max(0.15,excretion(sim.map)/150);
+  var ksec=Math.min(9,aldo*S.mods.kblock*Math.pow(flow,0.6));
+  return {renin:renin,ang2:ang2,aldo:aldo,anp:anp,flow:flow,ksec:ksec};
+}
+
+function render(){
+  $('vIn').textContent=S.intake+' mmol/day · '+(S.intake*58.44/1000).toFixed(1)+' g salt';
+  $('vShift').textContent=(S.shift===0?'normal':(S.shift>0?'right '+S.shift+' mmHg':'left '+Math.abs(S.shift)+' mmHg'));
+  $('vMass').textContent=Math.round(S.mass*100)+'%';
+  $('oMAP').textContent=sim.map.toFixed(0);
+  $('oDay').textContent=sim.t.toFixed(0);
+  $('oECF').textContent=sim.ecf.toFixed(1);
+  $('oEx').textContent=excretion(sim.map).toFixed(0);
+  cascade(); verdict(); draw1(); draw2();
+}
+
+function cascade(){
+  var h=hormones();
+  function bar(name,sub2,val,color){
+    var w=Math.max(2,Math.min(100,Math.log(1+val)/Math.log(4)*100));
+    return '<div class="cr"><span>'+name+'<small>'+sub2+'</small></span><span class="track"><span class="fill" style="width:'+w.toFixed(1)+'%;background:'+color+'"></span></span><span class="num">&times;'+(val<10?val.toFixed(2):val.toFixed(0))+'</span></div>';
+  }
+  $('casc').innerHTML=
+    bar('Renin','low afferent stretch, low macula densa NaCl, beta-1 drive',h.renin,TEAL)+
+    bar('Angiotensin II','vasoconstriction, efferent tone, proximal NHE3, thirst, ADH',h.ang2,PURPLE)+
+    bar('Aldosterone','principal cells: ENaC, ROMK, Na+/K+ ATPase over 1&ndash;2 h',h.aldo,GOLD)+
+    bar('ANP','stretched atria: afferent dilation, renin and aldosterone inhibited',h.anp,BLUE)+
+    bar('Distal flow','sweeps K+ away, keeping the secretion gradient steep',h.flow,GREEN)+
+    bar('K+ secretion drive','ROMK and BK channels of the collecting duct',h.ksec,CORAL);
+  var dir=h.ksec>1.35?'falling':(h.ksec<0.7?'rising':'steady');
+  var why=h.ksec>1.35
+    ? 'Aldosterone and distal flow are both high, so potassium is being pushed into the lumen faster than the diet replaces it and plasma potassium tends to <b>fall</b>. Loop and thiazide diuretics cause hypokalemia by exactly this pair of levers.'
+    : (h.ksec<0.7
+      ? 'Aldosterone drive or the ENaC/ROMK response is low, so secretion falls and plasma potassium tends to <b>rise</b>. ENaC blockers and aldosterone antagonists do this on purpose, which is why they are called potassium sparing &mdash; and it is one arm of the hyperkalemia of advanced kidney disease.'
+      : 'Aldosterone and distal flow sit near normal, so the collecting duct secretes roughly the 60 to 100 mmol of potassium a day the diet delivers and plasma potassium holds inside 3.5 to 5.0 mmol/L.');
+  $('kNote').innerHTML='<b>Potassium and acid ride along with sodium.</b> Almost all filtered potassium is reclaimed proximally and in the thick ascending limb, so what leaves the body is set by <i>secretion</i> from principal cells &mdash; the product of aldosterone, distal flow rate and plasma potassium acting directly on the adrenal cortex. Trend right now: plasma potassium '+dir+'. '+why+' The neighboring type A intercalated cells respond to the same aldosterone by pumping H+ into the lumen, which is why potassium and acid&ndash;base status never move independently.';
+}
+
+function verdict(){
+  var eq=equilibrium(), v=$('verdict'), cls, t, s;
+  var ex=excretion(sim.map), gap=S.intake-ex;
+  if(sim.t===0){
+    cls='cool'; t='Day 0. Press <b>Run the days</b>.';
+    s='At the current pressure of '+sim.map.toFixed(0)+' mmHg this kidney would excrete '+ex.toFixed(0)+' mmol of sodium a day against an intake of '+S.intake+'. The gap is '+gap.toFixed(0)+' mmol a day, so extracellular volume will '+(gap>0?'rise':'fall')+' until pressure reaches about <b>'+eq.toFixed(0)+' mmHg</b> &mdash; the pressure at which the curve crosses the intake line.';
+  }else if(Math.abs(gap)<2.5){
+    cls=(sim.map>135)?'bad':((sim.map>105||sim.map<78)?'warn':'ok');
+    t='Balance reached at a mean arterial pressure of '+sim.map.toFixed(0)+' mmHg.';
+    s='Excretion now equals the '+S.intake+' mmol a day coming in, so extracellular volume has stopped changing at '+sim.ecf.toFixed(1)+' L and pressure has stopped moving. ';
+    if(S.shift>6){
+      s+='Notice what fixed the imbalance: not a fall in intake, but a <b>rise in pressure</b>. A curve shifted '+S.shift+' mmHg to the right can only clear a normal salt load at a higher pressure, and it will hold that pressure indefinitely. This is why sustained hypertension always implies a reset renal function curve &mdash; if the curve were normal, pressure natriuresis would have dumped the volume and taken the pressure back down.';
+    }else if(S.shift<-6){
+      s+='The curve has been shifted <b>left</b>, so the same salt load is now cleared at a lower pressure. Blocking angiotensin II, blocking aldosterone and raising ANP all work this way: they move the curve, not the intake, and the new pressure follows automatically.';
+    }else if(S.mass<0.6){
+      s+='With only '+Math.round(S.mass*100)+' percent of nephron mass the curve is flatter: each surviving nephron must excrete several times its usual sodium load, and it can only be persuaded to do that by a higher pressure. Volume-dependent hypertension in chronic kidney disease is this arithmetic, and it is why salt restriction and diuretics matter so much there.';
+    }else if(S.intake>300){
+      s+='And notice how little pressure moved. The normal curve is so steep that a large rise in intake is absorbed by a small rise in pressure &mdash; salt resistance is a property of the curve, not of willpower.';
+    }else{
+      s+='This is the ordinary resting state: roughly '+S.intake+' mmol in, '+S.intake+' mmol out, about 14 L of extracellular fluid, pressure near 97 mmHg.';
+    }
+  }else if(gap>0){
+    cls='warn'; t='Day '+sim.t.toFixed(0)+': still retaining '+gap.toFixed(0)+' mmol of sodium a day.';
+    s='Output is below intake, so extracellular volume is climbing (now '+sim.ecf.toFixed(1)+' L). Venous return and cardiac output rise with it and pressure is pushed up &mdash; and it will keep being pushed up until the kidney is excreting all '+S.intake+' mmol. Predicted resting point about '+eq.toFixed(0)+' mmHg.';
+  }else{
+    cls='cool'; t='Day '+sim.t.toFixed(0)+': excreting '+Math.abs(gap).toFixed(0)+' mmol a day more than is coming in.';
+    s='Output exceeds intake, so volume is falling (now '+sim.ecf.toFixed(1)+' L) and pressure is dropping. It will keep dropping until output has fallen back to match intake, predicted at about '+eq.toFixed(0)+' mmHg. That one-way persistence, with no adaptation and no fatigue, is the infinite gain baroreceptors do not have.';
+  }
+  v.className='verdict '+cls;
+  v.innerHTML=t+'<small>'+s+'</small>';
+}
+
+function draw1(){
+  var cv=$('cv1'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=58,padR=16,padT=14,padB=42, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var x0=60,x1=190, ymax=650;
+  function X(v){return padL+(v-x0)/(x1-x0)*pw;}
+  function Y(v){return padT+ph-Math.max(0,Math.min(1,v/ymax))*ph;}
+  g.lineWidth=1; g.font='600 10px Inter,sans-serif';
+  for(var v=0;v<=ymax;v+=100){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(padL,Y(v)); g.lineTo(padL+pw,Y(v)); g.stroke();
+    g.fillStyle=MUTED; g.textAlign='right'; g.fillText(v,padL-7,Y(v)+3);
+  }
+  g.textAlign='center';
+  for(var p=60;p<=190;p+=20){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(X(p),padT); g.lineTo(X(p),padT+ph); g.stroke();
+    g.fillStyle=MUTED; g.fillText(p,X(p),padT+ph+15);
+  }
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif';
+  g.fillText('Mean arterial pressure (mmHg)',padL+pw/2,padT+ph+32);
+  g.save(); g.translate(15,padT+ph/2); g.rotate(-Math.PI/2); g.textAlign='center';
+  g.fillText('Sodium excretion (mmol/day)',0,0); g.restore();
+
+  var keepShift=S.shift, keepMass=S.mass;
+  S.shift=0; S.mass=1;
+  g.beginPath(); g.strokeStyle=LINE; g.lineWidth=2.4; g.setLineDash([4,4]);
+  for(var p2=x0;p2<=x1;p2+=1){ var y=Y(excretion(p2)); if(p2===x0) g.moveTo(X(p2),y); else g.lineTo(X(p2),y); }
+  g.stroke(); g.setLineDash([]);
+  S.shift=keepShift; S.mass=keepMass;
+
+  g.beginPath(); g.strokeStyle=TEAL; g.lineWidth=3;
+  for(var p3=x0;p3<=x1;p3+=1){ var y3=Y(excretion(p3)); if(p3===x0) g.moveTo(X(p3),y3); else g.lineTo(X(p3),y3); }
+  g.stroke();
+
+  g.beginPath(); g.strokeStyle=GOLD; g.lineWidth=2.2; g.setLineDash([7,5]);
+  g.moveTo(padL,Y(S.intake)); g.lineTo(padL+pw,Y(S.intake)); g.stroke(); g.setLineDash([]);
+  g.fillStyle=GOLD; g.font='800 10.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillText('intake '+S.intake+' mmol/day',padL+6,Y(S.intake)-6);
+
+  var eq=equilibrium();
+  if(eq>x0&&eq<x1){
+    g.strokeStyle=PURPLE; g.lineWidth=1.4; g.setLineDash([2,3]);
+    g.beginPath(); g.moveTo(X(eq),Y(S.intake)); g.lineTo(X(eq),padT+ph); g.stroke(); g.setLineDash([]);
+    g.fillStyle=PURPLE; g.textAlign='center';
+    g.fillText('settles at '+eq.toFixed(0),X(eq),padT+ph-6);
+  }
+  sim.hist.forEach(function(h,i){
+    g.globalAlpha=0.12+0.7*(i/Math.max(1,sim.hist.length-1));
+    g.fillStyle=CORAL; g.beginPath(); g.arc(X(h.map),Y(h.ex),2.4,0,6.2832); g.fill();
+  });
+  g.globalAlpha=1;
+  g.fillStyle=TEALD; g.beginPath(); g.arc(X(sim.map),Y(excretion(sim.map)),6,0,6.2832); g.fill();
+  g.strokeStyle='#fff'; g.lineWidth=2.2; g.stroke();
+
+  g.font='800 10.5px Inter,sans-serif'; g.textAlign='right';
+  g.fillStyle=TEAL; g.fillText('this kidney',padL+pw-6,padT+13);
+  g.fillStyle=MUTED; g.fillText('normal curve',padL+pw-6,padT+27);
+}
+
+function draw2(){
+  var cv=$('cv2'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+  var padL=48,padR=48,padT=14,padB=36, pw=W-padL-padR, ph=H-padT-padB;
+  g.clearRect(0,0,W,H);
+  var days=40, mMin=60, mMax=180, eMax=650;
+  function X(d){return padL+Math.min(1,d/days)*pw;}
+  function YM(v){return padT+ph-Math.max(0,Math.min(1,(v-mMin)/(mMax-mMin)))*ph;}
+  function YE(v){return padT+ph-Math.max(0,Math.min(1,v/eMax))*ph;}
+  g.lineWidth=1; g.font='600 10px Inter,sans-serif';
+  for(var v=mMin;v<=mMax;v+=20){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(padL,YM(v)); g.lineTo(padL+pw,YM(v)); g.stroke();
+    g.fillStyle=TEAL; g.textAlign='right'; g.fillText(v,padL-7,YM(v)+3);
+  }
+  for(var e=0;e<=eMax;e+=150){
+    g.fillStyle=GOLD; g.textAlign='left'; g.fillText(e,padL+pw+7,YE(e)+3);
+  }
+  for(var d=0;d<=days;d+=10){
+    g.beginPath(); g.strokeStyle=LINE; g.moveTo(X(d),padT); g.lineTo(X(d),padT+ph); g.stroke();
+    g.fillStyle=MUTED; g.textAlign='center'; g.fillText(d,X(d),padT+ph+15);
+  }
+  g.fillStyle=SOFT; g.font='700 10.5px Inter,sans-serif'; g.textAlign='center';
+  g.fillText('days',padL+pw/2,padT+ph+30);
+
+  g.strokeStyle=GOLD; g.lineWidth=1.8; g.setLineDash([6,5]);
+  g.beginPath(); g.moveTo(padL,YE(S.intake)); g.lineTo(padL+pw,YE(S.intake)); g.stroke(); g.setLineDash([]);
+
+  if(sim.hist.length>1){
+    g.beginPath(); g.strokeStyle=GOLD; g.lineWidth=2.4;
+    sim.hist.forEach(function(h,i){ var y=YE(h.ex); if(i===0) g.moveTo(X(h.d),y); else g.lineTo(X(h.d),y); });
+    g.stroke();
+    g.beginPath(); g.strokeStyle=TEAL; g.lineWidth=3;
+    sim.hist.forEach(function(h,i){ var y=YM(h.map); if(i===0) g.moveTo(X(h.d),y); else g.lineTo(X(h.d),y); });
+    g.stroke();
+    var last=sim.hist[sim.hist.length-1];
+    g.fillStyle=TEALD; g.beginPath(); g.arc(X(last.d),YM(last.map),4.6,0,6.2832); g.fill();
+    g.strokeStyle='#fff'; g.lineWidth=2; g.stroke();
+  }
+  g.font='800 10.5px Inter,sans-serif'; g.textAlign='left';
+  g.fillStyle=TEAL; g.fillText('MAP, left axis',padL+7,padT+13);
+  g.fillStyle=GOLD; g.fillText('Na+ excretion, right axis',padL+7,padT+27);
+}
+
+function run(){
+  if(timer){ clearInterval(timer); timer=null; $('bRun').textContent='Run the days'; return; }
+  $('bRun').textContent='Pause';
+  timer=setInterval(function(){
+    tick(); render();
+    if(sim.t>=40){ clearInterval(timer); timer=null; $('bRun').textContent='Run the days'; }
+  },70);
+}
+
+function bindRange(id,fn){ $(id).addEventListener('input',function(){ fn(parseFloat(this.value)); S.mods=neutral(); mark(-1); reset(); }); }
+bindRange('sIn',function(v){S.intake=v;});
+bindRange('sShift',function(v){S.shift=v;});
+bindRange('sMass',function(v){S.mass=v/100;});
+$('bRun').addEventListener('click',run);
+$('bReset').addEventListener('click',reset);
+window.addEventListener('resize',function(){ draw1(); draw2(); });
+
+buildChips(); sync(); reset();
+})();
+</script>
+</body>
+</html>

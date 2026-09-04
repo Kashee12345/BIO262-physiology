@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>Muscle Tissue and Nervous Tissue &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="Muscle and nerve are the body&rsquo;s two excitable tissues, and they are studied together because neither one makes sense alone. A neuron is a cell that has specialized in moving charge quickly and precisely; a muscle fiber is a ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 5 &middot; Muscle Tissue and Nervous</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#sarcomere-engine">1 &middot; The Sarcomere: An Engine That Shortens by Sliding</a>
+        <a href="#neuromuscular-junction">2 &middot; From Nerve to Calcium: The Junction and Excitation&ndash;Contraction Coupling</a>
+        <a href="#grading-force">3 &middot; Grading Force: Motor Units, Frequency, Length and Fuel</a>
+        <a href="#smooth-and-cardiac">4 &middot; Smooth and Cardiac Muscle: Same Filaments, Different Control</a>
+        <a href="#nervous-tissue">5 &middot; Nervous Tissue: Cells, the Resting Voltage, and the Reflex Loop</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 5</div>
+<h1>Muscle Tissue and Nervous Tissue</h1>
+<p class="lede">Muscle and nerve are the body&rsquo;s two excitable tissues. We study them together because neither one makes sense alone. A neuron is a cell built to move charge fast and precisely. A muscle fiber is a cell built to turn the chemical energy of ATP into force. Between them sits a chemical synapse. Its only job is simple. It turns a voltage change in one cell into a voltage change in another. In this module you follow the signal all the way down. An electrical event in a motor neuron releases acetylcholine. Acetylcholine depolarizes the muscle membrane, which means it makes the inside less negative. That opens calcium channels in the sarcoplasmic reticulum, the calcium store inside the cell. Calcium then unblocks the actin filament so myosin can pull. Then you follow it back up. You learn how force is graded and how the tissue pays for it. You learn how smooth and cardiac muscle solve the same problem in their own ways. And you learn how nervous tissue holds a resting voltage in the first place.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain how the <b>sliding-filament</b> layout of the <b>sarcomere</b> turns cross-bridge cycling into shortening. Say where ATP binds and where it is split.</li>
+<li>Put the four steps of the <b>cross-bridge cycle</b> in order. Predict what happens when there is no ATP (<b>rigor</b>).</li>
+<li>Trace <b>excitation&ndash;contraction coupling</b> from the <b>neuromuscular junction</b> through the <b>T tubule</b>, <b>DHP receptor</b> and <b>ryanodine receptor</b>. It ends with calcium inside the cell rising from about 0.1 &micro;M to 10 &micro;M.</li>
+<li>Describe the two ways whole-muscle force is graded. They are <b>motor unit recruitment</b> (the <b>size principle</b>) and <b>frequency summation</b> up to <b>tetanus</b>. Read a <b>length&ndash;tension</b> curve and say why it has that shape.</li>
+<li>Compare the three ATP-making systems of muscle by power and by how long each lasts. Link <b>fiber type</b> (I, IIa, IIx) to fatigue resistance.</li>
+<li>Contrast <b>skeletal</b>, <b>cardiac</b> and <b>smooth</b> muscle. Look at the calcium source, the calcium receptor protein, electrical coupling, and the ability to tetanize.</li>
+<li>Explain the <b>resting membrane potential</b> as a leak-and-pump steady state. Use the <b>Nernst equation</b> to predict equilibrium potentials for potassium and sodium.</li>
+<li>Tell <b>graded potentials</b> apart from action potentials. Explain <b>spatial</b> and <b>temporal summation</b> at the <b>trigger zone</b>.</li>
+<li>Name the parts of the <b>stretch reflex</b> as a negative-feedback loop. They are the variable, the sensor, the integrator, the effector and the response.</li>
+</ul></div>
+
+<h2 id="sarcomere-engine"><span class="num">Section 1</span>The Sarcomere: An Engine That Shortens by Sliding</h2>
+<figure class="bref"><div class="fr"><img src="img/ch05_s1.jpg" alt="Diagram of a skeletal muscle sarcomere showing the Z discs, I band, A band, H zone and M line, with thin actin filaments overlapping thick myosin filaments" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The sarcomere is the repeating unit between two Z discs. Every band in the striped pattern is simply a region with a different amount of filament overlap. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Why the striations are the mechanism, not the decoration</h3>
+<p>A skeletal muscle fiber is one huge cell with many nuclei. It is commonly 10 to 100 &micro;m across. In a long muscle such as the sartorius it runs up to 30 cm end to end. Almost the whole cell is packed with <b>myofibrils</b>. These are round bundles about 1 to 2 &micro;m across. They run the full length of the fiber. Each myofibril is a chain of <b>sarcomeres</b> laid end to end. The sarcomere is the smallest part of the cell that can do the job. It is the piece that shortens.</p>
+<p>The stripes you see under the microscope are not a staining trick. A sarcomere runs from one <b>Z disc</b> to the next. At rest that is roughly 2.0 to 2.2 &micro;m. <b>Thin filaments</b> of actin anchor to each Z disc and point inward. They are about 1.0 &micro;m long. <b>Thick filaments</b> of myosin float in the middle, tied to the <b>M line</b>. They are about 1.6 &micro;m long. The dark <b>A band</b> is exactly as long as the thick filament. The light <b>I band</b> holds thin filament only. The <b>H zone</b> holds thick filament only. Every band is a statement about overlap. That is why the bands change in a predictable way during contraction. The A band never changes width. The I band and H zone both narrow, and they can vanish.</p>
+<p>That is the whole of the <b>sliding-filament theory</b>. The filaments do not get shorter. They slide past one another and pull the Z discs toward the M line. Thousands of sarcomeres sit in a row along a myofibril. So a small percent of shortening in each one adds up. A sarcomere going from 2.2 to 1.8 &micro;m shortens about 18 percent. A 30 cm muscle shortening 18 percent moves a bone about 5 cm. A third protein, <b>titin</b>, runs from Z disc to M line like a tiny spring. It keeps the thick filament centered. It also gives most of the passive tension you feel when you stretch a relaxed muscle.</p>
+
+<h3>The cross-bridge cycle: four steps and one ATP</h3>
+<p>Each thick filament carries roughly 300 myosin molecules. Each myosin has two round heads that point outward toward the thin filament. A head is two things at once. It is an <b>actin-binding site</b>. It is also an <b>ATPase</b>, an enzyme that splits ATP. That double identity is the engine. The cycle has four steps. Learn them in the order the chemistry actually happens.</p>
+<p><b>1. Cocking.</b> Myosin splits ATP into ADP and inorganic phosphate, but it keeps hold of both. The energy that comes free is stored as strain in the head. The head swings into a cocked position of roughly 90 degrees. <b>2. Cross-bridge formation.</b> If the binding site on actin is uncovered, the cocked head attaches. That attachment is a <b>cross-bridge</b>. <b>3. The power stroke.</b> Phosphate leaves. The head pivots to about 45 degrees. It drags the thin filament toward the M line by roughly 10 nm. ADP leaves at the end of the stroke. <b>4. Detachment.</b> A fresh ATP binds the head. The head loses its grip on actin and lets go. Now it is ready to be cocked again.</p>
+<p>Notice the accounting. One ATP is used per head per cycle. It is split in step 1, but its energy is spent in step 3. The ATP that binds in step 4 is not split. It is simply needed before the head can let go. At any moment only some heads are attached. So the filament never slips backward. Some heads always hold on while others reset. It works the way a rope is pulled hand over hand. The attached, force-making part of the cycle lasts only a few milliseconds. Even so, a head runs the whole cycle five to fifty times per second. That is during a steady contraction.</p>
+
+<div class="pearl"><b>Misconception check.</b> Students often say the filaments &ldquo;contract&rdquo;. Others say actin and myosin get shorter. Neither protein changes length at any point. Shortening happens because two stiff rods are pulled into greater overlap. That is why the A band never changes width. It stays the same no matter how hard the muscle contracts. The A band is simply the width of the thick filament.</div>
+
+<h3>Rigor mortis is the clean experiment</h3>
+<p>If letting go needs ATP, then a cell with no ATP should be stuck holding on. That is exactly what <b>rigor mortis</b> is. After death, oxidative phosphorylation stops. The leftover ATP is used up within a few hours. Calcium also leaks out of the sarcoplasmic reticulum into the cytosol, the fluid inside the cell. It leaks because the pump that clears it needs ATP too. Binding sites stay uncovered. Heads stay bound. No head can release. Stiffness starts about 3 to 4 hours after death. It peaks near 12 hours. It fades over 48 to 72 hours, and only because lysosomal enzymes digest the proteins themselves. A warm room and hard exercise before death both use ATP up faster. Both make stiffness start sooner. Investigators use that fact to estimate the time of death.</p>
+<p>The clinical lesson matters more than the forensic one. Any condition that badly limits the ATP supply to muscle makes it stiff and contracted. It does not make it limp. That is one reason muscle short of blood flow hurts and hardens. It does not simply go slack.</p>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Neither actin nor myosin ever changes length. Shortening happens because two stiff rods are pulled into greater overlap. Drag the sarcomere from 1.3 to 3.7 &micro;m and watch the A band hold its width. <a href="../lab/ch05/SarcomereSlidingEngine.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch05/SarcomereSlidingEngine.html" loading="lazy" title="The Sarcomere &mdash; an engine that shortens by sliding interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Muscle shortens because stiff filaments slide into greater overlap. A repeating myosin cycle drives that sliding. It costs one ATP per head per stroke. The ATP is split to cock the head. A new one is needed again before the head can let go.</p></div>
+
+<h2 id="neuromuscular-junction"><span class="num">Section 2</span>From Nerve to Calcium: The Junction and Excitation&ndash;Contraction Coupling</h2>
+<figure class="bref"><div class="fr"><img src="img/ch05_s2.jpg" alt="Illustration of the neuromuscular junction showing the motor neuron terminal, synaptic vesicles containing acetylcholine, the synaptic cleft, and nicotinic receptors on the folded motor end plate" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> At the neuromuscular junction, calcium enters the axon terminal. That triggers acetylcholine release onto a tightly folded end plate packed with nicotinic receptors. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>The neuromuscular junction is built with a huge safety factor</h3>
+<p>A somatic motor neuron meets the muscle fiber at one special synapse. It is the <b>neuromuscular junction</b> (NMJ). The action potential reaches the axon terminal, and voltage-gated calcium channels open. Calcium flows down a steep gradient. Outside the cell it sits at about 1.2 mM. Inside it sits at about 0.0001 mM. That local calcium spike makes synaptic vesicles fuse with the membrane. The SNARE proteins do the fusing. Each vesicle dumps roughly 5,000 to 10,000 molecules of <b>acetylcholine</b> (ACh) into the cleft. The cleft is only 20 to 50 nm wide. A single nerve impulse releases on the order of 100 to 200 vesicles.</p>
+<p>ACh crosses in well under a millisecond. It binds <b>nicotinic ACh receptors</b>. These are not G-protein-coupled. They are <b>ligand-gated ion channels</b>. Two ACh molecules must bind before the pore opens. The open pore passes both sodium and potassium. At rest the push on sodium is far bigger than the push on potassium. So the net current flows inward and the end plate depolarizes. Remember the current rule I = g &times; (Vm &minus; Eion). At a resting Vm of about &minus;90 mV, sodium is 150 mV away from its equilibrium potential. Potassium is already close to rest. So sodium wins.</p>
+<p>The <b>end-plate potential</b> that follows is huge for a synapse. It is about 70 mV, measured before it can set off a spike. Only about 35 mV of depolarization is needed to reach threshold. That is the move from roughly &minus;90 mV to &minus;55 mV. So there is about a twofold voltage margin. The nerve also releases several times more acetylcholine than the minimum needed. Together those margins are the <b>safety factor</b>. It is why a healthy NMJ works one-to-one. Every motor neuron action potential makes a muscle action potential. <b>Acetylcholinesterase</b> in the basal lamina then ends the signal. It breaks ACh down within about 1 millisecond. The end plate can then reset and wait for the next impulse.</p>
+
+<div class="pearl"><b>Why it matters clinically.</b> The safety factor explains a whole family of diseases. <b>Myasthenia gravis</b> destroys about 70 to 80 percent of nicotinic receptors with autoantibodies. The end-plate potential then drops below threshold once transmitter stores run low. So the weakness gets worse with use and better with rest. <b>Lambert&ndash;Eaton syndrome</b> attacks the calcium channels on the nerve side. Weakness there improves briefly with repeated effort, as calcium builds up. <b>Botulinum toxin</b> cuts SNARE proteins and blocks release altogether. <b>Organophosphates</b> block acetylcholinesterase. ACh piles up in the cleft. That causes twitching first, then a depolarizing block.</div>
+
+<h3>Excitation&ndash;contraction coupling: turning voltage into calcium</h3>
+<p>The muscle action potential now sweeps along the sarcolemma at 3 to 5 m/s. The sarcolemma is the muscle cell membrane. The middle of a 50 &micro;m fiber is deep. A surface signal cannot reach it in time by diffusion. The fix is anatomical. The sarcolemma dives into the fiber as <b>transverse (T) tubules</b>. These are tubes of surface membrane that carry the action potential into the core. They wrap each myofibril at the A&ndash;I junctions. Two end sacs of the <b>sarcoplasmic reticulum</b> (SR) flank each T tubule. The SR is the calcium store. The three structures together make a <b>triad</b>.</p>
+<p>The T-tubule membrane holds the <b>dihydropyridine (DHP) receptor</b>, a voltage sensor. Facing it in the SR membrane sits the <b>ryanodine receptor</b> (RyR1), a calcium-release channel. In skeletal muscle the two are linked by direct contact. The T-tubule membrane depolarizes, the DHP receptor changes shape, and it physically pulls RyR1 open. No calcium has to enter from outside the cell. This really is special to skeletal muscle. It is why skeletal muscle keeps contracting for a while in a calcium-free bath. Cardiac muscle stops within a few beats.</p>
+<p>SR calcium pours into the cytosol. Free calcium jumps roughly 100-fold. It goes from about 0.0001 mM (0.1 &micro;M) at rest to about 0.01 mM (10 &micro;M). Calcium binds <b>troponin C</b>. Troponin drags <b>tropomyosin</b> off the myosin-binding sites on actin. Cross-bridge cycling begins. So muscle is not switched on by myosin. Myosin is always willing. Muscle is switched on by taking a block off actin. That is why we call this <b>actin-linked</b> regulation, or thin-filament regulation. The gap between the action potential and visible tension is the <b>latent period</b>. It is only about 2 milliseconds.</p>
+
+<h3>Relaxation costs energy too</h3>
+<p>Relaxation is not passive. The action potential ends and RyR1 closes. <b>SERCA</b>, the SR calcium-ATPase, starts pumping calcium back into the SR. It pumps against a gradient of about 10,000 to one. It uses one ATP for every two calcium ions. Inside the SR, <b>calsequestrin</b> holds calcium loosely. Huge amounts can be stored that way. The free level never rises enough to stall the pump. Calcium in the cytosol falls back below about 0.1 &micro;M. Troponin lets go of calcium. Tropomyosin slides back over the binding sites. Cross-bridges cannot re-form. Titin and the connective tissue frame then recoil. That returns the sarcomere toward its resting length.</p>
+<p>Two clinical points follow straight from that. First, a large share of muscle ATP goes to SERCA, not to myosin. It is roughly a quarter to a third. That is part of why shivering makes heat so well. Second, the RyR1 channel can be faulty and leaky. That is the inherited risk for <b>malignant hyperthermia</b>. Certain anesthetics then trigger runaway calcium release. The patient turns rigid, burns ATP wildly, and body temperature can climb 1 degree Celsius every 5 minutes. The antidote is dantrolene. It works by blocking RyR1 directly. You can now explain that drug from first principles.</p>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A healthy junction makes an end-plate potential of about 70 mV. Only about 35 mV is needed to carry the membrane from &minus;90 to &minus;55 mV. That roughly twofold margin is the safety factor. <a href="../lab/ch05/JunctionToCalciumLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch05/JunctionToCalciumLab.html" loading="lazy" title="From Nerve to Calcium &mdash; the safety factor and E&ndash;C coupling interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Excitation&ndash;contraction coupling turns a voltage change into a calcium surge. Calcium inside the cell rises 100-fold. Calcium works by unblocking actin. Relaxation is not free. It needs ATP to pump that calcium back into the sarcoplasmic reticulum.</p></div>
+
+<h2 id="grading-force"><span class="num">Section 3</span>Grading Force: Motor Units, Frequency, Length and Fuel</h2>
+<figure class="bref"><div class="fr"><img src="img/ch05_s3.jpg" alt="Graph of muscle tension over time showing a single twitch, wave summation with closely spaced stimuli, incomplete tetanus and fused complete tetanus" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> A twitch lasts longer than an action potential. So stimuli that arrive before relaxation is finished add up into smoother, stronger tension. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Motor units and the size principle</h3>
+<p>One muscle fiber does not grade its own force much. Its action potential is all-or-none. Its calcium release is close to full. Whole-muscle force is graded at the level of the <b>motor unit</b> instead. A motor unit is one alpha motor neuron plus every fiber it supplies. The number of fibers per unit matches the precision the job needs. The muscles that aim the eye have units of roughly 5 to 10 fibers. The muscles of the larynx are just as fine. The gastrocnemius, the big calf muscle, only needs to push. Its units hold 1,000 to 2,000 fibers. Small units give fine control. Large units give coarse, powerful steps.</p>
+<p>Adding force by switching on more units is <b>recruitment</b>. It follows a strict order called the <b>size principle</b>. Motor neurons are recruited from the smallest cell body to the largest. Small neurons have higher input resistance. So the same synaptic current moves their voltage further. That is I = V/R rearranged as V = I &times; R. They reach threshold first. Helpfully, small motor neurons supply small, slow, fatigue-resistant fibers. So the system uses its cheapest fibers for light postural work on its own. It calls in the powerful, tiring ones only when the load demands it. Willpower and training do not change the recruitment order. They change only the firing rate and the endpoint.</p>
+
+<h3>Summation and tetanus: why a twitch is not the working unit</h3>
+<p>A single stimulus makes a <b>twitch</b>. It has a latent period of about 2 ms, then a contraction phase, then a relaxation phase. All together that is roughly 20 ms in a fast fiber. It is up to 100 ms in a slow one. Compare that with the muscle action potential. It is over in 1 to 5 ms. The mismatch is the key. The electrical event finishes long before the mechanical one. So a second action potential can arrive early. Calcium is still high and tension is still there. Tension then adds up. That is <b>wave summation</b>.</p>
+<p>Raise the stimulus frequency and twitches fuse. At around 20 to 30 Hz you get <b>incomplete (unfused) tetanus</b>, a bumpy plateau. Above roughly 50 Hz in fast fibers you get <b>complete tetanus</b>, a smooth plateau. That plateau makes three to four times the tension of a single twitch. Tetanus is not a disease state. It is the normal working state of skeletal muscle. The mechanism is simple. SERCA cannot clear calcium between stimuli. So calcium in the cytosol stays high, troponin stays loaded, and every binding site stays open. In the living body, motor units also fire out of step with each other. That smooths whole-muscle force even more.</p>
+
+<h3>Length&ndash;tension: force depends on overlap</h3>
+<p>Active tension is a direct readout of how many cross-bridges can form. So it depends on sarcomere length. The best length is about 2.0 to 2.2 &micro;m. There every myosin head faces an actin binding site. The thin filaments stay out of each other&rsquo;s way. Stretch the sarcomere past about 3.6 &micro;m and overlap drops to zero. Active tension then falls to zero, no matter how much calcium is released. Squeeze it below about 2.0 &micro;m and thin filaments from opposite ends overlap. They get in each other&rsquo;s way. Squeeze below about 1.7 &micro;m and the thick filaments jam against the Z discs. Tension falls steeply. The curve is an upside-down U. Its shape is pure geometry.</p>
+<p>The body normally holds resting muscle very close to that best length. The skeleton limits how far a joint can travel. So you can usually ignore the falling limb of the curve in intact skeletal muscle. You cannot ignore it in the heart. There the rising limb of the same curve becomes the <b>Frank&ndash;Starling</b> relationship from Module 10. The more the ventricle fills, the closer its sarcomeres come to the best overlap. The harder it then contracts.</p>
+
+<div class="pearl"><b>Bedside translation.</b> Ask a patient to grip your fingers with the wrist fully bent. Then ask again with the wrist straight. Grip is much weaker in the bent position. Bending the wrist shortens the finger flexors past their best sarcomere length. Nothing is wrong with the nerve, the receptor or the calcium. Only the overlap has changed. So positioning a limb well is a physiologic treatment, not just a comfort measure.</div>
+
+<h3>Paying for it: three energy systems and three fiber types</h3>
+<p>A resting muscle fiber holds only about 5 mmol of ATP per kilogram. That is enough for perhaps 2 to 3 seconds of all-out work. Three systems make more. <b>Creatine phosphate</b> sits at 20 to 25 mmol/kg. Creatine kinase hands its phosphate to ADP almost at once. That covers roughly the first 10 to 15 seconds. <b>Anaerobic glycolysis</b> then makes 2 ATP per glucose very fast. It can carry hard work for about 30 seconds to 2 minutes. The cost is a build-up of lactate and hydrogen ions. <b>Oxidative phosphorylation</b> gives about 30 to 32 ATP per glucose. It takes 30 to 60 seconds to get going, and oxygen delivery limits it. It powers everything past a couple of minutes.</p>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Fiber type</th><th>Main ATP source</th><th>Twitch speed / fatigue</th><th>Typical role</th></tr></thead><tbody>
+<tr><td>Type I (slow oxidative)</td><td>Oxidative. Many mitochondria, high myoglobin, red</td><td>Slow (about 100 ms). Very hard to tire out</td><td>Posture, soleus, steady low-force work</td></tr>
+<tr><td>Type IIa (fast oxidative-glycolytic)</td><td>Both oxidative and glycolytic. Middling myoglobin</td><td>Fast (about 50 ms). Fairly hard to tire out</td><td>Walking, cycling, long repeated effort</td></tr>
+<tr><td>Type IIx (fast glycolytic)</td><td>Glycolytic. Few mitochondria, low myoglobin, pale</td><td>Fastest (about 20 ms). Tires out in seconds</td><td>Sprinting, jumping, sudden top force</td></tr>
+</tbody></table></div>
+<p>Fatigue is worth naming exactly, because the popular story is wrong. <b>Muscle fatigue is not caused by lactic acid burning the muscle</b>. It is also almost never caused by literally running out of ATP. ATP rarely falls below 60 percent of the resting level, even in exhausting exercise. The cell shuts down before that. The real causes are a set of build-ups. Inorganic phosphate piles up and gets in the way of cross-bridge force. Hydrogen ions block key enzymes and upset calcium handling. Potassium piles up in the T tubules and blunts the action potential. Glycogen runs low. Drive from the nervous system fades too. Soreness that starts 24 to 72 hours later is tiny muscle damage and inflammation. It is not lactate. Lactate clears within about an hour.</p>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A single fiber barely grades its own force. Its action potential is all-or-none and its calcium release is close to full. Whole-muscle force is graded two other ways. You recruit more motor units, and you fire them faster. <a href="../lab/ch05/ForceGradingBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch05/ForceGradingBench.html" loading="lazy" title="Grading Force &mdash; motor units, frequency, length and fuel interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Whole-muscle force is graded in two ways. You recruit more and larger motor units in a fixed small-to-large order. You also raise the firing rate until twitches fuse into tetanus. Maximum force is only on offer near the best filament overlap.</p></div>
+
+<h2 id="smooth-and-cardiac"><span class="num">Section 4</span>Smooth and Cardiac Muscle: Same Filaments, Different Control</h2>
+<figure class="bref"><div class="fr"><img src="img/ch05_s4.jpg" alt="Comparison illustration of skeletal, cardiac and smooth muscle tissue showing striations and multiple peripheral nuclei in skeletal fibers, branched striated cells with intercalated discs in cardiac muscle, and spindle-shaped non-striated cells in smooth muscle" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> All three muscle types use actin and myosin. They differ in how the filaments are arranged, where calcium comes from, and how the cells are wired together electrically. <span class="cred">BruceBlaus, CC BY-SA 4.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Smooth muscle: cheap, slow, and built to hold</h3>
+<p>Smooth muscle cells are small spindles. They are 2 to 10 &micro;m wide and 50 to 200 &micro;m long. Each has one central nucleus and no stripes. The missing stripes are not from missing actin and myosin. Those filaments simply run at an angle. They attach to <b>dense bodies</b> scattered through the cell, not to lined-up Z discs. So when the filaments pull, the cell twists and balls up. It does not shorten along one axis. That is exactly what you want in the wall of a tube. Smooth muscle can shorten by up to 70 percent of its resting length. Skeletal muscle manages about 30 percent. That is how a hollow organ can empty almost completely.</p>
+<p>The control chemistry is different in a way worth memorizing. Smooth muscle has no troponin. Calcium binds <b>calmodulin</b> instead, four calcium ions per molecule. The calcium&ndash;calmodulin complex switches on <b>myosin light-chain kinase</b> (MLCK). MLCK adds a phosphate to the myosin head. Only then can cross-bridges cycle. So regulation here is <b>myosin-linked</b>, not actin-linked. Relaxation needs <b>myosin light-chain phosphatase</b> to take that phosphate off. So the balance between kinase and phosphatase sets the tone, not calcium alone. Many drugs and second messengers work by shifting that balance rather than by changing calcium.</p>
+<p>Calcium comes from two places. Some comes from a thin sarcoplasmic reticulum. Some comes from outside the cell through voltage-gated and ligand-gated channels. That is why calcium channel blockers relax blood vessel smooth muscle so well. Cycling is slow. The myosin ATPase is roughly ten times slower than the skeletal one. Slowness is an advantage here. Heads that have lost their phosphate can stay attached in the <b>latch state</b>. They hold tension for hours. The ATP cost is perhaps one three-hundredth that of the same skeletal contraction. That is how a blood vessel keeps its width all day. It is how a sphincter stays shut without tiring. Most smooth muscle is <b>single-unit</b>. Gap junctions couple the cells, so whole sheets contract together. Pacemaker cells often drive them. Autonomic nerves, hormones and local stretch adjust them rather than command them.</p>
+
+<h3>Cardiac muscle: a syncytium that must never tetanize</h3>
+<p>Cardiac muscle is striped like skeletal muscle and uses troponin like skeletal muscle. Three features are its own. First, the cells are short and branched. They join end to end at <b>intercalated discs</b>. Those discs hold desmosomes for mechanical strength and <b>gap junctions</b> for electrical continuity. So the atria act as one unit and the ventricles act as one unit. Each is a <b>functional syncytium</b>. Stimulate one cell and the whole chamber contracts. Second, roughly 1 percent of cardiac cells are autorhythmic pacemakers. Their resting potential is unstable. So the heart needs no nerve to beat. Autonomic input only changes the rate and the force.</p>
+<p>Third, and most important, cardiac excitation&ndash;contraction coupling needs <b>calcium-induced calcium release</b>. A small amount of calcium enters through L-type channels. It comes in during the plateau of the cardiac action potential. That calcium binds RyR2 on the SR. RyR2 then releases the bulk of the calcium. This is genuine <b>positive feedback</b>. Calcium causes calcium release. Like all useful positive feedback in the body, it stops itself. It stays tightly bounded, and that is what makes it safe. It also makes cardiac contraction depend on calcium outside the cell. Skeletal contraction does not.</p>
+<p>Cardiac muscle also has a long absolute refractory period. It runs roughly 200 to 250 milliseconds. That is almost as long as the contraction itself. So a second action potential cannot arrive while tension is still building. Summation and tetanus are therefore impossible. That is the point. A tetanized ventricle would never refill, and cardiac output would fall to zero. Here the failure to add twitches together is a safety feature. It is built into the electrical properties of the tissue.</p>
+
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Feature</th><th>Skeletal</th><th>Cardiac</th><th>Smooth</th></tr></thead><tbody>
+<tr><td>Striations / Z discs</td><td>Yes, sarcomeres</td><td>Yes, sarcomeres</td><td>No. Dense bodies</td></tr>
+<tr><td>Nuclei per cell</td><td>Many, at the edge</td><td>One or two, central</td><td>One, central</td></tr>
+<tr><td>Calcium receptor</td><td>Troponin C (actin-linked)</td><td>Troponin C (actin-linked)</td><td>Calmodulin, then MLCK (myosin-linked)</td></tr>
+<tr><td>Main calcium source</td><td>SR only. Mechanical DHP&ndash;RyR1 link</td><td>Trigger from outside plus SR (CICR)</td><td>Outside the cell plus a little SR</td></tr>
+<tr><td>Electrical coupling</td><td>None. Each fiber has its own nerve ending</td><td>Gap junctions. A syncytium</td><td>Gap junctions in the single-unit type</td></tr>
+<tr><td>Control</td><td>Voluntary. Somatic motor neuron</td><td>Involuntary. Autorhythmic</td><td>Involuntary. Autonomic, hormonal, stretch</td></tr>
+<tr><td>Can it tetanize?</td><td>Yes, and normally does</td><td>No. Long refractory period</td><td>Steady tone through the latch state</td></tr>
+<tr><td>Regeneration</td><td>Limited. Satellite cells</td><td>Essentially none</td><td>Good. Cells can divide</td></tr>
+</tbody></table></div>
+
+<div class="pearl"><b>Misconception check.</b> Students say &ldquo;smooth muscle is weak because it is slow.&rdquo; Compare the two by cross-sectional area. Smooth muscle makes about as much force as skeletal muscle. It simply makes that force slowly and then holds it almost for free. Think of the uterus in labor. Think of an arteriole holding pressure against a beating heart. Slow is a design choice, not a defect.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> All three muscle types slide actin past myosin. They differ in only three things. Where the calcium comes from, which protein it binds, and whether the cells are joined electrically. <a href="../lab/ch05/MuscleTypeComparator.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch05/MuscleTypeComparator.html" loading="lazy" title="Smooth and Cardiac Muscle &mdash; same filaments, different control interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>All three muscle types slide actin past myosin. They differ in only three ways. Where calcium comes from, which protein it binds, and whether the cells are joined electrically. Those three differences explain every functional contrast between them.</p></div>
+
+<h2 id="nervous-tissue"><span class="num">Section 5</span>Nervous Tissue: Cells, the Resting Voltage, and the Reflex Loop</h2>
+<figure class="bref"><div class="fr"><img src="img/ch05_s5.jpg" alt="Diagram of a multipolar neuron showing dendrites, cell body, axon hillock, myelinated axon with nodes of Ranvier and axon terminals, alongside surrounding glial cells" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Each part of a neuron matches a job. Dendrites receive. The axon hillock decides. The myelinated axon carries the signal. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Neurons are shaped by the job they do</h3>
+<p>The nervous system holds roughly 86 billion neurons. It holds about the same number of glial cells. A neuron&rsquo;s shape states its function directly. <b>Dendrites</b> are short, branched and unmyelinated. That gives them a big surface for taking in thousands of synaptic inputs. One cortical neuron may receive 10,000. The <b>soma</b> holds the nucleus and the Nissl bodies, which are rough endoplasmic reticulum. It does the building work for a cell whose farthest process may be a meter away. The <b>axon hillock</b> is the trigger zone. It is packed with voltage-gated sodium channels and has the lowest threshold in the cell. It is the point where the summed input becomes an all-or-none output. The <b>axon</b> carries that output. The <b>terminals</b> turn it back into chemistry.</p>
+<p>By shape, <b>multipolar</b> neurons are by far the most common. They have many dendrites and one axon. All motor neurons and interneurons are multipolar. <b>Bipolar</b> neurons are rare and specialized. They serve the retina, the smell epithelium and the inner ear. <b>Pseudounipolar</b> neurons carry sensory information in from the body. They have a single process that splits, so the signal skips the cell body. By job the sorting is simpler. <b>Sensory (afferent)</b> neurons carry information toward the central nervous system. <b>Motor (efferent)</b> neurons carry commands out. <b>Interneurons</b> sit between them and do the integrating. They are about 99 percent of all neurons.</p>
+
+<h3>Glia are not packing material</h3>
+<p>Neurons cannot work without glia. Glia outnumber neurons roughly three to one in the cerebral cortex. Across the whole brain the ratio is closer to one to one. <b>Astrocytes</b> are the most common CNS glia. They hold the blood&ndash;brain barrier together by making capillary cells form tight junctions. They mop up potassium outside the cell, so repeated firing does not shift the resting potential. They take up glutamate before it can poison neurons. They also hand lactate to busy neurons. <b>Oligodendrocytes</b> myelinate CNS axons. One cell can wrap segments of as many as 50 different axons. <b>Microglia</b> are the resident immune cells. They do not come from blood monocytes. They come from yolk-sac cells. Those cells seed the brain early in the embryo and then renew themselves in place. They eat debris and prune synapses. Macrophages made from monocytes are a separate group. They enter only when the blood&ndash;brain barrier is broken. <b>Ependymal cells</b> line the ventricles and make cerebrospinal fluid.</p>
+<p>In the peripheral nervous system, <b>Schwann cells</b> myelinate exactly one segment of one axon. That difference from oligodendrocytes has real consequences. A Schwann cell can form a tube. That tube guides a cut peripheral axon back at about 1 to 5 mm per day. CNS axons largely cannot regrow. <b>Satellite cells</b> surround and support neuron cell bodies in peripheral ganglia. Demyelinating disease follows the same split. Multiple sclerosis attacks CNS myelin. Guillain&ndash;Barr&eacute; syndrome attacks peripheral myelin.</p>
+
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Glial cell</th><th>Location</th><th>Main physiologic job</th></tr></thead><tbody>
+<tr><td>Astrocyte</td><td>CNS</td><td>Blood&ndash;brain barrier, potassium and glutamate mopping, metabolic support</td></tr>
+<tr><td>Oligodendrocyte</td><td>CNS</td><td>Myelinates many axons. Speeds up conduction</td></tr>
+<tr><td>Microglia</td><td>CNS</td><td>Immune watch, clean-up, synapse pruning</td></tr>
+<tr><td>Ependymal cell</td><td>CNS ventricles</td><td>Makes and circulates cerebrospinal fluid</td></tr>
+<tr><td>Schwann cell</td><td>PNS</td><td>Myelinates one internode. Guides axon regrowth</td></tr>
+<tr><td>Satellite cell</td><td>PNS ganglia</td><td>Controls the chemical setting around cell bodies</td></tr>
+</tbody></table></div>
+
+<h3>The resting membrane potential is a leak-and-pump steady state</h3>
+<p>Every cell holds a voltage across its membrane. Excitable cells simply put it to work. A typical neuron rests at about &minus;70 mV. A skeletal muscle fiber rests at about &minus;90 mV. That means the inside is negative compared with the outside. Three facts produce it. First, concentration gradients. Potassium is roughly 140 mM inside and 5 mM outside. Sodium is roughly 15 mM inside and 145 mM outside. Second, selective permeability. At rest the membrane lets potassium through 25 to 100 times more easily than sodium. Potassium leak channels stand open. Third, anions inside that cannot leave. Proteins and phosphates are stuck there and cannot follow potassium out.</p>
+<p>The <b>Nernst equation</b> gives the voltage at which a single ion would sit at equilibrium. At body temperature it is Eion = (61 / z) &times; log([ion]outside / [ion]inside) millivolts. For potassium that is about &minus;90 mV. For sodium it is about +60 mV. For chloride it is about &minus;70 mV. For calcium it is about +120 mV. The real resting potential sits near the potassium value, because potassium permeability rules. A small steady sodium leak drags it a few millivolts positive. The <b>sodium&ndash;potassium ATPase</b> then pumps 3 sodium out for every 2 potassium in. That costs one ATP per cycle. The pump adds only a few millivolts by itself. It is still essential, because it keeps the gradients up. The brain spends on the order of half its huge ATP budget on this pump alone. Block it with ouabain, or with poor blood flow, and the resting potential fades within minutes.</p>
+<p>Two clinical rules fall out of the Nernst relationship. First, raise potassium outside the cell, say from 4.0 to 7.0 mM in hyperkalemia. The potassium equilibrium potential moves toward zero. So the resting potential depolarizes. Cells become more excitable for a short time. Then they stop responding, because sustained depolarization inactivates sodium channels. That is why hyperkalemia is deadly to the heart. Second, lower the calcium outside the cell. Sodium channels then open more easily at any given voltage. That produces the tetany and spasms of hypocalcemia. Calcium itself carries very little of the resting current.</p>
+
+<h3>Graded potentials, summation, and a reflex that closes the loop</h3>
+<p>Inputs arriving on dendrites and the soma make <b>graded potentials</b>. These are local voltage changes. Their size matches the size of the stimulus. Some depolarize, and we call those excitatory postsynaptic potentials. Some hyperpolarize, and we call those inhibitory. They all <b>decay with distance</b>. Current leaks out through the membrane as the signal spreads. So a 10 mV potential may be only 4 mV a fraction of a millimeter away. The distance over which it falls to 37 percent of its starting size is the length constant. It is typically 0.1 to 1 mm. So graded potentials cannot carry information far. That is what the action potential of Module 6 is for. Even so, graded potentials are the currency of integration.</p>
+<p>Integration happens at the trigger zone, and it is arithmetic. <b>Temporal summation</b> adds inputs from the same synapse. They arrive in quick succession, before the first has faded. <b>Spatial summation</b> adds inputs that arrive at the same moment at different synapses. If the total at the axon hillock reaches threshold, near &minus;55 mV, an action potential fires. If not, nothing happens. A neuron taking 10,000 inputs is running a nonstop weighted vote. Inhibitory inputs subtract from the total just as truly as excitatory ones add to it.</p>
+<p>Muscle and nerve close a loop in the <b>stretch (myotatic) reflex</b>. It is worth naming every part in the standard negative-feedback words. The <b>regulated variable</b> is muscle length. The <b>sensor</b> is the <b>muscle spindle</b>. That is a bundle of intrafusal fibers wrapped in sensory endings. They fire faster the more the muscle is stretched. The <b>afferent pathway</b> is a large Ia sensory fiber. It is among the fastest in the body at 80 to 120 m/s. The <b>integrator</b> is the spinal cord. There that fiber synapses straight onto the alpha motor neuron. It is a monosynaptic arc, which is why the whole loop takes only about 20 to 40 milliseconds. The <b>effector</b> is the extrafusal muscle. The <b>response</b> is contraction. Contraction shortens the muscle and removes the very stretch that started it. Sensed change opposed. That is negative feedback in three words. Tap the patellar tendon and you are testing this loop. A brisk reflex suggests loss of descending inhibition. An absent one suggests a break somewhere in the arc.</p>
+
+<div class="pearl"><b>Misconception check.</b> A common picture is that a signal &ldquo;travels down the axon&rdquo;. People imagine a packet of sodium ions moving from cell body to terminal. Nothing of the kind happens. Ions move a very short distance <i>across</i> the membrane. The signal spreads because each patch of membrane depolarizes its neighbor. Picture a line of falling dominoes, or a burning fuse. Do not picture water in a pipe. This is also why conduction speed depends on membrane insulation and axon width. It does not depend on how much sodium is on hand.</div>
+<div class="pearl"><b>Why it matters clinically.</b> Myelin exists to raise conduction speed. A bare axon carries a signal at about 0.5 to 2 m/s. A large myelinated one can reach 120 m/s. Myelin does it by forcing current to jump from node to node. The nodes sit 1 to 2 mm apart. Demyelination does not cut the axon. It lets current leak between the nodes. So conduction slows, turns unreliable at high firing rates, and can fail. That is why the problems in multiple sclerosis come and go. They get worse with heat. They cost precision as much as power.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Every cell holds a voltage across its membrane. Excitable cells simply put it to work. Set the ion concentrations and the permeability. The Nernst and resting potentials are then worked out live. <a href="../lab/ch05/RestingPotentialAndReflexLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch05/RestingPotentialAndReflexLab.html" loading="lazy" title="Nervous Tissue &mdash; the resting voltage, summation and the reflex loop interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Nervous tissue holds a resting voltage set mainly by potassium permeability. The sodium&ndash;potassium pump keeps it going. The trigger zone then adds up graded potentials that fade as they spread. That arithmetic lets a reflex loop oppose the change that provoked it.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>Muscle and nerve are the excitable tissues. Their partnership is a chain of conversions. A motor neuron holds a resting potential near &minus;70 mV. Potassium leaks out through open channels, and the sodium&ndash;potassium ATPase keeps the gradients up. Graded inputs are added at the axon hillock. If the total reaches about &minus;55 mV, an impulse is sent. At the neuromuscular junction that impulse lets calcium in and releases acetylcholine. The end-plate potential that follows is about twice as big as threshold needs. That safety factor makes transmission reliable. Its failure is what myasthenia gravis is. The muscle action potential runs into the fiber along T tubules. There the DHP receptor mechanically opens RyR1. Calcium in the cytosol rises 100-fold, to about 10 &micro;M. Calcium binds troponin. Tropomyosin slides aside. Myosin heads cycle, one ATP each. The ATP is split to cock the head. A new one is needed again to release it. Force is graded by recruiting motor units smallest first. It is graded again by firing fast enough to fuse twitches into tetanus. It peaks near 2.0 to 2.2 &micro;m of sarcomere length, where overlap is best. Cardiac and smooth muscle run the same filaments under different control. The heart uses calcium-induced calcium release and a long refractory period. Vessels and organs use calmodulin and the energy-cheap latch state. Relaxation, in every case, is active.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable"><thead><tr><th>Term</th><th>What it means</th></tr></thead><tbody>
+<tr><td>Sarcomere</td><td>Contractile unit from Z disc to Z disc, about 2.0 to 2.2 &micro;m at rest. It is the piece of the cell that shortens.</td></tr>
+<tr><td>Sliding-filament theory</td><td>Contraction happens because thin and thick filaments slide into greater overlap. Neither filament changes length.</td></tr>
+<tr><td>Cross-bridge cycle</td><td>Cock, attach, power stroke, detach. One ATP per myosin head per cycle.</td></tr>
+<tr><td>Titin</td><td>Elastic protein running from Z disc to M line. It centers the thick filament and supplies passive tension.</td></tr>
+<tr><td>Troponin / tropomyosin</td><td>The regulatory pair on the thin filament. Calcium binds troponin C, which moves tropomyosin off the myosin-binding sites.</td></tr>
+<tr><td>Neuromuscular junction</td><td>The synapse between a somatic motor neuron and a muscle fiber. It uses acetylcholine on nicotinic receptors.</td></tr>
+<tr><td>End-plate potential</td><td>Local depolarization of about 70 mV at the motor end plate. That is roughly twice the 35 mV needed to reach threshold.</td></tr>
+<tr><td>T tubule</td><td>A dip of sarcolemma that carries the action potential into the fiber. It forms a triad with two SR cisternae.</td></tr>
+<tr><td>DHP and ryanodine receptors</td><td>The voltage sensor in the T tubule. Direct contact links it to the SR calcium-release channel in skeletal muscle.</td></tr>
+<tr><td>SERCA</td><td>The sarcoplasmic reticulum calcium-ATPase. It pumps 2 calcium ions back into the SR per ATP, which produces relaxation.</td></tr>
+<tr><td>Motor unit</td><td>One alpha motor neuron plus every fiber it supplies. Units run from about 5 fibers in eye muscles to 2,000 in the calf.</td></tr>
+<tr><td>Size principle</td><td>Motor neurons are recruited smallest to largest. So slow, fatigue-resistant fibers are used first.</td></tr>
+<tr><td>Tetanus</td><td>A fused, sustained contraction from fast stimulation. It makes three to four times twitch tension and is normal in skeletal muscle.</td></tr>
+<tr><td>Length&ndash;tension relationship</td><td>Active force depends on filament overlap. It peaks near 2.0 to 2.2 &micro;m of sarcomere length.</td></tr>
+<tr><td>Latch state</td><td>Smooth muscle cross-bridges that hold tension after losing their phosphate. They sustain tone at very little ATP cost.</td></tr>
+<tr><td>Calcium-induced calcium release</td><td>The cardiac mechanism where a small calcium entry from outside triggers a large SR release. It is physiologic positive feedback.</td></tr>
+<tr><td>Resting membrane potential</td><td>The steady voltage across the membrane, about &minus;70 mV in neurons and &minus;90 mV in skeletal muscle. Potassium permeability mainly sets it.</td></tr>
+<tr><td>Nernst equation</td><td>Eion = (61 / z) &times; log([outside] / [inside]) mV at 37 degrees Celsius. It gives an ion&rsquo;s equilibrium potential.</td></tr>
+<tr><td>Graded potential</td><td>A local voltage change on dendrites or soma. It varies in size and fades with distance. It is the input to integration.</td></tr>
+<tr><td>Muscle spindle</td><td>The intrafusal stretch sensor. Its Ia afferent drives the monosynaptic stretch reflex, which opposes changes in muscle length.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">During a maximal contraction, which sarcomere bands narrow? Which one stays the same width? Why?</div><div class="ans">The I band and H zone narrow. The A band never changes. The A band is set by the length of the thick filament. That filament does not change length. Only the amount of overlap changes. That single observation is the strongest evidence for the sliding-filament model.</div></div>
+<div class="qq"><div class="q">A muscle cell runs out of ATP. Will it go limp or stiff? Give the mechanism.</div><div class="ans">Stiff. Myosin lets go of actin when ATP binds, not when ATP is split. With no ATP the heads stay bound. Calcium also builds up in the cytosol, because SERCA cannot pump it back. This is rigor mortis. It begins about 3 to 4 hours after death.</div></div>
+<div class="qq"><div class="q">The neuromuscular junction gives one muscle impulse for every nerve impulse. Most central synapses do not. Why?</div><div class="ans">Because of the safety factor. Each impulse releases enough acetylcholine to make an end-plate potential of about 70 mV. Only about 35 mV is needed to reach threshold, the move from &minus;90 mV to &minus;55 mV. That is roughly a twofold voltage margin, and the margin in transmitter released is larger still. Central synapses each make potentials of only 0.5 to a few millivolts. So they must summate.</div></div>
+<div class="qq"><div class="q">Skeletal muscle in a calcium-free bath still contracts for a time. Cardiac muscle stops within a few beats. Explain.</div><div class="ans">Skeletal excitation&ndash;contraction coupling uses a direct mechanical link between the DHP receptor and RyR1. All the calcium comes from the SR. None has to enter from outside. Cardiac coupling needs a calcium trigger from outside to open RyR2, by calcium-induced calcium release. Take that outside calcium away and cardiac contraction stops.</div></div>
+<div class="qq"><div class="q">Fast stimulation makes roughly three to four times the force of a single twitch. Explain that in terms of calcium handling.</div><div class="ans">A twitch lasts 20 to 100 ms. The action potential lasts only 1 to 5 ms. So a second stimulus arrives before SERCA has cleared the calcium. Calcium in the cytosol stays high. Troponin stays saturated. Nearly every binding site stays open. So far more cross-bridges cycle at once. One twitch gives only a brief, partial calcium rise.</div></div>
+<div class="qq"><div class="q">A patient grips with the wrist fully bent, and grip strength drops sharply. What is the mechanism? Is it a disease?</div><div class="ans">Bending the wrist shortens the finger flexors below their best sarcomere length. Thin filaments from opposite ends then interfere, and thick filaments come up against the Z discs. So fewer cross-bridges can form. It is a normal result of the length&ndash;tension relationship, not a disease. That is why positioning a limb is itself a physiologic treatment.</div></div>
+<div class="qq"><div class="q">Put the three ATP systems in order by how fast they supply power. Say roughly how long each one leads.</div><div class="ans">Creatine phosphate is almost instant and covers about 10 to 15 seconds. Anaerobic glycolysis starts within seconds. It carries hard work for about 30 seconds to 2 minutes, at 2 ATP per glucose. Oxidative phosphorylation takes 30 to 60 seconds to get going. It yields about 30 to 32 ATP per glucose and powers everything past a couple of minutes.</div></div>
+<div class="qq"><div class="q">Why can skeletal muscle tetanize when cardiac muscle cannot? Why is that difference protective?</div><div class="ans">Cardiac muscle has an absolute refractory period of about 200 to 250 milliseconds. That is nearly as long as its contraction. So a second action potential cannot arrive while tension is still building. A tetanized ventricle would never relax enough to refill. Cardiac output would collapse. The refractory period is a built-in safety mechanism.</div></div>
+<div class="qq"><div class="q">Smooth muscle has no troponin. How does calcium start contraction? Why is the tissue so cheap to run?</div><div class="ans">Calcium binds calmodulin. The calcium&ndash;calmodulin complex switches on myosin light-chain kinase. That kinase adds a phosphate to the myosin head, which allows cycling. So regulation is myosin-linked rather than actin-linked. Once the phosphate comes off, heads can stay attached in the latch state. They hold tension for hours. The ATP cost is roughly one three-hundredth that of the same skeletal contraction.</div></div>
+<div class="qq"><div class="q">Serum potassium rises from 4.0 to 7.0 mM. Use the Nernst relationship to predict the effect on resting membrane potential and on excitability.</div><div class="ans">More potassium outside moves the potassium equilibrium potential toward zero. So the resting potential depolarizes, for example from about &minus;90 toward &minus;75 mV. Cells become more excitable for a short time, because they sit closer to threshold. Then they stop responding, because the lasting depolarization inactivates voltage-gated sodium channels. That sequence is what makes hyperkalemia dangerous to the heart.</div></div>
+<div class="qq"><div class="q">Tell spatial summation apart from temporal summation. Say where the decision is made.</div><div class="ans">Spatial summation adds graded potentials that arrive at the same moment at different synapses. Temporal summation adds potentials from the same synapse. They arrive in quick succession, before the first has faded. Both are added up at the axon hillock, the trigger zone. It has the highest density of voltage-gated sodium channels. So it has the lowest threshold in the cell.</div></div>
+<div class="qq"><div class="q">Name the five parts of the stretch reflex as a negative-feedback loop. Explain what makes it negative rather than positive.</div><div class="ans">Regulated variable: muscle length. Sensor: the muscle spindle. Integrator: the spinal cord, through a monosynaptic Ia-to-alpha-motor-neuron connection. Effector: the extrafusal muscle fibers. Response: contraction. It is negative feedback because the response shortens the muscle. That removes the stretch that triggered the loop. The output opposes the original change instead of building on it.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch04.html"><span class="k">Previous</span>&larr; Bones and Skeletal Physiology</a>
+        <a class="next" href="ch06.html"><span class="k">Next</span>Brain, Action Potentials &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

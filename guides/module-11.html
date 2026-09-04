@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 11 — The Lymphatic &amp; Immune Systems | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 11 — The Lymphatic &amp; Immune Systems</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit5">
+
+<h2>Module 11 &nbsp;•&nbsp; The Lymphatic &amp; Immune Systems &nbsp;<span class="chip">Exam 5</span></h2>
+<div class="box obj"><ol><li>Identify the significance of different types of lymphocytes.</li><li>Describe the functions of lymphatic tissues and organs.</li><li>Explain the physiology of the innate, adaptive and complement systems.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Innate = fast, non-specific, no memory. Adaptive = slower, specific, <b>has memory</b>.</li><li>NK cells are lymphocytes but act <b>innately</b>.</li><li>Plasma cells (activated B cells) make the antibodies; helper T cells coordinate everything.</li><li>The lymphatic system returns leaked interstitial fluid to the blood — blockage causes edema.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">Two immune systems, working together</h4><div class="read"><b>Innate</b> immunity is what you are born with: fast, non-specific, no memory. Skin and mucous
+membranes, neutrophils and macrophages, NK cells, complement, inflammation and fever. It responds in minutes
+but treats every intruder the same.<br><br>
+<b>Adaptive</b> immunity is specific and remembers. It takes days on first exposure, but the second time it
+is dramatically faster — which is the entire principle behind vaccination.<br><br>
+NK cells are the confusing case: they are lymphocytes, which feels adaptive, but they attack without prior
+exposure, so they are <b>innate</b>.</div>
+<h4 class="topic">Who does what in the adaptive response</h4><div class="read"><b>Helper T cells (CD4)</b> coordinate. They activate B cells and cytotoxic T cells and release cytokines —
+which is precisely why HIV, by destroying them, disables both arms at once.<br><br>
+<b>B cells</b> recognize antigen and become <b>plasma cells</b>, which mass-produce antibody. <b>Cytotoxic T
+cells (CD8)</b> kill infected cells directly. <b>Memory cells</b> of both kinds persist afterwards, and are
+the reason the second exposure is so much easier.</div>
+<h4 class="topic">The lymphatic system does two jobs</h4><div class="read">First, immunity: <b>lymph nodes</b> filter lymph and hold lymphocytes and macrophages, the <b>spleen</b>
+filters blood and clears old red cells, the <b>thymus</b> matures T cells, and MALT guards mucosal surfaces.<br><br>
+Second, and easy to forget: <b>fluid balance</b>. Capillaries leak fluid into tissue continuously. The
+lymphatics collect that excess and return it to the bloodstream at the subclavian veins. Block the drainage
+and the fluid has nowhere to go — that is lymphedema.</div>
+<h4 class="topic">Antibodies, and which one is where</h4><div class="read">All five immunoglobulins do the same basic thing — bind antigen — but each is deployed differently.<br><br>
+<b>IgM</b> is produced first in a new infection, so finding it suggests a current or recent one. <b>IgG</b>
+is the most abundant, arrives later, and is the <i>only</i> one that crosses the placenta — which is how a
+newborn borrows its mother's immunity for a few months. <b>IgA</b> guards mucosal surfaces and is in breast
+milk. <b>IgE</b> binds mast cells and drives allergy and parasite defense. <b>IgD</b> sits on B cells as a
+receptor.<br><br>
+If a question mentions a newborn, think IgG. Mucosa or milk, think IgA. Allergy, think IgE.</div>
+<h4 class="topic">Active and passive immunity</h4><div class="read"><b>Active</b> immunity means you made the response yourself — through infection or vaccination. It is slow
+to establish but leaves <b>memory</b>, so it lasts.<br><br>
+<b>Passive</b> immunity means someone else's antibodies were handed to you — across the placenta, in breast
+milk, or as an injection. Protection is immediate, which is exactly why it is used in emergencies, but it
+fades within weeks to months and leaves no memory, because your own B cells were never involved.<br><br>
+Immediate but temporary, or slow but lasting. That trade-off is the whole distinction.</div>
+<h4 class="topic">The complement system, all three pathways</h4><div class="read">Complement is a set of plasma proteins that circulate inactive until one of three pathways switches them on. The <b>classical pathway</b> starts when C1 binds an antibody already stuck to an antigen. The <b>lectin pathway</b> starts when mannose-binding lectin recognizes sugars on microbes but not on yours. The <b>alternative pathway</b> starts by itself, when activated C3 lands on a foreign surface lacking your regulatory proteins.<br><br>
+All three converge on one cascade with three outcomes. <b>C3b</b> coats the microbe so phagocytes can grip it — opsonization. <b>C3a and C5a</b> drive inflammation, and C5a especially pulls neutrophils in. <b>C5b through C9</b> assemble the membrane attack complex, a pore that lyses the cell. Which is why people missing late complement proteins get repeated Neisseria infections — antibody alone cannot drill that hole.</div>
+<h4 class="topic">The innate arsenal, layer by layer</h4><div class="read">Innate defense is layered, and a microbe meets those layers in order. The barriers come first — intact skin, mucus and cilia sweeping the airway, stomach acid, lysozyme in tears and saliva, and normal flora holding the space.<br><br>
+Break through those and cells respond. <b>Neutrophils</b> arrive first and phagocytose. <b>Macrophages</b> engulf and present what they find. <b>Dendritic cells</b> carry antigen to the lymph nodes, where adaptive immunity begins. <b>Eosinophils</b> attack parasites, while <b>basophils and mast cells</b> release histamine. <b>Natural killer cells</b> are lymphocytes, but innate ones — they kill any cell that has stopped displaying normal self markers, without ever having met it before. <b>Interferons</b>, <b>complement</b>, <b>inflammation</b> and <b>fever</b> run alongside. None of it requires prior exposure, which is why it works in minutes rather than days.</div>
+<h4 class="topic">MHC, and why CD4 and CD8 see different things</h4><div class="read">A T cell cannot see free antigen — only fragments displayed on a <b>major histocompatibility complex</b> molecule — and the two classes explain the division of labor. <b>MHC class I</b> sits on every nucleated cell, displaying proteins made inside it. If a virus replicates there, its fragments appear on the surface, and <b>CD8 cytotoxic T cells</b> read class I and kill the cell outright. <b>MHC class II</b> sits only on antigen-presenting cells — dendritic cells, macrophages, B cells — displaying material swallowed from outside. <b>CD4 helper T cells</b> read class II and release cytokines that activate B cells, cytotoxic T cells and macrophages.<br><br>
+Which is why HIV is so devastating: it destroys CD4 cells, and without the coordinator, otherwise healthy B cells and CD8 cells never get switched on.</div>
+<h4 class="topic">Why the second exposure is different</h4><div class="read">The first time you meet an antigen the response is slow — several days while the few lymphocytes that happen to fit divide into a clone. Antibody appears late, at a low level, and it is mostly <b>IgM</b>. That lag is why a first infection makes you ill.<br><br>
+Some of that clone becomes <b>memory B and T cells</b>, which persist for years. On re-exposure the <b>secondary response</b> starts within hours, climbs far higher, lasts longer and is mostly <b>IgG</b>. You often clear the organism before symptoms begin. That is exactly what a vaccine buys, and why boosters exist — each repeat exposure enlarges the memory pool. It is also why a laboratory finding of IgM says recent infection while IgG says past infection or vaccination.</div>
+<h4 class="topic">When tolerance fails</h4><div class="read">Lymphocytes are built with random receptors, so some inevitably recognize you. <b>Tolerance</b> is the screening that removes them. T cells are tested in the <b>thymus</b>: those that cannot read your MHC die, and those that bind your own proteins too strongly are deleted. B cells are screened separately in <b>bone marrow</b>, where those binding your tissue are deleted or made to rebuild their receptor.<br><br>
+When that screening fails you get <b>autoimmunity</b> — Hashimoto thyroiditis, type 1 diabetes, rheumatoid arthritis, multiple sclerosis, lupus. None of these is weakness. The system is working at full strength and simply aiming at the wrong target, which is why the treatment is immunosuppression rather than immune stimulation — the opposite of what you give in <b>immunodeficiency</b>, where the response is too small rather than misdirected.</div>
+<h3>Reference tables</h3>
+<h4>Every lymphocyte</h4><table><tr><th>Cell</th><th>Innate/Adaptive</th><th>Function</th></tr><tr><td>B cell</td><td>Adaptive</td><td>Becomes a plasma cell; makes antibodies</td></tr><tr><td>Plasma cell</td><td>Adaptive</td><td>Mass-produces antibody</td></tr><tr><td>Memory B cell</td><td>Adaptive</td><td>Faster response on re-exposure</td></tr><tr><td>Helper T (CD4)</td><td>Adaptive</td><td>Coordinates B cells and cytotoxic T cells</td></tr><tr><td>Cytotoxic T (CD8)</td><td>Adaptive</td><td>Kills infected cells via perforin/granzymes</td></tr><tr><td>Natural killer</td><td>Innate</td><td>Destroys virus-infected and tumor cells without prior exposure</td></tr></table>
+<h4>Lymphoid organs</h4><table><tr><th>Organ</th><th>Primary/Secondary</th><th>Function</th></tr><tr><td>Red bone marrow</td><td>Primary</td><td>B cell maturation; all blood cells made here</td></tr><tr><td>Thymus</td><td>Primary</td><td>T cell maturation</td></tr><tr><td>Lymph nodes</td><td>Secondary</td><td>Filter lymph; house lymphocytes</td></tr><tr><td>Spleen</td><td>Secondary</td><td>Filters blood; removes old red cells</td></tr><tr><td>MALT / tonsils</td><td>Secondary</td><td>Guards mucosal surfaces</td></tr></table>
+<h4>All five immunoglobulins</h4><table><tr><th>Ig</th><th>Role</th></tr><tr><td>IgG</td><td>Most abundant; only one crossing the placenta</td></tr><tr><td>IgA</td><td>Mucosal secretions and breast milk</td></tr><tr><td>IgM</td><td>First produced in a primary response</td></tr><tr><td>IgE</td><td>Allergy and parasite defense (binds mast cells)</td></tr><tr><td>IgD</td><td>B cell receptor; role less defined</td></tr></table>
+<h4>Innate vs adaptive</h4><table><tr><th>Feature</th><th>Innate</th><th>Adaptive</th></tr><tr><td>Speed</td><td>Minutes to hours</td><td>Days on first exposure</td></tr><tr><td>Specificity</td><td>Non-specific</td><td>Highly specific</td></tr><tr><td>Memory</td><td>None</td><td>Yes</td></tr><tr><td>Components</td><td>Skin, mucus, neutrophils, macrophages, NK, complement, fever</td><td>T cells, B cells, antibodies</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"NK cells are adaptive."</b> They are lymphocytes but act without prior exposure — innate.</li><li><b>"Passive immunity gives lasting protection."</b> It fades in weeks to months and leaves no memory.</li><li><b>"Autoimmunity means a weak immune system."</b> It is misdirected, not weak.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 11 — p.122 · Module 11 immune &amp; lymph deck, slide 10 · Module 11 immune &amp; lymph deck, slide 11 · Module 11 immune &amp; lymph deck, slide 12 · Module 11 immune &amp; lymph deck, slide 13 · Module 11 immune &amp; lymph deck, slide 14 · Module 11 immune &amp; lymph deck, slide 15 · Module 11 immune &amp; lymph deck, slide 16 · Module 11 immune &amp; lymph deck, slide 17 · Module 11 immune &amp; lymph deck, slide 18</p>
+<h3>Practice questions <span class="small">(43)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> B cells contribute to immunity by:</summary><ol class="opts" type="A"><li>Directly killing virus-infected cells by releasing perforin</li><li class="key">Differentiating into plasma cells that secrete antibodies</li><li>Engulfing and digesting bacteria inside a phagolysosome</li><li>Producing myelin sheaths around peripheral nerve axons</li><li>Forming the keratinized physical barrier of the epidermis</li></ol><div class="ans show"><b>Answer: B.</b> B cells drive humoral (antibody-mediated) adaptive immunity.<span class="ref">Module 11 immune &amp; lymph deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q2.</b> Natural killer cells are classified as ____ immunity and act by ____.</summary><ol class="opts" type="A"><li>adaptive; producing antigen-specific antibodies after clonal selection and class switching</li><li>adaptive; forming long-lived memory cells only after a first antigen exposure</li><li class="key">innate; destroying virus-infected and tumor cells without prior exposure</li><li>innate; secreting antibodies into mucosal surfaces and breast milk</li><li>adaptive; engulfing opsonized pathogens and presenting their antigen</li></ol><div class="ans show"><b>Answer: C.</b> Despite being lymphocytes, NK cells need no prior sensitization, so they are innate.<span class="ref">Module 11 immune &amp; lymph deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q3.</b> Helper T cells are essential because they:</summary><ol class="opts" type="A"><li>Directly lyse virus-infected cells by releasing perforin and granzyme granules</li><li>Secrete antibodies themselves after differentiating into plasma cells</li><li>Form the keratinized barrier layer of the skin surface</li><li class="key">Activate B cells and cytotoxic T cells and release cytokines</li><li>Clot blood by forming a platelet plug at the injury site</li></ol><div class="ans show"><b>Answer: D.</b> They coordinate the whole adaptive response — which is why HIV, by destroying them, is so devastating.<span class="ref">Module 11 immune &amp; lymph deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q4.</b> Cytotoxic T cells kill target cells by:</summary><ol class="opts" type="A"><li>Secreting antibodies that neutralize free virus particles</li><li>Engulfing them into a phagosome and digesting them</li><li>Releasing histamine to increase capillary permeability</li><li>Coating the target with complement proteins for opsonization</li><li class="key">Releasing perforin and granzymes to induce apoptosis</li></ol><div class="ans show"><b>Answer: E.</b> They punch holes in the target membrane and trigger programd cell death.<span class="ref">Module 11 immune &amp; lymph deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q5.</b> Memory cells are important because they:</summary><ol class="opts" type="A"><li class="key">Enable a faster, stronger response on re-exposure to the same antigen</li><li>Prevent every future infection by any pathogen encountered, permanently and completely</li><li>Produce the histamine that drives vasodilation and swelling during inflammation</li><li>Form the innate physical barrier at the body's outer surface</li><li>Digest engulfed pathogens using lysosomal enzymes and free radicals</li></ol><div class="ans show"><b>Answer: A.</b> This accelerated secondary response is the principle underlying vaccination.<span class="ref">Module 11 immune &amp; lymph deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q6.</b> Which cell type actually secretes antibodies?</summary><ol class="opts" type="A"><li>Naive B cell</li><li class="key">Plasma cell</li><li>Helper T cell</li><li>Cytotoxic T cell</li><li>Macrophage</li></ol><div class="ans show"><b>Answer: B.</b> Activated B cells differentiate into plasma cells, which are dedicated antibody factories.<span class="ref">Module 11 immune &amp; lymph deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q7.</b> Which cells are the hallmark of ADAPTIVE immunity?</summary><ol class="opts" type="A"><li>Neutrophils and tissue macrophages</li><li>NK cells and circulating basophils</li><li class="key">T lymphocytes and B lymphocytes</li><li>Eosinophils and tissue mast cells</li><li>Platelets and mature erythrocytes</li></ol><div class="ans show"><b>Answer: C.</b> Only T and B cells display antigen specificity and immunological memory.<span class="ref">Module 11 immune &amp; lymph deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q8.</b> The thymus functions as the site of:</summary><ol class="opts" type="A"><li>B cell maturation</li><li>Red blood cell production</li><li>Antibody storage</li><li class="key">T cell maturation</li><li>Lymph filtration</li></ol><div class="ans show"><b>Answer: D.</b> T cells mature and are selected in the thymus, which involutes after puberty.<span class="ref">Module 11 immune &amp; lymph deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q9.</b> The spleen's principal immune function is to:</summary><ol class="opts" type="A"><li>Filter lymph and trap antigens draining from the tissues</li><li>Produce and mature naive T lymphocytes before release</li><li>Store and concentrate bile produced by the liver</li><li>Generate cerebrospinal fluid in the choroid plexus</li><li class="key">Filter blood and remove aged or damaged red blood cells</li></ol><div class="ans show"><b>Answer: E.</b> The spleen screens blood-borne pathogens and recycles worn-out erythrocytes.<span class="ref">Module 11 immune &amp; lymph deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q10.</b> Lymph nodes function to:</summary><ol class="opts" type="A"><li class="key">Filter lymph and house lymphocytes and macrophages</li><li>Filter blood and remove worn-out red blood cells</li><li>Produce hormones that regulate the metabolic rate</li><li>Store platelets and release them during bleeding</li><li>Absorb digested nutrients across the intestinal wall</li></ol><div class="ans show"><b>Answer: A.</b> Nodes trap antigens traveling in lymph and present them to immune cells.<span class="ref">Module 11 immune &amp; lymph deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q11.</b> MALT refers to lymphoid tissue located:</summary><ol class="opts" type="A"><li>In the red bone marrow cavities where B lymphocytes first develop and mature</li><li class="key">At mucosal surfaces such as the gut, airways and tonsils</li><li>In the white pulp of the spleen and in no other site in the body</li><li>Within the cortex and medulla of the thymus gland</li><li>In the liver alongside the bile-producing hepatocytes</li></ol><div class="ans show"><b>Answer: B.</b> Mucosa-Associated Lymphoid Tissue guards the body's largest points of contact with the outside world.<span class="ref">Module 11 immune &amp; lymph deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q12.</b> Which are the PRIMARY lymphoid organs?</summary><ol class="opts" type="A"><li>Lymph nodes and spleen</li><li>Tonsils and Peyer's patches</li><li class="key">Red bone marrow and thymus</li><li>Spleen and MALT</li><li>Liver and thymus</li></ol><div class="ans show"><b>Answer: C.</b> Primary organs are where lymphocytes develop; secondary organs are where they meet antigen.<span class="ref">Module 11 immune &amp; lymph deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q13.</b> The lymphatic system helps maintain blood volume by:</summary><ol class="opts" type="A"><li>Producing the plasma albumin proteins that hold water inside the blood vessels</li><li>Filtering worn-out red blood cells out of the circulation inside the thymus gland</li><li>Absorbing water from the large intestine into portal blood</li><li class="key">Collecting excess interstitial fluid and returning it to the bloodstream</li><li>Transporting oxygen from the lungs out to the working tissues</li></ol><div class="ans show"><b>Answer: D.</b> Capillaries leak fluid continuously; lymphatics recover it and return it via the subclavian veins.<span class="ref">Module 11 immune &amp; lymph deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q14.</b> Blockage of lymphatic drainage would most likely produce:</summary><ol class="opts" type="A"><li>Whole-body dehydration</li><li>Increased blood volume</li><li>Anemia with low hemoglobin</li><li>Sustained arterial hypertension</li><li class="key">Localized edema (swelling)</li></ol><div class="ans show"><b>Answer: E.</b> Fluid that cannot be collected accumulates in the tissue — lymphedema.<span class="ref">Module 11 immune &amp; lymph deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q15.</b> Why do lymph nodes swell during infection?</summary><ol class="opts" type="A"><li class="key">Lymphocytes proliferate rapidly within them as they respond to trapped antigen</li><li>Blood diverted from the nearby arteries pools inside them and distends the capsule</li><li>They fill only with pus formed from dead neutrophils and other cellular debris</li><li>The fibrous capsule breaks down and lets tissue fluid swell the node</li><li>They absorb water osmotically from the surrounding interstitial space</li></ol><div class="ans show"><b>Answer: A.</b> Swollen nodes are a sign the adaptive response is being mounted.<span class="ref">Module 11 immune &amp; lymph deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q16.</b> Lymph differs from blood in that lymph:</summary><ol class="opts" type="A"><li>Contains just as many red blood cells per microliter as whole circulating blood</li><li class="key">Contains no red blood cells and travels in one direction toward the heart</li><li>Is pumped around the body by the rhythmic contractions of the left ventricle</li><li>Carries oxygen to the tissues bound to hemoglobin molecules</li><li>Clots faster than blood because it holds more fibrinogen</li></ol><div class="ans show"><b>Answer: B.</b> Lymph is a one-way collection system driven by muscle movement and valves, not a pump.<span class="ref">Module 11 immune &amp; lymph deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q17.</b> Innate immunity is best characterized as:</summary><ol class="opts" type="A"><li>Slow, highly specific, with memory</li><li>Slow, non-specific, with memory</li><li class="key">Fast, non-specific, without memory</li><li>Fast, antigen-specific, with memory</li><li>Present only after vaccination</li></ol><div class="ans show"><b>Answer: C.</b> Innate defenses act within minutes but cannot distinguish one pathogen from another.<span class="ref">Module 11 immune &amp; lymph deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q18.</b> Adaptive immunity is best characterized as:</summary><ol class="opts" type="A"><li>Fast, entirely non-specific, and identical in magnitude on every exposure</li><li>Present from birth at full strength and completely unchanged by later exposures</li><li>Non-specific but able to generate lasting memory cells</li><li class="key">Slower on first exposure, highly specific, and generates memory</li><li>Effective only against parasitic worms and fungal spores</li></ol><div class="ans show"><b>Answer: D.</b> Specificity and memory are the two defining features of adaptive immunity.<span class="ref">Module 11 immune &amp; lymph deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q19.</b> Which is the body's FIRST line of defense?</summary><ol class="opts" type="A"><li>Antibodies in the circulating blood plasma</li><li>Activated cytotoxic T cells in the tissues</li><li>Antigen-specific memory B cells</li><li>The complement protein cascade</li><li class="key">Intact skin and mucous membranes</li></ol><div class="ans show"><b>Answer: E.</b> Physical and chemical barriers prevent entry before any immune cell is needed.<span class="ref">Module 11 immune &amp; lymph deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q20.</b> The complement system functions primarily to:</summary><ol class="opts" type="A"><li class="key">Enhance phagocytosis, promote inflammation and lyse pathogens</li><li>Replace antibody molecules after they have been used up in a response</li><li>Produce brand-new lymphocytes inside the red bone marrow of the flat bones</li><li>Store captured antigens for presentation at a later date</li><li>Clot blood by converting fibrinogen into fibrin strands</li></ol><div class="ans show"><b>Answer: A.</b> Complement 'complements' antibody and phagocyte action, and can form the membrane attack complex.<span class="ref">Module 11 immune &amp; lymph deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q21.</b> The membrane attack complex kills pathogens by:</summary><ol class="opts" type="A"><li>Digesting them internally inside a phagolysosome full of acid hydrolases</li><li class="key">Forming pores in the pathogen membrane causing lysis</li><li>Producing antibodies that agglutinate pathogens into large clumps</li><li>Blocking the surface receptors they use to attach</li><li>Starving them of the iron they need to multiply</li></ol><div class="ans show"><b>Answer: B.</b> Pore formation destroys osmotic integrity and the cell bursts.<span class="ref">Module 11 immune &amp; lymph deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q22.</b> Opsonization refers to:</summary><ol class="opts" type="A"><li>Direct killing of virus-infected cells by cytotoxic T cells releasing perforin</li><li>Production of large amounts of antibody by activated plasma cells</li><li class="key">Coating a pathogen to make it easier for phagocytes to engulf</li><li>Generation of fever by pyrogens acting on the hypothalamus</li><li>Sealing a damaged vessel by forming a fibrin clot from fibrinogen</li></ol><div class="ans show"><b>Answer: C.</b> Complement and antibody act as handles that phagocytes can grip.<span class="ref">Module 11 immune &amp; lymph deck, slide 21</span></div></details>
+<details class="q"><summary><b>Q23.</b> Which is an example of an innate, non-specific defense?</summary><ol class="opts" type="A"><li>Antibody production</li><li>Memory T cell activation</li><li>Plasma cell differentiation</li><li class="key">Fever and inflammation</li><li>Vaccination response</li></ol><div class="ans show"><b>Answer: D.</b> Fever and inflammation occur regardless of the specific pathogen involved.<span class="ref">Module 11 immune &amp; lymph deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q24.</b> Active immunity differs from passive immunity in that active immunity:</summary><ol class="opts" type="A"><li>Provides immediate protection that fades within weeks and leaves no memory</li><li>Comes from ready-made antibodies transferred from another person's plasma</li><li>Never involves B cells or any antibody production at all</li><li>Occurs only in infants during the first year of life</li><li class="key">Results from your own immune response and produces lasting memory</li></ol><div class="ans show"><b>Answer: E.</b> Passive immunity (maternal antibodies, immunoglobulin injections) is immediate but temporary and leaves no memory.<span class="ref">Module 11 immune &amp; lymph deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q25.</b> A patient receives antibodies from a donor for immediate protection. This is:</summary><ol class="opts" type="A"><li class="key">Passive immunity</li><li>Active natural immunity</li><li>Innate immunity</li><li>Adaptive cellular immunity</li><li>Autoimmunity</li></ol><div class="ans show"><b>Answer: A.</b> Borrowed antibodies protect now but confer no memory once they degrade.<span class="ref">Lecture Outline, Module 11 — p.122</span></div></details>
+<details class="q"><summary><b>Q26.</b> Why is the secondary immune response faster than the primary?</summary><ol class="opts" type="A"><li>A much larger dose of antigen is always present on the second encounter</li><li class="key">Memory cells already exist and can proliferate immediately</li><li>The complement cascade has been permanently strengthened by the first infection</li><li>The skin barrier has thickened since the first exposure</li><li>Antibodies made at the first exposure never break down</li></ol><div class="ans show"><b>Answer: B.</b> Memory cells bypass the lengthy initial activation and clonal expansion phase.<span class="ref">Module 11 immune &amp; lymph deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q27.</b> An autoimmune disease occurs when:</summary><ol class="opts" type="A"><li>The immune system stops responding to any antigen at all, leaving the person defenseless</li><li>Only the innate defenses remain because every adaptive lymphocyte has been destroyed</li><li class="key">The immune system attacks the body's own tissues, failing to recognize self</li><li>The complement proteins are completely absent from the blood plasma</li><li>All memory lymphocytes are lost within days of the first infection</li></ol><div class="ans show"><b>Answer: C.</b> Loss of self-tolerance underlies conditions such as rheumatoid arthritis and type 1 diabetes.<span class="ref">Module 11 immune &amp; lymph deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q28.</b> A person lacking functional helper T cells would be most vulnerable because:</summary><ol class="opts" type="A"><li>All innate immunity, including neutrophil phagocytosis, would fail completely</li><li>Only the skin and mucous barriers would be left, with no complement activity</li><li>Complement proteins could no longer be manufactured by the liver</li><li class="key">Both antibody production and cytotoxic T cell activity would be impaired</li><li>Red blood cell production in the red bone marrow would stop</li></ol><div class="ans show"><b>Answer: D.</b> Helper T cells are the hub coordinating both arms of adaptive immunity.<span class="ref">Module 11 immune &amp; lymph deck, slide 18</span></div></details>
+<details class="q"><summary><b>Q29.</b> Lymph ultimately returns to the bloodstream at the:</summary><ol class="opts" type="A"><li>Aorta</li><li>Renal artery</li><li>Hepatic portal vein</li><li>Pulmonary artery</li><li class="key">Subclavian veins</li></ol><div class="ans show"><b>Answer: E.</b> The thoracic and right lymphatic ducts drain into the subclavian veins.<span class="ref">Module 11 immune &amp; lymph deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q30.</b> Lacteals are specialized lymphatic vessels that absorb:</summary><ol class="opts" type="A"><li class="key">Dietary fats</li><li>Simple sugars</li><li>Amino acids</li><li>Plain water</li><li>Electrolytes</li></ol><div class="ans show"><b>Answer: A.</b> Lacteals in intestinal villi take up chylomicrons.<span class="ref">Module 11 immune &amp; lymph deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q31.</b> Which is a physical barrier of innate immunity?</summary><ol class="opts" type="A"><li>Antibodies in the circulating blood plasma</li><li class="key">Intact skin and mucous membranes</li><li>T lymphocytes circulating in the lymph nodes</li><li>Long-lived memory B lymphocytes</li><li>The complement protein cascade</li></ol><div class="ans show"><b>Answer: B.</b> Barriers block entry before any cellular response is needed.<span class="ref">Module 11 immune &amp; lymph deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q32.</b> Interferons act primarily against:</summary><ol class="opts" type="A"><li>Bacteria</li><li>Parasites</li><li class="key">Viruses</li><li>Fungi</li><li>Toxins</li></ol><div class="ans show"><b>Answer: C.</b> Infected cells release interferon to warn neighboring cells.<span class="ref">Module 11 immune &amp; lymph deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q33.</b> The cardinal signs of inflammation include all EXCEPT:</summary><ol class="opts" type="A"><li>Redness</li><li>Heat</li><li>Swelling</li><li class="key">Pallor</li><li>Pain</li></ol><div class="ans show"><b>Answer: D.</b> Inflamed tissue is red and warm from vasodilation, not pale.<span class="ref">Lecture Outline, Module 11 — p.122</span></div></details>
+<details class="q"><summary><b>Q34.</b> Fever aids defense by:</summary><ol class="opts" type="A"><li>Cooling the deep tissues so that bacteria divide much more slowly</li><li>Reducing blood flow through the infected tissue</li><li>Blocking antibodies from binding their target antigen</li><li>Lowering the metabolic rate of every cell in the body to save energy</li><li class="key">Inhibiting pathogen growth and enhancing immune activity</li></ol><div class="ans show"><b>Answer: E.</b> Moderate fever slows pathogens and speeds immune reactions.<span class="ref">Module 11 immune &amp; lymph deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q35.</b> MHC class I molecules present antigen to:</summary><ol class="opts" type="A"><li class="key">Cytotoxic T cells</li><li>Helper T lymphocytes</li><li>Naive B lymphocytes</li><li>Neutrophils</li><li>Mast cells</li></ol><div class="ans show"><b>Answer: A.</b> All nucleated cells display MHC I, allowing cytotoxic T cell surveillance.<span class="ref">Module 11 immune &amp; lymph deck, slide 19</span></div></details>
+<details class="q"><summary><b>Q36.</b> Which immunoglobulin crosses the placenta to protect the fetus?</summary><ol class="opts" type="A"><li>IgA</li><li class="key">IgG</li><li>IgM</li><li>IgE</li><li>IgD</li></ol><div class="ans show"><b>Answer: B.</b> IgG is the only class transferred across the placenta.<span class="ref">Lecture Outline, Module 11 — p.122</span></div></details>
+<details class="q"><summary><b>Q37.</b> Which immunoglobulin predominates in breast milk and mucosal secretions?</summary><ol class="opts" type="A"><li>IgG</li><li>IgM</li><li class="key">IgA</li><li>IgE</li><li>IgD</li></ol><div class="ans show"><b>Answer: C.</b> Secretory IgA protects mucosal surfaces.<span class="ref">Module 11 immune &amp; lymph deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q38.</b> Which immunoglobulin is produced first in a primary response?</summary><ol class="opts" type="A"><li>IgG</li><li>IgA</li><li>IgE</li><li class="key">IgM</li><li>IgD</li></ol><div class="ans show"><b>Answer: D.</b> IgM appears first, then class switching produces IgG.<span class="ref">Module 11 immune &amp; lymph deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q39.</b> IgE is most associated with:</summary><ol class="opts" type="A"><li>Neutralizing bacterial toxins in the plasma</li><li>Fixing complement by the classical pathway</li><li>Crossing the placenta to protect the fetus</li><li>Mucosal defense in saliva and breast milk</li><li class="key">Allergic reactions and parasite defense</li></ol><div class="ans show"><b>Answer: E.</b> IgE binds mast cells and triggers histamine release.<span class="ref">Module 11 immune &amp; lymph deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q40.</b> Vaccination produces which type of immunity?</summary><ol class="opts" type="A"><li class="key">Active artificial</li><li>Passive natural</li><li>Passive artificial</li><li>Innate</li><li>Active natural</li></ol><div class="ans show"><b>Answer: A.</b> A vaccine provokes your own response and memory without disease.<span class="ref">Module 11 immune &amp; lymph deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q41.</b> Maternal antibodies crossing the placenta give the newborn:</summary><ol class="opts" type="A"><li>Active natural immunity</li><li class="key">Passive natural immunity</li><li>Innate barrier immunity</li><li>Active artificial immunity</li><li>No immune protection</li></ol><div class="ans show"><b>Answer: B.</b> Borrowed antibodies protect temporarily and leave no memory.<span class="ref">Module 11 immune &amp; lymph deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q42.</b> Anaphylaxis is best described as:</summary><ol class="opts" type="A"><li>A localized itchy skin rash confined to the point of contact with the allergen</li><li>A chronic autoimmune disease of the synovial joints and their connective tissue</li><li class="key">A severe systemic hypersensitivity with hypotension and bronchoconstriction</li><li>An immunodeficiency caused by the absence of helper T lymphocytes</li><li>A delayed cell-mediated reaction peaking after forty-eight hours</li></ol><div class="ans show"><b>Answer: C.</b> Massive mediator release causes airway and circulatory collapse.<span class="ref">Lecture Outline, Module 11 — p.122</span></div></details>
+<details class="q"><summary><b>Q43.</b> HIV progressively destroys which cell, crippling immunity?</summary><ol class="opts" type="A"><li>Circulating B cells</li><li>Blood neutrophils</li><li>Mature erythrocytes</li><li class="key">Helper T (CD4) cells</li><li>Circulating platelets</li></ol><div class="ans show"><b>Answer: D.</b> Loss of the coordinating helper T cell disables both adaptive arms.<span class="ref">Module 11 immune &amp; lymph deck, slide 18</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

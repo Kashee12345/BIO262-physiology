@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 10 — The Heart | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 10 — The Heart</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit5">
+
+<h2>Module 10 &nbsp;•&nbsp; The Heart &nbsp;<span class="chip">Exam 5</span></h2>
+<div class="box obj"><ol><li>Describe the physiology of the heart as a pump.</li><li>Describe the physiology of the heart as an electrical system.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li><b>S1</b> = AV valves closing (start of systole). <b>S2</b> = semilunar valves closing (start of diastole).</li><li><b>CO = HR × stroke volume</b> (~5 L/min at rest).</li><li>Conduction: <b>SA node → AV node → Bundle of His → bundle branches → Purkinje fibers</b>.</li><li>P = atrial depolarization, QRS = ventricular depolarization, T = ventricular repolarization.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">The heart as a pump</h4><div class="read">Four chambers, two circuits. The right side receives deoxygenated blood from the body and sends it to the
+lungs — the <b>pulmonary circuit</b>. The left side receives oxygenated blood from the lungs and pushes it
+to the body — the <b>systemic circuit</b>. The left ventricle has by far the thickest wall because it has
+by far the longest push.<br><br>
+Valves make flow one-way. The <b>AV valves</b> (tricuspid right, mitral left) open during diastole to let
+the ventricles fill and slam shut when the ventricles contract — that closure is <b>S1</b>, the "lub". The
+<b>semilunar valves</b> (pulmonary and aortic) open during ejection and snap shut as the ventricles relax —
+that is <b>S2</b>, the "dub". The two heart sounds are simply two sets of valves closing.</div>
+<h4 class="topic">Cardiac output, and the two ways to change it</h4><div class="read"><b>Cardiac output = heart rate × stroke volume</b>, around 5 liters a minute at rest. Anything that
+changes output must change one of those two numbers.<br><br>
+Heart rate is set by autonomic tone — sympathetic speeds it, vagal parasympathetic slows it. Stroke volume
+depends on <b>preload</b> (how full the ventricle got, which depends on venous return), <b>contractility</b>
+(how hard it squeezes), and <b>afterload</b> (the pressure it must push against). Stretch a ventricle more
+and it contracts harder — the Frank–Starling relationship — which is how the heart automatically matches
+output to return.</div>
+<h4 class="topic">The heart as an electrical system</h4><div class="read">The <b>SA node</b> depolarizes spontaneously and fastest, so it sets the rhythm. The impulse spreads
+across the atria, then reaches the <b>AV node</b>, which deliberately <i>delays</i> it — that pause is what
+lets the atria finish emptying before the ventricles contract. From there it runs down the <b>Bundle of
+His</b>, splits into <b>bundle branches</b>, and spreads through the <b>Purkinje fibers</b> so the ventricles
+contract as one coordinated unit from the apex upward.<br><br>
+On an ECG: <b>P</b> is atrial depolarization, <b>QRS</b> is ventricular depolarization, and <b>T</b> is
+ventricular repolarization. Atrial repolarization does happen — it is simply buried inside the much larger
+QRS.</div>
+<h4 class="topic">Preload, afterload, contractility</h4><div class="read">Three words govern stroke volume, and they are easy to keep straight if you picture the ventricle.<br><br>
+<b>Preload</b> is how full it got before it squeezed — it depends on venous return. More filling stretches
+the fibers, and a stretched ventricle contracts harder. That is the <b>Frank–Starling</b> relationship, and
+it is how the heart matches output to whatever comes back without needing instructions.<br><br>
+<b>Contractility</b> is how hard it squeezes at a given stretch — sympathetic stimulation raises it.
+<b>Afterload</b> is the pressure it must overcome to open the aortic valve and eject. Raise afterload, as
+chronic hypertension does, and the ventricle must work harder for every beat — which is why untreated
+hypertension eventually thickens and then fails the left ventricle.</div>
+<h4 class="topic">Why the heart cannot cramp</h4><div class="read">Skeletal muscle can be stimulated repeatedly until the twitches fuse into one sustained contraction —
+tetanus. If the heart could do that, it would seize and never refill, and you would die.<br><br>
+It cannot, because cardiac muscle has an unusually long refractory period. The plateau phase — sustained by
+calcium entering while potassium leaves — keeps the cell unresponsive until the contraction is over and
+relaxation has begun. The heart is physically incapable of a second beat before the first has finished.
+That constraint is a safety feature.</div>
+<h4 class="topic">The two heart sounds, and which valves make them</h4><div class="read">Put a stethoscope on a chest and you hear lub-dub: two sounds, four valves.<br><br>
+The first sound, <b>S1</b>, is the <b>atrioventricular valves</b> slamming shut — the <b>tricuspid</b> on the right, the <b>mitral</b> on the left. They close the moment ventricular pressure rises above atrial pressure, so S1 marks the start of <b>systole</b>. The second sound, <b>S2</b>, is the <b>semilunar valves</b> — <b>pulmonary</b> and <b>aortic</b> — snapping shut as the ventricles relax and arterial pressure pushes blood back toward them, marking the start of <b>diastole</b>.<br><br>
+No valve is pulled open or pushed shut by muscle — every one moves on a pressure difference alone, and the papillary muscles only anchor the AV valves so they cannot turn inside out. Which is why a stiff or leaking valve gives the turbulent flow you hear as a <b>murmur</b>.</div>
+<h4 class="topic">Reading the ECG wave by wave</h4><div class="read">An <b>ECG</b> records electrical events, not contractions — each wave is a voltage change that a mechanical event follows.<br><br>
+The <b>P wave</b> is <b>atrial depolarization</b>. The flat <b>PR segment</b> after it is the signal being held at the <b>AV node</b>, giving the atria time to finish emptying. The <b>QRS complex</b> is <b>ventricular depolarization</b> — large, because the ventricles carry far more muscle. Atrial repolarization happens at the same moment, buried inside the QRS, which is why you never see a wave for it. The <b>ST segment</b> should sit flat during contraction, and the <b>T wave</b> is <b>ventricular repolarization</b>.<br><br>
+That flat segment matters clinically: starved of oxygen, myocardium shifts it — depressed in <b>ischemia</b>, elevated when muscle is injuring and infarcting — which is how a blocked coronary announces itself on the monitor.</div>
+<h4 class="topic">Why the heart beats itself</h4><div class="read">A heart removed from the body keeps beating, and a transplanted heart beats before any nerve reaches it. That is because <b>pacemaker cells</b> have no stable resting potential — sodium leaks inward through funny channels until the cell drifts to threshold and fires on its own. That drift is the heartbeat.<br><br>
+Every part of the conduction system can do this, at different speeds. The <b>SA node</b> drifts fastest — around 100 a minute on its own, 60 to 100 with vagal braking — so it sets the rhythm; the <b>AV node</b> manages 40 to 60, and the <b>bundle of His</b>, <b>bundle branches</b> and <b>Purkinje fibers</b> only 20 to 40.<br><br>
+The fastest pacemaker wins. Which is why, if the SA node fails, a slower site takes over — the patient goes bradycardic, but stays alive.</div>
+<h4 class="topic">Why your resting pulse is not 100</h4><div class="read">If the SA node fires at around 100 on its own, why is your resting pulse nearer 70? Because the <b>vagus nerve</b> brakes it continuously. That standing <b>parasympathetic</b> traffic — <b>vagal tone</b> — releases acetylcholine onto the node, slows the drift to threshold and holds you below your own intrinsic rate.<br><br>
+Sympathetic fibers release norepinephrine, and the adrenal medulla adds circulating epinephrine — both doing the opposite, through three effects: <b>chronotropy</b> (rate at the SA node), <b>dromotropy</b> (conduction speed at the AV node) and <b>inotropy</b> (force of contraction). Parasympathetic supply reaches the nodes but barely touches ventricular muscle, so the vagus changes rate far more than force.<br><br>
+When you stand and your pulse jumps, the first thing that happened was vagal withdrawal — releasing the brake is quicker than pressing the accelerator.</div>
+<h4 class="topic">The heart feeds itself during diastole</h4><div class="read">The heart sits in a chamber full of blood and cannot use a drop of it. Myocardium is fed by the <b>coronary arteries</b>, which branch off the aorta just above the aortic valve — the first vessels off the pump.<br><br>
+Here is the catch. During <b>systole</b> the contracting left ventricle squeezes its own vessels almost shut, so the coronaries fill during <b>diastole</b>, when the muscle is relaxed and the closed aortic valve holds a column of pressurized blood above them. Left-heart perfusion is a diastolic event.<br><br>
+Now think about tachycardia. As rate climbs, diastole shortens far more than systole — a racing heart demands more oxygen while giving itself less time to collect any. Which is why chest pain appears on exertion, and why slowing the rate is so often the treatment.</div>
+<h3>Reference tables</h3>
+<h4>Cardiac cycle and valves</h4><table><tr><th>Event</th><th>Valves</th><th>Sound</th></tr><tr><td>Ventricular diastole</td><td>AV valves OPEN; semilunar CLOSED</td><td>—</td></tr><tr><td>Atrial systole</td><td>AV valves open; final filling</td><td>—</td></tr><tr><td>Ventricular systole begins</td><td>AV valves CLOSE</td><td>S1 'lub'</td></tr><tr><td>Ejection</td><td>Semilunar valves OPEN</td><td>—</td></tr><tr><td>Ventricular diastole begins</td><td>Semilunar valves CLOSE</td><td>S2 'dub'</td></tr></table>
+<h4>Conduction pathway</h4><table><tr><th>Structure</th><th>Role</th></tr><tr><td>SA node</td><td>Pacemaker — fastest intrinsic rate (60–100/min)</td></tr><tr><td>AV node</td><td>Delays impulse so atria finish emptying</td></tr><tr><td>Bundle of His</td><td>Only electrical bridge from atria to ventricles</td></tr><tr><td>Bundle branches</td><td>Carry impulse down the septum</td></tr><tr><td>Purkinje fibers</td><td>Rapid spread through ventricles for coordinated contraction</td></tr></table>
+<h4>ECG waves</h4><table><tr><th>Wave</th><th>Represents</th></tr><tr><td>P wave</td><td>Atrial depolarization</td></tr><tr><td>QRS complex</td><td>Ventricular depolarization (hides atrial repolarization)</td></tr><tr><td>T wave</td><td>Ventricular repolarization</td></tr></table>
+<h4>Blood flow through the heart</h4><table><tr><th>Order</th><th>Structure</th></tr><tr><td>1</td><td>SVC / IVC → right atrium</td></tr><tr><td>2</td><td>Tricuspid valve → right ventricle</td></tr><tr><td>3</td><td>Pulmonary valve → pulmonary artery → lungs</td></tr><tr><td>4</td><td>Pulmonary veins → left atrium</td></tr><tr><td>5</td><td>Mitral valve → left ventricle</td></tr><tr><td>6</td><td>Aortic valve → aorta → body</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"S1 is the semilunar valves."</b> S1 = AV valves closing. S2 = semilunar valves closing.</li><li><b>"Cardiac output is just heart rate."</b> CO = HR × stroke volume. Both matter.</li><li><b>"The QRS shows atrial repolarization."</b> It shows ventricular depolarization; atrial repolarization is hidden inside it.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 10 — p.113 · Module 10 heart deck, slide 10 · Module 10 heart deck, slide 11 · Module 10 heart deck, slide 12 · Module 10 heart deck, slide 13 · Module 10 heart deck, slide 14 · Module 10 heart deck, slide 15 · Module 10 heart deck, slide 16 · Module 10 heart deck, slide 17 · Module 10 heart deck, slide 3</p>
+<h3>Practice questions <span class="small">(43)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> The atrioventricular valves are open during:</summary><ol class="opts" type="A"><li>Ventricular systole, while blood is ejected into the aorta</li><li>Atrial systole only, closing before the ventricles fill</li><li>The entire cardiac cycle, including both systole and diastole</li><li class="key">Ventricular diastole, allowing the ventricles to fill</li><li>Isovolumetric contraction, as ventricular pressure rises</li></ol><div class="ans show"><b>Answer: D.</b> AV valves open when ventricular pressure is low, permitting filling; they snap shut as the ventricles contract.<span class="ref">Module 10 heart deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q2.</b> The semilunar valves close at the start of:</summary><ol class="opts" type="A"><li>Ventricular systole</li><li>Atrial systole</li><li>Atrial diastole</li><li>Isovolumetric contraction</li><li class="key">Ventricular diastole</li></ol><div class="ans show"><b>Answer: E.</b> As the ventricles relax and pressure falls below arterial pressure, backflow snaps the semilunar valves shut.<span class="ref">Module 10 heart deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q3.</b> The first heart sound (S1, 'lub') is produced by:</summary><ol class="opts" type="A"><li class="key">AV valves closing at the start of ventricular systole</li><li>Semilunar valves closing at the end of ventricular ejection</li><li>Atrial contraction pushing the last blood into the ventricles</li><li>Blood entering the atria from the vena cavae and pulmonary veins</li><li>Rapid ventricular filling early in diastole</li></ol><div class="ans show"><b>Answer: A.</b> S1 marks the beginning of ventricular contraction.<span class="ref">Module 10 heart deck, slide 16</span></div></details>
+<details class="q"><summary><b>Q4.</b> The second heart sound (S2, 'dub') is produced by:</summary><ol class="opts" type="A"><li>AV valves closing at the start of ventricular systole</li><li class="key">Semilunar valves closing at the start of ventricular diastole</li><li>Atrial contraction topping off ventricular filling</li><li>Coronary artery blood flow through the myocardium during systole</li><li>Turbulent ventricular filling in early diastole</li></ol><div class="ans show"><b>Answer: B.</b> S2 marks the end of ejection and the start of relaxation.<span class="ref">Module 10 heart deck, slide 4</span></div></details>
+<details class="q"><summary><b>Q5.</b> Which valve prevents backflow into the LEFT atrium during ventricular contraction?</summary><ol class="opts" type="A"><li>Tricuspid valve</li><li>Aortic semilunar</li><li class="key">Mitral (bicuspid)</li><li>Pulmonary semilunar</li><li>Eustachian valve</li></ol><div class="ans show"><b>Answer: C.</b> The mitral valve guards the left AV orifice.<span class="ref">Module 10 heart deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q6.</b> Which valve prevents backflow into the RIGHT atrium?</summary><ol class="opts" type="A"><li>Bicuspid</li><li>Semilunar</li><li>Pulmonary</li><li class="key">Tricuspid</li><li>Thebesian</li></ol><div class="ans show"><b>Answer: D.</b> The tricuspid valve guards the right AV orifice.<span class="ref">Module 10 heart deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q7.</b> Systole refers to ____ and diastole refers to ____.</summary><ol class="opts" type="A"><li>relaxation; contraction</li><li>filling; ejection</li><li>depolarization; repolarization</li><li>inflow; outflow</li><li class="key">contraction; relaxation</li></ol><div class="ans show"><b>Answer: E.</b> Systole is contraction and ejection; diastole is relaxation and filling.<span class="ref">Module 10 heart deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q8.</b> Trace blood correctly from the body back to the body:</summary><ol class="opts" type="A"><li class="key">RA → RV → lungs → LA → LV → body</li><li>LA → LV → lungs → RA → RV → body</li><li>RA → LA → RV → LV → lungs → body</li><li>RV → RA → lungs → LV → LA → body</li><li>LV → LA → lungs → RV → RA → body</li></ol><div class="ans show"><b>Answer: A.</b> Deoxygenated blood enters the right heart, goes to the lungs, returns to the left heart, and is pumped to the body.<span class="ref">Module 10 heart deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q9.</b> The pulmonary circuit carries:</summary><ol class="opts" type="A"><li>Oxygenated blood from the left heart out to the body</li><li class="key">Deoxygenated blood from the right heart to the lungs</li><li>Oxygenated blood from the lungs to the right heart</li><li>Blood only to the heart muscle by way of the coronary arteries</li><li>Lymph from the tissues to the thoracic duct</li></ol><div class="ans show"><b>Answer: B.</b> The pulmonary artery is the one artery carrying deoxygenated blood.<span class="ref">Module 10 heart deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q10.</b> Cardiac output is defined as:</summary><ol class="opts" type="A"><li>Blood ejected by one ventricle with each beat</li><li>Total blood volume held in the heart chambers</li><li class="key">Blood pumped by each ventricle per minute</li><li>Pressure generated during systole</li><li>Heart rate alone, measured in beats per minute</li></ol><div class="ans show"><b>Answer: C.</b> CO = heart rate x stroke volume, typically around 5 L/min at rest.<span class="ref">Module 10 heart deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q11.</b> If heart rate is 70 bpm and stroke volume is 70 mL, cardiac output is:</summary><ol class="opts" type="A"><li>1.0 L/min</li><li>14 L/min</li><li>0.49 L/min</li><li class="key">4.9 L/min</li><li>49 L/min</li></ol><div class="ans show"><b>Answer: D.</b> 70 x 70 = 4900 mL/min = 4.9 L/min.<span class="ref">Module 10 heart deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q12.</b> Which change would directly INCREASE cardiac output?</summary><ol class="opts" type="A"><li>Decreased heart rate with stroke volume unchanged</li><li>Decreased stroke volume from poor ventricular filling</li><li>Increased parasympathetic tone slowing the SA node</li><li>Reduced venous return lowering end-diastolic volume</li><li class="key">Increased heart rate with stroke volume maintained</li></ol><div class="ans show"><b>Answer: E.</b> Since CO = HR x SV, raising either factor raises output.<span class="ref">Module 10 heart deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q13.</b> Sympathetic stimulation of the heart produces:</summary><ol class="opts" type="A"><li class="key">Increased rate and increased contractility</li><li>Decreased rate and contractility</li><li>Decreased rate with contractility unchanged</li><li>No change in rate, contractility, or output</li><li>Slowed conduction through the atrioventricular node</li></ol><div class="ans show"><b>Answer: A.</b> Sympathetic input raises both HR and the force of contraction, boosting cardiac output.<span class="ref">Module 10 heart deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q14.</b> Vagal (parasympathetic) stimulation of the heart primarily:</summary><ol class="opts" type="A"><li>Increases heart rate</li><li class="key">Decreases heart rate</li><li>Increases contractility strongly</li><li>Closes the aortic valve</li><li>Raises blood pressure</li></ol><div class="ans show"><b>Answer: B.</b> The vagus nerve slows SA node firing, lowering heart rate.<span class="ref">Module 10 heart deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q15.</b> A patient in severe hemorrhage has reduced venous return. The effect on stroke volume is:</summary><ol class="opts" type="A"><li>Increased, because the ventricle fills more completely</li><li>Unchanged, since stroke volume is set by heart rate</li><li class="key">Decreased, because less filling means less preload</li><li>Doubled, as the ventricle compensates for blood loss</li><li>Eliminated entirely, with no blood ejected at all</li></ol><div class="ans show"><b>Answer: C.</b> Less preload means less stretch and a weaker contraction — the Frank-Starling relationship.<span class="ref">Module 10 heart deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q16.</b> The normal pacemaker of the heart is the:</summary><ol class="opts" type="A"><li>AV node</li><li>Bundle of His</li><li>Purkinje fibers</li><li class="key">SA node</li><li>Left bundle branch</li></ol><div class="ans show"><b>Answer: D.</b> The SA node has the fastest intrinsic rate, so it sets the pace for the whole heart.<span class="ref">Module 10 heart deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q17.</b> Place the conduction pathway in correct order:</summary><ol class="opts" type="A"><li>AV node → SA node → Purkinje fibers → Bundle of His → bundle branches</li><li>Purkinje fibers → SA node → AV node → Bundle of His → bundle branches</li><li>SA node → Purkinje fibers → AV node → Bundle of His → bundle branches</li><li>Bundle of His → SA node → AV node → bundle branches → Purkinje fibers</li><li class="key">SA node → AV node → Bundle of His → bundle branches → Purkinje fibers</li></ol><div class="ans show"><b>Answer: E.</b> Impulse originates at the SA node and spreads down to the Purkinje network.<span class="ref">Module 10 heart deck, slide 17</span></div></details>
+<details class="q"><summary><b>Q18.</b> The physiological purpose of the AV nodal delay is to:</summary><ol class="opts" type="A"><li class="key">Allow the atria to finish emptying into the ventricles before ventricular contraction</li><li>Slow the overall heart rate permanently so that diastole is always longer than systole</li><li>Prevent the SA node from firing again until the ventricles have fully repolarized</li><li>Increase ventricular contractility by allowing more calcium to enter the myocardium</li><li>Keep the semilunar valves closed while the ventricles are ejecting blood</li></ol><div class="ans show"><b>Answer: A.</b> Without the delay, atria and ventricles would contract simultaneously and filling would be inadequate.<span class="ref">Module 10 heart deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q19.</b> The Bundle of His conducts impulses from the:</summary><ol class="opts" type="A"><li>SA node across the atrial myocardium to the left atrium</li><li class="key">AV node into the interventricular septum and bundle branches</li><li>Purkinje fibers of the ventricular walls back up to the atria</li><li>Aortic root through the septum into the left ventricle</li><li>Coronary sinus into the wall of the right atrium</li></ol><div class="ans show"><b>Answer: B.</b> It is the only normal electrical bridge between atria and ventricles.<span class="ref">Module 10 heart deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q20.</b> Purkinje fibers function to:</summary><ol class="opts" type="A"><li>Delay the impulse briefly so that the atria can empty before the ventricles contract</li><li>Generate the normal pacemaker rhythm that sets heart rate at sixty to one hundred beats per minute</li><li class="key">Rapidly distribute the impulse through the ventricular walls for a coordinated contraction</li><li>Close the atrioventricular valves by pulling on the chordae tendineae during systole</li><li>Supply oxygenated blood to the myocardium through the right and left coronary arteries</li></ol><div class="ans show"><b>Answer: C.</b> They allow the ventricles to contract almost simultaneously from the apex upward.<span class="ref">Module 10 heart deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q21.</b> The P wave on an ECG represents:</summary><ol class="opts" type="A"><li>Ventricular depolarization</li><li>Ventricular repolarization</li><li>Atrial repolarization</li><li class="key">Atrial depolarization</li><li>Ventricular filling</li></ol><div class="ans show"><b>Answer: D.</b> The P wave precedes atrial contraction.<span class="ref">Module 10 heart deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q22.</b> The QRS complex represents:</summary><ol class="opts" type="A"><li>Atrial depolarization</li><li>Ventricular repolarization</li><li>Atrial repolarization only</li><li>Coronary artery perfusion</li><li class="key">Ventricular depolarization</li></ol><div class="ans show"><b>Answer: E.</b> Atrial repolarization occurs at the same time but is hidden within the much larger QRS.<span class="ref">Module 10 heart deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q23.</b> The T wave represents:</summary><ol class="opts" type="A"><li class="key">Ventricular repolarization</li><li>Atrial depolarization</li><li>Ventricular depolarization</li><li>Atrial repolarization</li><li>Semilunar valve closure</li></ol><div class="ans show"><b>Answer: A.</b> The T wave is ventricular recovery, preparing for the next beat.<span class="ref">Module 10 heart deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q24.</b> Why is atrial repolarization not normally visible on an ECG?</summary><ol class="opts" type="A"><li>It does not occur in healthy atrial tissue</li><li class="key">It is masked by the much larger QRS complex</li><li>It occurs during the P wave and cancels it out</li><li>It produces no electrical change</li><li>It happens well after the T wave has ended</li></ol><div class="ans show"><b>Answer: B.</b> The ventricular mass generates a far larger signal that obscures it.<span class="ref">Module 10 heart deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q25.</b> Cardiac muscle cells contract as a coordinated unit because they are joined by:</summary><ol class="opts" type="A"><li>Tight junctions that seal the cell membranes</li><li>Desmosomes alone, without any gap junctions</li><li class="key">Gap junctions within intercalated discs</li><li>Chemical synapses between adjacent fibers</li><li>A shared basement membrane and collagen</li></ol><div class="ans show"><b>Answer: C.</b> Gap junctions allow current to pass directly, making the myocardium a functional syncytium.<span class="ref">Module 10 heart deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q26.</b> If the SA node fails, the AV node can take over at a slower intrinsic rate. This property is called:</summary><ol class="opts" type="A"><li>Contractility</li><li>Conductivity</li><li>Excitability</li><li class="key">Automaticity</li><li>Elasticity</li></ol><div class="ans show"><b>Answer: D.</b> Several cardiac tissues possess automaticity, providing backup pacemakers.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q27.</b> A complete block at the AV node would result in:</summary><ol class="opts" type="A"><li>Immediate cardiac arrest with no ventricular activity</li><li>Faster ventricular rate than atrial</li><li>Loss of the P wave only</li><li>Normal conduction</li><li class="key">Atria and ventricles beating independently</li></ol><div class="ans show"><b>Answer: E.</b> In third-degree block the ventricles escape at their own slower intrinsic rate, dissociated from the atria.<span class="ref">Module 10 heart deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q28.</b> Damage to the left ventricle after myocardial infarction most directly reduces:</summary><ol class="opts" type="A"><li class="key">Stroke volume and therefore cardiac output</li><li>Venous return from the systemic circulation</li><li>Heart rate set by the sinoatrial node</li><li>The force of right atrial contraction</li><li>Valve integrity only, with pumping preserved</li></ol><div class="ans show"><b>Answer: A.</b> Scar tissue is non-contractile, so ejection falls.<span class="ref">Module 10 heart deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q29.</b> The pericardial fluid functions to:</summary><ol class="opts" type="A"><li>Nourish the myocardium with oxygen</li><li class="key">Reduce friction as the heart beats</li><li>Conduct impulses to the ventricles</li><li>Store calcium for contraction</li><li>Filter waste from the blood</li></ol><div class="ans show"><b>Answer: B.</b> Serous fluid lets the heart move freely within the pericardial sac.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q30.</b> The myocardium is thickest in the:</summary><ol class="opts" type="A"><li>Right atrium</li><li>Right ventricle</li><li class="key">Left ventricle</li><li>Left atrium</li><li>Interatrial septum</li></ol><div class="ans show"><b>Answer: C.</b> The left ventricle must generate systemic pressure, so its wall is thickest.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q31.</b> Coronary arteries fill mainly during:</summary><ol class="opts" type="A"><li>Ventricular systole</li><li>Atrial systole</li><li>Isovolumetric contraction</li><li class="key">Ventricular diastole</li><li>Ejection</li></ol><div class="ans show"><b>Answer: D.</b> During systole the vessels are compressed; filling occurs at rest.<span class="ref">Module 10 heart deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q32.</b> Preload is best defined as:</summary><ol class="opts" type="A"><li>Resistance the ventricle pumps against</li><li>The number of beats the heart makes in one full minute</li><li>The intrinsic force of myocardial contraction</li><li>The volume of blood ejected with each beat</li><li class="key">The degree of ventricular stretch at end-diastole</li></ol><div class="ans show"><b>Answer: E.</b> Preload reflects venous return and end-diastolic volume.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q33.</b> Afterload refers to:</summary><ol class="opts" type="A"><li class="key">The resistance the ventricle must overcome to eject blood</li><li>The volume of blood returning to the right atrium</li><li>The volume of blood in the ventricle at the end of diastole</li><li>The number of cardiac cycles completed each minute</li><li>The intrinsic strength of myocardial fiber shortening</li></ol><div class="ans show"><b>Answer: A.</b> Increased afterload, as in hypertension, makes ejection harder.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q34.</b> The Frank-Starling relationship states that:</summary><ol class="opts" type="A"><li>Heart rate alone determines the volume of blood ejected each beat</li><li class="key">Greater end-diastolic stretch produces a stronger contraction</li><li>Rising afterload increases the volume ejected each beat</li><li>Contractility is fixed and cannot be altered by nerves</li><li>Preload has no effect on the force of contraction</li></ol><div class="ans show"><b>Answer: B.</b> More filling stretches the fibers, improving cross-bridge overlap.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q35.</b> Ejection fraction is calculated as:</summary><ol class="opts" type="A"><li>Heart rate multiplied by stroke volume</li><li>End-systolic volume over end-diastolic volume</li><li class="key">Stroke volume divided by end-diastolic volume</li><li>Cardiac output divided by heart rate</li><li>Preload divided by afterload pressure</li></ol><div class="ans show"><b>Answer: C.</b> EF expresses the proportion of the filled ventricle that is ejected.<span class="ref">Module 10 heart deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q36.</b> An ejection fraction of 30% indicates:</summary><ol class="opts" type="A"><li>Normal ventricular function for an adult</li><li>Excellent contractility above the normal range</li><li>A normal athletic adaptation to endurance training</li><li class="key">Reduced systolic function, as in heart failure</li><li>Dehydration with a low circulating volume</li></ol><div class="ans show"><b>Answer: D.</b> Normal is roughly 55-70%; 30% reflects significant systolic dysfunction.<span class="ref">Module 10 heart deck, slide 11</span></div></details>
+<details class="q"><summary><b>Q37.</b> The intrinsic rate of the SA node is approximately:</summary><ol class="opts" type="A"><li>20-30 bpm</li><li>40-60 bpm</li><li>100-140 bpm</li><li>140-180 bpm</li><li class="key">60-100 bpm</li></ol><div class="ans show"><b>Answer: E.</b> The SA node's faster rate lets it override slower pacemakers.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q38.</b> The plateau phase of the cardiac action potential is produced by:</summary><ol class="opts" type="A"><li class="key">Calcium influx balancing potassium efflux</li><li>Rapid sodium influx through fast channels</li><li>Potassium influx through leak channels</li><li>Chloride efflux across the sarcolemma</li><li>The sodium-potassium pump restoring gradients</li></ol><div class="ans show"><b>Answer: A.</b> Slow calcium channels sustain depolarization, prolonging contraction.<span class="ref">Module 10 heart deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q39.</b> Why is a long cardiac refractory period important?</summary><ol class="opts" type="A"><li>It speeds conduction through the AV node</li><li class="key">It prevents tetany so the heart can refill</li><li>It increases the force of each contraction</li><li>It slows the firing rate of the SA node</li><li>It closes the atrioventricular valves</li></ol><div class="ans show"><b>Answer: B.</b> Cardiac muscle cannot be tetanized, guaranteeing time to fill.<span class="ref">Module 10 heart deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q40.</b> A prolonged PR interval indicates delay at the:</summary><ol class="opts" type="A"><li>SA node</li><li>Purkinje fibers</li><li class="key">AV node</li><li>Ventricles</li><li>Bundle branches</li></ol><div class="ans show"><b>Answer: C.</b> The PR interval reflects atrial depolarization plus AV nodal delay.<span class="ref">Module 10 heart deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q41.</b> Atrial fibrillation would most likely show:</summary><ol class="opts" type="A"><li>Regular P waves before every QRS complex</li><li>A widened QRS complex with otherwise normal P waves</li><li>A tall peaked T wave with a regular rhythm</li><li class="key">Absent organized P waves with an irregular rhythm</li><li>A prolonged plateau phase in the ST segment</li></ol><div class="ans show"><b>Answer: D.</b> Chaotic atrial activity replaces discrete P waves.<span class="ref">Lecture Outline, Module 10 — p.113</span></div></details>
+<details class="q"><summary><b>Q42.</b> Which change increases cardiac output during exercise?</summary><ol class="opts" type="A"><li>Reduced venous return from the exercising skeletal muscle beds</li><li>Increased vagal tone slowing the sinoatrial node</li><li>Decreased preload and lower end-diastolic volume</li><li>Increased afterload only, with no change in heart rate</li><li class="key">Increased heart rate and contractility from sympathetic drive</li></ol><div class="ans show"><b>Answer: E.</b> Sympathetic stimulation raises both determinants of output.<span class="ref">Module 10 heart deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q43.</b> Blood in the pulmonary VEINS is:</summary><ol class="opts" type="A"><li class="key">Oxygenated</li><li>Deoxygenated</li><li>Mixed venous</li><li>Lymph</li><li>Filtered plasma</li></ol><div class="ans show"><b>Answer: A.</b> Pulmonary veins are the exception carrying oxygenated blood to the heart.<span class="ref">Module 10 heart deck, slide 3</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Starling Forces and the Lymphatic Drain</title>
+<meta name="description" content="Set the six Starling terms and the lymphatic pump, then run the tissue forward in time and watch interstitial fluid and protein either balance or accumulate into edema.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_physio262.css">
+<style>
+.wrap{display:grid;grid-template-columns:1.02fr 0.98fr;gap:16px;}
+@media (max-width:880px){.wrap{grid-template-columns:1fr !important;}}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+.lbl{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);font-weight:800;margin:15px 0 7px;}
+.lbl:first-child{margin-top:0;}
+.sl{margin:10px 0 0;}
+.sl label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;font-weight:700;color:var(--soft);margin-bottom:3px;}
+.sl label .v{font-weight:800;color:var(--teal-dk);font-variant-numeric:tabular-nums;}
+input[type=range]{width:100%;height:26px;accent-color:var(--teal);cursor:pointer;}
+.chk{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;}
+.chk label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--soft);cursor:pointer;}
+.chk input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--soft);cursor:pointer;line-height:1.3;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff;}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.lab{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:#fff;}
+.lab .k{font-size:9.6px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);font-weight:800;line-height:1.25;}
+.lab .v{font-family:var(--disp);font-size:20px;font-weight:700;color:var(--teal-dk);font-variant-numeric:tabular-nums;line-height:1.25;}
+.lab .u{font-size:10.5px;color:var(--muted);}
+.verdict{border-radius:11px;padding:12px 14px;margin-top:12px;font-size:13px;font-weight:700;line-height:1.45;color:#fff;background:var(--teal);}
+.verdict small{display:block;font-weight:500;font-size:12.3px;opacity:.96;margin-top:5px;}
+.verdict.bad{background:var(--coral);} .verdict.warn{background:var(--gold);} .verdict.ok{background:var(--green);} .verdict.cool{background:var(--purple);}
+.eq{font-size:12.4px;color:var(--soft);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-top:11px;line-height:1.7;}
+.eq b{color:var(--teal-dk);} .eq .num{font-variant-numeric:tabular-nums;}
+.hint{font-size:12.2px;color:var(--muted);margin-top:11px;line-height:1.55;} .hint b{color:var(--soft);}
+.row{display:flex;gap:8px;margin-top:12px;}
+.btn{flex:1;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:12.5px;padding:10px 6px;border-radius:10px;cursor:pointer;font-family:var(--sans);}
+.btn.solid{background:var(--teal);color:#fff;border-color:var(--teal);}
+.btn:hover{filter:brightness(1.05);}
+canvas{display:block;width:100%;height:auto;}
+svg text{font-family:var(--sans);}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="top"><a href="../../book/ch11.html">&larr; Module 11</a></div>
+<header>
+  <div class="kick">Human Physiology &middot; Module 11</div>
+  <h1>Starling Forces and the Lymphatic Drain</h1>
+  <div class="intro">Across 24 hours a normal body filters about <b>20 liters</b> of fluid out of its capillaries and pulls only about <b>17 liters</b> back, because the albumin that escapes cannot diffuse home against its own gradient. The missing <b>3 liters</b> must leave by lymph. Set the six Starling terms, set the pump that moves lymph, then run the tissue forward in time and watch it either balance or fill.</div>
+</header>
+<div class="wrap">
+  <div>
+    <div class="card">
+      <h2>The six Starling terms</h2>
+      <div class="sl"><label for="sPa">P<sub>c</sub> at the arteriolar end <span class="v" id="vPa">35 mmHg</span></label>
+        <input type="range" id="sPa" min="20" max="50" step="1" value="35" aria-label="Capillary hydrostatic pressure at the arteriolar end, in mmHg"></div>
+      <div class="sl"><label for="sPv">P<sub>c</sub> at the venular end <span class="v" id="vPv">16 mmHg</span></label>
+        <input type="range" id="sPv" min="5" max="35" step="1" value="16" aria-label="Capillary hydrostatic pressure at the venular end, in mmHg"></div>
+      <div class="sl"><label for="sPc">&pi;<sub>c</sub> plasma oncotic pressure <span class="v" id="vPc">28 mmHg</span></label>
+        <input type="range" id="sPc" min="8" max="32" step="1" value="28" aria-label="Plasma colloid osmotic pressure, in mmHg"></div>
+      <div class="sl"><label for="sSig">&sigma; reflection coefficient <span class="v" id="vSig">0.90</span></label>
+        <input type="range" id="sSig" min="0.3" max="1" step="0.02" value="0.9" aria-label="Reflection coefficient, how completely the wall holds protein back"></div>
+      <div class="sl"><label for="sKf">K<sub>f</sub> filtration coefficient <span class="v" id="vKf">1.0 &times; normal</span></label>
+        <input type="range" id="sKf" min="0.5" max="3" step="0.05" value="1" aria-label="Filtration coefficient as a multiple of normal"></div>
+      <div class="eq" id="eqS"></div>
+      <div class="hint">&pi;<sub>c</sub> is held up by albumin (normal plasma <b>3.5&ndash;5.0 g/dL</b>). Below about <b>2.5 g/dL</b> the oncotic pull collapses far enough to flood every capillary bed at once. P<sub>i</sub> and &pi;<sub>i</sub> are not sliders here &mdash; they are <b>outputs</b>, because the tissue itself sets them as it fills with water and stranded protein.</div>
+    </div>
+    <div class="card">
+      <h2>The drain: what actually moves lymph</h2>
+      <div class="sl"><label for="sRate">Lymphangion contraction rate <span class="v" id="vRate">8 /min</span></label>
+        <input type="range" id="sRate" min="0" max="30" step="1" value="8" aria-label="Lymphangion contractions per minute"></div>
+      <div class="sl"><label for="sStr">Pressure generated per beat <span class="v" id="vStr">12 mmHg</span></label>
+        <input type="range" id="sStr" min="0" max="20" step="1" value="12" aria-label="Pressure generated by each lymphangion contraction, in mmHg"></div>
+      <div class="sl"><label for="sVal">Valve competence <span class="v" id="vVal">100 %</span></label>
+        <input type="range" id="sVal" min="0" max="100" step="5" value="100" aria-label="Percentage of semilunar lymphatic valves that still close properly"></div>
+      <div class="chk">
+        <label><input type="checkbox" id="cMus" checked> Skeletal muscle pump</label>
+        <label><input type="checkbox" id="cRes" checked> Respiratory pump</label>
+      </div>
+      <div class="hint">A lymphangion is the segment between two valves. At rest it contracts <b>6&ndash;10 times a minute</b> at <b>5&ndash;20 mmHg</b> a beat, and stretch raises both rate (to about 30/min) and force &mdash; a Starling&rsquo;s-law-of-the-heart analog that auto-matches output to load. Every mechanism here needs competent valves: <b>set valve competence to zero and the pump becomes a sloshing reservoir.</b></div>
+    </div>
+    <div class="card">
+      <h2>Clinical presets</h2>
+      <div class="chips" id="chips"></div>
+      <div class="row">
+        <button type="button" class="btn solid" id="bRun">Run 24-hour clock</button>
+        <button type="button" class="btn" id="bJump">Jump to steady state</button>
+        <button type="button" class="btn" id="bReset">Reset tissue</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h2>One capillary, its tissue and its drain</h2>
+      <svg id="cap" viewBox="0 0 520 268" role="img" aria-label="Diagram of a capillary filtering at the arteriolar end and reabsorbing at the venular end, with interstitial fluid below and a blind-ended lymphatic capillary draining it">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="context-stroke"></path>
+          </marker>
+        </defs>
+        <rect id="tiss" x="26" y="112" width="468" height="98" rx="12" fill="none"></rect>
+        <rect x="34" y="52" width="452" height="34" rx="17" fill="#fff" stroke="" id="tube" stroke-width="2.5"></rect>
+        <text x="34" y="42" font-size="11.5" font-weight="800" id="tA">ARTERIOLAR END</text>
+        <text x="486" y="42" font-size="11.5" font-weight="800" text-anchor="end" id="tV">VENULAR END</text>
+        <g id="gA"></g>
+        <g id="gV"></g>
+        <text x="30" y="132" font-size="11.5" font-weight="800" id="tI">INTERSTITIUM</text>
+        <text x="30" y="150" font-size="12" id="tPi"></text>
+        <text x="30" y="167" font-size="12" id="tPii"></text>
+        <path id="lymV" d="M60 206 L470 206" fill="none" stroke-width="12" stroke-linecap="round"></path>
+        <g id="flaps"></g>
+        <path id="lymArrow" d="M180 206 L440 206" fill="none" stroke-width="4" marker-end="url(#ar)"></path>
+        <text x="60" y="234" font-size="11.5" font-weight="800" id="tL">LYMPHATIC CAPILLARY</text>
+        <text x="486" y="234" font-size="12" text-anchor="end" id="tLv"></text>
+      </svg>
+      <div class="labs">
+        <div class="lab"><div class="k">Filtered</div><div class="v" id="oF">20.0</div><div class="u">L / day</div></div>
+        <div class="lab"><div class="k">Reabsorbed</div><div class="v" id="oR">17.0</div><div class="u">L / day</div></div>
+        <div class="lab"><div class="k">Net &rarr; interstitium</div><div class="v" id="oN">3.0</div><div class="u">L / day</div></div>
+        <div class="lab"><div class="k">Lymph flow</div><div class="v" id="oL">3.0</div><div class="u"><span id="oLh">125 mL/h</span></div></div>
+        <div class="lab"><div class="k">Interstitial excess</div><div class="v" id="oV">0.0</div><div class="u">liters</div></div>
+        <div class="lab"><div class="k">&pi;<sub>i</sub> in tissue</div><div class="v" id="oPii">3.0</div><div class="u">mmHg</div></div>
+      </div>
+      <div class="verdict" id="verd"></div>
+    </div>
+    <div class="card">
+      <h2>Ninety days of tissue fluid</h2>
+      <canvas id="ch" width="1040" height="440" role="img" aria-label="Chart of interstitial excess volume and interstitial oncotic pressure over ninety simulated days"></canvas>
+      <div class="hint">The pale band marks <b>2.5&ndash;3 liters</b> of excess &mdash; roughly where edema first becomes palpable and where body weight has risen a few kilograms. Watch &pi;<sub>i</sub> as well as volume: if the drain fails, stranded protein raises &pi;<sub>i</sub>, which weakens the inward oncotic pull, which increases filtration. That is the self-reinforcing spiral the lymphatics exist to break.</div>
+      <div class="sr" id="live" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var cs=getComputedStyle(document.documentElement);
+function CV(n){return cs.getPropertyValue('--'+n).trim();}
+var K0=1.3793, WV=2.74, IFV=11, KP=0.1607, VMAX=15, TMAX=90;
+
+var P={Pa:35,Pv:16,pc:28,sig:0.90,kf:1,rate:8,stroke:12,valve:1,musc:1,resp:1};
+var V=0, M=IFV*3, T=0, running=false, hist=[[0,0,3]];
+
+function pumpF(){
+  var r=(P.rate/8)*(P.stroke/12)*P.valve*(1+0.5*P.musc+0.3*P.resp);
+  return r/1.8;
+}
+function piOf(v){ return v<=0.25 ? (-2+8*v) : (0.45*(v-0.25)); }
+
+function st(){
+  var pii=M/(IFV+V), pI=piOf(V), onc=P.sig*(P.pc-pii);
+  var na=(P.Pa-pI)-onc, nv=(P.Pv-pI)-onc, K=K0*P.kf;
+  var filt=K*(Math.max(na,0)+WV*Math.max(nv,0));
+  var reab=K*(Math.max(-na,0)+WV*Math.max(-nv,0));
+  var pf=pumpF();
+  var lymph=Math.min(40, 3*pf*(1+3*V));
+  return {pii:pii,pI:pI,onc:onc,na:na,nv:nv,filt:filt,reab:reab,net:filt-reab,lymph:lymph,pf:pf};
+}
+function step(dt){
+  var s=st();
+  V+=(s.net-s.lymph)*dt; if(V<0)V=0; if(V>VMAX)V=VMAX;
+  M+=(s.filt*P.pc*(1-P.sig)*KP - s.lymph*s.pii)*dt; if(M<0.4)M=0.4;
+  T+=dt;
+}
+function record(){ hist.push([T,V,M/(IFV+V)]); if(hist.length>2000)hist.shift(); }
+
+/* ---- presets ---- */
+var PRE=[
+ {n:'Normal',s:{Pa:35,Pv:16,pc:28,sig:0.90,kf:1,rate:8,stroke:12,valve:1,musc:1,resp:1}},
+ {n:'Heart failure &mdash; P<sub>c</sub> up',s:{Pa:42,Pv:28,pc:28,sig:0.90,kf:1,rate:8,stroke:12,valve:1,musc:1,resp:1}},
+ {n:'Albumin 1.9 g/dL &mdash; &pi;<sub>c</sub> down',s:{Pa:35,Pv:16,pc:13,sig:0.90,kf:1,rate:8,stroke:12,valve:1,musc:1,resp:1}},
+ {n:'Burn / sepsis &mdash; &sigma; down, K<sub>f</sub> up',s:{Pa:32,Pv:20,pc:24,sig:0.55,kf:2.0,rate:8,stroke:12,valve:1,musc:1,resp:1}},
+ {n:'Lymphedema after node dissection',s:{Pa:35,Pv:16,pc:28,sig:0.90,kf:1,rate:5,stroke:10,valve:0.10,musc:0,resp:1}},
+ {n:'Standing still all day',s:{Pa:38,Pv:26,pc:28,sig:0.90,kf:1,rate:6,stroke:10,valve:1,musc:0,resp:1}},
+ {n:'Exercise &mdash; the pump wins',s:{Pa:40,Pv:18,pc:28,sig:0.90,kf:1.3,rate:22,stroke:18,valve:1,musc:1,resp:1}}
+];
+var chips=document.getElementById('chips');
+PRE.forEach(function(p,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='chip'+(i===0?' on':''); b.innerHTML=p.n;
+  b.addEventListener('click',function(){
+    for(var k in p.s){P[k]=p.s[k];}
+    V=0; M=IFV*3; T=0; hist=[[0,0,3]];
+    syncInputs();
+    [].forEach.call(chips.children,function(c){c.classList.remove('on');});
+    b.classList.add('on');
+    draw();
+  });
+  chips.appendChild(b);
+});
+
+/* ---- inputs ---- */
+function syncInputs(){
+  document.getElementById('sPa').value=P.Pa;
+  document.getElementById('sPv').value=P.Pv;
+  document.getElementById('sPc').value=P.pc;
+  document.getElementById('sSig').value=P.sig;
+  document.getElementById('sKf').value=P.kf;
+  document.getElementById('sRate').value=P.rate;
+  document.getElementById('sStr').value=P.stroke;
+  document.getElementById('sVal').value=Math.round(P.valve*100);
+  document.getElementById('cMus').checked=!!P.musc;
+  document.getElementById('cRes').checked=!!P.resp;
+}
+function bind(id,fn){document.getElementById(id).addEventListener('input',function(){fn(parseFloat(this.value));clearChip();draw();});}
+function clearChip(){[].forEach.call(chips.children,function(c){c.classList.remove('on');});}
+bind('sPa',function(v){P.Pa=v;}); bind('sPv',function(v){P.Pv=v;});
+bind('sPc',function(v){P.pc=v;}); bind('sSig',function(v){P.sig=v;});
+bind('sKf',function(v){P.kf=v;}); bind('sRate',function(v){P.rate=v;});
+bind('sStr',function(v){P.stroke=v;}); bind('sVal',function(v){P.valve=v/100;});
+document.getElementById('cMus').addEventListener('change',function(){P.musc=this.checked?1:0;clearChip();draw();});
+document.getElementById('cRes').addEventListener('change',function(){P.resp=this.checked?1:0;clearChip();draw();});
+
+document.getElementById('bRun').addEventListener('click',function(){
+  running=!running; this.textContent=running?'Pause clock':'Run 24-hour clock';
+  if(running) loop();
+});
+document.getElementById('bJump').addEventListener('click',function(){
+  V=0;M=IFV*3;T=0;hist=[[0,0,3]];
+  for(var i=0;i<4500;i++){ step(0.02); if(i%12===0) record(); }
+  draw();
+});
+document.getElementById('bReset').addEventListener('click',function(){
+  V=0;M=IFV*3;T=0;hist=[[0,0,3]];draw();
+});
+
+function loop(){
+  if(!running) return;
+  for(var i=0;i<12;i++){ step(0.02); }
+  record();
+  if(T>=TMAX){ running=false; document.getElementById('bRun').textContent='Run 24-hour clock'; }
+  draw();
+  if(running) requestAnimationFrame(loop);
+}
+
+/* ---- svg ---- */
+var svg=document.getElementById('cap');
+function arrows(g,x,nfp,scale){
+  while(g.firstChild)g.removeChild(g.firstChild);
+  var n=3, mag=Math.min(1,Math.abs(nfp)/26);
+  var col = nfp>0 ? CV('coral') : CV('blue');
+  var len = 8+34*mag;
+  for(var i=0;i<n;i++){
+    var xx=x+(i-1)*30;
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    if(nfp>0) p.setAttribute('d','M'+xx+' 88 L'+xx+' '+(88+len));
+    else p.setAttribute('d','M'+xx+' '+(88+len)+' L'+xx+' 88');
+    p.setAttribute('stroke',col); p.setAttribute('stroke-width',2.6);
+    p.setAttribute('marker-end','url(#ar)'); p.setAttribute('fill','none');
+    p.setAttribute('opacity', 0.25+0.75*mag);
+    g.appendChild(p);
+  }
+  var t=document.createElementNS('http://www.w3.org/2000/svg','text');
+  t.setAttribute('x',x); t.setAttribute('y',88+len+15); t.setAttribute('text-anchor','middle');
+  t.setAttribute('font-size','11.5'); t.setAttribute('font-weight','800'); t.setAttribute('fill',col);
+  t.textContent=(nfp>0?'FILTER ':'REABSORB ')+Math.abs(nfp).toFixed(1);
+  g.appendChild(t);
+}
+function drawSvg(s){
+  document.getElementById('tube').setAttribute('stroke',CV('teal'));
+  ['tA','tV','tI','tL'].forEach(function(id){document.getElementById(id).setAttribute('fill',CV('muted'));});
+  var tis=document.getElementById('tiss');
+  tis.setAttribute('fill',CV('blue')); tis.setAttribute('fill-opacity',(0.05+Math.min(0.4,V/8)).toFixed(3));
+  arrows(document.getElementById('gA'),130,s.na);
+  arrows(document.getElementById('gV'),400,s.nv);
+  var tp=document.getElementById('tPi');
+  tp.textContent='Pᵢ '+s.pI.toFixed(1)+' mmHg'; tp.setAttribute('fill',CV('soft'));
+  var tq=document.getElementById('tPii');
+  tq.textContent='πᵢ '+s.pii.toFixed(1)+' mmHg'+(s.pii>6?'  — protein is piling up':'');
+  tq.setAttribute('fill', s.pii>6?CV('coral'):CV('soft'));
+  var lv=document.getElementById('lymV');
+  lv.setAttribute('stroke',CV('green')); lv.setAttribute('stroke-opacity','0.28');
+  var la=document.getElementById('lymArrow');
+  var w=1+Math.min(11,s.lymph*0.9);
+  la.setAttribute('stroke',CV('green')); la.setAttribute('stroke-width',w.toFixed(2));
+  la.setAttribute('opacity', s.lymph<0.4?0.25:1);
+  var flaps=document.getElementById('flaps');
+  while(flaps.firstChild)flaps.removeChild(flaps.firstChild);
+  var open=Math.min(1,V/1.5);
+  for(var i=0;i<7;i++){
+    var x=78+i*30, p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d','M'+x+' 200 L'+(x+9)+' '+(194-8*open));
+    p.setAttribute('stroke',CV('green')); p.setAttribute('stroke-width','3'); p.setAttribute('fill','none');
+    p.setAttribute('stroke-linecap','round');
+    flaps.appendChild(p);
+  }
+  var tl=document.getElementById('tLv');
+  tl.textContent='lymph '+s.lymph.toFixed(1)+' L/day';
+  tl.setAttribute('fill',CV('green'));
+}
+
+/* ---- chart ---- */
+var cv=document.getElementById('ch'), cx=cv.getContext('2d');
+function drawChart(){
+  var W=cv.width,H=cv.height; cx.clearRect(0,0,W,H);
+  var L=68,R=W-68,Tp=18,B=H-38;
+  cx.fillStyle=CV('gold'); cx.globalAlpha=0.16;
+  cx.fillRect(L, B-(3/VMAX)*(B-Tp), R-L, (0.5/VMAX)*(B-Tp));
+  cx.globalAlpha=1;
+  cx.strokeStyle=CV('line'); cx.lineWidth=1.5; cx.font='600 15px Inter, sans-serif';
+  for(var v=0;v<=15;v+=3){
+    var y=B-(v/VMAX)*(B-Tp);
+    cx.beginPath();cx.moveTo(L,y);cx.lineTo(R,y);cx.stroke();
+    cx.fillStyle=CV('muted');cx.textAlign='right';cx.fillText(v+' L',L-8,y+5);
+  }
+  for(var d=0;d<=TMAX;d+=15){
+    var x=L+(d/TMAX)*(R-L);
+    cx.fillStyle=CV('muted');cx.textAlign='center';cx.fillText(d===0?'day 0':d,x,B+24);
+  }
+  function line(idx,col,maxv,wd){
+    cx.beginPath();
+    for(var i=0;i<hist.length;i++){
+      var h=hist[i];
+      if(h[0]>TMAX)break;
+      var x=L+(h[0]/TMAX)*(R-L), y=B-(Math.min(h[idx],maxv)/maxv)*(B-Tp);
+      if(i===0)cx.moveTo(x,y);else cx.lineTo(x,y);
+    }
+    cx.strokeStyle=col;cx.lineWidth=wd;cx.lineJoin='round';cx.stroke();
+  }
+  line(2,CV('coral'),30,2.6);
+  line(1,CV('teal'),VMAX,3.6);
+  cx.textAlign='left';cx.font='800 15px Inter, sans-serif';
+  cx.fillStyle=CV('teal'); cx.fillText('interstitial excess (L)',L+6,Tp+16);
+  cx.fillStyle=CV('coral'); cx.fillText('πᵢ (0–30 mmHg)',L+6,Tp+36);
+  cx.fillStyle=CV('gold'); cx.textAlign='right'; cx.fillText('edema palpable ≈ 2.5–3 L',R-6,B-(3/VMAX)*(B-Tp)-8);
+}
+
+/* ---- verdict ---- */
+function verdict(s){
+  var el=document.getElementById('verd'), cls='verdict ', h='';
+  var bal=s.net-s.lymph;
+  if(V>=VMAX-0.05){
+    cls+='bad'; h='RUNAWAY &mdash; the drain has been outrun<small>Net filtration '+s.net.toFixed(1)+' L/day exceeds the maximum lymph flow of '+s.lymph.toFixed(1)+' L/day, so the interstitium never reaches equilibrium. Clinically this is anasarca, third-spacing or capillary-leak shock: fluid keeps leaving the circulation until the plasma volume itself falls.</small>';
+  } else if(V>=2.5){
+    cls+='bad'; h='PALPABLE EDEMA &mdash; '+V.toFixed(1)+' L of excess<small>&pi;<sub>i</sub> has risen to '+s.pii.toFixed(1)+' mmHg and P<sub>i</sub> to '+s.pI.toFixed(1)+' mmHg. Above roughly 2.5&ndash;3 L of excess the swelling is visible and the patient has gained several kilograms. Name the term that moved &mdash; P<sub>c</sub>, &pi;<sub>c</sub>, K<sub>f</sub>/&sigma;, or the drain &mdash; and you have named the mechanism.</small>';
+  } else if(V>=0.8){
+    cls+='warn'; h='SUBCLINICAL EXCESS &mdash; '+V.toFixed(1)+' L<small>The tissue is holding more fluid than normal but not yet enough to pit. The lymphatics are running at '+s.lymph.toFixed(1)+' L/day, above their resting 3 L/day, because swelling itself pulls the anchoring filaments and opens the endothelial flaps.</small>';
+  } else if(Math.abs(bal)<0.25){
+    cls+='ok'; h='BALANCED &mdash; filtration is matched by drainage<small>'+s.filt.toFixed(1)+' L filtered, '+s.reab.toFixed(1)+' L reabsorbed, '+s.net.toFixed(1)+' L left behind, and '+s.lymph.toFixed(1)+' L/day carried away as lymph. The escaped albumin leaves with it, which is what holds &pi;<sub>i</sub> at '+s.pii.toFixed(1)+' mmHg and P<sub>i</sub> at '+s.pI.toFixed(1)+' mmHg.</small>';
+  } else if(bal>0){
+    cls+='warn'; h='FILLING &mdash; net '+bal.toFixed(1)+' L/day is accumulating<small>Run the clock and watch where it settles. Equilibrium arrives when rising P<sub>i</sub> has cut filtration enough, and rising interstitial volume has opened the lymphatic flaps enough, for the two to meet again.</small>';
+  } else {
+    cls+='cool'; h='DRAINING &mdash; the tissue is emptying<small>Lymph flow ('+s.lymph.toFixed(1)+' L/day) currently exceeds net filtration ('+s.net.toFixed(1)+' L/day), so excess volume is falling. This is what elevation, compression and active movement are for.</small>';
+  }
+  el.className=cls; el.innerHTML=h;
+}
+
+function draw(){
+  var s=st();
+  document.getElementById('vPa').textContent=P.Pa+' mmHg';
+  document.getElementById('vPv').textContent=P.Pv+' mmHg';
+  document.getElementById('vPc').textContent=P.pc+' mmHg';
+  document.getElementById('vSig').textContent=P.sig.toFixed(2);
+  document.getElementById('vKf').textContent=P.kf.toFixed(2)+' × normal';
+  document.getElementById('vRate').textContent=P.rate+' /min';
+  document.getElementById('vStr').textContent=P.stroke+' mmHg';
+  document.getElementById('vVal').textContent=Math.round(P.valve*100)+' %';
+
+  document.getElementById('eqS').innerHTML=
+    'J<sub>v</sub> = K<sub>f</sub> [ (P<sub>c</sub> &minus; P<sub>i</sub>) &minus; &sigma;(&pi;<sub>c</sub> &minus; &pi;<sub>i</sub>) ]<br>'+
+    'Arteriolar NFP = ('+P.Pa+' &minus; '+s.pI.toFixed(1)+') &minus; '+P.sig.toFixed(2)+'('+P.pc+' &minus; '+s.pii.toFixed(1)+') = <b class="num">'+s.na.toFixed(1)+' mmHg</b><br>'+
+    'Venular NFP = ('+P.Pv+' &minus; '+s.pI.toFixed(1)+') &minus; '+P.sig.toFixed(2)+'('+P.pc+' &minus; '+s.pii.toFixed(1)+') = <b class="num">'+s.nv.toFixed(1)+' mmHg</b><br>'+
+    'Lymphatic pump output = <b class="num">'+(s.pf).toFixed(2)+' &times;</b> resting';
+
+  document.getElementById('oF').textContent=s.filt.toFixed(1);
+  document.getElementById('oR').textContent=s.reab.toFixed(1);
+  document.getElementById('oN').textContent=s.net.toFixed(1);
+  document.getElementById('oL').textContent=s.lymph.toFixed(1);
+  document.getElementById('oLh').textContent=Math.round(s.lymph*1000/24)+' mL/h';
+  document.getElementById('oV').textContent=V.toFixed(1);
+  document.getElementById('oPii').textContent=s.pii.toFixed(1);
+  drawSvg(s); drawChart(); verdict(s);
+  document.getElementById('live').textContent='Day '+T.toFixed(0)+'. Filtered '+s.filt.toFixed(1)+' liters per day, reabsorbed '+s.reab.toFixed(1)+', lymph flow '+s.lymph.toFixed(1)+', interstitial excess '+V.toFixed(1)+' liters.';
+}
+syncInputs(); draw();
+})();
+</script>
+</body>
+</html>

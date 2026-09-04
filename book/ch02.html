@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f3040">
+<title>THE CELLULAR LEVEL OF ORGANIZATION &mdash; Human Physiology &middot; Dr. Akash Garg</title>
+<meta name="description" content="A cell is not a bag of chemistry; it is a machine that spends energy to hold itself away from equilibrium. Every process you will study for the rest of this course &mdash; a nerve firing, a kidney reclaiming sodium, a muscle short">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#152128; --soft:#5f5340; --muted:#8d8270; --faint:#b0a693; --line:#ebe3d5;
+    --paper:#faf8f2; --card:#fffdf9; --accent:#1f5b73; --accent-dk:#0f3040; --gold:#b8862f;
+    --serif:"Source Serif 4",Georgia,"Times New Roman",serif; --disp:"Fraunces",Georgia,serif; --ui:"Inter",system-ui,sans-serif;
+    --shadow:0 1px 3px rgba(70,50,20,.06);
+  }
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;} a:hover{text-decoration:underline;}
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(250,248,242,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .topbar .row{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;font-family:var(--ui);}
+  .topbar a.home{font-size:13.5px;font-weight:600;color:var(--soft);white-space:nowrap;}
+  .topbar a.home:hover{color:var(--accent);text-decoration:none;}
+  .topbar .ct{font-size:13px;color:var(--faint);font-weight:600;margin-left:auto;white-space:nowrap;}
+  .progress{height:3px;background:transparent;} .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .1s;}
+  .layout{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:230px 1fr;gap:30px;}
+  aside{font-family:var(--ui);padding-top:34px;}
+  aside .toc{position:sticky;top:74px;}
+  aside .toc h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin:0 0 12px;font-weight:700;}
+  aside .toc a{display:block;font-size:13.5px;color:var(--soft);padding:6px 10px;border-left:2px solid var(--line);line-height:1.35;}
+  aside .toc a:hover{color:var(--accent);text-decoration:none;border-left-color:var(--accent);}
+  aside .toc a.on{color:var(--accent-dk);font-weight:700;border-left-color:var(--gold);background:#f8f3ea;border-radius:0 8px 8px 0;}
+  .reading{max-width:1040px;padding:30px 0 70px;min-width:0;}
+  .kicker{font-family:var(--ui);font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  h1{font-family:var(--disp);font-weight:600;font-size:clamp(32px,5.2vw,46px);line-height:1.08;letter-spacing:-.5px;color:var(--accent-dk);margin:10px 0 6px;max-width:718px;}
+  .lede{font-size:20px;line-height:1.6;color:var(--soft);max-width:718px;margin:14px 0 0;}
+  h2{font-family:var(--disp);font-weight:600;font-size:27px;letter-spacing:-.3px;color:var(--accent-dk);margin:52px 0 4px;scroll-margin-top:70px;max-width:718px;}
+  h2 .num{font-family:var(--ui);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase;}
+  h3{font-family:var(--disp);font-weight:600;font-size:20px;color:var(--accent-dk);margin:26px 0 2px;max-width:718px;}
+  p{margin:14px 0;max-width:718px;} p b,li b{color:var(--accent-dk);font-weight:600;}
+  em{font-style:italic;}
+  .reading ul,.reading ol{max-width:718px;padding-left:24px;} .reading li{margin:7px 0;}
+  .objectives{max-width:718px;background:#f8f3ea;border:1px solid #eadfca;border-radius:14px;padding:18px 22px;margin:24px 0;font-family:var(--ui);}
+  .objectives h4{margin:0 0 8px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .objectives ul{margin:0;padding-left:20px;} .objectives li{font-size:14.5px;line-height:1.5;color:var(--soft);margin:6px 0;font-family:var(--serif);}
+  .kp{max-width:718px;background:#f8f3ea;border:1px solid #ecdcc2;border-left:5px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 20px;margin:22px 0;font-family:var(--ui);}
+  .kp .t{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--accent-dk);font-weight:700;margin-bottom:6px;}
+  .kp ul{margin:0;padding-left:18px;} .kp li{font-size:14.5px;line-height:1.55;color:var(--ink);margin:5px 0;font-family:var(--serif);}
+  .pearl{max-width:718px;background:#fbf3e2;border:1px solid #ecd9ac;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:13px 20px;margin:22px 0;font-family:var(--serif);font-size:15px;line-height:1.6;color:#6a5320;}
+  .pearl b{color:#5a4212;}
+  .summary{max-width:718px;background:var(--accent-dk);color:#f7f2e8;border-radius:16px;padding:24px 26px;margin:50px 0 30px;font-family:var(--serif);}
+  .summary h2{color:#fff;margin:0 0 6px;font-size:24px;}
+  .summary ul{margin:10px 0 0;padding-left:20px;} .summary li{margin:8px 0;font-size:15.5px;line-height:1.55;color:#ece0cb;}
+  .summary li b{color:#fff;}
+  .quiz{max-width:718px;margin:36px 0;}
+  .quiz h2{margin-top:0;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q .qq{font-weight:600;color:var(--accent-dk);font-family:var(--serif);}
+  .q button{margin-top:10px;font-family:var(--ui);font-size:13px;font-weight:700;color:var(--accent);background:#f8f3ea;border:1px solid #ecdcc2;border-radius:20px;padding:7px 15px;cursor:pointer;}
+  .q button:hover{background:#f2e7d4;}
+  .q .ans{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:15.5px;color:var(--soft);}
+  .q .ans .a{font-weight:700;color:var(--accent-dk);}
+  .q.show .ans{display:block;} .q.show button{display:none;}
+  .chapnav{max-width:718px;display:flex;justify-content:space-between;gap:12px;margin:44px 0 0;font-family:var(--ui);}
+  .chapnav a,.chapnav span{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.5px;background:var(--card);}
+  .chapnav a{color:var(--accent-dk);font-weight:600;} .chapnav a:hover{border-color:var(--accent);text-decoration:none;}
+  .chapnav .k{display:block;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+  .chapnav .next{text-align:right;} .chapnav .disabled{color:var(--faint);}
+  footer{font-family:var(--ui);text-align:center;color:var(--faint);font-size:12.5px;border-top:1px solid var(--line);padding:26px 20px 50px;margin-top:30px;}
+  footer b{color:var(--soft);}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;gap:0;}
+    aside{padding-top:16px;} aside .toc{position:static;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);}
+    aside .toc a{border-left:none;padding:6px 4px;} aside .toc a.on{background:none;}
+    .reading{padding-top:16px;}
+  }
+  .ctwrap{max-width:718px;overflow-x:auto;margin:22px 0;-webkit-overflow-scrolling:touch;}
+  table.ctable{border-collapse:collapse;width:100%;min-width:520px;font-family:var(--ui);font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.ctable th,table.ctable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;}
+  table.ctable thead th{background:#f8f3ea;color:var(--accent-dk);font-weight:700;font-size:12.5px;letter-spacing:.3px;}
+  table.ctable tbody tr:last-child td{border-bottom:none;}
+  table.ctable td:first-child,table.ctable th:first-child{font-weight:600;color:var(--soft);white-space:nowrap;}
+  table.ctable td b{color:var(--accent-dk);font-weight:600;}
+  dl.terms{max-width:718px;margin:18px 0;}
+  dl.terms dt{font-family:var(--ui);font-weight:700;color:var(--accent-dk);font-size:15px;margin-top:15px;}
+  dl.terms dd{margin:3px 0 0;color:var(--soft);}
+  .bref{max-width:1040px;margin:10px 0 24px;padding:0;}
+  .bref .fr{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);box-shadow:0 8px 26px rgba(70,50,20,.09);}
+  .bref img{display:block;width:100%;height:auto;background:#fff;}
+  .bref figcaption{font-family:var(--ui);font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .bref figcaption b{color:var(--accent-dk);}
+  .embed{max-width:1040px;margin:22px 0 26px;}
+  .embed .cap{font-family:var(--ui);font-size:12.5px;font-weight:600;color:var(--muted);margin:0 0 8px;display:flex;align-items:center;gap:8px;}
+  .embed .cap .tag{background:var(--accent);color:#fff;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .embed .cap a{font-family:var(--ui);margin-left:auto;font-size:12.5px;font-weight:600;}
+  .embed .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 26px rgba(70,50,20,.10);background:#fff;}
+  .embed iframe{display:block;width:100%;height:640px;border:0;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="row">
+      <a class="home" href="index.html">📖 Contents</a>
+      <span class="ct">Chapter 2 &middot; CELLULAR LEVEL OF ORGANIZATION</span>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+
+  <div class="layout">
+    <aside>
+      <nav class="toc">
+        <h4>In this chapter</h4>
+        <a href="#membrane">1 &middot; The Plasma Membrane as a Selective Barrier</a>
+        <a href="#transport">2 &middot; Transport Across the Membrane: Gradients, Carriers and Pumps</a>
+        <a href="#osmosis">3 &middot; Water, Osmosis and Cell Volume Control</a>
+        <a href="#genetic">4 &middot; From Gene to Protein: How the Cell Builds Its Machinery</a>
+        <a href="#organelles">5 &middot; Organelles, Energy and the Cell Cycle</a>
+        <a href="#summary">The chapter in one breath</a>
+        <a href="#glossary">Words worth knowing</a>
+        <a href="#quiz">Check yourself</a>
+      </nav>
+    </aside>
+
+    <main class="reading">
+<div class="kicker">Human Physiology &middot; Module 2</div>
+<h1>THE CELLULAR LEVEL OF ORGANIZATION</h1>
+<p class="lede">A cell is not just a bag of chemicals. It is a machine. It spends energy to hold itself away from equilibrium. Every process you study for the rest of this course is a controlled release of a gradient the cell built ahead of time. A nerve fires. A kidney takes sodium back. A muscle shortens. A gland lets go of its product. All four are the same trick. In this module you learn how the plasma membrane works as a barrier that lets only some things through. It has a resistance and a capacitance, like a small electrical part. You learn how water moves by osmosis while solutes move by diffusion, by carrier and by pump. You learn how the Na&#43;/K&#43; ATPase spends roughly a quarter of your resting calories. That pump holds potassium inside the cell near 140 mM and sodium inside near 12 mM. You then follow information from DNA through transcription and translation to protein. You watch the organelles finish and ship that protein. You see how checkpoints police the cell cycle. When those checkpoints fail, that is cancer. Mechanism comes first here. Structure shows up only where structure explains behavior.</p>
+<div class="objectives"><h4>By the end of this module you can</h4><ul>
+<li>Explain why the <b>phospholipid bilayer</b> lets gases and lipids through easily but almost blocks ions. Link that to <b>membrane resistance</b> and <b>capacitance</b>.</li>
+<li>Tell apart <b>simple diffusion</b>, <b>facilitated diffusion</b>, <b>primary active transport</b> and <b>secondary active transport</b>. Use three things: driving force, saturability and energy source.</li>
+<li>Use <b>Fick&rsquo;s law</b> to predict flux across a membrane. Show how surface area, thickness, gradient and lipid solubility change the rate.</li>
+<li>Work out <b>osmolarity</b> and <b>tonicity</b>. Say what each one means. Predict cell volume in hypotonic, isotonic and hypertonic solutions.</li>
+<li>Describe how the <b>Na&#43;/K&#43; ATPase</b> builds the ion gradients. Those gradients power the <b>resting membrane potential</b> and secondary transport.</li>
+<li>Trace information through the <b>central dogma</b>. It runs from DNA through <b>transcription</b>, <b>RNA processing</b> and <b>translation</b> to a working protein.</li>
+<li>Map the secretory pathway. It runs through <b>rough ER</b>, <b>Golgi apparatus</b> and <b>vesicle</b>. Say what <b>mitochondria</b>, <b>lysosomes</b> and <b>peroxisomes</b> add.</li>
+<li>Draw the <b>cell cycle</b> with its <b>checkpoints</b>. Explain how <b>apoptosis</b> and runaway growth are two ends of one control loop.</li>
+<li>Find the variable, sensor, integrator and effector in at least one cellular <b>negative feedback</b> loop. Cell volume control is a good one.</li>
+</ul></div>
+
+<h2 id="membrane"><span class="num">Section 1</span>The Plasma Membrane as a Selective Barrier</h2>
+<figure class="bref"><div class="fr"><img src="img/ch02_s1.jpg" alt="Diagram of the fluid mosaic plasma membrane showing a phospholipid bilayer with hydrophilic heads facing the aqueous compartments, hydrophobic tails inward, and embedded integral proteins, channels, cholesterol and glycoproteins" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The fluid mosaic membrane. It is a lipid sheet two molecules thick. The proteins studded through it are what make it selectively permeable. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Why a bilayer forms and what that costs a solute</h3>
+<p>A phospholipid has two ends. The phosphate head hydrogen-bonds happily with water. The two fatty-acid tails cannot. Drop enough of them into water and they line themselves up. They form a sheet two molecules thick. Tails point inward. Heads point outward. Nobody builds this sheet. It is simply the lowest-energy way those molecules can sit. That is also why the membrane seals itself again after a fine glass needle punctures it. What you end up with is a hydrophobic core about 3 nm thick. Hydrophobic means water-repelling. That oily core sits between two watery spaces.</p>
+<p>That oily core is the whole story of membrane permeability. To cross it, a molecule has to leave water. Then it has to dissolve in lipid. Then it has to enter water again on the far side. Small non-polar molecules do this easily. Oxygen, carbon dioxide, nitrogen, steroid hormones and the anesthetic gases all cross. Only their gradients limit how fast. Water is polar, but it is small. It trickles across slowly on its own. It moves fast where <b>aquaporins</b>, water channels, are present. Ions do not cross at all in any way that matters to the body. A sodium ion in water wears a shell of water molecules lined up around it. Stripping that shell off to enter lipid costs enormous energy. So the bare bilayer barely lets Na&#43; through. Its permeability runs on the order of 10<sup>&minus;14</sup> cm/s. That is lower than its permeability to oxygen by something like 10<sup>14</sup> to 10<sup>16</sup> fold. It also sits roughly 10<sup>11</sup> times below the bilayer&rsquo;s permeability to water.</p>
+<p>This is why a cell can control what crosses its membrane. The lipid does the shutting out. The proteins do the letting in. Roughly half the mass of a typical plasma membrane is protein. Which channels, which carriers, which pumps, which receptors &mdash; that list is what makes one cell act differently from another. A neuron and a hepatocyte, a liver cell, are built on the same lipid. Their proteins are what set them apart.</p>
+
+<h3>Fluidity, cholesterol and the membrane as an electrical device</h3>
+<p>The bilayer is a flat, two-dimensional fluid. Single phospholipids slide sideways within their own layer. They travel several micrometers per second. So a protein can drift to a new spot. Receptors can gather where a signal arrives. Flipping from one layer to the other is a different story. It costs a lot of energy and needs enzymes called flippases. That is why the cell keeps phosphatidylserine on the inner layer. When it shows up on the outer layer, it is a reliable &ldquo;eat me&rdquo; flag for apoptosis.</p>
+<p><b>Cholesterol</b> makes up 20&ndash;25&#37; of plasma-membrane lipid. It works as a fluidity buffer. At body temperature it wedges between phospholipids and slows their motion. That stiffens the membrane. In the cold it does the opposite. It keeps the lipids from packing tight, so the membrane does not turn to gel. Unsaturated fatty-acid tails have kinks in them. They fight gelling the same way. The target is a middle ground. The membrane has to be fluid enough for proteins to move. It has to stay ordered enough to work as a barrier.</p>
+<p>The membrane is also an electrical part. That matters a great deal in Modules 5 and 6. Put a thin insulator between two salt solutions that conduct. You have built a <b>capacitor</b>, a device that stores charge. Membrane capacitance is close to 1 microfarad per square centimeter. That holds in nearly every cell ever studied. It is that steady because bilayer thickness barely varies. The channels alongside it supply <b>conductance</b>, the ease with which charge flows. Together they set a membrane time constant, tau = R &times; C. It runs roughly 1&ndash;20 ms. That is the time the voltage needs to travel 63&#37; of the way to its new value after a step of injected current. That one number explains much of why action potentials rise and spread as fast as they do.</p>
+<div class="pearl"><b>Misconception check.</b> Many students picture the membrane as a stiff wall with holes drilled in it. Picture a warm oil slick instead, with machinery floating in it. Nothing is bolted down. Most proteins drift freely. And &ldquo;permeability&rdquo; is not a fixed feature of a cell. It changes second to second as channels open and close.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> A lipid bilayer is an oily sheet about 3 nm thick. It sits between two salt solutions. That one fact decides what crosses and how fast. It also makes the membrane a capacitor. A thin insulator between two conductors stores charge. <a href="../lab/ch02/MembraneBarrierLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch02/MembraneBarrierLab.html" loading="lazy" title="The Bilayer Barrier &mdash; permeability, fluidity and &tau; = R &times; C interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The lipid bilayer keeps ions out and lets fat-soluble molecules through. So the proteins embedded in it, not the lipid, decide what any one cell can move and how fast.</p></div>
+
+<h2 id="transport"><span class="num">Section 2</span>Transport Across the Membrane: Gradients, Carriers and Pumps</h2>
+<figure class="bref"><div class="fr"><img src="img/ch02_s2.jpg" alt="Comparison diagram of membrane transport mechanisms showing simple diffusion through the bilayer, channel-mediated and carrier-mediated facilitated diffusion, primary active transport by the sodium-potassium pump, and secondary active symport and antiport" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The transport menu. Passive goes down a gradient. Primary active climbs one using ATP. Secondary active climbs one using a gradient someone else paid for. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Passive movement and Fick&rsquo;s law</h3>
+<p>Diffusion is not a force. It is what random, heat-driven motion adds up to. Put more particles on one side than the other. More of them wander left to right than right to left. Net movement keeps going until the two sides even out. At equilibrium the molecules still move. Only the <i>net</i> flux is zero. Diffusion is fast across the width of a cell. A small solute crosses 10 micrometers in about 50 milliseconds. But the time needed rises with the square of the distance. Crossing 1 cm by diffusion alone would take hours. That one scaling rule is why you have a circulation, an airway tree and villi.</p>
+<p><b>Fick&rsquo;s law</b> gives the rate of diffusion across a membrane. You should be able to write it and read it: J = (D &times; A &times; &Delta;C) / T. J is flux, the amount that moves. D is the diffusion coefficient of the solute in the membrane. A is the surface area available. &Delta;C is the concentration difference. T is the thickness of the barrier. Every clinical use in this course is one term in that equation. Emphysema destroys alveolar walls, so A falls. Pulmonary edema thickens the barrier, so T rises. Going up to altitude lowers alveolar oxygen pressure, so &Delta;C falls. Anemia is the exception worth learning. It lowers oxygen <i>content</i> without lowering the pressure gradient. So it is not a Fick term at all. Microvilli on an enterocyte, a gut lining cell, multiply A by roughly 20-fold. That is how the whole small intestine reaches about 200 square meters of absorbing surface.</p>
+<p><b>Facilitated diffusion</b> is still passive. It still runs down the gradient and still uses no ATP. The difference is that the solute rides on a protein. Channels are water-filled pores with a high throughput, up to 10<sup>8</sup> ions per second. They can be gated by voltage, by a ligand, or by mechanical stretch. Carriers work another way. A carrier binds the solute, changes shape, and lets it go on the other side. Carriers move perhaps 10<sup>2</sup>&ndash;10<sup>4</sup> molecules per second. A carrier has only so many binding sites. So carrier transport shows <b>saturation</b> (a transport maximum, or T<sub>m</sub>), <b>specificity</b> and <b>competition</b>. Simple diffusion shows none of those. Its rate simply climbs in a straight line with the gradient. That contrast is the cleanest way to tell the two apart. It also explains glucosuria, glucose in the urine. SGLT carriers reabsorb filtered glucose until plasma glucose passes roughly 180&ndash;200 mg/dL. Past that point T<sub>m</sub> is exceeded and glucose spills into the urine.</p>
+
+<h3>Primary and secondary active transport</h3>
+<p><b>Primary active transport</b> moves a solute against its electrochemical gradient. The transporter itself splits ATP to pay for the trip. The classic example is the <b>Na&#43;/K&#43; ATPase</b>, and every animal cell has one. It sends 3 Na&#43; out and brings 2 K&#43; in per ATP. Those two numbers do not match, so the pump moves net charge. That makes it electrogenic and adds a few millivolts of negativity on its own. Its far larger job is holding the gradients themselves. These values are worth memorizing. Sodium inside the cell runs about 10&ndash;15 mM against 140 mM outside. Potassium inside runs about 140&ndash;150 mM against 3.5&ndash;5.0 mM outside. Holding that costs on the order of 20&ndash;30&#37; of basal metabolic rate. It costs a good deal more in tissues such as the kidney and brain. Cardiac glycosides such as digoxin block this pump. That is clean proof the pump is the source of the gradient, not just a passenger. Other primary pumps exist. One is the sarcoplasmic/endoplasmic reticulum Ca<sup>2&#43;</sup> ATPase (SERCA). Another is the plasma-membrane Ca<sup>2&#43;</sup> ATPase. Another is the H&#43;/K&#43; ATPase of the gastric parietal cell, the pump that proton-pump inhibitors block.</p>
+<p><b>Secondary active transport</b> is the elegant trick. The cell has already spent ATP to build a steep sodium gradient pointing inward. A cotransporter now lets sodium fall down that gradient. It uses the released energy to drag a second solute <i>uphill</i>. When both move the same direction, the carrier is a <b>symporter</b>. SGLT1 in the intestine hauls glucose in along with sodium. The sodium-linked amino-acid carriers do the same for protein digestion products. When the two move opposite directions, the carrier is an <b>antiporter</b>. The Na&#43;/H&#43; exchanger pushes acid out. The Na&#43;/Ca<sup>2&#43;</sup> exchanger clears calcium from cardiac myocytes, the muscle cells of the heart. No ATP touches these carriers directly. Yet they weaken and then fail if you poison the Na&#43;/K&#43; ATPase. The gradient they live off runs down. So ask two questions about any transporter. What is the driving force? Who paid for it?</p>
+<p>Some particles are too large for any carrier. For those the membrane moves in bulk. <b>Endocytosis</b> folds inward and pinches off a vesicle, a small membrane bubble. Phagocytosis takes in particles and bacteria. Pinocytosis takes in extracellular fluid, the fluid around cells. Receptor-mediated endocytosis takes in one named cargo. LDL bound to its receptor in a clathrin-coated pit is the classic case. Familial hypercholesterolemia is a fault in that receptor. Plasma LDL runs high because the uptake step fails. The body is not making too much. <b>Exocytosis</b> runs the process backwards. It is how neurotransmitters, hormones and digestive enzymes leave the cell. A rise in cytosolic Ca<sup>2&#43;</sup> usually sets it off.</p>
+
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Mechanism</th><th>Driving force</th><th>Uses ATP?</th><th>Saturable / specific?</th><th>Example</th></tr></thead>
+<tbody>
+<tr><td>Simple diffusion</td><td>Concentration gradient</td><td>No</td><td>No</td><td>O<sub>2</sub>, CO<sub>2</sub>, steroid hormones</td></tr>
+<tr><td>Channel-mediated</td><td>Electrochemical gradient</td><td>No</td><td>Picky, but does not saturate</td><td>Voltage-gated Na&#43;, aquaporin water</td></tr>
+<tr><td>Carrier-mediated facilitated</td><td>Concentration gradient</td><td>No</td><td>Yes &mdash; it has a T<sub>m</sub></td><td>GLUT4 glucose uptake into muscle</td></tr>
+<tr><td>Primary active</td><td>ATP split at the pump</td><td>Yes, directly</td><td>Yes</td><td>Na&#43;/K&#43; ATPase, SERCA, H&#43;/K&#43; ATPase</td></tr>
+<tr><td>Secondary active (symport)</td><td>Na&#43; gradient, same direction</td><td>Indirectly</td><td>Yes</td><td>SGLT1 glucose absorption</td></tr>
+<tr><td>Secondary active (antiport)</td><td>Na&#43; gradient, opposite direction</td><td>Indirectly</td><td>Yes</td><td>Na&#43;/H&#43; exchanger, Na&#43;/Ca<sup>2&#43;</sup> exchanger</td></tr>
+<tr><td>Vesicular</td><td>Cell skeleton work, Ca<sup>2&#43;</sup> trigger</td><td>Yes</td><td>Yes &mdash; it picks its receptor</td><td>LDL uptake, neurotransmitter release</td></tr>
+</tbody></table></div>
+
+<div class="pearl"><b>Clinically.</b> Oral rehydration solution is secondary active transport put to work. SGLT1 will not carry glucose without sodium. It will not carry sodium well without glucose. Water then follows the absorbed solute by osmosis. Sugar-and-salt water rehydrates a cholera patient. Plain water does far less. The coupled carrier keeps working even after the toxin has wrecked secretion. That is why the therapy works.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> Every transport process is either falling down a gradient or spending energy to climb one. Here you change one Fick term at a time and watch the flux answer. You can also push a carrier past its transport maximum and see what happens. <a href="../lab/ch02/TransportBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch02/TransportBench.html" loading="lazy" title="The Transport Bench &mdash; Fick, T&#8344; and the pump that pays for everything interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Every transport process either falls down a gradient or spends energy to climb one. Secondary active transport climbs on energy the Na&#43;/K&#43; ATPase already paid for.</p></div>
+
+<h2 id="osmosis"><span class="num">Section 3</span>Water, Osmosis and Cell Volume Control</h2>
+<figure class="bref"><div class="fr"><img src="img/ch02_s3.jpg" alt="Three beakers showing red blood cells in hypotonic, isotonic and hypertonic solutions, with cells swelling and lysing, remaining normal biconcave, and shrinking into crenated forms respectively" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Red cells report tonicity directly. They swell and lyse in hypotonic fluid. They keep a normal shape in isotonic fluid. They crenate, or shrivel, in hypertonic fluid. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Osmolarity, osmotic pressure and why water always moves passively</h3>
+<p><b>Osmosis</b> is the diffusion of water across a membrane that lets only some things through. Water moves from where it is more concentrated to where it is less concentrated. More concentrated water means dilute solute. Less concentrated water means packed solute. There is no water pump anywhere in the human body. Water always moves passively. It follows an osmotic gradient or a hydrostatic pressure gradient. When the kidney &ldquo;reabsorbs water&rdquo;, it is really reabsorbing solute. The water just follows.</p>
+<p><b>Osmolarity</b> counts dissolved particles per liter of solution. The unit is osmoles per liter. It does not care what the particles are. One mole of glucose gives 1 osmole. One mole of NaCl splits apart and gives close to 2 osmoles. One mole of CaCl<sub>2</sub> gives close to 3. Normal plasma osmolarity is held tight at about 275&ndash;295 mOsm/L. A handy bedside estimate is this: calculated osmolarity = 2 &times; [Na&#43;] &#43; glucose/18 &#43; BUN/2.8 in conventional US units. Sometimes the measured value sits well above the calculated one. That difference is an <b>osmolar gap</b>. It means particles are there that nobody measured. Methanol and ethylene glycol are the classic ones.</p>
+<p><b>Osmotic pressure</b> is the pressure you would have to apply to stop water moving by osmosis. It is large. Van&rsquo;t Hoff&rsquo;s relation, &pi; = n &times; C &times; R &times; T, gives roughly 19 mmHg per mOsm/L. So plasma at 290 mOsm/L pulls very hard against pure water. The number that matters in the body is usually not that total, though. It is the small share that comes from plasma proteins that cannot cross a capillary wall. That share is <b>colloid osmotic (oncotic) pressure</b>, about 25&ndash;28 mmHg, mostly albumin. Module 9 uses it directly in the Starling equation. For now, note one thing. A solute pulls water across a membrane only if the membrane <i>cannot</i> let it through.</p>
+
+<h3>Tonicity is not osmolarity, and cells report the difference</h3>
+<p>That last sentence is the whole difference between osmolarity and <b>tonicity</b>. Osmolarity counts every particle. Tonicity counts only the <b>effective</b> osmoles. Those are the ones the membrane keeps out. They are the ones that really pull water. Urea crosses cell membranes freely. It evens out across them and pulls no lasting water. So a 300 mOsm/L urea solution is isosmotic with plasma. But it acts <i>hypotonic</i>. Red cells placed in it swell and lyse, which means they burst. Sodium and mannitol are shut out of cells. They are effective osmoles. They behave exactly as their osmolarity predicts.</p>
+<p>Place a red cell in a <b>hypotonic</b> solution and water enters. The cell swells. Past about a 1.4-fold rise in volume it bursts. In a <b>hypertonic</b> solution water leaves and the cell shrivels, or crenates. In an <b>isotonic</b> solution the volume holds steady. Isotonic here means 0.9&#37; NaCl at about 308 mOsm/L, or 5&#37; dextrose in water at about 278 mOsm/L at the moment you infuse it. D5W is the trap worth learning now. It is isotonic in the bag. But the body burns the dextrose within minutes. What is left is free water, and it spreads through every body compartment. Infuse enough of it fast enough and you can cause a real hypotonic injury with a fluid labeled isotonic.</p>
+<p>Cells do not sit still while their volume changes. They defend it. Here is this module&rsquo;s clearest <b>negative feedback</b> loop. The <i>variable</i> is cell volume. The <i>sensor</i> is a set of stretch-activated channels and volume-sensitive membrane proteins. They notice swelling. The <i>integrator</i> is a network of volume-sensitive kinases in the cytosol. The WNK/SPAK family is part of it. The <i>effectors</i> are potassium and chloride channels plus the KCC cotransporter. The <i>response</i> to swelling is a regulatory volume decrease. The cell pushes out K&#43;, Cl&#45; and organic osmolytes such as taurine and myo-inositol. Osmolarity inside falls. Water follows it out. Volume returns toward set point. Shrinking triggers the mirror image. That is a regulatory volume increase, run by the NKCC1 cotransporter and Na&#43;/H&#43; exchange. Look at the shape of it. The fix opposes the change. That is the definition of negative feedback. You will meet the same pattern in every module left.</p>
+<div class="pearl"><b>Clinically.</b> Brain cells run this loop slowly, over hours to days. That is why chronic hyponatremia must be corrected slowly. Neurons living in low-sodium plasma have already pushed osmolytes out to survive. Raise serum sodium faster than roughly 8&ndash;10 mEq/L in 24 hours and those neurons shrink violently. The result is osmotic demyelination. The speed of the feedback loop sets the ceiling on how fast you may correct.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> There is no water pump anywhere in the human body. Water only follows effective osmoles. Those are the particles a membrane cannot let through. Mix a solution below. Read its osmolarity and its tonicity. <a href="../lab/ch02/TonicityCellVolumeLab.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch02/TonicityCellVolumeLab.html" loading="lazy" title="Tonicity & Cell Volume &mdash; mix a solution, watch the cell answer interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Water never moves on its own. It follows effective osmoles. So tonicity, not total osmolarity, predicts what a cell will do.</p></div>
+
+<h2 id="genetic"><span class="num">Section 4</span>From Gene to Protein: How the Cell Builds Its Machinery</h2>
+<figure class="bref"><div class="fr"><img src="img/ch02_s4.jpg" alt="Schematic of the central dogma showing DNA transcribed into pre-messenger RNA in the nucleus, splicing of introns to make mature mRNA, export through a nuclear pore, and ribosomal translation into a polypeptide chain" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> Transcription happens in the nucleus. Then come processing, export and translation on the ribosome. Information flows from a stored sequence to a working molecule. <span class="cred">Laboratoires Servier, CC BY-SA 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Storage, transcription and the point of processing</h3>
+<p>Roughly two meters of DNA fit inside a nucleus about 6 micrometers across. It fits because DNA winds around histone octamers into nucleosomes. Those coil further into chromatin. That packing is not only storage. It is control. Tightly packed <b>heterochromatin</b> is silent. Nothing is copied from it. Loosely packed <b>euchromatin</b> is open for business. Adding acetyl groups to histone tails loosens the wrapping. That invites transcription. Adding methyl groups to promoter DNA usually silences it. Two cells with the same genes can become a neuron and a hepatocyte. Different regions are open in each one. They do not carry different genes.</p>
+<p><b>Transcription</b> copies one gene into RNA. RNA polymerase II binds a promoter and unwinds a short stretch. It reads the template strand 3&prime; to 5&prime; while building RNA 5&prime; to 3&prime;. It puts uracil where thymine was, and ribose where deoxyribose was. The product is pre-mRNA, and the cell then processes it. A 5&prime; cap goes on. A poly-A tail of 100&ndash;250 adenines goes on. The spliceosome cuts out the <b>introns</b> and joins the <b>exons</b>. Alternative splicing lets one gene yield several proteins. Roughly 20,000 human genes support well over 100,000 different proteins. That is why counting genes is a poor measure of complexity.</p>
+<p>Only mature mRNA leaves through a nuclear pore. Every part of this design serves control. The nucleus keeps transcription and translation apart in time and space. So the cell can edit the message, block it, or tune it before any protein is built. Prokaryotes have no nucleus and cannot do this. Many antibiotics work by exploiting exactly those differences.</p>
+
+<h3>Translation, the genetic code and mutation</h3>
+<p>In the cytosol the small ribosomal subunit binds the mRNA. It scans along to the start codon, AUG. The <b>genetic code</b> reads in triplets that do not overlap. There are 64 codons for 20 amino acids plus a stop. So the code is <b>degenerate</b>. Most amino acids have more than one codon, and those codons usually differ in the third base. Transfer RNAs do the delivery. Each one carries a specific amino acid and a matching anticodon. Peptidyl transferase joins the amino acids with peptide bonds. Elongation runs at roughly 2&ndash;6 amino acids per second in human cells. A 300-residue protein takes roughly one to two minutes. A stop codon (UAA, UAG, UGA) brings in release factors and the chain lets go. Several ribosomes read one mRNA at the same time as a polyribosome. That multiplies the output.</p>
+<p>Degeneracy explains why not every DNA change matters. A <b>silent</b> point mutation changes the third base. It still codes for the same amino acid. A <b>missense</b> mutation swaps one amino acid for another. A single GAG&rarr;GTG in the beta-globin gene puts valine where glutamate belongs. That produces sickle cell disease. One base changes how well deoxygenated hemoglobin dissolves. That one change drives the whole clinical picture. A <b>nonsense</b> mutation makes an early stop. It cuts the protein short. An <b>insertion or deletion</b> that is not a multiple of three shifts the reading frame. Everything after it comes out garbled. That is usually catastrophic. Sequence sets the folding. Folding sets the shape. Shape sets the function. That chain is why a physiologist cares about molecular genetics at all.</p>
+<p>Folding itself gets help. Chaperone proteins keep water-repelling regions from clumping. They do that while the chain is still coming off the ribosome. Misfolded proteins get tagged with ubiquitin. The proteasome then destroys them. When that quality control fails on a large scale, you get disease. Look at cystic fibrosis. The common &Delta;F508 mutation makes a CFTR chloride channel that would work if it reached the membrane. It misfolds and is destroyed before it gets there. The defect is trafficking, not catalysis. That is exactly why corrector drugs that rescue folding help.</p>
+<div class="pearl"><b>Misconception check.</b> DNA does not leave the nucleus. It is not &ldquo;converted&rdquo; into protein either. The information is copied into a disposable RNA middleman. That copy is what gets translated. The master file stays home. The working copy goes out and is broken down within minutes to days. This is also why controlling how long an mRNA lasts is a real way to control protein levels.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> This is a real fragment of the human &beta;-globin gene. It holds eleven codons, an intron, then twelve more codons. Click any base and change it. Transcription, splicing and translation all run again right away. <a href="../lab/ch02/CentralDogmaBench.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch02/CentralDogmaBench.html" loading="lazy" title="Central Dogma Bench &mdash; edit a gene, read the protein interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>The nucleotide sequence sets the amino acid sequence. That sets the fold. The fold sets the function. So a single base change can rewrite a whole physiology.</p></div>
+
+<h2 id="organelles"><span class="num">Section 5</span>Organelles, Energy and the Cell Cycle</h2>
+<figure class="bref"><div class="fr"><img src="img/ch02_s5.jpg" alt="Cutaway illustration of a generalized animal cell showing nucleus and nucleolus, rough and smooth endoplasmic reticulum, Golgi apparatus, mitochondria, lysosomes, peroxisomes, centrioles and cytoskeletal elements" loading="lazy" onerror="this.closest('figure').style.display='none'"></div><figcaption><b>Reference.</b> The organelles of a typical animal cell. Each one is a separate room. Each lets one chemistry run without contaminating another. <span class="cred">BruceBlaus, CC BY 3.0 (via Wikimedia Commons)</span></figcaption></figure>
+
+<h3>Compartmentation and the secretory pathway</h3>
+<p>A eukaryotic cell has organelles because chemistries that clash need separate rooms. Take the lysosomal hydrolases, the enzymes that digest waste. They work best near pH 4.8. The cytosol at pH 7.2 would never allow that. The lysosomal membrane and its V-type proton pump build that acid interior. Oxidative phosphorylation needs a proton gradient. A gradient needs a membrane tight enough to hold it. That is just what the inner mitochondrial membrane gives. Compartments are not about being tidy. They are a requirement of the job.</p>
+<p>Follow a protein that will be secreted. Translation starts on a free ribosome. Then a signal sequence at the N-terminus steers the whole ribosome to the <b>rough endoplasmic reticulum</b>. The chain is fed into the ER lumen as it is built. There it folds. It gains disulfide bonds and its first sugars. Transport vesicles carry it to the <b>Golgi apparatus</b>. The Golgi is a sorting and finishing plant. Sugars are trimmed and refined. Proteins are sorted by their destination tag. Vesicles bud from the trans face. Each one is labeled for the plasma membrane, for secretion, or for a lysosome. <b>Smooth ER</b> has no ribosomes and does other work. It builds lipids and steroids, so it is plentiful in the adrenal cortex and gonads. It detoxifies drugs using cytochrome P450, so it is plentiful in hepatocytes. It also stores calcium. In muscle a specialized smooth ER becomes the sarcoplasmic reticulum. Its Ca<sup>2&#43;</sup> release triggers contraction. You meet that mechanism in Module 5.</p>
+<p><b>Mitochondria</b> supply the ATP that pays for all of it. Glycolysis in the cytosol yields a net 2 ATP per glucose. The citric acid cycle in the matrix raises that. So does oxidative phosphorylation along the inner membrane. Together they bring the total to roughly 30&ndash;32 ATP. The mechanism is chemiosmotic. Electrons pass down the respiratory chain. That pumps protons into the intermembrane space. The protons build an electrochemical gradient. ATP synthase then lets them fall back through. It uses that fall to add phosphate to ADP. It is the same idea as secondary active transport. A gradient is built with energy, then spent to do work. Cells with high energy demand carry more mitochondria. A cardiac myocyte gives about 30&ndash;40&#37; of its volume to them. A skin cell gives far less. Mitochondria also carry their own circular DNA. You inherit it from your mother. That is why mitochondrial disease follows a maternal pattern. It also hits high-energy tissues first: brain, muscle and heart.</p>
+
+<h3>The cell cycle, checkpoints and programd death</h3>
+<p>Most of a cell&rsquo;s life is <b>interphase</b>. G<sub>1</sub> is for growth and normal work. S phase copies the DNA and takes about 6&ndash;8 hours in a typical human cell. G<sub>2</sub> is the final preparation. <b>Mitosis</b> then separates the doubled chromosomes. Its stages are prophase, metaphase, anaphase and telophase. Cytokinesis divides the cytoplasm. Mitosis itself takes only about an hour of a 24-hour cycle. Some cells will never divide again. Neurons and cardiac myocytes step out of the cycle into <b>G<sub>0</sub></b>. That exit is why a myocardial infarction leaves scar rather than new muscle.</p>
+<p><b>Checkpoints</b> police the cycle, and cyclins and cyclin-dependent kinases drive them. The G<sub>1</sub> checkpoint asks whether the cell is large enough. It asks whether nutrients and growth signals are present, and whether the DNA is undamaged. The G<sub>2</sub> checkpoint confirms that replication finished correctly. The M checkpoint confirms that every chromosome is attached to the spindle before anaphase begins. <b>p53</b> is the central guard at G<sub>1</sub>. It halts the cycle for repair. If the damage is beyond repair, it orders the cell to die. p53 is mutated in over half of human cancers. That tells you the checkpoint is doing real work when it is intact.</p>
+<p><b>Apoptosis</b> is programmed cell death. It is an orderly caspase cascade, and it costs ATP. The cell shrinks. Its DNA is chopped up. Phosphatidylserine flips to the outer leaflet. The remains are packed into blebs that phagocytes clear without inflammation. This is essential, not a disease. It carves away the webbing between fetal fingers. It removes lymphocytes that attack the self. It kills virus-infected cells. Compare it with <b>necrosis</b>, the uncontrolled death that follows ischemia or trauma. There the cell swells, ruptures, spills its contents and stirs up inflammation. Cancer is best understood as this whole control system failing in both directions at once. Growth signals stay switched on. Checkpoints are disabled. Apoptosis is suppressed. The cell cycle is itself a feedback-regulated system. Cancer is what happens when the loop is cut.</p>
+<div class="pearl"><b>Clinically.</b> Most classical chemotherapy targets the cell cycle. That is why its side effects are so predictable. Fast-cycling normal tissues take the hit alongside the tumor. Bone marrow, gut lining and hair follicles divide fastest. So you see myelosuppression, which means low blood counts. You see mucositis, which means mouth sores. You see alopecia, which means hair loss. The toxicity is not incidental. It is the mechanism of action applied to the wrong cells.</div>
+<div class="pearl"><b>Misconception check.</b> Apoptosis is not a cell &ldquo;wearing out&rdquo; or &ldquo;giving up&rdquo;. It is an active, energy-using, tightly choreographed program that the cell runs on command. A cell without ATP cannot perform apoptosis at all. It dies by necrosis instead. Death, done properly, costs energy.</div>
+<div class="embed">
+        <div class="cap"><span class="tag">Interactive</span> The cell cycle is a feedback-regulated control system. Cancer is what happens when the loop is cut. Set the conditions. Run a full 24-hour cycle. Watch each checkpoint decide whether the cell may go on. <a href="../lab/ch02/CellCycleCheckpointSim.html" target="_blank" rel="noopener">Open full &uarr;</a></div>
+        <div class="frame"><iframe src="../lab/ch02/CellCycleCheckpointSim.html" loading="lazy" title="Checkpoints & Chemiosmosis &mdash; run a cell cycle, then pay for it interactive"></iframe></div>
+      </div>
+      <div class="kp"><div class="t">Key point</div><p>Organelles exist so reactions that clash can run at once. Checkpoints exist so a cell divides only when it should. Both are control systems. Both fail in ways you can recognize as disease.</p></div>
+
+<div class="summary"><h2 id="summary">The module in one breath</h2><p>A cell earns its living by holding gradients. The phospholipid bilayer supplies the barrier. Gases and lipid-soluble molecules pass through it freely. Ions essentially do not. The proteins in it decide what crosses. Transport comes in two kinds. Passive transport falls down an electrochemical gradient. It uses simple or facilitated diffusion. Fick&rsquo;s law predicts its rate from area, gradient and thickness. Active transport climbs a gradient instead. It can spend ATP directly. That is what the Na&#43;/K&#43; ATPase does to hold K&#43; inside near 140 mM and Na&#43; inside near 12 mM. Or it can spend that stored sodium gradient through symporters and antiporters. Water never pumps. It follows effective osmoles. So tonicity, not raw osmolarity, predicts whether a cell swells or shrinks. Cells defend their volume with a real negative feedback loop. Stretch sensors, volume-sensitive kinases and osmolyte channels run it. Meanwhile the nucleus stores the instructions. Transcription and splicing make a working copy the cell can edit. Ribosomes translate it. The ER, Golgi and vesicle pathway finishes the product and ships it. Mitochondria pay for all of it with a proton gradient of their own. Checkpoints decide when a cell may divide. Apoptosis decides when it must stop. Every mechanism in the next twelve modules is one of these jobs, scaled up to an organ.</p></div>
+
+<h2 id="glossary">Words worth knowing</h2>
+<div class="ctwrap"><table class="ctable">
+<thead><tr><th>Term</th><th>What it means</th></tr></thead>
+<tbody>
+<tr><td>Phospholipid bilayer</td><td>A sheet of lipids two molecules thick. Its oily, water-repelling core faces inward. It is the basic membrane barrier and it blocks ion movement.</td></tr>
+<tr><td>Fluid mosaic model</td><td>The idea that the membrane is a two-dimensional fluid. Proteins drift sideways in a sea of lipid.</td></tr>
+<tr><td>Membrane capacitance</td><td>The membrane&rsquo;s ability to store charge. It is close to 1 microfarad per square centimeter. With resistance it sets the time constant tau = R &times; C.</td></tr>
+<tr><td>Simple diffusion</td><td>Passive movement of a solute straight through the bilayer, down its gradient. No protein is involved, and it is neither saturable nor picky.</td></tr>
+<tr><td>Facilitated diffusion</td><td>Passive movement down a gradient on a protein. That protein is a channel or a carrier. Carrier forms are saturable and picky.</td></tr>
+<tr><td>Fick&rsquo;s law</td><td>J = (D &times; A &times; &Delta;C) / T. Flux rises with the diffusion coefficient, the surface area and the gradient. It falls as the barrier gets thicker.</td></tr>
+<tr><td>Primary active transport</td><td>Movement against an electrochemical gradient. The transporter itself splits ATP to pay for it, as the Na&#43;/K&#43; ATPase does.</td></tr>
+<tr><td>Secondary active transport</td><td>One solute is dragged uphill by another falling downhill. That other one is usually sodium. Symport moves both the same way. Antiport moves them opposite ways.</td></tr>
+<tr><td>Transport maximum (T<sub>m</sub>)</td><td>The saturation ceiling of a carrier system, reached when every binding site is full. It is the reason glucose spills into urine above roughly 180&ndash;200 mg/dL.</td></tr>
+<tr><td>Osmolarity</td><td>Total dissolved particles per liter of solution. Normal plasma runs about 275&ndash;295 mOsm/L.</td></tr>
+<tr><td>Tonicity</td><td>What a solution does to cell volume. Only effective osmoles, the ones that cannot cross, decide it. That is why isosmotic urea is still hypotonic.</td></tr>
+<tr><td>Oncotic pressure</td><td>The colloid osmotic pressure from plasma proteins that cannot cross. It runs about 25&ndash;28 mmHg and is mostly albumin.</td></tr>
+<tr><td>Negative feedback</td><td>A control setup. A sensed change drives a response that opposes it. The variable returns toward set point.</td></tr>
+<tr><td>Transcription</td><td>RNA polymerase builds RNA from a DNA template. It happens in the nucleus, and capping, polyadenylation and splicing follow.</td></tr>
+<tr><td>Translation</td><td>The ribosome builds a polypeptide from mRNA codons using charged tRNAs. It runs at roughly 2&ndash;6 amino acids per second.</td></tr>
+<tr><td>Degenerate code</td><td>A feature of the genetic code. Several codons can specify the same amino acid. That is what allows silent mutations.</td></tr>
+<tr><td>Secretory pathway</td><td>The route of an exported protein. Rough ER builds and folds it. Golgi finishes and sorts it. A vesicle delivers it or releases it by exocytosis.</td></tr>
+<tr><td>Chemiosmosis</td><td>The mitochondrial mechanism. The respiratory chain pumps protons and builds a gradient. ATP synthase then spends that gradient to phosphorylate ADP.</td></tr>
+<tr><td>Cell-cycle checkpoint</td><td>A regulatory gate (G<sub>1</sub>, G<sub>2</sub>, M) that halts progress until conditions are met. p53 guards the G<sub>1</sub> gate.</td></tr>
+<tr><td>Apoptosis</td><td>Active, ATP-requiring, caspase-driven programmed cell death. It leaves no inflammation. Necrosis does.</td></tr>
+</tbody></table></div>
+
+<div class="quiz"><h2 id="quiz">Check yourself</h2>
+<div class="qq"><div class="q">Oxygen crosses the plasma membrane freely. Sodium basically cannot, even though sodium is the smaller particle. Why?</div><div class="ans">Because size is not the limit here. Lipid solubility is. Oxygen is small and non-polar. It dissolves into the oily core and out the other side. Sodium carries a charge. It also wears a hydration shell of water molecules lined up around it. Stripping that shell off to enter lipid costs enormous energy. So the bare bilayer lets Na&#43; through at a far lower rate. It is lower by orders of magnitude. Sodium needs a protein pore or carrier instead. That is exactly what makes its movement controllable.</div></div>
+<div class="qq"><div class="q">A patient develops pulmonary edema. Use Fick&rsquo;s law. Which term changes, and what happens to oxygen flux?</div><div class="ans">Fluid in the interstitium and alveoli makes oxygen travel farther. That raises T, the thickness, in J = (D &times; A &times; &Delta;C) / T. T sits on the bottom of the fraction. So flux falls and oxygenation gets worse. Compare emphysema. It destroys alveolar walls and lowers A on the top of the fraction. A different term, the same direction of harm to gas exchange.</div></div>
+<div class="qq"><div class="q">How can you tell by experiment whether a substance crosses by simple diffusion or on a carrier?</div><div class="ans">Raise the concentration gradient step by step. Plot the flux. Simple diffusion gives a straight line that keeps rising. There is nothing to saturate. A carrier levels off at its transport maximum. That happens once every binding site is full. Carriers are also picky about shape. Similar molecules compete for the site and block it. Simple diffusion shows neither trait.</div></div>
+<div class="qq"><div class="q">Digoxin inhibits the Na&#43;/K&#43; ATPase. Explain why that also impairs the Na&#43;/Ca<sup>2&#43;</sup> exchanger.</div><div class="ans">The Na&#43;/Ca<sup>2&#43;</sup> exchanger is a secondary active transporter. It pushes calcium out using the energy of sodium falling down its inward gradient. Block the pump and sodium inside the cell rises. That flattens the gradient. The exchanger now has less driving force, so it clears less calcium. Ca<sup>2&#43;</sup> inside the cell rises and the heart beats harder. That is precisely digoxin&rsquo;s therapeutic effect. It arrives through two steps, and neither step touches calcium directly.</div></div>
+<div class="qq"><div class="q">Why does oral rehydration solution hold both glucose and salt, and not just one of them?</div><div class="ans">SGLT1 sits in the intestinal brush border. It is a sodium-glucose symporter. It will not carry either passenger well without the other. Give both and sodium is absorbed against long odds. Water then follows the absorbed solute by osmosis. Plain water offers no solute to pull that water along. Salt alone is absorbed far less well by this route.</div></div>
+<div class="qq"><div class="q">A 300 mOsm/L urea solution is isosmotic with plasma. Why do red cells placed in it lyse?</div><div class="ans">Because tonicity decides cell volume, not osmolarity. Urea crosses cell membranes readily. It evens out across the membrane and pulls no lasting water. It is an ineffective osmole. So the solution acts as if it held no effective solute at all. Water rushes into the cell down its own gradient. The cell swells past its lytic limit. Then it bursts.</div></div>
+<div class="qq"><div class="q">Name the variable, sensor, integrator, effector and response in the cell volume loop. Is it positive or negative feedback?</div><div class="ans">Variable: cell volume. Sensor: stretch-activated channels and volume-sensitive membrane proteins. Integrator: volume-sensitive kinases in the cytosol. The WNK/SPAK family is one of them. Effectors: K&#43; and Cl&#45; channels and the KCC cotransporter when the cell swells. NKCC1 and Na&#43;/H&#43; exchange when it shrinks. Response: osmolytes go out or come in. Water follows. Volume returns toward set point. It is negative feedback. The fix opposes the change.</div></div>
+<div class="qq"><div class="q">Why must chronic hyponatremia be corrected slowly?</div><div class="ans">Brain cells adapt to low plasma sodium over hours to days. They push out potassium and organic osmolytes. That keeps them from swelling dangerously. Raise serum sodium quickly after that and those cells are in trouble. What surrounds them is now relatively hypertonic. Faster than roughly 8&ndash;10 mEq/L per 24 hours is too fast. They lose water quickly and shrink. That produces osmotic demyelination. The rate limit comes straight from how slow the loop is.</div></div>
+<div class="qq"><div class="q">A point mutation changes the third base of a codon and the protein is unaffected. What property of the genetic code explains this?</div><div class="ans">Degeneracy. Sixty-four codons name only 20 amino acids plus stop. So most amino acids have several codons. Those codons usually differ at the third position. A change there often still names the same amino acid. That is a silent mutation. Now compare a change at the first or second position. That one usually swaps the amino acid. Sickle cell disease is the example. GAG becomes GTG, and valine replaces glutamate.</div></div>
+<div class="qq"><div class="q">In cystic fibrosis with the &Delta;F508 mutation, the CFTR channel could do its job. The cell still cannot move chloride. Why?</div><div class="ans">The defect is in folding and trafficking, not in channel function. The mutant protein misfolds in the endoplasmic reticulum. It fails quality control, is tagged with ubiquitin, and is destroyed in the proteasome. It never reaches the plasma membrane. A channel that never arrives cannot conduct. This is why corrector drugs that help the protein fold and traffic can restore some function.</div></div>
+<div class="qq"><div class="q">Why does a heart attack, a myocardial infarction, heal with scar rather than new cardiac muscle?</div><div class="ans">Cardiac myocytes are fully specialized. They have left the cell cycle for G<sub>0</sub>. They do not go back into mitosis in any real numbers. Fibroblasts can still divide. So they fill the defect with collagen instead. That new tissue does not squeeze and does not carry the signal. So the heart pumps less well from then on. The dead zone also sets the stage for arrhythmia.</div></div>
+<div class="qq"><div class="q">Why does classical chemotherapy nearly always cause hair loss, mouth sores and low blood counts?</div><div class="ans">Because it aims at the cell cycle, not at the tumor itself. Any tissue that cycles fast is at risk. The fastest-dividing normal tissues are bone marrow, gut lining and hair follicles. So you get myelosuppression, mucositis and alopecia. The side effects are the drug doing its job. It just does that job in healthy cells that divide like the tumor.</div></div>
+</div>
+      <div class="chapnav">
+        <a href="ch01.html"><span class="k">Previous</span>&larr; Intro to Physiology</a>
+        <a class="next" href="ch03.html"><span class="k">Next</span>Tissues &rarr;</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    A student-friendly introduction to human physiology · by Dr. Akash Garg · open-licensed figures (CC BY, CC BY-SA, CC0 and public domain) &middot; by <b>Dr. Akash Garg &middot; BIO 262 &middot; Joyce University</b><br>
+    Figures are reused under open licenses (CC BY-SA, CC BY, CC0, public domain); each figure&rsquo;s exact license and author are listed in the figure credits. &middot; <a href="_credits.html" style="color:inherit;">figure credits</a></footer>
+
+<style id="pdfprint">
+.pdf-btn{position:fixed;right:16px;bottom:16px;z-index:400;font-family:'Inter',system-ui,sans-serif;font-weight:700;font-size:13.5px;color:#fff;background:var(--accent);border:none;border-radius:24px;padding:11px 17px;box-shadow:0 6px 20px rgba(61,42,92,.30);cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+.pdf-btn:hover{background:var(--accent-dk);}
+@media print{
+ @page{margin:14mm;}
+ html,body{background:#fff !important;}
+ .topbar,.progress,aside,.chapnav,.pdf-btn{display:none !important;}
+ .embed iframe,.embed .frame{display:none !important;} .embed .cap{color:#555 !important;font-style:italic;} .embed .cap a{display:none !important;}
+ .layout{display:block !important;max-width:100% !important;padding:0 !important;grid-template-columns:1fr !important;gap:0 !important;}
+ .reading{max-width:100% !important;padding:0 !important;}
+ .bref,.bref .fr{break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;}
+ .bref img{max-height:150mm;width:auto !important;margin:0 auto;}
+ .ctwrap,table.ctable,.pearl,.kp,.q,.objectives,.summary,dl.terms,figure{break-inside:avoid;page-break-inside:avoid;}
+ h1,h2,h3{break-after:avoid;page-break-after:avoid;}
+ .quiz .ans{display:block !important;} .quiz .q button{display:none !important;}
+ a{color:inherit !important;text-decoration:none !important;}
+ *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+ footer{border-top:1px solid #ccc !important;}
+}
+</style>
+<button class="pdf-btn" onclick="window.print()" title="Save this chapter as a PDF">🖨 Save as PDF</button>
+
+<script>
+  var bar=document.getElementById('bar');
+  function prog(){var h=document.documentElement, max=h.scrollHeight-h.clientHeight; bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';}
+  addEventListener('scroll',prog,{passive:true}); prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var ids=links.map(function(a){return a.getAttribute('href').slice(1);});
+  var secs=ids.map(function(id){return document.getElementById(id);});
+  function spy(){var y=scrollY+90,cur=0;
+    for(var i=0;i<secs.length;i++){ if(secs[i] && secs[i].offsetTop<=y) cur=i; }
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur);});}
+  addEventListener('scroll',spy,{passive:true}); spy();
+</script>
+</body>
+</html>

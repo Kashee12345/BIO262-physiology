@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 6 — Brain, Action Potentials &amp; the Autonomic Nervous System | BIO 262 · Joyce University</title>
+<style>
+:root{
+ --u1:#1e40af;--u1b:#eff6ff;--u2:#047857;--u2b:#ecfdf5;--u3:#b91c1c;--u3b:#fef2f2;
+ --u4:#7c3aed;--u4b:#faf5ff;--u5:#c2410c;--u5b:#fff7ed;--u6:#be185d;--u6b:#fdf2f8;
+ --obj:#0f766e;--objb:#ecfdf5;--pearl:#b45309;--pearlb:#fffbeb;
+ --miss:#991b1b;--missb:#fef2f2;--prac:#6d28d9;--pracb:#f5f3ff;
+ --text:#111827;--muted:#475569;--line:#d1d5db;
+}
+*{box-sizing:border-box}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;font-size:10.8pt;line-height:1.45;
+ color:var(--text);margin:0;background:#f9fafb}
+.layout{display:grid;grid-template-columns:255px 1fr;max-width:1180px;margin:0 auto}
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;background:#fff;
+ border-right:1px solid var(--line);padding:16px 12px;font-size:9.5pt}
+nav.toc h3{font-size:10pt;margin:6px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+nav.toc a{display:block;padding:4px 7px;color:var(--text);text-decoration:none;border-radius:3px;margin-bottom:1px}
+nav.toc a:hover{background:#f3f4f6}
+nav.toc .u1{border-left:3px solid var(--u1)}nav.toc .u2{border-left:3px solid var(--u2)}
+nav.toc .u3{border-left:3px solid var(--u3)}nav.toc .u4{border-left:3px solid var(--u4)}
+nav.toc .u5{border-left:3px solid var(--u5)}nav.toc .u6{border-left:3px solid var(--u6)}
+main{padding:22px 30px;background:#fff}
+h1{font-size:20pt;margin:0 0 4px}
+h2{font-size:15pt;margin:22px 0 8px;padding:8px 12px;border-radius:4px;color:#fff}
+h3{font-size:12pt;margin:14px 0 5px;padding:3px 0 3px 10px;border-left:4px solid}
+h4{font-size:10.6pt;margin:10px 0 4px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.unit1 h2{background:var(--u1)}.unit1 h3{border-left-color:var(--u1);color:var(--u1)}
+.unit2 h2{background:var(--u2)}.unit2 h3{border-left-color:var(--u2);color:var(--u2)}
+.unit3 h2{background:var(--u3)}.unit3 h3{border-left-color:var(--u3);color:var(--u3)}
+.unit4 h2{background:var(--u4)}.unit4 h3{border-left-color:var(--u4);color:var(--u4)}
+.unit5 h2{background:var(--u5)}.unit5 h3{border-left-color:var(--u5);color:var(--u5)}
+.unit6 h2{background:var(--u6)}.unit6 h3{border-left-color:var(--u6);color:var(--u6)}
+p{margin:4px 0}ul,ol{margin:4px 0 8px 22px;padding:0}li{margin:2px 0}
+table{width:100%;border-collapse:collapse;font-size:9.8pt;margin:6px 0 10px}
+th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+th{background:#f3f4f6;font-weight:600}
+.box{border-left:4px solid;padding:7px 11px;margin:8px 0;border-radius:3px;font-size:10pt}
+.obj{border-color:var(--obj);background:var(--objb)}
+.obj::before{content:"LEARNING OUTCOMES";font-weight:700;color:var(--obj);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.pearl{border-color:var(--pearl);background:var(--pearlb)}
+.pearl::before{content:"HIGH-YIELD — KNOW THIS COLD";font-weight:700;color:var(--pearl);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.miss{border-color:var(--miss);background:var(--missb)}
+.miss::before{content:"\26A0 COMMON MISCONCEPTIONS";font-weight:700;color:var(--miss);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.prac{border-color:var(--prac);background:var(--pracb)}
+.prac::before{content:"PRACTICE QUESTIONS";font-weight:700;color:var(--prac);font-size:8.8pt;letter-spacing:.5px;display:block;margin-bottom:3px}
+.hero{padding:16px 20px;background:linear-gradient(135deg,#1e3a8a,#7c3aed,#be185d);color:#fff;border-radius:6px;margin-bottom:16px}
+.hero h1{color:#fff}.hero p{margin:4px 0;font-size:10pt;opacity:.95}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:9.5pt}
+.meta span{background:#f1f5f9;border:1px solid var(--line);padding:3px 10px;border-radius:20px}
+.btns{margin:10px 0}
+.btns button{background:#0f172a;color:#fff;border:0;padding:7px 14px;border-radius:4px;font-size:9.8pt;cursor:pointer;margin-right:6px}
+details.q{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin:6px 0;background:#fff}
+details.q summary{cursor:pointer;font-weight:600;font-size:10pt}
+details.q .opts{margin:6px 0 6px 24px;font-size:9.8pt}
+details.q .opts li.key{font-weight:700;color:#065f46}
+.ans{display:none;background:#ecfdf5;border-left:3px solid #059669;padding:6px 9px;margin-top:5px;font-size:9.8pt;border-radius:3px}
+.ans.show{display:block}
+.ref{display:block;margin-top:4px;color:var(--muted);font-size:9pt;font-style:italic}
+.small{font-size:9.3pt;color:var(--muted)}
+h4.topic{font-size:11.4pt;color:#0f172a;text-transform:none;letter-spacing:0;margin:14px 0 5px;font-weight:700}
+.read{font-size:10.9pt;line-height:1.62;color:#1f2937;max-width:74ch;margin:0 0 10px;padding-left:2px}
+.read b{color:#0f172a}
+.chip{display:inline-block;background:rgba(255,255,255,.22);padding:2px 8px;border-radius:3px;font-size:10pt}
+@media print{
+ body{background:#fff}
+ .layout{display:block;max-width:none}
+ nav.toc,.btns{display:none}
+ main{padding:.4in .4in}
+ h2{page-break-before:always;break-before:page}
+ section:first-of-type h2{page-break-before:auto;break-before:auto}
+ .hero,h2,.box,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ details,details[open]{display:block!important}
+ details>summary{display:block!important}
+ .ans{display:block!important}
+ a[href]:after{content:""!important}
+ h2,h3,h4{page-break-after:avoid}
+ table,.box,details.q{page-break-inside:avoid}
+}
+
+/* ---- mobile (phones read these guides) ---- */
+@media (max-width:880px){
+  /* minmax(0,1fr) not 1fr: a bare 1fr resolves to MIN-CONTENT, and the
+     nowrap reference tables then force the whole page wider than the phone. */
+  .layout{grid-template-columns:minmax(0,1fr) !important;}
+  main,.layout>*{min-width:0 !important;}
+  .hero,h1,h2,h3,p,li{overflow-wrap:anywhere;}
+  nav.toc{position:static !important;max-height:none !important;margin-bottom:14px;}
+  main{padding:0 4vw !important;max-width:100% !important;}
+  .hero{padding:14px !important;}
+  h1{font-size:17pt !important;}
+  h2{font-size:13.5pt !important;}
+  /* wide reference tables scroll instead of blowing out the page */
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap;}
+  .btns{position:sticky;top:0;background:#fff;z-index:5;padding:6px 0;}
+  .btns button{flex:1 1 auto;min-width:0;}
+}
+@media (max-width:520px){
+  body{font-size:11pt;}
+  .btns button{font-size:9pt;padding:7px 8px;}
+}
+@media print{
+  table{display:table !important;white-space:normal !important;overflow:visible !important;}
+  .btns{display:none !important;}
+}
+
+@media(min-width:881px){.layout{grid-template-columns:1fr}}
+main{max-width:900px;margin:0 auto}
+.backlink{display:inline-block;margin-bottom:10px;color:#475569;font-size:9.5pt}
+</style></head>
+<body><div class="layout"><main>
+<a class="backlink" href="../study-guide.html">&larr; All study guides</a>
+<div class="btns">
+  <button onclick="window.print()">Print / Save as PDF</button>
+  <button data-toggle data-on="1">Hide all answers</button>
+  <button data-expand data-on="0">Expand all sections</button>
+</div>
+<div class="hero"><h1>Module 6 — Brain, Action Potentials &amp; the Autonomic Nervous System</h1>
+<p><b>BIO 262 · Human Physiology</b> — Joyce University of Nursing and Health Sciences</p>
+<p>Prepared by Dr. Akash Garg</p></div>
+
+<div class="unit3">
+
+<h2>Module 6 &nbsp;•&nbsp; Brain, Action Potentials &amp; the Autonomic Nervous System &nbsp;<span class="chip">Exam 3</span></h2>
+<div class="box obj"><ol><li>Describe the significance of the meninges, white matter and gray matter.</li><li>Explain nerve physiology including action potentials.</li><li>Compare the sympathetic and parasympathetic nervous systems.</li><li>Describe the functions of the brain and brainstem.</li><li>Describe the physiology of olfaction and gustation.</li></ol></div>
+<h3>High-yield facts</h3>
+<div class="box pearl"><ul><li>Resting −70 mV → threshold −55 mV → <b>Na⁺ in</b> (depolarize) → <b>K⁺ out</b> (repolarize) → hyperpolarize −90 mV.</li><li>Sympathetic = thoracolumbar, fight-or-flight. Parasympathetic = craniosacral, rest-and-digest.</li><li><b>Olfaction is the only sense that bypasses the thalamus.</b></li><li>Spicy is <b>not</b> a taste — it is a pain/heat sensation.</li></ul></div>
+<h3>Topic walkthrough &mdash; read this first</h3>
+<h4 class="topic">The action potential, step by step</h4><div class="read">At rest the inside of a neuron sits at about <b>−70 mV</b>, held there by the sodium–potassium pump. A
+stimulus nudges it upward. Nothing happens until it reaches <b>threshold at about −55 mV</b> — and then
+everything happens at once, identically, every time. That is what "all-or-none" means.<br><br>
+At threshold, voltage-gated sodium channels fly open and <b>Na⁺ rushes in</b>, driving the inside to about
++30 mV: <b>depolarization</b>. Those channels then inactivate and potassium channels open, so <b>K⁺ moves
+out</b> and the inside falls negative again: <b>repolarization</b>. Potassium is slow to close, so it
+overshoots to about −90 mV: <b>hyperpolarization</b>. The pump then restores the resting state.<br><br>
+Sodium in, potassium out. If you remember nothing else from this module, remember that.</div>
+<h4 class="topic">Protecting and supplying the brain</h4><div class="read">Three membranes cover the brain — <b>dura</b> (tough, outer), <b>arachnoid</b> (web-like, middle), and
+<b>pia</b> (delicate, hugging the surface). <b>Cerebrospinal fluid</b> circulates in the subarachnoid space,
+cushioning the brain and making it effectively buoyant so it does not crush under its own weight.<br><br>
+<b>Gray matter</b> is cell bodies and does the processing. <b>White matter</b> is myelinated axons and does
+the transmitting — it looks white because myelin is fatty.</div>
+<h4 class="topic">Who does what in the brain</h4><div class="read"><b>Frontal</b> lobe: decisions, planning, personality, voluntary movement. <b>Parietal</b>: touch,
+pressure, pain, temperature. <b>Temporal</b>: hearing, language comprehension, memory. <b>Occipital</b>:
+vision. <b>Cerebellum</b>: coordination and balance — damage causes clumsiness, not paralysis.
+<b>Brainstem</b>: breathing, heart rate, blood pressure, which is why brainstem injury is so often fatal.
+<b>Thalamus</b>: the relay station nearly all sensory input passes through. <b>Hypothalamus</b>: hunger,
+thirst, temperature, and the bridge to the endocrine system.</div>
+<h4 class="topic">Two settings for the body</h4><div class="read">The <b>sympathetic</b> division is fight-or-flight: heart rate up, blood pressure up, airways open, pupils
+dilate, digestion suspended. The <b>parasympathetic</b> division is rest-and-digest and does the reverse.<br><br>
+Neither is good or bad. They are two settings, and most organs receive both. Losing parasympathetic tone
+does not make you calm — it leaves you tachycardic.</div>
+<h4 class="topic">Smell and taste</h4><div class="read">Both need the chemical to <b>dissolve</b> first. In olfaction, dissolved odorants bind receptors on the
+olfactory epithelium, bipolar neurons fire, and the signal reaches the olfactory bulb and then the cortex —
+<b>bypassing the thalamus entirely</b>, the only sense that does. That direct line to the limbic system is
+why a smell can drop you into a memory.<br><br>
+Taste has five types: sweet, sour, salty, bitter and umami. Spicy is not among them — capsaicin triggers
+pain and heat receptors, not taste buds.</div>
+<h4 class="topic">How a neuron decides to fire</h4><div class="read">Before any action potential exists, the neuron is adding up. Neurotransmitters open channels that produce <b>graded potentials</b> — small local voltage changes that fade with distance. An <b>EPSP</b> nudges the membrane toward threshold; an <b>IPSP</b> pushes it away. They combine by <b>temporal summation</b> when one synapse fires rapidly in succession, and by <b>spatial summation</b> when several synapses fire at once.<br><br>
+The running total arrives at the <b>axon hillock</b>, the trigger zone, where voltage-gated sodium channels sit densest. Reach <b>threshold</b> — about minus 55 millivolts — and an action potential fires at full size. Fall short and nothing happens at all. That is the <b>all-or-none</b> rule, which is why a stronger stimulus never makes a bigger impulse; it makes more per second, and frequency is how intensity is encoded.</div>
+<h4 class="topic">Refractory periods, and why signals go one way</h4><div class="read">Nothing physically stops an impulse spreading backwards along the axon except time. During the <b>absolute refractory period</b> the sodium channels behind the impulse are <b>inactivated</b> rather than simply closed, and no stimulus of any strength will reopen them until the membrane repolarizes. The membrane just travelled through is therefore deaf, so the signal can only move forward into resting membrane.<br><br>
+The <b>relative refractory period</b> follows, while the membrane is still repolarizing and often <b>hyperpolarized</b> past resting because potassium is still leaving. Some sodium channels have reset, so firing is possible but needs a stronger stimulus than usual. Keep the directions straight: <b>sodium in depolarizes, potassium out repolarizes</b>. The absolute period also sets a ceiling on how fast a neuron can fire, which is why frequency coding cannot rise without limit.</div>
+<h4 class="topic">Myelin, and what demyelination costs</h4><div class="read">Two things set conduction speed. The first is <b>axon diameter</b> — a wider axon offers less resistance to current, the way a wide pipe moves more water. The second, and far more powerful, is <b>myelin</b>: fatty insulation laid down by <b>oligodendrocytes</b> in the central nervous system and <b>Schwann cells</b> in the peripheral nervous system, which stops charge leaking out through the membrane.<br><br>
+Voltage-gated sodium channels cluster in the bare gaps between wraps, the <b>nodes of Ranvier</b>, so the impulse is regenerated only at the nodes and effectively jumps between them. That is <b>saltatory conduction</b>. Strip that myelin, as <b>multiple sclerosis</b> does in the central nervous system, and current bleeds away between nodes, so conduction slows or fails outright — which is why the symptoms are weakness, numbness and visual loss.</div>
+<h4 class="topic">Gray matter, white matter, and why the pattern flips</h4><div class="read"><b>Gray matter</b> is cell bodies, dendrites and synapses, so it is where processing happens. <b>White matter</b> is myelinated axons, white because of the myelin, so it is where information travels. In the <b>cerebrum and cerebellum</b> the gray sits outside as cortex with white beneath, but in the <b>spinal cord</b> it inverts — gray in a central butterfly, white tracts wrapped around it.<br><br>
+White matter runs three ways: <b>association fibers</b> within one hemisphere, <b>commissural fibers</b> crossing between the hemispheres, mostly through the <b>corpus callosum</b>, and <b>projection fibers</b> running between cortex and cord. Deep gray includes the <b>basal nuclei</b> and the <b>thalamus</b>, which relays every sensory pathway to the cortex except <b>olfaction</b>. Smell reaches cortex directly, which is why an odor can summon a memory before you can name it.</div>
+<h4 class="topic">The autonomic system at the receptor level</h4><div class="read">Both divisions use a two-neuron chain, and in both the preganglionic neuron releases <b>acetylcholine</b> onto <b>nicotinic</b> receptors in a ganglion — that much is identical. The difference comes afterwards. <b>Parasympathetic</b> fibers are <b>craniosacral</b>, with long preganglionic and short postganglionic neurons, ending in acetylcholine on <b>muscarinic</b> receptors. <b>Sympathetic</b> fibers are <b>thoracolumbar</b>, short then long, ending in <b>norepinephrine</b> on <b>alpha and beta adrenergic</b> receptors, with sweat glands the exception, taking acetylcholine on muscarinic receptors.<br><br>
+The <b>adrenal medulla</b> is a modified sympathetic ganglion whose cells have no axons, so instead of targeting one organ they pour <b>epinephrine</b> into the blood. Neither division is good or bad; both run constantly as <b>autonomic tone</b>, which is why blocking either is a drug strategy — beta blockers for a racing heart, atropine for a dangerously slow one.</div>
+<h3>Reference tables</h3>
+<h4>Action potential phases</h4><table><tr><th>Phase</th><th>Ion movement</th><th>Voltage</th></tr><tr><td>Resting</td><td>Na⁺/K⁺ pump maintains gradient</td><td>−70 mV</td></tr><tr><td>Threshold</td><td>Stimulus reaches trigger point</td><td>−55 mV</td></tr><tr><td>Depolarization</td><td>Na⁺ rushes IN</td><td>−55 → +30 mV</td></tr><tr><td>Repolarization</td><td>K⁺ moves OUT</td><td>+30 → −70 mV</td></tr><tr><td>Hyperpolarization</td><td>K⁺ continues out</td><td>→ −90 mV</td></tr><tr><td>Return to rest</td><td>Na⁺/K⁺ pump restores gradient</td><td>−70 mV</td></tr></table>
+<h4>Every brain region</h4><table><tr><th>Region</th><th>Primary function</th></tr><tr><td>Frontal lobe</td><td>Decision-making, planning, personality, voluntary motor</td></tr><tr><td>Parietal lobe</td><td>Touch, pressure, pain, temperature, spatial awareness</td></tr><tr><td>Temporal lobe</td><td>Hearing, language comprehension, memory</td></tr><tr><td>Occipital lobe</td><td>Vision</td></tr><tr><td>Cerebellum</td><td>Coordination, balance, posture</td></tr><tr><td>Brainstem</td><td>Breathing, heart rate, blood pressure</td></tr><tr><td>Thalamus</td><td>Sensory relay to the cortex</td></tr><tr><td>Hypothalamus</td><td>Hunger, thirst, temperature; links to endocrine system</td></tr><tr><td>Meninges</td><td>Dura, arachnoid, pia — protection</td></tr></table>
+<h4>Autonomic comparison</h4><table><tr><th>Target</th><th>Sympathetic</th><th>Parasympathetic</th></tr><tr><td>Heart rate</td><td>Increases</td><td>Decreases</td></tr><tr><td>Blood pressure</td><td>Increases</td><td>Decreases</td></tr><tr><td>Respiratory rate</td><td>Increases; bronchodilation</td><td>Decreases; bronchoconstriction</td></tr><tr><td>Digestion</td><td>Inhibited</td><td>Stimulated</td></tr><tr><td>Pupils</td><td>Dilate</td><td>Constrict</td></tr><tr><td>Sweat glands</td><td>Stimulated</td><td>—</td></tr><tr><td>Bladder</td><td>Retention</td><td>Emptying</td></tr></table>
+<h3>Common misconceptions</h3>
+<div class="box miss"><ul><li><b>"Depolarization is potassium moving in."</b> Depolarization is <b>sodium in</b>. Repolarization is potassium out.</li><li><b>"Sympathetic is bad, parasympathetic is good."</b> Both are essential and balanced.</li><li><b>"All senses relay through the thalamus."</b> Olfaction is the exception — it bypasses the thalamus entirely.</li></ul></div>
+<h3>Where this is covered in the lectures</h3>
+<p class="small">Lecture Outline, Module 6 — p.60 · Module 6 brain &amp; ANS deck, slide 1 · Module 6 brain &amp; ANS deck, slide 10 · Module 6 brain &amp; ANS deck, slide 12 · Module 6 brain &amp; ANS deck, slide 13 · Module 6 brain &amp; ANS deck, slide 14 · Module 6 brain &amp; ANS deck, slide 15 · Module 6 brain &amp; ANS deck, slide 2 · Module 6 brain &amp; ANS deck, slide 3 · Module 6 brain &amp; ANS deck, slide 5</p>
+<h3>Practice questions <span class="small">(53)</span></h3>
+<div class="box prac">Answers show by default. Click <b>Hide all answers</b> to self-test. Everything expands automatically when you print.</div>
+<details class="q"><summary><b>Q1.</b> List the meninges from OUTERMOST to innermost:</summary><ol class="opts" type="A"><li class="key">Dura, arachnoid, pia</li><li>Pia, arachnoid, dura</li><li>Arachnoid, dura, pia</li><li>Dura, pia, arachnoid</li><li>Pia, dura, arachnoid</li></ol><div class="ans show"><b>Answer: A.</b> Dura mater (tough outer), arachnoid mater (web-like middle), pia mater (delicate, hugs the brain surface).<span class="ref">Module 6 brain &amp; ANS deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q2.</b> Cerebrospinal fluid circulates within which space?</summary><ol class="opts" type="A"><li>Epidural space</li><li class="key">Subarachnoid space</li><li>Subdural space</li><li>Between dura and skull</li><li>Within the pia only</li></ol><div class="ans show"><b>Answer: B.</b> CSF fills the subarachnoid space, cushioning the brain within the cranium.<span class="ref">Module 6 brain &amp; ANS deck, slide 6</span></div></details>
+<details class="q"><summary><b>Q3.</b> A principal function of CSF is to:</summary><ol class="opts" type="A"><li>Deliver oxygen and glucose directly to neurons in place of the cerebral blood supply</li><li>Produce the myelin sheaths that insulate axons in the white matter tracts</li><li class="key">Cushion the brain and provide buoyancy so it does not compress under its own weight</li><li>Generate the action potentials that carry signals along cortical axons</li><li>Store calcium and magnesium that muscles draw on during contraction</li></ol><div class="ans show"><b>Answer: C.</b> Buoyancy reduces the brain's effective weight enormously, protecting deep structures.<span class="ref">Module 6 brain &amp; ANS deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q4.</b> White matter appears white because it consists mainly of:</summary><ol class="opts" type="A"><li>Neuron cell bodies</li><li>Glial nuclei</li><li>Blood vessels</li><li class="key">Myelinated axons</li><li>Cerebrospinal fluid</li></ol><div class="ans show"><b>Answer: D.</b> Lipid-rich myelin is white; its function is rapid transmission between regions.<span class="ref">Module 6 brain &amp; ANS deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q5.</b> Gray matter is composed chiefly of ____ and functions in ____.</summary><ol class="opts" type="A"><li>myelinated axons and fiber tracts; long-distance transmission</li><li>glial cells and their processes; structural support</li><li>blood vessels and capillaries; oxygen and nutrient delivery</li><li>cerebrospinal fluid; cushioning and buoyancy of the brain</li><li class="key">neuron cell bodies and dendrites; information processing</li></ol><div class="ans show"><b>Answer: E.</b> Cell bodies do the computing; axons do the transmitting.<span class="ref">Module 6 brain &amp; ANS deck, slide 7</span></div></details>
+<details class="q"><summary><b>Q6.</b> The resting membrane potential of a typical neuron is approximately:</summary><ol class="opts" type="A"><li class="key">-70 mV</li><li>0 mV</li><li>-40 mV</li><li>-55 mV</li><li>+30 mV</li></ol><div class="ans show"><b>Answer: A.</b> About -70 mV, maintained largely by the Na+/K+ pump and potassium leak channels.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q7.</b> Threshold potential is approximately:</summary><ol class="opts" type="A"><li>-90 mV</li><li class="key">-55 mV</li><li>-70 mV</li><li>0 mV</li><li>+30 mV</li></ol><div class="ans show"><b>Answer: B.</b> At roughly -55 mV, voltage-gated sodium channels open and the all-or-none action potential fires.<span class="ref">Module 6 brain &amp; ANS deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q8.</b> Depolarization of the axon membrane is caused by:</summary><ol class="opts" type="A"><li>K+ moving out</li><li>Cl- moving in</li><li class="key">Na+ moving in</li><li>Ca2+ moving out</li><li>Na+ moving out</li></ol><div class="ans show"><b>Answer: C.</b> Sodium rushes down its electrochemical gradient into the cell, making the interior more positive.<span class="ref">Module 6 brain &amp; ANS deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q9.</b> Repolarization occurs when:</summary><ol class="opts" type="A"><li>Na+ enters the cell</li><li>Cl- exits the cell</li><li>Ca2+ enters the cell</li><li class="key">K+ exits the cell</li><li>The Na+/K+ pump reverses</li></ol><div class="ans show"><b>Answer: D.</b> Potassium efflux restores the negative interior after the sodium spike.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q10.</b> Hyperpolarization occurs because:</summary><ol class="opts" type="A"><li>Voltage-gated sodium channels reopen and admit a second wave of sodium</li><li>Calcium floods into the axon through voltage-gated calcium channels</li><li>The sodium-potassium pump stops and the gradients collapse entirely</li><li>Chloride leaves the cell and carries negative charge outward</li><li class="key">Potassium continues to leave, driving the potential below resting</li></ol><div class="ans show"><b>Answer: E.</b> Slow-closing potassium channels overshoot, taking the membrane to about -90 mV.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q11.</b> The sodium-potassium pump restores resting potential by moving:</summary><ol class="opts" type="A"><li class="key">Na+ out and K+ in</li><li>Na+ in and K+ out</li><li>Both ions outward</li><li>Both ions inward</li><li>Only potassium inward</li></ol><div class="ans show"><b>Answer: A.</b> Three sodium out and two potassium in per ATP, re-establishing the ionic gradients.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q12.</b> An action potential is described as all-or-none, meaning:</summary><ol class="opts" type="A"><li>It varies in size in direct proportion to the strength of the stimulus</li><li class="key">Once threshold is reached the response is complete and of fixed amplitude</li><li>It can be partially generated when the stimulus is below threshold</li><li>It occurs only in myelinated axons that have nodes of Ranvier</li><li>It requires no ATP because the ion gradients never need restoring</li></ol><div class="ans show"><b>Answer: B.</b> Subthreshold stimuli produce only graded potentials; at threshold the full spike fires.<span class="ref">Module 6 brain &amp; ANS deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q13.</b> A graded potential differs from an action potential because a graded potential:</summary><ol class="opts" type="A"><li>Is always larger in amplitude than an action potential</li><li>Cannot be summed with other graded potentials at the axon hillock</li><li class="key">Varies in amplitude and may fail to reach threshold</li><li>Occurs only in axons and never in dendrites or cell bodies</li><li>Requires no ion movement across the plasma membrane</li></ol><div class="ans show"><b>Answer: C.</b> Graded potentials decay with distance and can summate to reach threshold.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q14.</b> Saltatory conduction refers to impulses:</summary><ol class="opts" type="A"><li>Traveling continuously along an unmyelinated axon</li><li>Moving backward along the axon toward the cell body</li><li>Crossing a chemical synapse by way of neurotransmitter release</li><li class="key">Jumping between nodes of Ranvier on a myelinated axon</li><li>Passing directly through gap junctions at an electrical synapse</li></ol><div class="ans show"><b>Answer: D.</b> Jumping node to node is dramatically faster and more energy-efficient than continuous conduction.<span class="ref">Module 6 brain &amp; ANS deck, slide 2</span></div></details>
+<details class="q"><summary><b>Q15.</b> During the absolute refractory period, the neuron:</summary><ol class="opts" type="A"><li>Fires more easily than usual because the membrane is already depolarized</li><li>Fires spontaneously without any incoming synaptic stimulation</li><li>Hyperpolarizes indefinitely and never returns to resting potential</li><li>Loses its myelin sheath and must rebuild it before firing again</li><li class="key">Cannot fire another action potential regardless of stimulus strength</li></ol><div class="ans show"><b>Answer: E.</b> Sodium channels are inactivated, which also ensures the impulse travels in one direction only.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q16.</b> Sympathetic activation produces which set of effects?</summary><ol class="opts" type="A"><li class="key">Increased heart rate, decreased digestion, dilated pupils</li><li>Decreased heart rate, increased digestion, constricted pupils</li><li>Decreased heart rate and blood pressure</li><li>Increased digestion and salivation</li><li>Bronchoconstriction and bradycardia</li></ol><div class="ans show"><b>Answer: A.</b> Fight-or-flight prioritizes muscle and brain perfusion and suspends non-urgent functions like digestion.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q17.</b> Parasympathetic activation is best summarized as:</summary><ol class="opts" type="A"><li>Fight or flight</li><li class="key">Rest and digest</li><li>Thermoregulation</li><li>Fever response</li><li>Inflammatory response</li></ol><div class="ans show"><b>Answer: B.</b> It conserves energy, slows the heart, and promotes digestion and elimination.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q18.</b> Sympathetic stimulation affects the pupils by causing:</summary><ol class="opts" type="A"><li>Constriction (miosis)</li><li>No change</li><li class="key">Dilation (mydriasis)</li><li>Lens thickening</li><li>Tear production</li></ol><div class="ans show"><b>Answer: C.</b> Pupil dilation admits more light, improving visual detection during threat.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q19.</b> The effect of parasympathetic stimulation on the digestive tract is to:</summary><ol class="opts" type="A"><li>Inhibit peristalsis and secretion</li><li>Cause vasoconstriction of gut vessels</li><li>Halt salivation</li><li class="key">Stimulate peristalsis and secretion</li><li>Close all sphincters</li></ol><div class="ans show"><b>Answer: D.</b> Rest-and-digest actively promotes gastrointestinal activity.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q20.</b> Sympathetic activation typically raises blood pressure by:</summary><ol class="opts" type="A"><li>Causing vasodilation of arterioles together with bradycardia</li><li>Reducing stroke volume and lowering total peripheral resistance</li><li>Increasing urine output and reducing circulating blood volume</li><li>Decreasing cardiac output and slowing conduction at the SA node</li><li class="key">Increasing heart rate and causing widespread vasoconstriction</li></ol><div class="ans show"><b>Answer: E.</b> Higher cardiac output plus higher peripheral resistance raises arterial pressure.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q21.</b> An alternative name for the sympathetic division reflecting its anatomy is:</summary><ol class="opts" type="A"><li class="key">Thoracolumbar</li><li>Craniosacral</li><li>Enteric division</li><li>Somatic efferent</li><li>Craniocervical</li></ol><div class="ans show"><b>Answer: A.</b> Sympathetic fibers emerge from thoracic and lumbar spinal segments; parasympathetic are craniosacral.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q22.</b> Which response would you NOT expect during sympathetic activation?</summary><ol class="opts" type="A"><li>Airway bronchodilation</li><li class="key">Increased peristalsis</li><li>Increased sweating</li><li>Glycogen breakdown</li><li>Increased alertness</li></ol><div class="ans show"><b>Answer: B.</b> Digestion is suppressed, not enhanced, during fight-or-flight.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q23.</b> The occipital lobe is primarily responsible for:</summary><ol class="opts" type="A"><li>Hearing</li><li>Voluntary movement</li><li class="key">Vision</li><li>Balance</li><li>Language production</li></ol><div class="ans show"><b>Answer: C.</b> The primary visual cortex occupies the occipital lobe.<span class="ref">Module 6 brain &amp; ANS deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q24.</b> Decision-making, planning and personality are functions of the:</summary><ol class="opts" type="A"><li>Occipital lobe</li><li>Parietal lobe</li><li>Temporal lobe</li><li class="key">Frontal lobe</li><li>Cerebellum</li></ol><div class="ans show"><b>Answer: D.</b> The prefrontal region of the frontal lobe governs executive function.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q25.</b> Processing of touch, pressure, pain and temperature occurs in the:</summary><ol class="opts" type="A"><li>Frontal lobe</li><li>Occipital lobe</li><li>Brainstem</li><li>Cerebellum</li><li class="key">Parietal lobe</li></ol><div class="ans show"><b>Answer: E.</b> The primary somatosensory cortex lies in the parietal lobe.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q26.</b> Hearing and language comprehension are associated with the:</summary><ol class="opts" type="A"><li class="key">Temporal lobe</li><li>Occipital lobe</li><li>Parietal lobe</li><li>Cerebellum</li><li>Medulla</li></ol><div class="ans show"><b>Answer: A.</b> The auditory cortex and Wernicke's area are temporal.<span class="ref">Module 6 brain &amp; ANS deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q27.</b> The cerebellum's principal role is to:</summary><ol class="opts" type="A"><li>Regulate the rate and depth of breathing</li><li class="key">Coordinate movement, balance and posture</li><li>Process visual input from the retinas</li><li>Secrete hormones into the bloodstream</li><li>Control blood pressure and vessel diameter</li></ol><div class="ans show"><b>Answer: B.</b> It fine-tunes motor output; damage causes ataxia and incoordination.<span class="ref">Module 6 brain &amp; ANS deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q28.</b> Which structure controls vital autonomic functions such as breathing and heart rate?</summary><ol class="opts" type="A"><li>Cerebrum</li><li>Cerebellum</li><li class="key">Brainstem</li><li>Thalamus</li><li>Corpus callosum</li></ol><div class="ans show"><b>Answer: C.</b> The medulla within the brainstem houses the cardiovascular and respiratory centers — damage here is rapidly fatal.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q29.</b> The thalamus is best described as the:</summary><ol class="opts" type="A"><li>Master endocrine gland controlling the other glands</li><li>Motor coordination center for balance and posture</li><li>Site of cerebrospinal fluid production and secretion</li><li class="key">Sensory relay station routing input to the cortex</li><li>Emotional memory center storing fear and reward</li></ol><div class="ans show"><b>Answer: D.</b> Nearly all sensory pathways synapse in the thalamus before reaching the cortex.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q30.</b> The hypothalamus regulates all of the following EXCEPT:</summary><ol class="opts" type="A"><li>Hunger and satiety signals</li><li>Thirst and water balance</li><li>Body temperature set point</li><li>Endocrine output via the pituitary</li><li class="key">Fine motor coordination</li></ol><div class="ans show"><b>Answer: E.</b> Fine motor coordination is cerebellar. The hypothalamus is the homeostatic control center.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q31.</b> A patient with a lesion causing loss of balance and clumsy, uncoordinated movement most likely has damage to the:</summary><ol class="opts" type="A"><li class="key">Cerebellum</li><li>Frontal lobe</li><li>Occipital lobe</li><li>Temporal lobe</li><li>Thalamus</li></ol><div class="ans show"><b>Answer: A.</b> Ataxia is the classic sign of cerebellar dysfunction.<span class="ref">Module 6 brain &amp; ANS deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q32.</b> Which sensory pathway is unique in that it bypasses the thalamus?</summary><ol class="opts" type="A"><li>Color vision</li><li class="key">Olfaction</li><li>Hearing</li><li>Gustation</li><li>Fine touch</li></ol><div class="ans show"><b>Answer: B.</b> Olfactory signals travel from the olfactory bulb directly to the cortex and limbic system — which is why smell so strongly evokes memory and emotion.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q33.</b> Odorant molecules must first ____ before they can be detected.</summary><ol class="opts" type="A"><li>Be broken down into single atoms by enzymes in the mucus</li><li>Be converted into light energy by receptor pigments</li><li class="key">Dissolve in the mucus of the olfactory epithelium</li><li>Bind to hemoglobin and travel in the bloodstream to the bulb</li><li>Cross the blood-brain barrier into the cerebral circulation</li></ol><div class="ans show"><b>Answer: C.</b> Receptors detect dissolved chemicals, so the odorant must go into solution first.<span class="ref">Module 6 brain &amp; ANS deck, slide 12</span></div></details>
+<details class="q"><summary><b>Q34.</b> Which neuron type serves olfactory transduction?</summary><ol class="opts" type="A"><li>Multipolar motor</li><li>Unipolar interneuron</li><li>Pyramidal</li><li class="key">Bipolar</li><li>Purkinje</li></ol><div class="ans show"><b>Answer: D.</b> Olfactory receptor neurons are bipolar, sending one process to the epithelium and one to the bulb.<span class="ref">Module 6 brain &amp; ANS deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q35.</b> The five recognized primary tastes are:</summary><ol class="opts" type="A"><li>Sweet, sour, salty, bitter, spicy</li><li>Sweet, sour, salty, umami, metallic</li><li>Sweet, salty, bitter, spicy, fatty</li><li>Sour, salty, bitter, cold, umami</li><li class="key">Sweet, sour, salty, bitter, umami</li></ol><div class="ans show"><b>Answer: E.</b> Umami is the savoury/glutamate taste. Spicy is a pain and temperature sensation, not a taste.<span class="ref">Module 6 brain &amp; ANS deck, slide 15</span></div></details>
+<details class="q"><summary><b>Q36.</b> Why is 'spicy' NOT classified as a taste?</summary><ol class="opts" type="A"><li class="key">Capsaicin activates pain and heat receptors rather than gustatory receptors</li><li>It is detected only in the throat and not on the surface of the tongue</li><li>Capsaicin is neutralized by saliva long before it reaches receptors</li><li>It is detected by olfactory receptors in the nasal epithelium instead</li><li>It is too weak a stimulus to depolarize any taste receptor cell</li></ol><div class="ans show"><b>Answer: A.</b> Capsaicin stimulates TRPV1 nociceptors — the brain interprets it as burning, not flavor.<span class="ref">Module 6 brain &amp; ANS deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q37.</b> Gustatory information reaches the cortex after relaying through the:</summary><ol class="opts" type="A"><li>Olfactory bulb</li><li class="key">Thalamus</li><li>Cerebellum</li><li>Pineal gland</li><li>Hypothalamus only</li></ol><div class="ans show"><b>Answer: B.</b> Unlike smell, taste follows the standard route through the thalamus.<span class="ref">Module 6 brain &amp; ANS deck, slide 9</span></div></details>
+<details class="q"><summary><b>Q38.</b> A patient with a severe head cold reports that food is tasteless. The best explanation is:</summary><ol class="opts" type="A"><li>The taste buds have been destroyed by the viral infection</li><li>The thalamus is inflamed and can no longer relay taste signals</li><li class="key">Loss of olfaction removes most of the perceived flavor</li><li>Saliva production has stopped so tastants cannot dissolve</li><li>The gustatory nerves have been severed by the congestion</li></ol><div class="ans show"><b>Answer: C.</b> Most of what we call flavor is retronasal smell, so nasal congestion blunts it dramatically.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q39.</b> The blood-brain barrier is formed chiefly by:</summary><ol class="opts" type="A"><li>Microglia acting as the resident immune cells of the brain</li><li>Oligodendrocytes wrapping myelin around central nervous system axons</li><li>Ependymal cells lining the ventricles and secreting spinal fluid</li><li class="key">Tight junctions of capillary endothelium supported by astrocytes</li><li>The three meningeal layers wrapping the outside of the brain</li></ol><div class="ans show"><b>Answer: D.</b> Tight junctions restrict passage; astrocyte end-feet help regulate it.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q40.</b> Cerebrospinal fluid is produced by the:</summary><ol class="opts" type="A"><li>Arachnoid villi</li><li>The pia mater</li><li>Corpus callosum</li><li>Pituitary gland</li><li class="key">Choroid plexus</li></ol><div class="ans show"><b>Answer: E.</b> Ependymal cells of the choroid plexus secrete CSF into the ventricles.<span class="ref">Module 6 brain &amp; ANS deck, slide 5</span></div></details>
+<details class="q"><summary><b>Q41.</b> The corpus callosum functions to:</summary><ol class="opts" type="A"><li class="key">Connect the two cerebral hemispheres</li><li>Produce cerebrospinal fluid for the ventricles</li><li>Control the rhythm and depth of breathing</li><li>Relay sensory input on its way to the cortex</li><li>Regulate hormone release from the pituitary</li></ol><div class="ans show"><b>Answer: A.</b> It is the largest white-matter commissure linking left and right.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q42.</b> Broca's area is associated with:</summary><ol class="opts" type="A"><li>Language comprehension</li><li class="key">Speech production</li><li>Visual processing</li><li>Balance and posture</li><li>Sound perception</li></ol><div class="ans show"><b>Answer: B.</b> Damage causes expressive aphasia: understanding is intact but speech is labored.<span class="ref">Module 6 brain &amp; ANS deck, slide 8</span></div></details>
+<details class="q"><summary><b>Q43.</b> The medulla oblongata regulates:</summary><ol class="opts" type="A"><li>Voluntary movement of the skeletal muscles</li><li>Vision and visual interpretation</li><li class="key">Heart rate, breathing and blood pressure</li><li>Hormone release from the anterior pituitary</li><li>Fine motor coordination, balance and posture</li></ol><div class="ans show"><b>Answer: C.</b> It houses the cardiovascular and respiratory control centers.<span class="ref">Module 6 brain &amp; ANS deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q44.</b> Which structure links the nervous and endocrine systems?</summary><ol class="opts" type="A"><li>The thalamus</li><li>Cerebellum</li><li>Pons and midbrain</li><li class="key">Hypothalamus</li><li>Medulla oblongata</li></ol><div class="ans show"><b>Answer: D.</b> The hypothalamus controls the pituitary and thus much of the endocrine system.<span class="ref">Module 6 brain &amp; ANS deck, slide 1</span></div></details>
+<details class="q"><summary><b>Q45.</b> The limbic system is most associated with:</summary><ol class="opts" type="A"><li>Visual interpretation</li><li>Balance and posture</li><li>Breathing and heart rate</li><li>Spinal reflex arcs</li><li class="key">Emotion and memory</li></ol><div class="ans show"><b>Answer: E.</b> The amygdala and hippocampus mediate emotion and memory formation.<span class="ref">Module 6 brain &amp; ANS deck, slide 13</span></div></details>
+<details class="q"><summary><b>Q46.</b> Absolute refractory period exists to ensure:</summary><ol class="opts" type="A"><li class="key">One-way propagation and a maximum firing rate</li><li>Faster conduction velocity along the axon</li><li>Stronger signals with greater amplitude</li><li>Neurotransmitter release at every synapse</li><li>Myelin formation around the growing axon</li></ol><div class="ans show"><b>Answer: A.</b> Inactivated sodium channels prevent the impulse from traveling backward.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q47.</b> During repolarization the membrane potential moves:</summary><ol class="opts" type="A"><li>From -70 toward +30 mV</li><li class="key">From +30 back toward -70 mV</li><li>From -55 to -70 mV only</li><li>It does not change at all</li><li>From -90 up to +30 mV</li></ol><div class="ans show"><b>Answer: B.</b> Potassium efflux restores negativity after the sodium spike.<span class="ref">Module 6 brain &amp; ANS deck, slide 3</span></div></details>
+<details class="q"><summary><b>Q48.</b> Sympathetic effects on the bladder and gut are to:</summary><ol class="opts" type="A"><li>Stimulate emptying of the bladder and bowel</li><li>Increase peristalsis and glandular secretion</li><li class="key">Inhibit motility and contract sphincters</li><li>Relax the internal sphincters to allow emptying</li><li>Increase salivation and gastric acid output</li></ol><div class="ans show"><b>Answer: C.</b> Fight-or-flight defers elimination and digestion.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q49.</b> Which neurotransmitter dominates at parasympathetic target organs?</summary><ol class="opts" type="A"><li>Norepinephrine</li><li>Dopamine</li><li>Serotonin</li><li class="key">Acetylcholine</li><li>Histamine</li></ol><div class="ans show"><b>Answer: D.</b> Parasympathetic postganglionic fibers are cholinergic.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q50.</b> The basal ganglia are chiefly involved in:</summary><ol class="opts" type="A"><li>Hearing and the localization of sound</li><li>Processing visual input from the retina</li><li>Digestion and absorption of nutrients</li><li>Regulating body temperature and shivering</li><li class="key">Initiating and regulating voluntary movement</li></ol><div class="ans show"><b>Answer: E.</b> Dysfunction produces movement disorders such as Parkinson disease.<span class="ref">Module 6 brain &amp; ANS deck, slide 10</span></div></details>
+<details class="q"><summary><b>Q51.</b> Taste receptor cells are found within:</summary><ol class="opts" type="A"><li class="key">Taste buds</li><li>Papillae only</li><li>The olfactory bulb</li><li>The thalamus</li><li>The tongue muscle</li></ol><div class="ans show"><b>Answer: A.</b> Taste buds sit within papillae and house the gustatory receptor cells.<span class="ref">Module 6 brain &amp; ANS deck, slide 14</span></div></details>
+<details class="q"><summary><b>Q52.</b> Which cranial nerve carries most taste sensation from the anterior tongue?</summary><ol class="opts" type="A"><li>CN V (trigeminal)</li><li class="key">CN VII (facial)</li><li>CN IX (glossopharyngeal)</li><li>CN X (vagus)</li><li>CN XII (hypoglossal)</li></ol><div class="ans show"><b>Answer: B.</b> The facial nerve serves the anterior two-thirds of the tongue.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+<details class="q"><summary><b>Q53.</b> Olfactory adaptation explains why:</summary><ol class="opts" type="A"><li>Smells intensify the longer they are present</li><li>Taste sensation grows stronger over the meal</li><li class="key">You stop noticing a persistent odor</li><li>Vision blurs when an odor is strong</li><li>Hearing sharpens when the nose is blocked</li></ol><div class="ans show"><b>Answer: C.</b> Receptors desensitize rapidly to a constant stimulus.<span class="ref">Lecture Outline, Module 6 — p.60</span></div></details>
+</div>
+<p class="small" style="margin-top:20px">BIO 262 Human Physiology — Joyce University of Nursing and Health Sciences.
+Practice questions are original, written against the published module learning outcomes; they are not drawn from any exam.</p>
+</main></div><script>
+(function(){
+  var reopened=[],revealed=[];
+  function expand(){
+    var d=document.querySelectorAll('details'),i;
+    for(i=0;i<d.length;i++){ if(!d[i].open){ d[i].open=true; reopened.push(d[i]); } }
+    var a=document.querySelectorAll('.ans'),j;
+    for(j=0;j<a.length;j++){ if(!a[j].classList.contains('show')){ a[j].classList.add('show'); revealed.push(a[j]); } }
+  }
+  function restore(){
+    var i;
+    for(i=0;i<reopened.length;i++) reopened[i].open=false;
+    for(i=0;i<revealed.length;i++) revealed[i].classList.remove('show');
+    reopened=[];revealed=[];
+  }
+  window.addEventListener('beforeprint',expand);
+  window.addEventListener('afterprint',restore);
+  if(window.matchMedia){
+    var mq=window.matchMedia('print');
+    var h=function(e){ e.matches?expand():restore(); };
+    if(mq.addEventListener) mq.addEventListener('change',h);
+    else if(mq.addListener) mq.addListener(h);
+  }
+  window.__printExpand=expand; window.__printRestore=restore;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-toggle]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('.ans').forEach(function(a){ a.classList.toggle('show',!on); });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Show all answers':'Hide all answers';
+  });
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('[data-expand]'); if(!b) return;
+    var on=b.getAttribute('data-on')==='1';
+    document.querySelectorAll('details').forEach(function(d){ d.open=!on; });
+    b.setAttribute('data-on',on?'0':'1');
+    b.textContent=on?'Expand all sections':'Collapse all sections';
+  });
+})();
+</script></body></html>
