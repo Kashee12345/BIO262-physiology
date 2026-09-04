@@ -268,6 +268,15 @@
     var WORKBOOKS = {
       1: "https://akashgarg.h5p.com/content/1292999252951159368"
     };
+
+    // Lecture slides, converted from the live-class PowerPoints
+    var SLIDES = {};
+    for (var sm = 1; sm <= 14; sm++) {
+      SLIDES[sm] = "slides/module-" + (sm < 10 ? "0" + sm : sm) + "-lecture-slides.pdf";
+    }
+    var slides = SLIDES[mod.n]
+      ? ' &nbsp;&middot;&nbsp; <a class="go" href="'+SLIDES[mod.n]+'" target="_blank" rel="noopener">Lecture slides &rarr;</a>'
+      : '';
     var workbook = WORKBOOKS[mod.n]
       ? '<div class="wb">'
         + '<div class="wbhead"><span class="ic">&#128218;</span>'
@@ -296,7 +305,7 @@
       +   '<div class="body"><ul>'+li+'</ul>'
       +     lesson
       +     '<a class="go" href="practice.html">Practice questions →</a>'
-      +     ' &nbsp;·&nbsp; <a class="go" href="flashcards.html">Flashcards →</a>'+deep
+      +     ' &nbsp;·&nbsp; <a class="go" href="flashcards.html">Flashcards →</a>'+deep+slides
       +     workbook
       +   '</div>'
       + '</div>';
