@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>M03 Exam Review Guide &middot; Exam 1 &mdash; BIO 262 Human Physiology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e8; --card:#fffdf8; --ink:#241f1b; --muted:#7a6f63; --faint:#9d9184; --line:#e6dccb;
+  --gold:#c99a2e; --gold-lt:#f7eeda; --maroon:#8a2f36; --maroon-dk:#5e1f24; --maroon-lt:#f7e9e9;
+  --teal:#3a7aa8; --teal-lt:#e8f0f5; --green:#3f6b4e; --green-lt:#e8f0ea;
+  --shadow:0 1px 3px rgba(60,40,20,.06); --r:14px;
+  --disp:'Cinzel Decorative',serif; --sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased;}
+a{color:inherit;}
+.wrap{max-width:800px;margin:0 auto;padding:0 18px 90px;}
+
+.backbar{background:var(--card);border-bottom:1px solid var(--line);}
+.backbar .bi{max-width:800px;margin:0 auto;padding:12px 20px;font-size:13.5px;font-weight:600;color:var(--maroon);
+             display:flex;align-items:center;gap:12px;}
+.backbar a{text-decoration:none;} .backbar a:hover{text-decoration:underline;}
+.printbtn{font:inherit;font-weight:700;font-size:13px;background:var(--maroon);color:#fff;border:none;
+          border-radius:7px;padding:6px 14px;cursor:pointer;margin-left:auto;}
+.printbtn:hover{background:var(--maroon-dk);}
+
+header.hero{padding:38px 0 12px;}
+.kicker{font-size:11.5px;letter-spacing:3px;font-weight:700;color:var(--maroon);text-transform:uppercase;}
+header.hero h1{font-family:var(--disp);font-weight:700;font-size:clamp(26px,5vw,38px);margin:10px 0 12px;
+               color:var(--maroon-dk);line-height:1.15;}
+header.hero p.sub{margin:0;font-size:16.5px;color:var(--muted);}
+
+.goals{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+       border-radius:var(--r);padding:18px 22px;margin:24px 0 8px;box-shadow:var(--shadow);}
+.goals>b{display:block;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--faint);margin-bottom:9px;}
+.goals ul{margin:0;padding-left:20px;} .goals li{font-size:15px;color:var(--muted);margin-bottom:5px;}
+
+.notice{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 10px 10px 0;
+        padding:14px 20px;margin:18px 0;}
+.notice p{margin:0;font-size:15px;color:#2c4a5e;}
+
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:26px 0 6px;
+     position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);}
+.btn{font:inherit;font-weight:700;font-size:13px;background:var(--card);color:var(--maroon);
+     border:1px solid var(--line);border-radius:8px;padding:7px 14px;cursor:pointer;}
+.btn:hover{background:var(--maroon);color:#fff;border-color:var(--maroon);}
+.prog{margin-left:auto;font-size:13px;font-weight:700;color:var(--muted);}
+.prog b{color:var(--maroon);}
+
+h2{font-family:var(--disp);font-weight:700;font-size:23px;color:var(--maroon-dk);margin:38px 0 6px;line-height:1.25;}
+h2 .num{display:inline-block;background:var(--maroon);color:#fff;font-family:var(--sans);
+        font-size:13px;font-weight:800;width:26px;height:26px;line-height:26px;text-align:center;
+        border-radius:50%;margin-right:10px;vertical-align:middle;}
+p.lead{color:var(--muted);font-size:16px;margin:0 0 14px;}
+
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;
+   box-shadow:var(--shadow);overflow:hidden;position:relative;}
+.q.done{border-color:#cfe0d4;background:#fbfdfb;}
+details{width:100%;}
+summary{list-style:none;cursor:pointer;padding:14px 92px 14px 16px;display:flex;gap:12px;align-items:flex-start;}
+summary::-webkit-details-marker{display:none;}
+summary:hover{background:var(--maroon-lt);}
+.qn{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--maroon-lt);color:var(--maroon-dk);
+    font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.qt{font-size:15.5px;font-weight:600;line-height:1.5;}
+.chev{position:absolute;right:14px;top:16px;font-size:12px;color:var(--faint);transition:transform .15s;}
+details[open] .chev{transform:rotate(90deg);}
+.tick{position:absolute;right:36px;top:14px;display:flex;align-items:center;gap:5px;
+      font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.6px;cursor:pointer;}
+.tick input{accent-color:var(--green);width:15px;height:15px;cursor:pointer;}
+.ans{padding:2px 18px 18px 54px;border-top:1px solid var(--line);}
+.ans p{font-size:15.5px;margin:12px 0 0;}
+.ans ul{margin:10px 0 0;padding-left:20px;}
+.ans li{font-size:15.5px;margin-bottom:6px;}
+.ans b{color:var(--maroon-dk);}
+.ans .tipbox{background:var(--gold-lt);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+             padding:10px 14px;margin:12px 0 0;font-size:14.5px;color:#6d5518;}
+.ans .draw{background:var(--teal-lt);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;
+           padding:10px 14px;margin:12px 0 0;font-size:14.5px;color:#2c4a5e;}
+
+footer{text-align:center;padding:44px 20px 10px;font-size:12.5px;color:var(--faint);line-height:1.7;}
+footer b{color:var(--muted);}
+
+@media print{
+  @page{margin:14mm;}
+  html,body{background:#fff;}
+  body{font-size:11pt;line-height:1.45;}
+  .wrap{max-width:100%;padding:0;}
+  .backbar,.printbtn,.bar,.chev{display:none !important;}
+  .tick{position:static;display:inline-flex;margin-left:8px;}
+  details{display:block !important;}
+  details > .ans{display:block !important;}
+  summary{padding:8px 8px 4px 8px;}
+  .q{break-inside:avoid;page-break-inside:avoid;box-shadow:none;margin-bottom:6px;}
+  .goals,.notice{break-inside:avoid;page-break-inside:avoid;}
+  h2{break-after:avoid;page-break-after:avoid;margin-top:18px;}
+  .ans{padding:2px 8px 10px 8px;}
+  a{text-decoration:none;color:inherit;}
+  footer{border-top:1px solid #ddd;margin-top:20px;}
+}
+</style>
+</head>
+<body>
+<div class="backbar"><div class="bi">
+  <a href="../index.html">&larr; BIO 262 course hub</a>
+  <a href="../study-guides.html">All study guides</a>
+  <button class="printbtn" onclick="window.print()">Download PDF</button>
+</div></div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Exam 1 &nbsp;&middot;&nbsp; Modules 1 and 2 &nbsp;&middot;&nbsp; BIO 262</div>
+    <h1>M03 Exam Review Guide</h1>
+    <p class="sub">Every question your instructor wants you to be able to answer before Exam 1 &mdash; with the answer one click away.</p>
+  </header>
+
+  <div class="goals">
+    <b>How to use this</b>
+    <ul>
+      <li>Read a question and answer it <b>out loud or on paper first</b>. Then open the answer and compare.</li>
+      <li>Opening the answer before you try is the fastest way to feel ready and not be ready.</li>
+      <li>Tick <b>Got it</b> once you can answer without looking. Your ticks are saved on this device.</li>
+      <li><b>Download PDF</b> prints the whole guide with every answer already open.</li>
+    </ul>
+  </div>
+
+  <div class="notice">
+    <p><b>This is a review guide, not the exam.</b> It covers what you are expected to know for Modules 1 and 2.
+    No exam questions appear here. If you can answer everything below in your own words, you are ready.</p>
+  </div>
+
+  <div class="bar">
+    <button class="btn" id="openAll">Open all answers</button>
+    <button class="btn" id="closeAll">Close all</button>
+    <button class="btn" id="clearTicks">Clear my ticks</button>
+    <span class="prog" id="prog"></span>
+  </div>
+
+  <h2><span class="num">1</span>Module 1 &mdash; Physiology, homeostasis and chemistry</h2>
+  <p class="lead">Fifteen questions. Everything here builds on one idea: the body holds itself steady, and chemistry is how it does it.</p>
+  <div id="m1"></div>
+
+  <h2><span class="num">2</span>Module 2 &mdash; The cell, transport and protein synthesis</h2>
+  <p class="lead">Twenty questions. The membrane decides what gets in, and the organelles decide what happens next.</p>
+  <div id="m2"></div>
+
+  <footer>
+    <b>BIO 262 &middot; Human Physiology</b><br>
+    Joyce University of Nursing and Health Sciences<br>
+    Course resources by <b>Dr. Vidya Garg</b>
+  </footer>
+</div>
+
+<script>
+var M1 = [
+{q:"Define physiology. Give an example of cell, organ, and systemic physiology. What is pathophysiology?",
+ a:"<p><b>Physiology</b> is the study of how the body works. Anatomy is the parts list; physiology is the operating manual.</p><ul><li><b>Cell physiology</b> &mdash; how a neuron holds a charge at rest and then fires.</li><li><b>Organ physiology</b> &mdash; how the heart fills and then ejects blood in one beat.</li><li><b>Systemic physiology</b> &mdash; how the cardiovascular system as a whole keeps blood pressure steady.</li></ul><p><b>Pathophysiology</b> is the study of how those functions change when there is disease. It is physiology gone wrong.</p>"},
+{q:"What is homeostasis? How do the nervous system and endocrine system regulate it?",
+ a:"<p><b>Homeostasis</b> is keeping the inside of the body steady while the outside changes. Temperature near 37&deg;C, blood pH 7.35 to 7.45, and blood sugar, calcium and oxygen all stay in narrow ranges.</p><ul><li><b>Nervous system</b> &mdash; fast and electrical. Signals travel in milliseconds and stop just as fast.</li><li><b>Endocrine system</b> &mdash; slower and chemical. Hormones travel in blood, take seconds to hours, and keep working.</li></ul><p>They work together. Nerves start a response, hormones keep it going.</p>"},
+{q:"Write an example of negative feedback – include stimulus, receptor, control center, effector, result. What does the outcome do to the receptor?",
+ a:"<p>Example: you get too warm.</p><ul><li><b>Stimulus</b> &mdash; body temperature rises above the set point.</li><li><b>Receptor</b> &mdash; temperature receptors in the skin and hypothalamus notice.</li><li><b>Control center</b> &mdash; the hypothalamus compares it to the set point and decides.</li><li><b>Effector</b> &mdash; sweat glands make sweat, and skin blood vessels widen.</li><li><b>Result</b> &mdash; heat is lost and temperature falls back to normal.</li></ul><p><b>What it does to the receptor:</b> it shuts the receptor's signal off. The response removes the thing that started it. That is why it is called negative &mdash; the response opposes the change. Negative means opposing, not bad.</p>"},
+{q:"Write an example of positive feedback – how is this outcome different than negative feedback? What does it do to the receptor?",
+ a:"<p>Example: blood clotting. Platelets stick to a damaged vessel and release chemicals that call in more platelets, which release more chemicals.</p><p>Other examples: labor contractions, and the LH surge that triggers ovulation.</p><p><b>How it differs:</b> the response builds on the change instead of opposing it. The value moves further away from where it started, not back toward it.</p><p><b>What it does to the receptor:</b> it increases the receptor's signal, so the loop feeds itself. Something outside the loop has to stop it &mdash; the sealed vessel, or the birth of the baby.</p>"},
+{q:"What does pH measure? What does a pH of 2 mean? What about 9? Describe the relationship between pH and hydrogen ion concentration.",
+ a:"<p><b>pH measures how many free hydrogen ions (H&#8314;) are in a solution</b> &mdash; how acidic or basic it is.</p><ul><li><b>pH 2</b> is strongly acidic. Lots of H&#8314;. Stomach acid sits down here.</li><li><b>pH 9</b> is basic, or alkaline. Very little H&#8314;.</li><li><b>pH 7</b> is neutral.</li></ul><p><b>The relationship is inverse:</b> more H&#8314; means a lower pH, less H&#8314; means a higher pH.</p><div class='tipbox'>The scale is logarithmic, so each whole number is a tenfold change. pH 2 has 10 times more H&#8314; than pH 3, and 100 times more than pH 4.</div>"},
+{q:"What is the pH of blood? What is it called when pH of the blood is above the set point? Below the set point?",
+ a:"<p><b>Blood pH is 7.35 to 7.45</b>, so slightly basic. Call it 7.4.</p><ul><li><b>Above 7.45 &mdash; alkalosis.</b></li><li><b>Below 7.35 &mdash; acidosis.</b></li></ul><p>That window is tight for a reason. Outside it, proteins change shape and stop working, and enzymes, receptors and channels are all proteins.</p>"},
+{q:"How does a buffer keep pH from swinging when acid is added? Which buffer pair does most of that work in blood?",
+ a:"<p>A <b>buffer</b> is a chemical pair that resists a change in pH. It soaks up extra hydrogen ions when there are too many and releases them when there are too few.</p><p><b>The main example is the bicarbonate buffer system:</b> CO&#8322; + H&#8322;O &harr; H&#8322;CO&#8323; &harr; H&#8314; + HCO&#8323;&#8315;.</p><p>Others are the phosphate buffer inside cells, and proteins such as hemoglobin and albumin.</p><p>The lungs back it up by changing how much CO&#8322; you blow off, and the kidneys by handling bicarbonate and hydrogen ions.</p>"},
+{q:"Where are electrons found in an atom?",
+ a:"<p>In the space <b>around the nucleus</b>, arranged in energy levels called shells.</p><ul><li><b>Nucleus</b> &mdash; protons (positive) and neutrons (no charge).</li><li><b>Around it</b> &mdash; electrons (negative), moving in shells.</li></ul>"},
+{q:"What is a valence shell? What are valence electrons?",
+ a:"<p>The <b>valence shell</b> is the outermost energy level of an atom. The <b>valence electrons</b> are the electrons sitting in it.</p><p>They matter because they decide how, and whether, an atom bonds. An atom is stable when its valence shell is full &mdash; eight electrons for most atoms in the body, two for hydrogen.</p>"},
+{q:"What is an ionic bond? What's happening to electrons? Draw an ionic bond.",
+ a:"<p>An <b>ionic bond</b> forms when one atom <b>transfers</b> one or more electrons to another atom.</p><p>The atom that loses electrons becomes positive. The atom that gains them becomes negative. Opposite charges attract, and that attraction is the bond.</p><p>Classic example: sodium gives its one valence electron to chlorine, making Na&#8314; and Cl&#8315;, which stick together as table salt.</p><div class='draw'><b>Drawing it:</b> show sodium with 1 electron in its outer shell and chlorine with 7. Draw an arrow moving that electron from sodium to chlorine. Then label the result Na&#8314; and Cl&#8315; and show them attracted to each other.</div>"},
+{q:"What is an ion? What is the difference between a cation and an anion?",
+ a:"<p>An <b>ion</b> is an atom that carries an electrical charge because it has lost or gained electrons.</p><ul><li><b>Cation</b> &mdash; positive, because it <b>lost</b> electrons. Na&#8314;, K&#8314;, Ca&#178;&#8314;.</li><li><b>Anion</b> &mdash; negative, because it <b>gained</b> electrons. Cl&#8315;, HCO&#8323;&#8315;.</li></ul><div class='tipbox'>A way to keep them straight: an <b>a</b>nion is <b>a</b> negative ion.</div>"},
+{q:"What is happening with electrons in a covalent bond? How do polar and nonpolar bonds differ? Draw a polar covalent bond and a nonpolar covalent bond.",
+ a:"<p>In a <b>covalent bond</b> the atoms <b>share</b> electrons instead of transferring them.</p><ul><li><b>Nonpolar covalent</b> &mdash; shared <b>equally</b>, because both atoms pull about the same. Example: O&#8322;, or the carbon-hydrogen bonds in fats.</li><li><b>Polar covalent</b> &mdash; shared <b>unequally</b>, because one atom pulls harder. That atom becomes slightly negative and the other slightly positive. Example: the oxygen-hydrogen bonds in water.</li></ul><div class='draw'><b>Drawing them:</b> for nonpolar, draw the shared pair of electrons sitting midway between the two atoms. For polar, draw the shared pair closer to oxygen, then mark oxygen &delta;&#8315; and hydrogen &delta;&#8314;.</div>"},
+{q:"What is a hydrogen bond? What relevance does this have in the human body?",
+ a:"<p>A <b>hydrogen bond</b> is a weak attraction between two polar molecules. The slightly positive hydrogen on one is pulled toward a slightly negative atom on the other. That atom is usually oxygen or nitrogen.</p><p>One is weak. Many together are strong.</p><p><b>Why it matters in the body:</b></p><ul><li>Holds water molecules to each other. That is what gives water its surface tension, and why it resists temperature swings.</li><li>Holds the two strands of DNA together, weakly enough that they can be pulled apart to be read.</li><li>Holds proteins in their folded shape. Break those bonds with heat or a pH swing and the protein denatures, so it stops working.</li></ul>"},
+{q:"What bond makes a single water molecule?",
+ a:"<p><b>Polar covalent bonds.</b> Oxygen shares electrons with two hydrogens, but pulls them closer to itself, so oxygen ends up slightly negative and the hydrogens slightly positive.</p>"},
+{q:"What bond is formed between multiple water molecules?",
+ a:"<p><b>Hydrogen bonds.</b> The slightly positive hydrogen of one water molecule is attracted to the slightly negative oxygen of another.</p><div class='tipbox'>Worth keeping straight: <b>inside</b> one water molecule the bonds are polar covalent. <b>Between</b> water molecules they are hydrogen bonds.</div>"}
+];
+
+var M2 = [
+{q:"What is the role of the cell membrane? What does it mean when we say the cell membrane is selectively permeable?",
+ a:"<p>The <b>cell membrane</b> separates the inside of the cell from the outside and controls what crosses.</p><p><b>Selectively permeable</b> means it lets some things through and blocks others.</p><ul><li><b>Cross easily</b> &mdash; small, uncharged, fat-soluble things: oxygen, carbon dioxide, steroid hormones.</li><li><b>Cannot cross alone</b> &mdash; charged or large things: sodium, potassium, calcium, glucose, amino acids. These need a protein to let them through.</li></ul>"},
+{q:"Describe the following membrane proteins: anchoring, cell adhesion, enzyme, transport, antigen.",
+ a:"<ul><li><b>Anchoring</b> &mdash; attaches the membrane to the cell's internal skeleton or to structures outside, giving the cell shape and stability.</li><li><b>Cell adhesion</b> &mdash; holds cells to each other or to surrounding material, forming junctions.</li><li><b>Enzyme</b> &mdash; speeds up a chemical reaction right at the membrane.</li><li><b>Transport</b> &mdash; forms the channels and carriers that move substances across.</li><li><b>Antigen</b> &mdash; an identity marker on the surface that lets the immune system tell your cells from foreign ones.</li></ul>"},
+{q:"What type of transport does NOT require energy (ATP)? How does this relate to the concentration gradient?",
+ a:"<p><b>Passive transport</b> needs no ATP.</p><p>It moves substances <b>down the concentration gradient</b> &mdash; from where there is more to where there is less. The gradient itself supplies the energy, so the cell pays nothing.</p><p>Passive types: simple diffusion, facilitated diffusion, osmosis and filtration.</p>"},
+{q:"What is diffusion? What is moving? How is it moving in relation to the concentration gradient?",
+ a:"<p><b>Diffusion</b> is movement of a dissolved substance from where it is more concentrated to where it is less concentrated.</p><ul><li><b>What moves:</b> the solute, meaning the dissolved substance.</li><li><b>Direction:</b> down the concentration gradient, until it is evenly spread out.</li></ul><p>This is the whole basis of gas exchange &mdash; oxygen and carbon dioxide simply diffuse down their gradients.</p>"},
+{q:"What is the difference between simple diffusion and facilitated diffusion? Does either type of diffusion use energy (ATP)?",
+ a:"<ul><li><b>Simple diffusion</b> &mdash; the substance passes straight through the membrane on its own. Works for small, uncharged, fat-soluble things like oxygen and carbon dioxide.</li><li><b>Facilitated diffusion</b> &mdash; the substance goes through a channel or carrier protein, because it cannot cross the membrane by itself. Glucose and ions travel this way.</li></ul><p><b>Neither uses ATP.</b> Both are passive, and both run down the concentration gradient. The only difference is whether a protein is needed to get through.</p>"},
+{q:"What is osmosis? What is moving? How is it moving in relation to the concentration gradient?",
+ a:"<p><b>Osmosis</b> is the diffusion of <b>water</b> across a selectively permeable membrane.</p><ul><li><b>What moves:</b> water, not the solute.</li><li><b>Direction:</b> water moves toward the side with <b>more solute</b>, which is the side with less water. So water is still moving down its own gradient.</li></ul><div class='tipbox'>The sentence that answers most tonicity questions: <b>water follows solute.</b></div>"},
+{q:"Does osmosis require ATP?",
+ a:"<p><b>No.</b> Osmosis is passive. Water moves down its own gradient and the cell spends nothing.</p>"},
+{q:"What type of transport uses ATP? List 2 examples.",
+ a:"<p><b>Active transport</b> uses ATP, because it moves a substance <b>against</b> its gradient &mdash; from low concentration to high.</p><ul><li><b>Sodium-potassium pump</b> &mdash; pushes 3 sodium out and pulls 2 potassium in for each ATP. This is what keeps sodium low and potassium high inside the cell.</li><li><b>Calcium pump</b> &mdash; moves calcium out of the cytoplasm, back into storage or out of the cell.</li></ul><p>Bulk transport also costs ATP: <b>endocytosis</b> brings large material in, <b>exocytosis</b> pushes it out.</p>"},
+{q:"What job does the nucleus do, and what is the nucleolus inside it for?",
+ a:"<p>Holds the <b>DNA</b> and directs the cell. This is where DNA is copied into mRNA during transcription. It also contains the nucleolus, where ribosomes are put together.</p>"},
+{q:"What does a ribosome build, and where in the cell are ribosomes found?",
+ a:"<p><b>Builds proteins.</b> It reads mRNA and links amino acids together in the order the message specifies. Ribosomes float free in the cytoplasm or sit attached to rough endoplasmic reticulum.</p>"},
+{q:"A protein arrives at the Golgi apparatus. What happens to it there?",
+ a:"<p>Receives proteins from the endoplasmic reticulum. It then <b>modifies, sorts and packages</b> them into vesicles, and ships them where they need to go &mdash; inside the cell or out of it.</p><div class='tipbox'>Think of it as the shipping department: it does not make the product, it finishes and addresses it.</div>"},
+{q:"What does a lysosome contain, and what does it use that for?",
+ a:"<p>Holds <b>digestive enzymes</b>. It breaks down worn-out organelles, and material the cell has taken in from outside. It is the cell's recycling and disposal unit.</p>"},
+{q:"How do rough and smooth endoplasmic reticulum differ, both in structure and in what they make?",
+ a:"<ul><li><b>Rough ER</b> &mdash; covered in ribosomes. Makes and folds proteins that will be exported or built into the membrane.</li><li><b>Smooth ER</b> &mdash; no ribosomes. Makes lipids and steroids, breaks down drugs and toxins, and stores calcium. In muscle it is the calcium store that triggers contraction.</li></ul><div class='tipbox'>Rough has ribosomes, so rough handles proteins. Smooth has none, so smooth handles fats.</div>"},
+{q:"What does the mitochondrion make, and which cells carry the most of them?",
+ a:"<p>Makes most of the cell's <b>ATP</b>, using oxygen. It is where the citric acid cycle and the electron transport chain happen.</p><p>Cells with high energy demand are packed with mitochondria. Heart muscle, kidney tubules and neurons are the examples to know. They are also the first to be injured when blood flow fails.</p>"},
+{q:"Draw out the pathway of ATP production and location in the cell starting with glycolysis. Indicate whether the step is aerobic or anaerobic.",
+ a:"<ul><li><b>Glycolysis</b> &mdash; in the <b>cytoplasm</b> &mdash; <b>anaerobic</b>, no oxygen needed. One glucose becomes 2 pyruvate, with a small net gain of 2 ATP.</li><li><b>If there is no oxygen:</b> pyruvate becomes lactic acid, still in the cytoplasm, still <b>anaerobic</b>.</li><li><b>If there is oxygen:</b> pyruvate enters the mitochondrion.</li><li><b>Citric acid cycle</b> (Krebs) &mdash; in the <b>mitochondrial matrix</b> &mdash; <b>aerobic</b>. Produces a small amount of ATP and loads up electron carriers.</li><li><b>Electron transport chain</b> &mdash; on the <b>inner mitochondrial membrane</b> &mdash; <b>aerobic</b>. Makes the large majority of the ATP. Oxygen is the final electron acceptor, and water is the product.</li></ul><div class='draw'><b>Drawing it:</b> one arrow chain &mdash; glucose &rarr; glycolysis (cytoplasm, anaerobic) &rarr; pyruvate &rarr; then branch. One branch to lactic acid (no oxygen). The other into the mitochondrion &rarr; citric acid cycle (matrix, aerobic) &rarr; electron transport chain (inner membrane, aerobic) &rarr; most of the ATP.</div>"},
+{q:"What is transcription? Where does it happen in the cell?",
+ a:"<p><b>Transcription</b> is copying a gene's DNA sequence into a strand of messenger RNA.</p><p><b>Where:</b> in the <b>nucleus</b>, because that is where the DNA is.</p><div class='tipbox'>Transcription is copying the same language, DNA to RNA. Translation changes language, RNA to protein.</div>"},
+{q:"What is translation? Where does it happen in the cell?",
+ a:"<p><b>Translation</b> is reading the mRNA and building the protein it specifies.</p><p><b>Where:</b> at the <b>ribosome</b> &mdash; either floating in the cytoplasm or attached to rough endoplasmic reticulum.</p>"},
+{q:"What are the 3 types of RNA and where are they used in transcription/translation?",
+ a:"<ul><li><b>mRNA</b> (messenger) &mdash; made during <b>transcription</b> in the nucleus, then carries the message out to the ribosome to be read during <b>translation</b>.</li><li><b>tRNA</b> (transfer) &mdash; used in <b>translation</b>. Brings the matching amino acid to the ribosome.</li><li><b>rRNA</b> (ribosomal) &mdash; makes up the ribosome itself, so it works during <b>translation</b>.</li></ul>"},
+{q:"What does a ribosome do for protein synthesis?",
+ a:"<p>It holds the mRNA and the incoming tRNAs together, so the correct amino acid is added next. It then links those amino acids with peptide bonds to build the growing chain.</p><p>In short: the ribosome is the workbench where the message becomes a protein.</p>"},
+{q:"What is mitosis? What is the result of mitosis? Why is this important for life?",
+ a:"<p><b>Mitosis</b> is division of the nucleus, producing two genetically identical daughter nuclei. Cytokinesis then splits the cytoplasm into two cells.</p><p><b>The result:</b> two cells with the same number and the same kind of chromosomes as the original cell.</p><p><b>Why it matters:</b></p><ul><li><b>Growth</b> &mdash; you got from one cell to trillions this way.</li><li><b>Repair</b> &mdash; damaged tissue is replaced.</li><li><b>Replacement</b> &mdash; skin, gut lining and blood cells wear out constantly and must be remade.</li></ul>"}
+];
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function build(list, hostId, prefix){
+  var host=document.getElementById(hostId), html='';
+  list.forEach(function(item,i){
+    var id=prefix+'-'+(i+1);
+    html += '<div class="q" data-id="'+id+'">'
+         +   '<details>'
+         +     '<summary><span class="qn">'+(i+1)+'</span><span class="qt">'+esc(item.q)+'</span>'
+         +       '<span class="chev">&#9654;</span></summary>'
+         +     '<div class="ans">'+item.a+'</div>'
+         +   '</details>'
+         +   '<label class="tick"><input type="checkbox" data-id="'+id+'"> Got it</label>'
+         + '</div>';
+  });
+  host.innerHTML=html;
+}
+build(M1,'m1','m1');
+build(M2,'m2','m2');
+
+var KEY='bio262_m03_review_ticks';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+function save(o){ try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){} }
+
+function paint(){
+  var st=load(), boxes=document.querySelectorAll('.tick input'), done=0;
+  boxes.forEach(function(b){
+    var on=!!st[b.dataset.id];
+    b.checked=on;
+    b.closest('.q').classList.toggle('done', on);
+    if(on) done++;
+  });
+  document.getElementById('prog').innerHTML='<b>'+done+'</b> of '+boxes.length+' ticked off';
+}
+paint();
+
+document.addEventListener('click', function(e){
+  var t=e.target;
+  if(t && t.matches('.tick input')){
+    var st=load();
+    if(t.checked) st[t.dataset.id]=1; else delete st[t.dataset.id];
+    save(st); paint();
+    e.stopPropagation();
+  }
+});
+document.querySelectorAll('.tick').forEach(function(l){
+  l.addEventListener('click', function(e){ e.stopPropagation(); });
+});
+
+document.getElementById('openAll').onclick=function(){
+  document.querySelectorAll('details').forEach(function(d){ d.open=true; });
+};
+document.getElementById('closeAll').onclick=function(){
+  document.querySelectorAll('details').forEach(function(d){ d.open=false; });
+};
+document.getElementById('clearTicks').onclick=function(){
+  save({}); paint();
+};
+window.addEventListener('beforeprint', function(){
+  document.querySelectorAll('details').forEach(function(d){ d.open=true; });
+});
+</script>
+</body>
+</html>
