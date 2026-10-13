@@ -149,6 +149,11 @@
     footer{border-top:1px solid #ddd;margin-top:24px;}
     a{text-decoration:none;color:inherit;}
   }
+  .h5pwrap{position:relative;width:100%;background:#fbf7ef;border:1px solid var(--line);
+           border-radius:10px;overflow:hidden;min-height:420px;}
+  .h5pwrap iframe{display:block;width:100%;height:637px;border:0;}
+  @media(max-width:700px){ .h5pwrap iframe{height:560px;} }
+  @media print{ .h5pwrap{display:none;} }
 </style>
 </head><body>
 <div class="backbar"><div class="bi"><a href="../index.html">&larr; BIO 262 course hub</a><button class="printbtn" onclick="window.print()">Download PDF</button></div></div>
@@ -249,7 +254,29 @@
   <p>That barrier keeps toxins out. It also keeps many useful drugs out. This is why a brain infection needs antibiotics chosen for their ability to cross it, and why brain drugs are hard to design.</p>
   <div class="hr"></div>
 
-  <h2><span class="num">6</span>Check yourself</h2>
+  <h2><span class="num">6</span>The interactive workbook</h2>
+  <p class="lead">Work through this once you have read the page above. It covers the same Module 5 material, and it asks you to do things rather than just read.</p>
+
+  <div class="demo">
+    <div class="dh">Module 5 &mdash; interactive book</div>
+    <div class="h5pwrap">
+      <iframe src="https://akashgarg.h5p.com/content/1293021379885476328/embed"
+              aria-label="BIO 262 Module 5 - Interactive Book"
+              title="BIO 262 Module 5 &mdash; Interactive Book"
+              frameborder="0" allowfullscreen="allowfullscreen"
+              allow="autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>
+    </div>
+    <p style="margin:12px 0 0;font-size:14.5px;color:#7a6f63;">
+      Needs an internet connection. If it does not load, open it directly:
+      <a href="https://akashgarg.h5p.com/content/1293021379885476328" target="_blank" rel="noopener"
+         style="color:#8a2f36;font-weight:700;">Module 5 interactive book &#8599;</a>
+    </p>
+  </div>
+  <script src="https://akashgarg.h5p.com/js/h5p-resizer.js" charset="UTF-8"></script>
+
+  <div class="hr"></div>
+
+  <h2><span class="num">7</span>Check yourself</h2>
   <p class="lead">Five questions. The wrong answers explain themselves, so they are worth reading.</p>
   <div id="quiz"></div>
 
