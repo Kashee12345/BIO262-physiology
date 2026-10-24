@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8a2f36">
+<title>BIO 262 · Human Physiology — Joyce University</title>
+<meta name="description" content="BIO 262 Human Physiology at Joyce University: 693 practice questions, 70 lab benches, 554 flashcards, module study guides, exam reviews and games in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>/* Course hub home page, Oct 2026 revamp.
+   Layout and components follow drgarglearning.com (hero with live question, stats, tool cards with clips,
+   week path, exam cards, footer) in Joyce University colors. Built by hubtools/build_hubs.py. */
+:root{
+  --ink:#241f1b; --mute:#66594f; --faint:#73675b;
+  --bg:#fbf8f2; --bg2:#f4ede1; --card:#fffdf8; --line:#e6dccb; --line2:#d9ccb6;
+  --maroon:#8a2f36; --maroon-d:#5e1f24; --maroon-soft:#f7e9e9;
+  --gold:#c99a2e; --gold-d:#9a7418; --gold-t:#7f5f12; --gold-ink:#2b1f05; --gold-soft:#f7eeda;
+  --teal:#0c7283; --teal-d:#0c3a44; --teal-soft:#e4f1f3;
+  --night:#2a1416; --night2:#3a1d20; --night-mute:#d9c7c0;
+  --ok:#276b44; --ok-soft:#e5f3ea; --bad:#b0332c; --bad-soft:#fbeae8;
+  --disp:"Fraunces",Georgia,"Times New Roman",serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --r:18px; --shadow:0 1px 0 var(--line),0 12px 26px -18px rgba(60,30,20,.38);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16.5px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%;display:block}
+a{color:var(--maroon)}
+h1,h2,h3{font-family:var(--disp);font-weight:700;line-height:1.08;letter-spacing:-.01em;margin:0;color:var(--maroon-d)}
+p{margin:0}
+button{font:inherit}
+.wrap{width:min(1200px,100%);margin:0 auto;padding-inline:16px}
+@media (min-width:700px){.wrap{padding-inline:28px}}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--maroon-d);color:#fff;padding:10px 14px;border-radius:10px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:8px}
+.foot :focus-visible,.dark :focus-visible{outline-color:var(--gold)}
+
+/* announcement banner (kept from the original page) */
+.notice{background:linear-gradient(180deg,#fbf3e2,#f7ecd8);border-bottom:1px solid #ecdcb8}
+.notice .ni{display:flex;gap:12px;align-items:flex-start;padding-block:13px}
+.notice .nx{font-size:21px;line-height:1.2;flex:none}
+.notice .nt{color:#6d5518;font-size:14px;line-height:1.5}
+.notice .nt strong{display:block;font-family:var(--disp);font-weight:700;font-size:16px;color:#57420f;margin-bottom:2px}
+
+/* What's New (BIO 280) */
+.wnew{background:var(--card);border-bottom:1px solid var(--line)}
+.wnew summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding-block:12px;font-size:14px;font-weight:700;color:var(--maroon-d)}
+.wnew summary::-webkit-details-marker{display:none}
+.wnew .wn-latest{font-weight:500;color:var(--faint);font-size:13px}
+.wnew .wn-chev{margin-left:auto;color:var(--faint);transition:transform .2s}
+.wnew details[open] .wn-chev{transform:rotate(90deg)}
+.wnew .wn-body{padding-bottom:14px}
+.wnew .wn-intro{margin:6px 0 4px;font-size:13px;color:var(--faint);font-style:italic}
+.wnew .wn-item{display:flex;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.wnew .wn-item:last-child{border-bottom:0}
+.wnew .wn-date{flex:none;width:104px;font-size:12px;font-weight:700;color:var(--maroon);background:var(--maroon-soft);border-radius:8px;padding:5px 0;text-align:center;height:fit-content}
+.wnew .wn-txt h4{margin:0 0 2px;font-size:14.5px}
+.wnew .wn-txt p{font-size:13.5px;color:var(--mute);line-height:1.5}
+.wnew .wn-tag{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--gold-t);border:1px solid var(--gold);padding:1px 6px;border-radius:9px;margin-left:7px;vertical-align:middle}
+@media (max-width:560px){.wnew .wn-item{flex-direction:column;gap:5px}.wnew .wn-date{width:auto;align-self:flex-start;padding:4px 11px}}
+
+/* header */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.top .bar{display:flex;align-items:center;gap:14px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--maroon-d);min-width:0}
+.logo .crest{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:23px;line-height:1;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 0 var(--line);flex:none}
+.logo b{display:block;font-family:var(--disp);font-size:18px;line-height:1.1;white-space:nowrap}
+.logo small{display:block;font-size:12px;color:var(--mute);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{display:none;margin-left:auto;gap:4px}
+.nav a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:8px 12px;border-radius:10px}
+.nav a:hover{background:var(--bg2)}
+.top .btn{margin-left:auto}
+@media (min-width:760px){.nav{display:flex}.top .btn{margin-left:8px}}
+.mnav{display:flex;gap:8px;overflow-x:auto;padding:0 0 10px;scrollbar-width:none}
+.mnav::-webkit-scrollbar{display:none}
+.mnav a{flex:none;text-decoration:none;color:var(--ink);font-weight:600;font-size:14px;background:var(--card);border:1px solid var(--line);padding:7px 12px;border-radius:99px}
+@media (min-width:760px){.mnav{display:none}}
+@media (max-height:520px) and (orientation:landscape){.top{position:relative}}
+
+/* buttons */
+.btn{--c:var(--gold);--cd:var(--gold-d);--ci:var(--gold-ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px/1 var(--body);color:var(--ci);background:var(--c);border:0;border-radius:14px;padding:12px 16px;text-decoration:none;cursor:pointer;box-shadow:0 4px 0 var(--cd);transition:transform .08s,box-shadow .08s,filter .15s;white-space:nowrap}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--cd)}
+.btn.maroon{--c:var(--maroon);--cd:var(--maroon-d);--ci:#fff}
+.btn.ghost{--c:var(--card);--cd:var(--line2);--ci:var(--ink);border:2px solid var(--line)}
+.btn.sm{font-size:14px;padding:9px 13px;border-radius:12px}
+@media (max-width:420px){.top .btn{padding:10px 12px;font-size:14px}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(800px 420px at 90% 0%,color-mix(in srgb,var(--maroon) 13%,transparent),transparent 70%),radial-gradient(640px 380px at 0% 100%,color-mix(in srgb,var(--gold) 22%,transparent),transparent 70%),var(--bg)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:30px;padding-block:30px 44px}
+@media (min-width:980px){.hero .wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:48px;align-items:center;padding-block:54px 66px}}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;color:var(--maroon-d);background:var(--card);border:1px solid var(--line);padding:6px 12px 6px 8px;border-radius:99px;max-width:100%}
+.kicker span{white-space:normal}
+.kicker i{font-style:normal;font-size:16px;line-height:1}
+.hero h1{font-size:clamp(38px,6.4vw,70px);font-weight:700;margin-top:16px;color:var(--maroon-d)}
+.hero h1 em{font-style:italic;font-weight:600;background:linear-gradient(transparent 64%,color-mix(in srgb,var(--gold) 55%,transparent) 64%);padding:0 .05em}
+.hero .sub{font-size:clamp(17px,1.8vw,20px);color:var(--mute);max-width:36ch;margin-top:14px}
+.byline{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:14px;font-weight:600;color:var(--mute)}
+.byline .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 22%,transparent)}
+.optional{margin-top:10px;font-size:13.5px;color:var(--mute);background:var(--gold-soft);border:1px solid #ecdcb8;border-radius:12px;padding:8px 12px;max-width:52ch}
+.optional b{color:#57420f}
+
+/* course search */
+.hsearch{margin-top:22px;max-width:560px}
+.sbox{position:relative}
+.hsearch form{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:6px 6px 6px 14px;box-shadow:0 3px 0 var(--line);transition:border-color .15s}
+.hsearch form:focus-within{border-color:var(--maroon)}
+.hsearch svg{width:20px;height:20px;color:var(--mute);flex:none}
+.hsearch input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:16px;color:var(--ink);padding:9px 2px;outline:none}
+.hsearch input::placeholder{color:var(--faint)}
+.hsearch .btn{padding:11px 16px}
+.results{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:30;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 50px -20px rgba(60,30,20,.45);padding:6px;max-height:min(420px,60vh);overflow:auto;display:none}
+.results.on{display:block}
+.results a{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border-radius:10px;text-decoration:none;color:var(--ink)}
+.results a:hover,.results a[aria-selected=true]{background:var(--maroon-soft)}
+.results .rtt{display:block;font-weight:600;font-size:15px;line-height:1.3}
+.results .rss{display:block;font-size:12.5px;color:var(--mute);line-height:1.35;margin-top:1px}
+.results .rk{flex:none;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--maroon);background:var(--maroon-soft);border-radius:6px;padding:3px 6px;margin-top:2px;min-width:58px;text-align:center}
+.results .none{padding:12px;color:var(--mute);font-size:14px}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.quick a{font-size:13.5px;font-weight:600;color:var(--maroon-d);text-decoration:none;background:color-mix(in srgb,var(--card) 70%,transparent);border:1px solid var(--line);border-radius:99px;padding:6px 11px}
+.quick a:hover{border-color:var(--maroon)}
+
+/* hero stage: screenshot + live question */
+.stage{position:relative}
+.stage .shot{position:absolute;right:-18px;top:0;width:min(62%,330px);border-radius:16px;overflow:hidden;box-shadow:0 30px 60px -22px rgba(60,30,20,.55);transform:rotate(3deg);border:5px solid var(--card);background:#111}
+.stage .shot img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
+.quiz{position:relative;z-index:2;margin:110px 0 0;width:100%;background:var(--card);border:2px solid var(--line);border-radius:22px;padding:16px 16px 14px;box-shadow:0 24px 50px -20px rgba(60,30,20,.4)}
+@media (min-width:600px){.quiz{margin:120px 0 0 auto;width:min(470px,86%)}.stage .shot{right:auto;left:0}}
+@media (min-width:980px){.stage{min-height:520px}.stage .shot{left:auto;right:-10px;top:-10px;width:300px}.quiz{margin:120px auto 0 0;width:min(460px,92%)}}
+.qhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.qtag{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;color:#fff;background:var(--maroon)}
+.qcount{font-size:13px;color:var(--mute);font-weight:600}
+.quiz h3{font-family:var(--body);font-weight:700;font-size:17.5px;line-height:1.35;color:var(--ink);margin:0 0 12px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;width:100%;font:500 15px/1.35 var(--body);color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:9px 11px;cursor:pointer;box-shadow:0 3px 0 var(--line);transition:border-color .12s,transform .08s}
+.opt:hover:not([disabled]){border-color:var(--maroon)}
+.opt:active:not([disabled]){transform:translateY(2px)}
+.opt b{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--bg2);font-size:13px;flex:none}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}.opt.right b{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}.opt.wrong b{background:var(--bad);color:#fff}
+.opt.dim{opacity:.55}
+.res{margin-top:12px;font-size:14.5px;line-height:1.5;display:none;border-radius:12px;padding:10px 12px}
+.res.on{display:block}
+.res.good{background:var(--ok-soft);color:#1f5a38}.res.bad{background:var(--bad-soft);color:#7d2420}
+.res strong{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px}
+.res .cite{display:block;margin-top:6px;font-size:12.5px;opacity:.85}
+.qfoot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-top:12px}
+.qfoot a{font-weight:700;font-size:14px;text-decoration:none}
+.qfoot button{background:none;border:0;color:var(--maroon);font-weight:700;font-size:14px;cursor:pointer;padding:6px 0}
+
+/* stats */
+.stats{border-block:1px solid var(--line);background:var(--card)}
+.stats ul{list-style:none;margin:0;padding:22px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px}
+@media (min-width:640px){.stats ul{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1050px){.stats ul{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.stats li{display:flex;flex-direction:column;gap:2px;padding-left:12px;border-left:3px solid var(--sc,var(--maroon))}
+.stats b{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.6vw,42px);line-height:1;color:var(--maroon-d);font-variant-numeric:tabular-nums}
+.stats span{font-size:13.5px;color:var(--mute);font-weight:600;line-height:1.3}
+
+/* sections */
+.sec{padding-block:44px}
+@media (min-width:900px){.sec{padding-block:64px}}
+.sec.alt{background:var(--bg2)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.head h2{font-size:clamp(28px,4vw,42px)}
+.head p{color:var(--mute);margin-top:8px;max-width:58ch}
+.eyebrow{display:block;font:800 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-t);margin-bottom:8px}
+.railbtns{display:flex;gap:8px}
+.railbtns button{width:42px;height:42px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 0 var(--line)}
+.railbtns button:hover{border-color:var(--maroon)}
+.railbtns svg{width:18px;height:18px}
+
+/* tool cards with preview clips */
+.rail{--cw:clamp(232px,72vw,272px);list-style:none;margin:0 -16px;padding:4px 16px 18px;display:grid;grid-auto-flow:column;grid-auto-columns:var(--cw);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+@media (min-width:700px){.rail{margin-inline:-28px;padding-inline:28px;scroll-padding-inline:28px}}
+@media (max-height:500px) and (orientation:landscape){.rail{--cw:200px}}
+.rail > li{scroll-snap-align:start;display:flex}
+.tcard{position:relative;display:flex;flex-direction:column;width:100%;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);transition:transform .18s cubic-bezier(.2,.8,.2,1),border-color .15s,box-shadow .18s}
+@media (hover:hover){.tcard:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:0 1px 0 var(--line),0 22px 40px -22px rgba(60,30,20,.5)}}
+.tcard:active{transform:scale(.985)}
+.media{position:relative;aspect-ratio:3/4;background:#1b1214;overflow:hidden}
+.media img,.media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media video{opacity:0;transition:opacity .35s}
+.media video.on{opacity:1}
+.media .tag{position:absolute;left:10px;top:10px;z-index:2;font-size:11.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:4px 8px;border-radius:8px;background:rgba(255,253,248,.94);color:var(--maroon-d);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.media .tag.gold{background:var(--gold);color:var(--gold-ink)}
+.media .live{position:absolute;right:10px;top:10px;z-index:2;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:rgba(20,10,10,.55);padding:4px 7px;border-radius:8px}
+.media .live i{width:6px;height:6px;border-radius:50%;background:#ff5d5d}
+.media.art{display:grid;place-items:center;background:linear-gradient(150deg,var(--maroon) 0%,var(--maroon-d) 70%)}
+.media.art .big{font-family:var(--disp);font-weight:700;color:#fff;font-size:64px;line-height:.95;text-align:center}
+.media.art .big small{display:block;font:700 13px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);margin-top:10px}
+.tbody{display:flex;flex-direction:column;gap:5px;padding:14px 15px 15px;flex:1}
+.tbody h3{font-size:20px}
+.tbody p{font-size:14px;color:var(--mute);line-height:1.45}
+.tbody .go{margin-top:auto;padding-top:6px;font-weight:700;font-size:14px;color:var(--maroon)}
+.rail.games .tcard{background:var(--night);border-color:var(--night2);color:#fff}
+.rail.games .tbody h3{color:#fff}.rail.games .tbody p{color:var(--night-mute)}.rail.games .tbody .go{color:var(--gold)}
+.dark{background:var(--night);color:#fff}
+.dark .head h2{color:#fff}.dark .head p{color:var(--night-mute)}.dark .eyebrow{color:var(--gold)}
+.dark .railbtns button{background:var(--night2);border-color:#5a3236;color:#fff;box-shadow:0 3px 0 #1a0c0d}
+.swipe{display:none}
+
+/* week / module path */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;margin-inline:-2px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.chip{flex:none;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-width:62px;height:58px;padding:6px 10px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--line);font-weight:700}
+.chip small{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.chip span{font-family:var(--disp);font-size:21px;line-height:1}
+.chip:hover{border-color:var(--maroon)}
+.chip[aria-pressed=true]{background:var(--maroon);border-color:var(--maroon);color:#fff;box-shadow:0 3px 0 var(--maroon-d)}
+.chip[aria-pressed=true] small{color:var(--gold-soft)}
+.chip.now::after{content:"";position:absolute}
+.chip .nowdot{display:block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-top:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:18px}
+@media (min-width:800px){.panel{padding:24px 26px}}
+.ptop{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px}
+.ptop h3{font-size:clamp(24px,3.4vw,32px)}
+.pmeta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--bg2);color:var(--mute)}
+.pill.ex{background:var(--gold-soft);color:#7a5a0e}
+.pill.now{background:var(--ok-soft);color:var(--ok)}
+.ptopic{color:var(--mute);margin-top:8px;font-size:15px;max-width:70ch}
+.res-row{list-style:none;margin:16px -18px 0;padding:2px 18px 12px;display:grid;grid-auto-flow:column;grid-auto-columns:148px;gap:10px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--line2) transparent;scroll-snap-type:x proximity}
+.res-row>li{scroll-snap-align:start}
+@media (min-width:800px){.res-row{margin-inline:-26px;padding-inline:26px;grid-auto-columns:minmax(132px,1fr)}}
+.rt{display:flex;flex-direction:column;gap:6px;height:100%;min-height:118px;padding:12px;border-radius:14px;border:1px solid var(--line);background:var(--bg);text-decoration:none;color:var(--ink);transition:border-color .15s,transform .18s cubic-bezier(.2,.8,.2,1)}
+.rt:hover{border-color:var(--maroon);transform:translateY(-2px)}
+.rt .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--maroon-soft);color:var(--maroon)}
+.rt .ic svg{width:19px;height:19px}
+.rt b{font-size:14.5px;line-height:1.25}
+.rt small{font-size:12.5px;color:var(--mute);line-height:1.35}
+.rt .ext{font-size:11px;font-weight:700;color:var(--faint);margin-top:auto}
+.rt.teal .ic{background:var(--teal-soft);color:var(--teal)}
+.rt.gold .ic{background:var(--gold-soft);color:var(--gold-t)}
+.rt.ok .ic{background:var(--ok-soft);color:var(--ok)}
+.sub-h{font:800 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:18px 0 8px}
+.lessons{display:flex;flex-wrap:wrap;gap:8px}
+.lessons a{font-size:14px;font-weight:600;text-decoration:none;color:var(--teal-d);background:var(--teal-soft);border-radius:10px;padding:7px 11px}
+.lessons a:hover{background:color-mix(in srgb,var(--teal) 18%,var(--teal-soft))}
+details.more{margin-top:14px;border-top:1px dashed var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-weight:700;font-size:14px;color:var(--maroon);list-style:none;display:flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .2s;margin-right:2px}
+details.more[open] summary::before{transform:rotate(45deg)}
+details.more ul{margin:10px 0 0;padding-left:20px;color:var(--mute);font-size:14.5px}
+details.more li{margin-bottom:5px}
+.wb{margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.wb iframe{display:block;width:100%;height:600px;border:0;background:#fbf7ef}
+.allweeks{margin-top:18px}
+.allweeks > summary{cursor:pointer;font-weight:700;color:var(--maroon);list-style:none;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);box-shadow:0 3px 0 var(--line)}
+.allweeks > summary::-webkit-details-marker{display:none}
+.wk-list{display:grid;gap:8px;margin-top:12px}
+.wk-item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.wk-item h4{margin:0 0 6px;font-size:15px}
+.wk-item h4 span{color:var(--maroon);margin-right:6px}
+.wk-item .links{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.wk-item .links a{font-weight:600}
+
+/* exams */
+.exams{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media (min-width:700px){.exams{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1080px){.exams{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.excard{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow);border-top:5px solid var(--ec,var(--maroon))}
+.excard.final{--ec:var(--gold);background:linear-gradient(180deg,var(--gold-soft),var(--card) 60%);grid-column:1/-1}
+@media (min-width:860px){.excard.final:has(.finalgrid){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:26px;align-items:start}.excard.final .exhead,.excard.final .covers,.excard.final .exlinks{grid-column:1}.excard.final .finalgrid{grid-column:2;grid-row:1/span 3;margin-top:0}.excard.final .exlinks{margin-top:0}}
+@media (min-width:1080px){.exams.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.exams.g5 .excard:not(.final) .exlinks{flex-direction:column}.exams.g5 .exhead{flex-direction:column;align-items:flex-start;gap:2px}}
+@media (min-width:700px) and (max-width:1079px){.exams.g5 .excard:nth-child(5){grid-column:1/-1}}
+.exhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.exhead h3{font-size:24px}
+.exhead span{font-size:13px;font-weight:700;color:var(--mute);white-space:nowrap}
+.excard .covers{margin-top:6px;color:var(--mute);font-size:14.5px;line-height:1.45}
+.exlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:14px}
+.exlinks a{flex:1 1 auto;justify-content:center;display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;text-decoration:none;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:9px 10px;white-space:nowrap}
+.exlinks a:hover{border-color:var(--maroon);color:var(--maroon)}
+.exlinks a svg{width:16px;height:16px;color:var(--maroon)}
+.exlinks a.chase{background:var(--night);border-color:var(--night);color:#fff}
+.exlinks a.chase svg{color:var(--gold)}
+.exlinks a.chase:hover{color:var(--gold)}
+.finalgrid{display:grid;gap:10px;margin-top:12px}
+.fmod{display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.fmod:hover{border-color:var(--maroon)}
+.fmod .n{flex:none;width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:var(--maroon);color:#fff;font:700 22px var(--disp)}
+.fmod b{display:block;font-size:15px}
+.fmod small{color:var(--mute);font-size:13px}
+
+/* how-to (BIO 280, kept content) */
+details.usehub{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+details.usehub>summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:4px 11px;padding:16px 18px;font-weight:700;font-size:16px}
+@media (max-width:600px){details.usehub .uh-hint{order:3;flex-basis:100%;padding-left:31px}}
+details.usehub>summary::-webkit-details-marker{display:none}
+details.usehub .uh-hint{font-weight:400;color:var(--mute);font-size:14px}
+details.usehub .chev{margin-left:auto;color:var(--faint);transition:transform .2s}
+details.usehub[open] .chev{transform:rotate(90deg)}
+details.usehub[open]>summary{border-bottom:1px solid var(--line)}
+.uh-body{padding:4px 18px 20px}
+.uh-body .sl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--faint);margin:16px 0 6px}
+.gintro{font-size:14px;color:var(--mute);margin:4px 0 12px}
+.guide{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:800px){.guide{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.guide .tool{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.guide .tool .tico{font-size:20px;flex:none}
+.guide .tool h4{margin:0 0 3px;font-size:14.5px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.guide .tool .where{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:800}
+.guide .tool p{font-size:13.5px;color:var(--mute);line-height:1.55}
+.flow{background:var(--maroon-soft);border:1px solid #e8cfd0;border-radius:12px;padding:14px 18px;margin-top:14px}
+.flow h4{margin:0 0 8px;font-size:15px;color:var(--maroon-d)}
+.flow ol{margin:0;padding-left:20px}.flow li{font-size:14px;margin:5px 0}
+
+/* footer */
+.foot{background:var(--night);color:var(--night-mute)}
+.foot .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:26px;padding-block:44px 30px;font-size:14.5px}
+@media (min-width:860px){.foot .wrap{grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr))}}
+.foot .logo{color:#fff}
+.foot .logo .crest{background:var(--night2);border-color:#5a3236;box-shadow:none}
+.foot .logo small{color:var(--night-mute)}
+.foot .who{margin-top:14px;line-height:1.7}
+.foot .who b{color:#fff}
+.foot h2{font:800 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:#fff;margin:0 0 10px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.foot a{color:var(--night-mute);text-decoration:none}
+.foot a:hover{color:#fff;text-decoration:underline}
+.foot .fine{grid-column:1/-1;border-top:1px solid #4a2a2d;padding-top:18px;font-size:13px;color:#bba7a0}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="notice">
+  <div class="wrap ni">
+    <div class="nx" aria-hidden="true">📌</div>
+    <div class="nt">
+      <strong>Module numbering on this site</strong>
+      <span>Module numbers here match <b>what the exams actually test</b>. Your Lecture Outline packet numbers Modules&nbsp;4–7 differently — if the two disagree, study by <b>topic</b>, not by module number. Modules 1–3 and 8–14 are the same in both.</span>
+    </div>
+  </div>
+</div>
+<header class="top"><div class="wrap">
+<div class="bar"><a class="logo" href="index.html"><span class="crest" aria-hidden="true">&#9877;&#65039;</span><span><b>BIO 262</b><small>Human Physiology</small></span></a>
+<nav class="nav" aria-label="Main"><a href="#tools">Tools</a><a href="#games">Games</a><a href="#path">Modules</a><a href="#exams">Exams</a></nav>
+<a class="btn sm" href="chase.html">Play The Chase</a></div>
+<nav class="mnav" aria-label="Sections"><a href="#tools">Tools</a><a href="#games">Games</a><a href="#path">Modules</a><a href="#exams">Exams</a></nav>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap">
+<div>
+<span class="kicker"><i aria-hidden="true">&#9877;&#65039;</i><span>Joyce University of Nursing and Health Sciences</span></span>
+<h1>Human Physiology, <em>one module</em> at a time.</h1>
+<p class="sub">Everything for BIO 262 in one place: 693 original practice questions with slide references, module guides, labs and games.</p>
+<p class="byline"><span class="dot" aria-hidden="true"></span>Course resources by Dr. Vidya Garg</p>
+<div class="hsearch"><div class="sbox"><form id="hform" role="search" action="#tools">
+<label class="sr" for="hq">Search this course</label><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+<input id="hq" type="search" placeholder="Search: heart, Exam 3" autocomplete="off" enterkeyhint="search" role="combobox" aria-expanded="false" aria-controls="hres" aria-autocomplete="list">
+<button class="btn" type="submit">Search</button></form>
+<div class="results" id="hres" role="listbox" aria-label="Search results"></div></div>
+<div class="quick" aria-label="Popular searches"><a href="#" data-q="action potential">action potential</a><a href="#" data-q="nephron">nephron</a><a href="#" data-q="Exam 4">Exam 4</a><a href="#" data-q="flashcards">flashcards</a></div></div>
+</div>
+<div class="stage">
+<div class="shot" aria-hidden="true"><img src="assets/previews/chase.jpg" alt="" width="480" height="640" fetchpriority="low"></div>
+<div class="quiz" id="tryone" aria-labelledby="tryq">
+<div class="qhead"><span class="qtag">Module 10</span><span class="qcount">Try one</span></div>
+<h3 id="tryq">Blood in the pulmonary VEINS is:</h3>
+<div class="opts" role="group" aria-label="Answers"><button class="opt" type="button" data-k="0"><b>A</b><span>Oxygenated</span></button><button class="opt" type="button" data-k="1"><b>B</b><span>Deoxygenated</span></button><button class="opt" type="button" data-k="2"><b>C</b><span>Mixed venous</span></button><button class="opt" type="button" data-k="3"><b>D</b><span>Lymph</span></button><button class="opt" type="button" data-k="4"><b>E</b><span>Filtered plasma</span></button></div>
+<div class="res" aria-live="polite"></div><noscript><p class="res on good"><strong>Answer: A</strong>Oxygenated. Pulmonary veins are the exception carrying oxygenated blood to the heart.</p></noscript>
+<div class="qfoot"><button type="button" data-next>Try another question</button><a href="practice.html">All practice questions &rarr;</a></div>
+</div>
+<script>window.TRY_QS=[{"tag": "Module 10", "q": "Blood in the pulmonary VEINS is:", "a": ["Oxygenated", "Deoxygenated", "Mixed venous", "Lymph", "Filtered plasma"], "c": 0, "why": "Pulmonary veins are the exception carrying oxygenated blood to the heart.", "cite": "Source: Module 10 heart deck, slide 3", "mt": "The Heart"}, {"tag": "Module 11", "q": "Interferons act primarily against:", "a": ["Bacteria", "Parasites", "Viruses", "Fungi", "Toxins"], "c": 2, "why": "Infected cells release interferon to warn neighboring cells.", "cite": "Source: Module 11 immune & lymph deck, slide 13", "mt": "The Lymphatic & Immune Systems"}, {"tag": "Module 12", "q": "Gas exchange occurs at the:", "a": ["Nasopharynx", "Diaphragm", "Alveoli", "Pleura", "Larynx"], "c": 2, "why": "Only the alveoli have the thin walls and capillary contact required for diffusion.", "cite": "Source: Module 12 respiratory deck, slide 7", "mt": "The Respiratory System"}, {"tag": "Module 13", "q": "Chief cells secrete:", "a": ["HCl", "Gastrin", "Mucus", "Pepsinogen", "Intrinsic factor"], "c": 3, "why": "Pepsinogen is activated to pepsin by gastric acid.", "cite": "Source: Module 13 GI deck, slide 6", "mt": "The Digestive System"}, {"tag": "Module 14", "q": "Leydig (interstitial) cells produce:", "a": ["FSH", "Inhibin", "Sperm", "Testosterone", "Seminal fluid"], "c": 3, "why": "LH stimulates Leydig cells to make testosterone.", "cite": "Source: Lecture Outline, Module 14 — p.158", "mt": "The Urinary & Reproductive Systems"}, {"tag": "Module 1", "q": "A pH of 7.0 is considered:", "a": ["Strongly acidic", "Weakly acidic", "Weakly basic", "Strongly basic", "Neutral"], "c": 4, "why": "At pH 7 the H+ and OH- concentrations are equal.", "cite": "Source: Lecture Outline, Module 1 — p.4", "mt": "Introduction to Physiology & the Chemical Level"}, {"tag": "Module 2", "q": "Where does glycolysis occur?", "a": ["Mitochondrial matrix", "Nucleus", "Golgi apparatus", "Lysosome", "Cytoplasm"], "c": 4, "why": "Glycolysis is cytoplasmic and anaerobic. Only the later aerobic stages occur in the mitochondrion.", "cite": "Source: Module 2 live-class deck, slide 19", "mt": "The Cellular Level of Organization"}, {"tag": "Module 3", "q": "Melanin is produced by:", "a": ["Melanocytes", "Keratinocytes", "Langerhans cells", "Merkel cells", "Fibroblasts"], "c": 0, "why": "Melanocytes sit in the stratum basale and transfer melanin granules to nearby keratinocytes.", "cite": "Source: Module 3 live-class deck, slide 17", "mt": "Tissues & the Integumentary System"}, {"tag": "Module 4", "q": "Long bones lengthen at the:", "a": ["Periosteum", "Medullary cavity", "Endosteum", "Diaphyseal cortex", "Epiphyseal plate"], "c": 4, "why": "The epiphyseal (growth) plate is the cartilage zone where new bone is added to lengthen the shaft.", "cite": "Source: Module 4 bones deck, slide 3", "mt": "Bones & Skeletal Physiology"}, {"tag": "Module 5", "q": "Myoglobin functions in muscle to:", "a": ["Contract", "Store oxygen", "Break down glucose", "Bind calcium", "Conduct impulses"], "c": 1, "why": "Myoglobin holds an oxygen reserve for aerobic metabolism.", "cite": "Source: Lecture Outline, Module 5 — p.49", "mt": "Muscle Tissue & Nervous Tissue"}, {"tag": "Module 6", "q": "Threshold potential is approximately:", "a": ["-90 mV", "-55 mV", "-70 mV", "0 mV", "+30 mV"], "c": 1, "why": "At roughly -55 mV, voltage-gated sodium channels open and the all-or-none action potential fires.", "cite": "Source: Module 6 brain & ANS deck, slide 13", "mt": "Brain, Action Potentials & the Autonomic Nervous System"}, {"tag": "Module 7", "q": "Night vision depends primarily on:", "a": ["Rods", "Cones", "The lens", "The cornea", "Aqueous humor"], "c": 0, "why": "Rods are far more light-sensitive but give no color.", "cite": "Source: Module 7 eye & ear deck, slide 6", "mt": "Special Senses — Vision, Hearing & Equilibrium"}, {"tag": "Module 8", "q": "Cushing syndrome reflects excess:", "a": ["Insulin", "Calcitonin", "ADH", "Cortisol", "Melatonin"], "c": 3, "why": "Chronic glucocorticoid excess causes central obesity and hyperglycemia.", "cite": "Source: Lecture Outline, Module 8 — p.88", "mt": "The Endocrine System — Receptors & Hormones"}, {"tag": "Module 9", "q": "The most abundant plasma protein is:", "a": ["Fibrinogen", "Globulin", "Hemoglobin", "Thrombin", "Albumin"], "c": 4, "why": "Albumin maintains colloid osmotic pressure and transports substances.", "cite": "Source: Lecture Outline, Module 9 — p.98", "mt": "Blood & Blood Vessels"}];</script>
+<script>/* "Try one" question card. Runs inline right after the card, so it works before anything else loads. */
+(function () {
+  var card = document.getElementById("tryone");
+  if (!card) return;
+  var Q = window.TRY_QS || [], L = "ABCDEFGH";
+  var i = 0, done = false;
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  function render(n) {
+    var q = Q[n]; if (!q) return;
+    done = false;
+    card.querySelector(".qtag").textContent = q.tag;
+    card.querySelector("h3").innerHTML = q.q;
+    card.querySelector(".opts").innerHTML = q.a.map(function (a, k) {
+      return '<button class="opt" type="button" data-k="' + k + '"><b>' + L[k] + "</b><span>" + a + "</span></button>";
+    }).join("");
+    var r = card.querySelector(".res"); r.className = "res"; r.innerHTML = "";
+  }
+  card.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".opt") : null;
+    if (b && !done) {
+      done = true;
+      var q = Q[i], k = +b.getAttribute("data-k"), ok = k === q.c;
+      [].forEach.call(card.querySelectorAll(".opt"), function (o) {
+        var j = +o.getAttribute("data-k");
+        o.disabled = true;
+        o.classList.add(j === q.c ? "right" : (j === k ? "wrong" : "dim"));
+      });
+      var r = card.querySelector(".res");
+      r.className = "res on " + (ok ? "good" : "bad");
+      r.innerHTML = "<strong>" + (ok ? "Correct" : "Not quite") + "</strong>" + (ok ? "" : "The answer is " + L[q.c] + ". " + q.a[q.c] + ". ") + q.why + (q.cite ? '<span class="cite">' + esc(q.cite) + "</span>" : "");
+      r.setAttribute("tabindex", "-1");
+      return;
+    }
+    if (e.target.closest && e.target.closest("[data-next]")) {
+      i = (i + 1) % Q.length;
+      render(i);
+      var f = card.querySelector(".opt"); if (f) f.focus();
+    }
+  });
+})();
+</script>
+</div>
+</div></section>
+<section class="stats" aria-label="This course in numbers"><div class="wrap"><ul><li style="--sc:var(--maroon)"><b>693</b><span>practice questions with rationales</span></li><li style="--sc:var(--gold)"><b>554</b><span>flashcards</span></li><li style="--sc:var(--teal)"><b>70</b><span>interactive lab benches</span></li><li style="--sc:var(--maroon)"><b>14</b><span>module study guides</span></li><li style="--sc:var(--gold)"><b>20</b><span>Chase rounds to play</span></li><li style="--sc:var(--teal)"><b>6</b><span>exam review guides</span></li></ul></div></section>
+<section class="sec" id="tools" aria-labelledby="tools-h"><div class="wrap">
+<div class="head"><div><span class="eyebrow">Study tools</span><h2 id="tools-h">Everything to study with</h2><p>Each card shows the tool in action. Tap one to open it.</p><p class="swipe">Swipe for more.</p></div>
+<div class="railbtns" data-rail="rail-tools"><button type="button" data-dir="prev" aria-label="Scroll Everything to study with left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" data-dir="next" aria-label="Scroll Everything to study with right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+<ul class="rail" id="rail-tools"><li><a class="tcard" href="practice.html"><div class="media"><span class="tag gold">Start here</span><img src="assets/previews/practice.jpg" alt="Practice question answered correctly with its rationale" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/practice.jpg" data-src="assets/previews/practice.mp4" data-webm="assets/previews/practice.webm"></video></div><div class="tbody"><h3>Practice Questions</h3><p>693 questions. Every rationale cites the lecture slide.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="book/index.html"><div class="media"><img src="assets/previews/book.jpg" alt="A book chapter with its breathing simulation running" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/book.jpg" data-src="assets/previews/book.mp4" data-webm="assets/previews/book.webm"></video></div><div class="tbody"><h3>The Interactive Book</h3><p>14 modules, 70 built-in simulations, and the whole book as a PDF.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="labs.html"><div class="media"><img src="assets/previews/labs.jpg" alt="Pacemaker lab: dragging autonomic tone raises the heart rate" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/labs.jpg" data-src="assets/previews/labs.mp4" data-webm="assets/previews/labs.webm"></video></div><div class="tbody"><h3>The Lab Library</h3><p>70 interactive benches. All 14 modules, direct access.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="modules/index.html"><div class="media"><img src="assets/previews/studyguides.jpg" alt="Study guide stepping through the cardiac cycle" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/studyguides.jpg" data-src="assets/previews/studyguides.mp4" data-webm="assets/previews/studyguides.webm"></video></div><div class="tbody"><h3>Study Guides</h3><p>14 module lessons. Interactive, with a Download PDF on every page.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="study-guides.html"><div class="media"><img src="assets/previews/reviewguides.jpg" alt="Exam 4 review guide with an answer opened" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/reviewguides.jpg" data-src="assets/previews/reviewguides.mp4" data-webm="assets/previews/reviewguides.webm"></video></div><div class="tbody"><h3>Exam Review Guides</h3><p>14 module reviews and 6 exam reviews. Print to PDF.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="flashcards.html"><div class="media"><img src="assets/previews/flashcards.jpg" alt="A flashcard flipping to its answer" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/flashcards.jpg" data-src="assets/previews/flashcards.mp4" data-webm="assets/previews/flashcards.webm"></video></div><div class="tbody"><h3>Flashcards</h3><p>554 cards. Complete sets for all 14 modules.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="practice.html"><div class="media"><span class="tag">Final only</span><img src="assets/previews/final.jpg" alt="Module 13: walking the alimentary canal organ by organ" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/final.jpg" data-src="assets/previews/final.mp4" data-webm="assets/previews/final.webm"></video></div><div class="tbody"><h3>Final-Only Modules</h3><p>Modules 13 and 14, the final-only material.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li></ul>
+</div></section>
+<section class="sec dark" id="games" aria-labelledby="games-h"><div class="wrap">
+<div class="head"><div><span class="eyebrow">Learn by playing</span><h2 id="games-h">Play your way through physiology</h2><p>Every game uses the course questions and explains every answer.</p><p class="swipe">Swipe for more.</p></div>
+<div class="railbtns" data-rail="rail-games"><button type="button" data-dir="prev" aria-label="Scroll Play your way through physiology left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" data-dir="next" aria-label="Scroll Play your way through physiology right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+<ul class="rail games" id="rail-games"><li><a class="tcard" href="chase.html"><div class="media"><span class="tag gold">Main game</span><img src="assets/previews/chase.jpg" alt="The Chase: the Arrhythmia King closes in, lead down to 1" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/chase.jpg" data-src="assets/previews/chase.mp4" data-webm="assets/previews/chase.webm"></video></div><div class="tbody"><h3>The Chase</h3><p>Quiz show chase, one round per exam and per module.</p><span class="go">Play <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="physioquest.html"><div class="media"><img src="assets/previews/physioquest.jpg" alt="PhysioQuest: The Suffocant boss appears" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/physioquest.jpg" data-src="assets/previews/physioquest.mp4" data-webm="assets/previews/physioquest.webm"></video></div><div class="tbody"><h3>PhysioQuest</h3><p>11 zones, 14 module bosses, pixel art world map.</p><span class="go">Play <span aria-hidden="true">&rarr;</span></span></div></a></li><li><a class="tcard" href="bestiary.html"><div class="media"><img src="assets/previews/bestiary.jpg" alt="Bestiary cards of pixel art bosses" width="480" height="640" loading="lazy" decoding="async"><video muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" poster="assets/previews/bestiary.jpg" data-src="assets/previews/bestiary.mp4" data-webm="assets/previews/bestiary.webm"></video></div><div class="tbody"><h3>Bestiary</h3><p>14 module bosses: dossiers, movesets, weaknesses.</p><span class="go">Open <span aria-hidden="true">&rarr;</span></span></div></a></li></ul>
+</div></section>
+<section class="sec alt" id="path" aria-labelledby="path-h"><div class="wrap">
+<div class="head"><div><span class="eyebrow">This week</span><h2 id="path-h">Pick your module</h2><p>Everything for one module in a single row: the lesson, the book chapter, the labs, the review guide, practice and the Chase round.</p></div></div>
+<div class="chips" role="group" aria-label="Choose a module" id="chips"></div>
+<div class="panel" id="mpanel" aria-live="polite"><noscript>Open <a href="modules/index.html">the study guides</a> to choose a module.</noscript></div>
+</div></section>
+<section class="sec" id="exams" aria-labelledby="exams-h"><div class="wrap">
+<div class="head"><div><span class="eyebrow">Exam schedule</span><h2 id="exams-h">Getting ready for an exam</h2><p>Each exam has a review guide, a Chase review round and a practice set. Question counts come from the exam blueprint.</p></div></div>
+<div class="exams g5"><article class="excard"><div class="exhead"><h3>Exam 1</h3><span>50 questions</span></div><p class="covers">M1 Introduction to Physiology &amp; the Chemical Level &middot; M2 The Cellular Level of Organization</p><div class="exlinks"><a href="guides/exam-1.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=15"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (107)</a></div></article><article class="excard"><div class="exhead"><h3>Exam 2</h3><span>50 questions</span></div><p class="covers">M3 Tissues &amp; the Integumentary System &middot; M4 Bones &amp; Skeletal Physiology</p><div class="exlinks"><a href="guides/exam-2.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=16"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (95)</a></div></article><article class="excard"><div class="exhead"><h3>Exam 3</h3><span>50 questions</span></div><p class="covers">M5 Muscle Tissue &amp; Nervous Tissue &middot; M6 Brain, Action Potentials &amp; the Autonomic Nervous System</p><div class="exlinks"><a href="guides/exam-3.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=17"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (106)</a></div></article><article class="excard"><div class="exhead"><h3>Exam 4</h3><span>50 questions</span></div><p class="covers">M7 Special Senses — Vision, Hearing &amp; Equilibrium &middot; M8 The Endocrine System — Receptors &amp; Hormones &middot; M9 Blood &amp; Blood Vessels</p><div class="exlinks"><a href="guides/exam-4.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=18"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (135)</a></div></article><article class="excard"><div class="exhead"><h3>Exam 5</h3><span>50 questions</span></div><p class="covers">M10 The Heart &middot; M11 The Lymphatic &amp; Immune Systems &middot; M12 The Respiratory System</p><div class="exlinks"><a href="guides/exam-5.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=19"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (128)</a></div></article><article class="excard final"><div class="exhead"><h3>Final Exam</h3><span>100 questions</span></div><p class="covers">All 14 modules, cumulative, with Modules 13 and 14 weighted heaviest (16 questions each).</p><div class="finalgrid">
+<a class="fmod" href="module13.html"><span class="n">13</span><span><b>Module 13 &middot; Digestive</b><small>16 final questions &middot; walk the alimentary canal</small></span></a>
+<a class="fmod" href="module14.html"><span class="n">14</span><span><b>Module 14 &middot; Urinary and Reproductive</b><small>16 final questions &middot; nephron and cycle explorer</small></span></a></div><div class="exlinks"><a href="guides/final-exam.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>Review guide</a><a class="chase" href="chase.html?wk=20"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="14" cy="4" r="2"/><path d="m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3"/></svg>Chase round</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>Practice (693)</a><a href="practice.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Final-only modules</a></div></article></div>
+</div></section>
+</main>
+<footer class="foot"><div class="wrap">
+<div><a class="logo" href="index.html"><span class="crest" aria-hidden="true">&#9877;&#65039;</span><span><b>BIO 262</b><small>Human Physiology</small></span></a>
+<p class="who"><b>BIO 262 · Human Physiology</b><br>Joyce University of Nursing and Health Sciences<br>Course resources by Dr. Vidya Garg</p></div>
+<div><h2>Study tools</h2><ul><li><a href="practice.html">Practice Questions</a></li><li><a href="book/index.html">The Interactive Book</a></li><li><a href="labs.html">The Lab Library</a></li><li><a href="modules/index.html">Study Guides</a></li><li><a href="study-guides.html">Exam Review Guides</a></li><li><a href="flashcards.html">Flashcards</a></li></ul></div>
+<div><h2>Games</h2><ul><li><a href="chase.html">The Chase</a></li><li><a href="physioquest.html">PhysioQuest</a></li><li><a href="bestiary.html">Bestiary</a></li></ul></div>
+<div><h2>Final exam</h2><ul><li><a href="module13.html">Module 13 · Digestive</a></li><li><a href="module14.html">Module 14 · Urinary and Reproductive</a></li><li><a href="guides/final-exam.html">Final exam review guide</a></li><li><a href="#exams">All exams</a></li></ul></div>
+<p class="fine">Practice questions are original items written against the published learning outcomes. They are not taken from any exam.</p>
+</div></footer>
+<script src="data/modules.js"></script>
+<script>window.HUB_INDEX=[{"c": "Tool", "t": "Practice Questions", "u": "practice.html", "s": "693 questions with rationales that cite the lecture slide", "k": "quiz practice exam questions test", "w": 3}, {"c": "Tool", "t": "The Interactive Book", "u": "book/index.html", "s": "14 chapters with built-in simulations, whole book as PDF", "k": "textbook chapters reading", "w": 3}, {"c": "Tool", "t": "The Lab Library", "u": "labs.html", "s": "70 interactive lab benches", "k": "labs simulations benches", "w": 3}, {"c": "Tool", "t": "Study Guides", "u": "modules/index.html", "s": "14 module lessons with a working model and five questions", "k": "lessons study guide", "w": 3}, {"c": "Tool", "t": "Exam Review Guides", "u": "study-guides.html", "s": "14 module reviews and 6 exam reviews, print to PDF", "k": "review guide exam", "w": 3}, {"c": "Tool", "t": "Flashcards", "u": "flashcards.html", "s": "554 cards across all 14 modules", "k": "flash cards terms", "w": 3}, {"c": "Tool", "t": "PhysioQuest", "u": "physioquest.html", "s": "Pixel art adventure with 14 module bosses", "k": "game rpg", "w": 3}, {"c": "Tool", "t": "Bestiary", "u": "bestiary.html", "s": "Boss dossiers, movesets and weaknesses", "k": "bosses game", "w": 3}, {"c": "Tool", "t": "The Chase", "u": "chase.html", "s": "Quiz show chase, a round for every module and exam", "k": "game quiz show review", "w": 3}, {"c": "Module", "t": "Module 1: Introduction to Physiology & the Chemical Level", "u": "#m1", "s": "Open this module's lesson, labs, review and practice", "k": "Define physiology and its subdivisions Examine the role of atoms and electrons in physiological processes Define homeostasis, positive feedback, and negative feedback Describe pH and how acids, bases, and buffers are important to physiology", "w": 2}, {"c": "Lesson", "t": "Module 1 study guide", "u": "modules/module-01-introduction.html", "s": "Introduction to Physiology & the Chemical Level", "k": "Define physiology and its subdivisions Examine the role of atoms and electrons in physiological processes Define homeostasis, positive feedback, and negative feedback Describe pH and how acids, bases, and buffers are important to physiology", "w": 0}, {"c": "Review", "t": "Module 1 review guide", "u": "guides/module-01.html", "s": "Introduction to Physiology & the Chemical Level", "k": "Define physiology and its subdivisions Examine the role of atoms and electrons in physiological processes Define homeostasis, positive feedback, and negative feedback Describe pH and how acids, bases, and buffers are important to physiology", "w": 0}, {"c": "Book", "t": "Chapter 1: Intro to Physiology and the Chemical Level", "u": "book/ch01.html", "s": "The Interactive Book", "k": "Define physiology and its subdivisions Examine the role of atoms and electrons in physiological processes Define homeostasis, positive feedback, and negative feedback Describe pH and how acids, bases, and buffers are important to physiology", "w": 0}, {"c": "Slides", "t": "Module 1 lecture slides", "u": "slides/module-01-lecture-slides.pdf", "s": "PDF", "k": "Introduction to Physiology & the Chemical Level", "w": 0}, {"c": "Module", "t": "Module 2: The Cellular Level of Organization", "u": "#m2", "s": "Open this module's lesson, labs, review and practice", "k": "Identify the physiological functions of the cell membrane Describe the processes of diffusion and osmosis Describe the functions of major cellular organelles toward maintaining homeostasis Describe the significance of transcription, translation, and mitosis", "w": 2}, {"c": "Lesson", "t": "Module 2 study guide", "u": "modules/module-02-cellular.html", "s": "The Cellular Level of Organization", "k": "Identify the physiological functions of the cell membrane Describe the processes of diffusion and osmosis Describe the functions of major cellular organelles toward maintaining homeostasis Describe the significance of transcription, translation, and mitosis", "w": 0}, {"c": "Review", "t": "Module 2 review guide", "u": "guides/module-02.html", "s": "The Cellular Level of Organization", "k": "Identify the physiological functions of the cell membrane Describe the processes of diffusion and osmosis Describe the functions of major cellular organelles toward maintaining homeostasis Describe the significance of transcription, translation, and mitosis", "w": 0}, {"c": "Book", "t": "Chapter 2: THE CELLULAR LEVEL OF ORGANIZATION", "u": "book/ch02.html", "s": "The Interactive Book", "k": "Identify the physiological functions of the cell membrane Describe the processes of diffusion and osmosis Describe the functions of major cellular organelles toward maintaining homeostasis Describe the significance of transcription, translation, and mitosis", "w": 0}, {"c": "Slides", "t": "Module 2 lecture slides", "u": "slides/module-02-lecture-slides.pdf", "s": "PDF", "k": "The Cellular Level of Organization", "w": 0}, {"c": "Module", "t": "Module 3: Tissues & the Integumentary System", "u": "#m3", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiological functions of different epithelial tissues Identify the roles of various connective tissues in bodily functions Examine the physiological significance of body membranes Describe the physiological functions of the epidermis and dermis Explain the processes of melanin production and vitamin D conversion", "w": 2}, {"c": "Lesson", "t": "Module 3 study guide", "u": "modules/module-03-tissues.html", "s": "Tissues & the Integumentary System", "k": "Describe the physiological functions of different epithelial tissues Identify the roles of various connective tissues in bodily functions Examine the physiological significance of body membranes Describe the physiological functions of the epidermis and dermis Explain the processes of melanin production and vitamin D conversion", "w": 0}, {"c": "Review", "t": "Module 3 review guide", "u": "guides/module-03.html", "s": "Tissues & the Integumentary System", "k": "Describe the physiological functions of different epithelial tissues Identify the roles of various connective tissues in bodily functions Examine the physiological significance of body membranes Describe the physiological functions of the epidermis and dermis Explain the processes of melanin production and vitamin D conversion", "w": 0}, {"c": "Book", "t": "Chapter 3: Tissues and the Integumentary System", "u": "book/ch03.html", "s": "The Interactive Book", "k": "Describe the physiological functions of different epithelial tissues Identify the roles of various connective tissues in bodily functions Examine the physiological significance of body membranes Describe the physiological functions of the epidermis and dermis Explain the processes of melanin production and vitamin D conversion", "w": 0}, {"c": "Slides", "t": "Module 3 lecture slides", "u": "slides/module-03-lecture-slides.pdf", "s": "PDF", "k": "Tissues & the Integumentary System", "w": 0}, {"c": "Module", "t": "Module 4: Bones & Skeletal Physiology", "u": "#m4", "s": "Open this module's lesson, labs, review and practice", "k": "Compare the physiological functions of flat and long bones Describe the roles of different cell types in bone physiology Differentiate between endochondral and intramembranous ossification Identify bone growth and maintenance processes including remodeling hormone regulation and exercise", "w": 2}, {"c": "Lesson", "t": "Module 4 study guide", "u": "modules/module-07-muscular-skeletal.html", "s": "Bones & Skeletal Physiology", "k": "Compare the physiological functions of flat and long bones Describe the roles of different cell types in bone physiology Differentiate between endochondral and intramembranous ossification Identify bone growth and maintenance processes including remodeling hormone regulation and exercise", "w": 0}, {"c": "Review", "t": "Module 4 review guide", "u": "guides/module-04.html", "s": "Bones & Skeletal Physiology", "k": "Compare the physiological functions of flat and long bones Describe the roles of different cell types in bone physiology Differentiate between endochondral and intramembranous ossification Identify bone growth and maintenance processes including remodeling hormone regulation and exercise", "w": 0}, {"c": "Book", "t": "Chapter 4: Bones and Skeletal Physiology", "u": "book/ch04.html", "s": "The Interactive Book", "k": "Compare the physiological functions of flat and long bones Describe the roles of different cell types in bone physiology Differentiate between endochondral and intramembranous ossification Identify bone growth and maintenance processes including remodeling hormone regulation and exercise", "w": 0}, {"c": "Slides", "t": "Module 4 lecture slides", "u": "slides/module-04-lecture-slides.pdf", "s": "PDF", "k": "Bones & Skeletal Physiology", "w": 0}, {"c": "Module", "t": "Module 5: Muscle Tissue & Nervous Tissue", "u": "#m5", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiological functions of each type of muscle tissue Explain the physiological processes at the neuromuscular junction and during muscle contraction Identify the energy sources for muscle contraction and their physiological significance Describe the physiological functions of neurons and neuroglial cells Classify neurons based on structure and function Explain the physiological function of inhibitory synapses Explain the physiological roles of synapses and neurotransmitters", "w": 2}, {"c": "Lesson", "t": "Module 5 study guide", "u": "modules/module-04-nervous-tissue.html", "s": "Muscle Tissue & Nervous Tissue", "k": "Describe the physiological functions of each type of muscle tissue Explain the physiological processes at the neuromuscular junction and during muscle contraction Identify the energy sources for muscle contraction and their physiological significance Describe the physiological functions of neurons and neuroglial cells Classify neurons based on structure and function Explain the physiological function of inhibitory synapses Explain the physiological roles of synapses and neurotransmitters", "w": 0}, {"c": "Review", "t": "Module 5 review guide", "u": "guides/module-05.html", "s": "Muscle Tissue & Nervous Tissue", "k": "Describe the physiological functions of each type of muscle tissue Explain the physiological processes at the neuromuscular junction and during muscle contraction Identify the energy sources for muscle contraction and their physiological significance Describe the physiological functions of neurons and neuroglial cells Classify neurons based on structure and function Explain the physiological function of inhibitory synapses Explain the physiological roles of synapses and neurotransmitters", "w": 0}, {"c": "Book", "t": "Chapter 5: Muscle Tissue and Nervous Tissue", "u": "book/ch05.html", "s": "The Interactive Book", "k": "Describe the physiological functions of each type of muscle tissue Explain the physiological processes at the neuromuscular junction and during muscle contraction Identify the energy sources for muscle contraction and their physiological significance Describe the physiological functions of neurons and neuroglial cells Classify neurons based on structure and function Explain the physiological function of inhibitory synapses Explain the physiological roles of synapses and neurotransmitters", "w": 0}, {"c": "Slides", "t": "Module 5 lecture slides", "u": "slides/module-05-lecture-slides.pdf", "s": "PDF", "k": "Muscle Tissue & Nervous Tissue", "w": 0}, {"c": "Module", "t": "Module 6: Brain, Action Potentials & the Autonomic Nervous System", "u": "#m6", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiological significance of the meninges white matter and gray matter Explain the physiological significance of nerves including action potentials Compare the physiological roles of the sympathetic and parasympathetic nervous systems Describe the physiological functions of the brain and brainstem Describe the physiology of the olfactory and gustatory systems", "w": 2}, {"c": "Lesson", "t": "Module 6 study guide", "u": "modules/module-05-brain-ans.html", "s": "Brain, Action Potentials & the Autonomic Nervous System", "k": "Describe the physiological significance of the meninges white matter and gray matter Explain the physiological significance of nerves including action potentials Compare the physiological roles of the sympathetic and parasympathetic nervous systems Describe the physiological functions of the brain and brainstem Describe the physiology of the olfactory and gustatory systems", "w": 0}, {"c": "Review", "t": "Module 6 review guide", "u": "guides/module-06.html", "s": "Brain, Action Potentials & the Autonomic Nervous System", "k": "Describe the physiological significance of the meninges white matter and gray matter Explain the physiological significance of nerves including action potentials Compare the physiological roles of the sympathetic and parasympathetic nervous systems Describe the physiological functions of the brain and brainstem Describe the physiology of the olfactory and gustatory systems", "w": 0}, {"c": "Book", "t": "Chapter 6: The Brain, Action Potentials and the Autonomic Nervous System", "u": "book/ch06.html", "s": "The Interactive Book", "k": "Describe the physiological significance of the meninges white matter and gray matter Explain the physiological significance of nerves including action potentials Compare the physiological roles of the sympathetic and parasympathetic nervous systems Describe the physiological functions of the brain and brainstem Describe the physiology of the olfactory and gustatory systems", "w": 0}, {"c": "Slides", "t": "Module 6 lecture slides", "u": "slides/module-06-lecture-slides.pdf", "s": "PDF", "k": "Brain, Action Potentials & the Autonomic Nervous System", "w": 0}, {"c": "Module", "t": "Module 7: Special Senses — Vision, Hearing & Equilibrium", "u": "#m7", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiology of the eye Explain the physiology behind processing visual information Describe the physiology behind equilibrium Describe the physiology behind hearing", "w": 2}, {"c": "Lesson", "t": "Module 7 study guide", "u": "modules/module-06-sensations.html", "s": "Special Senses — Vision, Hearing & Equilibrium", "k": "Describe the physiology of the eye Explain the physiology behind processing visual information Describe the physiology behind equilibrium Describe the physiology behind hearing", "w": 0}, {"c": "Review", "t": "Module 7 review guide", "u": "guides/module-07.html", "s": "Special Senses — Vision, Hearing & Equilibrium", "k": "Describe the physiology of the eye Explain the physiology behind processing visual information Describe the physiology behind equilibrium Describe the physiology behind hearing", "w": 0}, {"c": "Book", "t": "Chapter 7: The Special Senses", "u": "book/ch07.html", "s": "The Interactive Book", "k": "Describe the physiology of the eye Explain the physiology behind processing visual information Describe the physiology behind equilibrium Describe the physiology behind hearing", "w": 0}, {"c": "Slides", "t": "Module 7 lecture slides", "u": "slides/module-07-lecture-slides.pdf", "s": "PDF", "k": "Special Senses — Vision, Hearing & Equilibrium", "w": 0}, {"c": "Module", "t": "Module 8: The Endocrine System — Receptors & Hormones", "u": "#m8", "s": "Open this module's lesson, labs, review and practice", "k": "Compare different types of receptors and their physiological significance Describe the physiological roles of hormones", "w": 2}, {"c": "Lesson", "t": "Module 8 study guide", "u": "modules/module-08-endocrine.html", "s": "The Endocrine System — Receptors & Hormones", "k": "Compare different types of receptors and their physiological significance Describe the physiological roles of hormones", "w": 0}, {"c": "Review", "t": "Module 8 review guide", "u": "guides/module-08.html", "s": "The Endocrine System — Receptors & Hormones", "k": "Compare different types of receptors and their physiological significance Describe the physiological roles of hormones", "w": 0}, {"c": "Book", "t": "Chapter 8: The Endocrine System", "u": "book/ch08.html", "s": "The Interactive Book", "k": "Compare different types of receptors and their physiological significance Describe the physiological roles of hormones", "w": 0}, {"c": "Slides", "t": "Module 8 lecture slides", "u": "slides/module-08-lecture-slides.pdf", "s": "PDF", "k": "The Endocrine System — Receptors & Hormones", "w": 0}, {"c": "Module", "t": "Module 9: Blood & Blood Vessels", "u": "#m9", "s": "Open this module's lesson, labs, review and practice", "k": "Identify the physiologic role of whole blood and its component parts Identify the physiological functions of erythrocytes, leukocytes, and platelets Describe the physiology behind vascular regulation Describe the physiology of hemostasis", "w": 2}, {"c": "Lesson", "t": "Module 9 study guide", "u": "modules/module-09-blood-vessels.html", "s": "Blood & Blood Vessels", "k": "Identify the physiologic role of whole blood and its component parts Identify the physiological functions of erythrocytes, leukocytes, and platelets Describe the physiology behind vascular regulation Describe the physiology of hemostasis", "w": 0}, {"c": "Review", "t": "Module 9 review guide", "u": "guides/module-09.html", "s": "Blood & Blood Vessels", "k": "Identify the physiologic role of whole blood and its component parts Identify the physiological functions of erythrocytes, leukocytes, and platelets Describe the physiology behind vascular regulation Describe the physiology of hemostasis", "w": 0}, {"c": "Book", "t": "Chapter 9: Blood and Blood Vessels", "u": "book/ch09.html", "s": "The Interactive Book", "k": "Identify the physiologic role of whole blood and its component parts Identify the physiological functions of erythrocytes, leukocytes, and platelets Describe the physiology behind vascular regulation Describe the physiology of hemostasis", "w": 0}, {"c": "Slides", "t": "Module 9 lecture slides", "u": "slides/module-09-lecture-slides.pdf", "s": "PDF", "k": "Blood & Blood Vessels", "w": 0}, {"c": "Module", "t": "Module 10: The Heart", "u": "#m10", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiology of the heart as a pump Describe the physiology of the heart as an electrical system", "w": 2}, {"c": "Lesson", "t": "Module 10 study guide", "u": "modules/module-10-heart.html", "s": "The Heart", "k": "Describe the physiology of the heart as a pump Describe the physiology of the heart as an electrical system", "w": 0}, {"c": "Review", "t": "Module 10 review guide", "u": "guides/module-10.html", "s": "The Heart", "k": "Describe the physiology of the heart as a pump Describe the physiology of the heart as an electrical system", "w": 0}, {"c": "Book", "t": "Chapter 10: The Heart", "u": "book/ch10.html", "s": "The Interactive Book", "k": "Describe the physiology of the heart as a pump Describe the physiology of the heart as an electrical system", "w": 0}, {"c": "Slides", "t": "Module 10 lecture slides", "u": "slides/module-10-lecture-slides.pdf", "s": "PDF", "k": "The Heart", "w": 0}, {"c": "Module", "t": "Module 11: The Lymphatic & Immune Systems", "u": "#m11", "s": "Open this module's lesson, labs, review and practice", "k": "Identify the physiologic significance of different types of lymphocytes Describe the physiological functions of lymphatic tissues and organs Explain the physiology of the innate, adaptive, and complement systems", "w": 2}, {"c": "Lesson", "t": "Module 11 study guide", "u": "modules/module-11-lymphatic-immune.html", "s": "The Lymphatic & Immune Systems", "k": "Identify the physiologic significance of different types of lymphocytes Describe the physiological functions of lymphatic tissues and organs Explain the physiology of the innate, adaptive, and complement systems", "w": 0}, {"c": "Review", "t": "Module 11 review guide", "u": "guides/module-11.html", "s": "The Lymphatic & Immune Systems", "k": "Identify the physiologic significance of different types of lymphocytes Describe the physiological functions of lymphatic tissues and organs Explain the physiology of the innate, adaptive, and complement systems", "w": 0}, {"c": "Book", "t": "Chapter 11: The Lymphatic and Immune Systems", "u": "book/ch11.html", "s": "The Interactive Book", "k": "Identify the physiologic significance of different types of lymphocytes Describe the physiological functions of lymphatic tissues and organs Explain the physiology of the innate, adaptive, and complement systems", "w": 0}, {"c": "Slides", "t": "Module 11 lecture slides", "u": "slides/module-11-lecture-slides.pdf", "s": "PDF", "k": "The Lymphatic & Immune Systems", "w": 0}, {"c": "Module", "t": "Module 12: The Respiratory System", "u": "#m12", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiology of ventilation, perfusion, and diffusion Describe the physiology of gas exchange and transport Identify the physiological roles of different cell types in the alveoli", "w": 2}, {"c": "Lesson", "t": "Module 12 study guide", "u": "modules/module-12-respiratory.html", "s": "The Respiratory System", "k": "Describe the physiology of ventilation, perfusion, and diffusion Describe the physiology of gas exchange and transport Identify the physiological roles of different cell types in the alveoli", "w": 0}, {"c": "Review", "t": "Module 12 review guide", "u": "guides/module-12.html", "s": "The Respiratory System", "k": "Describe the physiology of ventilation, perfusion, and diffusion Describe the physiology of gas exchange and transport Identify the physiological roles of different cell types in the alveoli", "w": 0}, {"c": "Book", "t": "Chapter 12: The Respiratory System", "u": "book/ch12.html", "s": "The Interactive Book", "k": "Describe the physiology of ventilation, perfusion, and diffusion Describe the physiology of gas exchange and transport Identify the physiological roles of different cell types in the alveoli", "w": 0}, {"c": "Slides", "t": "Module 12 lecture slides", "u": "slides/module-12-lecture-slides.pdf", "s": "PDF", "k": "The Respiratory System", "w": 0}, {"c": "Module", "t": "Module 13: The Digestive System", "u": "#m13", "s": "Open this module's lesson, labs, review and practice", "k": "Describe the physiological processes of mechanical and chemical digestion and absorption in each organ of the alimentary canal Identify the physiological roles of accessory digestive organs", "w": 2}, {"c": "Lesson", "t": "Module 13 study guide", "u": "modules/module-13-digestive.html", "s": "The Digestive System", "k": "Describe the physiological processes of mechanical and chemical digestion and absorption in each organ of the alimentary canal Identify the physiological roles of accessory digestive organs", "w": 0}, {"c": "Review", "t": "Module 13 review guide", "u": "guides/module-13.html", "s": "The Digestive System", "k": "Describe the physiological processes of mechanical and chemical digestion and absorption in each organ of the alimentary canal Identify the physiological roles of accessory digestive organs", "w": 0}, {"c": "Book", "t": "Chapter 13: The Digestive System", "u": "book/ch13.html", "s": "The Interactive Book", "k": "Describe the physiological processes of mechanical and chemical digestion and absorption in each organ of the alimentary canal Identify the physiological roles of accessory digestive organs", "w": 0}, {"c": "Slides", "t": "Module 13 lecture slides", "u": "slides/module-13-lecture-slides.pdf", "s": "PDF", "k": "The Digestive System", "w": 0}, {"c": "Module", "t": "Module 14: The Urinary & Reproductive Systems", "u": "#m14", "s": "Open this module's lesson, labs, review and practice", "k": "Identify the functions of the urinary system Describe how the nephron functions and how urine is formed Describe the process of spermatogenesis and sperm maturation Describe the process of oogenesis and follicular development Identify the menstrual cycle Describe menopause", "w": 2}, {"c": "Lesson", "t": "Module 14 study guide", "u": "modules/module-14-urinary-reproductive.html", "s": "The Urinary & Reproductive Systems", "k": "Identify the functions of the urinary system Describe how the nephron functions and how urine is formed Describe the process of spermatogenesis and sperm maturation Describe the process of oogenesis and follicular development Identify the menstrual cycle Describe menopause", "w": 0}, {"c": "Review", "t": "Module 14 review guide", "u": "guides/module-14.html", "s": "The Urinary & Reproductive Systems", "k": "Identify the functions of the urinary system Describe how the nephron functions and how urine is formed Describe the process of spermatogenesis and sperm maturation Describe the process of oogenesis and follicular development Identify the menstrual cycle Describe menopause", "w": 0}, {"c": "Book", "t": "Chapter 14: The Urinary and Reproductive Systems", "u": "book/ch14.html", "s": "The Interactive Book", "k": "Identify the functions of the urinary system Describe how the nephron functions and how urine is formed Describe the process of spermatogenesis and sperm maturation Describe the process of oogenesis and follicular development Identify the menstrual cycle Describe menopause", "w": 0}, {"c": "Slides", "t": "Module 14 lecture slides", "u": "slides/module-14-lecture-slides.pdf", "s": "PDF", "k": "The Urinary & Reproductive Systems", "w": 0}, {"c": "Lab", "t": "Acid–Base Lab", "u": "lab/ch01/AcidBaseLab.html", "s": "Module 1 lab: the Henderson–Hasselbalch ratio", "k": "Acid–Base Lab the Henderson–Hasselbalch ratio", "w": 0, "a": "Acid Base Lab"}, {"c": "Lab", "t": "Enzyme and ATP Lab", "u": "lab/ch01/EnzymeKineticsLab.html", "s": "Module 1 lab: saturation, shape, and the cost of a gradient", "k": "Enzyme and ATP Lab saturation, shape, and the cost of a gradient", "w": 0, "a": "Enzyme Kinetics Lab"}, {"c": "Lab", "t": "Feedback Loop Lab", "u": "lab/ch01/FeedbackLoopLab.html", "s": "Module 1 lab: break the loop and watch", "k": "Feedback Loop Lab break the loop and watch", "w": 0, "a": "Feedback Loop Lab"}, {"c": "Lab", "t": "The Flow Equation Lab", "u": "lab/ch01/FlowEquationLab.html", "s": "Module 1 lab: Q = ΔP / R", "k": "The Flow Equation Lab Q = ΔP / R", "w": 0, "a": "Flow Equation Lab"}, {"c": "Lab", "t": "Osmolality and Tonicity Lab", "u": "lab/ch01/TonicityLab.html", "s": "Module 1 lab: how solutes move water", "k": "Osmolality and Tonicity Lab how solutes move water", "w": 0, "a": "Tonicity Lab"}, {"c": "Lab", "t": "Checkpoints & Chemiosmosis", "u": "lab/ch02/CellCycleCheckpointSim.html", "s": "Module 2 lab: run a cell cycle, then pay for it", "k": "Checkpoints & Chemiosmosis run a cell cycle, then pay for it", "w": 0, "a": "Cell Cycle Checkpoint Sim"}, {"c": "Lab", "t": "Central Dogma Bench", "u": "lab/ch02/CentralDogmaBench.html", "s": "Module 2 lab: edit a gene, read the protein", "k": "Central Dogma Bench edit a gene, read the protein", "w": 0, "a": "Central Dogma Bench"}, {"c": "Lab", "t": "The Bilayer Barrier", "u": "lab/ch02/MembraneBarrierLab.html", "s": "Module 2 lab: permeability, fluidity and τ = R × C", "k": "The Bilayer Barrier permeability, fluidity and τ = R × C", "w": 0, "a": "Membrane Barrier Lab"}, {"c": "Lab", "t": "Tonicity & Cell Volume", "u": "lab/ch02/TonicityCellVolumeLab.html", "s": "Module 2 lab: mix a solution, watch the cell answer", "k": "Tonicity & Cell Volume mix a solution, watch the cell answer", "w": 0, "a": "Tonicity Cell Volume Lab"}, {"c": "Lab", "t": "The Transport Bench", "u": "lab/ch02/TransportBench.html", "s": "Module 2 lab: Fick, Tₘ and the pump that pays for everything", "k": "The Transport Bench Fick, Tₘ and the pump that pays for everything", "w": 0, "a": "Transport Bench"}, {"c": "Lab", "t": "The Diffusion Limit", "u": "lab/ch03/DiffusionAndJunctionsLab.html", "s": "Module 3 lab: why tissues exist, and what junctions do", "k": "The Diffusion Limit why tissues exist, and what junctions do", "w": 0, "a": "Diffusion And Junctions Lab"}, {"c": "Lab", "t": "The Polarized Epithelium", "u": "lab/ch03/PolarisedEpitheliumLab.html", "s": "Module 3 lab: move the pump, reverse the transport", "k": "The Polarized Epithelium move the pump, reverse the transport", "w": 0, "a": "Polarised Epithelium Lab"}, {"c": "Lab", "t": "The Skin Barrier", "u": "lab/ch03/SkinBarrierLab.html", "s": "Module 3 lab: and its repair loop", "k": "The Skin Barrier and its repair loop", "w": 0, "a": "Skin Barrier Lab"}, {"c": "Lab", "t": "Starling Forces", "u": "lab/ch03/StarlingForcesBench.html", "s": "Module 3 lab: and the interstitial compartment", "k": "Starling Forces and the interstitial compartment", "w": 0, "a": "Starling Forces Bench"}, {"c": "Lab", "t": "Skin as a Control Organ", "u": "lab/ch03/ThermoregulationLoop.html", "s": "Module 3 lab: the thermoregulatory loop", "k": "Skin as a Control Organ the thermoregulatory loop", "w": 0, "a": "Thermoregulation Loop"}, {"c": "Lab", "t": "The Bone Composite Bench", "u": "lab/ch04/BoneCompositeLab.html", "s": "Module 4 lab: mineral, collagen and the osteoclast", "k": "The Bone Composite Bench mineral, collagen and the osteoclast", "w": 0, "a": "Bone Composite Lab"}, {"c": "Lab", "t": "The Calcium Loop", "u": "lab/ch04/CalciumLoopSim.html", "s": "Module 4 lab: three effectors, three time constants", "k": "The Calcium Loop three effectors, three time constants", "w": 0, "a": "Calcium Loop Sim"}, {"c": "Lab", "t": "The Growth Plate Conveyor", "u": "lab/ch04/GrowthPlateConveyor.html", "s": "Module 4 lab: how a bone gets longer and wider", "k": "The Growth Plate Conveyor how a bone gets longer and wider", "w": 0, "a": "Growth Plate Conveyor"}, {"c": "Lab", "t": "Levers, Cartilage and Strain", "u": "lab/ch04/LeverAndFractureLab.html", "s": "Module 4 lab: the skeleton in motion and after injury", "k": "Levers, Cartilage and Strain the skeleton in motion and after injury", "w": 0, "a": "Lever And Fracture Lab"}, {"c": "Lab", "t": "The Mechanostat and RANKL", "u": "lab/ch04/MechanostatRemodelingSim.html", "s": "Module 4 lab: how bone decides how much of itself to keep", "k": "The Mechanostat and RANKL how bone decides how much of itself to keep", "w": 0, "a": "Mechanostat Remodeling Sim"}, {"c": "Lab", "t": "Grading Force", "u": "lab/ch05/ForceGradingBench.html", "s": "Module 5 lab: motor units, frequency, length and fuel", "k": "Grading Force motor units, frequency, length and fuel", "w": 0, "a": "Force Grading Bench"}, {"c": "Lab", "t": "From Nerve to Calcium", "u": "lab/ch05/JunctionToCalciumLab.html", "s": "Module 5 lab: the safety factor and E–C coupling", "k": "From Nerve to Calcium the safety factor and E–C coupling", "w": 0, "a": "Junction To Calcium Lab"}, {"c": "Lab", "t": "Smooth and Cardiac Muscle", "u": "lab/ch05/MuscleTypeComparator.html", "s": "Module 5 lab: same filaments, different control", "k": "Smooth and Cardiac Muscle same filaments, different control", "w": 0, "a": "Muscle Type Comparator"}, {"c": "Lab", "t": "Nervous Tissue", "u": "lab/ch05/RestingPotentialAndReflexLab.html", "s": "Module 5 lab: resting voltage, summation and the reflex loop", "k": "Nervous Tissue resting voltage, summation and the reflex loop", "w": 0, "a": "Resting Potential And Reflex Lab"}, {"c": "Lab", "t": "The Sarcomere", "u": "lab/ch05/SarcomereSlidingEngine.html", "s": "Module 5 lab: an engine that shortens by sliding", "k": "The Sarcomere an engine that shortens by sliding", "w": 0, "a": "Sarcomere Sliding Engine"}, {"c": "Lab", "t": "The Action Potential", "u": "lab/ch06/ActionPotentialLab.html", "s": "Module 6 lab: threshold, refractoriness and speed", "k": "The Action Potential threshold, refractoriness and speed", "w": 0, "a": "Action Potential Lab"}, {"c": "Lab", "t": "The Baroreceptor Reflex", "u": "lab/ch06/BaroreflexLoop.html", "s": "Module 6 lab: break the loop and watch", "k": "The Baroreceptor Reflex break the loop and watch", "w": 0, "a": "Baroreflex Loop"}, {"c": "Lab", "t": "The Brain as a Control System", "u": "lab/ch06/CerebralPerfusionModel.html", "s": "Module 6 lab: perfusion and set points", "k": "The Brain as a Control System perfusion and set points", "w": 0, "a": "Cerebral Perfusion Model"}, {"c": "Lab", "t": "The Charged Membrane", "u": "lab/ch06/RestingPotentialBench.html", "s": "Module 6 lab: building −70 mV", "k": "The Charged Membrane building −70 mV", "w": 0, "a": "Resting Potential Bench"}, {"c": "Lab", "t": "The Synapse", "u": "lab/ch06/SynapticIntegrationBench.html", "s": "Module 6 lab: summation at the axon hillock", "k": "The Synapse summation at the axon hillock", "w": 0, "a": "Synaptic Integration Bench"}, {"c": "Lab", "t": "From Pressure Wave to Firing Rate", "u": "lab/ch07/CochlearMechanicsLab.html", "s": "Module 7 lab: impedance, tonotopy and the hair cell", "k": "From Pressure Wave to Firing Rate impedance, tonotopy and the hair cell", "w": 0, "a": "Cochlear Mechanics Lab"}, {"c": "Lab", "t": "The Sixty-Diopter Eye", "u": "lab/ch07/OpticsOfTheEye.html", "s": "Module 7 lab: refraction, accommodation and intraocular pressure", "k": "The Sixty-Diopter Eye refraction, accommodation and intraocular pressure", "w": 0, "a": "Optics Of The Eye"}, {"c": "Lab", "t": "The Dark Current", "u": "lab/ch07/PhototransductionLab.html", "s": "Module 7 lab: phototransduction, adaptation and center-surround", "k": "The Dark Current phototransduction, adaptation and center-surround", "w": 0, "a": "Phototransduction Lab"}, {"c": "Lab", "t": "From Stimulus to Spike Train", "u": "lab/ch07/SensoryTransductionBench.html", "s": "Module 7 lab: transduction, adaptation and frequency coding", "k": "From Stimulus to Spike Train transduction, adaptation and frequency coding", "w": 0, "a": "Sensory Transduction Bench"}, {"c": "Lab", "t": "Accelerometers and Chemical Codes", "u": "lab/ch07/VestibularAndChemicalSenses.html", "s": "Module 7 lab: balance, taste and smell", "k": "Accelerometers and Chemical Codes balance, taste and smell", "w": 0, "a": "Vestibular And Chemical Senses"}, {"c": "Lab", "t": "Salt, Sugar and Speed", "u": "lab/ch08/AdrenalPressureLab.html", "s": "Module 8 lab: RAAS, cortisol and the permissive effect", "k": "Salt, Sugar and Speed RAAS, cortisol and the permissive effect", "w": 0, "a": "Adrenal Pressure Lab"}, {"c": "Lab", "t": "The Beta Cell", "u": "lab/ch08/GlucoseDefenceLab.html", "s": "Module 8 lab: and the defense of blood glucose", "k": "The Beta Cell and the defense of blood glucose", "w": 0, "a": "Glucose Defence Lab"}, {"c": "Lab", "t": "The Three-Tier Axis", "u": "lab/ch08/PituitaryAxisSimulator.html", "s": "Module 8 lab: break a tier, read the pair", "k": "The Three-Tier Axis break a tier, read the pair", "w": 0, "a": "Pituitary Axis Simulator"}, {"c": "Lab", "t": "Solubility and Amplification", "u": "lab/ch08/SignalAmplificationBench.html", "s": "Module 8 lab: receptor address and signal gain", "k": "Solubility and Amplification receptor address and signal gain", "w": 0, "a": "Signal Amplification Bench"}, {"c": "Lab", "t": "Two Set Points", "u": "lab/ch08/ThyroidCalciumBench.html", "s": "Module 8 lab: metabolic rate and ionized calcium", "k": "Two Set Points metabolic rate and ionized calcium", "w": 0, "a": "Thyroid Calcium Bench"}, {"c": "Lab", "t": "The Erythropoietin Loop", "u": "lab/ch09/ErythropoietinLoopSim.html", "s": "Module 9 lab: break a link, run the clock", "k": "The Erythropoietin Loop break a link, run the clock", "w": 0, "a": "Erythropoietin Loop Sim"}, {"c": "Lab", "t": "The Hematocrit Trade-off", "u": "lab/ch09/HematocritTradeoffLab.html", "s": "Module 9 lab: oxygen per milliliter vs milliliters per minute", "k": "The Hematocrit Trade-off oxygen per milliliter vs milliliters per minute", "w": 0, "a": "Hematocrit Tradeoff Lab"}, {"c": "Lab", "t": "Hemostasis", "u": "lab/ch09/HemostasisAmplifierLab.html", "s": "Module 9 lab: an amplifier with brakes", "k": "Hemostasis an amplifier with brakes", "w": 0, "a": "Hemostasis Amplifier Lab"}, {"c": "Lab", "t": "Q = ΔP / R", "u": "lab/ch09/PoiseuilleFlowBench.html", "s": "Module 9 lab: the fourth-power bench", "k": "Q = ΔP / R the fourth-power bench", "w": 0, "a": "Poiseuille Flow Bench"}, {"c": "Lab", "t": "Four Pressures and One Reflex", "u": "lab/ch09/StarlingAndBaroreflexLab.html", "s": "Module 9 lab: capillary exchange meets the baroreflex", "k": "Four Pressures and One Reflex capillary exchange meets the baroreflex", "w": 0, "a": "Starling And Baroreflex Lab"}, {"c": "Lab", "t": "The Cardiac Cycle", "u": "lab/ch10/CardiacCycleWiggers.html", "s": "Module 10 lab: every valve event is a pressure crossing", "k": "The Cardiac Cycle every valve event is a pressure crossing", "w": 0, "a": "Cardiac Cycle Wiggers"}, {"c": "Lab", "t": "Cardiac Output and the Baroreflex", "u": "lab/ch10/CardiacOutputBaroreflex.html", "s": "Module 10 lab: break the loop and watch pressure run away", "k": "Cardiac Output and the Baroreflex break the loop and watch pressure run away", "w": 0, "a": "Cardiac Output Baroreflex"}, {"c": "Lab", "t": "Automaticity and Conduction", "u": "lab/ch10/PacemakerAndConduction.html", "s": "Module 10 lab: building an ECG from the pacemaker up", "k": "Automaticity and Conduction building an ECG from the pacemaker up", "w": 0, "a": "Pacemaker And Conduction"}, {"c": "Lab", "t": "Two Pumps in Series", "u": "lab/ch10/TwoPumpsAndLaplace.html", "s": "Module 10 lab: resistance, pressure and the law of Laplace", "k": "Two Pumps in Series resistance, pressure and the law of Laplace", "w": 0, "a": "Two Pumps And Laplace"}, {"c": "Lab", "t": "The Ventricular Action Potential", "u": "lab/ch10/VentricularActionPotentialLab.html", "s": "Module 10 lab: plateau, calcium and why tetanus is impossible", "k": "The Ventricular Action Potential plateau, calcium and why tetanus is impossible", "w": 0, "a": "Ventricular Action Potential Lab"}, {"c": "Lab", "t": "Building an Antibody Response", "u": "lab/ch11/AntibodyResponseSimulator.html", "s": "Module 11 lab: from first exposure to memory", "k": "Building an Antibody Response from first exposure to memory", "w": 0, "a": "Antibody Response Simulator"}, {"c": "Lab", "t": "Clonal Selection and Thymic Tolerance", "u": "lab/ch11/ClonalSelectionAndThymicTolerance.html", "s": "Module 11 lab: how the repertoire is edited", "k": "Clonal Selection and Thymic Tolerance how the repertoire is edited", "w": 0, "a": "Clonal Selection And Thymic Tolerance"}, {"c": "Lab", "t": "Fever", "u": "lab/ch11/FeverSetPointLoop.html", "s": "Module 11 lab: a negative-feedback loop with a moved set point", "k": "Fever a negative-feedback loop with a moved set point", "w": 0, "a": "Fever Set Point Loop"}, {"c": "Lab", "t": "Starling Forces and the Lymphatic Drain", "u": "lab/ch11/StarlingForcesAndLymphDrain.html", "s": "Module 11 lab: where the missing liters go", "k": "Starling Forces and the Lymphatic Drain where the missing liters go", "w": 0, "a": "Starling Forces And Lymph Drain"}, {"c": "Lab", "t": "Two Signals, Then the Kill", "u": "lab/ch11/TCellSignalsAndTheKill.html", "s": "Module 11 lab: T cell activation and cytotoxicity", "k": "Two Signals, Then the Kill T cell activation and cytotoxicity", "w": 0, "a": "TCell Signals And The Kill"}, {"c": "Lab", "t": "The Lung as an Acid–Base Organ", "u": "lab/ch12/AcidBaseWorkbench.html", "s": "Module 12 lab: ventilation sets pH", "k": "The Lung as an Acid–Base Organ ventilation sets pH", "w": 0, "a": "Acid Base Workbench"}, {"c": "Lab", "t": "The Control of Breathing", "u": "lab/ch12/BreathingControlLoop.html", "s": "Module 12 lab: a loop you can break", "k": "The Control of Breathing a loop you can break", "w": 0, "a": "Breathing Control Loop"}, {"c": "Lab", "t": "Breathing Mechanics", "u": "lab/ch12/BreathingMechanicsLab.html", "s": "Module 12 lab: gradient, compliance and resistance", "k": "Breathing Mechanics gradient, compliance and resistance", "w": 0, "a": "Breathing Mechanics Lab"}, {"c": "Lab", "t": "Dead Space and the Spirogram", "u": "lab/ch12/DeadSpaceAndSpirometry.html", "s": "Module 12 lab: alveolar ventilation in numbers", "k": "Dead Space and the Spirogram alveolar ventilation in numbers", "w": 0, "a": "Dead Space And Spirometry"}, {"c": "Lab", "t": "Diffusion, V/Q Matching and Oxygen Transport", "u": "lab/ch12/GasExchangeAndTransport.html", "s": "Module 12 lab: getting O₂ to the tissue", "k": "Diffusion, V/Q Matching and Oxygen Transport getting O₂ to the tissue", "w": 0, "a": "Gas Exchange And Transport"}, {"c": "Lab", "t": "The Parietal Cell", "u": "lab/ch13/AcidLoopAndGastricEmptying.html", "s": "Module 13 lab: the somatostatin brake and metered emptying", "k": "The Parietal Cell the somatostatin brake and metered emptying", "w": 0, "a": "Acid Loop And Gastric Emptying"}, {"c": "Lab", "t": "The Brush Border", "u": "lab/ch13/BrushBorderTransport.html", "s": "Module 13 lab: sodium gradients, surface area and oral rehydration", "k": "The Brush Border sodium gradients, surface area and oral rehydration", "w": 0, "a": "Brush Border Transport"}, {"c": "Lab", "t": "Nine Liters a Day", "u": "lab/ch13/ColonWaterAndDefecation.html", "s": "Module 13 lab: colonic water balance and the defecation reflex", "k": "Nine Liters a Day colonic water balance and the defecation reflex", "w": 0, "a": "Colon Water And Defecation"}, {"c": "Lab", "t": "Secretin, CCK and Bile", "u": "lab/ch13/SecretinCCKandBile.html", "s": "Module 13 lab: the enterohepatic circulation", "k": "Secretin, CCK and Bile the enterohepatic circulation", "w": 0, "a": "Secretin CCKand Bile"}, {"c": "Lab", "t": "Slow Waves and Motility", "u": "lab/ch13/SlowWavesAndMotility.html", "s": "Module 13 lab: spike potentials and the motor patterns of the gut", "k": "Slow Waves and Motility spike potentials and the motor patterns of the gut", "w": 0, "a": "Slow Waves And Motility"}, {"c": "Lab", "t": "The Medullary Gradient", "u": "lab/ch14/CountercurrentAndADH.html", "s": "Module 14 lab: and the ADH loop", "k": "The Medullary Gradient and the ADH loop", "w": 0, "a": "Countercurrent And ADH"}, {"c": "Lab", "t": "Pressure Natriuresis", "u": "lab/ch14/PressureNatriuresisLoop.html", "s": "Module 14 lab: the kidney sets blood pressure", "k": "Pressure Natriuresis the kidney sets blood pressure", "w": 0, "a": "Pressure Natriuresis Loop"}, {"c": "Lab", "t": "One Axis, Two Patterns", "u": "lab/ch14/ReproductiveAxisAndCycle.html", "s": "Module 14 lab: the surge and the steady state", "k": "One Axis, Two Patterns the surge and the steady state", "w": 0, "a": "Reproductive Axis And Cycle"}, {"c": "Lab", "t": "Starling Forces and the 180 Liters", "u": "lab/ch14/StarlingForcesAndGFR.html", "s": "Module 14 lab: what the glomerulus filters", "k": "Starling Forces and the 180 Liters what the glomerulus filters", "w": 0, "a": "Starling Forces And GFR"}, {"c": "Lab", "t": "Editing the Filtrate", "u": "lab/ch14/TransportMaximumAndClearance.html", "s": "Module 14 lab: Tm, threshold and clearance", "k": "Editing the Filtrate Tm, threshold and clearance", "w": 0, "a": "Transport Maximum And Clearance"}, {"c": "Exam", "t": "Exam 1 review guide", "u": "guides/exam-1.html", "s": "Modules 1–2", "k": "exam review", "w": 2}, {"c": "Exam", "t": "Exam 2 review guide", "u": "guides/exam-2.html", "s": "Modules 3–4", "k": "exam review", "w": 2}, {"c": "Exam", "t": "Exam 3 review guide", "u": "guides/exam-3.html", "s": "Modules 5–6", "k": "exam review", "w": 2}, {"c": "Exam", "t": "Exam 4 review guide", "u": "guides/exam-4.html", "s": "Modules 7–9", "k": "exam review", "w": 2}, {"c": "Exam", "t": "Exam 5 review guide", "u": "guides/exam-5.html", "s": "Modules 10–12", "k": "exam review", "w": 2}, {"c": "Exam", "t": "Final Exam review guide", "u": "guides/final-exam.html", "s": "Modules 1–14 (cumulative)", "k": "exam review", "w": 2}, {"c": "Lesson", "t": "Module 13 full lesson: walk the alimentary canal", "u": "module13.html", "s": "Final-only module", "k": "digestive gi stomach", "w": 0}, {"c": "Lesson", "t": "Module 14 full lesson: nephron and cycle explorer", "u": "module14.html", "s": "Final-only module", "k": "urinary kidney reproductive menstrual", "w": 0}];</script>
+<script>/* Course hub home page behavior: preview clips, rails, course search. Built by hubtools/build_hubs.py. */
+(function () {
+  "use strict";
+  var doc = document;
+
+  /* ---------- preview clips: play only while in view; posters only for reduced motion or slow / Save-Data ---------- */
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  var slow = !!(conn && (conn.saveData || /(^|-)2g|3g/.test(conn.effectiveType || "")));
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var vids = [].slice.call(doc.querySelectorAll("video[data-src]"));
+  function load(v) {
+    if (v.dataset.loaded) return;
+    v.dataset.loaded = "1";
+    /* WebM (smaller) where the browser plays VP9, otherwise the H.264 MP4 */
+    var wm = v.dataset.webm && v.canPlayType && v.canPlayType('video/webm; codecs="vp9"');
+    v.src = wm ? v.dataset.webm : v.dataset.src;
+    v.addEventListener("playing", function () { v.classList.add("on"); });
+  }
+  function play(v) {
+    load(v);
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  if (!slow && !still && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting && e.intersectionRatio > 0.35) play(v);
+        else if (!v.paused) v.pause();
+      });
+    }, { threshold: [0, 0.35, 0.7] });
+    vids.forEach(function (v) { io.observe(v); });
+    doc.addEventListener("visibilitychange", function () {
+      if (doc.hidden) vids.forEach(function (v) { if (!v.paused) v.pause(); });
+    });
+  }
+
+  /* ---------- rails: previous / next buttons ---------- */
+  [].forEach.call(doc.querySelectorAll("[data-rail]"), function (box) {
+    var rail = doc.getElementById(box.getAttribute("data-rail"));
+    if (!rail) return;
+    [].forEach.call(box.querySelectorAll("button"), function (b) {
+      b.addEventListener("click", function () {
+        var card = rail.querySelector("li");
+        var step = card ? card.getBoundingClientRect().width + 16 : 280;
+        rail.scrollBy({ left: (b.getAttribute("data-dir") === "prev" ? -1 : 1) * step * 2, behavior: still ? "auto" : "smooth" });
+      });
+    });
+  });
+
+  /* ---------- course-only search over this hub's own pages, tools and topics ---------- */
+  var IDX = window.HUB_INDEX || [];
+  var input = doc.getElementById("hq"), box = doc.getElementById("hres"), form = doc.getElementById("hform");
+  if (input && box) {
+    var norm = function (s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]+/g, " "); };
+    IDX.forEach(function (r) { r._t = norm(r.t + " " + (r.a || "")); r._h = norm([r.t, r.a, r.s, r.k].join(" ")); });
+    var sel = -1, shown = [];
+    var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    var run = function () {
+      var q = norm(input.value).trim();
+      if (q.length < 2) { box.classList.remove("on"); input.setAttribute("aria-expanded", "false"); shown = []; return; }
+      var words = q.split(/\s+/);
+      var scored = [];
+      IDX.forEach(function (r) {
+        var sc = 0;
+        for (var i = 0; i < words.length; i++) {
+          var w = words[i];
+          if (r._h.indexOf(w) < 0) return;
+          sc += r._t.indexOf(w) === 0 ? 6 : (r._t.indexOf(" " + w) >= 0 ? 4 : (r._t.indexOf(w) >= 0 ? 3 : 1));
+        }
+        sc += (r.w || 0);
+        scored.push([sc, r]);
+      });
+      scored.sort(function (a, b) { return b[0] - a[0]; });
+      shown = scored.slice(0, 12).map(function (x) { return x[1]; });
+      sel = -1;
+      if (!shown.length) {
+        box.innerHTML = '<div class="none">Nothing in this course matches “' + esc(input.value) + '”. Try a body system or a disease name.</div>';
+      } else {
+        box.innerHTML = shown.map(function (r, i) {
+          return '<a role="option" id="hr' + i + '" href="' + esc(r.u) + '"' + (r.x ? ' target="_blank" rel="noopener"' : "") + '><span class="rk">' + esc(r.c) + '</span><span><span class="rtt">' + esc(r.t) + '</span>' + (r.s ? '<span class="rss">' + esc(r.s) + "</span>" : "") + "</span></a>";
+        }).join("");
+      }
+      box.classList.add("on");
+      input.setAttribute("aria-expanded", "true");
+    };
+    var mark = function () {
+      [].forEach.call(box.querySelectorAll("a"), function (a, i) { a.setAttribute("aria-selected", i === sel ? "true" : "false"); });
+      if (sel >= 0) { input.setAttribute("aria-activedescendant", "hr" + sel); var a = doc.getElementById("hr" + sel); if (a) a.scrollIntoView({ block: "nearest" }); }
+      else input.removeAttribute("aria-activedescendant");
+    };
+    input.addEventListener("input", run);
+    input.addEventListener("focus", function () { if (input.value.trim().length > 1) run(); });
+    input.addEventListener("keydown", function (e) {
+      if (!shown.length) return;
+      if (e.key === "ArrowDown") { sel = Math.min(sel + 1, shown.length - 1); mark(); e.preventDefault(); }
+      else if (e.key === "ArrowUp") { sel = Math.max(sel - 1, -1); mark(); e.preventDefault(); }
+      else if (e.key === "Escape") { box.classList.remove("on"); input.setAttribute("aria-expanded", "false"); }
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      run();
+      var r = shown[sel >= 0 ? sel : 0];
+      if (r) { if (r.x) window.open(r.u, "_blank", "noopener"); else location.href = r.u; }
+    });
+    doc.addEventListener("click", function (e) { if (!e.target.closest || !e.target.closest(".hsearch")) { box.classList.remove("on"); input.setAttribute("aria-expanded", "false"); } });
+    [].forEach.call(doc.querySelectorAll("[data-q]"), function (a) {
+      a.addEventListener("click", function (e) { e.preventDefault(); input.value = a.getAttribute("data-q"); input.focus(); run(); });
+    });
+  }
+})();
+</script>
+<script>
+/* Module path. Data comes from data/modules.js; the maps below are the same ones the old home page used. */
+(function(){
+  "use strict";
+  var MODULES = window.BIO262_MODULES || [], EXAMS = window.BIO262_EXAMS || [], MLOS = window.BIO262_MLOS || {};
+  var COUNTS = window.BIO262_COUNTS || {byModule:{}, byExam:{}};
+  var PRACTICE = {"1": 54, "2": 53, "3": 51, "4": 44, "5": 53, "6": 53, "7": 43, "8": 44, "9": 48, "10": 43, "11": 43, "12": 42, "13": 52, "14": 70};
+  var CARDS = {"1": 28, "2": 40, "3": 49, "4": 26, "5": 38, "6": 42, "7": 36, "8": 46, "9": 39, "10": 33, "11": 36, "12": 28, "13": 51, "14": 62};
+  var LABS = {"1": 5, "2": 5, "3": 5, "4": 5, "5": 5, "6": 5, "7": 5, "8": 5, "9": 5, "10": 5, "11": 5, "12": 5, "13": 5, "14": 5};
+  var LESSONS = {"1": "modules/module-01-introduction.html", "2": "modules/module-02-cellular.html", "3": "modules/module-03-tissues.html", "4": "modules/module-07-muscular-skeletal.html", "5": "modules/module-04-nervous-tissue.html", "6": "modules/module-05-brain-ans.html", "7": "modules/module-06-sensations.html", "8": "modules/module-08-endocrine.html", "9": "modules/module-09-blood-vessels.html", "10": "modules/module-10-heart.html", "11": "modules/module-11-lymphatic-immune.html", "12": "modules/module-12-respiratory.html", "13": "modules/module-13-digestive.html", "14": "modules/module-14-urinary-reproductive.html"};
+  // H5P interactive workbooks: add a module number and its content id as they are built
+  var WORKBOOKS = {
+    1: "https://akashgarg.h5p.com/content/1292999252951159368",
+    2: "https://akashgarg.h5p.com/content/1293003546589414058",
+    3: "https://akashgarg.h5p.com/content/1293010158367494768",
+    4: "https://akashgarg.h5p.com/content/1293015376246637478",
+    5: "https://akashgarg.h5p.com/content/1293021379885476328",
+    6: "https://akashgarg.h5p.com/content/1293029154783048928"
+  };
+  /* This week: Fall 2026 runs Monday Aug 31 to Dec 13 (15 weeks). Canvas week n is Canvas module n.
+     Canvas numbers Modules 4 to 7 differently, so map the Canvas week to this site's module by topic. */
+  var TERM_START = new Date(2026, 7, 31), WEEKS = 15;
+  var CANVAS_TO_SITE = {1:1,2:2,3:3,4:5,5:6,6:7,7:4,8:8,9:9,10:10,11:11,12:12,13:13,14:14};
+  var ICON = {"lesson": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 6l9-4 9 4-9 4z\"/><path d=\"M7 8.5V14c0 1.7 2.2 3 5 3s5-1.3 5-3V8.5\"/></svg>", "book": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z\"/><path d=\"M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5\"/></svg>", "flask": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9 3h6\"/><path d=\"M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3\"/><path d=\"M7.5 14h9\"/></svg>", "doc": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"/><path d=\"M14 3v6h6\"/><path d=\"M8 13h8M8 17h5\"/></svg>", "target": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><circle cx=\"12\" cy=\"12\" r=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"1.5\"/></svg>", "cards": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"6\" width=\"13\" height=\"15\" rx=\"2\"/><path d=\"M8 3h11a2 2 0 0 1 2 2v13\"/></svg>", "run": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"14\" cy=\"4\" r=\"2\"/><path d=\"m6 21 3-6 3 2 1 4M9 15l1-5 4 2 3-2M10 10 7 9l-3 3\"/></svg>", "slides": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M12 16v4M8 20h8\"/></svg>", "pdf": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"/><path d=\"M14 3v6h6\"/><path d=\"M12 12v6m-3-3 3 3 3-3\"/></svg>", "check": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9 11l3 3 8-8\"/><path d=\"M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11\"/></svg>", "ext": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 4h6v6\"/><path d=\"M20 4 10 14\"/><path d=\"M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5\"/></svg>"};
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+  function pad(n){return n<10?"0"+n:""+n;}
+  function examName(k){for(var i=0;i<EXAMS.length;i++) if(EXAMS[i].key===k) return EXAMS[i].name; return k;}
+  var now = new Date(), wk = Math.floor((now - TERM_START) / 6048e5) + 1, thisMod = null, wkLabel = "";
+  if (wk >= 1 && wk <= WEEKS) {
+    var ws = new Date(TERM_START.getTime() + (wk - 1) * 6048e5), we = new Date(ws.getTime() + 6 * 864e5);
+    var f = function(d){return d.toLocaleDateString("en-US", {month:"short", day:"numeric"});};
+    wkLabel = "Week " + wk + " of " + WEEKS + " · " + f(ws) + " to " + f(we);
+    thisMod = CANVAS_TO_SITE[wk] || null;
+  }
+  function tile(href, ic, t, s, cls, ext){
+    return '<li><a class="rt ' + (cls||'') + '" href="' + esc(href) + '"' + (ext ? ' target="_blank" rel="noopener"' : '') + '><span class="ic">' + ICON[ic] + '</span><b>' + esc(t) + '</b>' + (s ? '<small>' + esc(s) + '</small>' : '') + (ext ? '<span class="ext">Opens in a new tab</span>' : '') + '</a></li>';
+  }
+  function panel(n){
+    var mod = null; for (var i=0;i<MODULES.length;i++) if (MODULES[i].n===n) mod = MODULES[i];
+    if (!mod) return "";
+    var outs = MLOS[String(n)] || [], lesson = LESSONS[n], pdf = lesson ? "pdf/" + lesson.split("/").pop().replace(".html", ".pdf") : null;
+    var row = "";
+    if (lesson) row += tile(lesson, "lesson", "Study guide", "Read the lesson, try the model", "");
+    row += tile("book/ch" + pad(n) + ".html", "book", "Book chapter " + n, "With built-in simulations", "teal");
+    row += tile("labs.html", "flask", (LABS[n] || 0) + " lab benches", "Module " + n + " in the Lab Library", "teal");
+    row += tile("guides/module-" + pad(n) + ".html", "doc", "Module review guide", "Print to PDF", "gold");
+    row += tile("practice.html", "target", "Practice questions", (PRACTICE[n] || 0) + " for this module", "");
+    row += tile("flashcards.html", "cards", "Flashcards", (CARDS[n] || 0) + " cards for this module", "");
+    row += tile("chase.html?wk=" + n, "run", "Chase round", "Module " + n + " boss", "gold");
+    row += tile("slides/module-" + pad(n) + "-lecture-slides.pdf", "slides", "Lecture slides", "PDF", "", true);
+    if (pdf) row += tile(pdf, "pdf", "Study guide PDF", "Ready to print", "");
+    if (WORKBOOKS[n]) row += tile(WORKBOOKS[n], "check", "Interactive workbook", "On H5P", "ok", true);
+    if (n === 13 || n === 14) row += tile("module" + n + ".html", "lesson", "Full lesson", n === 13 ? "Walk the alimentary canal" : "Nephron and cycle explorer", "ok");
+    var li = outs.map(function(o){return "<li>" + esc(o.t) + "</li>";}).join("") || "<li>Outcomes listed in the course packet.</li>";
+    var wb = WORKBOOKS[n] ? '<details class="more" data-wb="' + n + '"><summary>Open the interactive workbook here</summary><div class="wb"></div></details>' : "";
+    var q = COUNTS.byModule[String(n)] || 0;
+    return '<div class="ptop"><div><h3 id="m' + n + '">Module ' + n + ' · ' + esc(mod.title) + '</h3>' +
+      '<div class="pmeta"><span class="pill ex">' + esc(examName(mod.exam)) + '</span><span class="pill">' + q + ' exam questions</span><span class="pill">' + outs.length + ' learning outcome' + (outs.length===1?'':'s') + '</span>' +
+      (n === thisMod ? '<span class="pill now">This week · ' + esc(wkLabel) + '</span>' : '') + '</div></div></div>' +
+      '<ul class="res-row" aria-label="Module ' + n + ' resources">' + row + '</ul>' +
+      '<details class="more"><summary>Learning outcomes</summary><ul>' + li + '</ul></details>' + wb;
+  }
+  var chips = document.getElementById("chips"), box = document.getElementById("mpanel");
+  if (!chips || !box) return;
+  chips.innerHTML = MODULES.map(function(m){
+    return '<button class="chip" type="button" data-n="' + m.n + '" aria-pressed="false" aria-label="Module ' + m.n + ': ' + esc(m.title) + (m.n===thisMod?' (this week)':'') + '"><small>' + (m.n===thisMod ? 'Now' : 'Mod') + '</small><span>' + m.n + '</span>' + (m.n===thisMod?'<i class="nowdot" aria-hidden="true"></i>':'') + '</button>';
+  }).join("");
+  function show(n, focus){
+    [].forEach.call(chips.querySelectorAll(".chip"), function(c){ c.setAttribute("aria-pressed", +c.getAttribute("data-n") === n ? "true" : "false"); });
+    box.innerHTML = panel(n);
+    var d = box.querySelector("details[data-wb]");
+    if (d) d.addEventListener("toggle", function(){
+      var w = d.querySelector(".wb");
+      if (d.open && !window.__h5pr) { window.__h5pr = 1; var sc = document.createElement("script"); sc.src = "https://akashgarg.h5p.com/js/h5p-resizer.js"; sc.charset = "UTF-8"; document.body.appendChild(sc); }
+      if (d.open && !w.firstChild) w.innerHTML = '<iframe src="' + WORKBOOKS[n] + '/embed" loading="lazy" title="BIO 262 Module ' + n + ' interactive workbook" allowfullscreen allow="autoplay *; geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>';
+    });
+    var c = chips.querySelector('[data-n="' + n + '"]');
+    if (c) { var r = c.getBoundingClientRect(), pr = chips.getBoundingClientRect(); if (r.left < pr.left || r.right > pr.right) chips.scrollLeft += r.left - pr.left - 12; }
+  }
+  chips.addEventListener("click", function(e){ var c = e.target.closest ? e.target.closest(".chip") : null; if (c) show(+c.getAttribute("data-n")); });
+  var hm = /^#m(\d+)$/.exec(location.hash);
+  show(hm ? +hm[1] : (thisMod || 1), false);
+  window.addEventListener("hashchange", function(){ var h = /^#m(\d+)$/.exec(location.hash); if (h) { show(+h[1]); document.getElementById("path").scrollIntoView(); } });
+})();
+</script>
+</body>
+</html>
